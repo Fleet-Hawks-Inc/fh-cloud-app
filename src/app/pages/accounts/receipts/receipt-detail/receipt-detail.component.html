@@ -1,0 +1,139 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row pr-5 " style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            Customer Receipt# - 1279430
+          </div>
+          <div class="col-md-8  col-lg-8 text-right pr-4">
+            <a routerLink="/accounts/receipts/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
+              Customer Receipts</a>
+          </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <div class="card-body text-dark">
+            <form class="form-horizontal form-bordered" method="get">
+              <div class=" row">
+                <div class="col-lg-12 mb-4">
+                  <div class="row cmaindiv">
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cerbor">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.txnDate | date: 'yyyy/MM/dd'}}</p>
+
+                        <p class="mb-0">DATE</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cerbor">
+                        <i class="fa fa-user text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{customersObject[receiptData.customerID] | uppercase}}</p>
+                        <p class="mb-0">CUSTOMER</p>
+                      </div>
+                    </div>
+
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cerbor">
+                        <i class="fas fa-money-bill-wave text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.recAmount}}&nbsp;{{receiptData.recAmountCur}}</p>
+                        <p class="mb-0">AMOUNT</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 pr-0">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
+                            <td width="60%">{{receiptData.paymentMode | titlecase}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 pl-0">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">{{receiptData.paymentMode | titlecase}}#, Date</td>
+                            <td>{{receiptData.paymentModeNo}}, {{receiptData.paymentModeDate | date : 'yyyy/MM/dd'}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 pr-0">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Invoice#</th>
+                            <th>Invoice Amount</th>
+                            <th>Balance Amount</th>
+                            <th>Total Amount Received</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let inv of receiptData.fetchedInvoices">
+                            <td>{{inv.invNo}}</td>
+                            <td>{{inv.finalAmount}} {{inv.invCur}}</td>
+                            <td>{{inv.balance}} {{inv.invCur}}</td>
+                            <td>{{inv.amountReceived}} {{inv.invCur}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6 pl-0">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Account Name</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let dt of receiptData.transactionLog">
+                        <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                       <td>{{customersObject[dt.name] | titlecase}}</td>
+                       <td>{{dt.type | titlecase}}</td>
+                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                      </tr>
+                      <tr>
+                        <td colspan="3" class="font-weight-bold text-right">Total</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

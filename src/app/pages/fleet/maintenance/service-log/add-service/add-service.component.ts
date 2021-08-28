@@ -9,6 +9,8 @@ import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HereMapService } from '../../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ListService } from '../../../../../services/list.service'
+import { isTemplateHead } from 'typescript';
+import { DomSanitizer} from '@angular/platform-browser';
 declare var $: any;
 
 @Component({
@@ -17,6 +19,7 @@ declare var $: any;
   styleUrls: ['./add-service.component.css']
 })
 export class AddServiceComponent implements OnInit {
+  logurl = this.apiService.AssetUrl;
   groups;
   vendors;
   vehicles;
@@ -42,17 +45,18 @@ export class AddServiceComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
   serviceData = {
     unitType: 'vehicle',
     reference: `Ref-${new Date().getTime()}`,
-    vehicleID: '',
-    assetID: '',
+    unitID: '',
     odometer: '',
     completionDate: '',
     vendorID: '',
     description: '',
+    taskIds:[],
     allServiceTasks: {
       serviceTaskList : [],
       subTotal: 0,
@@ -79,9 +83,11 @@ export class AddServiceComponent implements OnInit {
     geoCords: {
       lat: '',
       lng: ''
-    }
+    },
+     uploadedPhotos: [],
+    uploadedDocs: []
   };
-  
+
   uploadedPhotos = [];
     uploadedDocs = [];
   totalLabors = 0;
@@ -102,15 +108,16 @@ export class AddServiceComponent implements OnInit {
     partNumber:undefined,
     preferredVendorID:undefined,
     quantity: null,
-    itemID: ''
+    itemID: '',
+    itemName: ''
   };
   itemData = {
-    categoryID :undefined,
+    category :undefined,
     itemName: '',
     cost: '',
     costUnit: undefined,
     warehouseID: undefined
-  }
+  };
   itemGroups = [];
   categoryData = {
     name: '',
@@ -121,7 +128,19 @@ export class AddServiceComponent implements OnInit {
 
   inventoryQuantity: any = {};
   savedIssues = [];
-  
+
+  logImages = []
+  logDocs = [];
+  existingPhotos = [];
+  existingDocs = [];
+  vehicleDisabled = false;
+
+  resolvedIssues: any = [];
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -131,13 +150,14 @@ export class AddServiceComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private dateAdapter: NgbDateAdapter<string>,
     private hereMap: HereMapService,
+    private domSanitizer: DomSanitizer,
     private listService: ListService
   ) {
     this.selectedFileNames = new Map<any, any>();
-    localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
+    // localStorage.setItem('serviceLogs', JSON.stringify(this.serviceData));
    }
 
-   
+
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -145,45 +165,45 @@ export class AddServiceComponent implements OnInit {
     this.logID = this.route.snapshot.params['logID'];
     if (this.logID) {
       this.pageTitle = 'Edit Service Log';
+      this.vehicleDisabled = true;
       this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
-      
+
     }
 
 
 
     this.fetchGroups();
     this.fetchVehicles();
-    this.fetchVendors();
+    
     this.fetchInventory();
     this.fetchAssets();
-    // this.fetchTasks();
+   
+    this.listService.fetchVendors();
     this.listService.fetchTasks();
-    this.fetchAllTasksIDs();    
-    this.searchLocation();
+    this.fetchAllTasksIDs();
     this.fetchInventoryItems();
-    this.fetchItemGroups();
     this.fetchInventoryQuanitity();
 
     this.fetchedLocalData = JSON.parse(window.localStorage.getItem('unit'));
     if(this.fetchedLocalData){
-      if(this.fetchedLocalData.unitType === 'vehicle'){   
-        this.serviceData.vehicleID =   this.fetchedLocalData.unitID;
+      if(this.fetchedLocalData.unitType === 'vehicle'){
+        this.serviceData.unitID =   this.fetchedLocalData.unitID;
         this.getVehicleIssues(this.fetchedLocalData.unitID);
         this.serviceData.unitType = 'vehicle';
         window.localStorage.removeItem('unit');
       }
       else{
        this.serviceData.unitType = 'asset';
-       this.serviceData.assetID =   this.fetchedLocalData.unitID;
-       this.getAssetIssues(this.fetchedLocalData.unitID);      
+       this.serviceData.unitID =   this.fetchedLocalData.unitID;
+       this.getAssetIssues(this.fetchedLocalData.unitID);
        window.localStorage.removeItem('unit');
       }
-    }     
+    }
      this.localReminderUnitID = JSON.parse(window.localStorage.getItem('reminderUnitID'));
      if(this.localReminderUnitID) {
-      this.serviceData.vehicleID =   this.localReminderUnitID.unitID;
+      this.serviceData.unitID =   this.localReminderUnitID.unitID;
       this.getVehicleIssues(this.localReminderUnitID.unitID);
       this.serviceData.unitType = 'vehicle';
       window.localStorage.removeItem('reminderUnitID');
@@ -191,26 +211,36 @@ export class AddServiceComponent implements OnInit {
 
     //  if(this.serviceData.vehicleID != '') {
     //    this.getVehicleIssues(this.serviceData.vehicleID)
-    //  } 
+    //  }
     //  if(this.serviceData.assetID != '') {
     //    this.getAssetIssues(this.serviceData.assetID);
     //  }
 
      this.tasks = this.listService.tasksList;
-     
-     
+     this.vendors = this.listService.vendorList;
+
+
   }
 
   /*
    * Add new asset
    */
   addService() {
-    
+   this.submitDisabled = true;
     this.hideErrors();
     this.spinner.show();
-    this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
-      delete elem.existQuantity;
-    })
+
+    // this.serviceData.allServiceParts.servicePartsList.forEach(elem => {
+    //   delete elem.existQuantity;
+    // });
+
+    let taskIds = [];
+    this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
+      taskIds.push(elem.taskID);
+    });
+
+    this.serviceData.taskIds = taskIds;
+
     // create form data instance
     const formData = new FormData();
 
@@ -230,7 +260,7 @@ export class AddServiceComponent implements OnInit {
     this.apiService.postData('serviceLogs', formData, true).subscribe({
       complete: () => { },
        error: (err: any) => {
-        from(err.error) 
+        from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
@@ -240,25 +270,27 @@ export class AddServiceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.spinner.hide();
+              this.submitDisabled = false;
             },
-            error: () => { },
-            next: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+
+            },
           });
       },
       next: (res) => {
         this.response = res;
-        this.toastr.success('Log added successfully');
+        this.submitDisabled = false;
+        this.toastr.success('Service log added successfully');
         this.router.navigateByUrl('/fleet/maintenance/service-log/list');
         this.spinner.hide();
       },
     });
-    if(this.serviceData.selectedIssues.length > 0){
-      for(let i=0; i < this.serviceData.selectedIssues.length; i++){
-        this.setIssueStatus(this.serviceData.selectedIssues[i]);
-       }
-    } 
+    
   }
 
   throwErrors() {
@@ -283,26 +315,26 @@ export class AddServiceComponent implements OnInit {
   }
 
   selectIssues(event, ids: any) {
-    
+
     if(event.target.checked) {
-      this.selectedIssues.push(ids);
+      if(!this.selectedIssues.includes(ids)) {
+        this.selectedIssues.push(ids);
+      }
+      
     } else {
       let index = this.selectedIssues.indexOf(ids);
       this.selectedIssues.splice(index, 1);
     }
     this.serviceData.selectedIssues = this.selectedIssues;
   }
-  /**
-   * to set status of issue to resolved 
-   */
-  setIssueStatus(issueID) {
-    const issueStatus = 'RESOLVED';
-    this.apiService.getData('issues/setStatus/' + issueID + '/' + issueStatus).subscribe((result: any) => {});
-  }
+  
   fetchGroups() {
     this.apiService.getData('groups').subscribe((result: any) => {
-      this.groups = result.Items;
-      
+      if(result != null){
+        this.groups = result.Items;
+      } else {
+        this.groups = [];
+      }
     });
   }
 
@@ -342,7 +374,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   /*
-   * Get a vehicle by ID
+   * Get a assets by ID
    */
   fetchAssetByID(id) {
     this.apiService.getData(`assets/${id}`).subscribe(async (result: any) => {
@@ -369,7 +401,7 @@ export class AddServiceComponent implements OnInit {
           this.tasks.push(element);
         }
       });
-      
+
     });
   }
 
@@ -385,38 +417,42 @@ export class AddServiceComponent implements OnInit {
    * Get all stocks from api
    */
   fetchInventory() {
-    this.apiService.getData('items').subscribe((result: any) => {
-      result = result.Items;
+    this.apiService.getData('items/serviceLog/list').subscribe((result: any) => {
       this.inventory = result;
     });
   }
-  
-  async getIssuesByVehicle(vehicleID) {
-    await this.listService.fetchVehicleIssues(vehicleID);
-    this.listService.issuesList.subscribe(res => {
-      this.issues = res;
+
+  getResolvedIssues(id){
+    id = JSON.stringify(id);
+    this.apiService.getData('issues/fetch/resolvedIssues?issueIds='+id).subscribe((result: any) => {
+      this.resolvedIssues = result;
+      
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        element.selected = true;
+        this.issues.push(element)
+        
+      }
     });
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
+  }
+
+  async getIssuesByVehicle(vehicleID) {
+    
+    await this.listService.fetchVehicleIssues(vehicleID);
+    
+    this.listService.issuesList.subscribe(res => {
+      this.issues = [...this.resolvedIssues, ...res];
+    });
+
   }
   async getIssuesByAsset(assetID) {
     
     await this.listService.fetchAssetsIssues(assetID);
     this.listService.issuesList.subscribe(res => {
-      this.issues = res;
+      this.issues = [...this.resolvedIssues, ...res];
+
     });
-    for (let z = 0; z < this.savedIssues.length; z++) {
-      this.issues.map(elem => {
-        if (elem.issueID == this.savedIssues[z]) {
-          elem.selected = true;
-        }
-      })
-    }
+
   }
   async getVehicleIssues(id: any) {
     this.spinner.show();
@@ -425,7 +461,7 @@ export class AddServiceComponent implements OnInit {
     const vehicleID = id;
     await this.getReminders(vehicleID);
     await this.getIssuesByVehicle(vehicleID);
-    
+
     this.spinner.hide();
   }
 
@@ -435,7 +471,7 @@ export class AddServiceComponent implements OnInit {
     const assetID = id;
     await this.getReminders(assetID);
     await this.getIssuesByAsset(assetID);
-    
+
     this.spinner.hide();
   }
 
@@ -476,7 +512,7 @@ export class AddServiceComponent implements OnInit {
     this.inventory.forEach(element => {
       if (element.itemID === this.selectedParts[this.selectedParts.length - 1].itemID) {
         this.serviceData.allServiceParts.servicePartsList.push({
-          partName: element.itemName,  
+          partName: element.itemName,
           partID: element.itemID,
           existQuantity:  this.inventoryQuantity[element.partNumber],
           partNumber: element.partNumber,
@@ -498,15 +534,14 @@ export class AddServiceComponent implements OnInit {
   async addTasks() {
     let remindID;
     let newSchedule;
-    
+
     for (let remind of this.reminders) {
-      
       if (remind.reminderTasks.task === this.selectedTasks[this.selectedTasks.length - 1].taskID) {
         remindID = remind.reminderID;
         newSchedule = `Every ${remind.reminderTasks.remindByDays} days or ${remind.reminderTasks.odometer} Miles`;
       } else {
-        remindID = ' ';
-        newSchedule = ' ';
+        remindID = '';
+        newSchedule = '';
       }
     }
     this.serviceData.allServiceTasks.serviceTaskList.push({
@@ -515,27 +550,27 @@ export class AddServiceComponent implements OnInit {
       reminderID: remindID,
       schedule: newSchedule,
     });
-    
   }
 
-  async addListedTasks(data) {
-    
+  async addListedTasks(data: any) {
+
     data.buttonShow = !data.buttonShow;
     let result = await this.fetchTaskbyID(data.reminderTasks.task);
-    
+
     let task = result.Items[0].taskName;
     let ID = result.Items[0].taskID;
-    this.selectedTasks.push(task);
+    this.selectedTasks.push(result.Items[0]);
     this.serviceData.allServiceTasks.serviceTaskList.push({
       taskName: task,
       taskID: ID,
       reminderID: data.reminderID,
       schedule: `Every ${data.reminderTasks.odometer} Miles`,
     });
+
   }
 
   removeListedTasks(data) {
-    
+
     data.buttonShow = !data.buttonShow;
     let taskList = this.serviceData.allServiceTasks.serviceTaskList;
     let index = taskList.findIndex(item => item.taskID === data.reminderTasks.task);
@@ -567,7 +602,7 @@ export class AddServiceComponent implements OnInit {
     } else {
       this.serviceData.allServiceParts.servicePartsList = [];
     }
-    
+
   }
 
   removeTasks(item: any) {
@@ -575,7 +610,7 @@ export class AddServiceComponent implements OnInit {
         if (s.taskName === item.label) {
           let index = this.serviceData.allServiceTasks.serviceTaskList.indexOf(s);
           this.serviceData.allServiceTasks.serviceTaskList.splice(index, 1);
-          this.totalLabors -= s.laborCost; 
+          this.totalLabors -= s.laborCost;
           this.calculateTasks();
         }
         if(this.totalLabors === 0) {
@@ -584,33 +619,30 @@ export class AddServiceComponent implements OnInit {
           this.serviceData.allServiceTasks.total = 0;
         }
     });
-  
-    
   }
 
   removeParts(item: any) {
     this.serviceData.allServiceParts.servicePartsList.filter(s => {
-      if (s.partID === item.value) {
+      if (s.partNumber === item.value.partNumber) {
         let index = this.serviceData.allServiceParts.servicePartsList.indexOf(s);
         this.serviceData.allServiceParts.servicePartsList.splice(index, 1);
-        // this.totalLabors -= s.laborCost; 
+        // this.totalLabors -= s.laborCost;
         this.calculateParts();
       }
-      if(this.totalLabors === 0) {
+      if (this.totalLabors === 0) {
         this.serviceData.allServiceParts.discountPercent = 0;
         this.serviceData.allServiceParts.taxPercent = 0;
         this.serviceData.allServiceParts.total = 0;
       }
-  });
+    });
   }
 
-  
+
   calculateTasks() {
     let discountPercent = Number(this.serviceData.allServiceTasks.discountPercent);
     let taxPercent = Number(this.serviceData.allServiceTasks.taxPercent);
     // let total = Number(this.serviceData.allServiceTasks.total);
     let subTotal = Number(this.serviceData.allServiceTasks.subTotal);
-    
     let sum = 0;
     let tasksArr = this.serviceData.allServiceTasks.serviceTaskList;
     tasksArr.forEach(element => {
@@ -618,10 +650,9 @@ export class AddServiceComponent implements OnInit {
         sum = sum + (parseFloat(element.laborCost) || 0);
       }
     });
-    
     this.totalLabors = sum;
     this.serviceData.allServiceTasks.subTotal = sum;
-   
+
     if(discountPercent > 0) {
       this.serviceData.allServiceTasks.total = this.serviceData.allServiceTasks.subTotal - (this.serviceData.allServiceTasks.subTotal * discountPercent) / 100;
     } else {
@@ -634,7 +665,7 @@ export class AddServiceComponent implements OnInit {
     }
     let discountAmount = (subTotal * discountPercent) / 100;
     this.serviceData.allServiceTasks.discountAmount = discountAmount;
-    
+
   }
 
   calculateParts() {
@@ -670,7 +701,7 @@ export class AddServiceComponent implements OnInit {
       this.serviceData.allServiceParts.totalQuantity = countQuantity;
       this.serviceData.allServiceParts.subTotal = countAmount;
     });
-    
+
     let discountAmount = (subTotal * discountPercent) / 100;
     this.serviceData.allServiceParts.discountAmount = discountAmount;
     let taxAble = this.serviceData.allServiceParts.total - discountAmount;
@@ -685,31 +716,32 @@ export class AddServiceComponent implements OnInit {
     // this.spinner.show(); // loader init
     this.apiService
       .getData('serviceLogs/' + this.logID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
+        
         this.serviceData['logID'] = this.logID;
         this.serviceData.unitType = result.unitType;
-        if (result.vehicleID) {
-          this.getVehicleIssues(result.vehicleID);
-          
-          this.serviceData.vehicleID = result.vehicleID;
+        if (result.unitType == 'vehicle') {
+          await this.getVehicleIssues(result.unitID);
+          this.serviceData.unitID = result.unitID;
         } else {
-          this.getAssetIssues(result.assetID);
-          this.serviceData.assetID = result.assetID;
+          await this.getAssetIssues(result.unitID);
+          this.serviceData.unitID = result.unitID;
         }
-        
+
         this.serviceData.odometer = result.odometer;
         this.serviceData.completionDate = result.completionDate;
         this.serviceData.vendorID = result.vendorID;
         this.serviceData.reference = result.reference;
-        this.serviceData.location = result.location;
+        // this.serviceData.location = result.location;
         this.serviceData.geoCords.lat = result.geoCords.lat;
         this.serviceData.geoCords.lng = result.geoCords.lng;
         this.serviceData.odometer = result.odometer;
         this.serviceData.description = result.description;
-        
+
         this.savedIssues = result.selectedIssues;
-        
+        this.serviceData.selectedIssues = result.selectedIssues;
+
         let newTasks = [];
         for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
           newTasks.push({
@@ -728,7 +760,7 @@ export class AddServiceComponent implements OnInit {
         this.serviceData.allServiceTasks['total'] = result.allServiceTasks['total'];
         this.serviceData.allServiceTasks['subTotal'] = result.allServiceTasks['subTotal'];
         this.totalLabors = result.allServiceTasks['subTotal'];
-        
+
         this.serviceData.allServiceTasks.serviceTaskList = newTasks;
         let newParts = [];
         for (var j = 0; j < result.allServiceParts.servicePartsList.length; j++) {
@@ -743,7 +775,7 @@ export class AddServiceComponent implements OnInit {
           this.selectedParts.push(result.allServiceParts.servicePartsList[j].partName);
         }
         this.serviceData.allServiceParts.servicePartsList = newParts;
-        
+
         this.serviceData.allServiceParts['discountAmount'] = result.allServiceParts['discountAmount'];
         this.serviceData.allServiceParts['discountPercent'] = result.allServiceParts['discountPercent'];
         this.serviceData.allServiceParts['taxPercent'] = result.allServiceParts['taxPercent'];
@@ -751,10 +783,27 @@ export class AddServiceComponent implements OnInit {
         this.serviceData.allServiceParts['total'] = result.allServiceParts['total'];
         this.serviceData.allServiceParts['subTotal'] = result.allServiceParts['subTotal'];
         this.serviceData.allServiceParts['totalQuantity'] = result.allServiceParts['totalQuantity'];
-        
+
         this.totalPartsPrice = result.allServiceParts['subTotal'];
         this.totalQuantity = result.allServiceParts['totalQuantity'];
-        
+        this.existingPhotos = result.uploadedPhotos;
+        this.existingDocs = result.uploadedDocs;
+        if(result.selectedIssues.length > 0) {
+          this.getResolvedIssues(result.selectedIssues)
+        }
+
+
+        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.logImages = result.uploadedPhotos.map(x => ({
+            path: `${this.logurl}/${result.carrierID}/${x}`,
+            name: x,
+          }));
+        }
+
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+          this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
+        }
+
         this.selectedIssues = result.selectedIssues;
         this.serviceData['timeCreated'] = result.timeCreated;
       });
@@ -762,36 +811,65 @@ export class AddServiceComponent implements OnInit {
 
   onChangeUnitType(value: any) {
     this.serviceData['unitType'] = value;
+    this.issues = [];
     if (value === 'asset') {
-      delete this.serviceData.vehicleID;
       delete this.serviceData.odometer;
-    } else {
-      delete this.serviceData.assetID;
     }
   }
 
    /*
    * Update Service Log
   */
- updateService() {
-   this.hideErrors();
-  // create form data instance
-  const formData = new FormData();
+  updateService() {
+    this.hideErrors();
+    this.submitDisabled = true;
 
-  //append photos if any
-  for(let i = 0; i < this.uploadedPhotos.length; i++){
-    formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-  }
+    let taskIds = [];
+    this.serviceData.allServiceTasks.serviceTaskList.forEach(elem => {
+      taskIds.push(elem.taskID);
+    });
 
-  //append docs if any
-  for(let j = 0; j < this.uploadedDocs.length; j++){
-    formData.append('uploadedDocs', this.uploadedDocs[j]);
-  }
+    this.serviceData.taskIds = taskIds;
+    // if(this.serviceData.vehicleID == '' || this.serviceData.vehicleID == null) {
+    //   delete this.serviceData.vehicleID;
+    // }
 
-  //append other fields
-  formData.append('data', JSON.stringify(this.serviceData));
-  this.apiService.putData('serviceLogs', formData, true).subscribe({
-    complete: () => { },
+    const data = {
+      logID: this.logID,
+      unitType: this.serviceData.unitType,
+      reference: this.serviceData.reference,
+      unitID: this.serviceData.unitID,
+      odometer: this.serviceData.odometer,
+      completionDate: this.serviceData.completionDate,
+      vendorID: this.serviceData.vendorID,
+      description: this.serviceData.description,
+      taskIds: this.serviceData.taskIds,
+      allServiceTasks: this.serviceData.allServiceTasks,
+      allServiceParts: this.serviceData.allServiceParts,
+      selectedIssues: this.serviceData.selectedIssues,
+      location: this.serviceData.location,
+      geoCords: this.serviceData.geoCords,
+      uploadedPhotos: this.existingPhotos,
+
+    };
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+
+    //append docs if any
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
+      formData.append('uploadedDocs', this.uploadedDocs[j]);
+    }
+
+    //append other fields
+    formData.append('data', JSON.stringify(data));
+    this.apiService.putData('serviceLogs/', formData, true).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -803,20 +881,24 @@ export class AddServiceComponent implements OnInit {
           .subscribe({
             complete: () => {
               this.spinner.hide(); // loader hide
-              this.throwErrors();
+              // this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.submitDisabled = false;
+            },
             next: () => { },
           });
       },
-    next: (res) => {
-      this.response = res;
-      this.hasSuccess = true;
-      this.toastr.success('Service Updated Successfully');
-      this.router.navigateByUrl('/fleet/maintenance/service-log/list');
-    },
-  });
-}
+      next: (res) => {
+        this.response = res;
+        this.submitDisabled = false;
+        this.hasSuccess = true;
+        this.toastr.success('Service log Updated Successfully');
+        this.router.navigateByUrl('/fleet/maintenance/service-log/list');
+      },
+    });
+  }
 
   openReminders() {
     $('#serviceReminderModal').modal('show');
@@ -831,29 +913,6 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  public searchLocation() {
-    let target;
-    this.searchTerm.pipe(
-      map((e: any) => {
-        $('.map-search__results').hide();
-        $(e.target).closest('div').addClass('show-search__result');
-        target = e;
-        return e.target.value;
-      }),
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => {
-        return this.hereMap.searchEntries(term);
-      }),
-      catchError((e) => {
-        return throwError(e);
-      }),
-    ).subscribe(res => {
-      this.searchResults = res;
-    });
-  }
-
-
   async assignLocation(label) {
     const result = await this.hereMap.geoCode(label);
     const labelResult = result.items[0];
@@ -865,7 +924,7 @@ export class AddServiceComponent implements OnInit {
         lng: labelResult.position.lat
       }
     }
-    
+
     this.searchResults = false;
     $('div').removeClass('show-search__result');
 
@@ -873,16 +932,27 @@ export class AddServiceComponent implements OnInit {
 
   gotoIssuePage() {
     // this.router.navigateByUrl('/fleet/maintenance/issues/add')
-    $('#addIssuesModal').modal('show');
+    this.listService.separateModals('add-issue');
+    let selectedUnit: any = {
+      type: this.serviceData.unitType,
+      name: this.serviceData.unitID,
+    }
+    if(this.serviceData.unitType === 'vehicle'){
+      selectedUnit.odometer = this.serviceData.odometer;
+    } else {
+      delete selectedUnit.odometer;
+    }
+    localStorage.setItem('logUnit', JSON.stringify(selectedUnit))
+    this.listService.appendIssues(selectedUnit);
   }
-  
+
   currencyChange(value: string) {
     this.serviceData.allServiceParts.currency = value;
     this.serviceData.allServiceTasks.currency = value;
   }
 
   async changePartTab(type) {
-    if(type == 'new') {
+    if(type === 'new') {
       this.partType = 'new';
     } else {
       this.partType = 'existing';
@@ -901,7 +971,7 @@ export class AddServiceComponent implements OnInit {
   }
 
   fetchPartNumber() {
-    if (this.partData.partNumber != undefined && this.partData.partNumber != '') {
+    if (this.partData.partNumber !== undefined && this.partData.partNumber !== '') {
       this.apiService.getData('requiredItems/check/requestedItem/' + this.partData.partNumber).subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -915,7 +985,7 @@ export class AddServiceComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.spinner.hide(); // loader hide
-                this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -929,7 +999,7 @@ export class AddServiceComponent implements OnInit {
             this.partData.itemID = res.Items[0].itemID;
             // show modal
             $('#existingInvModal').modal('show');
-            
+
           } else {
             this.addExistingPartNumber();
           }
@@ -940,7 +1010,7 @@ export class AddServiceComponent implements OnInit {
     }
   }
 
-  updateExistingPartNumber () {
+  updateExistingPartNumber() {
     // let currQuan:any = parseInt(this.partData.quantity);
     this.partData.quantity = parseInt(this.partData.quantity) + parseInt(this.existingItemQuantity);
     this.apiService.putData('requiredItems', this.partData).subscribe({
@@ -956,7 +1026,7 @@ export class AddServiceComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.spinner.hide(); // loader hide
-                this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -972,10 +1042,11 @@ export class AddServiceComponent implements OnInit {
           partNumber:undefined,
           preferredVendorID:undefined,
           quantity:null,
-          itemID: ''
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category :undefined,
           itemName: '',
           cost: '',
           costUnit: undefined,
@@ -986,9 +1057,9 @@ export class AddServiceComponent implements OnInit {
     });
   }
 
-  addExistingPartNumber () {
+  addExistingPartNumber() {
     delete this.partData.itemID;
-    this.apiService.postData('requiredItems', this.partData).subscribe({
+    this.apiService.postData('items/requireditems/addExistingItem', this.partData).subscribe({
       complete: () => { },
         error: (err: any) => {
           from(err.error)
@@ -1001,7 +1072,7 @@ export class AddServiceComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.spinner.hide(); // loader hide
-                this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -1014,81 +1085,43 @@ export class AddServiceComponent implements OnInit {
         $('#existingInvModal').modal('hide');
         this.existingItemQuantity = null;
         this.partData = {
-          partNumber:undefined,
-          preferredVendorID:undefined,
-          quantity:null,
-          itemID: ''
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
         };
         this.itemData = {
-          categoryID :undefined,
+          category : '',
           itemName: '',
           cost: '',
-          costUnit: undefined,
-          warehouseID: undefined
-        }
-        this.toastr.success('Part Requested Successfully');
+          costUnit: '',
+          warehouseID: '',
+        };
+        this.toastr.success('Requested Item Added Successfully.');
       },
     });
   }
 
   getPartDetail(event) {
     let curr = this;
-    this.inventoryItems.map(function(v){
+    this.inventoryItems.map(function(v) {
       if(v.partNumber == event){
         curr.partData.quantity = v.quantity;
         curr.partData.preferredVendorID = v.preferredVendorID;
+        curr.partData.itemName = v.itemName;
       }
-    })
-  }
-
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups`).subscribe((result) => {
-      this.itemGroups = result.Items;
     });
   }
+
 
   showCategoryModal() {
-    this.categoryData.name = "";
-    this.categoryData.description = "";
-    $("#categoryModal").modal("show");
+    this.categoryData.name = '';
+    this.categoryData.description = '';
+    $('#categoryModal').modal('show');
   }
 
-  addGroup() {
-    this.hideErrors();
 
-    const data = {
-      groupName: this.categoryData.name,
-      groupDescription: this.categoryData.description,
-    };
-
-    this.apiService.postData("itemGroups", data).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => {},
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.categoryData.name = "";
-        this.categoryData.description = "";
-        this.fetchItemGroups();
-        $("#categoryModal").modal("hide");
-        this.toastr.success('Category Added successfully');
-      },
-    });
-  }
 
   addInventory() {
     this.hasError = false;
@@ -1097,9 +1130,9 @@ export class AddServiceComponent implements OnInit {
 
     const data = {
       partNumber: this.partData.partNumber,
-      quantity: 0,
+      quantity: this.partData.quantity,
       itemName: this.itemData.itemName,
-      categoryID: this.itemData.categoryID,
+      category: this.itemData.category,
       preferredVendorID: this.partData.preferredVendorID,
       cost: this.itemData.cost,
       costUnit: this.itemData.costUnit,
@@ -1107,13 +1140,7 @@ export class AddServiceComponent implements OnInit {
       warehouseVendorID: this.partData.preferredVendorID,
     };
 
-    // create form data instance
-    const formData = new FormData();
-
-    //append other fields
-    formData.append('data', JSON.stringify(data));
-    
-    this.apiService.postData("items", formData, true).subscribe({
+    this.apiService.postData('items/requireditems/addExistingItem', data).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -1125,9 +1152,8 @@ export class AddServiceComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
               this.hasError = true;
-              this.Error = 'Please see the errors';
             },
             error: () => { },
             next: () => { },
@@ -1136,7 +1162,22 @@ export class AddServiceComponent implements OnInit {
       next: (res) => {
         this.response = res;
         this.hasSuccess = true;
-        this.addExistingPartNumber();
+        $('#partModal').modal('hide');
+        this.toastr.success('Requested Item Added Successfully.');
+        this.partData = {
+          partNumber:'',
+          preferredVendorID:'',
+          quantity: '',
+          itemID: '',
+          itemName: ''
+        };
+        this.itemData = {
+          category : '',
+          itemName: '',
+          cost: '',
+          costUnit: '',
+          warehouseID: '',
+        };
       },
     });
   }
@@ -1152,16 +1193,52 @@ export class AddServiceComponent implements OnInit {
       partNumber: undefined,
       preferredVendorID: undefined,
       quantity: null,
-      itemID: ''
+      itemID: '',
+      itemName: ''
     };
     this.itemData = {
-      categoryID: undefined,
+      category: undefined,
       itemName: '',
       cost: '',
       costUnit: undefined,
       warehouseID: undefined
-    }
-    $("#partModal").modal('show');
+    };
+    $('#partModal').modal('show');
   }
 
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length-1];
+    this.pdfSrc = '';
+    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  // delete uploaded images and documents
+  delete(type: string, name: string, index:any) {
+    this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
+      if(type === 'image') {
+        this.logImages.splice(index, 1);
+      } else {
+        this.logDocs.splice(index,1);
+      }
+    });
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+        
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
+  getTasks() {
+    this.listService.fetchTasks();
+  }
 }

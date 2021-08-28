@@ -49,12 +49,12 @@ export class LeafletMapService {
     //   // alert('pm:create event fired. See console for details');
     //   const layer = e.layer;
 
-    //   //console.log("lyr", layer)
+    
     //   var polyedit = layer.toGeoJSON();
     //   this.geofenceData.geofence.type = polyedit.geometry.type;
     //   this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
 
-    //   console.log("created", this.geofenceData);
+    
 
     //   layer.on('pm:edit', ({ layer }) => {
 
@@ -62,7 +62,7 @@ export class LeafletMapService {
     //     this.geofenceData.geofence.type = polyedit.geometry.type;
     //     this.geofenceData.geofence.cords = polyedit.geometry.coordinates;
 
-    //     console.log("edited",this.geofenceData);
+    
 
     //   })
 
@@ -70,13 +70,10 @@ export class LeafletMapService {
     // });
 
     // map.on('pm:cut', function (e) {
-    //   console.log('cut event on map');
-    //   //console.log(e);
+    
     // });
     // map.on('pm:remove', function (e) {
-    //   console.log('pm:remove event fired.');
-    //   // alert('pm:remove event fired. See console for details');
-    //   //console.log(e);
+    
     // });
 
     this.map = map;

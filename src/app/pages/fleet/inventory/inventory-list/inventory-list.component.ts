@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Constants from '../../constants';
+import { ListService } from '../../../../services';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-inventory-list',
@@ -12,11 +15,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class InventoryListComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageReq: string = Constants.FETCHING_DATA;
   items = [];
   itemGroups = {};
   vendors = {};
   warehouses = [];
-
+  allWarehouses = [];
   partNumber = '';
   partDetails = '';
   quantity = '';
@@ -30,32 +35,29 @@ export class InventoryListComponent implements OnInit {
     category: true,
     vendor: true,
     quantity: true,
-    onHand: true,
     unitCost: true,
     warehouse: true,
     warranty: false,
-    reorderPoint: false,
-    reorderQuantity: false,
     preferredVendor: false,
   }
 
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
-  partNo = [1, 2 , 3, 4, 5, 6, 7, 8, 9, 10];
+  partNo = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  partQuantity;
   /**
    * search props
    */
   itemID = '';
   itemName = '';
-  itemGroupID = '';
+  category = null;
   groupName = '';
-  vendorID = ''
+  vendorID = null;
   companyName = '';
   suggestedVendors = [];
   suggestedItems = [];
-  suggestedItemGroups = [];
   requiredItems = [];
   allItems = [];
   itemDetail = {
@@ -70,12 +72,22 @@ export class InventoryListComponent implements OnInit {
   itemPrevData = {
     quantity: ''
   };
-
+  transfer = {
+    partNumber: '',
+    itemID: '',
+    quantity: 0,
+    notes: '',
+    transferQuantity: 0,
+    warehouseID1: '',
+    warehouseID2: '',
+    vendorID: '',
+    date: ''
+  };
   requiredItemName = '';
   requiredCompanyName = '';
-  requiredPartNumber = '';
-  requiredItemID = '';
-  requiredVendorID = '';
+  requiredPartNumber = null;
+  requiredItemID = null;
+  requiredVendorID = null;
   requiredSuggestedItems = [];
 
   inventoryNext = false;
@@ -91,212 +103,215 @@ export class InventoryListComponent implements OnInit {
   requiredInventoryPrevEvauatedKeys = [''];
   requiredInventoryStartPoint = 1;
   requiredInventoryEndPoint = this.pageLength;
-  totalRecordsRequired = 20;
+  totalRecordsRequired = 10;
   requiredLastEvaluatedKey = '';
   currentTab = 'inv';
   requiredSuggestedVendors = [];
+  allVendors: any = [];
+  allCompanies: any = [];
+  searchItems: any = [];
+  requiredSuggestedPartNo = [];
+  quantityError = false;
 
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) {}
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date1: any = new Date();
+  futureDatesLimit = { year: this.date1.getFullYear() + 30, month: 12, day: 31 };
+
+  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService, private listService: ListService) { }
 
   ngOnInit() {
     this.fetchItemsCount();
-    this.fetchVendors();
-    this.fetchItemGroups();
     this.fetchWarehouses();
-    // this.fetchRequiredItems();
     this.fetchAllItemsList();
-    this.initDataTable();
+    this.fetchVendors();
     this.fetchRequiredItemsCount();
-    this.initDataTableRequired();
+    this.listService.fetchVendors();
+    this.disableButton();
+    this.allVendors = this.listService.vendorList;
   }
 
-  getVendorSuggestions(value, type) {
-    this.apiService
-      .getData(`vendors/suggestion/${value}`)
-      .subscribe((result) => {
-        if(type == 'inv') {
-          this.suggestedVendors = result.Items;
-          if(this.suggestedVendors.length === 0) {
-            this.vendorID = '';
-          }
-        } else {
-          this.requiredSuggestedVendors = result.Items;
-          if(this.requiredSuggestedVendors.length === 0) {
-            this.requiredVendorID = '';
-          }
-        }
-      });
-  }
-
-  setVendor (vendorID, companyName, type) {
-    if(type == 'inv') {
-      this.companyName = companyName;
-      this.vendorID = vendorID;
-      this.suggestedVendors = [];
+  getItemSuggestions = _.debounce(function (value, type) {
+    if (value != '') {
+      value = value.toLowerCase();
+      if (type === 'inv') {
+        this.apiService
+          .getData(`items/suggestion/${value}?type=inventory`)
+          .subscribe((result) => {
+            this.suggestedItems = result;
+          });
+      } else {
+        this.apiService
+          .getData(`items/suggestion/${value}?item=required`)
+          .subscribe((result) => {
+            this.requiredSuggestedItems = result;
+          });
+      }
     } else {
-      this.requiredCompanyName = companyName;
-      this.requiredVendorID = vendorID;
-      this.requiredSuggestedVendors = [];
+      this.suggestedItems = [];
+      this.requiredSuggestedItems = [];
     }
-  }
+  }, 800)
 
-  getItemSuggestions(value, type) {
-    if(type == 'inv') {
+  getPartNumberSuggestions = _.debounce(function (value) {
+    if (value != '') {
+      value = value.toLowerCase();
       this.apiService
-      .getData(`items/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedItems = result.Items;
-        if(this.suggestedItems.length === 0) {
-          this.itemID = '';
-        }
-      });
+        .getData(`items/partNo/suggestion/${value}?item=required`)
+        .subscribe((result) => {
+          this.requiredSuggestedPartNo = result;
+        });
     } else {
-      this.apiService
-      .getData(`requiredItems/suggestion/${value}`)
-      .subscribe((result) => {
-        this.requiredSuggestedItems = result.Items;
-        console.log('requiredSuggestedItems', this.requiredSuggestedItems)
-        if(this.requiredSuggestedItems.length === 0) {
-          this.requiredItemID = '';
-        }
-      });
+      this.requiredSuggestedPartNo = [];
     }
+  }, 800)
+
+  setPartNo(itemName) {
+    this.requiredPartNumber = itemName;
+    this.requiredSuggestedPartNo = [];
   }
 
-  setItem (itemID, itemName, type) {
-    if(type == 'inv') {
+  setItem(itemID, itemName, type) {
+    if (type == 'inv') {
       this.itemName = itemName;
-      this.itemID = itemID;
+      this.itemID = itemName;
       this.suggestedItems = [];
     } else {
       this.requiredItemName = itemName;
-      this.requiredItemID = itemID;
+      this.requiredItemID = itemName;
       this.requiredSuggestedItems = [];
     }
   }
 
-  getItemGroupSuggestions(value) {
-    this.apiService
-      .getData(`itemGroups/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedItemGroups = result.Items;
-        if(this.suggestedItemGroups.length === 0) {
-          this.itemGroupID = '';
-        }
-      });
-  }
-
-  setItemGroup (itemGroupID, groupName) {
-    this.groupName = groupName;
-    this.itemGroupID = itemGroupID;
-    this.suggestedItemGroups = [];
-  }
-  resetFilter(){
-    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
-      this.itemID = this.itemName = this.itemGroupID = this.groupName =  this.vendorID = this.companyName = '';
+  resetFilter() {
+    if (this.itemName !== '' || this.vendorID !== null || this.category !== null) {
+      this.itemID = this.itemName = this.groupName = this.companyName = '';
+      this.vendorID = null;
+      this.category = null;
       this.fetchItemsCount();
       this.items = [];
-      this.initDataTable();
+      this.suggestedItems = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.resetCountResult('inv');
     } else {
       return false;
     }
   }
 
-  resetRequiredFilter(){
-    if (this.requiredItemID !== '' || this.requiredItemName !== '' || this.requiredVendorID !== '' || this.requiredPartNumber !== '') {
-      this.requiredItemID = this.requiredItemName = this.requiredVendorID = this.requiredCompanyName =  this.requiredPartNumber = '';
+  resetRequiredFilter() {
+    if (this.requiredItemID !== null || this.requiredItemName !== '' || this.requiredVendorID !== null || this.requiredPartNumber !== '') {
+      this.requiredItemName = this.requiredCompanyName = this.requiredPartNumber = '';
+      this.requiredItemID = null;
+      this.requiredVendorID = null;
       this.fetchRequiredItemsCount();
+      this.requiredSuggestedPartNo = [];
       this.requiredItems = [];
-      this.initDataTableRequired();
+      this.dataMessageReq = Constants.FETCHING_DATA;
       this.resetCountResult('req');
     } else {
       return false;
     }
   }
 
-  fetchVendors(){
-    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+  fetchVendors() {
+    this.apiService.getData(`contacts/get/list`).subscribe((result) => {
       this.vendors = result;
     });
   }
 
-  fetchItemGroups(){
-    this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
-      this.itemGroups = result;
-    });
-  }
 
-  openTransferModal(){
+
+  openTransferModal() {
     $('#transferModal').modal('show');
   }
 
   fetchItemsCount() {
-    this.apiService.getData('items/get/count?itemID=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.itemGroupID).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('items/get/count?item=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.category).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if (this.itemID !== '' || this.vendorID !== null || this.category !== null) {
+          this.inventoryEndPoint = this.totalRecords;
+        }
+
+        this.initDataTable();
       },
     });
-  } 
+  }
 
   fetchRequiredItemsCount() {
-    this.apiService.getData('requiredItems/get/count?itemID='+this.requiredItemID+'&vendorID='+this.requiredVendorID+'&partNo='+this.requiredPartNumber).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('items/get/required/count?item=' + this.requiredItemID + '&vendorID=' + this.requiredVendorID + '&partNo=' + this.requiredPartNumber).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsRequired = result.Count;
+        if (this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
+          this.requiredInventoryEndPoint = this.totalRecords;
+        }
+
+        this.initDataTableRequired();
       },
     });
-  } 
+  }
 
-  fetchWarehouses(){
-    this.apiService.getData('warehouses/get/list').subscribe((result: any) => {
+  fetchWarehouses() {
+    this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
       this.warehouses = result;
     });
   }
 
-  fetchRequiredItems(){
-    this.apiService.getData('requiredItems').subscribe((result: any) => {
-      this.requiredItems = result.Items;
-    });
-  }
-
-  deleteItem(entryID) {
+  deleteItem(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`items/isDeleted/${entryID}/`+1)
-      .subscribe((result: any) => {
+      let record = {
+        date: eventData.createdDate,
+        time: eventData.createdTime,
+        eventID: eventData.itemID
+      }
+      this.apiService.deleteData(`items/delete/item/${eventData.itemID}/${eventData.itemName}` ).subscribe((result: any) => {
+
         this.items = [];
+        this.inventoryDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
         this.fetchItemsCount();
-        this.initDataTable();
         this.toastr.success('Inventory Item Deleted Successfully!');
       });
     }
   }
-
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('items/fetch/records?itemID='+this.itemID+'&vendorID='+this.vendorID+'&category='+this.itemGroupID+'&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('items/fetch/records?item=' + this.itemID + '&vendorID=' + this.vendorID + '&category=' + this.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.items = result['Items'];
-        if (this.vendorID != '') {
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedItems = [];
+        this.suggestedVendors = [];
+        this.getStartandEndVal('inv');
+
+        this.items = result[`Items`];
+        if (this.vendorID != null || this.category != null || this.itemID != null) {
           this.inventoryStartPoint = 1;
           this.inventoryEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].warehouseSK.replace(/#/g, '--');
           this.inventoryNext = false;
           // for prev button
-          if (!this.inventoryPrevEvauatedKeys.includes(result['LastEvaluatedKey'].itemID)) {
-            this.inventoryPrevEvauatedKeys.push(result['LastEvaluatedKey'].itemID);
+          if (!this.inventoryPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.inventoryPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].itemID;
-          
+          this.lastEvaluatedKey = lastEvalKey;
+
         } else {
           this.inventoryNext = true;
           this.lastEvaluatedKey = '';
+          this.inventoryEndPoint = this.totalRecords;
+        }
+
+        if (this.totalRecords < this.inventoryEndPoint) {
           this.inventoryEndPoint = this.totalRecords;
         }
 
@@ -314,25 +329,38 @@ export class InventoryListComponent implements OnInit {
 
   initDataTableRequired() {
     this.spinner.show();
-    this.apiService.getData('requiredItems/fetch/records?itemID='+this.requiredItemID+'&vendorID='+this.requiredVendorID+'&partNo='+this.requiredPartNumber+'&lastKey=' + this.requiredLastEvaluatedKey)
+    this.apiService.getData('items/fetch/required/records?item=' + this.requiredItemID + '&vendorID=' + this.requiredVendorID + '&partNo=' + this.requiredPartNumber + '&lastKey=' + this.requiredLastEvaluatedKey)
       .subscribe((result: any) => {
-        this.requiredItems = result['Items'];
-        if (this.requiredVendorID != '' || this.requiredItemID != '' || this.requiredPartNumber != '') {
+        if (result.Items.length == 0) {
+          this.dataMessageReq = Constants.NO_RECORDS_FOUND;
+        }
+        this.requiredSuggestedItems = [];
+        this.requiredSuggestedPartNo = [];
+        this.getStartandEndVal('req');
+
+        this.requiredItems = result[`Items`];
+        console.log('this.requiredItems', this.requiredItems);
+        if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
           this.requiredInventoryStartPoint = 1;
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].warehouseSK.replace(/#/g, '--');
           this.requiredInventoryNext = false;
           // for prev button
-          if (!this.requiredInventoryPrevEvauatedKeys.includes(result['LastEvaluatedKey'].itemID)) {
-            this.requiredInventoryPrevEvauatedKeys.push(result['LastEvaluatedKey'].itemID);
+          if (!this.requiredInventoryPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.requiredInventoryPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.requiredLastEvaluatedKey = result['LastEvaluatedKey'].itemID;
-          
+          this.requiredLastEvaluatedKey = lastEvalKey;
+
         } else {
           this.requiredInventoryNext = true;
           this.requiredLastEvaluatedKey = '';
+          this.requiredInventoryEndPoint = this.totalRecordsRequired;
+        }
+
+        if (this.totalRecordsRequired < this.requiredInventoryEndPoint) {
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
         }
 
@@ -350,76 +378,60 @@ export class InventoryListComponent implements OnInit {
 
   hideShowColumn() {
     // for headers
-    if(this.hideShow.part === false) {
+    if (this.hideShow.part === false) {
       $('.col1').css('display', 'none');
     } else {
       $('.col1').css('display', '');
     }
 
-    if(this.hideShow.name === false) {
+    if (this.hideShow.name === false) {
       $('.col2').css('display', 'none');
     } else {
       $('.col2').css('display', '');
     }
 
-    if(this.hideShow.category === false) {
+    if (this.hideShow.category === false) {
       $('.col3').css('display', 'none');
     } else {
       $('.col3').css('display', '');
     }
 
-    if(this.hideShow.vendor === false) {
+    if (this.hideShow.vendor === false) {
       $('.col4').css('display', 'none');
     } else {
       $('.col4').css('display', '');
     }
 
-    if(this.hideShow.quantity === false) {
+    if (this.hideShow.quantity === false) {
       $('.col5').css('display', 'none');
     } else {
       $('.col5').css('display', '');
     }
 
-    if(this.hideShow.onHand === false) {
-      $('.col6').css('display', 'none');
-    } else {
-      $('.col6').css('display', '');
-    }
 
-    if(this.hideShow.unitCost === false) {
+
+    if (this.hideShow.unitCost === false) {
       $('.col7').css('display', 'none');
     } else {
       $('.col7').css('display', '');
     }
 
-    if(this.hideShow.warehouse === false) {
+    if (this.hideShow.warehouse === false) {
       $('.col8').css('display', 'none');
     } else {
       $('.col8').css('display', '');
     }
 
     // extra columns
-    if(this.hideShow.warranty === false) {
+    if (this.hideShow.warranty === false) {
       $('.col9').css('display', 'none');
     } else {
       $('.col9').removeClass('extra');
       $('.col9').css('display', '');
     }
 
-    if(this.hideShow.reorderPoint === false) {
-      $('.col10').css('display', 'none');
-    } else {
-      $('.col10').removeClass('extra');
-      $('.col10').css('display', '');
-    }
 
-    if(this.hideShow.reorderQuantity === false) {
-      $('.col11').css('display', 'none');
-    } else {
-      $('.col11').removeClass('extra');
-      $('.col11').css('display', '');
-    }
-    if(this.hideShow.preferredVendor === false) {
+    if (this.hideShow.preferredVendor === false) {
       $('.col12').css('display', 'none');
     } else {
       $('.col12').removeClass('extra');
@@ -428,45 +440,60 @@ export class InventoryListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.itemID !== '' || this.vendorID !== '' || this.itemGroupID !== '') {
+    if (this.itemName !== '' || this.vendorID !== null || this.category !== null) {
+      this.itemName = this.itemName.toLowerCase();
+      if (this.itemID == '') {
+        this.itemID = this.itemName;
+      }
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchItemsCount();
       this.items = [];
-      this.initDataTable();
+      this.suggestedItems = [];
+      this.suggestedVendors = [];
     } else {
       return false;
     }
   }
 
   searchRequiredFilter() {
-    if (this.requiredItemID !== '' || this.requiredItemName !== '' || this.requiredVendorID !== '' || this.requiredPartNumber !== '') {
-      this.fetchRequiredItemsCount();
+    if (this.requiredItemID !== '' || this.requiredVendorID !== null || this.requiredPartNumber !== '') {
       this.requiredItems = [];
-      this.initDataTableRequired();
+      this.requiredSuggestedPartNo = [];
+      this.fetchRequiredItemsCount();
+      this.dataMessageReq = Constants.FETCHING_DATA;
+      this.requiredSuggestedPartNo = [];
     } else {
       return false;
     }
   }
 
-  fetchAllItemsList(){
+  fetchAllItemsList() {
     this.apiService.getData(`items/get/list`).subscribe((result) => {
       this.allItems = result;
     })
   }
 
-  deleteRequiredItem(entryID) {
+  deleteRequiredItem(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-        .deleteData(`requiredItems/${entryID}`)
-        .subscribe((result: any) => {
-          this.requiredItems = [];
-          this.fetchRequiredItems();
-          this.toastr.success('Required Item Deleted Successfully!');
-        });
+      let record = {
+        // date: eventData.createdDate,
+        // time: eventData.createdTime,
+        eventID: eventData.itemID
+      }
+      this.apiService.deleteData(`items/delete/required/item/${eventData.itemID}/${eventData.itemName}`).subscribe((result: any) => {
+
+        this.requiredItems = [];
+        this.requiredInventoryDraw = 0;
+        this.requiredLastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchRequiredItemsCount();
+        this.toastr.success('Required Inventory Item Deleted Successfully!');
+      });
     }
   }
 
   addInventory(partData) {
-    this.apiService.getData('items/partNumber/details/'+partData.partNumber).subscribe((result: any) => {
+    this.apiService.getData('items/partNumber/details/' + partData.partNumber).subscribe((result: any) => {
       const data = result.Items[0];
       this.itemPrevData = result.Items[0];
       const actualQuantity = result.Items[0].quantity;
@@ -494,7 +521,7 @@ export class InventoryListComponent implements OnInit {
         $('#existingInvModal').modal('hide');
         this.apiService.deleteData(`requiredItems/${reqItemID}`).subscribe((result: any) => {
           this.requiredItems = [];
-          this.fetchRequiredItems();
+         // this.fetchRequiredItems();
           this.toastr.success('Inventory Updated Successfully');
         });
       },
@@ -502,7 +529,7 @@ export class InventoryListComponent implements OnInit {
   }
 
   getStartandEndVal(type) {
-    if(type == 'inv') {
+    if (type == 'inv') {
       this.inventoryStartPoint = this.inventoryDraw * this.pageLength + 1;
       this.inventoryEndPoint = this.inventoryStartPoint + this.pageLength - 1;
     } else {
@@ -513,34 +540,38 @@ export class InventoryListComponent implements OnInit {
 
   // next button func
   nextResults(type) {
-    if(type == 'inv') {
+    if (type == 'inv') {
+      this.inventoryNext = true;
+      this.inventoryPrev = true;
       this.inventoryDraw += 1;
       this.initDataTable();
-      this.getStartandEndVal(type);
     } else {
+      this.requiredInventoryNext = true;
+      this.requiredInventoryPrev = true;
       this.requiredInventoryDraw += 1;
       this.initDataTableRequired();
-      this.getStartandEndVal(type);
     }
   }
 
   // prev button func
   prevResults(type) {
-    if(type == 'inv') {
+    if (type == 'inv') {
+      this.inventoryNext = true;
+      this.inventoryPrev = true;
       this.inventoryDraw -= 1;
       this.lastEvaluatedKey = this.inventoryPrevEvauatedKeys[this.inventoryDraw];
       this.initDataTable();
-      this.getStartandEndVal(type);
     } else {
+      this.requiredInventoryNext = true;
+      this.requiredInventoryPrev = true;
       this.requiredInventoryDraw -= 1;
       this.requiredLastEvaluatedKey = this.requiredInventoryPrevEvauatedKeys[this.requiredInventoryDraw];
       this.initDataTableRequired();
-      this.getStartandEndVal(type);
     }
   }
 
   resetCountResult(type) {
-    if(type == 'inv') {
+    if (type == 'inv') {
       this.inventoryStartPoint = 1;
       this.inventoryEndPoint = this.pageLength;
       this.inventoryDraw = 0;
@@ -553,5 +584,78 @@ export class InventoryListComponent implements OnInit {
 
   tabChange(type) {
     this.currentTab = type;
+  }
+
+
+  getWarehouseItems(id: any) {
+    this.allWarehouses = [];
+    if(id != undefined) {
+      this.apiService.getData(`items/warehouseParts/${id}`).subscribe(result => {
+        this.allWarehouses = result;
+      })
+    }
+  }
+
+  getQuanity(id: any) {
+    if(id != undefined) {
+      var result = this.allWarehouses.filter(item => {
+        return item.partNumber === id;
+      })
+      this.partQuantity = result[0].quantity;
+      this.transfer.vendorID = result[0].warehouseVendorID;
+      this.transfer.itemID = result[0].itemID;
+      this.transfer.quantity = result[0].quantity;
+
+    }
+
+  }
+
+  checkQuanity (value: any){
+    if(value > this.partQuantity ) {
+      this.quantityError = true;
+      this.transfer.transferQuantity = this.partQuantity;
+    } else {
+      this.quantityError = false;
+
+    }
+  }
+
+  transferInventory() {
+
+      this.apiService.postData('items/transfer/', this.transfer).subscribe((result: any) => {
+        this.transfer = {
+          itemID: '',
+          quantity: 0,
+          partNumber: '',
+          notes: '',
+          transferQuantity: 0,
+          warehouseID1: '',
+          warehouseID2: '',
+          vendorID: '',
+          date: ''
+        };
+        $('#transferModal').modal('hide');
+        this.toastr.success('Inventory Transferred Successfully.');
+        this.lastEvaluatedKey = '';
+        this.fetchItemsCount();
+      });
+  }
+
+
+  disableButton() {
+    if(this.transfer.warehouseID1 == '' || this.transfer.warehouseID1 == null ||
+    this.transfer.warehouseID2 == '' || this.transfer.warehouseID2 == null ||
+    this.transfer.partNumber == '' || this.transfer.partNumber == null ||
+    this.transfer.transferQuantity <= 0 || this.transfer.transferQuantity == null ||
+    this.transfer.date == '' || this.transfer.date == null || this.quantityError || this.transfer.notes.length > 500
+    ){
+
+      return true
+    } else {
+      return false
+    }
+
+
+
   }
 }

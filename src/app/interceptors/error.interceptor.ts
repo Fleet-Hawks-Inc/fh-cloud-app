@@ -25,8 +25,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
                 // auto logout if 401 response returned from api
                 Auth.signOut({ global: true })
-                    .then(data => console.log(data))
-                    .catch(err => console.log(err));
+                    .then(data => {})
+                    .catch(err => {});
             }
 
             // err.error is not null, if the Response Entity contains an Exception

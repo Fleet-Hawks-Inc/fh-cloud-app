@@ -1,35 +1,28 @@
 <section class="body">
 
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
+        
         <section role="main" class="content-body">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
-                        <div class="input-group input-group-sm mb-3">
-                            <input type="text" class="form-control" [(ngModel)]="filterValue.driverName" name="searchedDriverName"
-                            (input)="getSuggestions($event.target.value)" placeholder="Search Driver Name">
-                        </div>
-                        <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedDriver(data)">
-                            {{ data.name }}
-                        </div>
+                        <ng-select [(ngModel)]="filter.driverID" class="text-capitalize" name="driverID" placeholder="Search by Driver">
+                            <ng-option *ngFor="let driver of drivers"
+                                value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
+                        </ng-select>
                     </div>
+                    
                     <div class="col-md-2  col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <!-- <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date"> -->
                             <input 
-                                [(ngModel)]="filterValue.date" name="date" 
+                                [(ngModel)]="filter.date" name="date" 
                                 type="text" 
-                                placeholder="Search By Incident Date"
+                                placeholder="yyyy/mm/dd"
+                                [maxDate]="birthDateMaxLimit" 
+                                [minDate]="birthDateMinLimit"
                                 (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                class="form-control" autocomplete="off" (ngModelChange)="searchFilter($event)"> 
+                                class="form-control" autocomplete="off"> 
                         </div>
                     </div>
 
@@ -42,109 +35,100 @@
                         </a>
                     </div>
                     
-                    <div class="col-md-6 col-lg-6 text-right pr-1">
+                    <div class="col-6 text-right pr-1">
+                        
                         <a href="javascript:;" routerLink="/safety/incidents/add-incident"
                             class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add
                             Incident</a>
 
-                        <div class="btn-group flex-wrap">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Actions<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="">Import</a>
-                                <a class="dropdown-item text-1" href="">Export</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </header>
 
-            <div class="row">
-                <div class="col-lg-12">
+            <div class="row m-2">
+                <div class="col-lg-12 p-0">
                     <section class="card">
-                        <div class="card-body" style="display: block;">
-                            <div class="mb-3 pb-1">
-                                <ul class="nav nav-tabs top-tabs incident-tabs" id="incident-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active navtabs" id="allSafetyIncidents-tab" href="javascript:;" 
-                                        (click)="fetchTabData('all')">All</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link navtabs" id="assigned-tab" href="javascript:;" (click)="fetchTabData('assigned')">Assigned</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('underReview')">Under-review</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Resolved</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-content border-0 p-0" id="myTabContent">
-                                <div class="tab-pane fade show active" id="allSafetyIncidents" role="tabpanel"
-                                    aria-labelledby="allSafetyIncidents-tab">
-                                    <div class="">
-                                        <table
-                                            class="row-border hover table table-bordered table-striped mb-0 ">
-                                            <thead>
-                                                <tr>
-                                                    <th>Driver Name</th>
-                                                    <th>Date &amp; Time</th>
-                                                    <th>Location</th>
-                                                    <th>Vehicle</th>
-                                                    <th>Severity</th>
-                                                    <th>Assigned</th>
-                                                    <th>Status</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngIf="events.length > 0">
-                                                <tr *ngFor="let data of events; let i= index">
-                                                    <td class="cursorpoint"
-                                                        routerLink="/safety/incidents/incident-details/{{data.eventID}}">
-                                                        {{ driversObject[data.driverUsername] }}</td>
-                                                    <td>{{ data.date  | date: 'dd-MM-yyyy HH:mm' }}</td>
-                                                    <td>{{ data.location }}</td>
-                                                    <td>{{ vehiclesObject[data.vehicleID] }}</td>
-                                                    <td>{{ data.severity }}</td>
-                                                    <td>{{ usersObject[data.username] }}</td>
-                                                    <td>
-                                                        <select class="form-control" name="coachingStatus"
-                                                            [(ngModel)]="data.coachingStatus"
-                                                            (change)="changeCoachingStatus($event, data.eventID)">
-                                                            <option *ngFor="let stat of coachingStatus"
-                                                                value="{{ stat.value }}">{{ stat.name }}</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <div class="dropdown dropright">
-                                                            <button class="bg-transparent border-0" type="button"
-                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
-                                                                <i class="fas fa-ellipsis-v"></i>
-                                                            </button>
-                                                            <div class="dropdown-menu"
-                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item"
-                                                                    routerLink="/safety/incidents/edit-incident/{{data.eventID}}">Edit</a>
-                                                                <a class="dropdown-item" href="javascript:;"
-                                                                    (click)="deleteEvent(data.eventID)">Delete</a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                        <div class="main-panel">
+                            <div infiniteScroll
+                            [infiniteScrollDistance]="1"
+                            [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5"
+                            (scrolled)="onScroll()">
+                                <div class="card-body" style="display: block;">
+                                    <div class="mb-3 pb-1">
+                                        <ul class="nav nav-tabs top-tabs incident-tabs" id="incident-tabs" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link active navtabs" id="allSafetyIncidents-tab" href="javascript:;" 
+                                                (click)="fetchTabData('all')">All</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link navtabs" id="assigned-tab" href="javascript:;" (click)="fetchTabData('assigned')">Assigned</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('investigating')">Investigating</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link navtabs" id="coaching-tab" href="javascript:;" (click)="fetchTabData('coaching')">Coaching</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Closed</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="tab-content border-0 p-0" id="myTabContent">
+                                        <div class="tab-pane fade show active" id="allSafetyIncidents" role="tabpanel"
+                                            aria-labelledby="allSafetyIncidents-tab">
+                                            <div class="">
+                                                <table
+                                                    class="row-border hover table table-bordered table-striped mb-0 ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Driver Name</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Event Date</th>
+                                                            <th>Event Time</th>
+                                                            <th>Event Source</th>
+                                                            <th>Location</th>
+                                                            
+                                                            <th>Severity</th>
+                                                            <th>Assigned</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="events.length > 0">
+                                                        <tr class="cursorpoint" *ngFor="let data of events; let i= index">
+                                                            <td class="cursorpoint" class="text-capitalize"
+                                                                routerLink="/safety/incidents/incident-details/{{data.incidentID}}">
+                                                                {{ driversObject[data.driverID] }}</td>
+                                                                <td class="text-capitalize">{{ vehiclesObject[data.vehicleID] }}</td>
+                                                            <td class="text-capitalize">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
+                                                            <td class="text-capitalize">{{convertTimeFormat(data.eventTime)}}</td>
+                                                            <td class="text-capitalize">{{data.eventSource}}</td>
+                                                            <td class="text-capitalize"><span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
+                                                                <span *ngIf="data.location.label === undefined">NA</span></td>
+                                                            
+                                                            <td class="text-capitalize">{{ data.severity }}</td>
+                                                            <td class="text-capitalize">{{ data.assigned }}</td>
+                                                            <td style="width: 180px;" >
+                                                                <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.incidentID, $event, i);" [(ngModel)]="data.status">
+                                                                    <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
+                                                                </ng-select>
+                                                            </td>
+                                                            
+                                                        </tr>
 
-                                            </tbody>
-                                            <tbody *ngIf="events.length == 0">
-                                                <tr>
-                                                    <td colspan="8" class="no-data-available">No record(s) found</td>
-                                                </tr>
-                                            <tbody>
-                                        </table>
+                                                    </tbody>
+                                                    <tbody *ngIf="events.length == 0">
+                                                        <tr>
+                                                            <td colspan="9" class="no-data-available"> {{dataMessage}}</td>
+                                                        </tr>
+                                                    <tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                        </div>
                         </div>
                     </section>
                 </div>

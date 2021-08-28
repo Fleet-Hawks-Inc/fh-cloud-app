@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
-import { from, Subject, throwError  } from 'rxjs';
+import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { Auth } from 'aws-amplify';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
-import { Router} from '@angular/router';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
-import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, catchError, map } from 'rxjs/operators';
+import { SafetyService } from 'src/app/services/safety.service';
 
 declare var $: any;
 
@@ -20,23 +21,21 @@ export class AddEventComponent implements OnInit {
 
     errors = {};
     event = {
+        vehicleID: null,
         eventDate: '',
-        date: '',
         eventTime: '',
-        location: '',
-        documentID: [],
-        vehicleID: '',
-        tripID: '',
-        incidentVideodocumentID: [],
-        eventType: 'critical',
-        modeOfOrign: 'manual',
-        coachingStatus: 'open',
-        driverUsername: '',
-        severity: '',
-        criticalityType: '',
-        remarks: '',
-        assignedUsername: ''
+        eventType: null,
+        eventSource: 'manual',
+        createdBy: '',
+        location: {
+            label: '',
+            cords: '',
+        },
+        notes: '',
+        status: 'open',
     };
+    uploadedPhotos = [];
+    uploadedVideos = [];
     carrierID = '';
     selectedFiles: FileList;
     selectedFileNames: Map<any, any>;
@@ -50,24 +49,15 @@ export class AddEventComponent implements OnInit {
             name: 'Harsh Acceleration'
         },
         {
-            value: 'overSpeedingStart',
-            name: 'Over Speeding Start'
+            value: 'highSpeed',
+            name: 'High Speed'
         },
         {
-            value: 'overSpeedingEnd',
-            name: 'Over Speeding End'
-        },
-        {
-            value: 'harshTurn',
-            name: 'Harsh Turn'
-        },
-        {
-            value: 'crash',
-            name: 'Crash'
-        },
-        {
-            value: 'rollingStop',
-            name: 'Rolling Stop'
+            value: 'highSpeed',
+            name: 'High Speed'
+        }, {
+            value: 'impactTilt',
+            name: 'Impact/Tilt'
         }
     ];
 
@@ -86,112 +76,128 @@ export class AddEventComponent implements OnInit {
         },
     ];
     vehicles = [];
-    drivers  = [];
+    drivers = [];
     users = [];
     trips = [];
+    photoSizeError = '';
+    videoSizeError = '';
+    isSuggest: boolean = false;
 
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
-    uploadedVideos = [];
-    uploadedDocs = [];
 
-    constructor(private apiService: ApiService, private toastr: ToastrService,
-                private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
-                this.selectedFileNames = new Map<any, any>();
+    uploadedDocs = [];
+    currentUser: any;
+    disableButton = false;
+    birthDateMinLimit: any;
+    birthDateMaxLimit: any;
+
+    constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
+        private spinner: NgxSpinnerService, private router: Router, private hereMap: HereMapService) {
+        this.selectedFileNames = new Map<any, any>();
+        const date = new Date();
+        this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+        this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
     }
 
     ngOnInit() {
         this.fetchVehicles();
         this.fetchDrivers();
-        this.fetchUsers();
+
+        this.disabledButton();
         this.fetchTrips();
         this.searchLocation();
+        this.getCurrentuser();
+    }
+
+    /**
+     * Get Current User logged in
+     */
+    getCurrentuser = async () => {
+        let result = (await Auth.currentSession()).getIdToken().payload;
+        this.currentUser = `${result.firstName} ${result.lastName}`;
+        this.event.createdBy = this.currentUser;
     }
 
     fetchVehicles() {
         this.apiService.getData('vehicles')
-        .subscribe((result: any) => {
-            this.vehicles = result.Items;
-        })
+            .subscribe((result: any) => {
+                this.vehicles = result.Items;
+            })
     }
 
     fetchDrivers() {
-        this.apiService.getData('drivers')
-        .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if(element.isDeleted === 0) {
-                    this.drivers.push(element);
-                }
-            }
-        })
+        this.apiService.getData('drivers/safety')
+            .subscribe((result: any) => {
+                this.drivers = result.Items;
+            })
     }
 
     fetchUsers() {
         this.apiService.getData('users/fetch/records')
-        .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            this.users = result.Items;
-        })
+            .subscribe((result: any) => {
+                result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
+                this.users = result.Items;
+            })
     }
 
     fetchTrips() {
         this.apiService.getData('trips')
-        .subscribe((result: any) => {
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if (element.isDeleted === 0) {
-                    this.trips.push(element);
+            .subscribe((result: any) => {
+                for (let i = 0; i < result.Items.length; i++) {
+                    const element = result.Items[i];
+                    if (element.isDeleted === 0) {
+                        this.trips.push(element);
+                    }
                 }
-            }
-        });
+            });
     }
 
     addEvent() {
-        this.spinner.show();
+        
+        if(!this.isSuggest) {
+            this.toastr.error('Please select valid location');
+            return;
+        }
+        this.disableButton = true;
         this.hideErrors();
-        let timestamp;
-        const fdate = this.event.eventDate.split('-');
-        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
-        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
-        this.event.date = (timestamp * 1000).toString();
-        this.event.documentID = this.uploadedDocs;
-        this.event.incidentVideodocumentID = this.uploadedVideos;
 
         // create form data instance
         const formData = new FormData();
 
         // append videos if any
-        for (let i = 0; i < this.uploadedVideos.length; i++){
+        for (let i = 0; i < this.uploadedVideos.length; i++) {
             formData.append('uploadedVideos', this.uploadedVideos[i]);
         }
 
         // append docs if any
-        for (let j = 0; j < this.uploadedDocs.length; j++){
-            formData.append('uploadedDocs', this.uploadedDocs[j]);
+        for (let j = 0; j < this.uploadedPhotos.length; j++) {
+            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
         }
 
         // append other fields
         formData.append('data', JSON.stringify(this.event));
 
-        this.apiService.postData('safety/eventLogs', formData, true).subscribe({
-            complete: () => {},
+        this.safetyService.postData('critical-events', formData, true).subscribe({
+            complete: () => { },
             error: (err: any) => {
+                this.disableButton = false;
                 from(err.error)
                     .pipe(
                         map((val: any) => {
                             val.message = val.message.replace(/".*"/, 'This Field');
                             this.errors[val.context.key] = val.message;
+                            this.disableButton = false;
                         })
                     )
                     .subscribe({
                         complete: () => {
-                            this.spinner.hide();
+                            this.disableButton = false;
                             this.throwErrors();
                         },
                         error: () => {
+                            this.disableButton = false;
                         },
                         next: () => {
                         },
@@ -202,53 +208,70 @@ export class AddEventComponent implements OnInit {
                 this.toastr.success('Critical event added successfully');
                 this.router.navigateByUrl('/safety/critical-events');
             },
+
         });
     }
 
     throwErrors() {
         from(Object.keys(this.errors))
-          .subscribe((v) => {
-            $('[name="' + v + '"]')
-              .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-              .addClass('error')
-          });
+            .subscribe((v) => {
+                $('[name="' + v + '"]')
+                    .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+                    .addClass('error')
+            });
+    }
+
+    disabledButton() {
+        if (this.event.vehicleID == '' || this.event.vehicleID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == null ||
+                this.event.eventTime == '' || this.event.eventType == '' || this.event.eventType == null || this.event.createdBy == '' || this.event.location.label == '' || this.event.status == '' || 
+                this.event.eventSource == '' || this.event.notes.length > 500) {
+            return true
+        } else {
+            return false;
+        }
     }
 
     hideErrors() {
         from(Object.keys(this.errors))
-          .subscribe((v) => {
-            $('[name="' + v + '"]')
-              .removeClass('error')
-              .next()
-              .remove('label')
-          });
+            .subscribe((v) => {
+                $('[name="' + v + '"]')
+                    .removeClass('error')
+                    .next()
+                    .remove('label')
+            });
         this.errors = {};
     }
 
     public searchLocation() {
         this.searchTerm.pipe(
-          map((e: any) => {
-            $('.map-search__results').hide();
-            $(e.target).closest('div').addClass('show-search__result');
-            return e.target.value;
-          }),
-          debounceTime(400),
-          distinctUntilChanged(),
-          switchMap(term => {
-            return this.hereMap.searchEntries(term);
-          }),
-          catchError((e) => {
-            return throwError(e);
-          }),
+            map((e: any) => {
+                $(e.target).closest('div').addClass('show-search__result');
+                return e.target.value;
+            }),
+            debounceTime(400),
+            distinctUntilChanged(),
+            switchMap(term => {
+                return this.hereMap.searchEntries(term);
+            }),
+            catchError((e) => {
+                return throwError(e);
+            }),
         ).subscribe(res => {
-          this.searchResults = res;
+            this.searchResults = res;
         });
     }
 
-    async assignLocation(label) {
-        this.event.location = label;
-        this.searchResults = false;
-        $('div').removeClass('show-search__result');
+    async assignLocation(position: any, title: string) {
+        if (position) {
+            this.event.location.cords = `${position.lat},${position.lng}`;
+            this.event.location.label = title;
+            this.searchResults = false;
+            this.isSuggest = true;
+            $('div').removeClass('show-search__result');
+        } else {
+            this.event.location.label = title;
+            this.event.location.cords = '0,0';
+        }
     }
 
     /*
@@ -256,16 +279,65 @@ export class AddEventComponent implements OnInit {
     */
     selectDocuments(event, obj) {
         let files = [...event.target.files];
-        if (obj === 'uploadedDocs') {
-            this.uploadedDocs = [];
+        let filesSize = 0;
+
+        if(files.length > 5) {
+            this.toastr.error('files count limit exceeded');
+            if (obj === 'uploadedPhotos') {
+                this.photoSizeError = 'files should not be more than 5';
+            } else {
+                this.videoSizeError = 'files should not be more than 5';
+            }
+            return;
+        }
+
+        if (obj === 'uploadedPhotos') {
+            this.uploadedPhotos = [];
+
             for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i]);
+                filesSize += files[i].size / 1024 / 1024;
+                if (filesSize > 10) {
+                    this.toastr.error('files size limit exceeded');
+                    this.photoSizeError = 'Please select file which have size below 10 MB';
+                    return;
+                } else {
+                    this.photoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        this.uploadedPhotos.push(files[i])
+                    } else {
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed';
+                    }
+
+                }
+
             }
         } else {
+
             this.uploadedVideos = [];
             for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i]);
+                filesSize += files[i].size / 1024 / 1024;
+
+                if (filesSize > 30) {
+                    this.toastr.error('files size limit exceeded');
+                    this.videoSizeError = 'Please select file which have size below 30 MB';
+                    return;
+                } else {
+                    this.videoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if (ext == 'mp4' || ext == 'mov') {
+                        this.uploadedVideos.push(files[i])
+                    } else {
+                        this.videoSizeError = 'Only .mp4 and .mov files allowed';
+                    }
+
+                }
+
             }
         }
+
     }
+
 }

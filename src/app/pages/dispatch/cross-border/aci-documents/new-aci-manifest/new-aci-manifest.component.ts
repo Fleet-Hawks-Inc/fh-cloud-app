@@ -1,18 +1,19 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient } from '@angular/common/http';
 import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { from } from 'rxjs';
-import {
-  map,
-} from 'rxjs/operators';
+import { from, Subject, throwError } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ListService } from '../../../../../services';
-
+import { HereMapService } from '../../../../../services';
+import { CountryStateCity } from '../../../../../shared/utilities/countryStateCities';
+import * as _ from 'lodash';
 declare var $: any;
 @Component({
   selector: 'app-new-aci-manifest',
@@ -21,11 +22,14 @@ declare var $: any;
   providers: [],
 })
 export class NewAciManifestComponent implements OnInit {
-  public entryID;
+  public manifestID;
   title = 'Add ACI e-Manifest';
   modalTitle = 'Add';
+  public searchTerm = new Subject<string>();
+  public searchResults: any;
   errors = {};
   form;
+  manifestType = 'ACI';
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -34,12 +38,11 @@ export class NewAciManifestComponent implements OnInit {
   carriers = [];
   timeCreated: string;
   countries: any = [];
-  stateID: string;
-  states: any = [];
   cities: any = [];
   CANPorts: any = [];
   vehicles: any = [];
   vehicleData: any = [];
+  loadingStates: any = [];
   loadingCities: any = [];
   acceptanceCities: any = [];
   assets: any = [];
@@ -51,10 +54,8 @@ export class NewAciManifestComponent implements OnInit {
   ACIReleaseOfficeList: any = [];
   timeList: any = [];
   cityList: any = [];
-  notifyPartyCities: any = [];
-  notifyPartyStates: any = [];
-  deliveryDestinationCities: any = [];
-  deliveryDestinationStates: any = [];
+  modalStates: any = [];
+  modalCities: any = [];
   subLocationsList: any = [];
   cargoExemptionsList: any = [];
   documentTypeList: any = [];
@@ -63,6 +64,7 @@ export class NewAciManifestComponent implements OnInit {
   countriesList: any = [];
   currentStatus: string;
   getcurrentDate: any;
+  birthDateMinLimit: any;
   CCC: string;
   addTrailerBtn = true;
   data: string;
@@ -75,6 +77,9 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalTimeZone: '';
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
+  fetchedCoDrivers = [];
+  modifiedBy  = '';
+  createdBy = '';
   truck = {
     truckID: '',
     sealNumbers: [
@@ -121,28 +126,76 @@ export class NewAciManifestComponent implements OnInit {
       uniqueConsignmentReferenceNumber: '',
       estimatedArrivalDate: '',
       estimatedArrivalTime: '',
-      estimatedArrivalTimeZone: '',
+      estimatedArrivalTimeZone: null,
       cityOfLoading: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
+        country: null,
+        loadingStates: [],
+        loadingCities: []
       },
       cityOfAcceptance: {
-        cityName: '',
-        stateProvince: '',
+        cityName: null,
+        stateProvince: null,
+        country: null,
+        acceptanceStates: [],
+        acceptanceCities: []
       },
       consolidatedFreight: false,
       specialInstructions: '',
-      shipperID: '',
-      consigneeID: '',
-      deliveryDestinations: [],
-      notifyParties: [],
+      shipperID: null,
+      consigneeID: null,
+      deliveryDestinations: [{
+        name: '',
+        contactNumber: '',
+        address: {
+          countryName: '',
+          countryCode: '',
+          stateName: '',
+          stateCode: '',
+          cityName: '',
+          postalCode: '',
+          addressLine: '',
+          geoCords: {
+            lat: '',
+            lng: ''
+          },
+          manual: false,
+          userLocation: '',
+          deliveryDestinationStates: [],
+          deliveryDestinationCities: []
+        }
+      }],
+      notifyParties: [
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryName: '',
+            countryCode: '',
+            stateName: '',
+            stateCode: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: '',
+            notifyPartyStates: [],
+            notifyPartyCities: []
+          }
+        }
+      ],
       commodities: [
         {
           description: '',
           quantity: '',
-          packagingUnit: '',
+          packagingUnit: null,
           weight: '',
-          weightUnit: '',
+          weightUnit: null,
           marksAndNumbers: '',
           hazmatDetails: {
             unCode: '',
@@ -154,17 +207,21 @@ export class NewAciManifestComponent implements OnInit {
       ],
     },
   ];
-  borderAssetTypes = [];
+  borderAssetType: any = [];
   packagingUnitsList: any = [];
   loadedType = 'TRAILER';
   containerLoaded = 'TRAILER';
   shipmentTypeList: any = [];
   CCCShipment: string;
   cargoControlNumberInput: string;
+  borderResponses: any = [];
+  createdDate: '';
+  createdTime: '';
   amendManifest = false;
+  errorFastCard = false;
   constructor(
     private httpClient: HttpClient,
-
+    private HereMap: HereMapService,
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private listService: ListService,
@@ -181,16 +238,16 @@ export class NewAciManifestComponent implements OnInit {
       month: date.getMonth() + 1,
       day: date.getDate(),
     };
+    this.birthDateMinLimit = { year: date.getFullYear() - 60, month: date.getMonth() + 1, day: date.getDate() };
+
   }
 
   ngOnInit() {
-    this.entryID = this.route.snapshot.params[`entryID`];
-    if (this.entryID) {
+    this.manifestID = this.route.snapshot.params[`manifestID`];
+    if (this.manifestID) {
       this.title = 'Edit ACI e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACIEntry();
-      this.getNotifyPartyStatesCities();
-      this.getDeliveryDestinationStatesCities();
       this.route.queryParams.subscribe((params) => {
         if (params.amendManifest !== undefined) {
           this.amendManifest = params.amendManifest; // to get query parameter amend
@@ -200,20 +257,17 @@ export class NewAciManifestComponent implements OnInit {
       this.title = 'Add ACI e-Manifest';
       this.modalTitle = 'Add';
     }
-    this.listService.fetchStates();
-    this.listService.fetchCities();
+    this.searchLocation();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.shippers = this.listService.shipperList;
     this.consignees = this.listService.receiverList;
-    this.passengerDocStates = this.listService.stateList;
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
     this.fetchCountries();
-    this.fetchUSStates();
-    // this.fetchCities();
     this.fetchCarrier();
+    this.fetchAssetType();
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
       this.CANPorts = data;
     });
@@ -257,15 +311,51 @@ export class NewAciManifestComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   fetchCountries() {
-    this.apiService.getData('countries').subscribe((result: any) => {
-      this.countries = result.Items;
-    });
+    this.countries = CountryStateCity.GetAllCountries(); //fetch countries from library
   }
-  fetchUSStates() {
-    this.apiService.getData('states/getUSStates').subscribe((result: any) => {
-      this.states = result.Items;
-    });
+  /**
+   * function fetches the US and Mexico states
+   */
+
+  /**
+   * fetch cities of US and Mexico
+   */
+  getLoadingStates(countryCode: any, sIndex: any) {
+    this.shipments[sIndex].cityOfLoading.stateProvince = '';
+    this.shipments[sIndex].cityOfLoading.cityName = '';
+    this.shipments[sIndex].cityOfLoading.loadingStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
+  getLoadingCities(stateCode: any, sIndex: any) {
+    this.shipments[sIndex].cityOfLoading.cityName = '';
+    const countryCode = this.shipments[sIndex].cityOfLoading.country;
+    this.shipments[sIndex].cityOfLoading.loadingCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  getAcceptanceStates(countryCode: any, sIndex: any) {
+    this.shipments[sIndex].cityOfAcceptance.stateProvince = '';
+    this.shipments[sIndex].cityOfAcceptance.cityName = '';
+    this.shipments[sIndex].cityOfAcceptance.acceptanceStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getAcceptanceCities(stateCode: any, sIndex: any) {
+    this.shipments[sIndex].cityOfAcceptance.cityName = '';
+    const countryCode = this.shipments[sIndex].cityOfAcceptance.country;
+    this.shipments[sIndex].cityOfAcceptance.acceptanceCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  fetchLoadingStateCities(shipments: any) {
+  for(let s = 0; s < shipments.length; s++) {
+    const countryCode = this.shipments[s].cityOfLoading.country;
+    const stateCode = this.shipments[s].cityOfLoading.stateProvince;
+    this.shipments[s].cityOfLoading.loadingStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.shipments[s].cityOfLoading.loadingCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  }
+  fetchAcceptanceStateCities(shipments: any) {
+    for(let s = 0; s < shipments.length; s++) {
+      const countryCode = this.shipments[s].cityOfAcceptance.country;
+      const stateCode = this.shipments[s].cityOfAcceptance.stateProvince;
+      this.shipments[s].cityOfAcceptance.acceptanceStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+      this.shipments[s].cityOfAcceptance.acceptanceCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    }
+    }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
       this.carriers = result.Items;
@@ -276,38 +366,6 @@ export class NewAciManifestComponent implements OnInit {
   }
   saveContainers() {
     this.addedContainers = this.containers;
-  }
-  getLoadingCities(s) {
-    const stateID = this.shipments[s].cityOfLoading.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.loadingCities = result.Items;
-      });
-  }
-  getAcceptanceCities(s) {
-    const stateID = this.shipments[s].cityOfAcceptance.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.acceptanceCities = result.Items;
-      });
-  }
-  fetchCities() {
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.acceptanceCities = result.Items;
-      this.loadingCities = result.Items;
-    });
-  }
-  fetchShippers() {
-    this.apiService.getData('shippers').subscribe((result: any) => {
-      this.shippers = result.Items;
-    });
-  }
-  fetchConsignees() {
-    this.apiService.getData('receivers').subscribe((result: any) => {
-      this.consignees = result.Items;
-    });
   }
   fetchVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -328,27 +386,39 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
- /***
-   * fetch asset types from mapped table
-   */
-  async getBorderAssetTypes(e) {
-    const assetID = e;
-    let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
-    let resultData = await this.apiService.getData('borderAssetTypes/' +   fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
-    if (resultData.Items.length > 0) {// if parent asset type exists
-      this.borderAssetTypes = resultData.Items;
-    } else {
-      let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
-      this.borderAssetTypes = fetchedBorderAssets.Items;
-    }
+  shipmentLoadedFn(s){
+    this.shipments[s].loadedOn.number = '';
   }
+  containerLoadedFn(i) {
+    this.containers[i].loadedOn.number = '';
+  }
+  /***
+    * fetch asset types from mapped table
+    */
+  async getBorderAssetTypes(e) {
+    // const assetID = e;
+    // let fetchedAsset = await this.apiService.getData('assets/' + assetID).toPromise();
+    // let resultData = await this.apiService.getData('borderAssetTypes/' + fetchedAsset.Items[0].assetDetails.assetType).toPromise(); // border aset types are fetched whose parent is asset type of selected asset
+    // if (resultData.Items.length > 0) {// if parent asset type exists
+    //   this.borderAssetTypes = resultData.Items;
+    // } else {
+    //   let fetchedBorderAssets: any = await this.apiService.getData('borderAssetTypes').toPromise();
+    //   this.borderAssetTypes = fetchedBorderAssets.Items;
+    // }
+  }
+  fetchAssetType() {
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
+   this.borderAssetType = data;
+ });
+}
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
     });
   }
+
   // container data
-    addContainer() {
+  addContainer() {
     if (this.containers.length <= 4) {
       this.containers.push({
         loadedOn: {
@@ -410,16 +480,13 @@ export class NewAciManifestComponent implements OnInit {
           number: '',
           country: '',
           stateProvince: '',
+          docStates: []
         },
       ],
     });
   }
   deletePassenger(i: number) {
     this.passengers.splice(i, 1);
-  }
-  resetpassengerDocState(i, j) {
-    this.passengers[i].travelDocuments[j].stateProvince = '';
-    $('#passengerDocStateSelect').val('');
   }
   addDocument(i) {
     if (this.passengers[i].travelDocuments.length <= 2) {
@@ -438,104 +505,228 @@ export class NewAciManifestComponent implements OnInit {
   deleteDocument(i: number, p: number) {
     this.passengers[p].travelDocuments.splice(i, 1);
   }
-
-  getStatesDoc(i, j) {
-    const countryID = this.passengers[i].travelDocuments[j].country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.passengerDocStates = result.Items;
-      });
-  }
   // delivery destinations
-  getDeliveryDestinationStatesCities() {
-    this.apiService.getData('states').subscribe((result: any) => {
-      this.deliveryDestinationStates = result.Items;
-    });
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.deliveryDestinationCities = result.Items;
-    });
+
+  getDeliveryDestinationState(countryCode: any, sIndex: any, pIndex: any) {
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.stateCode = '';
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getDeliveryDestinationStates(s, p) {
-    const countryID = this.shipments[s].deliveryDestinations[p].address.country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.deliveryDestinationStates = result.Items;
-      });
+  getDeliveryDestinationCity(stateCode: any, sIndex: any, pIndex: any) {
+    const countryCode = this.shipments[sIndex].deliveryDestinations[pIndex].address.countryCode;
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.cityName = '';
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  getDeliveryDestinationCities(s, p) {
-    const stateID = this.shipments[s].deliveryDestinations[p].address
-      .stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.deliveryDestinationCities = result.Items;
-      });
+  fetchDeliveryDestinationAddress(shipments: any) {
+   for(let s = 0; s < shipments.length; s++) {
+    for(let p = 0; p < shipments[s].deliveryDestinations.length; p++) {
+      const countryCode: any = this.shipments[s].deliveryDestinations[p].address.countryCode;
+      const stateCode: any = this.shipments[s].deliveryDestinations[p].address.stateCode;
+      this.shipments[s].deliveryDestinations[p].address.deliveryDestinationStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+      this.shipments[s].deliveryDestinations[p].address.deliveryDestinationCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    }
+   }
   }
   addDeliveryDestination(p) {
     if (this.shipments[p].deliveryDestinations.length <= 96) {
-      this.shipments[p].deliveryDestinations.push({
-        name: '',
-        contactNumber: '',
-        address: {
-          addressLine: '',
-          city: '',
-          stateProvince: '',
-          country: '',
-          postalCode: '',
-        },
-      });
+      this.shipments[p].deliveryDestinations.push(
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryName: '',
+            countryCode: '',
+            stateName: '',
+            stateCode: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: '',
+            deliveryDestinationStates: [],
+            deliveryDestinationCities: []
+          }
+        }
+      );
     }
   }
   deleteDeliveryDestination(i: number, s: number) {
     this.shipments[s].deliveryDestinations.splice(i, 1);
   }
-  // notify parties
-  getNotifyPartyStatesCities() {
-    this.apiService.getData('states').subscribe((result: any) => {
-      this.notifyPartyStates = result.Items;
-    });
-    this.apiService.getData('cities').subscribe((result: any) => {
-      this.notifyPartyCities = result.Items;
-    });
-  }
-  getNotifyPartyStates(s, p) {
-    const countryID = this.shipments[s].notifyParties[p].address.country;
-    this.apiService
-      .getData('states/country/' + countryID)
-      .subscribe((result: any) => {
-        this.notifyPartyStates = result.Items;
-      });
-  }
-  getNotifyPartyCities(s, p) {
-    const stateID = this.shipments[s].notifyParties[p].address.stateProvince;
-    this.apiService
-      .getData('cities/state/' + stateID)
-      .subscribe((result: any) => {
-        this.notifyPartyCities = result.Items;
-      });
-  }
-  addNotifyParty(p) {
-    if (this.shipments[p].notifyParties.length <= 97) {
-      this.shipments[p].notifyParties.push({
-        name: '',
-        contactNumber: '',
-        address: {
-          addressLine: '',
-          city: '',
-          stateProvince: '',
-          country: '',
-          postalCode: '',
-        },
-      });
+  // address section
+  clearUserLocation(s, p, callType) {
+    if (callType == 'delivery') {
+      this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
+      $('div').removeClass('show-search__result');
+    }
+    else {
+      this.shipments[s].notifyParties[p].address[`userLocation`] = '';
+      $('div').removeClass('show-search__result');
     }
   }
-  deleteNotifyParty(i: number, s: number) {
-    this.shipments[s].notifyParties.splice(i, 1);
+  public searchLocation() {
+    this.searchTerm.pipe(
+      map((e: any) => {
+        $('.map-search__results').hide();
+        $(e.target).closest('div').addClass('show-search__result');
+        return e.target.value;
+      }),
+      debounceTime(400),
+      distinctUntilChanged(),
+      switchMap(term => {
+        return this.HereMap.searchEntries(term);
+      }),
+      catchError((e) => {
+        return throwError(e);
+      }),
+    ).subscribe(res => {
+      this.searchResults = res;
+    });
   }
-  addCommodity(i) {
-    this.shipments[i].commodities.push({
+  manAddress(event, s, p, callType) {
+    if (event.target.checked) {
+      if (callType === 'notify') {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipments[s].notifyParties[p].address[`userLocation`] = '';
+      } else {
+        $(event.target).closest('.address-item').addClass('open');
+        this.shipments[s].deliveryDestinations[p].address[`userLocation`] = '';
+      }
+    } else {
+      if (callType === 'notify') {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipments[s].notifyParties[p].address.countryName = '';
+        this.shipments[s].notifyParties[p].address.stateName = '';
+        this.shipments[s].notifyParties[p].address.cityName = '';
+        this.shipments[s].notifyParties[p].address.postalCode = '';
+        this.shipments[s].notifyParties[p].address.addressLine = '';
+        this.shipments[s].notifyParties[p].address.geoCords.lat = '';
+        this.shipments[s].notifyParties[p].address.geoCords.lng = '';
+      } else {
+        $(event.target).closest('.address-item').removeClass('open');
+        this.shipments[s].deliveryDestinations[p].address.countryName = '';
+        this.shipments[s].deliveryDestinations[p].address.stateName = '';
+        this.shipments[s].deliveryDestinations[p].address.cityName = '';
+        this.shipments[s].deliveryDestinations[p].address.postalCode = '';
+        this.shipments[s].deliveryDestinations[p].address.addressLine = '';
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lat = '';
+        this.shipments[s].deliveryDestinations[p].address.geoCords.lng = '';
+      }
+    }
+  }
+  async userAddress(s, p, item, callType) {
+    let result = await this.HereMap.geoCode(item.address.label);
+    result = result.items[0];
+    if (callType === 'delivery') {
+      this.shipments[s].deliveryDestinations[p].address.userLocation = result.address.label;
+      this.shipments[s].deliveryDestinations[p].address.geoCords.lat = result.position.lat;
+      this.shipments[s].deliveryDestinations[p].address.geoCords.lng = result.position.lng;
+      this.shipments[s].deliveryDestinations[p].address.countryName = result.address.countryName;
+      this.shipments[s].deliveryDestinations[p].address.countryCode = result.address.countryCode;
+      this.shipments[s].deliveryDestinations[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+      $('div').removeClass('show-search__result');
+      this.shipments[s].deliveryDestinations[p].address.stateName = result.address.state;
+      this.shipments[s].deliveryDestinations[p].address.stateCode = result.address.stateCode;
+      this.shipments[s].deliveryDestinations[p].address.cityName = result.address.city;
+      this.shipments[s].deliveryDestinations[p].address.postalCode = result.address.postalCode;
+      if (result.address.houseNumber === undefined) {
+        result.address.houseNumber = '';
+      }
+      if (result.address.street === undefined) {
+        result.address.street = '';
+      }
+    } else {
+      this.shipments[s].notifyParties[p].address.userLocation = result.address.label;
+      this.shipments[s].notifyParties[p].address.geoCords.lat = result.position.lat;
+      this.shipments[s].notifyParties[p].address.geoCords.lng = result.position.lng;
+      this.shipments[s].notifyParties[p].address.countryName = result.address.countryName;
+      this.shipments[s].notifyParties[p].address.countryCode = result.address.countryCode;
+      this.shipments[s].notifyParties[p].address.addressLine = result.address.houseNumber + ' ' + result.address.street;
+      $('div').removeClass('show-search__result');
+      this.shipments[s].notifyParties[p].address.stateName = result.address.state;
+      this.shipments[s].notifyParties[p].address.stateCode = result.address.stateCode;
+      this.shipments[s].notifyParties[p].address.cityName = result.address.city;
+      this.shipments[s].notifyParties[p].address.postalCode = result.address.postalCode;
+      if (result.address.houseNumber === undefined) {
+        result.address.houseNumber = '';
+      }
+      if (result.address.street === undefined) {
+        result.address.street = '';
+      }
+    }
+  }
+  // PASSENGER FUNCTIONS
+      getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
+      this.passengers[Pindex].travelDocuments[Dindex].stateProvince = '';
+      this.passengers[Pindex].travelDocuments[Dindex].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    }
+    fetchPassengerDocStates(passengers: any) {
+      for (let p = 0; p < passengers.length; p++) {
+        for (let d = 0; d < passengers[p].travelDocuments.length; d++) {
+          const countryCode = this.passengers[p].travelDocuments[d].country;
+          this.passengers[p].travelDocuments[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+        }
+      }
+    }
+  // notify parties
+    getNotifyPartyState(countryCode: any, sIndex: any, pIndex: any) {
+      this.shipments[sIndex].notifyParties[pIndex].address.stateCode = '';
+      this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    }
+    getNotifyPartyCity(stateCode: any, sIndex: any, pIndex: any) {
+      const countryCode = this.shipments[sIndex].notifyParties[pIndex].address.countryCode;
+      this.shipments[sIndex].notifyParties[pIndex].address.cityName = '';
+      this.shipments[sIndex].notifyParties[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+      this.shipments[sIndex].notifyParties[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+      this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    }
+    fetchNotifyPartyAddress(shipments: any) {
+     for(let s = 0; s < shipments.length; s++) {
+      for(let p = 0; p < shipments[s].notifyParties.length; p++) {
+        const countryCode: any = this.shipments[s].notifyParties[p].address.countryCode;
+        const stateCode: any = this.shipments[s].notifyParties[p].address.stateCode;
+        this.shipments[s].notifyParties[p].address.notifyPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+        this.shipments[s].notifyParties[p].address.notifyPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      }
+     }
+    }
+  addNotifyParty(p) {
+    if (this.shipments[p].notifyParties.length <= 97) {
+      this.shipments[p].notifyParties.push(
+        {
+          name: '',
+          contactNumber: '',
+          address: {
+            countryName: '',
+            countryCode: '',
+            stateName: '',
+            stateCode: '',
+            cityName: '',
+            postalCode: '',
+            addressLine: '',
+            geoCords: {
+              lat: '',
+              lng: ''
+            },
+            manual: false,
+            userLocation: '',
+            notifyPartyStates: [],
+            notifyPartyCities: []
+          }
+        }
+      );
+    }
+  }
+  deleteNotifyParty(p: number, s: number) {
+    this.shipments[s].notifyParties.splice(p, 1);
+  }
+  addCommodity(s) {
+    this.shipments[s].commodities.push({
       description: '',
       quantity: '',
       packagingUnit: '',
@@ -574,10 +765,16 @@ export class NewAciManifestComponent implements OnInit {
       cityOfLoading: {
         cityName: '',
         stateProvince: '',
+        country: null,
+        loadingStates: [],
+        loadingCities: []
       },
       cityOfAcceptance: {
         cityName: '',
         stateProvince: '',
+        country: null,
+        acceptanceStates: [],
+        acceptanceCities: []
       },
       consolidatedFreight: false,
       specialInstructions: '',
@@ -608,10 +805,10 @@ export class NewAciManifestComponent implements OnInit {
   }
 
   addACIManifest() {
-    this.coDrivers.unshift(this.mainDriver);
     const data = {
       CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      manifestType: this.manifestType,
+      tripNumber: this.CCC + this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -619,14 +816,39 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.coDrivers,
+      mainDriver: this.mainDriver,
+      coDrivers: this.coDrivers,
       passengers: this.passengers,
       containers: this.containers,
       shipments: this.shipments,
       currentStatus: 'Draft',
     };
-    this.apiService.postData('ACIeManifest', data).subscribe({
-      complete: () => {},
+    for (let p = 0; p < data.passengers.length; p++) {
+      for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+        const element = data.passengers[p].travelDocuments[d];
+        delete element.docStates;
+      }
+    }
+    for (let s = 0; s < data.shipments.length; s++) {
+      for (let p = 0; p < data.shipments[s].notifyParties.length; p++) {
+        const element = data.shipments[s].notifyParties[p].address;
+        delete element.notifyPartyStates;
+        delete element.notifyPartyCities;
+      }
+    }
+    for (let s = 0; s < data.shipments.length; s++) {
+      for (let p = 0; p < data.shipments[s].deliveryDestinations.length; p++) {
+        const element = data.shipments[s].deliveryDestinations[p].address;
+        delete element.deliveryDestinationStates;
+        delete element.deliveryDestinationCities;
+      }
+      delete data.shipments[s].cityOfLoading.loadingCities;
+      delete data.shipments[s].cityOfLoading.loadingStates;
+      delete data.shipments[s].cityOfAcceptance.acceptanceCities;
+      delete data.shipments[s].cityOfAcceptance.acceptanceStates;
+    }
+    this.apiService.postData('eManifests/addACIemanifest', data).subscribe({
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -637,10 +859,10 @@ export class NewAciManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+             // this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
@@ -653,19 +875,12 @@ export class NewAciManifestComponent implements OnInit {
   }
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
-      $('[name="' + v + '"]')
-        .after(
-          '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            '</label>'
-        )
+      if(v === 'tripNumber') {
+        $('[name="' + v + '"]')
+        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
         .addClass('error');
+      }
     });
-    // this.vehicleForm.showErrors(this.errors);
   }
 
   hideErrors() {
@@ -680,43 +895,48 @@ export class NewAciManifestComponent implements OnInit {
 
   fetchACIEntry() {
     this.apiService
-      .getData('ACIeManifest/' + this.entryID)
+      .getData('eManifests/ACI/' + this.manifestID)
       .subscribe((result: any) => {
         result = result.Items[0];
         this.timeCreated = result.timeCreated;
-        this.entryID = this.entryID;
+        this.manifestID = this.manifestID;
+        this.manifestType = result.manifestType,
         this.sendId = result.sendId;
-        this.CCC = result.CCC,
-          this.tripNumber = result.tripNumber.substring(
-            4,
-            result.tripNumber.length
-          );
-          // this.tripNumber = result.tripNumber,
-          this.portOfEntry = result.portOfEntry;
-          this.subLocation = result.subLocation;
-          this.estimatedArrivalDate = result.estimatedArrivalDate;
-          this.estimatedArrivalTime = result.estimatedArrivalTime;
-          this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
-          this.truck = result.truck;
-          this.mainDriver = result.drivers[0];
-          this.coDrivers = result.drivers.slice(1);
-          this.trailers = result.trailers;
-          this.containers = result.containers;
-          this.passengers = result.passengers;
-          this.shipments = result.shipments;
-          this.currentStatus = result.currentStatus;
-          setTimeout(() => {
-            this.fetchUSStates();
-          }, 2000);
+        this.CCC = result.CCC;
+        this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
+        this.portOfEntry = result.portOfEntry;
+        this.subLocation = result.subLocation;
+        this.estimatedArrivalDate = result.estimatedArrivalDate;
+        this.estimatedArrivalTime = result.estimatedArrivalTime;
+        this.estimatedArrivalTimeZone = result.estimatedArrivalTimeZone;
+        this.truck = result.truck;
+        this.mainDriver = result.mainDriver;
+        this.coDrivers = result.coDrivers;
+        this.trailers = result.trailers;
+        this.containers = result.containers;
+        this.passengers = result.passengers;
+        this.shipments = result.shipments;
+        this.currentStatus = result.currentStatus;
+        this.createdBy = result.createdBy;
+        this.modifiedBy = result.modifiedBy;
+        this.borderResponses = result.borderResponses;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.createdTime;
+        this.fetchNotifyPartyAddress(this.shipments);
+        this.fetchDeliveryDestinationAddress(this.shipments);
+        this.fetchLoadingStateCities(this.shipments);
+        this.fetchAcceptanceStateCities(this.shipments);
+        this.fetchPassengerDocStates(this.passengers);
+        this.fetchAssetType();
       });
   }
   updateACIManifest() {
-    this.coDrivers.unshift(this.mainDriver);
     const data = {
-      entryID: this.entryID,
+      manifestID: this.manifestID,
+      manifestType: this.manifestType,
       sendId: this.sendId,
       CCC: this.CCC,
-      tripNumber: this.tripNumber,
+      tripNumber: this.CCC + this.tripNumber,
       portOfEntry: this.portOfEntry,
       subLocation: this.subLocation,
       estimatedArrivalDate: this.estimatedArrivalDate,
@@ -724,20 +944,50 @@ export class NewAciManifestComponent implements OnInit {
       estimatedArrivalTimeZone: this.estimatedArrivalTimeZone,
       truck: this.truck,
       trailers: this.trailers,
-      drivers: this.coDrivers,
+      mainDriver: this.mainDriver,
+      coDrivers: this.coDrivers,
       passengers: this.passengers,
       containers: this.containers,
       shipments: this.shipments,
       currentStatus: this.currentStatus,
       timeCreated: this.timeCreated,
+      createdBy: this.createdBy,
+      modifiedBy: this.modifiedBy,
+      borderResponses : this.borderResponses,
+      createdDate: this.createdDate,
+      createdTime: this.createdTime,
     };
+    for (let p = 0; p < data.passengers.length; p++) {
+      for (let d = 0; d < data.passengers[p].travelDocuments.length; d++) {
+        const element = data.passengers[p].travelDocuments[d];
+        delete element.docStates;
+      }
+    }
+    for (let s = 0; s < data.shipments.length; s++) {
+      for (let p = 0; p < data.shipments[s].notifyParties.length; p++) {
+        const element = data.shipments[s].notifyParties[p].address;
+        delete element.notifyPartyStates;
+        delete element.notifyPartyCities;
+      }
+    }
+    for (let s = 0; s < data.shipments.length; s++) {
+      for (let p = 0; p < data.shipments[s].deliveryDestinations.length; p++) {
+        const element = data.shipments[s].deliveryDestinations[p].address;
+        delete element.deliveryDestinationStates;
+        delete element.deliveryDestinationCities;
+      }
+      delete data.shipments[s].cityOfLoading.loadingCities;
+      delete data.shipments[s].cityOfLoading.loadingStates;
+      delete data.shipments[s].cityOfAcceptance.acceptanceCities;
+      delete data.shipments[s].cityOfAcceptance.acceptanceStates;
+    }
     this.apiService
       .putData(
-        `ACIeManifest/${this.amendManifest}?amendTripReason=${this.amendTripReason}`,
+        `eManifests/updateACImanifest/${this.amendManifest}?amendTripReason=${this.amendTripReason}`,
         data
       )
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -748,10 +998,10 @@ export class NewAciManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                this.throwErrors();
+               // this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -761,5 +1011,34 @@ export class NewAciManifestComponent implements OnInit {
           this.location.back(); // <-- go back to previous location
         },
       });
+  }
+
+  fastValidation(e) {
+    const fastCard = e.target.value;
+    const newString = fastCard.split('');
+    if (newString.length == 0) {
+      this.errorFastCard = false;
+    } else {
+      if (newString.length != 14) {
+        this.errorFastCard = true;
+      } else {
+        const fastStart = newString[0].concat(newString[1], newString[2], newString[3]);
+        const fastEnd = newString[12].concat(newString[13]);
+        if (fastStart != '4270') {
+          this.errorFastCard = true;
+        }
+        else if (fastEnd != '00' && fastEnd != '01' && fastEnd != '02') {
+          this.errorFastCard = true;
+        } else {
+          this.errorFastCard = false;
+        }
+      }
+    }
+  }
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
   }
 }

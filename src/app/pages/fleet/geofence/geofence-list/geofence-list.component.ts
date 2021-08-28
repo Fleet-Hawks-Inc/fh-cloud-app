@@ -5,6 +5,9 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { LeafletMapService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import  Constants  from '../../constants';
+import { environment } from '../../../../../environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 declare var L: any;
 
@@ -14,7 +17,8 @@ declare var L: any;
   styleUrls: ['./geofence-list.component.css']
 })
 export class GeofenceListComponent implements OnInit {
- 
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
   private map: any;
   selectID;
   private geofenceSelectCount;
@@ -33,7 +37,7 @@ export class GeofenceListComponent implements OnInit {
 
   suggestedGeofences = [];
   geofenceID = '';
-  type = '';
+  type = null;
   geofenceName = '';
   geofencesTypes: any = {};
 
@@ -94,10 +98,10 @@ export class GeofenceListComponent implements OnInit {
         setTimeout(() => {
           let new_cords = [];
           for (let i = 0; i < cords[0].length - 1; i++) {
-  
+
             for (let j = 0; j < cords[0][i].length - 1; j++) {
               new_cords.push([cords[0][i][j + 1], cords[0][i][j]]);
-  
+
             }
           }
           this.map = this.LeafletMap.initGeoFenceMap();
@@ -105,14 +109,19 @@ export class GeofenceListComponent implements OnInit {
           this.map.fitBounds(poly.getBounds());
         },
           100);
-      } 
-     
+      }
+
     }
   }
 
   searchFilter() {
-    if(this.geofenceID !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== null) {
+      this.geofenceName = this.geofenceName.toLowerCase();
+      if(this.geofenceID == '') {
+        this.geofenceID = this.geofenceName;
+      }
       this.geofences = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchLogsCount();
       this.initDataTable();
     } else {
@@ -121,11 +130,11 @@ export class GeofenceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.geofenceID !== '' || this.type !== '') {
+    if(this.geofenceName !== '' || this.type !== null) {
       this.geofenceID = '';
       this.geofenceName = '';
-      this.type = '';
-
+      this.type = null;
+      this.dataMessage = Constants.FETCHING_DATA;
       this.geofences = [];
       this.fetchLogsCount();
       this.initDataTable();
@@ -135,17 +144,19 @@ export class GeofenceListComponent implements OnInit {
     }
   }
 
-  getSuggestions(value) {
+  getSuggestions = _.debounce(function (value) {
+    value = value.toLowerCase();
     this.apiService
       .getData(`geofences/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedGeofences = result.Items;
+        this.suggestedGeofences = result;
         if(this.suggestedGeofences.length == 0){
+          this.suggestedGeofences = [];
           this.geofenceID = '';
         }
       });
-  }
-  
+  }, 800)
+
 
   fetchGeofenceTypes() {
     this.apiService.getData('geofenceTypes')
@@ -156,18 +167,21 @@ export class GeofenceListComponent implements OnInit {
 
   setGeofence(geofenceID, geofenceName) {
     this.geofenceName = geofenceName;
-    this.geofenceID = geofenceID;
-
+    // this.geofenceID = geofenceID;
+    this.geofenceID = geofenceName;
     this.suggestedGeofences = [];
   }
 
-
-  deactivateGeofence(value, geofenceID) {
+  deactivateGeofence(value, geofenceID, geofenceName: string) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .getData(`geofences/isDeleted/${geofenceID}/${value}`)
+      .deleteData(`geofences/isDeleted/${geofenceID}/${geofenceName}/${value}`)
       .subscribe((result: any) => {
         this.geofences = [];
+        this.geoDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.toastr.success('Geofence deleted successfully!');
         this.fetchLogsCount();
         this.initDataTable();
       });
@@ -203,11 +217,16 @@ export class GeofenceListComponent implements OnInit {
   }
 
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData(`geofences/fetch/records?geofenceID=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
-      .subscribe((result: any) => {
+    this.apiService.getData(`geofences/fetch/records?geofence=${this.geofenceID}&type=${this.type}&lastKey=${this.lastEvaluatedKey}`)
+     .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedGeofences = [];
+        this.getStartandEndVal();
+
         this.geofences = result['Items'];
-        if (this.geofenceID != '' || this.type != '') {
+        if (this.geofenceID != '' || this.type != null) {
           this.geoStartPoint = 1;
           this.geoEndPoint = this.totalRecords;
         }
@@ -219,10 +238,14 @@ export class GeofenceListComponent implements OnInit {
             this.geoPrevEvauatedKeys.push(result['LastEvaluatedKey'].geofenceID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].geofenceID;
-          
+
         } else {
           this.geoNext = true;
           this.lastEvaluatedKey = '';
+          this.geoEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.geoEndPoint) {
           this.geoEndPoint = this.totalRecords;
         }
 
@@ -234,16 +257,20 @@ export class GeofenceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        this.spinner.hide();
+
       });
   }
 
   fetchLogsCount() {
-    this.apiService.getData(`geofences/get/count?geofenceID=${this.geofenceID}&type=${this.type}`).subscribe({
+    this.apiService.getData(`geofences/get/count?geofence=${this.geofenceID}&type=${this.type}`).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.geofenceID != '' || this.type != null) {
+          this.geoEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -255,17 +282,19 @@ export class GeofenceListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.geoNext = true;
+    this.geoPrev = true;
     this.geoDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.geoNext = true;
+    this.geoPrev = true;
     this.geoDraw -= 1;
     this.lastEvaluatedKey = this.geoPrevEvauatedKeys[this.geoDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

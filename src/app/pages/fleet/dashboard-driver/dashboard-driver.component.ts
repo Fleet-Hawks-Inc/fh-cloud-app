@@ -87,11 +87,11 @@ export class DashboardDriverComponent implements OnInit {
   }
 
   slickInit(e) {
-    console.log('slick initialized');
+    
   }
   animateMarker(timestamp) {
     var radius = 20;
-    // console.log(timestamp);
+    // 
     // Update the data to a new position based on the animation timestamp. The
     // divisor in the expression `timestamp / 1000` controls the animation speed.
     // this.marker.setLngLat([
@@ -109,7 +109,7 @@ export class DashboardDriverComponent implements OnInit {
 
 
   flyToDriver(lat, long) {
-    console.log('hello');
+    
     // this.map.flyTo({
     //   center: [lat, long],
     //   zoom: 15,
@@ -118,7 +118,7 @@ export class DashboardDriverComponent implements OnInit {
   }
 
   subscribeNewTopic(): void {
-    //console.log('inside subscribe new topic')
+    
     this.subscription = this._mqttService.observe(this.topicname).subscribe((message: IMqttMessage) => {
       this.msg = message;
 
@@ -130,14 +130,14 @@ export class DashboardDriverComponent implements OnInit {
       // let latParse = arr[0];
       // let latArr = latParse.split(':');
       //let finalLat = latArr[1];
-      //  console.log(coordi);
+      
       // let jsonGeo = JSON.parse(coordi);
       let arr = coordi.split(',');
       let lat = arr[0];
       let lng = arr[1];
       lat = parseFloat(lat);
       lng = parseFloat(lng);
-      console.log(parseFloat(lat));
+      
       if (lat && lng) {
         this.flyToDriver(lng, lat);
         this.lat = lat;
@@ -156,7 +156,7 @@ export class DashboardDriverComponent implements OnInit {
   }
 
   logMsg(message): void {
-    // console.log(message);
+    
     // this.msglog.nativeElement.innerHTML += '<br><hr>' + message;
   }
 

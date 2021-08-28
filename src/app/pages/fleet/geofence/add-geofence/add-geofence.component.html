@@ -1,162 +1,228 @@
 <section class="body">
-  
+
   <div class="inner-wrapper">
-    
-    <section role="main" class="content-body pl-0 pt-0">
-      <header class="page-header pr-5">
-         <div class="row pr-1 mr-1" style="padding-top:10px;">
+
+   <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header pr19 pl18">
+         <div class="row" style="padding-top:10px;">
             <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                {{pageTitle}}
             </div>
-            <div class="col-md-8 col-lg-8 text-right pr-1">
+            <div class="col-md-8 col-lg-8 pr-1 text-right">
                <a [routerLink]="['/fleet', 'geofence', 'list']"  class="btn btn-default btn-sm"><i class="fas fa-list"></i> Geofences List</a>
             </div>
          </div>
       </header>
-      <div class="row">
-        <div class="col pr-0">
-            <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="form_">
-              <div class="card-body pl-0 pt-0 text-dark">
-                 <div class="row">
-                    <div class="col-lg-12 position-relative">
-                       <div id="map" class="mapclassmain" style="height: 600px;"></div>
-                       <div class="geofence-search">
-                           <input type="text" id="destinationLocation" value="{{destinationLocation}}"
-                           placeholder="Choose Location" (keyup)="searchTerm.next($event);" [(ngModel)]="search"
-                           name="search" class="form-control mapinput">
-                           <div class="map-search__results bg-white">
-                              <ul class="p-0 m-0 text-left">
-                                 <li *ngFor="let item of searchResults; let i = index">
-                                    <a  href="javascript:;" (click)="searchDestination(item.address.label, item.position.lat, item.position.lng)" class="{{item.address.label}} py-2 d-block px-3">{{item.address.label}}</a>
-                                 </li>
-                              </ul>
-                           </div>
-                       </div>
 
-                    </div>
-                 </div>
-                 <div class="form-group row">
-                     <div class="col-lg-5">
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofence.type"
-                              name="geofence.type" hidden>
+      <section class="m-2">
+         <div class="row mb-3">
+           <div class="col-lg-12">
+             <div class="bg-white p-3 text-dark">
+               <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="form_" #geofenceF="ngForm">
+                  
+                     <div class="row">
+                        <div class="col-lg-12 position-relative">
+                           <div id="map" class="mapclassmain" style="height: 600px;"></div>
+                           <div class="geofence-search">
+                               <input type="text" id="destinationLocation" value="{{destinationLocation}}"
+                               placeholder="Choose Location" (keyup)="searchTerm.next($event);" [(ngModel)]="search"
+                               name="search" class="form-control mapinput">
+                               <div class="map-search__results bg-white">
+                                  <ul class="p-0 m-0 text-left">
+                                     <li *ngFor="let item of searchResults; let i = index">
+                                        <a  href="javascript:;" (click)="searchDestination(item.address.label, item.position.lat, item.position.lng)" class="{{item.address.label}} py-2 d-block px-3">{{item.address.label}}</a>
+                                     </li>
+                                  </ul>
+                               </div>
+                           </div>
+    
+                        </div>
+                     </div>
+                     <div class="row">
+                         <div class="col-lg-5">
+                            <div class="row">
+                               <div class="col-lg-12">
+                                  <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofence.type"
+                                  name="geofence.type" hidden>
+                               </div>
+                            </div>
+                         </div>
+                     </div>
+                     <div class="form-group row pt-3">
+    
+                        <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right text-5 pt-2" >Geofence Details</label>
+                        </div>
+                        <div class="col-lg-5">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <label class="control-label font-weight-bold text-lg-right pt-2"
+                                    >Geofence Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName" placeholder=" eg. Parking yard"
+                                 name="geofenceName" #gName = "ngModel" required pattern="^[A-Za-z0-9\s\.\#]+$">
+                                 <div *ngIf="gName.invalid && (gName.dirty || gName.touched)" class="text-danger">
+                                    <div *ngIf="gName.errors.required">
+                                     Geofence name  is required.
+    
+                                    </div>
+                                    <div *ngIf="gName.errors.pattern">
+                                     Geofence name must contain letters, numbers and allowed characters(. ,#)
+    
+                                    </div>
+                                 </div>
+    
+                              </div>
+                              <div class="col-lg-12">
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="eg. Calgary, AB, Canada" #Loca="ngModel" required>
+                                 <div *ngIf="Loca.invalid && (Loca.dirty || Loca.touched)" class="text-danger">
+                                  <div *ngIf="Loca.errors.required">
+                                  Location is required.
+                                  </div>
+    
+                                </div>
+                              </div>
+                           </div>
+                        </div>
+    
+                        <div class="col-lg-5 offset-lg-1">
+                           <div class="row" >
+                              <div class="col-lg-12">
+                                 <label
+                                    class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
+                                    >Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                 <div class="row">
+                                    <div class="col-10">
+                                       <ng-select
+                                          placeholder="Select geofence type"
+                                          class="form-control populate" name="geofenceType" #gType="ngModel" required [(ngModel)]="geofenceData.geofenceType">
+                                           <ng-option *ngFor="let item of geofenceTypes;"
+                                              value="{{item.typeID}}"
+                                           > {{item.geofenceType}}
+                                           </ng-option>
+                                       </ng-select>
+                                       <div *ngIf="gType.invalid && (gType.dirty || gType.touched)" class="text-danger">
+                                       <div *ngIf="gType.errors.required">
+                                           Type is required.
+                                           </div>
+                                         </div>
+                                    </div>
+                                    <div class="col-2 pl-0">
+                                       <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn cus-btn-padd text-light btn-success mr-1"><i class="fas fa-plus"></i></a>
+                                       <a href="javascript:;" (click)="getTypes()"
+                                       data-toggle="tooltip" title="Refresh geofenceTypes data"
+                                       class="btn btn-success btn-sm modal-with-form"><i
+                                             class="fas fa-sync"></i></a>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="col-lg-12">
+                                 <label
+                                    class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
+                                    >Description</label>
+                                 <textarea class="form-control h-auto" placeholder="Enter Description" [(ngModel)]="geofenceData.description"
+                                 name="description" rows="3" #desName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                 <div *ngIf="desName.invalid && (desName.dirty || desName.touched)" class="text-danger">
+                                    <div *ngIf="desName.errors.pattern">
+                                     Only 500 characters are allowed.
+                                    </div>
+    
+                                 </div>
+                              </div>
                            </div>
                         </div>
                      </div>
-                 </div>
-                 <div class="form-group row pt-3">
+                     <div class="row pb-2 mb-1">
+                        <div class="col-lg-11 text-right">
+                           <a href="javascript:;" routerLink="/fleet/geofence/list" class="btn btn-default mr-2">Cancel</a>
+                           
+                           <!-- if there is some error in validation  -->
+                           
+                            <button *ngIf="!getGeofenceID && !geofenceF.form.valid" class="btn btn-success" (click)="addGeofence()" [disabled]="!geofenceF.form.valid">Save</button>
+                             
+                            <!--- if validations are ok and now the button will disable on submit click  -->
+                            <button *ngIf="!getGeofenceID && geofenceF.form.valid" class="btn btn-success" (click)="addGeofence()" [disabled]="submitDisabled">Save</button>
+                                      <!-- update case -->
+                           <button *ngIf="getGeofenceID && !geofenceF.form.valid" class="btn btn-success" (click)="updateGeofence()" [disabled]="!geofenceF.form.valid">Update</button>
+                           
+                           <button *ngIf="getGeofenceID && geofenceF.form.valid" class="btn btn-success" (click)="updateGeofence()" [disabled]="submitDisabled">Update</button>
+    
+                        </div>
+                     </div>
+                     <div class="form-group row">
+                      <div class="col-lg-12">
+                        <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
+                        <p class="text text-success" *ngIf="hasSuccess">
+                          {{ Success }}
+                        </p>
+                      </div>
+                    </div>
+                  
+               </form>
+             </div>
+           </div>
+         </div>
+         
+        
+      </section>
 
-                    <div class="col-lg-12">
-                       <label class="control-label font-weight-bold text-lg-right text-5 pt-2"
-                          >Geo-Fence Details</label>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                       <div class="row">
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right pt-2"
-                                >Geo-Fence Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                             <input type="text" class="form-control"  [(ngModel)]="geofenceData.geofenceName" placeholder="Enter geofence name eg. parking yard etc."
-                             name="geofenceName">
-                          </div>
-                          <div class="col-lg-12">
-                             <label class="control-label font-weight-bold text-lg-right pt-2">Location<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                             <input disabled type="text" class="form-control"  [(ngModel)]="geofenceData.location" name="location" placeholder="Enter location">
-                          </div>
-                       </div>
-                    </div>
-                    <div class="col-lg-5">
-                       <div class="row" >
-                          <div class="col-lg-12">
-                             <label
-                                class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                >Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                             <div class="row">
-                                <div class="col-lg-11">
-                                   <ng-select
-                                      placeholder="Select geofence type"
-                                      class="form-control populate" name="geofenceType" [(ngModel)]="geofenceData.geofenceType">
-                                       <ng-option *ngFor="let item of geofenceTypes;" 
-                                          value="{{item.typeID}}"
-                                       > {{item.geofenceType}}
-                                       </ng-option>
-                                   </ng-select>
-                                </div>
-                                <div class="col-lg-1 pl-0">
-                                   <a data-target="#addGeofenceCategoryModal" data-toggle="modal"  class="modal-with-form btn btn-sm text-light btn-success"><i class="fas fa-plus"></i></a>
-                                </div>
-                             </div>
-                          </div>
-                          <div class="col-lg-12">
-                             <label
-                                class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right"
-                                >Description&nbsp; <span
-                                class="text-1 optional-label-color">(optional)</span></label>
-                             <textarea class="form-control"  [(ngModel)]="geofenceData.description"
-                             name="description" rows="3"></textarea>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-                 <div class="form-group row">
-                    <div class="col-lg-11 text-right">
-                       <button class="btn btn-default mr-2">Cancel</button>
-                       <button *ngIf="!getGeofenceID" class="btn btn-success" (click)="addGeofence()">Save</button>
-                       <button *ngIf="getGeofenceID" class="btn btn-success" (click)="updateGeofence()">Update</button>
 
-                    </div>
-                 </div>
-                 <div class="form-group row">
-                  <div class="col-lg-12">
-                    <!-- <p class="text text-danger" *ngIf="hasError">{{Error}}</p> -->
-                    <p class="text text-success" *ngIf="hasSuccess">
-                      {{ Success }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-           </form>
-        </div>
-     </div>
+      
     </section>
   </div>
 </section>
 
 <div class="modal fade" id="addGeofenceCategoryModal" tabindex="-1" role="dialog"
-   aria-labelledby="addGeofenceCategoryModal" aria-hidden="true">
+   aria-labelledby="addGeofenceCategoryModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title">Add Geofence Type</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" (click)="clearGeofenceData()" class="close" data-dismiss="modal" aria-label="Close">
                <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
             </button>
          </div>
          <div class="modal-body text-dark">
-            <form class="form-horizontal form-bordered" method="get" name="form" id="geofenceTypeForm">
+            <form class="form-horizontal form-bordered" method="get" name="form" id="geofenceTypeForm" #geofenceForm="ngForm" >
                <div class="form-row">
                   <div class="form-group col-md-12">
-                     <label class="font-weight-bold control-label">Geofence Type</label>
-                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="Enter name of geofence type">
+                     <label class="font-weight-bold control-label">Geofence Type
+                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                     </label>
+                     <input [(ngModel)]="geofenceTypeData.geofenceType" name="geofenceType" type="text" class="form-control" placeholder="eg. Parking Yard" #geoWarehouse1="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
+                     <div *ngIf="geoWarehouse1.invalid && (geoWarehouse1.dirty || geoWarehouse1.touched)" class="text-danger">
+                        <div *ngIf="geoWarehouse1.errors.required">
+                         Geofence type  is required.
 
+                        </div>
+                        <div *ngIf="geoWarehouse1.errors.pattern">
+                         Geofence type must contain alphanumeric characters.
+
+                        </div>
+                     </div>
                   </div>
+                  
                </div>
-               <div class="form-row">
+               <div class="form-row mt-2">
                   <div class="form-group col-md-12">
-                     <label class="font-weight-bold control-label">Description&nbsp; <span
-                        class="text-1 optional-label-color">(optional)</span></label>
+                     <label class="font-weight-bold control-label">Description</label>
                      <textarea [(ngModel)]="geofenceTypeData.description"
-                     name="description" class="form-control" row="3" placeholder="Enter description of the geofence type"></textarea>
+                     name="description" class="form-control heighta" row="3" placeholder="Enter description of the geofence type" #descName= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                     <div *ngIf="descName.invalid && (descName.dirty || descName.touched)" class="text-danger">
+                        <div *ngIf="descName.errors.pattern">
+                         Only 500 characters are allowed.
+                        </div>
+
+                     </div>
                   </div>
                </div>
             </form>
          </div>
          <div class="modal-footer">
             <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" (click)="addGeofenceType()" class="btn btn-success">Save</button>
+            <button type="button" (click)="addGeofenceType()" class="btn btn-success" [disabled]="!geofenceForm.form.valid">Save</button>
          </div>
       </div>
    </div>
 </div>
 
- 

@@ -58,9 +58,9 @@ export class HosListComponent implements OnInit {
   driverIDsObject: any = {};
 
   ngOnInit(): void {
-    this.fetchevents();
+   // this.fetchevents();
     this.fetchAllDriverIDs();
-    this.fetchDriverIDs();
+   // this.fetchDriverIDs();
   }
 
   getEventDetail(arrValues) {
@@ -101,7 +101,7 @@ export class HosListComponent implements OnInit {
       this.toastr.error('Please select atleast one filter');
       return false;
     }
- 
+
     let start = <any> '';
     let end = <any> '';
     start = this.filterData.startDate;
@@ -132,12 +132,12 @@ export class HosListComponent implements OnInit {
           this.suggestions = [];
           for (let i = 0; i < result.Items.length; i++) {
             const element = result.Items[i];
-  
+
             let obj = {
               userName: element.userName,
               name: element.firstName + ' ' + element.lastName
             };
-            if(this.filterData.driverName !== '' ) { 
+            if(this.filterData.driverName !== '' ) {
               this.suggestions.push(obj)
             }
           }

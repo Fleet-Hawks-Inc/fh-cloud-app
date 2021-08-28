@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ApiService } from '../../../../../services';
 import { ActivatedRoute } from '@angular/router';
-import { HereMapService } from "../../../../../services/here-map.service";
 import { DomSanitizer } from '@angular/platform-browser';
-
+import Constants from '../../../constants';
 
 @Component({
   selector: 'app-service-detail',
@@ -12,13 +11,15 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./service-detail.component.css']
 })
 export class ServiceDetailComponent implements OnInit {
-  Asseturl = this.apiService.AssetUrl;
-
+  logurl = this.apiService.AssetUrl;
+  noRecordMessage: string = Constants.NO_RECORDS_FOUND;
   private logID;
   programs;
-  logsData: any;
-  allServiceTasks: any;
-  allServiceParts: any;
+  logsData: any = {
+    unitType: '-'
+  };
+  allServiceTasks: any = [];
+  allServiceParts: any = [];
   vehicle: any;
   assetID: any;
   completionDate: any;
@@ -29,7 +30,7 @@ export class ServiceDetailComponent implements OnInit {
   description: any;
   vehiclesObject: any = {};
   vendorsObject: any = {};
-  issuesObject: any = {};
+  issuesObject: any = [];
   assetsObject: any = {};
 
   taskSubTotal: number;
@@ -50,6 +51,10 @@ export class ServiceDetailComponent implements OnInit {
   currency: any;
   photos: any = [];
   docs: any = [];
+  users: any = [];
+
+  logImages = []
+  logDocs = [];
 
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -57,7 +62,6 @@ export class ServiceDetailComponent implements OnInit {
       private spinner: NgxSpinnerService,
       private apiService: ApiService,
       private route: ActivatedRoute,
-      private hereMap: HereMapService,
       private domSanitizer: DomSanitizer,
   ) { }
 
@@ -66,9 +70,9 @@ export class ServiceDetailComponent implements OnInit {
     this.fetchProgramByID();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
-    this.fetchAllIssuesIDs();
+    // this.fetchAllIssuesIDs();
     this.fetchAllAssetsIDs();
-    this.hereMap.mapInit();
+    this.fetchUsers();
   }
 
   fetchProgramByID() {
@@ -78,10 +82,13 @@ export class ServiceDetailComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.logsData = result.Items[0];
+        
+
+        this.fetchSelectedIssues(this.logsData.selectedIssues);
        
         result = result.Items[0];
-        this.vehicle = result.vehicleID;
-        this.assetID = result.assetID;
+        this.vehicle = result.unitID;
+        this.assetID = result.unitID;
         this.vendorID = result.vendorID;
         this.completionDate = result.completionDate;
         this.odometer = result.odometer;
@@ -108,18 +115,15 @@ export class ServiceDetailComponent implements OnInit {
 
         this.currency = result.allServiceParts.currency;
         
-        if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
-          this.photos = result.uploadedPhotos.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
+       if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
+          this.logImages = result.uploadedPhotos.map(x => ({
+            path: `${this.logurl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-          this.docs = result.uploadedDocs.map(x => ({
-            path: `${this.Asseturl}/${this.logsData.carrierID}/${x}`, 
-            name: x,
-          }));
+        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
+          this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
         this.spinner.hide(); // loader init
       },
@@ -135,17 +139,28 @@ export class ServiceDetailComponent implements OnInit {
   }
 
   fetchAllVendorsIDs() {
-    this.apiService.getData('vendors/get/list')
+    this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
-        this.vendorsObject = result;
+        console.log('result vendor', result)
+        this.vendorsObject = result; 
       });
   }
 
-  fetchAllIssuesIDs() {
-    this.apiService.getData('issues/get/list')
+  fetchSelectedIssues(issueIDs) {
+    if(issueIDs.length > 0) {
+      issueIDs = JSON.stringify(issueIDs);
+      this.apiService.getData('issues/fetch/selected?issueIds='+issueIDs)
       .subscribe((result: any) => {
         this.issuesObject = result;
       });
+    }
+  }
+
+  fetchUsers(){
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
+      this.users = result;
+      
+    });
   }
 
   fetchAllAssetsIDs() {
@@ -155,10 +170,14 @@ export class ServiceDetailComponent implements OnInit {
       });
   }
 
-  // delete uploaded images and documents 
-  delete(type: string,name: string){
+  // delete uploaded images and documents
+  delete(type: string, name: string, index:any) {
     this.apiService.deleteData(`serviceLogs/uploadDelete/${this.logID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchProgramByID();
+      if(type === 'image') {
+        this.logImages.splice(index, 1);
+      } else {
+        this.logDocs.splice(index,1);
+      }
     });
   }
 

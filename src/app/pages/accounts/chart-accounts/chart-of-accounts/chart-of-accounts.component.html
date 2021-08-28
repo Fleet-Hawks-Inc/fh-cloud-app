@@ -1,0 +1,201 @@
+<!----- -<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "default" color = "#fff" type = "ball-clip-rotate"><p style="color: white" > Loading... </p></ngx-spinner> ----->
+<section class="body">
+	<div class="inner-wrapper">
+		<section role="main" class="content-body pl-0 pr-0 pt-0">
+			<header class="page-header pr19 pl7">
+				<div class="row" style="padding-top:10px;">
+					<div class="col-md-2 col-lg-2 pr-0">
+						<div class="input-group input-group-md mb-3">
+							<input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName" name="actName"> </div>
+					</div>
+					<div class="col-lg-2 col-md-2 pr-0">
+						<ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type" [(ngModel)]="filter.actType" name="actType">
+							<ng-option value="current assets">Current Assets</ng-option>
+							<ng-option value="bank">Bank</ng-option>
+							<ng-option value="credit card / loan">Credit Card/Loan</ng-option>
+							<ng-option value="direct expenses">Direct Expenses</ng-option>
+							<ng-option value="equity">Equity</ng-option>
+							<ng-option value="fixed assets">Fixed Assets</ng-option>
+							<ng-option value="future assets">Future Assets</ng-option>
+							<ng-option value="future liability">Future Liability</ng-option>
+							<ng-option value="other income">Other Income</ng-option>
+							<ng-option value="overheads">Overheads</ng-option>
+							<ng-option value="sales">Sales</ng-option>
+							<ng-option value="current liability">Current Liability</ng-option>
+						</ng-select>
+					</div>
+					<div class="col-md-2  col-lg-2">
+						<button type="button" class="btn btn-sm btn-success" (click)="searchAccounts()">Search</button>
+						<button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
+					</div>
+					<div class="col-md-6  col-lg-6 text-right">
+            <button type="button" class="btn btn-default btn-sm mr-1" *ngIf="!deactivatePredefined" (click)="preAccounts()">Add Predefined</button>
+						<button (click)="showAcModal()" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
+					</div>
+				</div>
+			</header>
+			<div class="row">
+				<div class="col-lg-12 pr-0">
+					<section class="card">
+						<div class="main-panel">
+							<div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+								<div class="card-body" style="display: block">
+									<div class="main-panel">
+										<div class="row bg-white">
+											<div class="col-lg-12">
+												<table class="table table-bordered table-hover table-striped mb-0 simple-table">
+													<thead>
+														<tr class="bgcol2">
+															<th class="text-2">Account Name</th>
+															<th class="text-2">Account Number</th>
+															<th class="text-2">Account Type</th>
+															<th class="text-2">Description</th>
+															<!-- <th class="text-2">Opening Balance</th>
+                                            <th class="text-2">Closing Balance</th> -->
+															<th class="text-2">Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr *ngIf="accounts.length === 0" class="text-center">
+															<td colspan="5">{{ dataMessage }}</td>
+														</tr>
+														<!-- <tr *ngFor="let ac of accounts | async"> -->
+														<tr *ngFor="let ac of accounts">
+															<td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}"><span *ngIf="ac.first === 'cpp' || ac.first === 'ei'">{{ac.first | uppercase}}</span><span *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'">{{ac.first | titlecase}}</span>&nbsp;{{ac.last | titlecase}} </td>
+															<td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actNo}}</td>
+															<td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actType | titlecase}} </td>
+															<td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.actDesc}}</td>
+															<!-- <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.opnBal}}&nbsp;{{ac.opnBalCurrency}}</td>
+                                            <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.closingAmt}}&nbsp;{{ac.opnBalCurrency}}</td> -->
+															<td>
+																<div class="btn-group flex-wrap">
+																	<button type="button" class="btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+																	<div class="dropdown-menu" role="menu">
+																		<button type="button" (click)="editAccount(ac.actID)" class="dropdown-item text-1">Edit</button>
+																		<!-- <button type="button" class="dropdown-item text-1" (click)="deleteAccount(ac.actID)">Delete</button> -->
+																	</div>
+																</div>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+		</section>
+	</div>
+</section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">{{modalTitle}}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"> <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i> </button>
+			</div>
+			<div class="modal-body text-dark">
+				<form id="accountForm" class="form-horizontal form-bordered bg-white" method="POST" #actForm="ngForm">
+					<div class="form-row">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Account Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+							<ng-select class="form-control populate" placeholder="Select account type" [(ngModel)]="actType" name="actType" #accountType="ngModel" required>
+								<ng-option value="current assets">Current Assets</ng-option>
+								<ng-option value="bank">Bank</ng-option>
+								<ng-option value="credit card / loan">Credit Card/Loan</ng-option>
+								<ng-option value="direct expenses">Direct Expenses</ng-option>
+								<ng-option value="equity">Equity</ng-option>
+								<ng-option value="fixed assets">Fixed Assets</ng-option>
+								<ng-option value="future assets">Future Assets</ng-option>
+								<ng-option value="future liability">Future Liability</ng-option>
+								<ng-option value="other income">Other Income</ng-option>
+								<ng-option value="overheads">Overheads</ng-option>
+								<ng-option value="sales">Sales</ng-option>
+								<ng-option value="current liability">Current Liability</ng-option>
+							</ng-select>
+							<div *ngIf="accountType.invalid && (accountType.dirty || accountType.touched)" class="text-danger">
+								<div *ngIf="accountType.errors.required"> Account type is required. </div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Account Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+							<input type="number" class="form-control" min="0" placeholder="eg. 1100,1150 " [(ngModel)]="actNo" name="actNo" #accountNo="ngModel" required>
+							<div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
+								<div *ngIf="accountNo.errors.required"> Account number is required. </div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Account Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+							<input type="text" class="form-control" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+							<div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
+								<div *ngIf="accountName.errors.required"> Account name is required. </div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+							<div class="row">
+								<div class="col-lg-3 pr-0">
+									<!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
+									<input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog">
+									<div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
+										<div *ngIf="actBal.errors.required"> Account balance is required. </div>
+									</div>
+								</div>
+								<div class="col-lg-3 pl-0">
+									<!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
+									<ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog">
+										<ng-option value="CAD">CAD</ng-option>
+										<ng-option value="USD">USD</ng-option>
+									</ng-select>
+									<div *ngIf="balCur.invalid && (balCur.dirty || balCur.touched)" class="text-danger">
+										<div *ngIf="balCur.errors.required"> Balance currency is required. </div>
+									</div>
+								</div>
+								<div class="col-lg-1 pr-0">
+									<label class="control-label font-weight-bold">as of</label>
+								</div>
+								<div class="col-lg-4 pr-0">
+									<input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog">
+									<div *ngIf="accountDate.invalid && (accountDate.dirty || accountDate.touched)" class="text-danger">
+										<div *ngIf="accountDate.errors.required"> Account date is required. </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="form-group col-lg-12">
+							<div class="checkbox-custom">
+								<input type="checkbox" class="form-control" [(ngModel)]="actDash" name="actDash">
+								<label class="control-label font-weight-bold">Add To Dashboard Watch List</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="form-group col-lg-12">
+							<label class="control-label font-weight-bold">Description</label>
+							<textarea rows="3" class="form-control" placeholder="Enter description of the account" [(ngModel)]="actDesc" name="actDesc"></textarea>
+						</div>
+					</div>
+					<div class="form-row mt-2">
+						<div class="col-lg-12 text-right">
+							<button class="btn btn-default mr-2" (click)="hideModal()">Cancel</button>
+							<button type="button" class="btn btn-success" *ngIf="!fetchedID" [disabled]="!actForm.form.valid || submitDisabled" (click)="addAccount()">Save</button>
+							<button type="button" class="btn btn-success" *ngIf="fetchedID" [disabled]="!actForm.form.valid || submitDisabled" (click)="updateAccount(fetchedID)">Update</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,120 +1,141 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pr-0 pl-0">
-            <header class="page-header">
-                <div class="row px-4" style="padding-top: 10px">
-                    <div class="col-md-2 col-lg-2 pr-0 pl-0">
-                        <div class="input-group input-group mb-3">
-                            <input type="text" name="userName" [(ngModel)]="userName" class="form-control"
-                                placeholder="Search user by name" />
-                        </div>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pl-2">
-                        <ng-select placeholder="Search user by status" name="currentStatus" [(ngModel)]="currentStatus">                                               
-                            <ng-option value="ACTIVE">Active</ng-option>
-                            <ng-option value="INACTIVE">Inactive</ng-option>
-                        </ng-select>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pl-2">
-                        <button type="submit" (click)="searchFilter()"
-                            class="btn btn-sm btn-success mr-2">Search</button>
-                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-                    </div>
-                    <div class="col-md-2 col-lg-2 pr-0 pl-2">
-                        <!-- <ng-select class="form-control populate" [(ngModel)]="departmentName" name="departmentName"
-                            placeholder="Search user by department">
-                            <ng-option value="Fleet">Fleet</ng-option>
-                            <ng-option value="Operations">Operations</ng-option>
-                            <ng-option value="Safety">Safety</ng-option>
-                            <ng-option value="Maintenance">Maintenance</ng-option>
-                            <ng-option value="Dispatch">Dispatch</ng-option>
-                            <ng-option value="Compliance">Compliance</ng-option>
-                            <ng-option value="Road Assistance">Road Assistance</ng-option>
-                            <ng-option value="Accounts">Accounts</ng-option>
-                        </ng-select> -->
-                    </div>
-                   
-                    
-                  
-                    <div class="col-md-4 col-lg-4 text-right pr-5 page-buttons">
-                        <div class="btn-group flex-wrap">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">
-                                Actions<span class="caret"></span>
-                            </button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
-                                position: absolute;
-                                will-change: transform;
-                                top: 0px;
-                                left: 0px;
-                                transform: translate3d(0px, 38px, 0px);
-                                ">
-                                <a class="dropdown-item text-1" href="">Import</a>
-                                <a class="dropdown-item text-1" href="">Export</a>
-                            </div>
-                        </div>
-                        <!-- <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2"
-                            style="color: white"><i class="fas fa-plus"></i> Add User</a> -->
-                    </div>
-                </div>
-            </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <section class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table
-                                    class="row-border hover table table-bordered table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                           <th>Employee ID</th>
-                                           <th>First Name</th>
-                                           <th>Last Name</th>
-                                           <th >Username</th>
-                                           <!-- <th>Department</th> -->
-                                           <th>User Type</th>
-                                           <th>Phone</th>
-                                           <th>Status</th>
-                                           <th>Actions</th>
-                                        </tr>
-                                     </thead>
-                                    <tbody>
-                                        <tr *ngIf="users.length == 0" class="text-center">
-                                            <td colspan="8">No records found</td>
-                                        </tr>
-                                        <tr *ngFor="let user of users">
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.employeeID}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.firstName}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.lastName}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userName}} </td>
-                                            <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.departmentName}}</td> -->
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.userType}}</td>
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.phone}}</td> 
-                                            <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td>                                
-                                            <td><div class="btn-group flex-wrap">
-                                                  <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                                  <div class="dropdown-menu" role="menu">
-                                                     <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{user.userName}}">Edit</a>
-                                                      <button class="dropdown-item text-1 modal-with-form" (click)="deleteUser(user.userName)">Delete</button>
-                                                  </div>
-                                               </div></td>
-                                         </tr>
-                                    </tbody>
-                                </table>
-                                <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
-                                    <div class="col-6">
-                                        Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="userPrev">Prev</button>
-                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="userNext">Next</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pt-0 pl-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md">
+              <input type="text" autocomplete="off" name="searchUserName" [(ngModel)]="searchUserName"
+                placeholder="Search user by name" class="form-control" (input)="getSuggestions($event.target.value)">
             </div>
-        </section>
-    </div>
+            <div *ngIf="suggestedUsers?.length > 0" class="result-suggestions">
+              <ul>
+                <li *ngFor="let suggestedUser of suggestedUsers" style="cursor: pointer;"
+                  (click)="setUser(suggestedUser.contactID, suggestedUser.firstName, suggestedUser.lastName)">
+                  {{ suggestedUser.firstName }} {{ suggestedUser.lastName }}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right">
+
+            <div class="col-md-8 col-lg-8 text-right pr-1">
+              <a [routerLink]="['/manage', 'users', 'add']" class="btn btn-success btn-sm ml-2" style="color: white"><i
+                  class="fas fa-plus"></i> Add User</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="row">
+        <div class="col-lg-12 pr-0">
+          <section class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="row-border hover table table-bordered table-striped mb-0">
+                  <thead>
+                    <tr>
+                      <th>Employee ID</th>
+                      <th>Name</th>
+                      <th>Username</th>
+                      <th>Department</th>
+                      <th>User Roles</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <!-- <th>Status</th> -->
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngIf="users.length == 0" class="text-center">
+                      <td colspan="8">{{ dataMessage }}</td>
+                    </tr>
+                    <tr *ngFor="let user of users">
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.employeeID}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.firstName}}&nbsp;
+                        {{user.lastName}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">
+                        {{user.userLoginData.userName ? user.userLoginData.userName : '-'}} </td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.userAccount.department}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">
+                        {{user.userLoginData.userRoles ? user.userLoginData.userRoles : '-'}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.phone}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.email}}</td>
+                      <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td> -->
+                      <td>
+                        <div class="btn-group flex-wrap">
+                          <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
+                              class="fas fa-ellipsis-v"></i></button>
+                          <div class="dropdown-menu" role="menu">
+                            <a href="javascript:;" data-toggle="modal" data-target="#assignrole"
+                              (click)="fetchRole(user)" class="dropdown-item"> Assign Roles</a>
+                            <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{user.contactID}}">Edit</a>
+                            <button class="dropdown-item text-1 modal-with-form"
+                              (click)="deleteUser(user.contactID)">Delete</button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="row mt-3 dtPaginate" *ngIf="users.length > 0">
+                  <div class="col-6">
+                    Showing {{ userStartPoint }} to {{ userEndPoint }} of {{ totalRecords }} enteries
+                  </div>
+                  <div class="col-6 text-right">
+                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                      [disabled]="userPrev">Prev</button>
+                    <button type="button" class="btn btn-default" (click)="nextResults()"
+                      [disabled]="userNext">Next</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="assignrole" style="max-width: 600px;" class="modal fade" role="dialog" aria-hidden="true"
+    aria-labelledby="assignrole">
+    <section class="card">
+      <header class="card-header">
+        <h2 class="card-title">Assign Roles</h2>
+      </header>
+      <div class="card-body text-dark">
+        <form>
+          <div class="form-row">
+            <div class="col-lg-12">
+              <label class="control-label font-weight-semibold labelmt text-3 text-dark">User Name/Email*</label>
+              <input type="text" class="form-control" [value]="setUsrName" disabled>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-lg-12">
+              <label class="control-label font-weight-semibold labelmt text-3 text-dark">Role</label>
+              <ng-select [multiple]="true" class="form-control populate" [(ngModel)]="setRoles" name="roles"
+                placeholder="Select User Roles">
+                <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}</ng-option>
+              </ng-select>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <footer class="card-footer">
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <button (click)="cancel()" class="btn btn-default modal-dismiss">Cancel</button>
+            <button (click)="assignRole()" class="btn btn-success modal-confirm">Assign Role</button>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </div>
 </section>

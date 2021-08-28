@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, PathLocationStrategy } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './entry/login/login.component';
 import { DashboardComponent } from './entry/dashboard/dashboard.component';
 import { AuthService } from './services/';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
-import { LeftBarComponent } from './entry/left-bar/left-bar.component';
-import { HealthcheckComponent } from './entry/healthcheck/healthcheck.component';
 import { MapDashboardComponent } from './entry/map-dashboard/map-dashboard.component';
 
 
@@ -21,65 +19,60 @@ import { UnsavedChangesComponent } from './unsaved-changes/unsaved-changes.compo
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AllCarriersComponent } from './shared/all-carriers/all-carriers.component';
 import { CheckUserService } from './services/check-user.service';
+import { CheckProfileServiceService } from './services/check-profile-service.service';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
   { path: 'onboard', component: AddAccountComponent },
+  { path: 'forgotPassword', component: ForgotPasswordComponent },
   {
     path: 'Dashboard',
     component: DashboardComponent,
-    canActivate: [AuthService],
+    canActivate: [AuthService,CheckProfileServiceService],
   },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
-    canActivate: [AuthService],
+    canActivate: [CheckProfileServiceService,AuthService],
   },
-  { path: 'healthcheck', component: HealthcheckComponent },
   {
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
     data: { preload: true },
-    canActivate: [AuthService, CheckUserService],
+    canActivate: [AuthService, CheckUserService,CheckProfileServiceService],
   },
   {
     path: 'compliance',
     loadChildren: () => import('./pages/compliance/compliance.module').then((m) => m.ComplianceModule),
     data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'dispatch',
     loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'accounts',
     loadChildren: () => import('./pages/accounts/accounts.module').then((m) => m.AccountsModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false },
-    canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: 'manage',
     loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false },
-    canActivate: [AuthService]
-  },
-  {
-    path: 'Left-Bar', component: LeftBarComponent, canActivate: [AuthService]
+    canActivate: [AuthService,CheckProfileServiceService]
   },
   {
     path: "404",
     component: ErrorComponent
-  },
-  {
-    path: "carriers",
-    component: AllCarriersComponent
   },
   {
     path: "**",
@@ -89,7 +82,8 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     {
-      preloadingStrategy: PreLoadStrategy
+      preloadingStrategy: PreLoadStrategy,
+      useHash: true
     }
   ), CommonModule, ChartsModule],
   exports: [RouterModule],

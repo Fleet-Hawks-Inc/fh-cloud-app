@@ -1,171 +1,203 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body p-0">
-            <header class="page-header pr-5">
-                <form>
-                    <div class="row pr-1 mr-1" style="padding-top:10px;">
-                       
-                        <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue" name="searchValue"
-                                (input)="getSuggestions($event.target.value)" autocomplete="off" placeholder="Search Document#">
-                            </div> 
-                            <div *ngFor="let data of suggestions" style="cursor: pointer" (click)="searchSelectedRoute(data)">
-                                {{ data.name }}
-                            </div>
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header pr5 pl7">
+
+                <div class="row" style="padding-top:10px;">
+
+                    <div class="col-md-2 col-lg-2 pr-2">
+                        <div class="input-group input-group-md mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="filterValues.searchValue"
+                                name="searchValue" (input)="getSuggestions($event.target.value)" autocomplete="off"
+                                placeholder="Search Document#">
                         </div>
-
-                        <div class="col-lg-3 col-md-3">
-                            <div class="input-daterange input-group">
-                                <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </span>
-                                <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                    class="form-control" autocomplete="off">
-
-                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                    to
-                                </span>
-                                <input [(ngModel)]="filterValues.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                                    class="form-control" autocomplete="off">
-                            </div>
-                        </div>
-
-                        <div class="col-md-2 col-lg-2">
-                            <button type="button" (click)="searchFilter()"
-                                class="btn btn-sm btn-success mr-2">Search</button>
-                            <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
-                        </div>
-
-                        <div class="col-lg-5 text-right">
-                            <div class="btn-group flex-wrap pull-right">
-                                <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
-                                    data-toggle="dropdown" aria-expanded="false">Actions<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" href="#">Print</a>
-                                    <a class="dropdown-item text-1" href="">Export</a>
-                                    <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
-                                </div>
-                            </div>
-                            <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'" data-target="#addDocumentModal" href="javascript:;"
-                                class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
-                                    class="fas fa-plus"></i> Add Document</a>
+                        <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                            <ul>
+                                <li *ngFor="let data of suggestions" style="cursor: pointer;"
+                                    (click)="searchSelectedRoute(data)">{{ data.name }}</li>
+                            </ul>
                         </div>
                     </div>
-                </form>
+
+                    <div class="col-lg-3 col-md-3 pr-2">
+                        <div class="input-daterange input-group">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </span>
+                            <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
+                                placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+                                class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+
+                            <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                to
+                            </span>
+                            <input [(ngModel)]="filterValues.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                                (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                                autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" (click)="searchFilter()"
+                            class="btn btn-sm btn-success mr-2">Search</button>
+                        <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                    </div>
+
+                    <div class="col-lg-5 text-right">
+                        <div class="btn-group flex-wrap pull-right" *ngIf="!environment">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle mr-2"
+                                data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" href="#">Print</a>
+                                <a class="dropdown-item text-1" href="">Export</a>
+                                <a class="dropdown-item text-1 modal-with-form" href="#emailForm">Email</a>
+                            </div>
+                        </div>
+                        <a data-toggle="modal" (click)="ifEdit = false; modalTitle = 'Add'; openDocumentModal()"
+                            href="javascript:;" class="modal-with-form mb-1 mr-1 btn btn-success btn-sm pull-right"><i
+                                class="fas fa-plus"></i> Add Document</a>
+                    </div>
+                </div>
+
             </header>
-            <div class="row text-dark">
-                <div class="col">
-                    <section class="card">
-                        <div class="card-body">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">Document#</th>
-                                        <th width="10%">Trip ID</th>
-                                        <th width="10%">Type</th>
-                                        <th width="10%">Document Name</th>
-                                        <th width="10%">Uploaded By</th>
-                                        <th width="10%">Uploaded On</th>
-                                        <th width="20%">Description</th>
-                                        <th width="5%">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="documents.length == 0" class="text-center">
-                                        <td colspan="8">No records found</td>
-                                    </tr>
-                                    <tr *ngFor="let document of documents;let i = index;">
-                                        <td>{{document.documentNumber}}</td>
-                                        <td>{{tripsObjects[document.tripID]}}</td>
-                                        <td>{{document.docType}}</td>
-                                        <td>{{document.documentName}}</td>
-                                        <td>{{document.uploadedBy}}</td>
-                                        <td>Created: {{document.timeCreated | date: 'dd-MM-yyyy'}} <br>
-                                            Last modified: {{document.timeModified | date: 'dd-MM-yyyy'}}
-                                        </td>
-                                        <td>{{document.description ? document.description : '-'}}</td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        (click)="editDocument(document.docID)">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
-                                                    <a target="_blank" class="dropdown-item" href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download File</a>
+
+
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row pt-3">
+                            <div class="col-lg-12">
+                                <table class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Document#</th>
+                                            <th width="10%">Trip </th>
+                                            <th width="10%">Document Type</th>
+                                            <th width="10%">Uploaded By</th>
+                                            <th width="10%">Uploaded On</th>
+                                            <th width="20%">Remarks</th>
+                                            <th width="5%">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngIf="documents.length == 0" class="text-center">
+                                            <td colspan="8">{{dataMessage}}</td>
+                                        </tr>
+                                        <tr *ngFor="let document of documents;let i = index;">
+                                            <td>{{document.documentNumber}}</td>
+                                            <td>{{tripsObjects[document.tripID]}}</td>
+                                            <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?
+                                                document.docType+'#' : document.docType }}</td>
+                                            <!-- <td>{{document.documentName}}</td> -->
+                                            <td>{{document.uploadedBy}}</td>
+                                            <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
+                                                Last modified: {{document.timeModified | date: 'yyyy/MM/dd'}}
+                                            </td>
+                                            <td>
+                                                <span *ngIf="document.description != ''">
+                                                    {{ document.description | slice:0:100 }}
+                                                    <a href="javascript:;" (click)="showDescModal(document.description)"
+                                                        *ngIf="document.description.length > 100"
+                                                        class="btn btn-dark btn-xs modal-with-form">Full Remarks</a>
+                                                </span>
+                                                <span *ngIf="document.description == ''">
+                                                    -
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown dropright">
+                                                    <button class="bg-transparent border-0" type="button"
+                                                        id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu"
+                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                        <a class="dropdown-item"
+                                                            (click)="editDocument(document.docID)">Edit</a>
+                                                        <a class="dropdown-item" href="javascript:;"
+                                                            (click)="deactivateAsset(document.isDeleted, document.docID, document.documentNumber)">Delete</a>
+                                                        <a target="_blank" class="dropdown-item"
+                                                            href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download
+                                                            File</a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
-                                <div class="col-6">
-                                    Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="docPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="docNext">Next</button>
-                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
 
-                            <!-- email modal Form -->
-                            <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
-                                <section class="card">
-                                    <header class="card-header">
-                                        <h2 class="card-title">Email Document</h2>
-                                    </header>
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="form-row">
-                                                <div class="form-group col-lg-12">
-                                                    <label for="inputEmail4">To</label>
-                                                    <input type="email" class="form-control" id="inputEmail4">
-                                                </div>
-                                                <div class="form-group col-lg-12 mb-3">
-                                                    <label for="inputPassword4">Subject</label>
-                                                    <input type="text" class="form-control" id="inputPassword4">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="inputAddress">Body</label>
-                                                <textarea class="form-control" rows="3" id="texteditor"></textarea>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="checkbox-custom">
-                                                    <input type="checkbox" name="terms" id="w1-terms">
-                                                    <label for="w1-terms">Send a copy of this email to me.</label>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <footer class="card-footer">
-                                        <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <button class="btn btn-success modal-confirm">Send</button>
-                                                <button class="btn btn-default modal-dismiss">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </footer>
-                                </section>
+
+                         </div>
+
+                         <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
+                            <div class="col-6">
+                                Showing {{ docStartPoint }} to {{ docEndPoint }} of {{ totalRecords }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                                    [disabled]="docPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults()"
+                                    [disabled]="docNext">Next</button>
                             </div>
                         </div>
 
-                    </section>
+                        <!---- email modal Form -->
+                        <!-- <div id="emailForm" class="modal-block modal-block-primary mfp-hide">
+                            <section class="card">
+                                <header class="card-header">
+                                    <h2 class="card-title">Email Document</h2>
+                                </header>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-12">
+                                                <label for="inputEmail4">To</label>
+                                                <input type="email" class="form-control" id="inputEmail4">
+                                            </div>
+                                            <div class="form-group col-lg-12 mb-3">
+                                                <label for="inputPassword4">Subject</label>
+                                                <input type="text" class="form-control" id="inputPassword4">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputAddress">Body</label>
+                                            <textarea class="form-control" rows="3" id="texteditor"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="checkbox-custom">
+                                                <input type="checkbox" name="terms" id="w1-terms">
+                                                <label for="w1-terms">Send a copy of this email to me.</label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <footer class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-success modal-confirm">Send</button>
+                                            <button class="btn btn-default modal-dismiss">Cancel</button>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </section>
+                        </div> -->
+
+                      </div>
+                   </div>
                 </div>
-            </div>
+
+
+
+             </section>
+
+
+
         </section>
     </div>
 </section>
@@ -173,30 +205,69 @@
 <div class="modal fade" id="addDocumentModal" tabindex="-1" role="dialog" aria-labelledby="addDocumentModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" style="max-width: 600px;" role="document">
+
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" method="get" name="form" id="form_">
+            <form class="form-horizontal" method="get" name="form" id="form_" #doc="ngForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="far fa-window-close modal-dismiss" style="font-size:25px;"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+
                     <div class="form-row">
                         <div class="form-group col-lg-12">
-                            <label for="">Document#</label>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document#
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input [readonly]="documentMode == 'Automatic'" [(ngModel)]="documentData.documentNumber"
-                                name="documentNumber" type="text" class="form-control">
+                                name="documentNumber" type="text" placeholder=" eg. 123456" class="form-control"
+                                #dDocument="ngModel" required pattern="^[a-zA-Z0-9\s\-\_\.]+$" [disabled]="documentNumberDisabled">
+                            <div *ngIf="dDocument.invalid && (dDocument.dirty || dDocument.touched)"
+                                class="text-danger">
+                                <div>
+
+                                    <div *ngIf="dDocument.errors.required">
+                                        Document number is required.
+                                    </div>
+                                    <div *ngIf="dDocument.errors.pattern">
+                                      Document number must be alphanumeric and allowed characters(space,-,_,.).
+                                    </div>
+
+
+                                </div>
+
+                            </div>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Select Trip ID</label>
-                            <ng-select [(ngModel)]="documentData.tripID" name="tripID" class="form-control">
-                                <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}</ng-option>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Select Trip
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <ng-select [(ngModel)]="documentData.tripID" name="tripID" placeholder="Select Trip"
+                                class="form-control" #dTrip="ngModel" required>
+                                <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}
+                                </ng-option>
                             </ng-select>
+                            <div *ngIf="dTrip.invalid && (dTrip.dirty || dTrip.touched)" class="text-danger">
+                                <div>
+
+                                    <div *ngIf="dTrip.errors.required">
+                                        Trip is required.
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
                         </div>
                         <div class="form-group col-lg-12">
-                            <label for="">Document Type</label>
-                            <ng-select [(ngModel)]="documentData.docType" name="docType" class="form-control">
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Type
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <ng-select [(ngModel)]="documentData.docType" name="docType"
+                                placeholder="Select Document Type" class="form-control" #docTypeName="ngModel" required>
 
                                 <ng-option value="BOL">BOL</ng-option>
                                 <ng-option value="POD">POD</ng-option>
@@ -204,19 +275,67 @@
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
 
                             </ng-select>
+                            <div *ngIf="docTypeName.invalid && (docTypeName.dirty || docTypeName.touched)"
+                                class="text-danger">
+                                <div>
+
+                                    <div *ngIf="docTypeName.errors.required">
+                                        Document type is required.
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
                         </div>
-                        <div class="form-group col-lg-12">
-                            <label for="">Document Name</label>
-                            <input [(ngModel)]="documentData.documentName" name="documentName" type="text"
-                                class="form-control">
-                        </div>
+                        <!-- <div class="form-group col-lg-12">
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Document Name
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <input [(ngModel)]="documentData.documentName" name="documentName" placeholder="eg. BOL "
+                                type="text" class="form-control" #documentName="ngModel" required
+                                pattern="^[a-zA-Z0-9\s\_\-\.]+$">
+                            <div *ngIf="documentName.invalid && (documentName.dirty || documentName.touched)"
+                                class="text-danger">
+                                <div>
+
+                                    <div *ngIf="documentName.errors.required">
+                                        Document name is required.
+                                    </div>
+                                    <div *ngIf="documentName.errors.pattern">
+
+                                      Document name must be alphanumeric and allowed characters(space,-,_,.) only.
+
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+                        </div> -->
                         <div class="form-group col-lg-12 mb-3">
-                            <label for="">Choose File</label>
-                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs" name="uploadedDocs" type="file" class="form-control" observeFiles>
+                            <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
+                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs"
+                                name="uploadedDocs" id="uploadedDocs" type="file" class="form-control choosefileLH"
+                                observeFiles #dPhoto="ngModel" required>
+                            <div *ngIf="dPhoto.invalid && (dPhoto.dirty || dPhoto.touched)" class="text-danger">
+                                <div>
+
+                                    <div *ngIf="dPhoto.errors.required">
+                                        Choose file is required.
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
                             <span>
-                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, gif, png, bmp, tif,
-                                tiff).
-                                The maximum file size can be 15MB.</span>
+                                Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, png). The maximum
+                                file size can be 15MB.</span>
                             <div *ngIf="newDoc" class="border my-2 p-2">
                                 <h4 class="mt-0">Uploaded Document</h4>
                                 <a href="{{newDoc}}" target="_blank">Document</a>
@@ -224,17 +343,61 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="inputAddress">Description</label>
-                        <textarea [(ngModel)]="documentData.description" name="description" class="form-control"
-                            rows="3" id="textareaDefault"></textarea>
+                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Remarks</label>
+                        <textarea [(ngModel)]="documentData.description" name="description"
+
+                            placeholder="Enter Remarks" class="form-control heighta" rows="3" #Descrip1= "ngModel" pattern ="^[\s\S]{1,500}$"
+
+                            ></textarea>
+                            <div *ngIf="Descrip1.invalid && (Descrip1.dirty || Descrip1.touched)" class="text-danger">
+                              <div>
+                                <div *ngIf="Descrip1.errors.pattern">
+                                  Only 500 characters are allowed.
+                                 </div>
+                              </div>
+                            </div>
                     </div>
-                </form>
+
+                </div>
+                <div class="modal-footer">
+
+                    <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
+                    <button *ngIf="ifEdit" (click)="updateDocument()"
+                        class="btn btn-success modal-confirm">Update</button>
+                    <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm" [disabled]="!doc.form.valid">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="routeNotes" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-footer">
-                <button *ngIf="ifEdit" (click)="updateDocument()" class="btn btn-success modal-confirm">Update</button>
-                <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm">Save</button>
-                <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
-            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group row text-dark">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="mb-0">
+                                        {{ descriptionData }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

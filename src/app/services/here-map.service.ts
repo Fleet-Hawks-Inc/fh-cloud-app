@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AnyCnameRecord } from 'dns';
+import { ApiService } from './api.service';
 declare var H: any;
 
 @Injectable({
@@ -43,13 +44,13 @@ export class HereMapService {
     };
     return httpOptions;
   }
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private apiService: ApiService) { }
 
   /**
    * Initialize maps
    */
 
-  mapSetAPI=()=>{
+  mapSetAPI = () => {
 
     return this.platform = new H.service.Platform({
       'apikey': this.apiKey,
@@ -58,62 +59,72 @@ export class HereMapService {
   }
   mapInit = () => {
     const defaultLayers = this.platform.createDefaultLayers();
+
     this.map = new H.Map(
       document.getElementById('map'),
       defaultLayers.vector.normal.truck,
       {
         zoom: 4.5,
-        center: {lat: 45.8598584, lng: -94.526364},
+        center: { lat: 45.8598584, lng: -94.526364 },
         pixelRatio: window.devicePixelRatio || 1
-
       }
     );
-  this.setStyle(this.map);
-    const mapTileService = this.platform.getMapTileService({
-      type: 'base'
-    });
-    
-    const parameters = {
-      congestion: true,
-      ppi: 320
 
-    };
-    // possible value  'normal.day', and 'normal.night'
-    const tileLayer = mapTileService.createTileLayer(
-      'trucktile',
-      'normal.night',
-      256,
-      'png',
+    //   let provider = this.map.getBaseLayer().getProvider();
+    //   var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
+    //   'https://js.api.here.com/v3/3.1/styles/omv/');
+    // // set the style on the existing layer
+    // provider.setStyle(style)
+    // const mapTileService = this.platform.getMapTileService({
+    //   type: 'base'
+    // });
 
-      parameters
-    );
+    // const parameters = {
+    //   congestion: true,
+    //   ppi: 320
+
+    // };
+    // // possible value  'normal.day', and 'normal.night'
+    // const tileLayer = mapTileService.createTileLayer(
+    //   'trucktile',
+    //   'normal.night',
+    //   256,
+    //   'png',
+
+    //   parameters
+    // );
 
     // This display the current traffic detail -> Green Means Free, Yellow means Moderate Congestion
     // Red means High Congestion
-    // this.map.addLayer(defaultLayers.vector.normal.traffic);
+    //this.map.addLayer(defaultLayers.vector.normal.traffic);
     // this.map.addLayer(tileLayer);
 
     // // This display the traffic incidents - by default its updated in every 3 mins
-    // this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
+    //this.map.addLayer(defaultLayers.vector.normal.trafficincidents);
     // this.map.setBaseLayer(tileLayer);
 
     // this.getCurrentLocation();
     const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
+    behavior.disable(H.mapevents.Behavior.WHEELZOOM);
     this.ui = H.ui.UI.createDefault(this.map, defaultLayers);
-    this.ui.getControl('mapsettings').setDisabled(true);
-    this.ui.getControl('mapsettings').setVisibility(false);
+    this.ui.getControl('mapsettings').setDisabled(false);
+    this.ui.getControl('mapsettings').setAlignment('bottom-left');
+    this.ui.getControl('zoom').setAlignment('bottom-left');
+    this.ui.getControl('scalebar').setAlignment('bottom-left');
+    this.ui.getControl('mapsettings').setVisibility(true);
 
 
-    // let mapSettings = this.ui.getControl('mapsettings');
-    // let zoom = this.ui.getControl('zoom');
-    // let scalebar = this.ui.getControl('scalebar');
+    //   let mapSettings = this.ui.getControl('mapsettings');
+    //   let zoom = this.ui.getControl('zoom');
+    //   let scalebar = this.ui.getControl('scalebar');
 
-    // mapSettings.setAlignment('bottom-left');
-    // zoom.setAlignment('bottom-left');
-    // scalebar.setAlignment('bottom-left');
- 
-     return this.map;
+    //   mapSettings
+    //   zoom.setAlignment('bottom-left');
+    //   scalebar.setAlignment('bottom-left');
+
+    return this.map;
   }
+
 
   /**
    * This method get current location of user. Currently it is using browsser navigater to get location
@@ -137,12 +148,12 @@ export class HereMapService {
       });
     }
   }
-/*
-  AutoSuggest Search Api v6
-*/
+  /*
+    AutoSuggest Search Api v6
+  */
   searchLocationOld(query): Observable<any> {
     const URL = 'https://autocomplete.geocoder.ls.hereapi.com/6.2/suggest.json';
-    return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query  )
+    return this.http.get(URL + '?apiKey=' + this.apiKey + '&query=' + query)
       .pipe(map(response => {
         return this.searchResults = response['suggestions'];
       })
@@ -152,44 +163,54 @@ export class HereMapService {
   /*
   AutoSuggest Search Api v7
 */
-  searchLocation = async (query) => {
-    this.platform = new H.service.Platform({
-      'apikey': this.apiKey,
-    });
-    if (query !== '') {
-      const service = this.platform.getSearchService();
-      const response = await service.autosuggest(
-        {
-          at: `51.271096,-114.275941`,
-          limit: 5,
-          q: query,
-          lang: 'en',
-        }
-      );
-      let newData = [];
-      response.items.forEach(element => {
-        if(element.address != undefined) {
-          newData.push(element);
-        }
-      });
-      return newData;
+  // searchLocation = async (query) => {
+  //   this.platform = new H.service.Platform({
+  //     'apikey': this.apiKey,
+  //   });
+  //   if (query !== '') {
+  //     const service = this.platform.getSearchService();
+  //     const response = await service.autosuggest(
+  //       {
+  //         at: `51.271096,-114.275941`,
+  //         limit: 5,
+  //         q: query,
+  //         lang: 'en',
+  //       }
+  //     );
+  //     let newData = [];
+  //     response.items.forEach(element => {
+  //       if (element.address != undefined) {
+  //         newData.push(element);
+  //       }
+  //     });
+  //     return newData;
+  //   }
+    
+  // }
+
+
+  searchForOnBoard = async (value) => {
+    let data = {
+      query: value,
+    };
+    let result = await this.apiService.getData(`pcMiles/onboard/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if(result != null) {
+      return result.items;
     }
-    // if (query !== '') {
-    //   const service = this.platform.getSearchService();
-    //   const result = await service.geocode({ q: query });
-    //   if (result && result.items.length > 0) {
-    //     const response = await service.autosuggest(
-    //       {
-    //         at: `51.271096,-114.275941`,
-    //         limit: 5,
-    //         q: query,
-    //         lang: 'en',
-    //       }
-    //     );
-    //     return response.items;
-    //   }
-    // }
+    
   }
+
+  searchLocation = async (value) => {
+    let data = {
+      query: value,
+    };
+    let result = await this.apiService.getData(`pcMiles/suggestions/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
+    if(result != null) {
+      return result.items;
+    }
+    
+  }
+  
   // returns the response
   public searchEntries(query) {
     return this.searchLocation(query);
@@ -233,7 +254,7 @@ export class HereMapService {
     });
 
     const service = this.platform.getSearchService();
-    return service.geocode({ q: value });
+    return service.geocode({ q: value, show: 'tz' });
   }
 
   /**
@@ -249,9 +270,27 @@ export class HereMapService {
       at: `${cords.lat},${cords.lng},150`,
       limit: '1'
     });
+    return result;
   }
 
-  calculateRoute(coordinates) {
+  // public async getImageMap(value:any){
+  //   let coords=await this.geoCode(value)
+  //   try{
+  //   if(coords){
+  //   const result=`https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=${this.apiKey}&c=${coords}`
+  //   return result
+  //   }
+  //   else{
+  //     return "Coords not found."
+  //   }
+  // }
+  // catch(error){
+  //   
+  // }
+
+  // }
+
+  calculateRoute(coordinates, additionalSpec?) {
     try {
       this.viaPoints = [];
       if (coordinates.length > 2) {
@@ -263,51 +302,61 @@ export class HereMapService {
       }
       // ['51.044978,-114.063311', '51.081848,-113.925807', '51.205534,-114.001558', '51.127017,-114.008666']
       const alternatives = 3;
-      const params = {
+      let params = {
         transportMode: `truck`,
         routingMode: 'fast',
         origin: coordinates[0],
         via: new H.service.Url.MultiValueQueryParameter(this.viaPoints),
         destination: coordinates[coordinates.length - 1],
+        truckRestrictionPenalty: 'soft', // if truck restriction is soft route and maneuvera attribute should be notes
+        grossWeight: "",
+        weightPerAxle: "",
+        width: "", // Should be in centimeter
+        length: "",//should be in centimeter
+        height: (additionalSpec != undefined) ? additionalSpec["height"] : 400, // Should be in Centimeter
+        "avoid[features]": "tollRoad",
+        traffic: 'disabled',
         representation: 'display',
         units: 'imperial',
         alternatives,
         return: 'polyline,actions,instructions,summary,travelSummary,turnByTurnActions,elevation,routeHandle,passthrough,incidents',
         spans: 'truckAttributes,duration,speedLimit',
       };
+
       this.router = this.platform.getRoutingService(null, 8);
       this.map.removeObjects(this.map.getObjects());
 
-      const routeColors = ['#bbbdbf', '#03dac6', '#cf6679', '#000080', '#f5d200', '#13a2c2'];
+      const routeColors = ['#2980b9', '#2980b9', '#2980b9', '#2980b9', '#2980b9'];
 
       this.router.calculateRoute(params, route => {
-        // console.log("route", route);
-        if (route.routes) {
-          route.routes.forEach((section, i) => {
-            // console.log("section", section);
-            // decode LineString from the flexible polyline
-            section.sections.forEach(item => {
-              // console.log("item", item);
 
-              const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
-              // Create a polyline to display the route:
-              const polyline = new H.map.Polyline(linestring, {
-                style: {
-                  lineWidth: 5,
-                  strokeColor: routeColors[i]
-                }
-              });
+        if (route.routes) {
+          // route.routes.forEach((section, i) => {
+          //   
+          //   // decode LineString from the flexible polyline
+          route.routes[0].sections.forEach(item => {
+
+
+            const linestring = H.geo.LineString.fromFlexiblePolyline(item.polyline);
+            // Create a polyline to display the route:
+            const polyline = new H.map.Polyline(linestring, {
+              style: {
+                lineWidth: 5,
+                strokeColor: "#2980b9",
+
+              }
+            });
 
             //   polyline.addEventListener('tap', function(evt) {
             //     // Log 'tap' and 'mouse' events:
-            //     console.log(evt.type, evt.currentPointer.type);
+            //     
             // });
 
-              // Total Distance in KM
-              this.totalDistance = item.travelSummary.length / 1000;
-              const factor = 0.621371;
-              this.totalDistance = this.totalDistance.toFixed(2) * factor + ' Miles';
-              // console.log(this.totalDistance)
+            // Total Distance in KM
+            this.totalDistance = item.travelSummary.length / 1000;
+            const factor = 0.621371;
+            this.totalDistance = this.totalDistance.toFixed(2) * factor + ' Miles';
+            // 
 
             //   var bubble = new H.ui.InfoBubble(item.departure.place.location, {
             //     content: `<b>${this.totalDistance}</b>`
@@ -315,39 +364,35 @@ export class HereMapService {
 
             //   // Add info bubble to the UI:
             //   this.ui.addBubble(bubble);
-              // Total Travel Time in hours & mins
-              const h = Math.floor(item.travelSummary.duration / 3600);
-              const m = Math.floor(item.travelSummary.duration % 3600 / 60);
-              this.totalTime = h + ' hour' + '  ' + m + ' mins';
+            // Total Travel Time in hours & mins
+            const h = Math.floor(item.travelSummary.duration / 3600);
+            const m = Math.floor(item.travelSummary.duration % 3600 / 60);
+            this.totalTime = h + ' hour' + '  ' + m + ' mins';
 
-              // let poly = H.geo.LineString.fromFlexiblePolyline(item.polyline).getLatLngAltArray();
+            // let poly = H.geo.LineString.fromFlexiblePolyline(item.polyline).getLatLngAltArray();
 
-              // Create a marker for the start point:
-              const startMarker = new H.map.Marker(item.departure.place.location);
+            // Create a marker for the start point:
+            const startIcon = new H.map.Icon("/assets/img/mapIcon/start.png", { size: { w: 16, h: 16 } })
+            const startMarker = new H.map.Marker(item.departure.place.location, { icon: startIcon });
 
-              // Create a marker for the end point:
-              const endMarker = new H.map.Marker(item.arrival.place.location);
+            // Create a marker for the end point:
+            const destIcon = new H.map.Icon("/assets/img/mapIcon/dest.png", { size: { w: 36, h: 36 } })
+            const endMarker = new H.map.Marker(item.arrival.place.location, { icon: destIcon });
 
-              // Add the route polyline and the two markers to the map:
-              this.map.addObjects([polyline, startMarker, endMarker]);
-
-              // And zoom to its bounding rectangle
-              this.map.getViewModel().setLookAtData({
-                bounds: polyline.getBoundingBox()
-              });
+            // Add the route polyline and the two markers to the map:
+            this.map.addObjects([polyline, startMarker, endMarker]);
+            this.map.setZoom(10);
+            // And zoom to its bounding rectangle
+            this.map.getViewModel().setLookAtData({
+              bounds: polyline.getBoundingBox()
             });
           });
+
         }
       })
-  } catch (erro) {
-    console.log('calculateroute', erro);
+    } catch (erro) {
+    }
   }
-  }
-  setStyle(map){
-    let provider = this.map.getBaseLayer().getProvider();
-    var style = new H.map.Style('/assets/hereMapStyles/defaultDark/dark/dark.yaml',
-    'https://js.api.here.com/v3/3.1/styles/omv/');
-  // set the style on the existing layer
-  provider.setStyle(style)
-  }
- }
+
+
+}

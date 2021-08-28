@@ -8,6 +8,9 @@ import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-company-documents',
@@ -15,6 +18,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./company-documents.component.css']
 })
 export class CompanyDocumentsComponent implements OnInit {
+  dataMessage: string = Constants.FETCHING_DATA;
+  environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
   trips;
@@ -39,14 +44,15 @@ export class CompanyDocumentsComponent implements OnInit {
   carrierID: any;
   documentData = {
     categoryType: 'company',
-    tripID: '',
+    tripID: null,
     documentNumber: '',
-    docType: '',
-    documentName: '',
+    docType: null,
+    // documentName: '',
     description: '',
-    uploadedDocs: []
+    uploadedDocs: [],
+    dateCreated: moment().format('YYYY-MM-DD')
   };
-  totalRecords = 20;
+  totalRecords = 0;
   pageLength = 10;
   serviceUrl = '';
   filterValues = {
@@ -71,6 +77,11 @@ export class CompanyDocumentsComponent implements OnInit {
   docPrevEvauatedKeys = [''];
   docStartPoint = 1;
   docEndPoint = this.pageLength;
+  descriptionData = '';
+  documentNumberDisabled = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(
     private apiService: ApiService,
@@ -81,29 +92,63 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchDocuments();
+    this.fetchDocumentsCount();
     this.fetchTrips();
     this.fetchTripsByIDs();
-    this.initDataTable();
+    // this.fetchLastDocumentNumber();
+
     $(document).ready(() => {
-      this.form = $('#form_').validate();
+      // this.form = $('#form_').validate();
+    });
+  }
+
+  fetchDocumentsCount() {
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
+      complete: () => {},
+      error: () => {},
+      next: (result: any) => {
+        this.totalRecords = result.Count;
+
+        if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
+          this.docEndPoint = this.totalRecords;
+        }
+        this.initDataTable();
+      },
     });
   }
 
   selectDoc(event) {
-    console.log('edd', event);
     let files = [...event.target.files];
-    this.uploadeddoc = [];
-    this.uploadeddoc.push(files[0])
+    let condition = true;
+
+    for (let i = 0; i < files.length; i++) {
+      const element = files[i];
+      let name = element.name.split('.');
+      let ext = name[name.length - 1].toLowerCase();
+
+
+      if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
+      && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+        $('#uploadedDocs').val('');
+        condition = false;
+        this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
+        return false;
+      }
+    }
+
+    if(condition) {
+      this.uploadeddoc = [];
+      this.uploadeddoc.push(files[0])
+    }
   }
 
   fetchDocuments = () => {
     this.totalRecords = 0;
-    this.apiService.getData('documents?categoryType=company').subscribe({
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
-        console.log('doc result', result)
+
         this.totalRecords = result.Count;
       }
     });
@@ -137,13 +182,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -153,13 +198,13 @@ export class CompanyDocumentsComponent implements OnInit {
           this.spinner.hide();
           this.toastr.success('Document Added successfully');
           $('#addDocumentModal').modal('hide');
-          this.fetchDocuments();
-          this.initDataTable();
           this.documentData.documentNumber = '';
-          this.documentData.docType = '';
-          this.documentData.tripID = '';
-          this.documentData.documentName = '';
+          this.documentData.docType = null;
+          this.documentData.tripID = null;
+          // this.documentData.documentName = '';
           this.documentData.description = '';
+          this.lastEvaluatedKey='';
+          this.fetchDocumentsCount();
         }
       });
   }
@@ -209,21 +254,23 @@ export class CompanyDocumentsComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-    console.log('currentID', this.currentID);
+
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
-        console.log(result);
+
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
-        this.documentData.documentName = result.documentName;
+        // this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
+        this.documentData['timeCreated'] = result.timeCreated;
+        this.documentData.dateCreated = result.dateCreated;
         this.documentData['uploadedDocs'] = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
@@ -251,13 +298,13 @@ export class CompanyDocumentsComponent implements OnInit {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+               val.message = val.message.replace(/".*"/, 'This Field');
               this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
             complete: () => {
-              this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -270,18 +317,25 @@ export class CompanyDocumentsComponent implements OnInit {
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
-          this.documentData.documentName = '';
+          // this.documentData.documentName = '';
           this.documentData.description = '';
+          this.lastEvaluatedKey='';
           this.initDataTable();
         }
       });
   }
 
-  deactivateAsset(value, docID) {
+  deactivateAsset(value, docID, docNo: any) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-        .getData(`documents/isDeleted/${docID}/${value}`)
+        .deleteData(`documents/isDeleted/${docID}/${docNo}/${value}`)
         .subscribe((result: any) => {
+          this.documents = [];
+          this.docDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+
+          this.toastr.success('Document deleted successfully.');
           this.fetchDocuments();
           this.initDataTable();
         });
@@ -290,25 +344,36 @@ export class CompanyDocumentsComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.docID + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+
+    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestions = [];
+        this.getStartandEndVal();
         this.documents = result['Items'];
-        if (this.filterValues.docID !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
+        if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
           this.docEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g,'--');
           this.docNext = false;
           // for prev button
-          if (!this.docPrevEvauatedKeys.includes(result['LastEvaluatedKey'].docID)) {
-            this.docPrevEvauatedKeys.push(result['LastEvaluatedKey'].docID);
+          if (!this.docPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.docPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].docID;
-          
+          this.lastEvaluatedKey = lastEvalKey;
+
         } else {
           this.docNext = true;
           this.lastEvaluatedKey = '';
+          this.docEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.docEndPoint) {
           this.docEndPoint = this.totalRecords;
         }
 
@@ -330,26 +395,43 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
-      if (this.filterValues.startDate !== '') {
-        let start = this.filterValues.startDate;
-        this.filterValues.start = moment(start + ' 00:00:01').format("X");
-        this.filterValues.start = this.filterValues.start * 1000;
+    if(this.filterValues.startDate===null) this.filterValues.startDate=''
+    if(this.filterValues.endDate===null) this.filterValues.endDate=''
+    if (this.filterValues.startDate != '' || this.filterValues.endDate != '' ||  this.filterValues.searchValue != '') {
+      if(this.filterValues.startDate != '' && this.filterValues.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      }else if(this.filterValues.startDate>this.filterValues.endDate){
+        this.toastr.error('Start date should be less then end date');
+        return false;
+      } else {
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.documents = [];
+        this.suggestions = [];
+        this.filterValues.searchValue = this.filterValues.searchValue.toLowerCase();
+        if (this.filterValues.startDate !== '') {
+          this.filterValues.start = this.filterValues.startDate;
+        }
+        if (this.filterValues.endDate !== '') {
+          this.filterValues.end = this.filterValues.endDate;
+        }
+        // this.pageLength = this.totalRecords;
+        this.fetchDocumentsCount();
       }
-      if (this.filterValues.endDate !== '') {
-        let end = this.filterValues.endDate;
-        this.filterValues.end = moment(end + ' 23:59:59').format("X");
-        this.filterValues.end = this.filterValues.end * 1000;
-      }
-      this.pageLength = this.totalRecords;
-      this.initDataTable();
     } else {
+      this.toastr.error('Please fill at least one field')
       return false;
     }
   }
 
   resetFilter() {
     if (this.filterValues.startDate !== '' || this.filterValues.endDate !== '' || this.filterValues.searchValue !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.documents = [];
+      this.suggestions = [];
       this.filterValues = {
         docID: '',
         searchValue: '',
@@ -358,14 +440,15 @@ export class CompanyDocumentsComponent implements OnInit {
         start: <any>'',
         end: <any>''
       };
-      this.pageLength = 10;
-      this.initDataTable();
+      this.resetCountResult();
+      this.fetchDocumentsCount();
+
     } else {
       return false;
     }
   }
 
-  getSuggestions(searchvalue='') {
+  getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
     if(searchvalue !== '') {
       this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
@@ -373,8 +456,8 @@ export class CompanyDocumentsComponent implements OnInit {
         error: () => { },
         next: (result: any) => {
           this.suggestions = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
 
             let obj = {
               id: element.docID,
@@ -385,7 +468,7 @@ export class CompanyDocumentsComponent implements OnInit {
         }
       })
     }
-  }
+  }, 800)
 
   searchSelectedRoute(document) {
     this.filterValues.docID = document.id;
@@ -400,22 +483,55 @@ export class CompanyDocumentsComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.docNext=true;
+    this.docPrev=true;
     this.docDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.docPrev=true;
+    this.docNext=true;
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
+    this.lastEvaluatedKey = '';
     this.docStartPoint = 1;
     this.docEndPoint = this.pageLength;
     this.docDraw = 0;
+  }
+
+  openDocumentModal() {
+    this.fetchLastDocumentNumber();
+    this.documentData = {
+      categoryType: 'company',
+      tripID: null,
+      documentNumber: '',
+      docType: null,
+      // documentName: '',
+      description: '',
+      uploadedDocs: [],
+      dateCreated: moment().format('YYYY-MM-DD')
+    };
+    this.newDoc = '';
+
+    $("#addDocumentModal").modal('show');
+  }
+
+  showDescModal(description) {
+    this.descriptionData = description;
+    $("#routeNotes").modal('show');
+  }
+
+  fetchLastDocumentNumber(){
+    this.apiService.getData('documents/get/last/number').subscribe((result) => {
+        // console.log('result', result);
+        this.documentNumberDisabled = true;
+        this.documentData.documentNumber = result.toString();
+    });
   }
 }

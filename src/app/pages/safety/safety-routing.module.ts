@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
+import {ListInspectionComponent} from '../compliance/dvir/inspection/list-inspection/list-inspection.component'
+import {EditInspectionComponent} from '../compliance/dvir/inspection/edit-inspection/edit-inspection.component'
+import {ViewInspectionComponent} from '../compliance/dvir/inspection/view-inspection/view-inspection.component'
+import {AddInspectionComponent} from '../compliance/dvir/inspection/add-inspection/add-inspection.component'
 import { SafetyOverviewComponent } from './home/safety-overview/safety-overview.component';
 import { EventListComponent } from './critical-events/event-list/event-list.component';
 import { AddEventComponent } from './critical-events/add-event/add-event.component';
-import { EditEventComponent } from './critical-events/edit-event/edit-event.component';
 import { EventDetailComponent } from './critical-events/event-detail/event-detail.component';
 import { IncidentListComponent } from './incidents/incident-list/incident-list.component';
 import { AddIncidentComponent } from './incidents/add-incident/add-incident.component';
-import { EditIncidentComponent } from './incidents/edit-incident/edit-incident.component';
 import { IncidentDetailComponent } from './incidents/incident-detail/incident-detail.component';
 import { HosListComponent } from './hos-violation/hos-list/hos-list.component';
 import { HosDetailComponent } from './hos-violation/hos-detail/hos-detail.component';
@@ -28,7 +29,6 @@ const routes: Routes = [
       { path: '', component: EventListComponent},
       { path: 'add-event', component: AddEventComponent},
       { path: 'event-details/:eventID', component: EventDetailComponent},
-      { path: 'edit-event/:eventID', component: EditEventComponent},
     ]
   },
   {
@@ -36,8 +36,7 @@ const routes: Routes = [
     children: [
       { path: '', component: IncidentListComponent},
       { path: 'add-incident', component: AddIncidentComponent},
-      { path: 'incident-details/:eventID', component: IncidentDetailComponent},
-      { path: 'edit-incident/:eventID', component: EditIncidentComponent},
+      { path: 'incident-details/:incidentID', component: IncidentDetailComponent},
     ]
   },
   {
@@ -53,7 +52,8 @@ const routes: Routes = [
       { path: '', component: ScorecardListComponent},
       { path: 'details/:driverID/:rank', component: ScorecardDetailComponent},
     ]
-  }
+  },
+  
 ];
 
 @NgModule({

@@ -16,7 +16,7 @@ declare var $: any;
 })
 export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   pageTitle: string;
-  vehicleModal: boolean = false; 
+  vehicleModal: boolean = false;
   vehicles: any;
   tasks: any;
   programID = '';
@@ -25,6 +25,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     programName: '',
     description: '',
     vehicles: [],
+    unselectedVehicles: [],
     serviceScheduleDetails: [{
       serviceTask: '',
       repeatByTime: '',
@@ -37,7 +38,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     taskType: 'service',
     taskName: '',
     description: '',
-    
+
   };
 
   errors = {};
@@ -55,9 +56,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   response: any = '';
   hasError: boolean = false;
   hasSuccess: boolean = false;
+  submitDisabled = false;
   Error: string = '';
   Success: string = '';
 
+  selectedVehicles = [];
   constructor(
     private apiService: ApiService,
     private router: Router,
@@ -89,7 +92,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
 
   ngAfterViewInit() {
-   
+
   }
 
   addDocument() {
@@ -99,10 +102,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       repeatByTimeUnit: '',
       repeatByOdometer: '',
     })
-    
+
   }
   addServiceProgram() {
-    
+  this.submitDisabled = true;
     this.hideErrors();
     this.apiService.postData('servicePrograms', this.serviceData).subscribe({
       complete: () => { },
@@ -117,12 +120,18 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           .subscribe({
             complete: () => {
               this.throwErrors();
+              this.submitDisabled = false;
             },
-            error: () => { },
-            next: () => { },
+            error: () => { 
+              this.submitDisabled = true;
+            },
+            next: () => {
+             
+            },
           });
       },
         next: (res) => {
+          this.submitDisabled = false;
           this.response = res;
           this.toastr.success('Service added successfully');
           this.router.navigateByUrl('/fleet/maintenance/service-program/list');
@@ -142,10 +151,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
 
   throwErrors() {
     from(Object.keys(this.errors))
-      .subscribe((v) => {
-        $('[name="' + v + '"]')
+      .subscribe((v) => { 
+        if(v === 'programName') {
+          $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error')
+        }
       });
     // this.vehicleForm.showErrors(this.errors);
   }
@@ -167,11 +178,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       .getData('servicePrograms/' + this.programID)
       .subscribe((result: any) => {
         result = result.Items[0];
-        
+
         this.serviceData['programID']= this.programID;
         this.serviceData.programName = result.programName;
         this.serviceData.description = result.description;
         this.serviceData.vehicles = result.vehicles;
+        this.selectedVehicles = result.vehicles;
         let newTasks = [];
         for (var i = 0; i < result.serviceScheduleDetails.length; i++) {
           newTasks.push({
@@ -192,7 +204,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
  updateServiceProgram() {
   this.hasError = false;
   this.hasSuccess = false;
-  
+  this.submitDisabled = true;
+
   this.apiService.putData('servicePrograms', this.serviceData).subscribe({
     complete: () => { },
     error: (err) => {
@@ -201,31 +214,47 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
           map((val: any) => {
             // We Can Use This Method
             const key = val.message.match(/'([^']+)'/)[1];
-            
+
             val.message = val.message.replace(/'.*'/, 'This Field');
             this.errors[key] = val.message;
           })
         )
         .subscribe({
           complete: () => {
-            this.throwErrors();
+            // this.throwErrors();
+            this.submitDisabled = false;
           },
-          error: () => { },
+          error: () => {
+            this.submitDisabled = false;
+           },
           next: () => { },
         });
     },
     next: (res) => {
       this.response = res;
       this.hasSuccess = true;
+      this.submitDisabled = false;
       this.toastr.success('Service Updated Successfully');
       this.router.navigateByUrl('/fleet/maintenance/service-program/list');
     },
   });
 }
-  
+
   removeTasks(i) {
     this.serviceData.serviceScheduleDetails.splice(i, 1);
   }
 
+  vehicleChange(vehicle) {
+    if (this.selectedVehicles.includes(vehicle.value) ){
+      this.serviceData.unselectedVehicles.push(vehicle.value)
+    }
+  }
 
+  getTasks() {
+    this.listService.fetchTasks();
+  }
+
+  refreshVehicleData() {
+    this.listService.fetchVehicles();
+  }
 }

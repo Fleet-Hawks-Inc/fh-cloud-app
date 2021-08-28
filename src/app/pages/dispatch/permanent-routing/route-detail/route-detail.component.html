@@ -5,44 +5,40 @@
 </style>
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body">
-            <header class="page-header pr-5">
+        <section role="main" class="content-body pl-0 pt-0 pr-0">
+            <header class="page-header pr8 pl11">
 
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <h4 class="text-4 mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
-                    <div class="col-md-10 col-lg-10 text-right pr-1">
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/quotes/add"><i class="fas fa-plus"></i> Estimate</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/orders/add"><i class="fas fa-plus"></i> Order</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-2" style="color:white;"
-                            routerLink="/dispatch/trips/add-trip"><i class="fas fa-plus"></i> Trip</a>
-                        <a href="javascript:;" class="btn btn-success btn-sm" style="color:white;"
-                            routerLink="/dispatch/routes/add"><i class="fas fa-plus"></i> Permanent Route</a>
+                    
+                    <div class="col-md-10 col-lg-10 text-right">
+                        <a routerLink="/dispatch/routes/list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i> All Routes</a>
+
+                        
                     </div>
                 </div>
 
             </header>
             <div class="routing-overview__wrapper m-3">
                 <div class="row">
-                    <div class="col-3 pr-2 mb-4">
+                    <div class="col-3 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Route#</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ routeNo }}</h3>
+                                <h4 class="m-0 text-4">Route#</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ routeNo }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-route fa-fw text-dark" style="font-size:20px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 pl-2 mb-4">
+                    <div class="col-3 pl-2 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Route Name</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ routeName }}</h3>
+                                <h4 class="m-0 text-4">Route Name</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ routeName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-route text-dark fa-fw" style="font-size:20px;"></i>
@@ -50,45 +46,49 @@
                         </div>
                     </div>
 
-                    <div class="col-3 pr-2 mb-4">
+                    <div class="col-3 pr-2 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Recuring</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ recurringType }}</h3>
+                                <h4 class="m-0 text-4">Recurring</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ recurringType }}
+                                    <span class="text-1" *ngIf="recurringDate != ''">{{ recurringDate | date:'yyyy/MM/dd'}}</span>
+                                </h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-clock text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 pl-2 mb-4">
-                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
-                            <div>
-                                <h4 class="m-0">Notes</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ notes }}</h3>
-                            </div>
-                            <div class="grey-bg p-4" style="color: #979797;">
-                                <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-3 pr-2 mb-4">
+                    <div class="col-3 pl-2 mb-3">
+                        <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
+                           <div>
+                              <h4 class="m-0">Notes</h4> 
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes != ''">{{ notes | slice:0:100}} <a href="javascript:;" *ngIf="notes.length > 100" (click)="openDetailModal(notes)" class="modal-with-form">See All</a></p>
+                              <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="notes == ''"> - </p>
+                           </div>
+                           <div class="grey-bg p-4" style="color: #979797;">
+                              <i class="far fa-file-alt text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                        </div>
+                     </div>
+
+                    <div class="col-3 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Vehicle</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ VehicleName }}</h3>
+                                <h4 class="m-0 text-4">Vehicle</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ VehicleName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-truck fa-fw text-dark" style="font-size:20px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 pl-2 mb-4">
+                    <div class="col-3 pl-2 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Asset</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ assetName }}</h3>
+                                <h4 class="m-0 text-4">Asset</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ assetName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="fas fa-box text-dark fa-fw" style="font-size:20px;"></i>
@@ -96,22 +96,22 @@
                         </div>
                     </div>
 
-                    <div class="col-3 pr-2 mb-4">
+                    <div class="col-3 pr-2 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Driver</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ driverName }}</h3>
+                                <h4 class="m-0 text-4">Driver</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ driverName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-3 pl-2 mb-4">
+                    <div class="col-3 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
                             <div>
-                                <h4 class="m-0">Co-Driver</h4>
-                                <h3 class="mt-1 mb-0 font-weight-semibold">{{ coDriverName }}</h3>
+                                <h4 class="m-0 text-4">Co-Driver</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ coDriverName }}</h3>
                             </div>
                             <div class="grey-bg p-4" style="color: #979797;">
                                 <i class="far fa-user text-dark fa-fw" style="font-size:20px;"></i>
@@ -120,70 +120,128 @@
                     </div>
 
 
-                    <div class="col-6 pl-2 mb-4">
+                    <div class="col-5 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Source Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
+                                <h4 class="m-0 text-4">Source Details</h4>
+                                <h3 class="mt-1 mb-0 text-4 font-weight-semibold">{{ sourceAddress+' '+sourceCityName+'
                                     '+sourceStateName+' '+sourceCountryName+' '+sourceZipcode }}</h3>
+
+                                <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="sourceNotes != ''">{{ sourceNotes | slice:0:100}} <a href="javascript:;" *ngIf="sourceNotes.length > 100" (click)="openDetailModal(sourceNotes)" class="modal-with-form">See All</a></p>
                             </div>
 
                         </div>
                     </div>
 
-                    <div class="col-6 pl-2 mb-4">
+                    <div class="col-5 pl-2 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Destination Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ destinationAddress+'
+                                <h4 class="m-0 text-4">Destination Details</h4>
+                                <h3 class="mt-1 mb-0 text-4 font-weight-semibold">{{ destinationAddress+'
                                     '+destinationCityName+' '+destinationStateName+' '+destinationCountryName+'
                                     '+destinationZipcode }}</h3>
+
+                                <p class="mt-1 mb-0 text-2 line-height-sm" *ngIf="destinationNotes != ''">{{ destinationNotes | slice:0:100}} <a href="javascript:;" *ngIf="destinationNotes.length > 100" (click)="openDetailModal(destinationNotes)" class="modal-with-form">See All</a></p>
                             </div>
 
                         </div>
                     </div>
 
-
-                    <!-- <div class="col-12 pl-2 mb-4">
-                            <div class="bg-white p-3">
-                                <div class="mapclass vehiclemain" id="map_view">
-                                    <div id="map" class=""></div>
-                                </div>
-                            </div>
-                        </div> -->
-
-                    <div class="col-lg-12 pl-2 mb-4">
-                        <div class="mapclass vehiclemain" id="map_view">
-                            <div id="map" class=""></div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-12 pl-2 mb-4">
+                    <div class="col-2 pl-2 mb-3">
                         <div class="bg-white p-3 d-flex text-dark">
                             <div class="grey-bg pull-left p-4" style="color: #979797;">
                                 <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                             </div>
 
                             <div class="pull-left ml-3">
-                                <h4 class="m-0">Stop Details</h4>
-                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold"
-                                    *ngFor="let data of stopInformation; let i=index;">Stop {{i+1}}: {{ data.stopName }}
-                                </h3>
+                                <h4 class="m-0 text-4">Miles</h4>
+                                <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ miles }}</h3>
                             </div>
 
                         </div>
                     </div>
+                    <div class="col-12 mb-3" *ngFor="let data of stopInformation; let i=index;">
+                        <div class="bg-white p-3 d-flex text-dark" *ngIf="i>0 && i <stopInformation.length-1">
+                           <div class="grey-bg pull-left p-4" style="color: #979797;">
+                              <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
+                           </div>
+                           
+                           <div class="pull-left ml-3">
+                              <h4 class="m-0">Stop {{stopNumber[i]}}</h4>
+                              <h3 class="mt-1 mb-0 text-5 font-weight-semibold">{{ data.name }}</h3>
+                              <p class="mb-0" *ngIf="data.notes != ''">Notes: {{ data.notes }}</p>
+                           </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <mat-accordion>
+                            <mat-expansion-panel hideToggle >
+                              <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                  <label
+                                  class="control-label text-lg-right text-5 m-0">Map View</label>
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              <div class="row mb-3">
+                                <div class="col-lg-12">
+                                    <div class="bg-white p-0 text-dark">
+                                        <div class="form-group row pt-2">
+                                            <div class="col-lg-12 mb-2">
+                                                <div class="mapclass vehiclemain" id="map_view">
+                                                    <div id="map" class=""></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                       
+                    </div>
+
+                    
                 </div>
             </div>
         </section>
     </div>
 </section>
+
+<div class="modal fade" id="routeNotes" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 500px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Notes</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="form-group row text-dark">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="mb-0">
+                                        {{ modalData }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

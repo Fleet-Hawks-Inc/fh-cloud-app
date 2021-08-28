@@ -3,6 +3,9 @@ import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -12,7 +15,8 @@ declare var $: any;
 })
 
 export class RouteListComponent implements OnInit {
-  
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
   title = "Permanent Routes";
   routes = [];
   suggestedRoutes = [];
@@ -22,7 +26,7 @@ export class RouteListComponent implements OnInit {
   hasSuccess = false;
   Error: string = '';
   Success: string = '';
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
   routesLength = 0;
@@ -38,7 +42,7 @@ export class RouteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchRoutes();
-    this.initDataTable();
+
   }
 
   fetchRoutes() {
@@ -47,29 +51,43 @@ export class RouteListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.searchedRouteId != '') {
+          this.routeEndPoint = result.Count;
+        }
+        this.initDataTable();
       },
     });
   }
 
-  deleteRoute(routeID) {
-    this.spinner.show();
-    this.apiService.getData('routes/delete/' + routeID + '/'+1).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.fetchRoutes();
-        this.initDataTable();
-        this.spinner.hide();
-        this.hasSuccess = true;
-        this.toastr.success('Route deleted successfully.');
-      }
-    })
+  deleteRoute(routeID, routeNo) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      this.apiService.deleteData(`routes/delete/${routeID}/${routeNo}`).subscribe({
+        complete: () => {},
+        error: () => {},
+        next: (result: any) => {
+          this.routes = [];
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.routeDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.fetchRoutes();
+          this.hasSuccess = true;
+          this.toastr.success('Route deleted successfully.');
+        }
+      })
+    }
   }
 
   initDataTable() {
     this.spinner.show();
     this.apiService.getData('routes/fetch/records?search=' + this.searchedRouteId + '&lastEvaluatedKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedRoutes = [];
+        this.getStartandEndVal();
+
         this.routes = result['Items'];
         if (this.searchedRouteId != '') {
           this.routeStartPoint = 1;
@@ -77,16 +95,21 @@ export class RouteListComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].routeSK.replace(/#/g,'--');
           this.routeNext = false;
           // for prev button
-          if (!this.routePrevEvauatedKeys.includes(result['LastEvaluatedKey'].routeID)) {
-            this.routePrevEvauatedKeys.push(result['LastEvaluatedKey'].routeID);
+          if (!this.routePrevEvauatedKeys.includes(lastEvalKey)) {
+            this.routePrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].routeID;
-          
+          this.lastEvaluatedKey = lastEvalKey;
+
         } else {
           this.routeNext = true;
           this.lastEvaluatedKey = '';
+          this.routeEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.routeEndPoint) {
           this.routeEndPoint = this.totalRecords;
         }
 
@@ -102,37 +125,37 @@ export class RouteListComponent implements OnInit {
       });
   }
 
-  getSuggestions(searchvalue='') {
+  getSuggestions = _.debounce(function (searchvalue) {
     this.suggestedRoutes = [];
+    this.searchedRouteId = '';
     if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
       this.apiService.getData('routes/get/suggestions/'+searchvalue).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
-          this.suggestedRoutes = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-  
-            let obj = {
-              id: element.routeID,
-              name: element.routeName
-            };
-            this.suggestedRoutes.push(obj)
-          }
+          this.suggestedRoutes = result;
         }
       })
-    }    
-  }
+    }
+  }, 800)
 
   searchSelectedRoute(route) {
-    this.searchedRouteId = route.id;
-    this.searchedRouteName = route.name;
+    this.searchedRouteId = route.routeName;
+    this.searchedRouteName = route.routeName;
     this.suggestedRoutes = [];
   }
 
   searchFilter() {
-    if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
-      this.initDataTable();
+    if(this.searchedRouteName !== '') {
+      this.searchedRouteName = this.searchedRouteName.toLowerCase();
+      if(this.searchedRouteId == '') {
+        this.searchedRouteId = this.searchedRouteName;
+      }
+      this.routes = [];
+      this.suggestedRoutes = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchRoutes();
     } else {
       return false;
     }
@@ -142,6 +165,10 @@ export class RouteListComponent implements OnInit {
     if(this.searchedRouteName !== '' || this.searchedRouteId !== '') {
       this.searchedRouteId = '';
       this.searchedRouteName = '';
+      this.routes = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.suggestedRoutes = [];
+      this.fetchRoutes();
       this.resetCountResult();
     } else {
       return false;
@@ -155,17 +182,19 @@ export class RouteListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.routeNext = true;
+    this.routePrev = true;
     this.routeDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.routeNext = true;
+    this.routePrev = true;
     this.routeDraw -= 1;
     this.lastEvaluatedKey = this.routePrevEvauatedKeys[this.routeDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

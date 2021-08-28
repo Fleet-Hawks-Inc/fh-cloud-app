@@ -10,7 +10,7 @@
  ::-webkit-scrollbar {
   width: 2px;
 }
- 
+
 ::-webkit-scrollbar:horizontal {
   width: 2px;
 }
@@ -18,21 +18,21 @@
 
   /* Track */
   ::-webkit-scrollbar-track {
-    background: #fff; 
-  }
-   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #dedede ; 
-  }
-  
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #5c5c5c; 
+    background: #fff;
   }
 
-  
-  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #dedede ;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #5c5c5c;
+  }
+
+
+
   /* chat classes start from here*/
 .chat-menu{float: left;}
 .chat-icon {
@@ -43,7 +43,7 @@
 }
 
 .chat-icon img {
-  border-radius: 50px !important ;  
+  border-radius: 50px !important ;
   width: 44px;
   height: 44px;
 }
@@ -66,7 +66,7 @@
 }
 
 .chat-hdicon img {
-border-radius: 50px !important ;  
+border-radius: 50px !important ;
 width: 44px;
 height: 44px;
 }
@@ -143,7 +143,7 @@ float:  left;
 	left: 0;
 	position: absolute;
 	right: 0;
-    
+
 }
 
 
@@ -262,7 +262,7 @@ float:  left;
   border-radius: 0;
   font-size: 15px; color: #fff;
   background: #212529b8;
- 
+
 }
 
 .profile-img .file input {
@@ -279,13 +279,13 @@ float:  left;
     height: 100%;
     margin: 0;
     padding: 0;
-  
+
 }
 
-.mapclass .mapclassmain{ 
+.mapclass .mapclassmain{
     height:100%;
     width:100%;
-    position: fixed !important; 
+    position: fixed !important;
 
 }
 
@@ -333,7 +333,7 @@ float:  left;
   color: #fff;;
   margin-right: 5px;
 
-  
+
 }
 
 
@@ -571,10 +571,10 @@ float:  left;
 
 .drivermain{position: relative;}
 .drivelist{
-  position: absolute; width: 518px;
+  position: absolute; width: 454px;
   background: #f5f5f5; height: 100%; padding-bottom: 100px;
   position: fixed;  z-index: 999;
-  right:50px; top: 110px; 
+  right:0px; top: 110px;
 }
 
 .driverdetail{float: left; background: #fff; width: 100%; padding:10px 10px;border-top: 2px solid white;border-left: 2px solid white;border-right: 2px solid white;
@@ -593,7 +593,7 @@ float:  left;
 .curcycle{width: 130px; float: left;  }
 
 .iconR{position: absolute;
-  right:515px; 
+  right:454px;
   top: 350px;
   }
 
@@ -601,18 +601,18 @@ float:  left;
   .iconR a{background: #ebebeb;}
 
   .iconL{position: absolute;
-    right:0px; 
+    right:0px;
     top: 370px;
     }
-  
+
     .iconL a{background: #fff; padding: 10px;}
     .iconL a{background: #ebebeb;}
 
-    
+
     /*dashboard drive detail classes*/
     .driverdetail2{float: left; background: #f5f5f5; width: 100%;
       border-bottom: 1px solid #bec8d1; padding:10px 10px;}
- 
+
       .vinfo{background:#fff; border:solid 1px #dcdcdc;
         min-height:200px; border-radius:6px; margin-top:20px;
         margin-bottom:20px;}
@@ -647,10 +647,10 @@ float:  left;
   position: absolute; width: 300px;
   background: #f5f5f5; height: 100%;
   position: fixed;
-  right:48px; top: 110px; 
+  right:48px; top: 110px;
 }
 .iconRmini{position: absolute;
-  right:293px; 
+  right:293px;
   top: 370px;
   }
 
@@ -658,10 +658,10 @@ float:  left;
   .iconRmini a{background: #ebebeb;}
 
   .iconLmini{position: absolute;
-    right:-5px; 
+    right:-5px;
     top: 370px;
     }
-  
+
     .iconLmini a{background: #fff; padding: 10px;}
     .iconLmini a{background: #ebebeb;}
 .driverdetailMap{float: left; background: #f5f5f5; width: 100%;
@@ -697,7 +697,7 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
 .tripbar2{width:100px; height: 3px; background: #000000;
     position: absolute; left: 100px; top: 60px; z-index: 400;}
-  
+
 .tripbarfinish2{width:100px; height: 3px; background: #0fd50a;
       position: absolute; left: 100px; top: 60px; z-index: 500;
 }
@@ -714,7 +714,7 @@ position: absolute; left: 0; top: 60px; z-index: 100;}
 
     .tripbar3{width:100px; height: 3px; border: dashed 1px #000000;
       position: absolute; left: 200px; top: 60px; z-index: 400;}
-    
+
   .tripbarfinish3{width:100px; height: 3px; background: #0fd50a;
         position: absolute; left: 100px; top: 60px; z-index: 500;
       }
@@ -806,7 +806,7 @@ background: #646464; color: #fff; text-decoration: none; text-align: center;}
 
 .trip2{z-index:999; width: 100%;  position: absolute; left: 0; top: 70px;}
 .trip2 p{width: 100%; display: block; position: absolute; left: 20px; top:-10px;}
-  
+
 
 
 
@@ -833,7 +833,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 .driverbar{float: left; width: 100%;}
 .ditotald{font-size: 50px; float: left; color: #000;
   padding-top: 10px; font-weight: 600;}
-  
+
 
 
 
@@ -865,7 +865,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 
 
 /* ********************* dashboard chat main box classes start here ********************** */
-  
+
   .dchatmb{
     width: 280px; height: 460px;
     position: absolute; background: #fff; border-radius:7px 7px 0 0;
@@ -884,7 +884,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
 /* The popup chat - hidden by default */
 .chat-popup {
   display: none; bottom: 0; right: 15px;
-  
+
 }
 
 .dchathead{
@@ -898,7 +898,7 @@ width: 100%; padding:2% 5%; font-size: 20px; color:#f0bd0b;
     margin-left: 17%;
     border-radius: 60px;}
 
- 
+
 
 
 /* chat box 1*/
@@ -973,22 +973,22 @@ right: 20px; top: 10px;
 /* Safety Parameters */
 
     .slidecontainer {width: 100%;}
-    
+
     .slider {
       -webkit-appearance: none;
       width: 100%; height: 10px; background: #d3d3d3;
       outline: none;  opacity: 1;
       -webkit-transition: .2s; transition: opacity .2s;
     }
-    
+
     .slider:hover { opacity: 1;}
-    
+
     .slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;  width: 20px; height: 20px;
       background: #000; cursor: pointer;
     }
-    
+
     .slider::-moz-range-thumb {
       width: 20px; height: 20px; background: #333;  cursor: pointer;
     }
@@ -1000,16 +1000,16 @@ right: 20px; top: 10px;
     .positionsta{position: static !important;}
 
 
-    
+
   /* make borde red for validation */
   .redBorder {
     border: solid 1px #C10000;
   }
-  
- 
-  
+
+
+
   /* Mapbox CSS */
-  
+
         #map {
           /* height:100vh;
           top: 10;
@@ -1032,7 +1032,7 @@ right: 20px; top: 10px;
           width: 100%;
           height: 100%;
         }
-  
+
         .filter-group {
           font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
           font-weight: 600;
@@ -1044,20 +1044,20 @@ right: 20px; top: 10px;
           width: 120px;
           color: #fff;
         }
-  
+
         .filter-group input[type="checkbox"]:first-child + label {
           border-radius: 3px 3px 0 0;
         }
-  
+
         .filter-group label:last-child {
           border-radius: 0 0 3px 3px;
           border: none;
         }
-  
+
         .filter-group input[type="checkbox"] {
           display: none;
         }
-  
+
         .filter-group input[type="checkbox"] + label {
           background-color: #3386c0;
           display: block;
@@ -1065,22 +1065,22 @@ right: 20px; top: 10px;
           padding: 10px;
           border-bottom: 1px solid rgba(0, 0, 0, 0.25);
         }
-  
+
         .filter-group input[type="checkbox"] + label {
           background-color: #3386c0;
           text-transform: capitalize;
         }
-  
+
         .filter-group input[type="checkbox"] + label:hover,
         .filter-group input[type="checkbox"]:checked + label {
           background-color: #4ea0da;
         }
-  
+
         .filter-group input[type="checkbox"]:checked + label:before {
           content: "âœ”";
           margin-right: 5px;
-        }    
-    
+        }
+
 .mapboxgl-ctrl-geocoder--icon{display: none !important;}
 
 
@@ -1114,7 +1114,7 @@ right: 20px; top: 10px;
   width: 100%;
   background:#fff;
   background-size: cover;
-  
+
 }
 
 
@@ -1181,7 +1181,7 @@ td.loadid a{color:#000 !important;}
 
 .divderrel{position: relative;}
 .midledriver{background: #dcdcdc; width: 1px; height: 700px; left: 48%; position: absolute;}
-.midleicon{left: 47%; top: 42%; position: absolute;}
+.midleicon{left: 50%; top: 46%; margin-left: -12px;position: absolute;}
 
 
 
@@ -1287,7 +1287,7 @@ color: black;
 }
 .mar-top-37
 {
-     margin-top: 37px;
+     margin-top: 37px !important;
 }
 
 
@@ -1512,7 +1512,7 @@ text-decoration: underline;
   position: absolute; width:1082px;
   background: #f5f5f5; padding-bottom: 10px;
   position: fixed;  z-index: 9;
-  bottom:0px; left: 270px; 
+  bottom:0px; left: 270px;
 }
 #hawk-btn
 {
@@ -1525,7 +1525,7 @@ text-decoration: underline;
 }
 #cam-btn{
   position: absolute;
-  bottom:0px; left: 44%; 
+  bottom:0px; left: 44%;
   position: fixed;  z-index: 99999;
   background-color: white;
   color: #000;
@@ -1533,14 +1533,14 @@ text-decoration: underline;
 }
 #cam-close-btn,#cam-close-btn2{
   position: relative;
-  bottom:28px; left: 50%; 
+  bottom:28px; left: 50%;
    z-index: 99999;
   background-color: white;
   color: #000;
   padding: 10px;
 }
 .iconT{position: absolute;
-  bottom:118px; 
+  bottom:118px;
   left: 1100px;
   }
 
@@ -1548,16 +1548,161 @@ text-decoration: underline;
   .iconT a{background: #ebebeb;}
 
   .iconB{position: absolute;
-    bottom:320px; 
+    bottom:320px;
     left: 570px;
     }
-  
+
 .iconB a{background: #fff; padding: 10px;}
 .iconB a{background: #ebebeb;}
 
 
 
+.prtsidebar{
+  width: 50px;
+  height: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  border-left: solid 1px #d7d7d7;
+  position: fixed;
+  /* z-index: 1110; */
+  z-index: 1097;
+  right: 0;
+  top: 100px; bottom: 0;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
 
+.prtsidebar a{display: block; color: #757575; margin-bottom: 10px;}
+
+.prtsidebara{bottom:0px; right:16px; position: fixed;}
+
+.prtsidebar .prtsidebara a{display: block; color: #757575; margin-bottom: 10px;}
+
+
+
+/* ************************************************** NEW CLASSES START 16.07.20  ************************************************** */
+
+/* on hover show description of the driver on map view */
+
+.vehicle-description {
+  display: none;
+}
+
+.vehicle-item:hover .vehicle-description {
+  display: block; z-index: 99999;
+  position: absolute; color: #000000;
+  box-shadow: 0 0 10px #333;
+  width: 250px; min-height: 135px; font-size: 13px;
+  text-align: left; padding: 10px;
+  background: rgba(255,255,255, 1);
+}
+
+
+
+/* overivew new layout with vertical trip info */
+.driverleftmain{
+  width: 100%; float: left;
+  /* border-right: solid 1px #cfcfcf;
+  padding-right: 3%; */
+
+}
+
+.driverrighttrip{
+  width: 13%; float: left;
+  text-align: center;
+}
+
+.driveredit-scrollbar {
+	position: relative;
+	height: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.driveredit-scroll-y {
+	display: block;
+}
+
+
+/* critical events new classes */
+.cmaindiv{background: #f9f9f9;}
+.cerbor{border-right: solid 1px #c6c6c6;}
+
+
+/* live view new classes */
+.tripbor{border-bottom: solid 1px #ebebeb;}
+
+
+/* new safety page */
+.safetytile {
+  background: #fff;
+  float: left;
+  width: 100%;
+  padding:3%;
+}
+
+
+
+/* create order page */
+.cotabdiv{min-height: 500px !important;}
+
+.btn-FTL {
+	color: #f37b4c;
+	background-color: #fff;
+	border-color: #f37b4c;
+	-webkit-box-shadow: none !important;
+	        box-shadow: none !important;
+}
+
+.btn-FTL:hover, .btn-FTL:active, .btn-FTL:focus {
+	color: #fff;
+	background-color: #f37b4c;
+	border-color: #f37b4c;
+}
+
+
+.btn-LTL {
+	color: #2b2b2b;
+	background-color: #fff;
+	border-color: #2b2b2b;
+	-webkit-box-shadow: none !important;
+          box-shadow: none !important;
+          /* color: rgb(0, 0, 0);
+          background-color: #f0f1f2; border-radius:25px; padding:20px;
+          background-image: none; font-size:17px;
+          border-color: #f0f1f2;
+          font-weight: 700; */
+}
+.btn-LTL .active, .btn-LTL:active{
+
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+/* .btn-LTL:hover, .btn-LTL:active, .btn-LTL:focus {
+	color: #fff;
+	background-color: #2b2b2b;
+	border-color: #2b2b2b;
+} */
+
+
+
+.btn-fleet {
+  color: rgb(0, 0, 0);
+  background-color: #f0f1f2; border-radius:10px; padding:5px;
+  background-image: none; font-size:13px;
+  border-color: #f0f1f2;
+  font-weight: 600;
+}
+
+.btn-fleet.active, .btn-fleet:active {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+
+/* p.css classes end here */
 
 
   /*****************  common classes  *********************************/
@@ -1571,13 +1716,59 @@ text-decoration: underline;
 
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
+  .borddas{border: dashed 1px #aaa;}
+
+  /* border radius */
+  .bor-radius0px{border-radius: 0px !important;}
 
   /* box */
   .boxshadow1{box-shadow: 0 0 0 3px #f6f6f6;}
+  .boxshadow0{box-shadow: none !important;}
 
-  /* width */
+  /* padding classes */
+  
+  /* padding right */
+  .pr2{padding-right:2px !important;}
+  .pr5{padding-right:5px !important;}
+  .pr8{padding-right:8px !important;}
+  .pr10{padding-right:10px !important;}
+  .pr19{padding-right:19px !important;}
+  .pr27{padding-right:27px !important;}
+  .pr32{padding-right:32px !important;}
+
+  .pr123{padding-right:123px !important;}
+  
+  /* padding bottom */
+  .pb2{padding-bottom:2px !important;}
+  .pb6{padding-bottom:6px !important;}
+  .pb10{padding-bottom:10px !important;}
+  .pb12{padding-bottom:12px !important;}
+  .pb14{padding-bottom:14px !important;}
+  .pb21{padding-bottom:21px !important;}
+
+  /* padding left */
+  .pl4{padding-left:4px !important;}
+  .pl7{padding-left:7px !important;}
+  .pl11{padding-left:11px !important;}
+  .pl13{padding-left:13px !important;}
+  .pl18{padding-left:18px !important;}
+
+  /* padding all */
+  .p7{padding:7px !important;}
+  .p11{padding:11px !important;}
+  .pr10{padding-right:10px;}
+
+
+/* width */
   .w100{width: 100%;}
+  .w25{width: 25% !important;}
+  .w33{width: 33% !important;}
+  .w6rem{min-width: 4rem !important;}
   .w150px{width: 150px;}
+
+  .btnw200px{width: 200px;}
+  .btnw100px{width: 100px;}
+  .btnw90px{width: 90px;}
 
   /* color */
   .blue1{color: #1c79c8;}
@@ -1588,10 +1779,15 @@ text-decoration: underline;
 
   .green1{color: #1eb54f;}
 
+  /* overflow x*/
+  .overflowxv{overflow-x: visible;}
+
 
   /* bg color */
   .bgcol1{background: #f0f0f0;}
   .bgcol2{background: #dcdcdc;}
+  .bgnone{background: none;}
+  .bggreyn{background: #f6f6f6 !important;}
 
   /* line height */
   .LH16{line-height: 16px !important;}
@@ -1599,8 +1795,31 @@ text-decoration: underline;
   /* cursor */
   .cursorpoint{cursor: pointer;}
 
-
+/* cursor */
+.text-white{color: #fff;}
   .divcenter{display: flex; justify-content: center;}
+
+  /* margin */
+  .mt-1-c1, .my-1-c1 {margin-top: 0.15rem !important;}
+
+   /* margin top */
+   .mar-top-2{margin-top:2px !important;}
+   .mt10{margin-top:10px !important;}
+   .mt74{margin-top:74px !important;}
+
+  /* margin right */
+  .mr15{margin-right:15px !important;}
+  .mr50{margin-right:50px !important;}
+
+  /* margin bottom */
+  .mb2{margin-bottom:2px !important;} 
+  .mb4{margin-bottom:4px !important;} 
+  
+  
+  /* z-index */
+  .zindex9910{z-index:9910 !important;}
+  .zindex9920{z-index:9920 !important;}
+  .zindex9930{z-index:9930 !important;}
 
 .profile-heading
 {
@@ -1623,7 +1842,7 @@ text-decoration: underline;
 /*  Driver profile Page  */
 .summary_box
 {
- 
+
   padding: 20px;
 }
 
@@ -1666,7 +1885,7 @@ text-decoration: underline;
     margin: 0;
     background: transparent;
 }
-.incident-tabs.nav-tabs .nav-link.active, 
+.incident-tabs.nav-tabs .nav-link.active,
 .incident-tabs.nav-tabs .nav-link:hover,
 .incident-tabs.nav-tabs .nav-link.active:hover,
 .incident-tabs.nav-tabs .nav-link.active:focus {
@@ -1733,7 +1952,7 @@ text-decoration: underline;
 }
 .alert-container {
     border: 2px solid #dcdcdc;
-    padding: 30px;  
+    padding: 30px;
 }
 .lh-normal {
     line-height: normal;
@@ -1769,7 +1988,7 @@ text-decoration: underline;
     padding: 10px 15px;
     float: left;
     margin-left: -2px;
-    border-radius: 0; 
+    border-radius: 0;
     position: relative;
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
@@ -1786,15 +2005,15 @@ text-decoration: underline;
     position: absolute;
     top: 10px;
     right: 10px;
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: 900; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f054";
 } */
 .reports-sidebar ul li:last-child a{
     border-bottom: none;
 }
 .active{
-    text-decoration: none !important; 
+    text-decoration: none !important;
 }
 
 html.fixed .reports-wrapper {
@@ -1820,8 +2039,8 @@ html.fixed .reports-wrapper {
     position: absolute;
     top: 25px;
     right: 25px;
-    font-family: "Font Awesome 5 Free"; 
-    font-weight: 900; 
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
     content: "\f054";
     color: #d2d2d2;
 } */
@@ -1926,17 +2145,17 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* placeholder classes */
 ::-webkit-input-placeholder { /* Edge */
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 
 ::placeholder {
-  color: e1e1e1 !important;
+  color: #e1e1e1 !important;
   font-size: 12px !important;
 }
 /* Optional label color */
@@ -1965,7 +2184,32 @@ table.dataTable thead th, table.dataTable thead td {
 
 .bggreyn{background: #f6f6f6 !important;}
 
+/* clickable button */
 
+.btn-alert {
+  color: rgb(0, 0, 0); float:left; width: 210px; margin-top:0px !important;
+  background-color: #f0f1f2; border-radius:4px; padding:12px;
+  background-image: none; font-size:14px;
+  border-color: #f0f1f2;
+  font-weight: 600;
+}
+
+.btn-alert.active, .btn-alert:active {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(34, 34, 34) !important;
+  border-color: rgb(34, 34, 34) !important;
+}
+
+
+/* no trip in dispatch planner classes */
+
+.notrip-dp{height:800px; border:solid 4px #e5e5e5; width:100%; display:block; justify-content:center;}
+.notrip-dp img{width:100px; height:auto; display: block; margin: auto; margin-top:300px; opacity:0.2;}
+.notrip-dp p{text-align:center;}
+
+/* no trip in dispatch planner classes end */
+
+/* planner modal classes for scroll each column*/
 
 /* miles buttons */
 .btn-miles {
@@ -2004,4 +2248,352 @@ table.dataTable thead th, table.dataTable thead td {
   background-color: rgb(34, 34, 34) !important;
   border-color: rgb(34, 34, 34) !important;
 }
- 
+
+
+/* height */
+.heighta{height:auto !important;}
+.h31{height: 31px !important;}
+
+/* min height */
+.mh31{min-height: 31px !important;}
+
+/* padding left sign in button page */
+.pl-signin{padding-left: 46px;}
+
+/* more than two orders in trip detail page */
+.orderinfoheight
+{
+    max-height: 240px !important;
+    overflow: scroll;
+}
+
+.attachheight
+{
+    max-height: 200px !important;
+    overflow: scroll;
+}
+
+
+/* scrollbar in vehicle detail page */
+.vdtableinfoheight
+{
+    max-height: 240px !important;
+    overflow: scroll;
+}
+
+.vdtableheight
+{
+    max-height: 210px !important;
+    overflow: scroll;
+}
+
+
+/* no Activity in Timelines in dispatch home page classes */
+.noactivity-dh{height:740px; border:solid 4px #e5e5e5; width:100%; display:block; justify-content:center;}
+.noactivity-dh img{width:100px; height:auto; display: block; margin: auto; margin-top:266px; opacity:0.2;}
+.noactivity-dh p{text-align:center;}
+/* no Activity in Timelines in dispatch home page classes end */
+
+/* Associated Company classes */
+.assoc{float:left; width:100%;}
+.assoc a{text-decoration:none; background:#eeeeee; display:block; color:#333; width:100%; float:left; height:40px; line-height:40px; font-weight:600; padding-left:10px; font-size:13px;}
+.assoc a:hover{text-decoration:none; background:#4f4f4f; display:block; color:#fff;}
+/* Associated Company classes end */
+
+
+/* Safety Summary height of driver page */
+.ssdriver{height:570px;}
+/* Safety Summary height of driver page end*/
+
+
+/* no trip on main home overview page classes */
+
+.notrip-oview{height:100%; border:solid 4px #e5e5e5; background:#ffffff; width:100%; display:block; justify-content:center;}
+.notrip-oview img{width:100px; height:auto; display:block; margin: auto; margin-top:70%; opacity:0.2;}
+.notrip-oview p{text-align:center;}
+
+/* no trip on main home overview page classes end */
+
+
+/* order detail page attachment start */
+.min-heightat{min-height: 237px;}
+
+.attachul ul{list-style:none; float:left; padding-left:0px;}
+.attachul ul li{float:left; margin-right:15px}
+.attachul ul li img{width:79px; height:100px;}
+/* order detail page attachment end */
+
+/* choose file line height class start*/
+.choosefileLH{line-height: 16px !important;}
+
+/* column visibility scroll */
+
+.colvisi-scrollbar {
+	position: relative;
+	height: 500px;
+	overflow-y: auto;
+}
+
+
+/* choose file line height class end*/
+.adddriverpl {
+  padding-left: 73px;
+}
+
+/* add orderpadding class start 11.05.21 */
+.adddriverpl2{padding-left:52px;}
+/* add driver class end */
+
+/* address book classes start */
+.heightab{height:670px;}
+
+.addressbook-scrollbar {
+	position: relative;
+	height: 500px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.addressbook-scroll-y {
+	display: block;
+}
+
+.heighaddtab{height:600px;}
+
+.padding-top-5{padding-top:5px;}
+
+.margin-top-37 {
+  margin-top: 37px;
+}
+
+.margin-left-27 {
+  margin-left: 27px;
+}
+
+
+.address-book-icon {
+    position: fixed;
+    bottom: 130px;
+    left: 23px;
+    background: #ffffff;
+    z-index: 999;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 50%;
+    box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+}
+
+.address-left-icon
+{
+    position: fixed;
+    left: 20px;
+    bottom: 30px !important;
+    z-index: 1010 !important;
+}
+.address-left-icon a{
+	background:#ffffff; border-radius: 50%;
+	box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+	padding:12px 12px 9px 12px;
+}
+
+.addcontbtn{display:none;}
+/* address book classes end */
+
+
+/* pic zoom classes */
+
+/* The Close Button */
+.close {
+  color: #ff0000;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* circles in trips and routes */
+.tripbarn{
+	height: 2px; width:100%;
+  position: relative;
+  top: 15px;
+  background: #cccccc;
+}
+
+.tripcirclen{
+  display: block; margin-left:35px;
+  background: #CCC;
+  color: #FFF;
+  line-height: 26px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 35px;
+  font-size: 13px;
+  text-indent: -1px;
+  border: 2px solid #CCC;
+  -webkit-transition: all .2s ease-in;
+  transition: all .2s ease-in;
+}
+
+.tripcontentn{
+	display: inline-block;
+  margin-top:17px; margin-left: 20px;
+  min-width: 50px;
+  max-width: 75px;
+}
+
+.tripinfoscroll {
+  overflow-x: scroll; 
+  white-space: nowrap;
+}
+
+/* new header input height */
+.page-header .row .col-lg-2 .input-group .form-control {height: calc(1.3em + 0.75rem + 0.1em) !important;}
+
+/* modal cross 31.05.21 */
+.modal-header .close
+{
+  margin: -0.1rem 0.5rem -1rem auto !important;
+  padding: 0.5rem 0.5rem !important;
+  color: #000 !important;
+}
+
+/* header select input height */
+.input-daterange input{
+  height: calc(1.3em + 0.75rem + 0.1em) !important;
+}
+.input-group input{
+  height: calc(1.3em + 0.75rem + 0.1em) !important;
+}
+
+.input-height input{
+  height: calc(1.3em + 0.75rem + 0.1em) !important;
+}
+
+input.placeholder-lowercase { 
+  text-transform: uppercase;
+}
+.placeholder-lowercase::-webkit-input-placeholder { /* WebKit browsers */
+  text-transform: none;
+}
+.placeholder-lowercase:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  text-transform: none;
+}
+.placeholder-lowercase::-moz-placeholder { /* Mozilla Firefox 19+ */
+  text-transform: none;
+}
+.placeholder-lowercase:-ms-input-placeholder { /* Internet Explorer 10+ */
+  text-transform: none;
+}
+.placeholder-lowercase::placeholder { /* Recent browsers */
+  text-transform: none;
+}
+
+
+/* on board page width according screen sizes */
+.onboardwidth {width: 95% !important;	}
+@media (min-width: 1640px) {
+	.onboardwidth {width: 75% !important;	}
+}
+
+.addsr-scroll-y {
+  display: block;
+}
+
+.addsr-scrollbar {
+  position: relative;
+  height: 685px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 15px;
+}
+/* toggle switch */
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 24px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.sliderbtn {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.sliderbtn:before {
+  position: absolute;
+  content: "";
+  height: 24px;
+  width: 26px;
+  left: 6px;
+  bottom: 0px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .sliderbtn {
+  background-color: #47a447;
+}
+
+input:focus + .sliderbtn {
+  box-shadow: 0 0 1px #797979;
+}
+
+input:checked + .sliderbtn:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.sliderbtn.round {
+  border-radius: 34px;
+}
+
+.sliderbtn.round:before {
+  border-radius: 50%;
+}
+.modal-dialog-lgdetail .modal-dialog{
+  max-width: 1250px !important;
+  margin: 9.75rem auto !important;
+}
+
+.form-control[readonly] {
+  background-color: #fff;
+}
+.units-list__main .modal-dialog {
+  max-width: 1200px !important;
+}
+.mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
+  cursor: pointer;
+}
+
+.modal.photo__main .modal-dialog {
+  max-width: 250px;
+}

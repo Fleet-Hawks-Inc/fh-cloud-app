@@ -1,25 +1,30 @@
-import {CommonModule} from '@angular/common';
-import {NgModule, Injectable} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
-import {RouterModule} from '@angular/router';
-import {SidebarComponent} from './sidebar/sidebar.component';
-import {MultiSidebarComponents} from './sidebars/multi-sidebar.component';
-import {HeaderComponent} from './header/header.component';
-import {FixedRightSidebarComponent} from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
-import {AddressBookComponent} from './popups/address-book/address-book.component';
-import { SharedModalsComponent} from './popups/shared-modals/shared-modals.component';
-import { AddDriverComponent} from '../pages/fleet/drivers/add-driver/add-driver.component'
+import { CommonModule } from '@angular/common';
+import { NgModule, Injectable } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
+import { HeaderComponent } from './header/header.component';
+import { FixedRightSidebarComponent } from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
+import { AddressBookComponent } from './popups/address-book/address-book.component';
+import { SharedModalsComponent } from './popups/shared-modals/shared-modals.component';
+import { AddDriverComponent } from '../pages/fleet/drivers/add-driver/add-driver.component'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
-import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ɵs } from '@ng-select/ng-select';
 import { AddServiceProgramComponent } from '../pages/fleet/maintenance/service-program/add-service-program/add-service-program.component';
 import { AllCarriersComponent } from './all-carriers/all-carriers.component';
+import { MustMatchDirective } from '../directives/must-match.directive';
+import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
+import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
+
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -33,10 +38,11 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     if (!value)
       return null
     let parts = value.split(this.DELIMITER);
-    return { 
-      year: + parseInt(parts[0]), 
+    return {
+      year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
-      day: + parseInt(parts[2]) }
+      day: + parseInt(parts[2])
+    }
   }
 
   toModel(date: NgbDateStruct): string // from internal model -> your mode
@@ -44,21 +50,6 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     return date ? date.year + this.DELIMITER + ('0' + date.month).slice(-2)
       + this.DELIMITER + ('0' + date.day).slice(-2) : null
   }
-  // fromModel(value: string | null): NgbDateStruct | null {
-  //   if (value) {
-  //     let date = value.split(this.DELIMITER);
-  //     return {
-  //       day : parseInt(date[0], 10),
-  //       month : parseInt(date[1], 10),
-  //       year : parseInt(date[2], 10)
-  //     };
-  //   }
-  //   return null;
-  // }
-
-  // toModel(date: NgbDateStruct | null): string | null {
-  //   return date ?  date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : null;
-  // }
 }
 
 /**
@@ -71,18 +62,19 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      let date = value.split(this.DELIMITER);
+      const date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        year: parseInt(date[2], 10),
+        month: parseInt(date[1], 10),
+        day: parseInt(date[0], 10),
+
       };
     }
     return null;
   }
 
   format(date: NgbDateStruct | null): string {
-    return date ? date.day + this.DELIMITER + date.month + this.DELIMITER + date.year : '';
+    return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
   }
 }
 
@@ -95,7 +87,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     RouterModule,
     NgSelectModule,
     NgbModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    InfiniteScrollModule
   ],
   declarations: [
     SidebarComponent,
@@ -108,6 +101,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     AddVehicleNewComponent,
     SharedModalsComponent,
     AllCarriersComponent,
+    MustMatchDirective,
+    AbsoluteValuePipe,
+    NewAddressBookComponent
+
   ],
   exports: [
     CommonModule,
@@ -119,11 +116,14 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MultiSidebarComponents,
     HeaderComponent,
     SidebarComponent,
-    FixedRightSidebarComponent
+    FixedRightSidebarComponent,
+    MustMatchDirective,
+    AbsoluteValuePipe
+
   ],
   providers: [NgSelectConfig, ɵs,
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
 export class SharedModule {

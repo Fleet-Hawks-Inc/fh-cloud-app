@@ -1,0 +1,365 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row pr-5 " style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Invoice</div>
+          <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/invoices/list" class="btn btn-default"><i
+                class="fas fa-list"></i> All Invoices</a> </div>
+        </div>
+      </header>
+      <section class="card mt-0 mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body text-dark">
+                <form class="form-horizontal form-bordered" method="get">
+                  <div class=" row">
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice#</label>
+                          <input type="text" class="form-control">
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
+                            Date</label>
+                          <input type="text" data-plugin-datepicker="" class="form-control" placeholder="mm/dd/yyyy">
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Customer">
+                              <option value="1">Customer 1</option>
+                              <option value="2">Customer 2</option>
+                              <option value="2">Customer 3</option>
+                              <option value="2">Customer 4</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                        <div class="col-lg-2  mar-top-37"> <a href="#addCustomerModal"
+                            class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> </div>
+                        <div class="col-lg-10 mt-4"
+                          style="border: 0.4px solid #e1e2e3;border-radius: 0px 0px 15px 15px;">
+                          <div class="row" style="background-color:#e1e2e3;">
+                            <div class="col-lg-6">
+                              <h5 class=" font-weight-bold">Details</h5>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                              <!-- <button type="button" class="btn btn-default btn-xs mt-2" data-toggle="modal" data-target="#addressModal"><i class="fas fa-pencil-alt"></i>Edit</button> -->
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">Address:</span> 100 street</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">City:</span> Calgary</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">State:</span> Alberta</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">Country:</span> Canada</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">Phone:</span> (306)-344-3456</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span
+                                      class=" font-weight-bold">Email:</span> testcustomer@hotmail.com</label>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-lg-12">
+                                  <label class="control-label text-lg-right"><span class=" font-weight-bold">Fax:</span>
+                                    100-756-5767</label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Reference#</label>
+                          <input type="text" class="form-control" placeholder="Enter Unique Reference Number">
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
+                          <input type="date" class="form-control">
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                            Terms</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select">
+                              <option value="1">15 Days</option>
+                              <option value="2">30 Days</option>
+                              <option value="2">45 Days</option>
+                              <option value="2">Due On Receipt</option>
+                              <option value="2">Due End Of The Month</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Factoring
+                            Company</label>
+                          <select data-plugin-selectTwo class="form-control populate">
+                            <optgroup label="Select Factoring Company">
+                              <option value="1">Factoring Company 1</option>
+                              <option value="2">Factoring Company 2</option>
+                              <option value="2">Factoring Company 3</option>
+                              <option value="2">Factoring Company 4</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                        <div class="col-lg-2  mar-top-37">
+                          <a href="#addFCModal" class="btn btn-sm btn-success modal-with-form"><i
+                              class="fas fa-plus"></i></a>
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Factoring
+                            Rate</label>
+                          <div class="row">
+                            <div class="col-lg-3 pr-0">
+                              <input type="number" class="form-control">
+                            </div>
+                            <div class="col-lg-3 pl-0">
+                              <select data-plugin-selectTwo class="form-control populate">
+                                <optgroup>
+                                  <option value="1">%</option>
+                                  <option value="2">CAD</option>
+                                  <option value="2">USD</option>
+                                </optgroup>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="row">
+                        <div class="col-lg-6">
+                          <h4>Details</h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-10 offset-lg-1">
+                      <div class="row pt-2">
+                        <table class="table table-bordered table-responsive-lg table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th><input type="checkbox"></th>
+                              <th>Order</th>
+                              <th>Type</th>
+                              <th>Customer</th>
+                              <th>Pickup</th>
+                              <th>Drop</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>34523</td>
+                              <td>LTL</td>
+                              <td>FH</td>
+                              <td>Date: 6/02/2020 05:25 AM<br>
+                                Location: Regina, SK
+                              </td>
+                              <td>Date: 06/10/2020 05:20 PM<br>
+                                Location: Winnipeg, YT
+                              </td>
+                              <td>Amountt: CAD 1500.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+                            </tr>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>5689</td>
+                              <td>FTL</td>
+                              <td>FH</td>
+                              <td>Date: 13/03/2020 04:20 AM<br>
+                                Location: Toronto, ON
+                              </td>
+                              <td>Date: 06/10/2020 05:20 PM<br>
+                                Location: Delta, BC
+                              </td>
+                              <td>Amount: CAD 1100.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+
+                            </tr>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>225890</td>
+                              <td>LTL</td>
+                              <td>FH</td>
+                              <td>Date: 14/06/2020 04:00 AM<br>
+                                Location: Calgary, AB
+                              </td>
+                              <td>Date: 20/07/2020 05:00 PM<br>
+                                Location: Vancouver, BC
+                              </td>
+                              <td>Amount: CAD 3000.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">DISPATCHED</span></td>
+
+
+                            </tr>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>5689</td>
+                              <td>FTL</td>
+                              <td>FH</td>
+                              <td>Date: 13/03/2020 04:20 AM<br>
+                                Location: Toronto, ON
+                              </td>
+                              <td>Date: 06/10/2020 05:20 PM<br>
+                                Location: Delta, BC
+                              </td>
+                              <td>Amount: CAD 1100.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+
+
+
+                            </tr>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>98766</td>
+                              <td>LTL</td>
+                              <td>FH</td>
+                              <td>Date: 14/04/2020 04:00 AM<br>
+                                Location: Calgary, AB
+                              </td>
+                              <td>Date: 20/05/2020 05:00 PM<br>
+                                Location: Perth, ON
+                              </td>
+
+                              <td>Amount: CAD 2500.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+
+
+
+                            </tr>
+                            <tr class="cursorpoint" onclick="window.location='order-detail.php'">
+                              <td><input type="checkbox"></td>
+                              <td>34523</td>
+                              <td>LTL</td>
+                              <td>FH</td>
+                              <td>Date: 6/02/2020 05:25 AM<br>
+                                Location: Regina, SK
+                              </td>
+                              <td>Date: 06/10/2020 05:20 PM<br>
+                                Location: Winnipeg, YT
+                              </td>
+
+                              <td>Amount: 1500.00
+                              </td>
+                              <td><span class="badge badge-dark p-1">CONFIRMED</span></td>
+
+
+
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div class="row mt-3">
+                        <div class="col-lg-12 text-right">
+                          <button class="btn btn-success">Select Orders</button>
+                        </div>
+                      </div>
+                      <div class="row mb-3">
+                        <div class="col-12">
+                          <div class="bg-white text-dark">
+
+                            <div class=" pt-2 ">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <label class="control-label font-weight-bold">Remarks</label>
+                                  <textarea class="form-control" rows="7"></textarea>
+                                </div>
+                                <div class="col-lg-6">
+
+                                  <div class="row">
+                                    <div class="col-lg-5 offset-lg-2">
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                  </div>
+                                  <div class="row mt-4">
+                                    <div class="col-lg-5 offset-lg-2">
+                                    </div>
+                                    <div class="col-lg-5">
+                                      <div class="row">
+                                        <div class="col-lg-9 bordtop pt-1">
+                                          <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
+                                        </div>
+
+                                        <div class="col-lg-3 bordtop pt-1">
+                                          <p class="text-right">0.00</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row mt-4">
+                    <div class="col-lg-11 text-right">
+                      <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
+                      <button  class="btn btn-success" (click)="addLoadInvoice()">Save</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>

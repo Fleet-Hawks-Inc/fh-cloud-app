@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { forkJoin } from 'rxjs';
+import {forkJoin} from 'rxjs';
+import  Constants  from '../../../fleet/constants';
 declare var $: any;
 import * as moment from 'moment';
+import { textChangeRangeIsUnchanged } from 'typescript';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dispatch-overview',
@@ -12,6 +15,7 @@ import * as moment from 'moment';
 })
 export class DispatchOverviewComponent implements OnInit {
 
+  dataMessage: string = Constants.FETCHING_DATA;
   activeTripsCount = 0;
   totalTripsCount = 0;
   permanentRoutesCount = 0;
@@ -99,14 +103,30 @@ export class DispatchOverviewComponent implements OnInit {
   tripGraphData = [];
   aceGraphData = [];
   aciGraphData = [];
+  allActivities = [];
 
-  constructor(private apiService: ApiService,
+  totalRecords = 0;
+  pageLength = 10;
+  lastEvaluatedKey:any = '';
+  dispatchLength = 0;
+  dispatchNext = false;
+  dispatchPrev = true;
+  dispatchDraw = 0;
+  dispatchPrevEvauatedKeys = [''];
+  dispatchStartPoint = 1;
+  dispatchEndPoint = this.pageLength;
+  pageload = true;
+  activitiesCount = 0;
+  prevKeyExist = true;
+
+  constructor(private apiService: ApiService,private router: Router,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.fetchActivitiesCount();
+    this.initDataTable();
     this.initManifestGraph();
     this.initTripsGraph();
-    this.dispatchData();
 
     this.fetchAllTrips();
     this.fetchAllRoutes();
@@ -115,99 +135,125 @@ export class DispatchOverviewComponent implements OnInit {
     this.fetchAllVehicles();
     this.fetchAceManifest();
     this.fetchAciManifest();
-  }
-
-  async dispatchData() {
-    const current = this;
-    current.spinner.show()
-    let latestEventActivities = new Promise(function (resolve, reject) {
-      current.apiService.getData('activities').
-        subscribe(async (result: any) => {
-          let activityGetUrl = [];
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-
-            if (element.tableName === 'serviceroutes') {
-              element.type = 'Route No.';
-              element.typeValue = '';
-
-              let url = current.apiService.getData('routes/' + element.eventID);
-              activityGetUrl.push(url);
-            }
-
-            if (i === result.Items.length - 1) {
-              forkJoin(activityGetUrl)
-                .subscribe(serviceResp => {
-                  for (let j = 0; j < serviceResp.length; j++) {
-                    const element2: any = serviceResp[j];
-                    if (element.tableName === 'serviceroutes') {
-                      result.Items[j].typeValue = element2.Items[0].routeNo;
-                    }
-                  }
-                  resolve(result.Items);
-                  current.spinner.hide();
-                });
-            }
-          }
-        })
-    })
-
-    let todayPickupCount = new Promise(function (resolve, reject) {
-      let pickupObj = {
-        todPickupCount: 0,
-        tomPickupCount: 0
-      };
-      var todayDate = new Date();
-      var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
-      current.apiService.getData('trips').
-        subscribe((result: any) => {
-          for (let i = 0; i < result.Items.length; i++) {
-            const element = result.Items[i];
-            if (element.isDeleted === 0 && element.tripStatus === 'confirmed') {
-              if (element.dateCreated != '' && element.dateCreated != undefined) {
-                let pickDate = element.dateCreated.split("-");
-                var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
-                if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
-                  pickupObj.todPickupCount = pickupObj.todPickupCount + 1;
-                } else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
-                  pickupObj.tomPickupCount = pickupObj.tomPickupCount + 1;
-                }
-              }
-              resolve(pickupObj);
-            }
-          }
-        })
-    })
-
-    await latestEventActivities.then(function (result) {
-      this.activities = result;
-      current.spinner.hide()
-    }.bind(this))
-
-    await todayPickupCount.then(function (result) {
-      this.todaysPickCount = result.todPickupCount;
-      this.tomorrowsPickCount = result.tomPickupCount;
-
-    }.bind(this));
 
   }
 
-  fetchActiveTrips() {
+  initDataTable() {
     this.spinner.show();
-    this.apiService.getData('trips/status/enroute').
-      subscribe((result: any) => {
-        this.activeTripsCount = result.Count;
+    // if(this.lastEvaluatedKey != '') {
+    //   this.lastEvaluatedKey = JSON.stringify(this.lastEvaluatedKey);
+    // }
+
+    this.apiService.getData('auditLogs/fetch?lastEvaluatedKey=' + this.lastEvaluatedKey)
+      .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal();
+        result.Items.map((k)=> {
+          k.eventParams.message = k.eventParams.message.replace('consignor','shipper');
+          k.eventParams.message = k.eventParams.message.replace('consignee','receiver');
+
+          if (k.eventParams.userName !== undefined) {
+            const newString = k.eventParams.userName.split('_');
+            k.userFirstName = newString[0];
+            k.userLastName = newString[1];
+          }
+          if (k.eventParams.number !== undefined) {
+            k.entityNumber = k.eventParams.number;
+          }
+          if (k.eventParams.name !== undefined) {
+            if (k.eventParams.name.includes('_')) {
+              const newString = k.eventParams.name.split('_');
+              k.firstName = newString[0];
+              k.lastName = newString[1];
+            }
+          }
+        });
+        if (this.pageload) {
+          this.activities = result[`Items`];
+          this.pageload = false;
+        }
+        this.allActivities = result['Items'];
+        if (result['LastEvaluatedKey'] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
+          this.dispatchNext = false;
+          this.checkPrevEvaluatedKey(lastEvalKey);
+          // for prev button
+          if(this.prevKeyExist) {
+            this.dispatchPrevEvauatedKeys.push(lastEvalKey);
+          }
+          this.lastEvaluatedKey = lastEvalKey;
+
+        } else {
+          this.dispatchNext = true;
+          this.lastEvaluatedKey = '';
+          this.dispatchEndPoint = this.totalRecords;
+        }
+
+        // disable prev btn
+        if (this.dispatchDraw > 0) {
+          this.dispatchPrev = false;
+        } else {
+          this.dispatchPrev = true;
+        }
         this.spinner.hide();
+      }, err => {
+        this.spinner.hide();
+      });
+  }
+
+  fetchActivitiesCount() {
+    this.apiService.getData('auditLogs/get/count').
+      subscribe((result: any) => {
+        this.totalRecords = result.Count;
       })
   }
-
+  goToDetails(eventID: string, type: string) {
+  //  console.log('eventID', eventID);
+  //  console.log('type', type);
+   if (type === 'driver') {
+     $('#acttimelinemodal').modal('hide');
+     this.router.navigateByUrl(`/fleet/drivers/detail/${eventID}`);
+   } else if (type === 'vehicle') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/vehicles/detail/${eventID}`);
+   } else if (type === 'asset') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/assets/detail/${eventID}`);
+   } else if (type === 'route') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/routes/detail/${eventID}`);
+   } else if (type === 'trip') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/trips/trip-details/${eventID}`);
+   } else if (type === 'issue') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/issues/detail/${eventID}`);
+   } else if (type === 'serviceProgram') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/service-program/detail/${eventID}`);
+   } else if (type === 'order') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/dispatch/orders/detail/${eventID}`);
+   } else if (type === 'fuelEntry') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/fuel/detail/${eventID}`);
+   } else if (type === 'serviceLog') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/maintenance/service-log/detail/${eventID}`);
+   } else if (type === 'inventory') {
+    $('#acttimelinemodal').modal('hide');
+    this.router.navigateByUrl(`/fleet/inventory/detail/${eventID}`);
+   }
+  }
   fetchAllTrips() {
     this.spinner.show();
     this.apiService.getData('trips').
       subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
-          if (element.dateCreated !== '' && element.dateCreated !== undefined) {
+          if(element.dateCreated !== '' && element.dateCreated !== undefined && element.isDeleted === 0) {
             let tripDate = element.dateCreated.split('-');
             let tripMonth = tripDate[1];
             if (tripMonth == '1' || tripMonth == '01') {
@@ -233,7 +279,20 @@ export class DispatchOverviewComponent implements OnInit {
             } else if (tripMonth == '11') {
               this.tripsMonths.nov += 1;
             } else if (tripMonth == '12') {
-              this.tripsMonths.dec += 1;
+            if (element.tripStatus === 'confirmed') {
+              var todayDate = new Date();
+              var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+              let pickDate = element.dateCreated.split("-");
+              var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
+              if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                this.todaysPickCount = this.todaysPickCount + 1;
+              } else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                this.tomorrowsPickCount = this.tomorrowsPickCount + 1;
+              }
+            }
+
+            if(element.tripStatus === 'enroute') {
+              this.activeTripsCount += 1;
             }
           }
         }
@@ -256,12 +315,8 @@ export class DispatchOverviewComponent implements OnInit {
   }
 
   fetchAllCustomers() {
-    this.spinner.show();
-    this.apiService.getData('customers/get/active').
+    this.apiService.getData('contacts/get/active/customers').
       subscribe((result: any) => {
-        // result = result.Items[0];
-        this.customerCount = result.Count;
-        this.spinner.hide();
       })
   }
 
@@ -269,15 +324,16 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('activities').
       subscribe(async (result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
-          const element = result.Items[i];
+          for (let i = 0; i < result.Items.length; i++) {
+            const element = result.Items[i];
 
-          if (element.tableName === 'serviceroutes') {
-            element.type = 'Route No.';
-            this.fetchRouteDetail(element.eventID, i, function (data) {
-              element.typeValue = data;
-              this.activities.push(element);
-            }.bind(this));
+            if(element.tableName === 'serviceroutes') {
+              element.type = 'Route No.';
+              this.fetchRouteDetail(element.eventID, i, function(data){
+                element.typeValue = data;
+                this.activities.push(element);
+              }.bind(this));
+            }
           }
         }
         this.spinner.hide();
@@ -315,7 +371,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAceManifest() {
     this.spinner.show();
-    this.apiService.getData('ACIeManifest').
+    this.apiService.getData('eManifests/get/ACErecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aceManifestCount = result.Count;
@@ -363,7 +419,7 @@ export class DispatchOverviewComponent implements OnInit {
 
   fetchAciManifest() {
     this.spinner.show();
-    this.apiService.getData('ACEeManifest').
+    this.apiService.getData('eManifests/get/ACIrecords').
       subscribe((result: any) => {
         let data = result.Items;
         this.aciManifestCount = result.Count;
@@ -507,5 +563,40 @@ export class DispatchOverviewComponent implements OnInit {
         data: this.tripGraphData,
       }
     ];
+  }
+
+  getStartandEndVal() {
+    this.dispatchStartPoint = this.dispatchDraw * this.pageLength + 1;
+    this.dispatchEndPoint = this.dispatchStartPoint + this.pageLength - 1;
+  }
+
+  // next button func
+  nextResults() {
+    this.dispatchNext = true;
+    this.dispatchPrev = true;
+    this.dispatchDraw += 1;
+    this.initDataTable();
+  }
+
+  // prev button func
+  prevResults() {
+    this.dispatchNext = true;
+    this.dispatchPrev = true;
+    this.dispatchDraw -= 1;
+    this.lastEvaluatedKey = this.dispatchPrevEvauatedKeys[this.dispatchDraw];
+    this.initDataTable();
+  }
+
+  checkPrevEvaluatedKey(newKeys:any = {}) {
+    //if primary key matches then it will not added into the prev keys array
+    for (let v = 0; v < this.dispatchPrevEvauatedKeys.length; v++) {
+      const element = this.dispatchPrevEvauatedKeys[v];
+      if(Object.values(element)[0] == Object.values(newKeys)[0]) {
+        this.prevKeyExist = false;
+        break;
+      } else {
+        this.prevKeyExist = true;
+      }
+    }
   }
 }

@@ -1,0 +1,94 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header">
+              <form class="form-horizontal" method="get">
+             <div class="row" style="padding-top:10px;">
+              <div class="col-md-2 col-lg-2">
+                <div class="input-group input-group-md mb-3">
+                  <input type="text" class="form-control" placeholder="Search by Receipt#" [(ngModel)]="filter.recNo" name="recNo">
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-3">
+                <div class="input-daterange input-group">
+                   <span class="input-group-prepend">
+                      <span class="input-group-text">
+                         <i class="fas fa-calendar-alt"></i>
+                      </span>
+                   </span>
+                   <input [(ngModel)]="filter.startDate" name="startDate"
+                      type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                      ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                      autocomplete="off">
+                   <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                      to
+                   </span>
+                   <input [(ngModel)]="filter.endDate" name="endDate"
+                      type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                      ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                      autocomplete="off">
+                </div>
+             </div>
+              <div class="col-md-2  col-lg-2">
+                <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+                <button type="button" class="btn btn-sm btn-success ml-1" (click)="resetFilter()">Reset</button>
+              </div>
+                <div class="col-md-5  col-lg-5 text-right pr-5">
+                   <a routerLink="/accounts/receipts/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Receive Payment </a>
+                </div>
+             </div>
+             </form>
+          </header>
+       <div class="row">
+          <div class="col pr-0">
+             <section class="card">
+              <div class="main-panel">
+                <div infiniteScroll
+                [infiniteScrollDistance]="1"
+                [infiniteScrollUpDistance]="1"
+                [infiniteScrollThrottle]="5"
+                (scrolled)="onScroll()">
+                <div class="card-body"  style="display: block">
+                  <div class="main-panel">
+                    <table class="table table-bordered table-striped mb-0 simple-table">
+                      <thead>
+                         <tr class="bgcol2">
+                           <th class="text-2">Receipt#</th>
+                            <th class="text-2">Date</th>
+                            <th class="text-2">Invoice#</th>
+                            <th class="text-2">Customer</th>
+                            <th class="text-2">Payment Mode</th>
+                            <th class="text-2">Account</th>
+                            <!-- <th class="text-2">Factoring Company</th> -->
+                            <th class="text-2">Amount</th>
+                         </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="receipts.length == 0" class="text-center">
+                          <td colspan="9">{{ dataMessage }}</td>
+                      </tr>
+                         <tr *ngFor="let rec of receipts">
+                           <td class="cursorpoint font-weight-bold" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate | date : 'yyyy/MM/dd'}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}} &nbsp;</span></td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID] | titlecase}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode | titlecase}}</td>
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID] | titlecase}}</td>
+                            <!-- <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td> -->
+                            <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
+                         </tr>
+                      </tbody>
+                   </table>
+                  </div>
+
+               </div>
+
+                </div>
+                </div>
+
+             </section>
+          </div>
+       </div>
+    </section>
+  </div>
+</section>

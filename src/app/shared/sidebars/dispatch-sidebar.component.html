@@ -1,4 +1,4 @@
-<ul class="nav nav-main">
+<ul class="nav nav-main mr-0 bg-white">
 
   <!-- <li routerLinkActive="nav-active">
      <a class="nav-link" [routerLink]="['/dispatch', 'quotes']">
@@ -6,6 +6,12 @@
      <span>Estimates</span>
      </a>
   </li> -->
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" [routerLink]="['/dispatch', 'overview']">
+    <i class="fas fa-file-alt" aria-hidden="true"></i>
+    <span>Overview</span>
+    </a>
+ </li>
   <li routerLinkActive="nav-active">
      <a class="nav-link" [routerLink]="['/dispatch', 'orders']">
      <i class="fas fa-truck-loading" aria-hidden="true"></i>
@@ -38,22 +44,20 @@
      <span>Invoices</span>
      </a>
   </li> -->
-  <li routerLinkActive="nav-active">
+  <!-- <li routerLinkActive="nav-active">
      <a class="nav-link" [routerLink]="['/dispatch', 'cross-border','eManifests']">
      <i class="fas fa-flag-usa" aria-hidden="true"></i>
      <span>Cross Border</span>
      </a>
-  </li>
+  </li> -->
 
 
   <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch', 'documents']">
+     <a class="nav-link" [routerLink]="['/dispatch', 'documents', 'company-documents']">
      <i class="far fa-folder" aria-hidden="true"></i>
      <span>Documents</span>
      </a>
   </li>
-
-
 
 
 

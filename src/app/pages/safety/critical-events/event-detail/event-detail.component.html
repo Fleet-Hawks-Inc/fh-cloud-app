@@ -1,271 +1,602 @@
 <style>
-    #map_view {
-        display: inline-block;
-        height: 700px;
-        width: 100%;
-    }
+  #map_view {
+    display: inline-block;
+    height: 700px;
+    width: 100%;
+  }
 </style>
 <section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pt-0 pr-0">
+      <header class="page-header">
+        <div class="row pr-1 mr-1" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
+              Event Details
+            </h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a
+              routerLink="/safety/critical-events"
+              class="btn btn-sm btn-default mr-2"
+              ><i class="fas fa-list"></i> Events List</a
+            >
 
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
-    <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
-        <section role="main" class="content-body pl-0 pt-0 pr-0">
-            <header class="page-header">
-                <div class="row pr-5 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        Event Details
-                    </div>
-                    <div class="col-md-8  col-lg-8 text-right pr-4">
-                        <!-- <a href="#assignSafetyProgramModal" class="btn btn-sm btn-success modal-with-form "><i class="fas fa-list"></i> Assign Safety Program</a> -->
-
-                        <a href="javascript:;" routerLink = "/safety/critical-events" class="btn btn-sm btn-default mr-2"><i class="fas fa-list"></i> Events
-                            List</a>
-                        <div class="btn-group flex-wrap mr-2">
-                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                                aria-expanded="false">Actions<span class="caret"></span></button>
-                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" href="javascript:;" routerLink="/safety/critical-events/edit-event/{{eventID}}">Edit</a>
-                                <a class="modal-with-form dropdown-item text-1" href="javascript:;"
-                                data-toggle="modal" data-target="#deleteModal">Delete</a>
-                            </div>
+            <a
+              routerLink="/safety/critical-events/add-event"
+              class="btn btn-success btn-sm"
+              ><i class="fas fa-plus"></i> Add Event</a
+            >
+          </div>
+        </div>
+      </header>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row justify-content-between pl-2 pr-2">
+                <div class="col-xl-9 col-12 pl-0 pr-0">
+                  <div class="row pl-3 pr-3">
+                    <div class="col-xl-6 col-6 pl-0">
+                      <div class="safetytile p-4 border">
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-capitalize text-4
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ deviceSerialNo }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Device Serial No.
+                          </h2>
                         </div>
-                        <a href="javascript:;" routerLink="/safety/critical-events/add-event" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
-                            Event</a>
+
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ vehiclesObject[vehicle] }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Vehicle
+                          </h2>
+                        </div>
+
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ eventDate | date: "yyyy/MM/dd" }} {{ eventTime }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Event Date Time
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ eventSpeed || 0 | number : '1.2-2' }} km/h</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Speed (approx.)
+                          </h2>
+                        </div>
+                      </div>
                     </div>
-                </div>
-            </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <div class="card-body text-dark">
-                        <form class="form-horizontal form-bordered" method="get">
 
-                            <div class="row cmaindiv">
-                                <div class="col-md-3 col-lg-3">
-                                    <div class="text-center p-4 cerbor">
-                                        <i class="fa fa-user text-7"></i>
-                                        <br>
-                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.driverName }}</p>
-                                        <p class="mb-0">DRIVER NAME</p>
-                                    </div>
-                                </div>
+                    <div class="col-xl-6 col-6 pr-0">
+                      <div class="safetytile p-4 border">
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                          >
+                            <span *ngIf="eventType == 'motionDetection'"
+                              >Motion Detection</span
+                            >
+                            <span *ngIf="eventType == 'harshDriving'"
+                              >Harsh Driving</span
+                            >
+                            <span *ngIf="eventType == 'harshAcceleration'"
+                              >Harsh Acceleration</span
+                            >
+                            <span *ngIf="eventType == 'highSpeed'"
+                              >High Speed</span
+                            >
 
-                                <div class="col-md-3 col-lg-3">
-                                    <div class="text-center p-4 cerbor">
-                                        <i class="far fa-calendar-check text-7"></i>
-                                        <br>
-                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.criticalityType }}</p>
-                                        <p class="mb-0">EVENT TYPE</p>
-                                    </div>
-                                </div>
+                            <span *ngIf="eventType == 'impactTilt'"
+                            >Impact/Tilt</span
+                          >
 
-                                <div class="col-md-3 col-lg-3">
-                                    <div class="text-center p-4 cerbor">
-                                        <i class="far fa-calendar-alt text-7"></i>
-                                        <br>
-                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.eventDate }} {{ event.eventTime }}</p>
-                                        <p class="mb-0">DATE</p>
-                                    </div>
-                                </div>
+                            <span *ngIf="eventType == 'harshBrake'">
+                              Harsh Brake
+                            </span>
 
-                                <div class="col-md-3 col-lg-3">
-                                    <div class="text-center p-4">
-                                        <i class="fas fa-map-marker-alt text-7"></i>
-                                        <br>
-                                        <p class="mb-0 text-5 font-weight-bold text-dark">{{ event.location }}</p>
-                                        <p class="mb-0">LOCATION</p>
-                                    </div>
-                                </div>
-                            </div>
+                          </span>
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Event Type
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ eventSource }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Event Source
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ createdBy }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Created By
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-2 mb-2" />
+                        </div>
 
-                            <div class="row mt-4">
-                                <div class="col-md-8 col-lg-8">
-                                    <!-- <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Front View</label> -->
-                                    <div class="safety-deails__map">
-                                        <iframe width="100%" height="100%"
-                                            src="https://www.youtube.com/embed/y4lX98Ch-gI" frameborder="0"
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen=""></iframe>
-                                    </div>
-                                    <div class="safety-deails__map mt-4">
-                                        <iframe width="100%" height="100%"
-                                            src="https://www.youtube.com/embed/y4lX98Ch-gI" frameborder="0"
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen=""></iframe>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 col-lg-4">
-                                    <div class="vehicle-common-box">
-                                        <div class="mapclass" id="map_view">
-                                            <div id="map" class=""></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mt-3">
-                                <div class="col-lg-12">
-                                    <div id="DataTables_Table_16_wrapper"
-                                        class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="dataTables_length" id="DataTables_Table_16_length">
-                                                    <label>Show <select name="DataTables_Table_16_length"
-                                                            aria-controls="DataTables_Table_16"
-                                                            class="custom-select custom-select-sm form-control form-control-sm">
-                                                            <option value="10">10</option>
-                                                            <option value="25">25</option>
-                                                            <option value="50">50</option>
-                                                            <option value="100">100</option>
-                                                        </select> entries</label></div>
-                                            </div>
-                                            <div class="col-lg-6"></div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <table
-                                                class="table table-responsive-lg table-bordered table-striped mb-0 simple-table dataTable no-footer"
-                                                id="DataTables_Table_16" role="grid" style="width: 1013px;">
-                                                <thead>
-                                                    <tr class="font-weight-bold" role="row">
-                                                        <td width="10%" class="sorting_asc" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="0" aria-sort="ascending"
-                                                            aria-label="Status: activate to sort column descending"
-                                                            style="width: 62px;">Status</td>
-                                                        <td width="10%" class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="1"
-                                                            aria-label="Time: activate to sort column ascending"
-                                                            style="width: 63px;">Time</td>
-                                                        <td width="10%" class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="2"
-                                                            aria-label="Duration: activate to sort column ascending"
-                                                            style="width: 63px;">Duration</td>
-                                                        <td width="20%" class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="3"
-                                                            aria-label="Location: activate to sort column ascending"
-                                                            style="width: 164px;">Location</td>
-                                                        <td width="10%" class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="4"
-                                                            aria-label="Odometer: activate to sort column ascending"
-                                                            style="width: 66px;">Odometer</td>
-                                                        <td width="40%" class="sorting" tabindex="0"
-                                                            aria-controls="DataTables_Table_16" rowspan="1" colspan="1"
-                                                            data-column-index="5"
-                                                            aria-label="Notes: activate to sort column ascending"
-                                                            style="width: 367px;">Notes</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-
-
-
-
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1"><span class="offduty">OFF</span>OFF Duty
-                                                        </td>
-                                                        <td> 12:00:00 AM</td>
-                                                        <td>7 mins 11 secs</td>
-                                                        <td>12.8 km S of Portage, WI</td>
-                                                        <td>5658 miles</td>
-                                                        <td>This is real good business in the world evenin time of
-                                                            crisis.</td>
-                                                    </tr>
-                                                    <tr role="row" class="even">
-                                                        <td class="sorting_1"><span class="onduty">ON</span>ON Duty</td>
-                                                        <td> 12:00:00 AM</td>
-                                                        <td>7 mins 11 secs</td>
-                                                        <td>12.8 km S of Portage, WI</td>
-                                                        <td>5658 miles</td>
-                                                        <td>This is real good business in the world evenin time of
-                                                            crisis.</td>
-                                                    </tr>
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1"><span class="onduty">ON</span>ON Duty</td>
-                                                        <td> 12:00:00 AM</td>
-                                                        <td>7 mins 11 secs</td>
-                                                        <td>12.8 km S of Portage, WI</td>
-                                                        <td>5658 miles</td>
-                                                        <td>This is real good business in the world evenin time of
-                                                            crisis.</td>
-                                                    </tr>
-                                                    <tr role="row" class="even">
-                                                        <td class="sorting_1"><span class="sbduty">SB</span>Sleeper</td>
-                                                        <td> 12:00:00 AM</td>
-                                                        <td>7 mins 11 secs</td>
-                                                        <td>12.8 km S of Portage, WI</td>
-                                                        <td>5658 miles</td>
-                                                        <td>This is real good business in the world evenin time of
-                                                            crisis.</td>
-                                                    </tr>
-                                                    <tr role="row" class="odd">
-                                                        <td class="sorting_1"><span class="ymduty">YM</span>Yard Move
-                                                        </td>
-                                                        <td> 12:00:00 AM</td>
-                                                        <td>7 mins 11 secs</td>
-                                                        <td>12.8 km S of Portage, WI</td>
-                                                        <td>5658 miles</td>
-                                                        <td>This is real good business in the world evenin time of
-                                                            crisis.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="dataTables_paginate paging_simple_numbers"
-                                            id="DataTables_Table_16_paginate">
-                                            <ul class="pagination">
-                                                <li class="paginate_button page-item previous disabled"
-                                                    id="DataTables_Table_16_previous"><a href="#"
-                                                        aria-controls="DataTables_Table_16" data-dt-idx="0" tabindex="0"
-                                                        class="page-link">Previous</a></li>
-                                                <li class="paginate_button page-item active"><a href="#"
-                                                        aria-controls="DataTables_Table_16" data-dt-idx="1" tabindex="0"
-                                                        class="page-link">1</a></li>
-                                                <li class="paginate_button page-item next disabled"
-                                                    id="DataTables_Table_16_next"><a href="#"
-                                                        aria-controls="DataTables_Table_16" data-dt-idx="2" tabindex="0"
-                                                        class="page-link">Next</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-4 text-capitalize
+                              font-weight-bold
+                              text-dark
+                              w-50
+                              text-right
+                            "
+                            >{{ location }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Location
+                          </h2>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
+
+                <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="vehicle-common-box maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <span class="pull-right text-3 mt-2 text-dark">
+                          </span>
+
+                          <h2
+                            class="
+                              pull-left
+                              mt-0
+                              mb-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            <i class="fas fa-box"></i> Attachments
+                          </h2>
+                        </div>
+
+                        <div class="widgetlinfo pb-1">
+                          <div class="row">
+                            <div class="col-lg-12 text-center p-5">
+                              <a
+                                *ngIf="eventSource == 'Automatic'"
+                                href="javascript:;"
+                                (click)="fetchEvidence()"
+                                class="
+                                  modal-with-form
+                                  btn btn-success btn-block
+                                  mb-2
+                                  btn-sm
+                                "
+                                ><i class="fas fa-eye"></i> Fetch Evidence
+                                Video(s)</a
+                              >
+                              <a
+                                *ngIf="eventSource == 'manual'"
+                                href="javascript:;"
+                                data-target="#viewImagesModal"
+                                data-toggle="modal"
+                                class="
+                                  modal-with-form
+                                  btn btn-success btn-block
+                                  mb-2
+                                  btn-sm
+                                "
+                                ><i class="fas fa-eye"></i> View Critical Event
+                                Photo</a
+                              >
+                              <a
+                                *ngIf="eventSource == 'manual'"
+                                href="javascript:;"
+                                data-target="#viewVideosModal"
+                                data-toggle="modal"
+                                class="
+                                  modal-with-form
+                                  btn btn-success btn-block
+                                  mb-1
+                                  btn-sm
+                                "
+                                ><i class="fas fa-eye"></i> View Critical Event
+                                Video</a
+                              >
+
+                              <div
+                                *ngIf="
+                                  eventVideos?.length > 0 &&
+                                  eventSource == 'Automatic'
+                                "
+                              >
+                                <a
+                                  *ngFor="
+                                    let item of eventVideos;
+                                    let i = index
+                                  "
+                                  [href]="item.path"
+                                >
+                                  Download Video {{ i + 1 }}<br
+                                /></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-        </section>
-    </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-6">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row justify-content-between pl-2 pr-2">
+                <p class="mb-2 text-4 font-weight-bold text-dark">
+                  Safety Manager Internal Notes
+                </p>
+                <div
+                  class="
+                    timeline
+                    w100
+                    dispatch-timeline
+                    timeline-simple
+                    changelog
+                    pb-3
+                  "
+                  style="min-height: 370px; overflow-x: auto; max-height: 370px"
+                >
+                  <div class="tm-body text-dark py-0">
+                    <ol class="tm-items">
+                      <li *ngFor="let item of safetyNotes">
+                        <div class="tm-box">
+                          <span class="release-date">{{
+                            item.created | date: "yyyy/MM/dd hh:mm a"
+                          }}</span>
+                          <ul class="list-unstyled">
+                            <li>
+                              {{ item.notes }}
+                            </li>
+                          </ul>
+                        </div>
+                      </li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div class="w100 mt-3">
+                  <textarea
+                    [(ngModel)]="newNotes"
+                    name="newNotes"
+                    class="form-control heighta"
+                    placeholder="Enter notes for the Safety Manager"
+                    rows="2"
+                  ></textarea>
+                </div>
+                <div class="w100 mt-2 text-right">
+                  <a
+                    (click)="addNotes()"
+                    href="javascript:;"
+                    class="btn btn-success btn-sm"
+                    >Send</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row justify-content-between pl-2 pr-2">
+                <div id="map" style="height: 520px; overflow: hidden"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
 
-<div class="modal fade" id="deleteModal" role="dialog">
-    <div class="modal-dialog" style="max-width: 600px;">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Confirm Action</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+<!-- VIEW DOCUMENT MODAL -->
+<div
+  class="modal fade"
+  id="viewImagesModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="viewDocModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" style="max-width: 600px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDocModalLabel">
+          View Events Gallery
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-lg-12" *ngIf="eventImages?.length > 0">
+          <div class="mb-3" >
+            <div class="row">
+              <div class="col-12">
+                <ngx-slick-carousel
+                  class="carousel safety-slider"
+                  #slickModal="slick-carousel"
+                  [config]="slideConfig"
+                >
+                  <div
+                    ngxSlickItem
+                    *ngFor="let item of eventImages; let i = index"
+                    class="slide"
+                  >
+                    <img
+                      [src]="item.path"
+                      class="img-fluid"
+                      alt=""
+                      style="height: 400px; object-fit: cover"
+                    />
+                  </div>
+                </ngx-slick-carousel>
+              </div>
+            </div>
+           </div>
         </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete this record?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="deleteEvent()">Delete</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div *ngIf="eventImages?.length === 0">
+          <div class="alert alert-secondary m-0" role="alert">
+            No photo(s) found
+          </div>
         </div>
       </div>
-      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
+</div>
+
+<!-- VIEW Video MODAL -->
+<div
+  class="modal fade"
+  id="viewVideosModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="viewDocModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" style="max-width: 600px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDocModalLabel">View Events Videos</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="col-lg-12" *ngIf="eventVideos?.length > 0">
+          <div class="mb-3">
+            <div class="row">
+              <div class="col-12">
+                <ngx-slick-carousel
+                  class="carousel safety-slider"
+                  #slickModal="slick-carousel"
+                  [config]="slideConfig"
+                >
+                  <div
+                    ngxSlickItem
+                    *ngFor="let item of eventVideos; let i = index"
+                    class="slide"
+                  >
+                    <div>
+                      <video
+                        id="clip"
+                        controls
+                        disablepictureinpicture
+                        controlsList="nodownload"
+                        width="530"
+                        height="264"
+                      >
+                        <source [src]="item.path" />
+                      </video>
+                    </div>
+                    <a
+                      style="text-align: center"
+                      href="{{ item.path }}"
+                      target="_blank"
+                      >Download this video</a
+                    >
+                  </div>
+                </ngx-slick-carousel>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="eventVideos?.length === 0">
+          <div class="alert alert-secondary m-0" role="alert">
+            No video(s) found
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

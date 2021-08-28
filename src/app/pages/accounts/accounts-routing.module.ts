@@ -1,62 +1,55 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ChartAccountsComponent } from './accounts/chart-accounts/chart-accounts.component';
-import { DriverPaymentsComponent } from './driver-settlements/driver-payments/driver-payments.component';
-import { EmailedInvoicesComponent } from './invoices/emailed-invoices/emailed-invoices.component';
-import { ExpenseTransactionsComponent } from './accounts/expenses/expense-transactions/expense-transactions.component';
-import { AgingReportComponent } from './invoices/aging-report/aging-report.component';
-import { OpenInvoicesComponent } from './invoices/open-invoices/open-invoices.component';
-import { PaidInvoicesComponent } from './invoices/paid-invoices/paid-invoices.component';
-import { PartiallyPaidInvoicesComponent } from './invoices/partially-paid-invoices/partially-paid-invoices.component';
-import {RecurringDeductionsComponent } from './driver-settlements/recurring-deductions/recurring-deductions.component';
-import {VoidedInvoicesComponent} from './invoices/voided-invoices/voided-invoices.component';
-import {InvoicesComponent} from './invoices/invoices/invoices.component';
-import { ChartAccountsDetailsComponent } from './accounts/chart-accounts-details/chart-accounts-details.component';
-import { IncomeTransactionDetailComponent } from './accounts/income-transactions/income-transaction-detail/income-transaction-detail.component';
-import { AddIncomeComponent } from './accounts/income-transactions/add-income/add-income.component';
-import { AllIncomeTransactionsComponent } from './accounts/income-transactions/all-income-transactions/all-income-transactions.component';
+import { HomeComponent } from './home/home.component';
 const routes: Routes = [
+  { path: 'overview', component: HomeComponent },
   {
-    path: 'accounts',
-    children: [
-      { path: 'Chart-Accounts', component: ChartAccountsComponent },
-      { path: 'Chart-Accounts-Details', component: ChartAccountsDetailsComponent },
-      { path: 'Income-Transactions', component: AllIncomeTransactionsComponent },
-      { path: 'Income-Transaction-Detail', component: IncomeTransactionDetailComponent },
-      { path: 'Add-Income', component: AddIncomeComponent },
-    ] },
-      {
-        path: 'expenses',
-        children: [
-          {
-            path: 'Expense-Transactions',
-            component: ExpenseTransactionsComponent,
-          },
-        ],
-      },
-  {
-    path: 'invoices',
-    children: [
-      { path: 'All-Invoices', component: InvoicesComponent },
-      { path: 'Emailed-Invoices', component: EmailedInvoicesComponent },
-      { path: 'Aging-Report', component: AgingReportComponent },
-      { path: 'Open-Invoices', component: OpenInvoicesComponent },
-      { path: 'Paid-Invoices', component: PaidInvoicesComponent },
-      {
-        path: 'Partially-Paid-Invoices',
-        component: PartiallyPaidInvoicesComponent,
-      },
-      { path: 'Voided-Invoices', component: VoidedInvoicesComponent }
-
-    ],
+    path: 'chart-accounts',
+    loadChildren: () => import('./chart-accounts/chart-accounts.module').then((m) => m.ChartAccountsModule),
   },
   {
-    path: 'driver-settlements',
-    children: [
-      { path: 'Driver-Payments', component: DriverPaymentsComponent },
-      { path: 'Recurring-Deductions', component: RecurringDeductionsComponent },
-
-    ],
+    path: 'income',
+    loadChildren: () => import('./income/income.module').then((m) => m.IncomeModule),
+  },
+  {
+    path: 'expense',
+    loadChildren: () => import('./expense/expense.module').then((m) => m.ExpenseModule),
+  },
+  {
+    path: 'manual-journal',
+    loadChildren: () => import('./manual-journal/manual-journal.module').then((m) => m.ManualJournalModule),
+  },
+  {
+    path: 'invoices',
+    loadChildren: () => import('./invoices/invoices.module').then((m) => m.InvoicesModule),
+  },
+  {
+    path: 'receipts',
+    loadChildren: () => import('./receipts/receipts.module').then((m) => m.ReceiptsModule),
+  },
+  {
+    path: 'sales',
+    loadChildren: () => import('./sales/sales.module').then((m) => m.SalesModule),
+  },
+  {
+    path: 'purchases',
+    loadChildren: () => import('./purchases/purchases.module').then((m) => m.PurchasesModule),
+  },
+  {
+    path: 'payments',
+    loadChildren: () => import('./payments/payments.module').then((m) => m.PaymentsModule),
+  },
+  {
+    path: 'settlements',
+    loadChildren: () => import('./settlements/settlements.module').then((m) => m.SettlementsModule),
+  },
+  {
+    path: 'transactions',
+    loadChildren: () => import('./transactions/transactions.module').then((m) => m.TransactionsModule),
+  },
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/account-reports.module').then((m) => m.AccountReportsModule),
   },
 ];
 
@@ -64,4 +57,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AccountsRoutingModule {}
+export class AccountsRoutingModule { }

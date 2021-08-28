@@ -1,0 +1,80 @@
+<section class="body">
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pt-0 pl-0 pr-0">
+         <header class="page-header pr-5">
+            <div class="row pr-4 pl-2" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4">
+                  <h4 class="text-4 mt-0 mb-0 text-dark">Inspection Form details</h4>
+               </div>
+               <div class="col-md-8  col-lg-8 text-right pr-5">
+                  <a routerLink="/compliance/dvir/inspections" class="btn btn-sm btn-default"><i
+                        class="fas fa-list"></i>All Inspection Forms</a>
+               </div>
+            </div>
+         </header>
+
+         <div class="row">
+            <div class="col-lg-12 pr-0">
+               <section class="card">
+                  <div class="card-body" style="display: block;">
+                     <ng-template [ngIf]="result">
+                        <div class="row">
+                           <div class="col-lg-12">
+                              <div class="row text-dark">
+                                 <div class="col-lg-2 font-weight-bold">
+                                    Form Name:
+                                 </div>
+                                 <div class="col-lg-9">
+                                    {{result.inspectionFormName}}
+                                 </div>
+                              </div>
+                              <div class="row text-dark mt-3">
+                                 <div class="col-lg-2 font-weight-bold">
+                                    Form Type:
+                                 </div>
+                                 <div class="col-lg-9">
+                                    {{result.inspectionType}}
+                                 </div>
+                              </div>
+                              <div class="row text-dark mt-3">
+                                 <div class="col-lg-2 font-weight-bold">
+                                    Default Inspection Form
+                                 </div>
+                                 <div class="col-lg-9">
+                                    <span *ngIf="result.isDefaultInspectionType==1">Yes</span>
+                                    <span *ngIf="result.isDefaultInspectionType==0">No</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+
+
+                        <div class="row mt-4">
+                           <div class="col-lg-12">
+                              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Parameter</h4>
+                              <table class="table table-bordered table-responsive-lg">
+                                 <tbody>
+
+                                    <tr>
+                                       <td width="10%" class="back-color-gray font-weight-bold">Sr. No.</td>
+                                       <td width="90%" class="back-color-gray">Parameters Name</td>
+                                    </tr>
+
+                                    <tr *ngFor="let parameter of result.parameters; index as i">
+                                       <td width="10%">{{i+1}}</td>
+                                       <td width="90%" class="font-weight-bold">{{parameter.name}}</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+
+                           </div>
+                        </div>
+                     </ng-template>
+                  </div>
+               </section>
+            </div>
+
+         </div>
+      </section>
+   </div>
+</section>

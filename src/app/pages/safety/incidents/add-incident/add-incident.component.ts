@@ -5,9 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
 import { HereMapService } from '../../../../services';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { SafetyService } from 'src/app/services/safety.service';
+import { Auth } from 'aws-amplify';
 declare var $: any;
 @Component({
   selector: 'app-add-incident',
@@ -19,22 +20,25 @@ export class AddIncidentComponent implements OnInit {
     errors = {};
     event = {
         eventDate: '',
-        date: '',
         eventTime: '',
-        location: '',
-        documentID: [],
-        vehicleID: '',
-        tripID: '',
-        incidentVideodocumentID: [],
-        eventType: 'incident',
-        modeOfOrign: 'manual',
-        coachingStatus: 'open',
-        driverUsername: '',
-        severity: '',
-        criticalityType: '',
-        remarks: '',
-        assignedUsername: ''
+        driverID: null,
+        vehicleID: null,
+        tripID: null,
+        assigned: null,
+        incidentType: null,
+        eventSource: 'manual',
+        location: {
+            label: '',
+            cords: '',
+        },
+        severity: null,
+        notes: '',
+        status: 'open',
     };
+    uploadedVideos = [];
+    uploadedDocs = [];
+    uploadedPhotos = [];
+
     carrierID = '';
     selectedFiles: FileList;
     selectedFileNames: Map<any, any>;
@@ -71,27 +75,58 @@ export class AddIncidentComponent implements OnInit {
     drivers  = [];
     users = [];
     trips = [];
+    safetyManagers = [];
+    disableButton = false;
+    currentUser: string;
+    photoSizeError = '';
+    videoSizeError = '';
+    docSizeError = '';
+    
+    isSuggest: boolean = false;
 
     public searchResults: any;
     private readonly search: any;
     public searchTerm = new Subject<string>();
-    uploadedVideos = [];
-    uploadedDocs = [];
+    
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
 
-    constructor(private apiService: ApiService, private toastr: ToastrService,
+    constructor(private apiService: ApiService, private safetyService: SafetyService, private toastr: ToastrService,
                 private spinner: NgxSpinnerService,
                 private router: Router, private hereMap: HereMapService) {
                 this.selectedFileNames = new Map<any, any>();
+                const date = new Date();
+                this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+                this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
     }
 
     ngOnInit() {
         this.fetchVehicles();
         this.fetchDrivers();
-        this.fetchUsers();
         this.fetchTrips();
         this.searchLocation();
+        this.getCurrentUser();
+        this.disabledButton();
     }
 
+    getCurrentUser = async () => {
+        let result = (await Auth.currentSession()).getIdToken().payload;
+        this.currentUser = `${result.firstName} ${result.lastName}`;
+        this.safetyManagers.push(this.currentUser);
+    }
+
+    disabledButton() {
+        
+        if(this.event.driverID == '' || this.event.driverID == null || this.event.vehicleID == '' || this.event.vehicleID == null || 
+            this.event.tripID == '' || this.event.tripID == null || this.event.eventDate == '' || this.event.eventDate == null || this.event.eventTime == '' ||
+            this.event.eventTime == null || this.event.assigned == '' || this.event.assigned == null || this.event.severity == '' || this.event.severity == null || this.event.incidentType == '' || this.event.incidentType == null || 
+            this.event.location.label == '' || this.event.status == '' || this.event.eventSource == '' || this.event.notes.length > 500) {
+            return true
+        } else {
+            return false;
+        }
+    }
+    
     fetchVehicles() {
         this.apiService.getData('vehicles')
         .subscribe((result: any) => {
@@ -100,82 +135,68 @@ export class AddIncidentComponent implements OnInit {
     }
 
     fetchDrivers() {
-        this.apiService.getData('drivers')
+        this.apiService.getData('drivers/safety')
         .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if (element.isDeleted === 0) {
-                    this.drivers.push(element);
-                }
-            }
-        })
-    }
-
-    fetchUsers() {
-        this.apiService.getData('users/fetch/records')
-        .subscribe((result: any) => {
-            result.Items.map((i) => { i.fullName = i.firstName + ' ' + i.lastName; return i; });
-            this.users = result.Items;
+            this.drivers =  result.Items;
         })
     }
 
     fetchTrips() {
-        this.apiService.getData('trips')
+        this.apiService.getData('trips/safety/active')
         .subscribe((result: any) => {
-            for (let i = 0; i < result.Items.length; i++) {
-                const element = result.Items[i];
-                if(element.isDeleted === 0) {
-                    this.trips.push(element);
-                }
-            }
+            this.trips = result.Items;
         })
     }
 
     addEvent() {
-        this.spinner.show();
+        
+        if(!this.isSuggest) {
+            this.toastr.error('Please select valid location');
+            return;
+        }
+        this.disableButton = true;
         this.hideErrors();
-        let timestamp;
-        const fdate = this.event.eventDate.split('-');
-        const date = fdate[2] + '-' + fdate[1] + '-' + fdate[0];
-        timestamp = moment(date + ' ' + this.event.eventTime).format('X');
-        this.event.date = (timestamp * 1000).toString();
-
-        this.event.documentID = this.uploadedDocs;
-        this.event.incidentVideodocumentID = this.uploadedVideos;
-
+        
         // create form data instance
         const formData = new FormData();
 
         // append videos if any
-        for(let i = 0; i < this.uploadedVideos.length; i++){
+        for (let i = 0; i < this.uploadedVideos.length; i++){
             formData.append('uploadedVideos', this.uploadedVideos[i]);
         }
 
+        // append photos if any
+        for (let j = 0; j < this.uploadedPhotos.length; j++){
+            formData.append('uploadedPhotos', this.uploadedPhotos[j]);
+        }
+
         // append docs if any
-        for(let j = 0; j < this.uploadedDocs.length; j++){
+        for (let j = 0; j < this.uploadedDocs.length; j++){
             formData.append('uploadedDocs', this.uploadedDocs[j]);
         }
 
         // append other fields
         formData.append('data', JSON.stringify(this.event));
-
-        this.apiService.postData('safety/eventLogs', formData, true).subscribe({
+        
+        this.safetyService.postData('incidents', formData, true).subscribe({
             complete: () => {},
             error: (err: any) => {
+                this.disableButton = false;
                 from(err.error)
                     .pipe(
                         map((val: any) => {
                             val.message = val.message.replace(/".*"/, 'This Field');
                             this.errors[val.context.key] = val.message;
+                            this.disableButton = false;
                         })
                     )
                     .subscribe({
                         complete: () => {
-                            this.spinner.hide();
+                            this.disableButton = false;
                             this.throwErrors();
                         },
                         error: () => {
+                            this.disableButton = false;
                         },
                         next: () => {
                         },
@@ -211,46 +232,125 @@ export class AddIncidentComponent implements OnInit {
 
     public searchLocation() {
         this.searchTerm.pipe(
-          map((e: any) => {
-            $('.map-search__results').hide();
-            $(e.target).closest('div').addClass('show-search__result');
-            return e.target.value;
-          }),
-          debounceTime(400),
-          distinctUntilChanged(),
-          switchMap(term => {
-            return this.hereMap.searchEntries(term);
-          }),
-          catchError((e) => {
-            return throwError(e);
-          }),
+            map((e: any) => {
+                $(e.target).closest('div').addClass('show-search__result');
+                return e.target.value;
+            }),
+            debounceTime(400),
+            distinctUntilChanged(),
+            switchMap(term => {
+                return this.hereMap.searchEntries(term);
+            }),
+            catchError((e) => {
+                return throwError(e);
+            }),
         ).subscribe(res => {
-          this.searchResults = res;
+            this.searchResults = res;
         });
     }
 
-    async assignLocation(label) {
-        this.event.location = label;
-        this.searchResults = false;
-        $('div').removeClass('show-search__result');
-    }
-
-    /*
-    * Selecting files before uploading
-    */
-    selectDocuments(event, obj) {
-        let files = [...event.target.files];
-
-        if (obj === 'uploadedDocs') {
-            this.uploadedDocs = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedDocs.push(files[i])
-            }
+    async assignLocation(position: any,title:string) {
+        if (position) {
+            this.event.location.cords = `${position.lat},${position.lng}`;
+            this.event.location.label = title;
+            this.searchResults = false;
+            this.isSuggest = true;
+            $('div').removeClass('show-search__result');
         } else {
-            this.uploadedVideos = [];
-            for (let i = 0; i < files.length; i++) {
-                this.uploadedVideos.push(files[i])
-            }
+            this.event.location.label = title;
+            this.event.location.cords = '0,0';
         }
     }
+
+     /*
+    * Selecting files before uploading
+    */
+     selectDocuments(event, obj) {
+        let files = [...event.target.files];
+        let filesSize = 0;
+
+        if(files.length > 5) {
+            this.toastr.error('files count limit exceeded');
+            if (obj === 'uploadedPhotos') {
+                this.photoSizeError = 'files should not be more than 5';
+            } else if(obj === 'uploadedDocs') {
+                this.docSizeError = 'files should not be more than 5';
+            } else {
+                this.videoSizeError = 'files should not be more than 5';
+            }
+            return;
+        }
+
+        if (obj === 'uploadedPhotos') {
+            this.uploadedPhotos = [];
+            for (let i = 0; i < files.length; i++) {
+                filesSize += files[i].size / 1024 / 1024;
+                if(filesSize > 10) {
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.photoSizeError = 'Please select file which have size below 10 MB.';
+                    return;
+                } else {
+                    this.photoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                        this.uploadedPhotos.push(files[i])
+                    } else {
+                        this.photoSizeError = 'Only .jpg, .jpeg, .png files allowed.';
+                    }
+                    
+                }
+            }
+        } else if(obj === 'uploadedDocs') {
+            
+            this.uploadedDocs = [];
+            for (let i = 0; i < files.length; i++) {
+                
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 10) {
+                    this.toastr.error('file(s) size limit exceeded.');
+                    this.docSizeError = 'Please select file which have size below 10 MB.';
+                    return;
+                } else {
+                    this.docSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'doc' || ext == 'docx' || ext == 'pdf') {
+                        this.uploadedDocs.push(files[i])
+                    } else {
+                        this.docSizeError = 'Only .doc, .docx and .pdf files allowed.';
+                    }
+                    
+                }
+            }
+        } else {
+            
+            this.uploadedVideos = [];
+            for (let i = 0; i < files.length; i++) {
+                filesSize += files[i].size / 1024 / 1024;
+
+                if(filesSize > 30) {
+                    this.toastr.error('files size limit exceeded');
+                    this.videoSizeError = 'Please select file which have size below 30 MB';
+                    return;
+                } else {
+                    this.videoSizeError = '';
+                    let name = files[i].name.split('.');
+                    let ext = name[name.length - 1].toLowerCase();
+                    if(ext == 'mp4' || ext == 'mov') {
+                        this.uploadedVideos.push(files[i])
+                    } else {
+                        this.videoSizeError = 'Only .mp4 and .mov files allowed';
+                    }
+                    
+                }
+                
+            }
+        }
+        
+       
+    }
+
+    
 }

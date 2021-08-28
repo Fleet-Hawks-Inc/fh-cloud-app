@@ -16,14 +16,14 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body p-0">
-            <header class="page-header pr-5">
+            <header class="page-header">
                 <form class="form-horizontal" method="get">
-                    <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="row" style="padding-top:10px;">
                         <div class="col-md-6 col-lg-6">
                             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">Planner</h4>
                          </div>
 
-                        <div class="col-md-6 col-lg-6 text-right pr-1">
+                        <div class="col-md-6 col-lg-6 text-right">
                             <a href="javascript:;" routerLink="/dispatch/planner/calendar-view" class="btn btn-default btn-sm mr-2">Calendar View</a>
                             <a href="javascript:;" routerLink="/dispatch/trips/add-trip" class="btn btn-success btn-sm" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Trip</a>
@@ -49,14 +49,14 @@
                                             </div>
                                         </div>
                                         <ul class="m-0 p-0">
-                                            <li class=" mb-2 border" *ngFor="let trip of tempTrips">
+                                            <li class=" mb-2 border" *ngFor="let trip of tempTrips; let i=index;">
                                                 <div class="fc-event-main">
                                                     <h5 class="mb-2 font-weight-bold mt-0 border-bottom pb-2">
                                                         <div class="d-inline-block" *ngFor="let customer of trip.customersArr">
                                                             <span class="name-short">{{ customer.icon }}</span>
                                                             {{ customer.name }}
                                                         </div>
-                                                        <a href="javascript:;" (click)="showAssignModal(trip.tripID)" *ngIf="trip.tripStatus == 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
+                                                        <a href="javascript:;" (click)="showAssignModal(trip.tripID, i)" *ngIf="trip.tripStatus == 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assign</a>
                                                         <a href="javascript:;" *ngIf="trip.tripStatus != 'confirmed'"  class="pull-right modal-with-form btn btn-success btn-sm">Assigned</a>
                                                     </h5>
                                                     <p class="mb-1"><b>P/L:</b> {{ trip.pickupLocation }}</p>
@@ -104,7 +104,7 @@
                         <thead>
                             <tr>
                                 <th width="25%">Vehicle</th>
-                                <th width="25%">Trailer</th>
+                                <th width="25%">Assets</th>
                                 <th width="25%">Driver</th>
                                 <th>Co-Driver</th>
                             </tr>

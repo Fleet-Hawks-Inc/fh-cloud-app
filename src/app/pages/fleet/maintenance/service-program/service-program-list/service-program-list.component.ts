@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Constants from '../../../constants';
 declare var $: any;
-
+import { environment } from '../../../../../../environments/environment';
+import * as _ from 'lodash';
 @Component({
   selector: 'app-service-program-list',
   templateUrl: './service-program-list.component.html',
@@ -11,6 +13,8 @@ declare var $: any;
 })
 export class ServiceProgramListComponent implements  OnInit {
 
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
   title = 'Service Program List';
   // dtOptions: any = {};
   programs = [];
@@ -25,6 +29,7 @@ export class ServiceProgramListComponent implements  OnInit {
   serviceProgramPrevEvauatedKeys = [''];
   serviceProgramStartPoint = 1;
   serviceProgramEndPoint = this.pageLength;
+  suggestions = [];
 
   constructor(
       private apiService: ApiService,
@@ -43,6 +48,10 @@ export class ServiceProgramListComponent implements  OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+
+        if(this.programeName != '') {
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
       },
     });
   }
@@ -51,6 +60,10 @@ export class ServiceProgramListComponent implements  OnInit {
     this.spinner.show();
     this.apiService.getData('servicePrograms/fetch/records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.getStartandEndVal();
         this.programs = result['Items'];
         if (this.programeName != '') {
           this.serviceProgramStartPoint = 1;
@@ -64,10 +77,14 @@ export class ServiceProgramListComponent implements  OnInit {
             this.serviceProgramPrevEvauatedKeys.push(result['LastEvaluatedKey'].programID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].programID;
-          
+
         } else {
           this.serviceProgramNext = true;
           this.lastEvaluatedKey = '';
+          this.serviceProgramEndPoint = this.totalRecords;
+        }
+
+        if(this.totalRecords < this.serviceProgramEndPoint) {
           this.serviceProgramEndPoint = this.totalRecords;
         }
 
@@ -85,6 +102,8 @@ export class ServiceProgramListComponent implements  OnInit {
 
   searchFilter() {
     if (this.programeName !== '') {
+      this.programeName = this.programeName.toLowerCase();
+      this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
       this.fetchProgramsCount();
       this.initDataTable();
@@ -95,6 +114,7 @@ export class ServiceProgramListComponent implements  OnInit {
 
   resetFilter() {
     if (this.programeName !== '') {
+      this.dataMessage = Constants.FETCHING_DATA;
       this.programeName = '';
       this.programs = [];
       this.fetchProgramsCount();
@@ -105,12 +125,15 @@ export class ServiceProgramListComponent implements  OnInit {
     }
   }
 
-  deleteProgram(entryID) {
+  deleteProgram(entryID, programName) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .getData(`servicePrograms/isDeleted/${entryID}/`+1)
+      .deleteData(`servicePrograms/isDeleted/${entryID}/${programName}/` + 1)
       .subscribe((result: any) => {
         this.programs = [];
+        this.serviceProgramDraw = 0;
+        this.lastEvaluatedKey = '';
+        this.dataMessage = Constants.FETCHING_DATA;
         this.fetchProgramsCount();
         this.initDataTable();
         this.toastr.success('Service Program Deleted Successfully!');
@@ -125,22 +148,43 @@ export class ServiceProgramListComponent implements  OnInit {
 
   // next button func
   nextResults() {
+    this.serviceProgramNext = true;
+    this.serviceProgramPrev = true;
     this.serviceProgramDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.serviceProgramNext = true;
+    this.serviceProgramPrev = true;
     this.serviceProgramDraw -= 1;
     this.lastEvaluatedKey = this.serviceProgramPrevEvauatedKeys[this.serviceProgramDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {
     this.serviceProgramStartPoint = 1;
     this.serviceProgramEndPoint = this.pageLength;
     this.serviceProgramDraw = 0;
+  }
+
+  getSuggestions = _.debounce(function (searchvalue) {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
+      this.apiService.getData('servicePrograms/get/suggestions/'+searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = result;
+        }
+      })
+    }
+  }, 800)
+
+  setData(value) {
+    this.programeName = value.trim();
+    this.suggestions = [];
   }
 }

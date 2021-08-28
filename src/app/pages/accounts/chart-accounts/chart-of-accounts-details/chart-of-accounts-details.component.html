@@ -1,0 +1,144 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pr-0 pl-0 pt-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top:10px;">
+          <div class="col-lg-3 col-md-3 pr-0">
+            <div class="input-daterange input-group">
+               <span class="input-group-prepend">
+                  <span class="input-group-text">
+                     <i class="fas fa-calendar-alt"></i>
+                  </span>
+               </span>
+               <input [(ngModel)]="filter.startDate" name="startDate"
+                  type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                  ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                  autocomplete="off">
+               <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                  to
+               </span>
+               <input [(ngModel)]="filter.endDate" name="endDate"
+                  type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                  ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                  autocomplete="off">
+            </div>
+         </div>
+          <div class="col-md-2 col-lg-2">
+            <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
+            <button type="button" class="btn btn-sm btn-success ml-2" (click)="resetFilter()">Reset</button>
+          </div>
+          <div class="col-md-7 col-lg-7 text-right pr-1"> <a routerLink="/accounts/chart-accounts/list"
+              class="btn btn-default btn-sm"><i class="fas fa-list"></i> Chart Of Accounts</a>
+          </div>
+        </div>
+      </header>
+      <div class="row">
+        <div class="col pr-0">
+          <section class="card">
+            <div class="card-body">
+              <div class="row text-dark">
+                <div class="col-lg-12">
+                  <div class="row cmaindiv">
+                    <div class="col cerbor ">
+                      <div class="text-center p-4 ">
+                        <i class="fas fa-file-invoice-dollar text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actName | titlecase}}</p>
+                        <p class="mb-0">Account Name</p>
+                      </div>
+                    </div>
+                    <div class="col cerbor">
+                      <div class="text-center p-4">
+                        <i class="far fa-calendar-check text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actNo}}</p>
+                        <p class="mb-0">Account Number</p>
+                      </div>
+                    </div>
+                    <div class="col cerbor">
+                      <div class="text-center p-4">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actType | titlecase}}</p>
+                        <p class="mb-0">Account Type</p>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="text-center p-4">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actDate | date:'yyyy/MM/dd'}}</p>
+                        <p class="mb-0">Account Date</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12" *ngIf="account.actDesc !== '' && account.actDesc !== null && account.actDesc !== undefined">
+                 <table>
+                   <tbody>
+                     <tr>
+                       <td class="font-weight-bold">Description:</td>
+                       <td>{{account.actDesc}}</td>
+                     </tr>
+                   </tbody>
+                 </table>
+                </div>
+                <div class="col-lg-12">
+                  <table class="table table-bordered table-hover table-responsive-lg table-striped simple-table">
+                    <thead>
+                      <tr class="bgcol2">
+                        <th class="text-2">Trx #</th>
+                        <th class="text-2">Date</th>
+                        <th class="text-2">Name</th>
+                        <th class="text-2">Type</th>
+                        <th class="text-2">Description</th>
+                        <th class="text-2">Debit</th>
+                        <th class="text-2">Credit</th>
+                        <th class="text-2">Running Total</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="text-right font-weight-bold">Opening Balance</td>
+                        <td></td>
+                        <td>{{account.opnBal}}&nbsp; {{account.opnBalCurrency}}</td>
+                        <td></td>
+                      </tr>
+                      <tr *ngFor="let trx of account.transactionLog; let i= index">
+                        <td>{{i+1}}</td>
+                        <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
+                        <td><span *ngIf="trx.name !== undefined">{{merged[trx.name] |  titlecase}}</span>
+
+                          <span *ngIf="trx.name === undefined">-</span>
+                        </td>
+                        <td>{{trx.type | titlecase}}</td>
+                        <td>{{trx.desc | titlecase}}</td>
+                        <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
+                        <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
+                        <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="text-right font-weight-bold">Closing Balance</td>
+                        <td></td>
+                        <td>{{account.closingAmt | absoluteValue}}&nbsp;{{account.opnBalCurrency}}</td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="text-right font-weight-bold">Period Variance</td>
+                        <td></td>
+                        <td>{{periodVariance | absoluteValue}}&nbsp;{{account.opnBalCurrency}}
+                        </td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+           </div>
+          </div>
+          </section>
+         </div>
+        </div>
+    </section>
+  </div>
+</section>
+

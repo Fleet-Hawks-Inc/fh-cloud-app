@@ -3,6 +3,7 @@ import { ApiService } from "../../../../services";
 import { ActivatedRoute, Router } from "@angular/router";
 declare var $: any;
 import { ToastrService } from "ngx-toastr";
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: "app-inventory-detail",
@@ -11,7 +12,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class InventoryDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
-
+  environment = environment.isFeatureEnabled;
   /**
    * form props
    */
@@ -23,7 +24,7 @@ export class InventoryDetailComponent implements OnInit {
   quantity = "";
   itemName = "";
   description = "";
-  categoryID = "";
+  category = "";
   warehouseID = "";
   aisle = "";
   row = "";
@@ -43,7 +44,12 @@ export class InventoryDetailComponent implements OnInit {
   uploadedDocs = [];
   vendors = {};
   itemGroups = {};
-  warehouses = {};
+  warehouses = [];
+  warrantyTime;
+  warrantyUnit;
+  inventoryDataUpdate: any;
+  warehousesList: any = {};
+  costUnitType;
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -53,41 +59,44 @@ export class InventoryDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.itemID = this.route.snapshot.params["itemID"];
+    this.itemID = this.route.snapshot.params[`itemID`];
     this.getInventory();
     this.fetchVendors();
-    this.fetchItemGroups();
+    this.fetchWarehousesList();
   }
 
   fetchVendors() {
-    this.apiService.getData(`vendors/get/list`).subscribe((result) => {
+    this.apiService.getData(`contacts/get/list`).subscribe((result) => {
       this.vendors = result;
     });
   }
 
-  fetchItemGroups() {
-    this.apiService.getData(`itemGroups/get/list`).subscribe((result) => {
-      this.itemGroups = result;
-    });
-  }
 
   fetchWarehouses() {
-    this.apiService.getData("warehouses/get/list").subscribe((result: any) => {
+    this.apiService.getData(`items/get/itemqty/warehouses/` + this.partNumber).subscribe((result: any) => {
       this.warehouses = result;
     });
   }
-
+  fetchWarehousesList() {
+    this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
+      this.warehousesList = result;
+    });
+  }
   getInventory() {
-    this.apiService.getData("items/" + this.itemID).subscribe((result: any) => {
+    this.apiService.getData(`items/` + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
+      console.log('result inventory', result);
+      this.inventoryDataUpdate = result;
+
       this.carrierID = result.carrierID;
       this.partNumber = result.partNumber;
       this.cost = result.cost;
+      this.costUnitType = result.costUnitType;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
       this.itemName = result.itemName;
       this.description = result.description;
-      this.categoryID = result.categoryID;
+      this.category = result.category;
       this.warehouseID = result.warehouseID;
       this.aisle = result.aisle;
       this.row = result.row;
@@ -101,6 +110,8 @@ export class InventoryDetailComponent implements OnInit {
       this.days = result.days;
       this.time = result.time;
       this.notes = result.notes;
+      this.warrantyTime = result.warrantyTime;
+      this.warrantyUnit = result.warrantyUnit;
       this.uploadedPhotos = result.uploadedPhotos;
       this.uploadedDocs = result.uploadedDocs;
       if (
@@ -119,23 +130,27 @@ export class InventoryDetailComponent implements OnInit {
           name: x,
         }));
       }
+      this.fetchWarehouses();
     });
   }
 
-  delete(type: string, name: string) {
-    this.apiService
-      .deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`)
-      .subscribe((result: any) => {
-        this.getInventory();
-      });
+  // delete uploaded images and documents
+  delete(type: string, name: string, index:any) {
+    this.apiService.deleteData(`items/uploadDelete/${this.itemID}/${type}/${name}`).subscribe((result: any) => {
+      if(type === 'image') {
+        this.photos.splice(index, 1);
+      } else {
+        this.documents.splice(index,1);
+      }
+    });
   }
 
   deleteItem() {
     this.apiService
-      .deleteData("items/" + this.itemID)
+      .deleteData(`items/` + this.itemID)
       .subscribe((result: any) => {
-        this.toastr.success("Item Deleted Successfully!");
-        this.router.navigateByUrl("/fleet/items/list");
+        this.toastr.success(`Item Deleted Successfully!`);
+        this.router.navigateByUrl(`fleet/items/list`);
       });
   }
 }

@@ -5,7 +5,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import  Constants  from '../../../fleet/constants';
+import { environment } from 'src/environments/environment';
 declare var $: any;
+import * as moment from "moment";
 
 @Component({
   selector: 'app-trip-list',
@@ -13,11 +16,20 @@ declare var $: any;
   styleUrls: ['./trip-list.component.css']
 })
 export class TripListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
+  dataMessageConfirm: string = Constants.NO_RECORDS_FOUND;
+  dataMessageDispatch: string = Constants.NO_RECORDS_FOUND;
+  dataMessageStart: string = Constants.NO_RECORDS_FOUND;
+  dataMessageEnroute: string = Constants.NO_RECORDS_FOUND;
+  dataMessageCancel: string = Constants.NO_RECORDS_FOUND;
+  dataMessageDeliver: string = Constants.NO_RECORDS_FOUND;
+  dataMessageTonu: string = Constants.NO_RECORDS_FOUND;
   form;
   title = "Trips";
   tripID = '';
   tripStatus = '';
+  prevStatus = '';
   tripNumber = '';
   bolNumber = '';
   tripData = {
@@ -33,12 +45,7 @@ export class TripListComponent implements OnInit {
   enrouteTrips = [];
   cancelledTrips = [];
   deliveredTrips = [];
-  confirmedTripsCount = 0;
-  dispatchedTripsCount = 0;
-  startedTripsCount = 0;
-  enrouteTripsCount = 0;
-  cancelledTripsCount = 0;
-  deliveredTripsCount = 0;
+  tonuTrips = [];
   allTripsCount = 0;
   statusData = [
     {
@@ -58,12 +65,16 @@ export class TripListComponent implements OnInit {
       value: 'enroute'
     },
     {
-      name: "Cancelled",
-      value: 'cancelled'
-    },
-    {
       name: "Delivered",
       value: 'delivered'
+    },
+    {
+      name: "TONU",
+      value: 'tonu'
+    },
+    {
+      name: "Cancelled",
+      value: 'cancelled'
     },
   ]
 
@@ -77,6 +88,40 @@ export class TripListComponent implements OnInit {
   };
   totalRecords = 20;
   confirmedTotalRecords = 20;
+  categoryFilter = [
+    {
+      'name': 'Trip Number',
+      'value': 'tripNo'
+    },
+    {
+      'name': 'Trip Type',
+      'value': 'tripType'
+    },
+    {
+      'name': 'Order Number',
+      'value': 'orderNo'
+    },
+    {
+      'name': 'Driver',
+      'value': 'driver'
+    },
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+    {
+      'name': 'Location',
+      'value': 'location'
+    },
+    {
+      'name': 'Trip Status',
+      'value': 'tripStatus'
+    },
+  ]
 
   pageLength = 10;
   serviceUrl = '';
@@ -84,14 +129,11 @@ export class TripListComponent implements OnInit {
     searchValue: '',
     startDate: '',
     endDate: '',
-    category: '',
+    category: null,
     start: '',
     end: ''
   };
 
-  statesObject: any = {};
-  countriesObject: any = {};
-  citiesObject: any = {};
   vehiclesObject: any = {};
   assetsObject: any = {};
   carriersObject: any = {};
@@ -107,173 +149,148 @@ export class TripListComponent implements OnInit {
   tripStartPoint = 1;
   tripEndPoint = this.pageLength;
   lastEvaluatedKey = '';
-  tripConfirmedNext = false;
-  tripConfirmedPrev = true;
-  tripConfirmedDraw = 0;
-  tripConfirmedPrevEvauatedKeys = [''];
-  tripConfirmedStartPoint = 1;
-  tripConfirmedEndPoint = this.pageLength;
-  tripConfirmedlastEvaluatedKey = '';
-  tripDispatchedNext = false;
-  tripDispatchedPrev = true;
-  tripDispatchedDraw = 0;
-  tripDispatchedPrevEvauatedKeys = [''];
-  tripDispatchedStartPoint = 1;
-  tripDispatchedEndPoint = this.pageLength;
-  tripDispatchedlastEvaluatedKey = '';
-  tripStartedNext = false;
-  tripStartedPrev = true;
-  tripStartedDraw = 0;
-  tripStartedPrevEvauatedKeys = [''];
-  tripStartedStartPoint = 1;
-  tripStartedEndPoint = this.pageLength;
-  tripStartedlastEvaluatedKey = '';
-  tripEnrouteNext = false;
-  tripEnroutePrev = true;
-  tripEnrouteDraw = 0;
-  tripEnroutePrevEvauatedKeys = [''];
-  tripEnrouteStartPoint = 1;
-  tripEnrouteEndPoint = this.pageLength;
-  tripEnroutelastEvaluatedKey = '';
-  tripCancelNext = false;
-  tripCancelPrev = true;
-  tripCancelDraw = 0;
-  tripCancelPrevEvauatedKeys = [''];
-  tripCancelStartPoint = 1;
-  tripCancelEndPoint = this.pageLength;
-  tripCancellastEvaluatedKey = '';
-  tripDeliverNext = false;
-  tripDeliverPrev = true;
-  tripDeliverDraw = 0;
-  tripDeliverPrevEvauatedKeys = [''];
-  tripDeliverStartPoint = 1;
-  tripDeliverEndPoint = this.pageLength;
-  tripDeliverlastEvaluatedKey = '';
+  driversIDSObject = [];
+  tripDate = '';
+  tripTime = '';
+  recIndex:any = '';
+  records = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  fetchedRecordsCount = 0;
+  lastFetched = {
+    draw:0,
+    status: false
+  }
+  settlement;
+  cancelOrd = 'no';
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
-    this.fetchOtherTripsCount();
-    this.fetchTripsCount()
-    this.initDataTable('all');
-    this.fetchAllStatesIDs();
+    this.fetchAllTripsCount();
     this.fetchAllVehiclesIDs();
-    this.fetchAllCitiesIDs();
-    this.fetchAllCountriesIDs();
     this.fetchAllAssetIDs();
     this.fetchAllCarrierIDs();
-    this.fetchAllDriverIDs();
     this.fetchAllOrderIDs();
-
-    this.initConfirmedDataTable();
-    this.initDispatchedDataTable();
-    this.initStartedDataTable();
-    this.initEnrouteDataTable();
+    this.fetchAllDrivers();
   }
 
-  async fetchTrips(result, type=null) {
-
+  async fetchTrips(result, type = null) {
+    let trpArr = [];
     for (let i = 0; i < result.Items.length; i++) {
-        result.Items[i].pickupLocation = '';
-        result.Items[i].pickupTime = '';
-        result.Items[i].dropLocation = '';
-        result.Items[i].dropTime = '';
-        result.Items[i].dropLocation = '';
-        result.Items[i].driverUsername = '';
-        result.Items[i].vehicleId = '';
-        result.Items[i].assetId = [];
-        result.Items[i].carrierId = '';
+      result.Items[i].pickupLocation = '';
+      result.Items[i].pickupLocationCount = 0;
+      result.Items[i].dropLocation = '';
+      result.Items[i].dropLocationCount = 0;
+      result.Items[i].driverId = '';
+      result.Items[i].driverCount = 0;
+      result.Items[i].vehicleId = '';
+      result.Items[i].vehicleCount = 0;
+      result.Items[i].assetId = '';
+      result.Items[i].assetCount = 0;
+      result.Items[i].planCarrierId = '';
+      result.Items[i].carrierIdCount = 0;
 
-        const element = result.Items[i];
-        let drop;
-        let planData;
+      const element = result.Items[i];
 
-        planData = result.Items[i].tripPlanning[0];
-        result.Items[i].pickupLocation = planData.location;
-        result.Items[i].pickupTime = planData.pickupTime;
+      for (let j = 0; j < result.Items[i].tripPlanning.length; j++) {
+        const element2 = result.Items[i].tripPlanning[j];
+        if (element2.type == 'Pickup') {
+          result.Items[i].pickupLocationCount += 1;
 
-        let lastloc = result.Items[i].tripPlanning.length - 1
-        drop = result.Items[i].tripPlanning[lastloc].location;
-        result.Items[i].dropLocation = drop;
-        result.Items[i].dropTime =result.Items[i].tripPlanning[lastloc].dropTime;
+          if (result.Items[i].pickupLocation == '') {
+            result.Items[i].pickupLocation = element2.location;
+          }
+        } else if (element2.type == 'Delivery') {
+          result.Items[i].dropLocationCount += 1;
 
-        if (planData.assetID !== '' && planData.assetID !== undefined) {
-          for (let j = 0; j < planData.assetID.length; j++) {
-            const astId = planData.assetID[j];
-            result.Items[i].assetId.push(astId)
+          if (result.Items[i].dropLocation == '') {
+            result.Items[i].dropLocation = element2.location;
           }
         }
 
-        if (planData.driverUsername !== '' && planData.driverUsername !== undefined) {
-          result.Items[i].driverUsername = planData.driverUsername;
+        if (element2.carrierID !== '' && element2.carrierID !== undefined && element2.carrierID !== null) {
+          if (result.Items[i].planCarrierId == '') {
+            result.Items[i].planCarrierId = element2.carrierID;
+          }
+          if(element.carrierIDs) {
+            result.Items[i].carrierIdCount = element.carrierIDs.length;  
+          }
+          
         }
 
-        if (planData.vehicleID !== '' && planData.vehicleID !== undefined) {
-          result.Items[i].vehicleId = planData.vehicleID;
+        if (element2.driverID !== '' && element2.driverID !== undefined) {
+          if (result.Items[i].driverId == '') {
+            result.Items[i].driverId = element2.driverID;
+          }
+
+          result.Items[i].driverCount = element.driverIDs.length;
         }
 
-        if (planData.carrierID !== '' && planData.carrierID !== undefined) {
-          result.Items[i].carrierId = planData.carrierID;
+        if (element2.coDriverID !== '' && element2.coDriverID !== undefined) {
+          if (result.Items[i].driverId == '') {
+            result.Items[i].driverId = element2.coDriverID;
+          }
         }
 
-        if(type == 'confirmed') {
-          this.confirmedTrips.push(result.Items[i]);
-        } else if(type == 'dispatched') {
-          this.dispatchedTrips.push(result.Items[i]);
-        } else if(type == 'started') {
-          this.startedTrips.push(result.Items[i]);
-        } else if(type == 'enroute') {
-          this.enrouteTrips.push(result.Items[i]);
-        } else if(type == 'cancelled') {
-          this.cancelledTrips.push(result.Items[i]);
-        } else if(type == 'delivered') {
-          this.deliveredTrips.push(result.Items[i]);
-        } else {
-          this.trips.push(result.Items[i]);
+        if (element2.vehicleID !== '' && element2.vehicleID !== undefined) {
+          if (result.Items[i].vehicleId == '') {
+            result.Items[i].vehicleId = element2.vehicleID;
+          }
+          result.Items[i].vehicleCount = element.vehicleIDs.length;
         }
+
+        for (let l = 0; l < element2.assetID.length; l++) {
+          const element3 = element2.assetID[l];
+
+          if (element3 !== '' && element3 !== undefined) {
+            if (result.Items[i].assetId == '') {
+              result.Items[i].assetId = element3;
+            }
+            result.Items[i].assetCount = element.assetIDs.length;
+          }
+        }
+      }
+      if (element.tripStatus == 'confirmed') {
+        element.showStatus = true;
+        this.confirmedTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'dispatched') {
+        element.showStatus = true;
+        this.dispatchedTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'started') {
+        element.showStatus = true;
+        this.startedTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'enroute') {
+        element.showStatus = true;
+        this.enrouteTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'cancelled') {
+        element.showStatus = false;
+        this.cancelledTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'delivered') {
+        element.showStatus = false;
+        this.deliveredTrips.push(result.Items[i]);
+      } else if (element.tripStatus == 'tonu') {
+        element.tripStatus = element.tripStatus.toUpperCase();
+        element.showStatus = false;
+        this.tonuTrips.push(result.Items[i]);
+      }
+
+      trpArr.push(result.Items[i]);
     }
+    this.trips.push(trpArr);
   }
 
-  fetchOtherTripsCount() {
-    this.confirmedTripsCount = 0;
-    this.dispatchedTripsCount = 0;
-    this.startedTripsCount = 0;
-    this.enrouteTripsCount = 0;
-    this.cancelledTripsCount = 0;
-    this.deliveredTripsCount = 0;
+  fetchAllTripsCount() {
     this.allTripsCount = 0;
 
-    this.apiService.getData('trips').
-      subscribe(async (result: any) => {
-        this.allTripsCount = result.Count;
-        for (let i = 0; i < result.Items.length; i++) {
-          if (result.Items[i].tripStatus === 'confirmed') {
-            this.confirmedTripsCount = this.confirmedTripsCount + 1;
+    this.apiService.getData('trips/get/allTypes/count').subscribe(async (result: any) => {
+      this.allTripsCount = result.allCount;
+      this.totalRecords = result.allCount;
 
-          } else if (result.Items[i].tripStatus === 'dispatched') {
-            this.dispatchedTripsCount = this.dispatchedTripsCount + 1;
-
-          } else if (result.Items[i].tripStatus === 'started') {
-            this.startedTripsCount = this.startedTripsCount + 1;
-
-          } else if (result.Items[i].tripStatus === 'enroute') {
-            this.enrouteTripsCount = this.enrouteTripsCount + 1;
-
-          } else if (result.Items[i].tripStatus === 'cancelled') {
-            this.cancelledTripsCount = this.cancelledTripsCount + 1;
-
-          } else if (result.Items[i].tripStatus === 'delivered') {
-            this.deliveredTripsCount = this.deliveredTripsCount + 1
-          }
-        }
-        this.resetEndPoint('confirmed');
-        this.resetEndPoint('dispatched');
-        this.resetEndPoint('started');
-        this.resetEndPoint('enroute');
-        this.resetEndPoint('cancelled');
-        this.resetEndPoint('delivered');
-      })
+      this.initDataTable();
+    })
   }
 
   fetchTripsCount() {
@@ -283,134 +300,268 @@ export class TripListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+        this.initDataTable();
       },
     });
   }
 
-  openStatusModal(tripId) {
+  openStatusModal(tripId, index) {
     this.tripID = tripId;
+    this.recIndex = index;
     this.fetchTripDetail();
   }
 
-  deleteTrip(tripID) {
+  deleteTrip(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.spinner.show();
-      this.apiService.getData('trips/delete/' + tripID + '/1').subscribe({
+      let record = {
+        eventID: eventData.tripID,
+        status: eventData.tripStatus,
+        stl: eventData.settlmnt
+      }
+      this.apiService.deleteData(`trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`).subscribe({
         complete: () => {},
         error: () => { },
         next: (result: any) => {
-          this.spinner.hide();
+          this.trips = [];
+          this.confirmedTrips = [];
+          this.dispatchedTrips = [];
+          this.startedTrips = [];
+          this.enrouteTrips = [];
+          this.cancelledTrips = [];
+          this.deliveredTrips = [];
+          this.tonuTrips = [];
+
           this.hasSuccess = true;
           this.tripDraw = 0;
           this.lastEvaluatedKey = '';
+          this.records = false;
+          this.fetchAllTripsCount();
 
-          this.fetchOtherTripsCount();
-          this.fetchTripsCount()
-          this.initDataTable('all');
-          if(this.activeTab == 'confirmed') {
-            this.tripConfirmedDraw = 0;
-            this.tripConfirmedlastEvaluatedKey = '';
-            this.initConfirmedDataTable();
-          } else if(this.activeTab == 'dispatched') {
-            this.tripDispatchedlastEvaluatedKey = '';
-            this.tripDispatchedDraw = 0;
-            this.initDispatchedDataTable();
-          } else if(this.activeTab == 'started') {
-            this.tripStartedlastEvaluatedKey = '';
-            this.tripStartedDraw = 0;
-            this.initStartedDataTable();
-          } else if(this.activeTab == 'enroute') {
-            this.tripEnroutelastEvaluatedKey = '';
-            this.tripEnrouteDraw = 0;
-            this.initEnrouteDataTable();
-          } else if(this.activeTab == 'cancelled') {
-            this.tripCancellastEvaluatedKey = '';
-            this.tripCancelDraw = 0;
-            this.initCancelDataTable();
-          } else if(this.activeTab == 'delivered') {
-            this.tripDeliverlastEvaluatedKey = '';
-            this.tripDeliverDraw = 0;
-            this.initDeliveredDataTable();
-          }
           this.toastr.success('Trip deleted successfully');
         }
-      })
+      });
     }
   }
 
   fetchTripDetail() {
-    this.spinner.show();
     this.apiService.getData('trips/' + this.tripID).
       subscribe((result: any) => {
         result = result.Items[0];
-
+        this.prevStatus = result.tripStatus;
         this.tripStatus = result.tripStatus;
         this.tripNumber = result.tripNo;
         this.bolNumber = result.bol;
+        this.tripDate = result.createdDate;
+        this.tripTime = result.createdTime;
+        this.settlement = result.settlmnt;
 
+        // show change status acc to trip
+        if(this.tripStatus == 'confirmed') {
+          this.statusData = [
+            {
+              name: "Confirmed",
+              value: 'confirmed'
+            },
+            {
+              name: "Dispatched",
+              value: 'dispatched'
+            },
+          ];
+        } else if (this.tripStatus == 'dispatched') {
+          this.statusData = [
+            {
+              name: "Dispatched",
+              value: 'dispatched'
+            },
+            {
+              name: "Started",
+              value: 'started'
+            },
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONU",
+              value: 'tonu'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        } else if (this.tripStatus == 'started') {
+          this.statusData = [
+            {
+              name: "Started",
+              value: 'started'
+            },
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONU",
+              value: 'tonu'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        } else if (this.tripStatus == 'enroute') {
+          this.statusData = [
+            {
+              name: "En-route",
+              value: 'enroute'
+            },
+            {
+              name: "Delivered",
+              value: 'delivered'
+            },
+            {
+              name: "TONU",
+              value: 'tonu'
+            },
+            {
+              name: "Cancelled",
+              value: 'cancelled'
+            },
+          ]
+        }
         $("#tripStatusModal").modal('show');
-        this.spinner.hide();
       })
   }
 
-  updateTripStatus(tripId) {
-    this.spinner.show();
+  updateTripStatus() {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
 
     if (this.tripStatus === '') {
       this.toastr.error('Please select trip status');
-      this.spinner.hide();
       return false;
     }
 
-    this.apiService.getData('trips/update-status/' + this.tripID + '/' + this.tripStatus).subscribe({
-      complete: () => {
-      },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              const path = val.path;
-              // We Can Use This Method
-              const key = val.message.match(/"([^']+)"/)[1];
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.spinner.hide();
-              this.throwErrors();
-            },
-            error: () => {
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        this.spinner.hide();
-        this.trips = [];
-        this.initDataTable('all');
+    if (this.tripStatus === this.prevStatus) {
+      $("#tripStatusModal").modal('hide');
+      return false;
+    }
+
+    let allowedStatus = [];
+    switch(this.prevStatus){
+      case 'confirmed':
+        allowedStatus = ['dispatched','started','enroute','cancelled','delivered','tonu'];
+        break;
+      case 'dispatched':
+        allowedStatus = ['started','enroute','cancelled','delivered','tonu'];
+        break;
+      case 'started':
+        allowedStatus = ['enroute','cancelled','delivered','tonu'];
+        break;
+      case 'enroute':
+        allowedStatus = ['cancelled','delivered','tonu'];
+        break;
+      case 'cancelled':
+        allowedStatus = [];
+        break;
+      case 'delivered':
+        allowedStatus = [];
+        break;
+      case 'tonu':
+          allowedStatus = [];
+          break;
+    }
+
+    if(!allowedStatus.includes(this.tripStatus)) {
+      this.toastr.error('Please select a valid status');
+      return false;
+    }
+    this.cancelOrd = 'no';
+    if(this.tripStatus === 'cancelled' && this.tripStatus != this.prevStatus) {
+      $("#assignConfirmationModal").modal('show');
+    } else {
+      this.updateTrip();
+    }
+  }
+
+  cancelOrder(status) {
+    this.cancelOrd = status;
+    this.updateTrip();
+  }
+
+  updateTrip() {
+    let tripObj = {
+      entryID : this.tripID,
+      status: this.tripStatus,
+      settlement: this.settlement,
+      cancelOrder: this.cancelOrd,
+    }
+    this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
+      if(result) {
+        if(this.activeTab == 'all') {
+          this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
+          if(this.tripStatus === 'tonu') {
+            this.trips[this.tripDraw][this.recIndex].tripStatus = this.trips[this.tripDraw][this.recIndex].tripStatus.toUpperCase();
+          }
+          // this.trips[this.tripDraw][this.recIndex].showStatus = false;
+          this.resetMainTabValues();
+        } else {
+          if(this.activeTab  == 'confirmed') {
+            this.confirmedTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'dispatched') {
+            this.dispatchedTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'started') {
+            this.startedTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'enroute') {
+            this.enrouteTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'cancelled') {
+            this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'delivered') {
+            this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
+          } else if(this.activeTab  == 'tonu') {
+            this.tonuTrips[this.recIndex].tripStatus = this.tripStatus;
+            this.tonuTrips[this.recIndex].tripStatus = this.tonuTrips[this.recIndex].tripStatus.toUpperCase();
+          }
+          this.resetMainTabValues();
+        }
+
         $("#tripStatusModal").modal('hide');
-        this.toastr.success('Trip status updated successfully.');
-        this.router.navigateByUrl('/dispatch/trips/trip-list');
-      },
-    });
+        $("#assignConfirmationModal").modal('hide');
+        this.toastr.success('Trip status updated successfully');
+      } else {
+        this.toastr.error('Internal Server error');
+      }
+    })
   }
 
   throwErrors() {
     this.form.showErrors(this.errors);
   }
 
-  initDataTable(tabType) {
+  initDataTable() {
     this.spinner.show();
-    this.trips = [];
-    this.apiService.getData('trips/fetch/records/' + tabType + '?searchValue=' + this.tripsFiltr.searchValue + '&startDate=' + this.tripsFiltr.start +
+    this.apiService.getData('trips/fetch/records/all?searchValue=' + this.tripsFiltr.searchValue + '&startDate=' + this.tripsFiltr.start +
       '&endDate=' + this.tripsFiltr.end + '&category=' + this.tripsFiltr.category + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
+        // this.trips = [];
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.records = false;
+        } else {
+          this.records = true;
+        }
+        this.fetchedRecordsCount += result.Count;
+        this.getStartandEndVal('all');
+
         this.fetchTrips(result, 'all')
         if (this.tripsFiltr.searchValue !== '' || this.tripsFiltr.start !== '' ) {
           this.tripStartPoint = 1;
@@ -418,12 +569,13 @@ export class TripListComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
+          let lastEvalKey = result[`LastEvaluatedKey`].tripSK.replace(/#/g,'--');
           this.tripNext = false;
           // for prev button
-          if (!this.tripPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
+          if (!this.tripPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.tripPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].tripID;
+          this.lastEvaluatedKey = lastEvalKey;
 
         } else {
           this.tripNext = true;
@@ -431,209 +583,24 @@ export class TripListComponent implements OnInit {
           this.tripEndPoint = this.totalRecords;
         }
 
+        if(this.totalRecords < this.tripEndPoint) {
+          this.tripEndPoint = this.totalRecords;
+        }
+
         // disable prev btn
-        if (this.tripDraw > 0) {
-          this.tripPrev = false;
-        } else {
+        if (this.tripDraw == 0) {
           this.tripPrev = true;
         }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
 
-  initConfirmedDataTable() {
-    this.spinner.show();
-    this.confirmedTrips = [];
-    this.apiService.getData('trips/fetch/records/confirmed?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripConfirmedlastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'confirmed');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripConfirmedNext = false;
-          // for prev button
-          if (!this.tripConfirmedPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripConfirmedPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripConfirmedlastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripConfirmedNext = true;
-          this.tripConfirmedlastEvaluatedKey = '';
-          this.tripConfirmedEndPoint = this.confirmedTripsCount;
+        // disable next btn when no records at last
+        if(this.fetchedRecordsCount < this.totalRecords ){
+          this.tripNext = false;
+        } else if(this.fetchedRecordsCount === this.totalRecords) {
+          this.tripNext = true;
         }
-        
-        // disable prev btn
-        if (this.tripConfirmedDraw > 0) {
-          this.tripConfirmedPrev = false;
-        } else {
-          this.tripConfirmedPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDispatchedDataTable() {
-    this.spinner.show();
-    this.dispatchedTrips = [];
-    this.apiService.getData('trips/fetch/records/dispatched?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripDispatchedlastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'dispatched');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripDispatchedNext = false;
-          // for prev button
-          if (!this.tripDispatchedPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripDispatchedPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripDispatchedlastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripDispatchedNext = true;
-          this.tripDispatchedlastEvaluatedKey = '';
-          this.tripDispatchedEndPoint = this.dispatchedTripsCount;
-        }
-        
-        // disable prev btn
-        if (this.tripDispatchedDraw > 0) {
-          this.tripDispatchedPrev = false;
-        } else {
-          this.tripDispatchedPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initStartedDataTable() {
-    this.spinner.show();
-    this.startedTrips = [];
-    this.apiService.getData('trips/fetch/records/started?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripStartedlastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'started');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripStartedNext = false;
-          // for prev button
-          if (!this.tripStartedPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripStartedPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripStartedlastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripStartedNext = true;
-          this.tripStartedlastEvaluatedKey = '';
-          this.tripStartedEndPoint = this.startedTripsCount;
-        }
-        
-        // disable prev btn
-        if (this.tripStartedDraw > 0) {
-          this.tripStartedPrev = false;
-        } else {
-          this.tripStartedPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initEnrouteDataTable() {
-    this.spinner.show();
-    this.enrouteTrips = [];
-    this.apiService.getData('trips/fetch/records/enroute?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripEnroutelastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'enroute');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripEnrouteNext = false;
-          // for prev button
-          if (!this.tripEnroutePrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripEnroutePrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripEnroutelastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripEnrouteNext = true;
-          this.tripEnroutelastEvaluatedKey = '';
-          this.tripEnrouteEndPoint = this.enrouteTripsCount;
-        }
-        
-        // disable prev btn
-        if (this.tripEnrouteDraw > 0) {
-          this.tripEnroutePrev = false;
-        } else {
-          this.tripEnroutePrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initCancelDataTable() {
-    this.spinner.show();
-    this.cancelledTrips = [];
-    this.apiService.getData('trips/fetch/records/cancelled?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripCancellastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'cancelled');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripCancelNext = false;
-          // for prev button
-          if (!this.tripCancelPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripCancelPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripCancellastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripCancelNext = true;
-          this.tripCancellastEvaluatedKey = '';
-          this.tripCancelEndPoint = this.cancelledTripsCount;
-        }
-        
-        // disable prev btn
-        if (this.tripCancelDraw > 0) {
-          this.tripCancelPrev = false;
-        } else {
-          this.tripCancelPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
-  }
-
-  initDeliveredDataTable() {
-    this.spinner.show();
-    this.deliveredTrips = [];
-    this.apiService.getData('trips/fetch/records/delivered?searchValue=&startDate=&endDate=&category=&lastKey=' + this.tripDeliverlastEvaluatedKey)
-      .subscribe((result: any) => {
-        this.fetchTrips(result,'delivered');
-        
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.tripDeliverNext = false;
-          // for prev button
-          if (!this.tripDeliverPrevEvauatedKeys.includes(result['LastEvaluatedKey'].tripID)) {
-            this.tripDeliverPrevEvauatedKeys.push(result['LastEvaluatedKey'].tripID);
-          }
-          this.tripDeliverlastEvaluatedKey = result['LastEvaluatedKey'].tripID;
-
-        } else {
-          this.tripDeliverNext = true;
-          this.tripDeliverlastEvaluatedKey = '';
-          this.tripDeliverEndPoint = this.deliveredTripsCount;
-        }
-        
-        // disable prev btn
-        if (this.tripDeliverDraw > 0) {
-          this.tripDeliverPrev = false;
-        } else {
-          this.tripDeliverPrev = true;
+        this.lastFetched = {
+          draw:this.tripDraw,
+          status: this.tripNext
         }
         this.spinner.hide();
       }, err => {
@@ -642,30 +609,53 @@ export class TripListComponent implements OnInit {
   }
 
   filterTrips() {
-    if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== '' 
-    || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== '') {
 
-      this.trips = [];
-      let sdate;
-      let edate;
-      if(this.tripsFiltr.startDate !== ''){
-        sdate = this.tripsFiltr.startDate.split('-');
-        if(sdate[0] < 10) {
-          sdate[0] = '0'+sdate[0]
-        }
-        this.tripsFiltr.start = sdate[2]+'-'+sdate[1]+'-'+sdate[0];
+
+    if(this.tripsFiltr.startDate===null) this.tripsFiltr.startDate=''
+    if(this.tripsFiltr.endDate===null) this.tripsFiltr.endDate=''
+
+    if(this.tripsFiltr.searchValue !== '' || this.tripsFiltr.startDate !== ''
+    || this.tripsFiltr.endDate !== '' || this.tripsFiltr.category !== null) {
+
+      if(this.tripsFiltr.startDate != '' && this.tripsFiltr.endDate == '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.startDate == '' && this.tripsFiltr.endDate != '') {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if(this.tripsFiltr.startDate>this.tripsFiltr.endDate){
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
       }
-      if(this.tripsFiltr.endDate !== ''){
-        edate = this.tripsFiltr.endDate.split('-');
-        if(edate[0] < 10) {
-          edate[0] = '0'+edate[0]
+      else if(this.tripsFiltr.category !== null && this.tripsFiltr.searchValue == ''){
+        this.toastr.error('Please enter search value.');
+        return false;
+      }else {
+        if(this.tripsFiltr.category == 'location') {
+          this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.toLowerCase();
         }
-        this.tripsFiltr.end = edate[2]+'-'+edate[1]+'-'+edate[0];
+        this.trips = [];
+        this.confirmedTrips = [];
+        this.dispatchedTrips = [];
+        this.startedTrips = [];
+        this.enrouteTrips = [];
+        this.cancelledTrips = [];
+        this.deliveredTrips = [];
+        this.tonuTrips = [];
+
+        this.records = false;
+        this.trips = [];
+        if(this.tripsFiltr.startDate !== '') {
+          this.tripsFiltr.start = this.tripsFiltr.startDate;
+        }
+        if(this.tripsFiltr.endDate !== '') {
+          this.tripsFiltr.end = this.tripsFiltr.endDate;
+        }
+        this.totalRecords = this.allTripsCount;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.activeTab = 'all';
+        this.fetchTripsCount();
       }
-      this.totalRecords = this.allTripsCount;
-      this.activeTab = 'all';
-      this.fetchTripsCount();
-      this.initDataTable('all');
     } else {
       return false;
     }
@@ -678,62 +668,27 @@ export class TripListComponent implements OnInit {
         searchValue: '',
         startDate: '',
         endDate: '',
-        category: '',
+        category: null,
         start: '',
         end: ''
       };
+      this.records = false;
+      this.dataMessage = Constants.FETCHING_DATA;
       $("#categorySelect").text('Search by category');
       this.tripDraw = 0;
       this.activeTab = 'all';
+      this.confirmedTrips = [];
+      this.dispatchedTrips = [];
+      this.startedTrips = [];
+      this.enrouteTrips = [];
+      this.cancelledTrips = [];
+      this.deliveredTrips = [];
+      this.tonuTrips = [];
       this.fetchTripsCount();
-      this.initDataTable('all');
       this.getStartandEndVal('all');
     } else {
       return false;
     }
-  }
-
-  selectCategory(type) {
-    let typeText = '';
-    this.tripsFiltr.category = type;
-
-    if (type === 'TripNo') {
-      typeText = 'Trip Number';
-      this.tripsFiltr.category = 'tripNo'
-    } else if (type === 'TripType') {
-      typeText = 'Trip Type';
-    } else if (type === 'OrderNo') {
-      typeText = 'Order Number';
-    } else if(type === 'TripType') {
-      typeText = 'Trip Type';
-    } else if(type === 'OrderNo') {
-      typeText = 'Order Number';
-    } else {
-      typeText = type;
-    }
-    
-    $("#categorySelect").text(typeText);
-  }
-
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
   }
 
   fetchAllVehiclesIDs() {
@@ -751,16 +706,16 @@ export class TripListComponent implements OnInit {
   }
 
   fetchAllCarrierIDs() {
-    this.apiService.getData('carriers/get/list')
+    this.apiService.getData('contacts/get/list/carrier')
       .subscribe((result: any) => {
         this.carriersObject = result;
       });
   }
 
-  fetchAllDriverIDs() {
-    this.apiService.getData('drivers/get/username-list')
+  fetchAllDrivers() {
+    this.apiService.getData('drivers/get/list')
       .subscribe((result: any) => {
-        this.driversObject = result;
+        this.driversIDSObject = result;
       });
   }
 
@@ -776,114 +731,54 @@ export class TripListComponent implements OnInit {
       this.tripStartPoint = this.tripDraw * this.pageLength + 1;
       this.tripEndPoint = this.tripStartPoint + this.pageLength - 1;
 
-    } else if(type == 'confirmed') {
-      this.tripConfirmedStartPoint = this.tripConfirmedDraw * this.pageLength + 1;
-      this.tripConfirmedEndPoint = this.tripConfirmedStartPoint + this.pageLength - 1;
-
-    } else if(type == 'dispatched') {
-      this.tripDispatchedStartPoint = this.tripDispatchedDraw * this.pageLength + 1;
-      this.tripDispatchedEndPoint = this.tripDispatchedStartPoint + this.pageLength - 1;
-
-    } else if(type == 'started') {
-      this.tripStartedStartPoint = this.tripStartedDraw * this.pageLength + 1;
-      this.tripStartedEndPoint = this.tripStartedStartPoint + this.pageLength - 1;
-
-    } else if(type == 'enrouted') {
-      this.tripEnrouteStartPoint = this.tripEnrouteDraw * this.pageLength + 1;
-      this.tripEnrouteEndPoint = this.tripEnrouteStartPoint + this.pageLength - 1;
-
-    } else if(type == 'cancelled') {
-      this.tripCancelStartPoint = this.tripCancelDraw * this.pageLength + 1;
-      this.tripCancelEndPoint = this.tripCancelStartPoint + this.pageLength - 1;
-
-    } else if(type == 'delivered') {
-      this.tripDeliverStartPoint = this.tripDeliverDraw * this.pageLength + 1;
-      this.tripDeliverEndPoint = this.tripDeliverStartPoint + this.pageLength - 1;
     }
   }
 
   // next button func
   nextResults(type) {
     if(type == 'all') {
+      this.tripNext = true;
       this.tripDraw += 1;
-      this.initDataTable('all');
-      this.getStartandEndVal(type);
 
-    } else if(type == 'confirmed') {
-      this.tripConfirmedDraw += 1;
-      this.initConfirmedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'dispatched') {
-      this.tripDispatchedDraw += 1;
-      this.initDispatchedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'started') {
-      this.tripStartedDraw += 1;
-      this.initStartedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'enrouted') {
-      this.tripEnrouteDraw += 1;
-      this.initEnrouteDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'cancelled') {
-      this.tripCancelDraw += 1;
-      this.initCancelDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'delivered') {
-      this.tripDeliverDraw += 1;
-      this.initDeliveredDataTable();
-      this.getStartandEndVal(type);
+      if(this.trips[this.tripDraw] == undefined) {
+        this.records = false;
+        this.initDataTable();
+        this.tripPrev = false;
+      } else {
+        if(this.tripDraw <= 0 ){
+          this.tripPrev = true;
+        } else {
+          this.tripPrev = false;
+        }
+        if(this.tripDraw < this.lastFetched.draw ){
+          this.tripNext = false;
+        } else {
+          this.tripNext = this.lastFetched.status;
+        }
+        this.getStartandEndVal('all');
+        this.tripEndPoint = this.tripStartPoint+this.trips[this.tripDraw].length-1;
+      }
     }
   }
 
   // prev button func
   prevResults(type) {
     if(type == 'all') {
+      this.tripNext = true;
+      this.tripPrev = true;
       this.tripDraw -= 1;
-      this.lastEvaluatedKey = this.tripPrevEvauatedKeys[this.tripDraw];
-      this.initDataTable('all');
-      this.getStartandEndVal(type);
 
-    } else if(type == 'confirmed') {
-      this.tripConfirmedDraw -= 1;
-      this.tripConfirmedlastEvaluatedKey = this.tripConfirmedPrevEvauatedKeys[this.tripConfirmedDraw];
-      this.initConfirmedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'dispatched') {
-      this.tripDispatchedDraw -= 1;
-      this.tripDispatchedlastEvaluatedKey = this.tripDispatchedPrevEvauatedKeys[this.tripDispatchedDraw];
-      this.initDispatchedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'started') {
-      this.tripStartedDraw -= 1;
-      this.tripStartedlastEvaluatedKey = this.tripStartedPrevEvauatedKeys[this.tripStartedDraw];
-      this.initStartedDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'enrouted') {
-      this.tripEnrouteDraw -= 1;
-      this.tripEnroutelastEvaluatedKey = this.tripEnroutePrevEvauatedKeys[this.tripEnrouteDraw];
-      this.initEnrouteDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'cancelled') {
-      this.tripCancelDraw -= 1;
-      this.tripCancellastEvaluatedKey = this.tripCancelPrevEvauatedKeys[this.tripCancelDraw];
-      this.initCancelDataTable();
-      this.getStartandEndVal(type);
-
-    } else if(type == 'delivered') {
-      this.tripDeliverDraw -= 1;
-      this.tripDeliverlastEvaluatedKey = this.tripDeliverPrevEvauatedKeys[this.tripDeliverDraw];
-      this.initDeliveredDataTable();
-      this.getStartandEndVal(type);
+      if(this.trips[this.tripDraw] == undefined) {
+        this.initDataTable();
+      } else {
+        if(this.tripDraw <= 0 ){
+          this.tripPrev = true;
+        } else {
+          this.tripPrev = false;
+        }
+        this.tripNext = false;
+        this.getStartandEndVal('all');
+      }
     }
   }
 
@@ -893,35 +788,53 @@ export class TripListComponent implements OnInit {
     this.tripDraw = 0;
   }
 
-  resetEndPoint(type){
-    if(type == 'confirmed') {
-      if(this.confirmedTripsCount < this.tripConfirmedEndPoint) {
-        this.tripConfirmedEndPoint = this.confirmedTripsCount;
-      }
-    } else if(type == 'dispatched') {
-      if(this.dispatchedTripsCount < this.tripDispatchedEndPoint) {
-        this.tripDispatchedEndPoint = this.dispatchedTripsCount;
-      }
-    } else if(type == 'started') {
-      if(this.startedTripsCount < this.tripStartedEndPoint) {
-        this.tripStartedEndPoint = this.startedTripsCount;
-      }
-    } else if(type == 'enroute') {
-      if(this.enrouteTripsCount < this.tripEnrouteEndPoint) {
-        this.tripEnrouteEndPoint = this.enrouteTripsCount;
-      }
-    } else if(type == 'cancelled') {
-      if(this.cancelledTripsCount < this.tripCancelEndPoint) {
-        this.tripCancelEndPoint = this.cancelledTripsCount;
-      }
-    } else if(type == 'delivered') {
-      if(this.deliveredTripsCount < this.tripDeliverEndPoint) {
-        this.tripDeliverEndPoint = this.deliveredTripsCount;
-      }
+  setActiveDiv(type){
+    this.activeTab = type;
+  }
+
+  categoryChange(event) {
+    if(event == 'driver' || event == 'vehicle' || event == 'asset' || event == 'tripType' || event == 'orderNo' || event == 'tripStatus') {
+      this.tripsFiltr.searchValue = null;
+    } else {
+      this.tripsFiltr.searchValue = '';
     }
   }
 
-  setActiveDiv(type){
-    this.activeTab = type;
+  resetMainTabValues(){
+    this.confirmedTrips = [];
+    this.dispatchedTrips = [];
+    this.startedTrips = [];
+    this.enrouteTrips = [];
+    this.cancelledTrips = [];
+    this.deliveredTrips = [];
+    for (let i = 0; i < this.trips.length; i++) {
+      const element = this.trips[i];
+
+      for (let x = 0; x < element.length; x++) {
+        if(this.tripID == element[x].tripID) {
+          element[x].tripStatus = this.tripStatus;
+        }
+
+        if (element[x].tripStatus == 'confirmed') {
+          this.confirmedTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'dispatched') {
+          this.dispatchedTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'started') {
+          this.startedTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'enroute') {
+          this.enrouteTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'cancelled') {
+          element[x].showStatus = false;
+          this.cancelledTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'delivered') {
+          element[x].showStatus = false;
+          this.deliveredTrips.push(element[x]);
+        } else if (element[x].tripStatus == 'tonu') {
+          element[x].showStatus = false;
+          element[x].tripStatus = element[x].tripStatus.toUpperCase();
+          this.tonuTrips.push(element[x]);
+        }
+      }
+    }
   }
 }

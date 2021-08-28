@@ -1,202 +1,254 @@
 <section class="body">
-
-    <!-- start: header -->
-    <app-header></app-header>
-    <!-- end: header -->
-
     <div class="inner-wrapper">
-        <!-- start: sidebar -->
-        <app-sidebar></app-sidebar>
-        <!-- end: sidebar -->
-
         <section role="main" class="content-body pr-0 pl-0 pt-0">
-            <header class="page-header pr-5">
-                <div class="row pr-1 mr-1" style="padding-top:10px;">
+            <header class="page-header">
+                <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                         Add Incident
                     </div>
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                    <div class="col-md-8 col-lg-8 text-right">
                         <a href="javascript:;" routerLink="/safety/incidents" class="btn btn-default btn-sm"><i
                                 class="fas fa-list"></i> Incident List</a>
                     </div>
                 </div>
             </header>
-            <div class="add-incident__main">
+            <div class="add-incident__main p-2">
                 <div class="card pr-0">
                     <div class="card-body">
                         <div class="row">
                             <div class="col pr-0">
-                                <form class="form-horizontal form-bordered text-dark">
+                                <form class="form-horizontal form-bordered text-dark" #eventForm="ngForm">
                                     <div class="form-group row">
                                         <div class="col-lg-5 offset-lg-1">
                                             <div class="row">
                                                 <div class="col-lg-5">
                                                     <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Date</label>
-                                                    <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
-                                                        placeholder="Enter event date" (click)="d.toggle()"
-                                                        ngbDatepicker #d="ngbDatepicker" class="form-control" readonly>
-
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Event Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    <input readonly [(ngModel)]="event.eventDate" name="eventDate" type="text"
+                                                        [maxDate]="birthDateMaxLimit" 
+                                                        [minDate]="birthDateMinLimit"
+                                                        placeholder="yyyy/mm/dd" #date="ngModel" (click)="d.toggle()"
+                                                        ngbDatepicker #d="ngbDatepicker" class="form-control" required>
+                                                    <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
+                                                        <div *ngIf="date.errors.required">
+                                                            Event date is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Time</label>
-                                                    <input type="text" class="form-control" [ngxTimepicker]="timep"
-                                                        [format]="24" readonly [(ngModel)]="event.eventTime"
-                                                        name="eventTime" placeholder="Enter event time">
-                                                    <ngx-material-timepicker #timep></ngx-material-timepicker>
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Event Time <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    <input type="time" class="form-control"
+                                                        [(ngModel)]="event.eventTime"
+                                                        name="eventTime" #time="ngModel" placeholder="Enter event time" required>
+                                                    <div *ngIf="time.invalid && (time.dirty || time.touched)" class="text-danger">
+                                                        <div *ngIf="time.errors.required">
+                                                            Event time is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Location</label>
-                                                    <input type="text" class="form-control"
-                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.location"
-                                                        name="location"
-                                                        placeholder="Start typing to get location suggestions"
-                                                        autocomplete="off">
 
-                                                    <ul class="p-0 m-0 text-left map-search__results bg-white"
-                                                        *ngIf="searchResults">
-                                                        <li *ngFor="let item of searchResults;">
-                                                            <a href="javascript:;"
-                                                                (click)="assignLocation(item.address.label)"
-                                                                title="{{item.address.label}}">{{item.address.label}}</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Driver
                                                         Name
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
-                                                    <ng-select [(ngModel)]="event.driverUsername"
-                                                        name="driverUsername" placeholder="Select driver name">
+                                                    <ng-select [(ngModel)]="event.driverID"
+                                                        name="driverID" #dName="ngModel" required placeholder="Select driver name">
                                                         <ng-option class="text-capitalize"
-                                                            *ngFor="let data of drivers" value="{{data.userName}}">{{data.fullName}}</ng-option>
+                                                            *ngFor="let data of drivers" value="{{data.driverID}}">{{data.firstName}} {{data.lastName}}</ng-option>
                                                     </ng-select>
+                                                    <div *ngIf="dName.invalid && (dName.dirty || dName.touched)" class="text-danger">
+                                                        <div *ngIf="dName.errors.required">
+                                                            Driver is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Trip ID <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <ng-select [(ngModel)]="event.tripID"
+                                                        name="tripID" #trip="ngModel" required placeholder="Select trip">
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let data of trips" value="{{data.tripID}}">{{data.tripNo}}</ng-option>
+                                                        </ng-select>
+                                                        <div *ngIf="trip.invalid && (trip.dirty || trip.touched)" class="text-danger">
+                                                            <div *ngIf="trip.errors.required">
+                                                                Trip is required.
+                                                            </div>
+                                                        </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Vehicle
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <ng-select [(ngModel)]="event.vehicleID" name="vehicleID"
-                                                        placeholder="Select vehicle">
+                                                        placeholder="Select vehicle" #vehicle="ngModel" required>
                                                         <ng-option class="text-capitalize"
                                                             *ngFor="let vehicle of vehicles"
                                                             value="{{ vehicle.vehicleID }}">{{
                                                             vehicle.vehicleIdentification }}
                                                         </ng-option>
                                                     </ng-select>
+                                                    <div *ngIf="vehicle.invalid && (vehicle.dirty || vehicle.touched)" class="text-danger">
+                                                        <div *ngIf="vehicle.errors.required">
+                                                            Vehicle is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
+
+                                                <div class="col-lg-5">
                                                     <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Severity
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Assigned To
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
-                                                    <ng-select [(ngModel)]="event.severity" name="severity"
-                                                        placeholder="Select Severity">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of severity"
-                                                            value="{{ data.value }}">{{ data.name }}</ng-option>
+                                                    <ng-select [(ngModel)]="event.assigned" name="assigned"
+                                                        placeholder="Select assigned to" #assigned="ngModel" required>
+                                                        <ng-option class="text-capitalize"
+                                                            *ngFor="let item of safetyManagers"
+                                                            value="{{ item }}">{{
+                                                                item }}
+                                                        </ng-option>
                                                     </ng-select>
+                                                    <div *ngIf="assigned.invalid && (assigned.dirty || assigned.touched)" class="text-danger">
+                                                        <div *ngIf="assigned.errors.required">
+                                                            Assigned is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
                                                     <label
                                                         class="control-label font-weight-bold text-lg-right pt-2">Incident
                                                         Type
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
-                                                    <ng-select [(ngModel)]="event.criticalityType"
-                                                        name="criticalityType" placeholder="Select Incident Type">
+                                                    <ng-select [(ngModel)]="event.incidentType"
+                                                        name="incidentType" #incType="ngModel" required placeholder="Select incident type">
                                                         <ng-option class="text-capitalize"
                                                             *ngFor="let data of incidentType" value="{{ data.value }}">
                                                             {{ data.name }}</ng-option>
                                                     </ng-select>
+                                                    <div *ngIf="incType.invalid && (incType.dirty || incType.touched)" class="text-danger">
+                                                        <div *ngIf="incType.errors.required">
+                                                            Incident type is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-5">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Severity
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="event.severity" name="severity"
+                                                        placeholder="Select severity" #sever="ngModel" required>
+                                                        <ng-option class="text-capitalize" *ngFor="let data of severity"
+                                                            value="{{ data.value }}">{{ data.name }}</ng-option>
+                                                    </ng-select>
+                                                    <div *ngIf="sever.invalid && (sever.dirty || sever.touched)" class="text-danger">
+                                                        <div *ngIf="sever.errors.required">
+                                                            Severity is required.
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-lg-10">
+                                                    <label
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                    <input type="text" class="form-control"
+                                                        (keyup)="searchTerm.next($event);" [(ngModel)]="event.location.label"
+                                                        name="location"
+                                                        placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada"
+                                                        autocomplete="off" #location="ngModel" required>
+
+                                                        <div class="map-search__results" *ngIf="searchResults">
+                                                            <ul class="p-0 m-0 text-left bg-white" >
+                                                               <li *ngFor="let item of searchResults;">
+                                                                  <a href="javascript:;" (click)="assignLocation(item.position,item.address.label)"
+                                                                     title="{{item.address.label}}">{{item.address.label}}</a>
+                                                               </li>
+                                                            </ul>
+                                                         </div>
+                                                    <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger">
+                                                        <div *ngIf="location.errors.required">
+                                                            Location is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
 
                                         <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Trip
-                                                        ID
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.tripID" name="tripID"
-                                                        placeholder="Select trip ID">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of trips"
-                                                            value="{{ data.tripID }}">{{ data.tripNo }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Assigned
-                                                        To
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="event.assignedUsername"
-                                                        name="assignedUsername" placeholder="Select assigned user">
-                                                        <ng-option class="text-capitalize" *ngFor="let data of users"
-                                                            value="{{ data.userName }}">{{ data.fullName }}</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                            </div>
+                                            
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label
 
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Upload
-                                                        Documents
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Attach Document(s)
+                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                     </label>
-                                                    <input type="file" class="form-control p-0" name="upload-doc"
+                                                    <input type="file" class="form-control p-0" multiple name="upload-doc"
                                                         (change)="selectDocuments($event, 'uploadedDocs')">
-
+                                                        <span *ngIf="docSizeError != ''" class="text-danger">
+                                                            {{docSizeError}}
+                                                            </span>    
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-10">
+                                                <div class="col-lg-5">
 
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Add
-                                                        Incident Video
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Photo(s)
+                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                     </label>
-                                                    <input type="file" class="form-control p-0" name="add_vid"
-                                                        (change)="selectDocuments($event, 'uploadedVideos')">
+                                                    <input type="file" class="form-control p-0" multiple name="add_vid"
+                                                        (change)="selectDocuments($event, 'uploadedPhotos')">
+                                                    <span *ngIf="photoSizeError != ''" class="text-danger">
+                                                        {{photoSizeError}}
+                                                        </span>
+                                                </div>
 
+                                                <div class="col-lg-5">
+
+                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Attach Video(s)
+                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                    </label>
+                                                    <input type="file" class="form-control p-0" multiple name="add_vid"
+                                                        (change)="selectDocuments($event, 'uploadedVideos')">
+                                                    <span *ngIf="videoSizeError != ''" class="text-danger">
+                                                        {{videoSizeError}}
+                                                        </span>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label
-                                                        class="control-label font-weight-bold text-lg-right pt-2">Remarks
-                                                        &nbsp; <span class="text-1 optional-label-color">(optional)</span>
+                                                        class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes
+                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
                                                     </label>
-                                                    <textarea class="form-control" rows="3" placeholder="Enter Remarks"
-                                                        name="remarks" [(ngModel)]="event.remarks"></textarea>
+                                                    <textarea class="form-control h-auto" #notes="ngModel" required rows="3" placeholder="Enter notes for the Safety Manager"
+                                                        name="notes" [(ngModel)]="event.notes"></textarea>
+                                                        <div *ngIf="event.notes?.length > 500" class="text-danger">
+                                                        Only 500 characters are allowed.
+                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-11 text-right">
                                             <button type="button" class="btn btn-default mt-4 mr-3"
                                                 routerLink="/safety/incidents">Cancel</button>
-                                            <a href="javascript:;" (click)="addEvent()"
-                                                class="btn btn-success mt-4 modal-confirm">Submit</a>
+                                            <button [disabled]="disableButton || disabledButton()" (click)="addEvent()"
+                                                class="btn btn-success mt-4 modal-confirm">Save</button>
                                         </div>
                                     </div>
                                 </form>

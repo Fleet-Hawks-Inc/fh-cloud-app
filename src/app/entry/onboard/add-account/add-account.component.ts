@@ -1,10 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
+import { AccountService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError, retryWhen } from 'rxjs/operators';
 import { from, Subject, throwError } from 'rxjs';
-import { NgForm } from '@angular/forms';
 import { HereMapService } from '../../../services';
+import { Location } from '@angular/common';
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { passwordStrength } from 'check-password-strength'
+import {Router} from '@angular/router'
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -12,24 +17,21 @@ declare var $: any;
   styleUrls: ['./add-account.component.css']
 })
 export class AddAccountComponent implements OnInit {
-  @ViewChild('carrierForm') carrierForm: NgForm;
   Asseturl = this.apiService.AssetUrl;
   carrierID: string;
-  activeTab = 1;
-
   CCC = '';
   DBAName = '';
-  DOT = '';
-  EIN = '';
-  MC = '';
+  DOT: number;
+  EIN: number;
+  MC: number;
   SCAC = '';
-  CTPAT = '';
-  CSA = '';
+  CSA = false;
+  CTPAT = false;
+  PIP = false;
   cargoInsurance = '';
   email = '';
   userName = '';
   carrierName = '';
-  carrierBusinessName = '';
   findingWay = '';
   firstName = '';
   lastName = '';
@@ -37,56 +39,66 @@ export class AddAccountComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
-   uploadedLogo = '';
+  fax = '';
+  bizCountry = null;
+  uploadedLogo = '';
   fleets = {
     curtainSide: 0,
     dryVans: 0,
     flatbed: 0,
     reefers: 0,
-    totalFleets: 0,
+    totalFleets: 1,
     trailers: 0,
     trucks: 0,
   };
+  reCaptcha: any
+  size = "Normal"
+  lang = "en"
+  theme = "light"
+
   addressDetails = [{
-    addressType: '',
-    countryID: '',
+    addressType: 'yard',
+    defaultYard: false,
     countryName: '',
-    stateID: '',
+    countryCode: '',
+    stateCode: '',
     stateName: '',
-    cityID: '',
     cityName: '',
     zipCode: '',
-    address1: '',
-    address2: '',
+    address: '',
     geoCords: {
       lat: '',
       lng: ''
     },
-    manual: false
+    manual: false,
+    states: [],
+    cities: []
   }];
-  bank = {
+  banks = [{
     branchName: '',
     accountNumber: '',
+    transitNumber: '',
     routingNumber: '',
-    institutionalNumber: '',
+    institutionNumber: '',
     addressDetails: [{
-      addressType: '',
-      countryID: '',
+      addressType: 'branch',
       countryName: '',
-      stateID: '',
+      countryCode: '',
+      stateCode: '',
       stateName: '',
-      cityID: '',
       cityName: '',
       zipCode: '',
-      address1: '',
-      address2: '',
+      address: '',
       geoCords: {
         lat: '',
         lng: ''
       },
-      manual: false
+      manual: false,
+      bankStates: [],
+      bankCities: []
     }]
-  };
+  }];
+  submitDisabled = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -96,7 +108,6 @@ export class AddAccountComponent implements OnInit {
   citiesObject: any = {};
   newAddress = [];
   addressCountries = [];
-  deletedAddress = [];
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
@@ -104,42 +115,69 @@ export class AddAccountComponent implements OnInit {
   countries = [];
   states = [];
   cities = [];
-  public searchBankTerm = new Subject<string>();
-  public searchBankResults: any;
-  userLocationBank: any;
-  statesObjectBank: any = {};
-  countriesObjectBank: any = {};
-  citiesObjectBank: any = {};
-  newAddressBank = [];
-  addressCountriesBank = [];
-  deletedAddressBank = [];
-  selectedFilesBank: FileList;
-  selectedFileNamesBank: Map<any, any>;
-  uploadedDocsBank = [];
-  showAddressBank = false;
-  countriesBank = [];
-  statesBank = [];
-  citiesBank = [];
   errors = {};
-  form;
+  carrierForm;
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  errorClass = false; // to show error when password and confirm password don't match
   Error = '';
   Success = '';
-  constructor(private apiService: ApiService, private toaster: ToastrService, private HereMap: HereMapService,) {
+  yardAddress: boolean;
+  fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
+  yardDefault = false;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  }
+  siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
+  constructor(private apiService: ApiService,
+              private toaster: ToastrService,
+              private accountService: AccountService,
+              private location: Location,
+              private HereMap: HereMapService,
+              private router: Router) {
     this.selectedFileNames = new Map<any, any>();
   }
 
   ngOnInit() {
-    this.fetchCountries();
-    this.fetchBankCountries();
+    this.getCarrierData();
     this.searchLocation(); // search location on keyup
-    this.searchBankLocation(); // search location on keyup
     $(document).ready(() => {
-      this.form = $('#carrierForm').validate();
+      // this.carrierForm = $('#carrierForm').validate();
     });
+  }
+
+  getCarrierData(){
+    this.apiService.getData('carriers/getCarrier').subscribe((res)=>{
+      if(res.Items.length>0){
+        let data=res.Items[0]
+
+        this.firstName=data.firstName
+        this.lastName=data.lastName
+        this.phone=data.phone
+        this.fax=data.fax
+        this.userName=data.userName
+        this.email=data.email
+        this.findingWay=data.findingWay
+        this.carrierID=data.carrierID
+
+
+      }
+    })
+  }
+  geocodingSearch(value) {
+    this.HereMap.geoCode(value);
+  }
+  // Show password
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  togglecpwdfieldTextType() {
+    this.cpwdfieldTextType = !this.cpwdfieldTextType;
   }
   /**
    * address
@@ -152,120 +190,84 @@ export class AddAccountComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
-  async getStates(id: any, oid = null) {
-    if (oid != null) {
-      this.addressDetails[oid].countryName = this.countriesObject[id];
-    }
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.states = result.Items;
-      });
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    $('div').removeClass('show-search__result');
   }
-
-  async getCities(id: any, oid = null) {
-    if (oid != null) {
-      this.addressDetails[oid].stateName = this.statesObject[id];
+  manBankAddress(event, i, bankIndex) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
     }
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.cities = result.Items;
-      });
   }
-  getCityName(i, id: any) {
-    const result = this.citiesObject[id];
-    this.addressDetails[i].cityName = result;
+  getStates(countryCode: any, index: any) {
+    this.addressDetails[index].stateCode = '';
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getCities(stateCode: any, index: any, countryCode: any) {
+    this.addressDetails[index].cityName = '';
+    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  getBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].stateCode = '';
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
-    this.addressDetails.push({
-      addressType: '',
-      countryID: '',
-      countryName: '',
-      stateID: '',
-      stateName: '',
-      cityID: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
-      geoCords: {
-        lat: '',
-        lng: ''
-      },
-      manual: false
-    });
-  }
-  fetchCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countries = result.Items;
-        this.countries.map(elem => {
-          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
-            this.addressCountries.push({ countryName: elem.countryName, countryID: elem.countryID })
-          }
-        });
+    if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
+      this.toaster.warning('Maximum 3 addresses are allowed.');
+    } else {
+      this.addressDetails.push({
+        addressType: '',
+        defaultYard: false,
+        countryName: '',
+        countryCode: '',
+        stateCode: '',
+        stateName: '',
+        cityName: '',
+        zipCode: '',
+        address: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        manual: false,
+        states: [],
+        cities: []
       });
-  }
-  async fetchCountriesByName(name: string, i) {
-    const result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;    }
-    return '';
-  }
-
-  async fetchStatesByName(name: string, i) {
-    const result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID, i);
-      return result.Items[0].stateID;
     }
-    return '';
-  }
-
-  async fetchCitiesByName(name: string) {
-    const result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
   }
   remove(obj, i, addressID = null) {
     if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddress.push(addressID)
-      }
       this.addressDetails.splice(i, 1);
     }
   }
-  fetchAllStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObject = result;
-      });
-  }
-
-  fetchAllCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObject = result;
-      });
-  }
-
-  fetchAllCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObject = result;
-      });
-  }
   public searchLocation() {
-    let target;
     this.searchTerm.pipe(
       map((e: any) => {
         $('.map-search__results').hide();
@@ -275,7 +277,7 @@ export class AddAccountComponent implements OnInit {
       debounceTime(400),
       distinctUntilChanged(),
       switchMap(term => {
-        return this.HereMap.searchEntries(term);
+        return this.HereMap.searchForOnBoard(term);
       }),
       catchError((e) => {
         return throwError(e);
@@ -284,298 +286,221 @@ export class AddAccountComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
-    $('div').removeClass('show-search__result');
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].countryID = ''; // empty the fields if manual is false (if manual was true IDs were stored)
-    this.addressDetails[i].stateID = '';
-    this.addressDetails[i].cityID = '';
-    this.addressDetails[i].zipCode = '';
-
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
-  }
-  /**
-   * bank address
-   */
-  clearBankLocation(i) {
-    this.bank.addressDetails[i][`userLocation`] = '';
+    this.addressDetails[i][`userLocation`] = item.address.label;
+    this.addressDetails[i].geoCords.lat = item.position.lat;
+    this.addressDetails[i].geoCords.lng = item.position.lng;
+    this.addressDetails[i].countryName = item.address.CountryFullName;
+    this.addressDetails[i].countryCode = item.address.Country;
+    this.addressDetails[i].stateCode = item.address.State;
+    this.addressDetails[i].stateName = item.address.StateName;
+    this.addressDetails[i].cityName = item.address.City;
+    this.addressDetails[i].zipCode = item.address.Zip;
+    this.addressDetails[i].address = item.address.StreetAddress;
     $('div').removeClass('show-search__result');
   }
-  addBankAddress() {
-    this.bank.addressDetails.push({
-      addressType: '',
-      countryID: '',
-      countryName: '',
-      stateID: '',
-      stateName: '',
-      cityID: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
-      geoCords: {
-        lat: '',
-        lng: ''
-      },
-      manual: false
-    });
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
-  manBankAddress(event, i) {
-    if (event.target.checked) {
-      $(event.target).closest('.address-item').addClass('open');
-      this.bank.addressDetails[i][`userLocation`] = '';
-    } else {
-      $(event.target).closest('.address-item').removeClass('open');
+  async bankAddress(i, item, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
+    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
+    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
+    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
+    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
+    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
+    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
+    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
+    $('div').removeClass('show-search__result');
+  }
+  defaultYardFn(e: any, index: number) {
+    if (e === true) {
+      this.addressDetails[index].defaultYard = true;
+      this.yardDefault = true;
     }
-  }
-  fetchBankCountries() {
-    this.apiService.getData('countries')
-      .subscribe((result: any) => {
-        this.countriesBank = result.Items;
-        this.countriesBank.map(elem => {
-          if (elem.countryName === 'Canada' || elem.countryName === 'United States of America') {
-            this.addressCountriesBank.push({ countryName: elem.countryName, countryID: elem.countryID });
-          }
-        });
-      });
-  }
-  async getBankStates(id: any, oid = null) {
-    if (oid != null) {
-      this.bank.addressDetails[oid].countryName = this.countriesObjectBank[id];
-    }
-    this.apiService.getData('states/country/' + id)
-      .subscribe((result: any) => {
-        this.statesBank = result.Items;
-      });
-  }
-
-  async getBankCities(id: any, oid = null) {
-    if (oid != null) {
-      this.bank.addressDetails[oid].stateName = this.statesObjectBank[id];
-    }
-    this.apiService.getData('cities/state/' + id)
-      .subscribe((result: any) => {
-        this.citiesBank = result.Items;
-      });
-  }
-  async fetchBankCountriesByName(name: string, i) {
-    const result = await this.apiService.getData(`countries/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getStates(result.Items[0].countryID, i);
-      return result.Items[0].countryID;
-    }
-    return '';
-  }
-
-  async fetchBankStatesByName(name: string, i) {
-    const result = await this.apiService.getData(`states/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      this.getCities(result.Items[0].stateID, i);
-      return result.Items[0].stateID;
-    }
-    return '';
-  }
-
-  async fetchBankCitiesByName(name: string) {
-    const result = await this.apiService.getData(`cities/get/${name}`)
-      .toPromise();
-    if (result.Items.length > 0) {
-      return result.Items[0].cityID;
-    }
-    return '';
-  }
-  fetchAllBankStatesIDs() {
-    this.apiService.getData('states/get/list')
-      .subscribe((result: any) => {
-        this.statesObjectBank = result;
-      });
-  }
-  fetchAllBankCountriesIDs() {
-    this.apiService.getData('countries/get/list')
-      .subscribe((result: any) => {
-        this.countriesObjectBank = result;
-      });
-  }
-  fetchAllBankCitiesIDs() {
-    this.apiService.getData('cities/get/list')
-      .subscribe((result: any) => {
-        this.citiesObjectBank = result;
-      });
-  }
-  getBankCityName(i, id: any) {
-    const result = this.citiesObject[id];
-    this.bank.addressDetails[i].cityName = result;
-  }
-  public searchBankLocation() {
-    let target;
-    this.searchBankTerm.pipe(
-      map((e: any) => {
-        $('.map-search__resultsBank').hide();
-        $(e.target).closest('div').addClass('show-search__resultBank');
-        return e.target.value;
-      }),
-      debounceTime(400),
-      distinctUntilChanged(),
-      switchMap(term => {
-        return this.HereMap.searchEntries(term);
-      }),
-      catchError((e) => {
-        return throwError(e);
-      }),
-    ).subscribe(res => {
-      this.searchBankResults = res;
-    });
-  }
-  async bankAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.bank.addressDetails[i][`bankLocation`] = result.address.label;
-    this.bank.addressDetails[i].geoCords.lat = result.position.lat;
-    this.bank.addressDetails[i].geoCords.lng = result.position.lng;
-    this.bank.addressDetails[i].countryName = result.address.countryName;
-    $('div').removeClass('show-search__resultBank');
-    this.bank.addressDetails[i].stateName = result.address.state;
-    this.bank.addressDetails[i].cityName = result.address.city;
-    this.bank.addressDetails[i].countryID = '';
-    this.bank.addressDetails[i].stateID = '';
-    this.bank.addressDetails[i].cityID = '';
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
-  }
-  removeBankAddress(obj, i, addressID = null) {
-    if (obj === 'address') {
-      if (addressID != null) {
-        this.deletedAddressBank.push(addressID);
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (i !== index) {
+        this.addressDetails[i].defaultYard = false;
       }
-      this.bank.addressDetails.splice(i, 1);
     }
+    if (e === false) {
+      this.addressDetails[index].defaultYard = false;
+    }
+  }
+  setYardDefault(event: any, index: number) {
+if (event === 'mailing') {
+  this.addressDetails[index].defaultYard = false;
+}
+  }
+  predefinedAccounts() {
+    this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
+    });
   }
   async onSubmit() {
     this.hasError = false;
     this.hasSuccess = false;
+    this.submitDisabled = true;
     this.hideErrors();
-    if (this.password === this.confirmPassword && this.password !== '') {
-    for (let i = 0; i < this.addressDetails.length; i++) {
-      const element = this.addressDetails[i];
-      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObject[element.cityID]}
-    ${this.statesObject[element.stateID]} ${this.countriesObject[element.countryID]}`;
+    for (const el of this.addressDetails) {
+      delete el.states;
+      delete el.cities;
+      if (el.countryCode !== '' && el.stateCode !== '' && el.cityName !== '') {
+        const fullAddress = `${el.address} ${el.cityName}
+    ${el.stateCode} ${el.countryCode}`;
         let result = await this.HereMap.geoCode(fullAddress);
         if (result.items.length > 0) {
           result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
+          el.geoCords.lat = result.position.lat;
+          el.geoCords.lng = result.position.lng;
         }
       }
     }
-    for (let i = 0; i < this.bank.addressDetails.length; i++) {
-      const element = this.bank.addressDetails[i];
-      if (element.countryID !== '' && element.stateID !== '' && element.cityID !== '') {
-        let fullAddress = `${element.address1} ${element.address2} ${this.citiesObjectBank[element.cityID]}
-    ${this.statesObjectBank[element.stateID]} ${this.countriesObjectBank[element.countryID]}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        if (result.items.length > 0) {
-          result = result.items[0];
-          element.geoCords.lat = result.position.lat;
-          element.geoCords.lng = result.position.lng;
+    for (const op of this.banks) {
+      for( const addressElement of op.addressDetails) {
+        delete addressElement.bankStates;
+        delete addressElement.bankCities;
+        if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
+          const fullAddress = `${addressElement.address} ${addressElement.cityName}
+      ${addressElement.stateCode} ${addressElement.countryCode}`;
+          let result = await this.HereMap.geoCode(fullAddress);
+          if (result.items.length > 0) {
+            result = result.items[0];
+            addressElement.geoCords.lat = result.position.lat;
+            addressElement.geoCords.lng = result.position.lng;
+          }
         }
       }
-    }
-    const data = {
-      CCC: this.CCC,
-      DBAName: this.DBAName,
-      DOT: this.DOT,
-      EIN: this.EIN,
-      MC: this.MC,
-      SCAC: this.SCAC,
-      cargoInsurance: this.cargoInsurance,
-      email: this.email,
-      userName: this.userName,
-      CTPAT: this.CTPAT,
-      CSA: this.CSA,
-      carrierName: this.carrierName,
-      findingWay: this.findingWay,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      liabilityInsurance: this.liabilityInsurance,
-      password: this.password,
-      addressDetails: this.addressDetails,
-      phone: this.phone,
-      fleets: {
-        curtainSide: this.fleets.curtainSide,
-        dryVans: this.fleets.dryVans,
-        flatbed: this.fleets.flatbed,
-        reefers: this.fleets.reefers,
-        totalFleets: this.fleets.totalFleets,
-        trailers: this.fleets.trailers,
-        trucks: this.fleets.trucks
-      },
-      bank: this.bank
-    };
-    // create form data instance
-    const formData = new FormData();
 
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
-    // append other fields
-    formData.append('data', JSON.stringify(data));
-    this.apiService.postData('carriers', formData, true).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.toaster.success('Account Added successfully');
-      },
+    const getYardDefault = this.addressDetails.filter((address: any) => {
+      return address.defaultYard === true;
     });
-  } else {
-    this.errorClass = true;
-    this.activeTab = 1;
-  }
+    if (getYardDefault.length === 0) {
+      this.yardDefault = false;
+    } else {
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (this.addressDetails[i].addressType === 'yard') {
+        if (this.addressDetails[i].manual) {
+          if (this.addressDetails[i].countryCode !== '' &&
+            this.addressDetails[i].stateCode !== '' &&
+            this.addressDetails[i].cityName !== '' &&
+            this.addressDetails[i].zipCode !== '' &&
+            this.addressDetails[i].address !== '') {
+            this.yardAddress = true;
+          }
+        } else if (!this.addressDetails[i].manual) {
+          if (this.addressDetails[i][`userLocation`] !== '') {
+            this.yardAddress = true;
+          }
+        }
+        break;
+      } else {
+        this.yardAddress = false;
+      }
+    }
+    if (this.yardAddress && this.yardDefault) {
+      const data = {
+        carrierID:this.carrierID,
+        entityType: 'carrier',
+        CCC: this.CCC,
+        DBAName: this.DBAName,
+        DOT: this.DOT,
+        EIN: this.EIN,
+        MC: this.MC,
+        SCAC: this.SCAC,
+        cargoInsurance: this.cargoInsurance,
+        email: this.email,
+        userName: this.userName,
+        CTPAT: this.CTPAT,
+        CSA: this.CSA,
+        PIP: this.PIP,
+        carrierName: this.carrierName.trim(),
+        findingWay: this.findingWay,
+        bizCountry: this.bizCountry,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        liabilityInsurance: this.liabilityInsurance,
+        password: this.password,
+        addressDetails: this.addressDetails,
+        phone: this.phone,
+        fax: this.fax,
+        fleets: {
+          curtainSide: this.fleets.curtainSide,
+          dryVans: this.fleets.dryVans,
+          flatbed: this.fleets.flatbed,
+          reefers: this.fleets.reefers,
+          totalFleets: this.fleets.totalFleets,
+          trailers: this.fleets.trailers,
+          trucks: this.fleets.trucks
+        },
+        banks: this.banks
+      };
+      if (data.bizCountry === 'CA') {
+        data.MC = null;
+        data.DOT = null;
+      }
+      // create form data instance
+      const formData = new FormData();
+      // append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
+      // append other fields
+      formData.append('data', JSON.stringify(data));
+      this.apiService.putData('carriers', formData, true).subscribe({
+        complete: () => {
+
+         },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+
+                // val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+
+                this.throwErrors();
+                this.submitDisabled = true;
+              },
+              error: () => { },
+              next: () => { this.submitDisabled = true; },
+            });
+        },
+        next: (res) => {
+          localStorage.setItem("isProfileComplete","true")
+          this.predefinedAccounts();
+          this.response = res;
+          this.submitDisabled = true;
+          this.toaster.success('Carrier completed successfully.');
+          this.router.navigate(['/Map-Dashboard'])
+        },
+      });
+    } else {
+      this.toaster.error('Yard address is mandatory and atleast one yard as default is mandatory');
+    }
+
   }
   throwErrors() {
-    console.log(this.errors);
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+        if (v === 'userName' || v === 'email' || v === 'carrierName') {
+          $('[name="' + v + '"]')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
+        }
+        if (v === 'cognito') {
+          this.toaster.error(this.errors[v]);
+        }
       });
-    // this.vehicleForm.showErrors(this.errors);
   }
   hideErrors() {
     from(Object.keys(this.errors))
@@ -588,19 +513,46 @@ export class AddAccountComponent implements OnInit {
     this.errors = {};
   }
   selectPhoto(event) {
-    let files = [...event.target.files];
+    const files = [...event.target.files];
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
-  next() {
-    this.activeTab++;
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else {
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else {
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else {
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else {
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true;
+    } else {
+      this.passwordValidation.length = false;
+
+
+    }
+    if (password.includes('.') || password.includes('-')) {
+      this.passwordValidation.specialCharacters = true;
+    }
+
+
   }
 
-  previous() {
-    this.activeTab--;
-  }
 
-  changeTab(value) {
-    this.activeTab = value;
-  }
 }

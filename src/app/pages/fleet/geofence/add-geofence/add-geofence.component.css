@@ -3,7 +3,7 @@
     position: absolute;
     top: 20px;
     right: 30px;
-    z-index: 999;
+    z-index: 700;
     width: 20rem;
 }
 .geofence-search ul{
@@ -28,3 +28,4 @@
 .show-search__result .map-search__results {
     display: block !important;
 }
+

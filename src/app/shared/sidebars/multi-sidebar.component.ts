@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from 'aws-amplify';
 declare var $: any;
 declare var jQuery: any;
 
 export class CommonSideBarComponent implements OnInit {
   //constructor(private router: Router) {}
+  companyID: string;
   ngOnInit() {
     $(document).ready(() => {
       // window.theme = {};
@@ -255,7 +256,7 @@ export class CommonSideBarComponent implements OnInit {
     });
   }
   Logout() {
-    //console.log('clicked');
+    
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
     //this.router.navigate(['/Login']);
@@ -267,7 +268,7 @@ export class CommonSideBarComponent implements OnInit {
   templateUrl: './fleet-sidebar.component.html',
 })
 export class FleetSidebarComponent extends CommonSideBarComponent {
-  constructor(private router: Router) {
+  constructor(private router: Router,) {
     super();
   }
   //super(router: Router) { }
@@ -333,6 +334,12 @@ export class SafetySidebarComponent extends CommonSideBarComponent {}
 })
 export class ManageSidebarComponent extends CommonSideBarComponent {}
 
+@Component({
+  selector: 'report-sidebar',
+  templateUrl: './module-report-sidebar.component.html',
+})
+export class ReportsSidebarComponent extends CommonSideBarComponent {}
+
 export const MultiSidebarComponents = [
   FleetSidebarComponent,
   ComplianceSidebarComponent,
@@ -342,4 +349,5 @@ export const MultiSidebarComponents = [
   AccountsSidebarComponent,
   SafetySidebarComponent,
   ManageSidebarComponent,
+  ReportsSidebarComponent,
 ];

@@ -1,7 +1,20 @@
 export const environment = {
   production: true,
-  BaseUrl: 'https://fleetservice.us-east-2.fleethawks.com/api/v1/',
-  AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
+  isFeatureEnabled: true,
+  isFleetEnabled: true,
+  isDispatchEnabled: true,
+  isComplianceEnabled: true,
+  isManageEnabled: true,
+  isSafetyEnabled: true,
+  isAccountsEnabled: true,
+  isReportsEnabled: false,
+
+  BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
+
+  AssetURL: 'https://fh-cloud-service-uploads-ue1.s3.us-east-1.amazonaws.com',
+  AccountServiceUrl: 'https://accounts.cloud.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.cloud.fleethawks.com/api/v1/',
+
   temp: 'search',
   LoginUrl: 'users/login',
   ApiKey: '',
@@ -14,15 +27,14 @@ export const environment = {
   //   APP_CLIENT_ID: '77ihpijtlrk6kt7e2ufma285il'
   // },
   congitoConfig: {
-    USER_POOL_ID: 'us-east-2_eGDgFKKM7',
-    REGION: 'us-east-2',
-    APP_CLIENT_ID: '76l88g289vcgrd8jf54pbedgqq'
+    USER_POOL_ID: 'ca-central-1_F0KoWWGIh',
+    REGION: 'ca-central-1',
+    APP_CLIENT_ID: '1khgs3lefjv2qld1dgts0dno68'
   },
   awsBucket: {
-    bucketName: 'fh-dashboard-assets',
-    accessKeyId: 'REMOVE_ME',
-    secretAccessKey: 'REMOVE_ME',
-    region: 'ap-south-1'
+    bucketName: 'fh-cloud-service-uploads-ue1',
+
+    region: 'ca-central-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,

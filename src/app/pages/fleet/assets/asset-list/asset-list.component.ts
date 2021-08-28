@@ -4,6 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
+import  Constants  from '../../constants';
+import {environment} from '../../../../../environments/environment';
+import {OnboardDefaultService}from '../../../../services/onboard-default.service';
+import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
@@ -12,12 +16,13 @@ declare var $: any;
   styleUrls: ['./asset-list.component.css'],
 })
 export class AssetListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
+  dataMessage: string = Constants.FETCHING_DATA;
   allAssetTypes: any;
   assetTypesObjects: any = {};
   title = 'Assets List';
-  mapView: boolean = false;
-  listView: boolean = true;
+  mapView = false;
+  listView = true;
   visible = true;
   allData = [];
   autoCarrier = [];
@@ -48,19 +53,20 @@ export class AssetListComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  Error: string = '';
-  Success: string = '';
+  Error = '';
+  Success = '';
 
   hideShow = {
+    vin: true,
     assetName: true,
     type: true,
     plateNo: true,
     lastLocation: true,
-    year: true,
+    year: false,
     make: true,
-    model: true,
-    ownership: true,
-    status: true,
+    model: false,
+    ownership: false,
+    currentStatus: true,
     group: false,
     aceID: false,
     aciID: false,
@@ -69,14 +75,14 @@ export class AssetListComponent implements OnInit {
   }
 
   message: any;
-  groupsList:any = {};
+  groupsList: any = {};
 
   suggestedAssets = [];
   assetID = '';
-  currentStatus = '';
+  assetType = null;
   assetIdentification = '';
   assetTypeList: any  = {};
-  totalRecords = 20;
+  totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
   manufacturersObjects: any = {};
@@ -94,41 +100,39 @@ export class AssetListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
-    private hereMap: HereMapService) {}
+    private hereMap: HereMapService,
+    private onboard: OnboardDefaultService) {}
 
   ngOnInit(): void {
+    this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
-      this.fetchAllAssetTypes();
       this.fetchGroups();
       this.initDataTable();
       this.fetchManufacturesByIDs();
       this.fetchModalsByIDs();
-      this.fetchAllAssetTypesList();
   }
 
-  getSuggestions(value) {
-    this.apiService
+  getSuggestions = _.debounce(function (value) {
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
       .getData(`assets/suggestion/${value}`)
       .subscribe((result) => {
-        this.suggestedAssets = result.Items;
-        if (this.suggestedAssets.length === 0){
-          this.assetID = '';
-        }
+        this.suggestedAssets = result;
       });
-  }
+    } else {
+      this.suggestedAssets = [];
+    }
+
+  }, 800)
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
-    this.assetID = assetID;
+    this.assetID = assetIdentification;
 
     this.suggestedAssets = [];
   }
-  fetchAllAssetTypesList() {
-    this.apiService.getData('assetTypes/get/list')
-    .subscribe((result: any) => {
-      this.assetTypeList = result;
-    });
-  }
+
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
@@ -142,7 +146,7 @@ export class AssetListComponent implements OnInit {
   }
 
   fetchModalsByIDs() {
-    this.apiService.getData('vehicleModels/get/list').subscribe((result: any) => {
+    this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
     });
   }
@@ -151,41 +155,40 @@ export class AssetListComponent implements OnInit {
     this.message = info.id + ' - ' + info.firstName;
   }
 
-
   fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?assetID=' + this.assetID + '&status=' + this.currentStatus).subscribe({
+    this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
+        if (this.assetID !== '' || this.assetType != null) {
+          this.assetEndPoint = this.totalRecords;
+        }
+        this.initDataTable();
       },
     });
   }
 
-  /*
-   * Get all assets types from trailers.json file
-   */
 
-  fetchAllAssetTypes() {
-    this.httpClient.get('assets/trailers.json').subscribe((data: any) =>{
-      this.allAssetTypes = data;
-      this.assetTypesObjects =  data.reduce( (a: any, b: any) => {
-        return a[b[`code`]] = b[`description`], a;
-    }, {});
-    })
-  }
+  deleteAsset(eventData) {;
+    // }
+      if (confirm('Are you sure you want to delete?') === true) {
+        // let record = {
+        //   date: eventData.createdDate,
+        //   time: eventData.createdTime,
+        //   eventID: eventData.assetID,
+        //   status: eventData.currentStatus
+        // }
+        this.apiService.deleteData(`assets/delete/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
+            this.allData = [];
+            this.assetDraw = 0;
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.lastEvaluatedKey = '';
+            this.fetchAssetsCount();
+            this.toastr.success('Asset Deleted Successfully!');
+          });
+      }
 
-  deactivateAsset(value, assetID) {
-    if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService
-      .getData(`assets/isDeleted/${assetID}/${value}`)
-      .subscribe((result: any) => {
-        this.allData = [];
-        this.fetchAssetsCount();
-        // this.rerender();
-        this.toastr.success('Asset deleted successfully');
-      });
-    }
   }
   mapShow() {
     this.mapView = true;
@@ -201,26 +204,40 @@ export class AssetListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('assets/fetch/records?assetID='+this.assetID+'&status='+this.currentStatus+'&lastKey='+this.lastEvaluatedKey)
+    this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        this.allData = result['Items'];
+        if(result.Items.length == 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
+        }
+        this.suggestedAssets = [];
+        this.getStartandEndVal();
 
-        if(this.assetID != '') {
+        result[`Items`].map((v:any) => {
+          v.assetType = v.assetType.replace("_"," ")
+        })
+        this.allData = result[`Items`];
+
+        if(this.assetID != '' || this.assetType != null) {
           this.assetStartPoint = 1;
           this.assetEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
+        if (result[`LastEvaluatedKey`] !== undefined) {
+          const lastEvalKey = result[`LastEvaluatedKey`].assetSK.replace(/#/g, '--');
           this.assetNext = false;
           // for prev button
-          if (!this.assetPrevEvauatedKeys.includes(result['LastEvaluatedKey'].assetID)) {
-            this.assetPrevEvauatedKeys.push(result['LastEvaluatedKey'].assetID);
+          if (!this.assetPrevEvauatedKeys.includes(lastEvalKey)) {
+            this.assetPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].assetID;
-          
+          this.lastEvaluatedKey = lastEvalKey;
+
         } else {
           this.assetNext = true;
           this.lastEvaluatedKey = '';
+          this.assetEndPoint = this.totalRecords;
+        }
+
+        if (this.totalRecords < this.assetEndPoint) {
           this.assetEndPoint = this.totalRecords;
         }
 
@@ -237,24 +254,29 @@ export class AssetListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.assetID !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
+      this.assetIdentification = this.assetIdentification.toLowerCase();
+      if(this.assetID == '') {
+        this.assetID = this.assetIdentification;
+      }
+      this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
+      this.suggestedAssets = [];
       this.fetchAssetsCount();
-      this.initDataTable();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.assetID !== '' || this.currentStatus !== '') {
+    if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetID = '';
       this.assetIdentification = '';
-      this.currentStatus = '';
-
+      this.assetType = null;
+      this.suggestedAssets = [];
       this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -263,6 +285,11 @@ export class AssetListComponent implements OnInit {
 
   hideShowColumn() {
     // for headers
+    if(this.hideShow.vin == false) {
+      $('.col0').css('display','none');
+    } else {
+      $('.col0').css('display','');
+    }
     if(this.hideShow.assetName == false) {
       $('.col1').css('display','none');
     } else {
@@ -290,7 +317,9 @@ export class AssetListComponent implements OnInit {
     if(this.hideShow.year == false) {
       $('.col5').css('display','none');
     } else {
+      $('.col5').removeClass('extra');
       $('.col5').css('display','');
+      $('.col5').css('min-width','200px');
     }
 
     if(this.hideShow.make == false) {
@@ -302,16 +331,20 @@ export class AssetListComponent implements OnInit {
     if(this.hideShow.model == false) {
       $('.col7').css('display','none');
     } else {
+      $('.col7').removeClass('extra');
       $('.col7').css('display','');
+      $('.col7').css('min-width','200px');
     }
 
     if(this.hideShow.ownership == false) {
       $('.col8').css('display','none');
     } else {
+      $('.col8').removeClass('extra');
       $('.col8').css('display','');
+      $('.col8').css('min-width','200px');
     }
 
-    if(this.hideShow.status == false) {
+    if(this.hideShow.currentStatus == false) {
       $('.col9').css('display','none');
     } else {
       $('.col9').css('display','');
@@ -323,7 +356,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col10').removeClass('extra');
       $('.col10').css('display','');
-      $('.col10').css('width','200px');
+      $('.col10').css('min-width','200px');
     }
 
     if(this.hideShow.aceID == false) {
@@ -331,7 +364,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col11').removeClass('extra');
       $('.col11').css('display','');
-      $('.col11').css('width','200px');
+      $('.col11').css('min-width','200px');
     }
 
     if(this.hideShow.aciID == false) {
@@ -339,7 +372,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col12').removeClass('extra');
       $('.col12').css('display','');
-      $('.col12').css('width','200px');
+      $('.col12').css('min-width','200px');
     }
 
     if(this.hideShow.gvwr == false) {
@@ -347,7 +380,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col13').removeClass('extra');
       $('.col13').css('display','');
-      $('.col13').css('width','200px');
+      $('.col13').css('min-width','200px');
     }
 
     if(this.hideShow.gawr == false) {
@@ -355,7 +388,7 @@ export class AssetListComponent implements OnInit {
     } else {
       $('.col14').removeClass('extra');
       $('.col14').css('display','');
-      $('.col14').css('width','200px');
+      $('.col14').css('min-width','200px');
     }
   }
 
@@ -366,17 +399,19 @@ export class AssetListComponent implements OnInit {
 
   // next button func
   nextResults() {
+    this.assetNext = true;
+    this.assetPrev = true;
     this.assetDraw += 1;
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   // prev button func
   prevResults() {
+    this.assetNext = true;
+    this.assetPrev = true;
     this.assetDraw -= 1;
     this.lastEvaluatedKey = this.assetPrevEvauatedKeys[this.assetDraw];
     this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

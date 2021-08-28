@@ -1,0 +1,397 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+        <h2>Accounts Overview</h2>
+        <div class="right-wrapper text-right mt-2 pr-2">
+          <a routerLink="/accounts/invoices/add" class="btn btn-success btn-sm mr-1" style="color:white;"><i
+              class="fas fa-plus"></i> Invoice </a>
+          <a routerLink="/accounts/expense/add" class="btn btn-success btn-sm mr-1" style="color:white;"><i
+              class="fas fa-plus"></i> Expense</a>
+          <a routerLink="/fleet/fuel/add" class="btn btn-success btn-sm mr-1" style="color:white;"><i
+              class="fas fa-plus"></i> Fuel Expense</a>
+          <a routerLink="/accounts/payments/driver-payments/add" class="btn btn-success btn-sm" style="color:white;"><i
+              class="fas fa-plus"></i> Driver Payment </a>
+        </div>
+      </header>
+      <div class=" m-3">
+        <div class="row text-dark">
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h3>Total Receivables</h3>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td colspan="2">
+                        <small>Total Unpaid Invoices CAD 2300</small>
+                        <div class="progress progress-xs progress-squared m-2 light">
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                            60%
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="text-center">
+                      <td>
+                        <div class="">
+                          <small>CURRENT</small>
+                          <div class="text-5 font-weight-bold">CAD 1300</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="">
+                          <small>OVERDUE<i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                              title="Above 45 Days"></i></small>
+                          <div class="text-5 font-weight-bold">CAD 1000</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h3>Total Payables</h3>
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <td colspan="2">
+                        <small>Total Unpaid Bills CAD 2500</small>
+                        <div class="progress progress-xs progress-squared m-2 light">
+                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60"
+                            aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                            60%
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="text-center">
+                      <td>
+                        <div class="">
+                          <small>CURRENT</small>
+                          <div class="text-5 font-weight-bold">CAD 1500</div>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="">
+                          <small>OVERDUE<i class="fas fa-exclamation-circle" data-toggle="tooltip" data-placement="top"
+                              title="Above 45 Days"></i></small>
+                          <div class="text-5 font-weight-bold">CAD 1000</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!-- CASH FLOW DIV -->
+        <!-- <div class="card-body my-3">
+          <div class="row text-dark my-4">
+            <div class="col-lg-6">
+              <h3>Cash Flow</h3>
+            </div>
+            <div class="col-lg-2 offset-lg-4 text-right mt-3">
+              <select class="form-control">
+                <optgroup>
+                  <option>This Fiscal Year</option>
+                  <option>Previous Fiscal Year</option>
+                  <option>Last 12 Months</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="col-lg-9">
+              <div>
+                <div class="chartjs-size-monitor">
+                   <div class="chartjs-size-monitor-expand">
+                      <div class=""></div>
+                   </div>
+                   <div class="chartjs-size-monitor-shrink">
+                      <div class=""></div>
+                   </div>
+                </div>
+                <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
+                   [legend]="chartLegend" [chartType]="chartType">
+                </canvas>
+             </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="row text-right my-3">
+                <div class="col-lg-12 text-4">Cash as on 01/04/2020</div>
+                <div class="col-lg-12 font-weight-bold text-5 ">CAD 0.00</div>
+              </div>
+              <div class="row text-right my-3">
+                <div class="col-lg-12 text-4">Incoming</div>
+                <div class="col-lg-12 font-weight-bold text-5 ">CAD 5345.00</div>
+              </div>
+              <div class="row text-right my-3">
+                <div class="col-lg-12 text-4">Outgoing</div>
+                <div class="col-lg-12 font-weight-bold text-5 ">CAD 3654.00</div>
+              </div>
+              <div class="row text-right my-3">
+                <div class="col-lg-12 text-4">Cash as on 31/03/2021</div>
+                <div class="col-lg-12 font-weight-bold text-5 ">CAD 5567.00</div>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- INCOME EXPENSE DIV -->
+        <div class=" mt-3">
+          <div class="row text-dark mt-4">
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <h3>Income & Expense</h3>
+                    </div>
+                    <div class="col-lg-3 offset-lg-3 text-right mt-3">
+                      <select class="form-control">
+                        <optgroup>
+                          <option>This Fiscal Year</option>
+                          <option>Previous Fiscal Year</option>
+                          <option>Last 12 Months</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                      <div>
+                        <div class="chartjs-size-monitor">
+                           <div class="chartjs-size-monitor-expand">
+                              <div class=""></div>
+                           </div>
+                           <div class="chartjs-size-monitor-shrink">
+                              <div class=""></div>
+                           </div>
+                        </div>
+                        <canvas  baseChart [datasets]="chartData1" [labels]="chartLabels1" [options]="chartOptions1"
+                           [legend]="chartLegend1" [chartType]="chartType1">
+                        </canvas>
+                     </div>
+                      <table class="table table-bordered">
+                        <tbody>
+                          <tr class="text-center text-dark">
+                            <td>
+                              <div>
+                                <p class="font-weight-bold">Total Income</p>
+                                <p class="text-5 font-weight-bold">CAD 544,234</p>
+                              </div>
+                            </td>
+                            <td>
+                              <div>
+                                <p class="font-weight-bold">Total Expense</p>
+                                <p class="text-5 font-weight-bold">CAD 456,674</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- TOP EXPENSE  -->
+            <div class="col-lg-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <h3>Top Expenses</h3>
+                    </div>
+                    <div class="col-lg-4 offset-lg-2 text-right mt-3">
+                      <select class="form-control">
+                        <optgroup>
+                          <option>This Fiscal Year</option>
+                          <option>This Quarter</option>
+                          <option>This Month</option>
+                          <option>Previous Fiscal Year</option>
+                          <option>Previous Quarter</option>
+                          <option>Previous Month</option>
+                          <option>Last 12 Months</option>
+                          <option>Last 6 Months</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div class="col-lg-12 mt-3">
+                      <div>
+                        <div class="chartjs-size-monitor">
+                           <div class="chartjs-size-monitor-expand">
+                              <div class=""></div>
+                           </div>
+                           <div class="chartjs-size-monitor-shrink">
+                              <div class=""></div>
+                           </div>
+                        </div>
+                        <canvas baseChart
+                         [datasets]="chartData2"
+                         [labels]="chartLabels2"
+                         [options]="chartOptions2"
+                         [legend]="chartLegend2"
+                         [chartType]="chartType2">
+                        </canvas>
+                     </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ACCOUNT DIV -->
+        <div class="mt-3">
+          <div class="row text-dark">
+            <div class="col-lg-4">
+              <div class="card" style="min-height: 300px;border: 0.5px solid #fff;">
+                <div class="card-header bg-default" style="padding: 2px;">
+                  <h4 class="font-weight-bold">Unbilled Expenses</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-responsive-md table-striped table-sm mb-0 table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Expense#</th>
+                            <th>Expense Type</th>
+                            <th>Expense Amount</th>
+                            <th>Vendor</th>
+                            <th>Balance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>8977</td>
+                            <td>Maintenance</td>
+                            <td>500 CAD</td>
+                            <td>XYZ Inc.</td>
+                            <td>8780 CAD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card" style="min-height: 300px;border: 0.5px solid #fff;">
+                <div class="card-header bg-default" style="padding: 2px;">
+                  <h4 class="font-weight-bold">Bank Account(s) Details</h4>
+                </div>
+                <div class="card-body" style="max-height: 246px;overflow-x: auto;">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-responsive-md table-striped table-sm mb-0 table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Account Name</th>
+                            <th>Account#</th>
+                            <th>Account Type</th>
+                            <th>Balance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Bank 1</td>
+                            <td>1002</td>
+                            <td>Bank</td>
+                            <td>8780 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Bank 2</td>
+                            <td>1002</td>
+                            <td>Bank</td>
+                            <td>6700 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Bank 3</td>
+                            <td>1002</td>
+                            <td>Bank</td>
+                            <td>1200 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Bank 4</td>
+                            <td>1002</td>
+                            <td>Bank</td>
+                            <td>5,466 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Bank 5</td>
+                            <td>1002</td>
+                            <td>Bank</td>
+                            <td>65,566 CAD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card" style="min-height: 300px;overflow-x:auto;border: 0.5px solid #fff;">
+                <div class="card-header bg-default" style="padding: 2px;">
+                  <h4 class="font-weight-bold">Account Watch List</h4>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-responsive-md table-striped table-sm mb-0 table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Account Name</th>
+                            <th>Account#</th>
+                            <th>Account Type</th>
+                            <th>Balance</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Accounts Receivables</td>
+                            <td>1020</td>
+                            <td>Current Assets</td>
+                            <td>87,800 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Expense Account</td>
+                            <td>1002</td>
+                            <td>Direct Expenses</td>
+                            <td>8,780 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Accounts Payable</td>
+                            <td>2100</td>
+                            <td>Liability</td>
+                            <td>8,798 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Sales Account</td>
+                            <td>2130</td>
+                            <td>Sales</td>
+                            <td>8,780 CAD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

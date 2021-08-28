@@ -13,3 +13,7 @@
     margin-top: 300px;
     opacity: 0.2;
 }
+
+.h5height{
+    min-height: 43px;
+}

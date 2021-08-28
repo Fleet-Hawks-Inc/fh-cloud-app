@@ -1,7 +1,11 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable, Output, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-
+import { Observable, Subject } from "rxjs";
+import { AccountService } from 'src/app/services/account.service';
+import { HttpClient } from "@angular/common/http"
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { NewAddressBookComponent } from "../shared/popups/new-address-book/new-address-book.component";
 @Injectable({
   providedIn: "root",
 })
@@ -11,6 +15,16 @@ export class ListService {
 
   shipperDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperList = this.shipperDataSource.asObservable();
+
+  public isTrueDataSource = new BehaviorSubject<boolean>(false);
+  isTrueList = this.isTrueDataSource.asObservable();
+  
+
+  shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  shipperObjectList = this.shipperObjectDataSource.asObservable();
+
+  receiverObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  receiverObjectList = this.receiverObjectDataSource.asObservable();
 
   receiverDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   receiverList = this.receiverDataSource.asObservable();
@@ -57,24 +71,50 @@ export class ListService {
 
   tasksDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   tasksList = this.tasksDataSource.asObservable();
-  
 
-  constructor(private apiService: ApiService) {}
+  assetsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  assetsList = this.assetsDataSource.asObservable();
+
+  accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  accountsList = this.accountsDataSource.asObservable();
+
+  addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  addressList = this.addressDataSource.asObservable();
+
+  paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentModelList = this.paymentModelDataSource.asObservable();
+
+  otherModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  otherModelList = this.otherModelDataSource.asObservable();
+
+  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentSaveList = this.paymentSaveDataSource.asObservable();
+
+  contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  contactsList = this.contactsObjectDataSource.asObservable();
+
+
+  public _subject = new BehaviorSubject<any>({});
+  statusChanged$: any;
+
+  public popup: Subject<any> = new Subject<any>();
+
+  constructor(private apiService: ApiService,private accountService: AccountService,private modalService: NgbModal) {}
 
   fetchVendors() {
-    this.apiService.getData("vendors").subscribe((result: any) => { 
-      this.vendorDataSource.next(result.Items);
+    this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
+      this.vendorDataSource.next(result);
     });
   }
 
 fetchShippers() {
-  this.apiService.getData("shippers").subscribe((result: any) => {      
-    this.shipperDataSource.next(result.Items);
+  this.apiService.getData("contacts/get/type/consignor").subscribe((result: any) => {
+    this.shipperDataSource.next(result);
   });
 }
 fetchReceivers() {
-  this.apiService.getData("receivers").subscribe((result: any) => {      
-    this.receiverDataSource.next(result.Items);
+  this.apiService.getData("contacts/get/type/consignee").subscribe((result: any) => {
+    this.receiverDataSource.next(result);
   });
 }
   fetchManufacturers() {
@@ -115,12 +155,12 @@ fetchReceivers() {
 
   fetchOwnerOperators() {
     this.apiService
-      .getData(`ownerOperators`)
+      .getData(`contacts/get/type/ownerOperator`)
       .subscribe((result: any) => {
-        this.ownerOperatorDataSource.next(result.Items);
+        this.ownerOperatorDataSource.next(result);
       });
   }
-  
+
   fetchAssetManufacturers() {
     this.apiService
       .getData(`assetManufacturers`)
@@ -143,9 +183,6 @@ fetchReceivers() {
         this.assetModelsDataSource.next(result.Items);
       });
   }
-
-  
-
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);
@@ -159,8 +196,8 @@ fetchReceivers() {
   }
 
   fetchCustomers() {
-    this.apiService.getData(`customers`).subscribe((result: any) => {
-      this.customersDataSource.next(result.Items);
+    this.apiService.getData(`contacts/fetch/order/customers`).subscribe((result: any) => {
+      this.customersDataSource.next(result);
     });
   }
 
@@ -172,12 +209,85 @@ fetchReceivers() {
 
   async fetchVehicleIssues(id: any) {
     let promise: any = await this.apiService.getData(`issues/vehicle/${id}`).toPromise();
-    this.issuesDataSource.next(promise.Items);
-    
+    let newIssues = [];
+    promise.Items.filter(elem => {
+      if(elem.currentStatus == 'OPEN') {
+        newIssues.push(elem);
+      }
+    })
+    this.issuesDataSource.next(newIssues);
+
   }
 
   async fetchAssetsIssues(id: any) {
     let promise: any = await this.apiService.getData(`issues/asset/${id}`).toPromise();
-    this.issuesDataSource.next(promise.Items);
+    let newIssues = [];
+    promise.Items.filter(elem => {
+      if(elem.currentStatus == 'OPEN') {
+        newIssues.push(elem);
+      }
+    })
+    this.issuesDataSource.next(newIssues);
+  }
+
+  fetchAssets() {
+    this.apiService.getData(`assets`).subscribe((result: any) => {
+      this.assetsDataSource.next(result.Items);
+    });
+  }
+
+  appendIssues(data: any){
+    this._subject.next(data);
+    this.fetchAppendIssues();
+  }
+
+  fetchAppendIssues() {
+    return this._subject.asObservable()
+  }
+
+
+  // fetch accounts of chart of accounts
+  fetchChartAccounts() {
+    this.accountService.getData('chartAc/fetch/list').subscribe((res: any) => {
+      this.accountsDataSource.next(res);
+      });
+  }
+
+  fetchShippersByIDs() {
+    this.apiService.getData("contacts/get/list/consignor").subscribe((result: any) => {
+      this.shipperObjectDataSource.next(result);
+    });
+  }
+
+  fetchReceiversByIDs() {
+    this.apiService.getData("contacts/get/list/consignee").subscribe((result: any) => {
+      this.receiverObjectDataSource.next(result);
+    });
+  }
+
+  fetchContactsByIDs() {
+    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
+      this.contactsObjectDataSource.next(result);
+    });
+  }
+
+  public changeButton(value: boolean){
+    this.isTrueDataSource.next(value);
+  }
+
+
+  triggerModal(value: any) {
+    this.addressDataSource.next(value)
+  }
+  openPaymentChequeModal(value){
+    this.paymentModelDataSource.next(value);
+  }
+
+  triggerPaymentSave(value) {
+    this.paymentSaveDataSource.next(value);
+  }
+  
+  separateModals(value){
+    this.otherModelDataSource.next(value);
   }
 }

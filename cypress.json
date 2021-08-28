@@ -1,0 +1,17 @@
+{
+    "baseUrl": "https://devapp.fleethawks.com",
+    "experimentalStudio": true,
+    "viewportHeight": 1080,
+    "viewportWidth": 1920,
+    "testerUserName": "cypress.testing",
+    "testerPassword": "11nAm11@",
+    "defaultCommandTimeout": 60000,
+    "requestTimeout": 8000,
+    "pageLoadTimeout": 80000,
+    "video":true,
+    "projectId": "bzbn1g",
+    "env": {
+        "SERVICE_URL": "https://fleetservice.ap-south-1.fleethawks.com/api/v1"
+    }
+   
+}

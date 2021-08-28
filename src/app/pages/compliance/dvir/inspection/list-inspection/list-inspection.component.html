@@ -1,0 +1,81 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body p-3">
+            <header class="page-header pr-1">
+                <div class="row pr-1 mr-1" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 text-dark">Inspection Forms</h4>
+                    </div>
+
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <div class="btn-group">
+                            <a routerLink="/compliance/dvir/inspection-add" class="btn btn-success btn-sm "
+                                style="color:white;"><i class="fas fa-plus"></i> Add Inspection Form</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show active" id="inspectionf" role="tabpanel" aria-labelledby="all-tab">
+                    <div id="DataTables_Table_16_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+
+                        <div class="table-responsive">
+                            <table class="row-border hover table table-bordered table-striped mb-0 ">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Sr. No.</th>
+                                        <th>Form Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="inspectionForms.length == 0" class="text-center">
+                                        <td colspan="3">{{ dataMessage }}</td>
+                                    </tr>
+                                    <tr class="cursorpoint even" role="row" *ngFor="let iForm of inspectionForms; index as i">
+                                        <td width='10%'
+                                            routerLink='/compliance/dvir/inspection-details/{{iForm.inspectionFormID}}'
+                                            class='sorting_1'>{{i+1}}
+                                        </td>
+                                        <td style="width: 1250.4px;"
+                                            routerLink='/compliance/dvir/inspection-details/{{iForm.inspectionFormID}}'>
+                                            {{iForm.inspectionFormName}}
+                                        </td>
+
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false" >
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                    <a class="dropdown-item"
+                                                        routerLink='/compliance/dvir/inspection-add/{{iForm.inspectionFormID}}'>Edit</a>
+                                                    <a [class.disabled]="iForm.isDefaultInspectionType==1" class="dropdown-item" href="javascript:;"
+                                                        (click)="deleteForm(iForm.inspectionFormID)">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row mt-3 dtPaginate" *ngIf="inspectionForms.length > 0">
+                            <div class="col-6">
+                                Showing {{ inspectionStartPoint }} to {{ inspectionEndPoint }} of {{ totalRecords }} enteries
+                            </div>
+                            <div class="col-6 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
+                                    [disabled]="inspectionPrev">Prev</button>
+                                <button type="button" class="btn btn-default" (click)="nextResults()"
+                                    [disabled]="inspectionNext">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>

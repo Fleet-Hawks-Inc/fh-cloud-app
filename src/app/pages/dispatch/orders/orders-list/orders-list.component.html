@@ -1,60 +1,55 @@
 <section class="body">
     <div class="inner-wrapper">
-        <section role="main" class="content-body p-0">
-            <header class="page-header pr-5">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
 
-                    <div class="row pr-1 mr-1" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2">
-                            <div class="input-group input-group-md mb-3">
+                    <div class="row" style="padding-top:9px;">
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <ng-select [(ngModel)]="orderFiltr.category" name="category" placeholder="Search by Category" (change)="categoryChange($event)" >
+                                <ng-option *ngFor="let data of categoryFilter" value="{{ data.value }}"> {{ data.name }}</ng-option>
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <div class="input-group input-group-md mb-3" *ngIf="orderFiltr.category != 'customer' && orderFiltr.category != 'orderType' && orderFiltr.category != 'orderStatus'">
                                 <input type="text" class="form-control" name="searchValue"
                                     [(ngModel)]="orderFiltr.searchValue" placeholder="Search">
                             </div>
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Customer" *ngIf="orderFiltr.category == 'customer'">
+                                <ng-option *ngFor="let data of customersObjects | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order Status" *ngIf="orderFiltr.category == 'orderStatus'">
+                                <ng-option *ngFor="let data of statusData" value="{{ data.value }}"> {{ data.name }}</ng-option>
+                            </ng-select>
+
+                            <ng-select [(ngModel)]="orderFiltr.searchValue" name="searchValue" placeholder="Search By Order Type" *ngIf="orderFiltr.category == 'orderType'">
+                                <ng-option value="FTL"> FTL</ng-option>
+                                <ng-option value="LTL"> LTL</ng-option>
+                            </ng-select>
                         </div>
 
-                        <div class="col-lg-3 col-md-3">
-                            <div class="input-daterange input-group" data-plugin-datepicker>
+                        <div class="col-lg-3 col-md-3 pr-1">
+                            <div class="input-daterange input-group">
                                 <span class="input-group-prepend">
                                     <span class="input-group-text">
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
                                 <input [(ngModel)]="orderFiltr.startDate" name="fromDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                    class="form-control" autocomplete="off">
+
+                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
+
+                                    class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                 <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                     to
                                 </span>
                                 <input [(ngModel)]="orderFiltr.endDate" name="toDate" type="text"
-                                    placeholder="DD-MM-YYYY" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
-                                    class="form-control" autocomplete="off">
-                            </div>
-                        </div>
 
-                        <div class="col-md-2 col-lg-2">
-                            <div class="btn-group flex-wrap" style="width:100%;">
-                                <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle togglecolor" data-toggle="dropdown" id="categorySelect">Search by Category<span
-                                        class="caret"></span></button>
-                                <div class="dropdown-menu dutystatwd" role="menu">
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('All')">All</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Company')">Company</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Customer')">Customer</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Driver')">Driver</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Vehicle')">Vehicle</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Trailer')">Trailer</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Vendor')">Vendor</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Broker')">Broker</a>
-                                    <a class="dropdown-item text-1" href="javascript:;"
-                                        (click)="selectCategory('Location')">Location</a>
-                                </div>
+                                    placeholder="yyyy/mm/dd" (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker"
+
+                                    class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                             </div>
                         </div>
 
@@ -63,9 +58,9 @@
                                 (click)="filterOrders()">Search</button>
                             <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
-                        <div class="col-md-3 col-lg-3 text-right pr-1">
+                        <div class="col-md-3 col-lg-3 pr-1 text-right">
 
-                            <div class="btn-group flex-wrap mr-2">
+                            <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                     data-toggle="dropdown" aria-expanded="false">Actions<span
                                         class="caret"></span></button>
@@ -82,558 +77,761 @@
                     </div>
                 </form>
             </header>
-            <section class="card mt-0 mb-4">
-                <div class="card-body pl-0 pr-0 pt-3">
-                    <div class="m-2">
-                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="allOrders-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'all'}"
-                                    (click)="fetchTabData('all')">All</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'confirmed'}"
-                                    (click)="fetchTabData('confirmed')">Confirmed : {{ confirmedOrdersCount }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="dispatched-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'dispatched'}"
-                                    (click)="fetchTabData('dispatched')">Dispatched : {{ dispatchedOrdersCount }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="delivered-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'delivered'}"
-                                    (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrdersCount }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="cancelledDispatch-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'cancelled'}"
-                                    (click)="fetchTabData('cancelled')">Cancelled Dispatch :
-                                    {{ cancelledOrdersCount }}</a>
-                            </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="invoiced-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'invoiced'}"
-                                    (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrdersCount }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navtabs" id="partiallyPaid-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'partiallyPaid'}"
-                                    (click)="fetchTabData('partiallyPaid')">Partially Paid :
-                                    {{ partiallyPaidOrdersCount }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                        <div class="tab-pane show active" id="allOrders" role="tabpanel" aria-labelledby="allOrders-tab" [ngClass]="{'show active': activeTab == 'all'}" *ngIf="activeTab == 'all'">
-                            <table class="row-border hover table table-bordered table-striped mb-0" >
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="orders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of orders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="orders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ ordersStartPoint }} to {{ ordersEndPoint }} of {{ totalRecords }} enteries
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row">
+
+                            <div class="col-lg-12 pl-0 pr-0">
+                                <div class="m-2">
+                                    <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="allOrders-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'all'}"
+                                                (click)="fetchTabData('all')">All</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="confirmed-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'confirmed'}"
+                                                (click)="fetchTabData('confirmed')">Confirmed : {{ confirmOrders.length }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="dispatched-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'dispatched'}"
+                                                (click)="fetchTabData('dispatched')">Dispatched : {{ dispatchOrders.length }}</a>
+                                        </li>
+
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="cancelledDispatch-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'cancelled'}"
+                                                (click)="fetchTabData('cancelled')">Cancelled Dispatch :
+                                                {{ cancelledOrders.length }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="delivered-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'delivered'}"
+                                                (click)="fetchTabData('delivered')">Delivered : {{ deliveredOrders.length }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="tonu-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'tonu'}"
+                                                (click)="fetchTabData('tonu')">TONU : {{ tonuOrders.length }}</a>
+                                        </li>
+                                        <!-- <li class="nav-item">
+                                            <a class="nav-link navtabs" id="invoiced-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'invoiced'}"
+                                                (click)="fetchTabData('invoiced')">Invoiced : {{ invoicedOrders.length }}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link navtabs" id="partiallyPaid-tab" href="javascript:;" [ngClass]="{'active': activeTab == 'partiallyPaid'}"
+                                                (click)="fetchTabData('partiallyPaid')">Partially Paid :
+                                                {{ partiallyOrders.length }}</a>
+                                        </li> -->
+                                    </ul>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="ordersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="ordersNext">Next</button>
+                                <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
+                                    <div class="tab-pane show active" id="allOrders" role="tabpanel" aria-labelledby="allOrders-tab" [ngClass]="{'show active': activeTab == 'all'}" *ngIf="activeTab == 'all'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0" >
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date </th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="!records" class="text-center">
+                                                    <td colspan="10">{{ dataMessage }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of orders[ordersDraw];let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}" class="font-weight-bold">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.cityName}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.stateName}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.countryName}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.cityName}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.stateName}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.countryName}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                                <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
+                                                                    (click)="changeStatus(order.orderID, order.orderNumber)">Confirm</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="row mt-3 dtPaginate" *ngIf="records">
+                                            <div class="col-6">
+                                                Showing {{ ordersStartPoint }} to {{ ordersEndPoint }} of {{ totalRecords }} enteries
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="ordersPrev">Prev</button>
+                                                <button type="button" class="btn btn-default" (click)="nextResults('all')" [disabled]="ordersNext">Next</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane show" id="confirmedOrders" role="tabpanel" aria-labelledby="confirmedOrders-tab" [ngClass]="{'show active': activeTab == 'confirmed'}" *ngIf="activeTab == 'confirmed'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup  Location</th>
+                                                    <th>Drop Off Location</th>
+
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="confirmOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of confirmOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane show" id="dispatchedOrders" role="tabpanel" aria-labelledby="dispatchedOrders-tab" [ngClass]="{'show active': activeTab == 'dispatched'}" *ngIf="activeTab == 'dispatched'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="dispatchOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of dispatchOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane show" id="deliveredOrders" role="tabpanel" aria-labelledby="deliveredOrders-tab" [ngClass]="{'show active': activeTab == 'delivered'}" *ngIf="activeTab == 'delivered'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="deliveredOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of deliveredOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane show" id="cancelledOrders" role="tabpanel" aria-labelledby="cancelledOrders-tab" [ngClass]="{'show active': activeTab == 'cancelled'}" *ngIf="activeTab == 'cancelled'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="cancelledOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of cancelledOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane show" id="invoicedOrders" role="tabpanel" aria-labelledby="invoicedOrders-tab" [ngClass]="{'show active': activeTab == 'invoiced'}" *ngIf="activeTab == 'invoiced'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="invoicedOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of invoicedOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane show" id="partiallyPaidOrders" role="tabpanel" aria-labelledby="partiallyPaidOrders-tab" [ngClass]="{'show active': activeTab == 'partiallyPaid'}" *ngIf="activeTab == 'partiallyPaid'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="partiallyOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of partiallyOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="tab-pane show" id="tonuOrders" role="tabpanel" aria-labelledby="tonu-tab" [ngClass]="{'show active': activeTab == 'tonu'}" *ngIf="activeTab == 'tonu'">
+                                        <table class="row-border hover table table-bordered table-striped mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order#</th>
+                                                    <th>Type</th>
+                                                    <th>Date</th>
+                                                    <th>Customer</th>
+                                                    <th>Pickup Location</th>
+                                                    <th>Drop Off Location</th>
+                                                    <th>Commodity</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="tonuOrders.length == 0" class="text-center">
+                                                    <td colspan="10">{{ noOrdersMsg }}</td>
+                                                </tr>
+                                                <tr class="cursorpoint" *ngFor="let order of tonuOrders;let i = index;">
+                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                        {{ order.orderNumber }}</td>
+                                                    <td>{{order.orderMode}}</td>
+                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td>
+                                                        Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location:
+                                                        <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.pickupLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint.length > 1">
+                                                            +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                        Location: -
+                                                        <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.city}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.state}},
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.country}}
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.zipCode}}
+                                                        </span>
+                                                        <span *ngIf="!order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
+                                                            {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.dropOffLocation}}
+                                                        </span>
+                                                        <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint > 1">
+                                                            +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
+                                                        </span>
+                                                    </td>
+                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                         {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
+                                                    </td>
+                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    </td>
+                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td>
+                                                        <div class="dropdown dropright">
+                                                            <button class="bg-transparent border-0" type="button"
+                                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                                aria-haspopup="true" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu"
+                                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                                <a class="dropdown-item"
+                                                                    routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
+                                                                <a class="dropdown-item" href="javascript:;"
+                                                                    (click)="deactivateOrder(order)">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane show" id="confirmedOrders" role="tabpanel" aria-labelledby="confirmedOrders-tab" [ngClass]="{'show active': activeTab == 'confirmed'}" *ngIf="activeTab == 'confirmed'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="confirmOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of confirmOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="confirmOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ confirmOrdersStartPoint }} to {{ confirmOrdersEndPoint }} of {{ confirmedOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('confirmed')" [disabled]="confirmOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('confirmed')" [disabled]="confirmOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane show" id="dispatchedOrders" role="tabpanel" aria-labelledby="dispatchedOrders-tab" [ngClass]="{'show active': activeTab == 'dispatched'}" *ngIf="activeTab == 'dispatched'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="dispatchOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of dispatchOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="dispatchOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ dispatchOrdersStartPoint }} to {{ dispatchOrdersEndPoint }} of {{ dispatchedOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('dispatched')" [disabled]="dispatchOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('dispatched')" [disabled]="dispatchOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane show" id="deliveredOrders" role="tabpanel" aria-labelledby="deliveredOrders-tab" [ngClass]="{'show active': activeTab == 'delivered'}" *ngIf="activeTab == 'delivered'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="deliveredOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of deliveredOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="deliveredOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ deliverOrdersStartPoint }} to {{ deliverOrdersEndPoint }} of {{ deliveredOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('delivered')" [disabled]="deliverOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('delivered')" [disabled]="deliverOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane show" id="cancelledOrders" role="tabpanel" aria-labelledby="cancelledOrders-tab" [ngClass]="{'show active': activeTab == 'cancelled'}" *ngIf="activeTab == 'cancelled'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="cancelledOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of cancelledOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="cancelledOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ cancelOrdersStartPoint }} to {{ cancelOrdersEndPoint }} of {{ cancelledOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('canceled')" [disabled]="cancelOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('canceled')" [disabled]="cancelOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane show" id="invoicedOrders" role="tabpanel" aria-labelledby="invoicedOrders-tab" [ngClass]="{'show active': activeTab == 'invoiced'}" *ngIf="activeTab == 'invoiced'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="invoicedOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of invoicedOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="invoicedOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ invoiceOrdersStartPoint }} to {{ invoiceOrdersEndPoint }} of {{ invoicedOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('invoiced')" [disabled]="invoiceOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('invoiced')" [disabled]="invoiceOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane show" id="partiallyPaidOrders" role="tabpanel" aria-labelledby="partiallyPaidOrders-tab" [ngClass]="{'show active': activeTab == 'partiallyPaid'}" *ngIf="activeTab == 'partiallyPaid'">
-                            <table class="row-border hover table table-bordered table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Type</th>
-                                        <th>Customer</th>
-                                        <th>Pickup</th>
-                                        <th>Drop</th>
-                                        <th>Commodity</th>
-                                        <th>Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="partiallyOrders.length == 0" class="text-center">
-                                        <td colspan="9">No records found</td>
-                                    </tr>
-                                    <tr class="cursorpoint" *ngFor="let order of partiallyOrders;let i = index;">
-                                        <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
-                                            {{ order.orderNumber }}</td>
-                                        <td>{{order.orderMode}}</td>
-                                        <td>{{customersObjects[order.customerID]}}</td>
-                                        <td>
-                                            Date: {{order.shippersReceiversInfo[0].shippers[0].dateAndTime}}<br>
-                                            Location: {{order.shippersReceiversInfo[0].shippers[0].pickupLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dateAndTime}}<br>
-                                            Location: - {{order.shippersReceiversInfo[0].receivers[0].dropOffLocation}}
-                                            <span class="badge badge-dark" *ngIf="order.shippersReceiversInfo?.length > 1">
-                                                +{{order.shippersReceiversInfo?.length - 1}}
-                                            </span>
-                                        </td>
-                                        <td>Name: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].name ? order.shippersReceiversInfo[0].shippers[0].commodity[0].name : '-'}}<br>
-                                            Qty: {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity ? order.shippersReceiversInfo[0].shippers[0].commodity[0].quantity : '-'}} 
-                                            {{order.shippersReceiversInfo[0].shippers[0].commodity[0].quantityUnit}}<br>
-                                        </td>
-                                        <td>T Amt: CAD - {{order.totalAmount}}<br>
-                                        </td>
-                                        <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;"
-                                                        (click)="deactivateOrder(order.isDeleted, order.orderID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="row mt-3 dtPaginate" *ngIf="partiallyOrders.length > 0">
-                                <div class="col-6">
-                                    Showing {{ partialPaidOrdersStartPoint }} to {{ partialPaidOrdersEndPoint }} of {{ partiallyPaidOrdersCount }} enteries
-                                </div>
-                                <div class="col-6 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="prevResults('partialPaid')" [disabled]="partialPaidOrdersPrev">Prev</button>
-                                    <button type="button" class="btn btn-default" (click)="nextResults('partialPaid')" [disabled]="partialPaidOrdersNext">Next</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </section>
+
+
+             </section>
+
+
+
         </section>
     </div>
 </section>
