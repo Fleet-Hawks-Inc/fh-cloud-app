@@ -82,9 +82,10 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes,
     {
-      preloadingStrategy: PreLoadStrategy,
-      useHash: true
-    }
+    preloadingStrategy: PreLoadStrategy,
+    useHash: true,
+    relativeLinkResolution: 'legacy'
+}
   ), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
