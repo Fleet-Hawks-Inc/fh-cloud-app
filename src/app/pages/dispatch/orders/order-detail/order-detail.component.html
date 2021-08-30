@@ -57,40 +57,7 @@
                     <div class="col-lg-12">
                         <div class="bg-white p-3">
                             <div class="row mb-3">
-                                <!--
-                  <div class="col-lg-6 text-dark">
-                           <div id="vehicle-details" class="">
-                              <div class="row m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Customer:</div>
-                                 <div class="col-lg-8 p-2 border-box">James</div>
-                              </div>
-                              <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Address:</div>
-                                 <div class="col-lg-8 p-2 border-box">100 Street, Olympic Park</div>
-                              </div>
-                              <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">City, State:</div>
-                                 <div class="col-lg-8 p-2 border-box">Calagary, AB</div>
-                              </div>
-                              <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                                 <div class="col-lg-8 p-2 border-box">Canada</div>
-                              </div>
-                              <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Phone:</div>
-                                 <div class="col-lg-8 p-2 border-box">(103) 069-1461</div>
-                              </div>
-                              <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Email:</div>
-                                 <div class="col-lg-8 p-2 border-box">info@fleetinc.ca</div>
-                              </div>
-                      <div class="row  m-0">
-                                 <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fax:</div>
-                                 <div class="col-lg-8 p-2 border-box">(103) 069-1465</div>
-                              </div>
-                           </div>
-                        </div>
-                  -->
+                               
 
                                 <div class="col-lg-6 text-dark">
                                     <div id="vehicle-details" class="">
@@ -138,14 +105,14 @@
 
                                 <div class="col-lg-6 text-dark">
                                     <div id="vehicle-details" class="">
-                                        <div class="row m-0">
+                                        <!-- <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Customer PO#:
                                             </div>
                                             <div class="col-lg-8 p-2 border-box">
                                                 {{ customerPo }}
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Reference:
@@ -290,11 +257,19 @@
                                                                                                 date:'yyyy/MM/dd hh:mm a' }}
                                                                                             </p>
                                                                                             <p class="mb-0 text-dark">
+                                                                                                <strong>Customer PO#</strong>
+                                                                                                <span *ngFor="let po of pick.customerPO">
+                                                                                                    <span class="badge badge-dark">
+                                                                                                        {{po}}
+                                                                                                    </span>
+                                                                                                </span>
+                                                                                            </p>
+                                                                                            <p class="mb-0 text-dark text-capitalize">
                                                                                                 <strong>Pickup
                                                                                                     Instruction:</strong>
                                                                                                 {{pick.pickupInstruction ? pick.pickupInstruction : '-'}}
                                                                                             </p>
-                                                                                            <p class="mb-0 text-dark">
+                                                                                            <p class="mb-0 text-dark text-capitalize">
                                                                                                 <strong>Contact Person at
                                                                                                     Pickup:</strong>
                                                                                                 {{pick.contactPerson ? pick.contactPerson : '-'}}
@@ -319,14 +294,14 @@
                                                                                                     <tr
                                                                                                         *ngFor="let commodity of pick.commodity;let l = index">
                                                                                                         <td>{{l+1}}</td>
-                                                                                                        <td>{{commodity.name ? commodity.name : '-'}}
+                                                                                                        <td class="text-capitalize">{{commodity.name ? commodity.name : '-'}}
                                                                                                         </td>
                                                                                                         <td>{{commodity.pu ? commodity.pu : '-'}}
                                                                                                         </td>
-                                                                                                        <td>{{commodity.quantity ? commodity.quantity : 0}}
+                                                                                                        <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 0}}
                                                                                                             {{commodity.quantityUnit}}
                                                                                                         </td>
-                                                                                                        <td>{{commodity.weight ? commodity.weight : 0}}
+                                                                                                        <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 0}}
                                                                                                             {{commodity.weightUnit}}
                                                                                                         </td>
                                                                                                     </tr>
@@ -408,13 +383,13 @@
                                                                                             | date:'yyyy/MM/dd hh:mm a'}}
 
                                                                                         </p>
-                                                                                        <p class="mb-0 text-dark">
+                                                                                        <p class="mb-0 text-dark text-capitalize">
                                                                                             <strong>Delivery
                                                                                                 Instruction:</strong>
                                                                                             {{drop.dropOffInstruction ? drop.dropOffInstruction : '-'}}
 
                                                                                         </p>
-                                                                                        <p class="mb-0 text-dark">
+                                                                                        <p class="mb-0 text-dark text-capitalize">
                                                                                             <strong>Contact Person at
                                                                                                 Delivery</strong>
                                                                                             {{drop.contactPerson ? drop.contactPerson : '-'}}
@@ -440,12 +415,12 @@
                                                                                                 <tr
                                                                                                     *ngFor="let commodity of drop.commodity;let m = index">
                                                                                                     <td>{{m+1}}</td>
-                                                                                                    <td>{{commodity.name ? commodity.name : '-'}}</td>
+                                                                                                    <td  class="text-capitalize">{{commodity.name ? commodity.name : '-'}}</td>
                                                                                                     <td>{{commodity.del ? commodity.del : '-'}}</td>
-                                                                                                    <td>{{commodity.quantity ? commodity.quantity : 0}}
+                                                                                                    <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 0}}
                                                                                                         {{commodity.quantityUnit}}
                                                                                                     </td>
-                                                                                                    <td>{{commodity.weight ? commodity.weight : 0}}
+                                                                                                    <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 0}}
                                                                                                         {{commodity.weightUnit}}
                                                                                                     </td>
                                                                                                 </tr>
@@ -461,7 +436,7 @@
                                                                     </div>
                                                                 </section>
                                                                 <p class="mb-0 text-dark">
-                                                                    <strong>Will Driver Load ?:</strong>
+                                                                    <strong>Will Driver Unload ?:</strong>
                                                                     {{receiver.driverUnload
                                                                     ? 'Yes': 'No'}}
                                                                 </p>
@@ -494,16 +469,21 @@
                                         </div>
                                         <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
-                                                Drop Asset:
+                                                Seal Type:
                                             </div>
-                                            <div class="col-lg-8 p-2 border-box">{{additionalDetails.dropTrailer ? 'Yes'
-                                                : 'No'}}</div>
+                                            <div class="col-lg-8 p-2 border-box text-capitalize">{{additionalDetails.sealType}}</div>
                                         </div>
-                                        <div class="row m-0" *ngIf="!additionalDetails.dropTrailer">
+                                        <div class="row m-0" *ngIf="additionalDetails.sealType != ''">
+                                            <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
+                                                Seal#:
+                                            </div>
+                                            <div class="col-lg-8 p-2 border-box">{{additionalDetails.sealNo}}</div>
+                                        </div>
+                                        <div class="row m-0" *ngIf="!additionalDetails.trailerType">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Asset Type:
                                             </div>
-                                            <div class="col-lg-8 p-2 border-box">{{ additionalDetails.trailerType}}
+                                            <div class="col-lg-8 p-2 border-box text-capitalize">{{ additionalDetails.trailerType}}
                                             </div>
                                         </div>
                                         <!-- <div class="row m-0">

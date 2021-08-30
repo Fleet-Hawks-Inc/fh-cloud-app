@@ -7,7 +7,6 @@
           <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/receipts/list"
               class="btn btn-default"><i class="fas fa-list"></i> All Receipts</a> </div>
         </div>
-
       </header>
       <section class="card mt-0 mb-4">
         <div class="card-body">
@@ -137,7 +136,7 @@
                                 name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" (change)="findReceivedAmtFn()"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" min="0" (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
@@ -213,12 +212,7 @@
                               name="totalAmount" [disabled]="true">
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <ng-select class="form-control populate" [(ngModel)]="receiptData.recAmountCur"
-                              name="recAmountCur" [disabled]="true">
-
-                                  <ng-option value="CAD">CAD</ng-option>
-                                  <ng-option value="USD">USD</ng-option>
-                              </ng-select>
+                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
                             </div>
                           </div>
                         </div>
@@ -258,16 +252,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 pl-0">
-                              <ng-select [(ngModel)]="receiptData.recAmountCur" name="recAmountCur"
-                                class="form-control populate" #receiptAmtCur="ngModel" placeholder="Select currency" [disabled]="true">
-                                <ng-option value="CAD">CAD</ng-option>
-                                <ng-option value="USD">USD</ng-option>
-                              </ng-select>
-                              <div *ngIf="receiptAmtCur.invalid && (receiptAmtCur.dirty || receiptAmtCur.touched)" class="text-danger">
-                                <div *ngIf="receiptAmtCur.errors.required">
-                                  Received amount currency is required.
-                                </div>
-                              </div>
+                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
+
                             </div>
                           </div>
                         </div>
@@ -295,14 +281,19 @@
                         </div>
                         <div class="col-lg-2" style="margin-top: 32px;">
                           <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i></button>
+                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                          </button>
+                          <a href="javascript:;" (click)="refreshAccount()"
+                            data-toggle="tooltip" title="Refresh account data"
+                            class="btn btn-success btn-sm modal-with-form"><i
+                                class="fas fa-sync"></i></a>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
-                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required>
+                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required >
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
                             </ng-option>
                           </ng-select>
@@ -310,18 +301,24 @@
                             <div *ngIf="receiptPay.errors.required">
                               Payment mode is required.
                             </div>
+
                           </div>
                         </div>
                       </div>
                       <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Number<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required
+                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} <span *ngIf="paymentLabel === 'Cash'">Reference</span>
+                            <span *ngIf="paymentLabel !== 'Cash'">Number</span>
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
                             class="form-control">
                             <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
                               <div *ngIf="receiptPayNo.errors.required">
-                                Payment number is required.
+                                {{ paymentLabel }} reference is required.
                               </div>
+                              <div *ngIf="receiptPayNo.errors.pattern">
+                                {{ paymentLabel }} reference must contain alphanumeric characters.
+                               </div>
                             </div>
                         </div>
                         <div class="col-lg-5">

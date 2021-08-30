@@ -70,6 +70,9 @@ export class EmployeePaymentDetailComponent implements OnInit {
       if(this.paymentData.payMode) {
         this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");
       }
+      this.paymentData.transactionLog.map((v: any) => {
+        v.type = v.type.replace('_', ' ');
+      });
       this.fetchEmpDetail(result[0].entityId);
     })
   }

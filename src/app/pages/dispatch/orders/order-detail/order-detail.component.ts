@@ -92,7 +92,8 @@ export class OrderDetailComponent implements OnInit {
   additionalEmail = '';
 
   additionalDetails = {
-    dropTrailer: false,
+    sealType: '',
+    sealNo: '',
     loadType: {
       hazMat: false,
       oversize: false,
@@ -179,10 +180,10 @@ export class OrderDetailComponent implements OnInit {
   /**
    * fetch Asset data
    */
-  fetchOrder() {
+  async fetchOrder() {
     this.apiService
       .getData(`orders/${this.orderID}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
           this.newOrderData = result;
           result = result.Items[0];
           if(result.stateTaxID != undefined) {
@@ -196,9 +197,8 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
-          this.fetchCustomersByID();
+          await this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;
-          this.customerPo = result.customerPO;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
           this.createdTime = result.timeCreated;
@@ -226,7 +226,8 @@ export class OrderDetailComponent implements OnInit {
               // }
 
 
-          this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
+          this.additionalDetails.sealType = result.additionalDetails.sealType ? result.additionalDetails.sealType.replace('_', ' ') : '-';;
+          this.additionalDetails.sealNo = result.additionalDetails.sealNo;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
           this.additionalDetails.trailerType = result.additionalDetails.trailerType ? result.additionalDetails.trailerType.replace('_', ' ') : '-';
@@ -392,27 +393,27 @@ export class OrderDetailComponent implements OnInit {
      /*
    * Get all customers's IDs of names from api
    */
-  fetchCustomersByID() {
+ async fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
 
       if(result.Items.length > 0) {
         result = result.Items[0];
-        this.customerName = `${result.companyName}`;
-        let newCusAddress = result.address.filter((elem: any) => {
+        this.customerName = `${result.cName}`;
+        let newCusAddress = result.adrs.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
             return elem;
           }
         });
         newCusAddress = newCusAddress[0];
-        if(result.address.length > 0) {
+        if(result.adrs.length > 0) {
           if(newCusAddress.manual) {
-            this.customerAddress = newCusAddress.address1;
+            this.customerAddress = newCusAddress.add1;
           } else {
-            this.customerAddress = newCusAddress.userLocation;
+            this.customerAddress = newCusAddress.userLoc;
           }
-          this.customerCityName = newCusAddress.cityName;
-          this.customerStateName = newCusAddress.stateName;
-          this.customerCountryName = newCusAddress.countryName;
+          this.customerCityName = newCusAddress.ctyName;
+          this.customerStateName = newCusAddress.sName;
+          this.customerCountryName = newCusAddress.cName;
           this.customerPhone = result.workPhone;
           this.customerEmail = result.workEmail;
         }
@@ -451,15 +452,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
-    // this.accountService.postData(`order-invoice`, this.invoiceData).subscribe((res) => {
-    //   if (res) {
-
-    //     $('#previewInvoiceModal').modal('hide');
-    //   }
-    //   this.toastr.success('Invoice Added Successfully.');
-    // });
-
-
+   
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -492,7 +485,7 @@ export class OrderDetailComponent implements OnInit {
 
   invoiceGenerated() {
     this.invGenStatus = true;
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.invGenStatus}`).subscribe((res) => {});
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {
@@ -634,6 +627,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
+        
         this.invoiceData = result[0];
         this.isInvoice = true;
       });

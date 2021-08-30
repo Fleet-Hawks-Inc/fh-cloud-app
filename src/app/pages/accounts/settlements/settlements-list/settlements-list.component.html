@@ -3,7 +3,7 @@
         <section role="main" class="content-body pr-0 pl-0 pt-0">
             <header class="page-header">
                 <form class="form-horizontal" method="get">
-                    <div class="row px-4" style="padding-top:10px;"> 
+                    <div class="row px-4" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" class="form-control" placeholder="Search by settlement#" name="settlementNo" [(ngModel)]="filter.settlementNo">
@@ -52,64 +52,79 @@
             <div class="row">
                 <div class="col pr-0">
                     <section class="card">
-                        <div class="card-body">
-                            <table class="table table-bordered table-striped mb-0 simple-table">
-                                <thead>
-                                    <tr class="bgcol2">
-                                        <th class="text-2">Settlement#</th>
-                                        <th class="text-2">Settlement Date</th>
-                                        <th class="text-2">Settlement Type</th>
-                                        <th class="text-2">Trip#</th>
-                                        <th class="text-2">Settled Amount</th>
-                                        <th class="text-2">Paid Amount</th>
-                                        <th class="text-2">Balance</th>
-                                        <th class="text-2">Status</th>
-                                        <th class="text-2">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="settlements.length === 0" class="text-center">
-                                        <td colspan="10">{{ dataMessage }}</td>
-                                    </tr>
-                                    <tr *ngFor="let data of settlements; let i=index;">
-                                        <td routerLink="/accounts/settlements/detail/{{ data.sttlID }}">{{ data.setNo }}</td>
-                                        <td>{{ data.txnDate |
-                                            date:"yyyy/MM/dd" }}</td>
-                                        <td>{{ data.entityType }}: 
-                                            <span *ngIf="data.type === 'driver'"> {{ drivers[data.entityId] }} </span>
-                                            <span *ngIf="data.type === 'carrier'"> {{ carriers[data.entityId] }} </span>
-                                            <span *ngIf="data.type === 'owner_operator'"> {{ ownerOperators[data.entityId] }}</span>
-                                        </td>
-                                        <td>
-                                            <span *ngFor="let trp of data.tripIds; let t=index;">
-                                                {{ tripsObj[trp] }}
-                                                <span *ngIf="t < data.tripIds.length-1">,</span>
-                                            </span>
-                                        </td>
-                                        <td>{{ data.finalTotal }} CAD </td>
-                                        <td>{{ (data.paidAmount) ? data.paidAmount + ' CAD' : '-' }}</td>
-                                        <td>{{ data.pendingPayment }} CAD</td> 
-                                        <td><span
-                                                class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
-                                        <td>
-                                            <div class="dropdown dropright">
-                                                <button class="bg-transparent border-0" type="button"
-                                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                    aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div class="dropdown-menu"
-                                                    attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                    <a class="dropdown-item"
-                                                        routerLink="/accounts/settlements/edit/{{ data.sttlID }}">Edit</a>
-                                                    <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked" (click)="deleteSettlement(data.sttlID)">Delete</a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                      <div class="main-panel">
+                        <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
+                        (scrolled)="onScroll()">
+                            <div class="card-body" style="display: block">
+                              <div class="main-panel">
+                                <table class="table table-bordered table-striped mb-0 simple-table">
+                                  <thead>
+                                      <tr class="bgcol2">
+                                          <th class="text-2">Settlement#</th>
+                                          <th class="text-2">Settlement Date</th>
+                                          <th class="text-2">Settlement Type</th>
+                                          <th class="text-2">Trip#</th>
+                                          <th class="text-2">Settled Amount</th>
+                                          <th class="text-2">Paid Amount</th>
+                                          <th class="text-2">Balance</th>
+                                          <th class="text-2">Status</th>
+                                          <th class="text-2">Action</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngIf="settlements.length === 0" class="text-center">
+                                          <td colspan="10">{{ dataMessage }}</td>
+                                      </tr>
+                                      <tr *ngFor="let data of settlements; let i=index;">
+                                          <td routerLink="/accounts/settlements/detail/{{ data.sttlID }}">{{ data.setNo }}</td>
+                                          <td>{{ data.txnDate |
+                                              date:"yyyy/MM/dd" }}</td>
+                                          <td>{{ data.entityType }}:
+                                              <span *ngIf="data.type === 'driver'"> {{ drivers[data.entityId] }} </span>
+                                              <span *ngIf="data.type === 'carrier'"> {{ carriers[data.entityId] }} </span>
+                                              <span *ngIf="data.type === 'owner_operator'"> {{ ownerOperators[data.entityId] }}</span>
+                                          </td>
+                                          <td>
+                                              <span *ngFor="let trp of data.tripIds; let t=index;">
+                                                  {{ tripsObj[trp] }}
+                                                  <span *ngIf="t < data.tripIds.length-1">,</span>
+                                              </span>
+                                          </td>
+                                          <td>{{ data.finalTotal | number}} CAD </td>
+                                          <td>
+                                              <span *ngIf="data.paidAmount">
+                                                  {{ data.paidAmount | number }} CAD
+                                              </span>
+                                              <span *ngIf="!data.paidAmount">-</span>
+                                          </td>
+                                          <td>{{ data.pendingPayment | number }} CAD</td>
+                                          <td><span
+                                                  class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
+                                          <td>
+                                              <div class="dropdown dropright">
+                                                  <button class="bg-transparent border-0" type="button"
+                                                      id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                      aria-haspopup="true" aria-expanded="false" [disabled]="data.paymentLinked">
+                                                      <i class="fas fa-ellipsis-v"></i>
+                                                  </button>
+                                                  <div class="dropdown-menu"
+                                                      attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                      <a class="dropdown-item"
+                                                          routerLink="/accounts/settlements/edit/{{ data.sttlID }}" >Edit</a>
+                                                      <a class="dropdown-item" href="javascript:;" (click)="deleteSettlement(data.sttlID)">Delete</a>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
+                              </div>
+                            </div>
                         </div>
+                      </div>
                     </section>
                 </div>
             </div>

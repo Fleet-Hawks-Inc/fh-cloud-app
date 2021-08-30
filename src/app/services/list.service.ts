@@ -1,9 +1,11 @@
-import { EventEmitter, Injectable, Output } from "@angular/core";
+import { EventEmitter, Injectable, Output, TemplateRef, ViewChild } from "@angular/core";
 import { ApiService } from "./api.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable, Subject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
 import { HttpClient } from "@angular/common/http"
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { NewAddressBookComponent } from "../shared/popups/new-address-book/new-address-book.component";
 @Injectable({
   providedIn: "root",
 })
@@ -16,6 +18,7 @@ export class ListService {
 
   public isTrueDataSource = new BehaviorSubject<boolean>(false);
   isTrueList = this.isTrueDataSource.asObservable();
+  
 
   shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperObjectList = this.shipperObjectDataSource.asObservable();
@@ -75,10 +78,28 @@ export class ListService {
   accountsDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   accountsList = this.accountsDataSource.asObservable();
 
+  addressDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  addressList = this.addressDataSource.asObservable();
+
+  paymentModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentModelList = this.paymentModelDataSource.asObservable();
+
+  otherModelDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  otherModelList = this.otherModelDataSource.asObservable();
+
+  paymentSaveDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentSaveList = this.paymentSaveDataSource.asObservable();
+
+  contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  contactsList = this.contactsObjectDataSource.asObservable();
+
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
-  constructor(private apiService: ApiService,private accountService: AccountService,private httpClient:HttpClient) {}
+  public popup: Subject<any> = new Subject<any>();
+
+  constructor(private apiService: ApiService,private accountService: AccountService,private modalService: NgbModal) {}
 
   fetchVendors() {
     this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
@@ -227,7 +248,7 @@ fetchReceivers() {
 
   // fetch accounts of chart of accounts
   fetchChartAccounts() {
-    this.accountService.getData('chartAc').subscribe((res: any) => {
+    this.accountService.getData('chartAc/fetch/list').subscribe((res: any) => {
       this.accountsDataSource.next(res);
       });
   }
@@ -244,9 +265,29 @@ fetchReceivers() {
     });
   }
 
-  public changeButton(value: boolean){
+  fetchContactsByIDs() {
+    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
+      this.contactsObjectDataSource.next(result);
+    });
+  }
 
+  public changeButton(value: boolean){
     this.isTrueDataSource.next(value);
-   
-   }
+  }
+
+
+  triggerModal(value: any) {
+    this.addressDataSource.next(value)
+  }
+  openPaymentChequeModal(value){
+    this.paymentModelDataSource.next(value);
+  }
+
+  triggerPaymentSave(value) {
+    this.paymentSaveDataSource.next(value);
+  }
+  
+  separateModals(value){
+    this.otherModelDataSource.next(value);
+  }
 }

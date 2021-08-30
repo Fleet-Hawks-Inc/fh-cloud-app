@@ -46,6 +46,7 @@ export class EditProfileComponent implements OnInit {
   password = '';
   confirmPassword = '';
   phone = '';
+  fax = '';
   uploadedLogo = '';
   fleets = {
     curtainSide: 0,
@@ -58,6 +59,7 @@ export class EditProfileComponent implements OnInit {
   };
   addressDetails = [{
     addressType: 'yard',
+    defaultYard: false,
     countryName: '',
     countryCode: '',
     stateCode: '',
@@ -79,7 +81,25 @@ export class EditProfileComponent implements OnInit {
     transitNumber: '',
     routingNumber: '',
     institutionNumber: '',
+    addressDetails: [{
+      addressType: '',
+      countryName: '',
+      countryCode: '',
+      stateCode: '',
+      stateName: '',
+      cityName: '',
+      zipCode: '',
+      address: '',
+      geoCords: {
+        lat: '',
+        lng: ''
+      },
+      manual: false,
+      bankStates: [],
+      bankCities: []
+    }]
   }];
+  yardDefault = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -128,7 +148,7 @@ export class EditProfileComponent implements OnInit {
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
-        this.carriers = result.Items[0];;
+        this.carriers = result.Items[0];
         this.carrierID = this.carriers.carrierID;
         this.CCC = this.carriers.CCC;
         this.DBAName = this.carriers.DBAName;
@@ -150,6 +170,7 @@ export class EditProfileComponent implements OnInit {
         this.lastName = this.carriers.lastName;
         this.liabilityInsurance = this.carriers.liabilityInsurance;
         this.phone = this.carriers.phone;
+        this.fax = this.carriers.fax;
         this.bizCountry = this.carriers.bizCountry;
         // uploadedLogo = '';
         this.fleets = {
@@ -171,6 +192,16 @@ export class EditProfileComponent implements OnInit {
           }
         }
         this.banks = this.carriers.banks;
+        if (this.banks !== undefined) {
+          for (let i = 0; i < this.carriers.banks.length; i++) {
+            for (let a = 0; a < this.carriers.banks[i].addressDetails.length; a++) {
+              const countryCode = this.carriers.banks[i].addressDetails[a].countryCode;
+              const stateCode = this.carriers.banks[i].addressDetails[a].stateCode;
+              this.fetchBankStates(countryCode, a, i);
+              this.fetchBankCities(countryCode, stateCode, a, i);
+            }
+          }
+        }
         this.uploadedLogo = this.carriers.uploadedLogo;
         this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
       });
@@ -179,14 +210,38 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
+   defaultYardFn(e: any, index: number) {
+    if (e === true) {
+      this.addressDetails[index].defaultYard = true;
+      this.yardDefault = true;
+    }
+    for (let i = 0; i < this.addressDetails.length; i++) {
+      if (i !== index) {
+        this.addressDetails[i].defaultYard = false;
+      }
+    }
+    if (e === false) {
+      this.addressDetails[index].defaultYard = false;
+    }
+  }
   fetchStates(countryCode: any, index: any) {
     this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
   fetchCities(countryCode: any, stateCode: any, index: any) {
     this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
+  fetchBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  fetchBankCities(countryCode: any, stateCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
+    $('div').removeClass('show-search__result');
+  }
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
@@ -202,6 +257,19 @@ export class EditProfileComponent implements OnInit {
       $(event.target).closest('.address-item').removeClass('open');
     }
   }
+  manBankAddress(event, i, bankIndex) {
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+    }
+  }
   getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
     this.addressDetails[index].cityName = '';
@@ -213,13 +281,24 @@ export class EditProfileComponent implements OnInit {
     this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
     this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
+  getBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].stateCode = '';
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].cityName = '';
+    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
       this.toaster.warning('Maximum 3 addresses are allowed.');
-    }
-    else {
+    } else {
       this.addressDetails.push({
         addressType: '',
+        defaultYard: false,
         countryName: '',
         countryCode: '',
         stateCode: '',
@@ -267,27 +346,35 @@ export class EditProfileComponent implements OnInit {
     });
   }
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.addressDetails[i][`userLocation`] = result.address.label;
-    this.addressDetails[i].geoCords.lat = result.position.lat;
-    this.addressDetails[i].geoCords.lng = result.position.lng;
-    this.addressDetails[i].countryName = result.address.countryName;
-    this.addressDetails[i].countryCode = result.address.countryCode;
-    this.addressDetails[i].stateCode = result.address.stateCode;
-    this.addressDetails[i].stateName = result.address.state;
-    this.addressDetails[i].cityName = result.address.city;
-    this.addressDetails[i].zipCode = result.address.postalCode;
+    console.log('item', item);
+    this.addressDetails[i][`userLocation`] = item.address.label;
+    this.addressDetails[i].geoCords.lat = item.position.lat;
+    this.addressDetails[i].geoCords.lng = item.position.lng;
+    this.addressDetails[i].countryName = item.address.CountryFullName;
+    this.addressDetails[i].countryCode = item.address.Country;
+    this.addressDetails[i].stateCode = item.address.State;
+    this.addressDetails[i].stateName = item.address.StateName;
+    this.addressDetails[i].cityName = item.address.City;
+    this.addressDetails[i].zipCode = item.address.Zip;
+    this.addressDetails[i].address = item.address.StreetAddress;
     $('div').removeClass('show-search__result');
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
-    }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+  async bankAddress(i, item, bankIndex: any) {
+    console.log('item', item);
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
+    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
+    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
+    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
+    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
+    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
+    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
+    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
+    $('div').removeClass('show-search__result');
   }
   async UpdateCarrier() {
     this.hasError = false;
@@ -309,6 +396,31 @@ export class EditProfileComponent implements OnInit {
         }
       }
     }
+    for (const op of this.banks) {
+      for ( const addressElement of op.addressDetails) {
+        delete addressElement.bankStates;
+        delete addressElement.bankCities;
+        if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
+          const fullAddress = `${addressElement.address} ${addressElement.cityName}
+      ${addressElement.stateCode} ${addressElement.countryCode}`;
+          let result = await this.HereMap.geoCode(fullAddress);
+          if (result.items.length > 0) {
+            result = result.items[0];
+            addressElement.geoCords.lat = result.position.lat;
+            addressElement.geoCords.lng = result.position.lng;
+          }
+        }
+      }
+
+    }
+    const getYardDefault = this.addressDetails.filter((address: any) => {
+      return address.defaultYard === true;
+    });
+    if (getYardDefault.length === 0) {
+      this.yardDefault = false;
+    } else {
+      this.yardDefault = true;
+    }
     for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
         if (this.addressDetails[i].manual) {
@@ -324,12 +436,12 @@ export class EditProfileComponent implements OnInit {
            this.yardAddress = true;
          }
         }
-     break;
+        break;
     } else {
         this.yardAddress = false;
       }
     }
-    if (this.yardAddress) {
+    if (this.yardAddress && this.yardDefault) {
       const data = {
         carrierID: this.carrierID,
         entityType: 'carrier',
@@ -354,6 +466,7 @@ export class EditProfileComponent implements OnInit {
         bizCountry: this.bizCountry,
         addressDetails: this.addressDetails,
         phone: this.phone,
+        fax: this.fax,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -409,7 +522,7 @@ export class EditProfileComponent implements OnInit {
         },
       });
     } else {
-      this.toaster.error('Yard address is mandatory');
+      this.toaster.error('Yard address is mandatory and atleast one yard as default is mandatory');
     }
   }
   updateUser() {

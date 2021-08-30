@@ -28,7 +28,7 @@
                             </span>
                             <input [(ngModel)]="filterValues.startDate" name="fromDate" type="text"
                                 placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"> 
+                                class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
 
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                 to
@@ -120,7 +120,7 @@
                                                         <a class="dropdown-item"
                                                             (click)="editDocument(document.docID)">Edit</a>
                                                         <a class="dropdown-item" href="javascript:;"
-                                                            (click)="deactivateAsset(document.isDeleted, document.docID)">Delete</a>
+                                                            (click)="deactivateAsset(document.isDeleted, document.docID, document.documentNumber)">Delete</a>
                                                         <a target="_blank" class="dropdown-item"
                                                             href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download
                                                             File</a>
@@ -131,8 +131,8 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            
+
+
                          </div>
 
                          <div class="row mt-3 dtPaginate" *ngIf="documents.length > 0">
@@ -191,13 +191,13 @@
                       </div>
                    </div>
                 </div>
-                
-             
-                
+
+
+
              </section>
 
 
-         
+
         </section>
     </div>
 </section>
@@ -360,9 +360,10 @@
 
                 </div>
                 <div class="modal-footer">
+
+                    <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
                     <button *ngIf="ifEdit" (click)="updateDocument()"
                         class="btn btn-success modal-confirm">Update</button>
-                    <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
                     <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm" [disabled]="!doc.form.valid">Save</button>
                 </div>
             </form>

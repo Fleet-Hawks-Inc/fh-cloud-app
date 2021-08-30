@@ -8,8 +8,10 @@
           </div>
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
-            <a class="text-uppercase btn btn-sm btn-dark mr-3" data-toggle="modal"
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
               data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
+              <a routerLink="/fleet/drivers/edit/{{driverID}}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Driver</a>
             <a routerLink="/fleet/drivers/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Drivers
               List</a>
           </div>
@@ -57,7 +59,7 @@
                   <div class="text-center p-4 cerbor">
                     <i class="far fa-envelope text-7"></i>
                     <br>
-                    <p class="mb-0 text-4 font-weight-bold text-dark">{{email ? email : '-'}}</p>
+                    <p class="mb-0 text-4 font-weight-bold text-dark text-lowercase">{{email ? email : '-'}}</p>
                     <p class="mb-0">EMAIL</p>
                   </div>
                 </div>
@@ -72,7 +74,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          <!-- <div class="col-lg-6 pr-1 pl-2 mt-3">
             <div class="bg-white ssdriver p-2">
               <h2 class="font-weight-bold text-dark text-5 mt-0 mb-2">Safety Summary</h2>
               <div class="row text-center">
@@ -146,8 +148,8 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-6 pr-1 pl-2 mt-3">
+          </div> -->
+          <div class="col-lg-12 pr-1 pl-2 mt-3">
             <div class="bg-white p-2">
               <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Trips</h2>
               <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
@@ -193,17 +195,17 @@
           <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
         </button>
       </div>
-      <div class="modal-body text-dark text-capitalize" style="max-height: 500px;overflow: scroll;">
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
         <div class="row">
           <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
           <div class="col-lg-6 text-right mb-2"><button type="button" data-toggle="modal"
-            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button></div>
+            data-target="#driverProfileModal" class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i> View Photo</button></div>
         </div>
         <div class="row">
           <div class="col-6">
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Type:</div>
-              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverType}} </div>
             </div>
             <div class="row m-0" *ngIf="driverType == 'employee'">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Employee ID:</div>
@@ -214,17 +216,26 @@
               <div class="col-lg-6 p-2 bor_half">{{employeeId}}</div>
             </div>
             <div class="row m-0" *ngIf="driverType != 'employee'">
-              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-              <div class="col-lg-6 p-2 bor_half">{{contactsObject[ownerOperator]}}</div>
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Type:</div>
+              <div class="col-lg-6 p-2 bor_half  text-capitalize">{{corporationType}}</div>
             </div>
-
+            <div class="row m-0" *ngIf="corporationType == 'company' || corporationType == 'corporation'">
+              <div *ngIf="corporationType == 'company'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Vendor:</div>
+              <div *ngIf="corporationType == 'corporation'" class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Corporation Name:</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'company'">{{contactsObject[vendor]}}</div>
+              <div class="col-lg-6 p-2 bor_half text-capitalize" *ngIf="corporationType === 'corporation'">{{corporation}}</div>
+            </div>
+            <div class="row m-0" *ngIf="driverType != 'employee' && corporationType != 'company' && corporationType != 'corporation'">
+              <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">owner Operator:</div>
+              <div class="col-lg-6 p-2 bor_half  text-capitalize">{{contactsObject[ownerOperator]}}</div>
+            </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Status:</div>
               <div class="col-lg-6 p-2 bor_half text-capitalize">{{driverStatus}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">User Name:</div>
-              <div class="col-lg-6 p-2 bor_half">{{userName}}</div>
+              <div class="col-lg-6 p-2 bor_half text-lowercase">{{ userName }}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Driver Name:</div>
@@ -276,7 +287,7 @@
             </div>
             <div class="row m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray"> Email:</div>
-              <div class="col-lg-6 p-2 bor_half">{{email ? email : '-'}}</div>
+              <div class="col-lg-6 p-2 bor_half text-lowercase">{{email ? email : '-'}}</div>
             </div>
             <div class="row  m-0">
               <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
@@ -426,8 +437,8 @@
               </div>
               <div class="row  m-0">
                 <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">CSA:</div>
-                <div class="col-lg-6 p-2 bor_half"><span *ngIf="csa == true">YES</span>
-                  <span *ngIf="csa == false">NO</span></div>
+                <div class="col-lg-6 p-2 bor_half"><span *ngIf="csa == true">Yes</span>
+                  <span *ngIf="csa == false">No</span></div>
               </div>
             </div>
             <div class="col-lg-6">
@@ -487,8 +498,8 @@
                   <div class="row  m-0">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Send Notification:
                     </div>
-                    <div class="col-lg-6 p-2 bor_half"><span *ngIf="licNotification == true">YES</span>
-                      <span *ngIf="licNotification == false">NO</span></div>
+                    <div class="col-lg-6 p-2 bor_half"><span *ngIf="licNotification == true">Yes</span>
+                      <span *ngIf="licNotification == false">No</span></div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Medical Card Renewal:
@@ -559,7 +570,7 @@
                     <div class="col-lg-6 p-2 bor_half">{{deliveryRate}}<span *ngIf="deliveryRateUnit != undefined">{{deliveryRateUnit}}</span></div>
                   </div>
 
-                  <div class="row  m-0">
+                  <div class="row  m-0" *ngIf="driverType == 'employee'">
                     <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">SIN:</div>
                     <div class="col-lg-6 p-2 bor_half">{{SIN}}</div>
                   </div>
@@ -587,14 +598,14 @@
           <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Personal Conveyance
               (PC):</div>
-            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosPcAllowed == true">YES</span>
-              <span *ngIf="hosPcAllowed == false">NO</span></div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosPcAllowed == true">Yes</span>
+              <span *ngIf="hosPcAllowed == false">No</span></div>
           </div>
           <div class="row  m-0" *ngIf="hosStatus == 'non_Exempted'">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Allow Yard Move (YM):
             </div>
-            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosYmAllowed == true">YES</span>
-              <span *ngIf="hosYmAllowed == false">NO</span></div>
+            <div class="col-lg-6 p-2 bor_half text-capitalize"><span *ngIf="hosYmAllowed == true">Yes</span>
+              <span *ngIf="hosYmAllowed == false">No</span></div>
           </div>
           <div class="row  m-0">
             <div class="col-lg-6 p-2 font-weight-bold text-3 text-left back-color-gray">Type:</div>

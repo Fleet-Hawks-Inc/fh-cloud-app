@@ -1,3 +1,4 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import * as moment from "moment";
@@ -8,6 +9,8 @@ import Constants from "src/app/pages/fleet/constants";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
+import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -37,6 +40,18 @@ export class AddEmployeePaymentComponent implements OnInit {
     additionTotal: 0,
     deductionTotal: 0,
     subTotal: 0,
+    taxdata: {
+      payPeriod: null,
+      stateCode: null,
+      federalCode: 'claim_code_1',
+      provincialCode: null,
+      cpp: 0,
+      ei: 0,
+      federalTax: 0,
+      provincialTax: 0,
+      emplCPP: 0,
+      emplEI: 0
+    },
     taxes: 0,
     advance: 0,
     finalTotal: 0,
@@ -107,8 +122,12 @@ export class AddEmployeePaymentComponent implements OnInit {
   };
   advancePayments = [];
   accList = [];
+  payPeriods = [];
+  states= [];
+  claimCodes = [];
+  provincalClaimCodes = [];
 
-  constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
+  constructor(private listService: ListService, private route: ActivatedRoute, private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -116,17 +135,28 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.fetchPaymentDetail();
     }
     this.fetchEmployees();
-    this.fetchAccounts();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
+    this.fetchPayPeriods();
+    this.getStates();
+    this.fetchClaimCodes();
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   fetchEmployees() {
     this.apiService.getData(`contacts/get/list/employee`).subscribe((result: any) => {
       this.employees = result;
     })
   }
-
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
+  }
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchEmployeDetail() {
     this.paymentData.payroll.type = null;
     this.paymentData.payroll.amount = 0;
@@ -134,7 +164,6 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.paymentTotal = 0;
     this.paymentData.finalTotal = 0;
     this.paymentData.subTotal =0;
-    this.paymentData.taxes=0;
     this.paymentData.advance =0;
     this.apiService.getData(`contacts/detail/${this.paymentData.entityId}`).subscribe((result: any) => {
       this.empDetails = result.Items[0];
@@ -150,10 +179,11 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.paymentData.finalTotal = this.paymentData.payroll.amount;
         this.paymentData.subTotal = this.paymentData.payroll.amount;
       }
-      
+
     })
     this.fetchLastAdded();
     this.fetchAdvancePayments();
+    this.calculatePayroll();
   }
 
   EmpRateCalc() {
@@ -166,6 +196,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.payroll.amount = Number(this.paymentData.payroll.amount);
     this.paymentData.paymentTotal = this.paymentData.payroll.amount;
     this.calculateFinalTotal();
+    this.calculatePayroll();
   }
 
   addAdditionalExp() {
@@ -238,20 +269,26 @@ export class AddEmployeePaymentComponent implements OnInit {
     let label = "";
     if (type == "cash") {
       label = "Cash";
+      this.paymentData.payModeNo = '';
     } else if (type == "cheque") {
       label = "Cheque";
+      this.paymentData.payModeNo = Date.now().toString();
     } else if (type == "eft") {
       label = "EFT";
+      this.paymentData.payModeNo = '';
     } else if (type == "credit_card") {
       label = "Credit Card";
+      this.paymentData.payModeNo = '';
     } else if (type == "debit_card") {
       label = "Debit Card";
+      this.paymentData.payModeNo = '';
     } else if (type == "demand_draft") {
       label = "Demand Draft";
+      this.paymentData.payModeNo = '';
     }
     this.payModeLabel = label;
     this.paymentData.payModeDate = null;
-    this.paymentData.payModeNo = '';
+
   }
 
   showAcModal() {
@@ -263,6 +300,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.toaster.error('Please enter valid amount');
       return false;
     }
+
     this.submitDisabled = true;
     this.accountService.postData('employee-payments', this.paymentData).subscribe({
         complete: () => { },
@@ -290,7 +328,7 @@ export class AddEmployeePaymentComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success('Employee payment added successfully.');
-          this.router.navigateByUrl('/accounts/payments/employee-payments/list');
+          this.cancel();
         },
     });
   }
@@ -302,21 +340,24 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.paymentTotal = Number(this.paymentData.paymentTotal);
     this.paymentData.additionTotal = Number(this.paymentData.additionTotal);
     this.paymentData.deductionTotal = Number(this.paymentData.deductionTotal);
-    this.paymentData.finalTotal = Number(this.paymentData.finalTotal);
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
-    this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
+    this.paymentData.finalTotal = this.paymentData.subTotal - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
+
+    this.paymentData.subTotal = Number(this.paymentData.subTotal.toFixed(2));
+    this.paymentData.finalTotal = Number(this.paymentData.finalTotal.toFixed(2));
   }
 
   fetchPaymentDetail() {
     this.accountService.getData(`employee-payments/detail/${this.paymentID}`).subscribe((result: any) => {
       this.paymentData = result[0];
       this.submitDisabled = true;
+      this.assignProvincalCode();
     })
   }
 
   checkInput(type) {
     if(type == 'tax') {
-      if(this.paymentData.taxes > this.paymentData.subTotal) {
+      if(Number(this.paymentData.taxes) > Number(this.paymentData.subTotal)) {
         this.taxErr = 'Tax amount should be less than sub total';
         this.submitDisabled = true;
       } else {
@@ -324,7 +365,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         this.submitDisabled = false;
       }
     } else if(type == 'advance') {
-      if(this.paymentData.advance > this.paymentData.subTotal) {
+      if(Number(this.paymentData.advance) > Number(this.paymentData.subTotal)) {
         this.advErr = 'Advance amount should be less than sub total';
         this.submitDisabled = true;
       } else {
@@ -375,12 +416,6 @@ export class AddEmployeePaymentComponent implements OnInit {
     });
   }
 
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/get/list/all`).subscribe((result: any) => {
-      this.accList = result;
-    });
-  }
-
   selectedAdvancepayments() {
     this.paymentData.advancePayIds = [];
     this.paymentData.advData = [];
@@ -422,6 +457,9 @@ export class AddEmployeePaymentComponent implements OnInit {
 
     for (const element of this.advancePayments) {
       if(element.selected) {
+        if(Number(element.paidAmount > 0)) {
+          selectCount += 1;
+        }
         this.paymentData.advance += Number(element.paidAmount);
         this.paymentData.advData.map((v) => {
           if(element.paymentID === v.paymentID) {
@@ -451,12 +489,95 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.paymentTotal = (this.paymentData.paymentTotal) ? Number(this.paymentData.paymentTotal) : 0;
 
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
-    this.paymentData.finalTotal = this.paymentData.subTotal + this.paymentData.taxes - this.paymentData.advance;
+    this.paymentData.finalTotal = this.paymentData.subTotal - this.paymentData.taxes - this.paymentData.advance;
+  }
+
+  openPayrollModel() {
+    $('#payrollModal').modal('show');
   }
 
   calculatePayroll() {
-    this.accountService.getData(`employee-payments/payroll/calculate`).subscribe((result: any) => {
-      // console.log('payrioll calculate result============', result);
+    this.paymentData.taxdata.cpp = 0;
+    this.paymentData.taxdata.ei = 0;
+    this.paymentData.taxdata.federalTax = 0;
+    this.paymentData.taxdata.provincialTax = 0;
+    this.paymentData.taxdata.emplCPP = 0;
+    this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = 0;
+    if(!this.paymentID) {
+      if(this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
+        if(this.paymentData.subTotal > 0) {
+          this.accountService.getData(`employee-payments/payroll/calculate?amount=${this.paymentData.subTotal}&pay-period=${this.paymentData.taxdata.payPeriod}&state=${this.paymentData.taxdata.stateCode}`).subscribe((result: any) => {
+            this.paymentData.taxdata.cpp = result.cpp;
+            this.paymentData.taxdata.ei = result.insurance;
+            this.paymentData.taxdata.federalTax = result.federalTax;
+            this.paymentData.taxdata.provincialTax = result.provncTax;
+            this.paymentData.taxdata.emplCPP = result.employerCpp;
+            this.paymentData.taxdata.emplEI = result.employerEI;
+            this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+            this.paymentData.taxes = Number(this.paymentData.taxes.toFixed(2));
+            this.calculateFinalTotal();
+          })
+        }
+      } else {
+        this.resetPayrollCalculations();
+        this.calculateFinalTotal();
+      }
+    }
+  }
+
+  fetchPayPeriods() {
+    this.httpClient.get('assets/jsonFiles/payroll/payPeriods.json').subscribe((data: any) => {
+      this.payPeriods = data;
+    });
+  }
+
+  fetchClaimCodes() {
+    this.httpClient.get('assets/jsonFiles/payroll/claimCodes.json').subscribe((data: any) => {
+      this.claimCodes = data;
+    });
+  }
+
+  getStates() {
+    this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
+  }
+
+  assignProvincalCode() {
+    if(this.paymentData.taxdata.stateCode == null || this.paymentData.taxdata.stateCode == undefined) {
+      this.resetPayrollCalculations();
+    }
+    this.provincalClaimCodes = [];
+    this.claimCodes[1].map((v) => {
+      if(this.paymentData.taxdata.stateCode === v.stateCode) {
+        this.provincalClaimCodes = v.codes;
+      }
     })
+    this.paymentData.taxdata.provincialCode = 'claim_code_1';
+    this.calculatePayroll();
+    this.calculateFinalTotal();
+  }
+
+  resetPayrollCalculations() {
+    this.paymentData.taxdata.cpp = 0;
+    this.paymentData.taxdata.ei = 0;
+    this.paymentData.taxdata.federalTax = 0;
+    this.paymentData.taxdata.provincialTax = 0;
+    this.paymentData.taxdata.emplCPP = 0;
+      this.paymentData.taxdata.emplEI = 0;
+    this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
+    this.calculateFinalTotal();
+  }
+
+  showCheque() {
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalTotal ,
+      type: 'employee',
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add'
+    }
+    this.listService.openPaymentChequeModal(obj);
   }
 }

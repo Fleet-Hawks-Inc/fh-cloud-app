@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AddJournalComponent } from './add-journal/add-journal.component';
 import { JournalListComponent } from './journal-list/journal-list.component';
 import { JournalDetailComponent } from './journal-detail/journal-detail.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -93,6 +94,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    InfiniteScrollModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

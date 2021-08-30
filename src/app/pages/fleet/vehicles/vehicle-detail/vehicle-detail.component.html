@@ -7,18 +7,11 @@
             <h4 class="text-4 mt-0 mb-0 text-dark">Vehicle Details</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right">
+            <a routerLink="/fleet/vehicles/edit/{{vehicleID}}" class="btn btn-default btn-sm mr-2"><i
+              class="fas fa-pencil-alt"></i> Edit Vehicle</a>
             <a routerLink="/fleet/vehicles/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Vehicles
               List</a>
-            <div class="btn-group flex-wrap" *ngIf="!environment.isFeatureEnabled">
-              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                aria-expanded="false">Actions<span class="caret"></span></button>
-              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                <a class="dropdown-item text-1" routerLink="/fleet/vehicles/edit/{{vehicleID }}"
-                  href="javascript:;">Edit</a>
-                <a class="modal-with-form dropdown-item text-1" (click)="deleteVehicle()" href="javascript:;">Delete</a>
-              </div>
-            </div>
+
           </div>
         </div>
       </header>
@@ -42,11 +35,11 @@
                     </div>
                     <div class="row m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Name/Number:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ vehicleIdentification }} </div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ vehicleIdentification }} </div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Vehicle Type:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ vehicleTypeObects[vehicleType] }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ vehicleTypeObects[vehicleType] }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">VIN:</div>
@@ -62,29 +55,29 @@
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Make:</div>
-                      <div *ngIf="vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">{{vehicleManufacturersList[manufacturerID] }}</div>
-                      <div *ngIf="!vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">{{manufacturerID }}</div>
+                      <div *ngIf="vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">{{vehicleManufacturersList[manufacturerID] | titlecase}}</div>
+                      <div *ngIf="!vehicleManufacturersList[manufacturerID]" class="col-lg-8 p-2 border-box">{{manufacturerID | titlecase}}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Model:</div>
-                      <div *ngIf="vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">{{ vehicleModelList[modelID] }}</div>
-                      <div *ngIf="!vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">{{modelID}}</div>
+                      <div *ngIf="vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">{{ vehicleModelList[modelID] | titlecase}}</div>
+                      <div *ngIf="!vehicleModelList[modelID]" class="col-lg-8 p-2 border-box">{{modelID | titlecase}}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Country:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ countryName }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ countryName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Province/State:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ stateName }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ stateName }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Assign Driver:</div>
-                      <div class="col-lg-8 p-2 border-box">{{driversList[driverID]}}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{driversList[driverID]}}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Driver's Team:</div>
-                      <div class="col-lg-8 p-2 border-box">{{driversList[teamDriverID]}}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{driversList[teamDriverID]}}</div>
                     </div>
 
                     <!-- <div class="row  m-0">
@@ -99,38 +92,38 @@
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Status:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ currentStatus | titlecase}}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ currentStatus | titlecase}}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Group:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ groupsList[groupID] }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ groupsList[groupID] }}</div>
                     </div>
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Ownership:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ ownership }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ ownership }}</div>
                     </div>
 
                     <div class="row  m-0" *ngIf="ownership == 'ownerOperator'">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Owner Operator:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ contactsObjects[ownerOperatorName] }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ contactsObjects[ownerOperatorName] }}</div>
                     </div>
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Enable IFTA Reporting:
                       </div>
-                      <div class="col-lg-8 p-2 border-box">{{ (iftaReporting) ? 'YES' : 'NO' }}</div>
+                      <div class="col-lg-8 p-2 border-box">{{ (iftaReporting) ? 'Yes' : 'No' }}</div>
                     </div>
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Color:</div>
-                      <div class="col-lg-8 p-2 border-box">{{ vehicleColor }}</div>
+                      <div class="col-lg-8 p-2 border-box text-capitalize">{{ vehicleColor }}</div>
                     </div>
 
                     <div class="row  m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Inspection Form:</div>
                       <div class="col-lg-8 p-2 border-box">
                         <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal"
-                          class="modal-with-form font-weight-bold">{{ inspectionForms.inspectionFormName }}</a>
+                          class="modal-with-form font-weight-bold text-capitalize">{{ inspectionForms.inspectionFormName }}</a>
                       </div>
                     </div>
                   </div>
@@ -179,7 +172,7 @@
                               <tr *ngIf="issues.length == 0" style="text-align: center;">
                                 <td colspan="3">{{ noRecordMsg }}</td>
                               </tr>
-                              <tr *ngFor="let data of issues">
+                              <tr *ngFor="let data of issues" class="text-capitalize">
                                 <td>{{ data.issueName }}</td>
                                 <td>{{ (data.description != '') ? data.description : '-' }}</td>
                                 <td>{{ data.currentStatus }}</td>
@@ -302,7 +295,7 @@
                           <tr *ngIf="servicePrograms.length == 0" style="text-align: center;">
                             <td colspan="2">{{ noRecordMsg }}</td>
                           </tr>
-                          <tr *ngFor="let progran of servicePrograms">
+                          <tr *ngFor="let progran of servicePrograms"  class="text-capitalize">
                             <td>{{ progran.programName }}</td>
                             <td>{{ progran.description }}</td>
                           </tr>
@@ -418,11 +411,11 @@
 
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Height:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ specifications.height }} {{ specifications.heightUnit }} </div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ specifications.height }} {{ specifications.heightUnit }} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Ground Clearance:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ specifications.groundClearnce }} {{ specifications.groundClearnceUnit }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ specifications.groundClearnce }} {{ specifications.groundClearnceUnit }}</div>
                   </div>
 
 
@@ -463,7 +456,7 @@
                 <div class="col-lg-6">
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Insurance Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[insurance.vendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ contactsObjects[insurance.vendorID] }}</div>
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Date of Issue:</div>
@@ -513,15 +506,15 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Engine Summary:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ engine.engineSummary }} </div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ engine.engineSummary }} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Engine Brand:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ engine.engineBrand }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ engine.engineBrand }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Cylinders:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ engine.cylinders }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ engine.cylinders }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Stroke:</div>
@@ -539,12 +532,12 @@
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Summary:
                     </div>
-                    <div class="col-lg-8 p-2 border-box">{{ engine.transmissionSummary }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ engine.transmissionSummary }}</div>
                   </div>
 
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Type:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ engine.transmissionType }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ engine.transmissionType }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Transmission Gears:
@@ -573,11 +566,11 @@
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Drive Type:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ wheelsAndTyres.driveType }} </div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ wheelsAndTyres.driveType }} </div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Brake System:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ wheelsAndTyres.brakeSystem }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ wheelsAndTyres.brakeSystem }}</div>
                   </div>
 
                 </div>
@@ -604,7 +597,7 @@
                   </div>
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Type:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ fluid.fuelType }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ fluid.fuelType }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Fuel Tank 1 Capacity:
@@ -656,7 +649,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[purchase.purchaseVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ contactsObjects[purchase.purchaseVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Price :</div>
@@ -688,7 +681,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Comments:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ purchase.purchaseComments }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ purchase.purchaseComments }}</div>
                   </div>
                 </div>
 
@@ -711,7 +704,7 @@
 
                   <div class="row m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Loan Vendor:</div>
-                    <div class="col-lg-8 p-2 border-box">{{ contactsObjects[loan.loanVendorID] }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize">{{ contactsObjects[loan.loanVendorID] }}</div>
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Amount of Loan:</div>
@@ -752,7 +745,7 @@
                   </div>
                   <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Notes:</div>
-                    <div class="col-lg-8 p-2 border-box"> {{ loan.notes }}</div>
+                    <div class="col-lg-8 p-2 border-box text-capitalize"> {{ loan.notes }}</div>
                   </div>
 
                 </div>
@@ -813,7 +806,7 @@
                 <div class="col-lg-3 font-weight-bold">
                   Form Name:
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 text-capitalize">
                   {{ inspectionForms.inspectionFormName }}
                 </div>
               </div>
@@ -821,7 +814,7 @@
                 <div class="col-lg-3 font-weight-bold">
                   Form Type:
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-9 text-capitalize">
                   {{ inspectionForms.inspectionType }}
                 </div>
               </div>
@@ -830,7 +823,7 @@
                   Default Inspection Form:
                 </div>
                 <div class="col-lg-9">
-                  <span *ngIf="inspectionForms"> 
+                  <span *ngIf="inspectionForms">
                     <span *ngIf="inspectionForms.isDefaultInspectionType=='0'">NO</span>
                     <span *ngIf="inspectionForms.isDefaultInspectionType=='1'">YES</span>
                   </span>
@@ -852,8 +845,8 @@
                 <tbody>
                   <tr *ngFor="let data of inspectionForms.parameters; let i=index;">
                     <td>{{ i+1 }}</td>
-                    <td class="font-weight-bold">{{ data.name }}</td>
-                    <td class="font-weight-bold">{{ (data.remarks != '') ? data.remarks : '-' }}</td>
+                    <td class="font-weight-bold text-capitalize">{{ data.name }}</td>
+                    <td class="font-weight-bold text-capitalize">{{ (data.remarks != '') ? data.remarks : '-' }}</td>
                   </tr>
                 </tbody>
               </table>

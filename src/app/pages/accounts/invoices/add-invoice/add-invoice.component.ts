@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {Auth} from 'aws-amplify';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -20,6 +21,7 @@ export class AddInvoiceComponent implements OnInit {
     private apiService: ApiService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
+    private location: Location,
     private router: Router) { }
     pageTitle = 'Add Invoice';
     dateMinLimit = { year: 2021, month: 1, day: 1 };
@@ -70,7 +72,7 @@ export class AddInvoiceComponent implements OnInit {
   customers: any = [];
   customerSelected = [{
     additionalContact: [],
-    address: [],
+    adrs: [],
     officeAddr: false,
     email: '',
     phone: ''
@@ -107,10 +109,9 @@ export class AddInvoiceComponent implements OnInit {
     this.listService.fetchCustomers();
     this.getCurrentuser();
     this.customers = this.listService.customersList;
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
     this.fetchStateTaxes();
-    this.fetchUsers();
+   // this.fetchUsers();
+    this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
       this.pageTitle = 'Edit Invoice';
@@ -125,6 +126,14 @@ export class AddInvoiceComponent implements OnInit {
       this.users = result;
     });
   }
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
+  }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
@@ -137,23 +146,23 @@ export class AddInvoiceComponent implements OnInit {
         if (result.Items.length > 0) {
 
           this.customerSelected = result.Items;
-          for (let i = 0; i < this.customerSelected[0].address.length; i++) {
-            const element = this.customerSelected[0].address[i];
+          for (let i = 0; i < this.customerSelected[0].adrs.length; i++) {
+            const element = this.customerSelected[0].adrs[i];
             element[`isChecked`] = false;
           }
           if (this.invID) {
-            this.customerSelected[0].address.filter( elem => {
+            this.customerSelected[0].adrs.filter( elem => {
               if (elem.addressID === this.invoiceData.cusAddressID) {
                 elem.isChecked = true;
               }
             });
           } else {
-            this.customerSelected[0].address[0].isChecked = true;
-            if (this.customerSelected[0].address.length > 0) {
-              this.invoiceData.cusAddressID = this.customerSelected[0].address[0].addressID;
+            this.customerSelected[0].adrs[0].isChecked = true;
+            if (this.customerSelected[0].adrs.length > 0) {
+              this.invoiceData.cusAddressID = this.customerSelected[0].adrs[0].addressID;
             }
-            const addressLength = this.customerSelected[0].address.length;
-            const getType = this.customerSelected[0].address[0].addressType;
+            const addressLength = this.customerSelected[0].adrs.length;
+            const getType = this.customerSelected[0].adrs[0].aType;
 
             if (addressLength === 1 && (getType === '' || getType === null)) {
               this.notOfficeAddress = true;
@@ -168,11 +177,11 @@ export class AddInvoiceComponent implements OnInit {
   getAddressID(value: boolean, i: number, id: string) {
     if (value === true) {
       this.invoiceData.cusAddressID = id;
-      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
-        const element = this.customerSelected[0].address[index];
+      for (let index = 0; index < this.customerSelected[0].adrs.length; index++) {
+        const element = this.customerSelected[0].adrs[index];
         element.isChecked = false;
       }
-      this.customerSelected[0].address[i].isChecked = true;
+      this.customerSelected[0].adrs[i].isChecked = true;
     }
   }
   getInvDueDate(e: any) {
@@ -271,7 +280,7 @@ export class AddInvoiceComponent implements OnInit {
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -323,13 +332,10 @@ export class AddInvoiceComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Invoice Added Successfully.');
-        this.router.navigateByUrl('/accounts/invoices/list');
+        this.cancel();
       },
     });
   }
- cancelFn() {
-  this.router.navigateByUrl('/accounts/invoices/list');
- }
   async calculateAmount() {
     this.midAmt = 0;
     for (const element of this.invoiceData.details) {
@@ -359,7 +365,7 @@ export class AddInvoiceComponent implements OnInit {
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -424,7 +430,7 @@ export class AddInvoiceComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Invoice Updated Successfully.');
-        this.router.navigateByUrl('/accounts/invoices/list');
+        this.cancel();
       },
     });
   }
@@ -435,5 +441,15 @@ export class AddInvoiceComponent implements OnInit {
       this.apiService.getData('contacts/get/list').subscribe((result: any) => {
         this.customersObjects = result;
       });
+    }
+
+    refreshCustomerData() {
+      this.listService.fetchCustomers();
+    }
+    openModal(unit: string) {
+      this.listService.triggerModal(unit);
+
+      localStorage.setItem('isOpen', 'true');
+      this.listService.changeButton(false);
     }
 }

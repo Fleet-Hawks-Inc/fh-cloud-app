@@ -7,6 +7,7 @@ import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -20,6 +21,7 @@ export class AddJournalComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   journal = {
+    jrNo: null,
     txnDate: moment().format('YYYY-MM-DD'),
     referenceNo: '',
     currency: null,
@@ -48,7 +50,7 @@ export class AddJournalComponent implements OnInit {
     transactionLog: [],
   };
   difference = 0;
-  accounts = [];
+  accounts: any = [];
 
   contacts: any = [];
   errors = {};
@@ -66,7 +68,8 @@ export class AddJournalComponent implements OnInit {
   documentSlides = [];
   uploadedDocs = [];
 
-  constructor(private listService: ListService,private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
+  constructor(private listService: ListService,private route: ActivatedRoute,
+    private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params['journalID'];
@@ -74,9 +77,10 @@ export class AddJournalComponent implements OnInit {
       this.fetchJournalByID();
       this.submitDisabled = false;
     }
-    this.fetchAccounts();
+    this.listService.fetchChartAccounts();
     this.listService.fetchCustomers();
     this.contacts = this.listService.customersList;
+    this.accounts = this.listService.accountsList;
   }
 
   addMoreDetails() {
@@ -89,14 +93,16 @@ export class AddJournalComponent implements OnInit {
       creditDisabled: false,
       debitDisabled: false
     };
-    this.journal.details.push(obj)
+    this.journal.details.push(obj);
   }
 
   deleteDetail(index) {
     this.journal.details.splice(index, 1);
     this.calculateTotal();
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   calculateTotal() {
     this.journal.debitTotalAmount = 0;
     this.journal.creditTotalAmount = 0;
@@ -121,7 +127,7 @@ export class AddJournalComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-
+    console.log('this.journal', this.journal);
     // create form data instance
     const formData = new FormData();
 
@@ -167,7 +173,7 @@ export class AddJournalComponent implements OnInit {
   fetchJournalByID() {
     this.accountService.getData(`journal/${this.journalID}`)
       .subscribe((result: any) => {
-        if(result[0] !== undefined) {
+        if (result[0] !== undefined) {
           this.journal = result[0];
           this.journal.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].attachments;
@@ -194,6 +200,7 @@ export class AddJournalComponent implements OnInit {
         }
       })
   }
+
 
   updateJournal() {
     this.submitDisabled = true;
@@ -238,18 +245,18 @@ export class AddJournalComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Manual journal updated successfully.');
-        this.router.navigateByUrl('/accounts/manual-journal/list');
+        this.cancel();
       },
     });
   }
 
   fetchAccounts() {
-    this.accountService.getData(`chartAc`)
+    this.accountService.getData(`chartAc/fetch/list`)
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.accounts = result;
         }
-      })
+      });
   }
 
   checkSelectedAccount(accountID, selectedIndex) {

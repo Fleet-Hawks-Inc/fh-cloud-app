@@ -31,6 +31,7 @@ export class ExpenseDetailComponent implements OnInit {
     txnDate: null,
     unitType: null,
     unitID: null,
+    tripID: null,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -65,23 +66,25 @@ export class ExpenseDetailComponent implements OnInit {
   accountsObjects: any = {};
   customersObject: any = {};
   accountsIntObjects: any = {};
+  trips: any = {};
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     this.fetchExpenseByID();
     this.fetchVendors();
-    this.fetchInvoices();
+    // this.fetchInvoices();
     this.fetchExpenseCategories();
-    this.fetchCustomersByIDs();
+    // this.fetchCustomersByIDs();
     this.fetchAccountsByIDs();
     this.fetchAccountsByInternalIDs();
+    this.fetchTrips();
   }
 
   fetchExpenseByID() {
     this.accountService.getData(`expense/detail/${this.expenseID}`)
       .subscribe((result: any) => {
-        if (result[0] != undefined) {
+        if (result[0] !== undefined) {
           this.expenseData = result[0];
           this.expenseData.transactionLog.map((v: any) => {
             v.type = v.type.replace('_', ' ');
@@ -111,7 +114,12 @@ export class ExpenseDetailComponent implements OnInit {
         this.vendors = result;
       })
   }
-
+  fetchTrips() {
+    this.apiService.getData(`trips/get/list`)
+      .subscribe((result: any) => {
+        this.trips = result;
+      })
+  }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];

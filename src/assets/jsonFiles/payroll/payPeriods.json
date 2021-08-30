@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Daily (240 pay periods a year)",
+        "payCount": 240
+    },
+    {
+        "name": "Weekly (52 pay periods a year)",
+        "payCount": 52
+    },
+    {
+        "name": "Biweekly (26 pay periods a year)",
+        "payCount": 26
+    },
+    {
+        "name": "Semi-monthly (24 pay periods a year)",
+        "payCount": 24
+    },
+    {
+        "name": "Monthly (12 pay periods a year)",
+        "payCount": 12
+    },
+    {
+        "name": "Weekly (53 pay periods a year)",
+        "payCount": 53
+    },
+    {
+        "name": "Biweekly (27 pay periods a year)",
+        "payCount": 27
+    }
+]

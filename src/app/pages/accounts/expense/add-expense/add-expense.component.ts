@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
 import { ListService } from 'src/app/services/list.service';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as moment from 'moment';
+import { Location } from '@angular/common';
 declare var $: any;
 
 @Component({
@@ -17,7 +18,7 @@ declare var $: any;
   styleUrls: ['./add-expense.component.css']
 })
 export class AddExpenseComponent implements OnInit {
-
+pageTitle = 'Add Other Expense';
   expenseData = {
     categoryID: null,
     expAccountID: null,
@@ -33,6 +34,8 @@ export class AddExpenseComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     unitType: null,
     unitID: null,
+    tripID: null,
+    stlStatus: null,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -109,26 +112,30 @@ export class AddExpenseComponent implements OnInit {
     catName: '',
     catDesc: ''
   };
-
-  constructor(private listService: ListService, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
+  catDisabled = false;
+  trips: any = [];
+  constructor(private listService: ListService,
+              private location: Location, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
-    if(this.expenseID != undefined) {
+    if (this.expenseID != undefined) {
       this.fetchExpenseByID();
+      this.pageTitle = 'Edit Other Expense';
     }
+    this.fetchTrips();
     this.fetchCountries();
     this.fetchExpenseCategories();
     this.fetchStateTaxes();
-    this.fetchInvoices();
+  //  this.fetchInvoices();
     this.listService.fetchChartAccounts();
-    this.listService.fetchCustomers();
+  //  this.listService.fetchCustomers();
     this.listService.fetchAssets();
     this.listService.fetchVehicles();
     this.listService.fetchVendors();
     this.expenseAccounts = this.listService.accountsList;
     this.paidThroughAccounts = this.listService.accountsList;
-    this.customers = this.listService.customersList;
+  //  this.customers = this.listService.customersList;
     this.vehicles = this.listService.vehicleList;
     this.assets = this.listService.assetsList;
     this.vendors = this.listService.vendorList;
@@ -137,7 +144,12 @@ export class AddExpenseComponent implements OnInit {
   resetUnitVal() {
     this.expenseData.unitID = null;
   }
-
+  refreshExpenseAccount() {
+    this.listService.fetchChartAccounts();
+  }
+  refreshPaidAccount() {
+    this.listService.fetchChartAccounts();
+  }
   fetchCountries() {
     this.countries = CountryStateCity.GetAllCountries();
   }
@@ -151,7 +163,7 @@ export class AddExpenseComponent implements OnInit {
     this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.expenseData.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
 
-    if(stateCode !== undefined && stateCode != null) {
+    if (stateCode !== undefined && stateCode != null) {
       let selected:any = this.stateTaxes.filter(o => o.stateCode === stateCode);
       this.expenseData.taxes.gstPercent = selected[0].GST;
       this.expenseData.taxes.pstPercent = selected[0].PST;
@@ -160,7 +172,14 @@ export class AddExpenseComponent implements OnInit {
       this.calculateFinalTotal();
     }
   }
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+  fetchTrips() {
+    this.apiService.getData('trips').subscribe((result: any) => {
+     this.trips = result.Items;
+    });
+  }
   fetchStateTaxes() {
     this.apiService.getData('stateTaxes').subscribe((res: any) => {
       this.stateTaxes = res.Items;
@@ -191,6 +210,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasSuccess = false;
 
     this.expenseData.amount = parseFloat(this.expenseData.amount);
+    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -228,7 +248,7 @@ export class AddExpenseComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Expense transaction added successfully.');
-        this.router.navigateByUrl('/accounts/expense/list');
+        this.cancel();
       },
     });
   }
@@ -238,6 +258,7 @@ export class AddExpenseComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] != undefined) {
           this.expenseData = result[0];
+
           this.expenseData.transactionLog = result[0].transactionLog;
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
@@ -274,7 +295,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-
+    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -312,13 +333,13 @@ export class AddExpenseComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Expense transaction updated successfully.');
-        this.router.navigateByUrl('/accounts/expense/list');
+        this.cancel();
       },
     });
   }
 
   addCategory() {
-    this.submitDisabled = true;
+    this.catDisabled = true;
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
@@ -335,11 +356,11 @@ export class AddExpenseComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
               // this.throwErrors();
             },
             error: () => {
-              this.submitDisabled = false;
+              this.catDisabled = false;
             },
             next: () => {
             },
@@ -347,7 +368,7 @@ export class AddExpenseComponent implements OnInit {
       },
       next: (res) => {
         this.fetchExpenseCategories();
-        this.submitDisabled = false;
+        this.catDisabled = false;
         this.response = res;
         $('#addExpenseTypeModal').modal('hide');
         this.categoryData = {
@@ -362,12 +383,15 @@ export class AddExpenseComponent implements OnInit {
   fetchExpenseCategories() {
     this.accountService.getData(`expense/categories`)
       .subscribe((result: any) => {
-        if (result[0] != undefined) {
+        if (result[0] !== undefined) {
           this.expenseCategories = result;
         }
-      })
+      });
   }
 
+  refreshCategory() {
+    this.fetchExpenseCategories();
+  }
   deleteDocument(name: string, index: number) {
     this.accountService.deleteData(`expense/uploadDelete/${this.expenseID}/${name}`).subscribe((result: any) => {
       this.existingDocs.splice(index, 1);
@@ -400,5 +424,14 @@ export class AddExpenseComponent implements OnInit {
     if(val === this.expenseData.paidAccountID) {
       this.expenseData.paidAccountID = null;
     }
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
   }
 }

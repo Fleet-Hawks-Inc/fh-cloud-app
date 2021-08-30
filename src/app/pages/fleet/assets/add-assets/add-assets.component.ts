@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
+import { Location } from '@angular/common';
 import { DomSanitizer} from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service';
 import * as moment from 'moment';
@@ -111,12 +112,14 @@ export class AddAssetsComponent implements OnInit {
   years = [];
   ownOperators: any = [];
   submitDisabled = false;
+  groupSubmitDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
+              private location: Location,
               private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
       this.selectedFileNames = new Map<any, any>();
   }
@@ -159,7 +162,9 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
   resetModel(){
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
@@ -176,10 +181,32 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
+  getManufactures(){
+    this.listService.fetchAssetManufacturers();
+  }
+
+  getModels(){
+    this.listService.fetchAssetModels();
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+
+  openProgram(value) {
+    this.listService.separateModals(value);
+  }
+
   /*
    * Add new asset
    */
-  addAsset() {
+  onAddAsset() {
     this.hideErrors();
     this.submitDisabled = true;
     const data = {
@@ -270,7 +297,7 @@ export class AddAssetsComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Asset added successfully.');
-        this.router.navigateByUrl('/fleet/assets/list');
+        this.cancel();
       },
     });
   }
@@ -370,7 +397,7 @@ export class AddAssetsComponent implements OnInit {
   /*
    * Update asset
   */
-  updateAsset() {
+  onUpdateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
 
@@ -466,7 +493,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success('Asset updated successfully.');
-        this.router.navigateByUrl('/fleet/assets/list');
+        this.cancel();
         this.Success = '';
       },
     });
@@ -506,6 +533,10 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
+  getGroups(){
+    this.fetchGroups();
+  }
+
 
   fetchAssets() {
     this.apiService.getData('assets')
@@ -515,6 +546,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   addGroup() {
+    this.groupSubmitDisabled = true;
     this.apiService.postData('groups', this.groupData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -527,13 +559,17 @@ export class AddAssetsComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-              // this.throwErrors();
+              this.throwErrors();
+              this.groupSubmitDisabled = false;
             },
-            error: () => { },
+            error: () => {
+              this.groupSubmitDisabled = false;
+            },
             next: () => { },
           });
       },
       next: (res) => {
+        this.groupSubmitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();

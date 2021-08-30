@@ -3,7 +3,7 @@
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header">
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Add Other Expenses </div>
+                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}}</div>
                     <div class="col-md-8  col-lg-8 text-right"> <a routerLink="/accounts/expense/list"
                             class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Other
                             Expenses
@@ -41,8 +41,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addExpenseTypeModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshCategory()"
+                                                    data-toggle="tooltip" title="Refresh category data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -64,8 +68,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshExpenseAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -90,8 +98,12 @@
                                         </div>
                                         <div class="col-lg-2  mar-top-37">
                                             <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm " style="color:white;"><i
+                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
                                                     class="fas fa-plus"></i></button>
+                                                    <a href="javascript:;" (click)="refreshPaidAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -183,6 +195,17 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
+                                      <div class="col-lg-10">
+                                          <label
+                                              class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip</label>
+                                          <ng-select [(ngModel)]="expenseData.tripID" name="tripID"
+                                              placeholder="Select Trip">
+                                              <ng-option value="{{ trip.tripID }}"
+                                                  *ngFor="let trip of trips">Trip# - {{ trip.tripNo }} </ng-option>
+                                          </ng-select>
+                                      </div>
+                                  </div>
+                                    <div class="row mt-3">
                                         <div class="col-lg-5">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -232,10 +255,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-2  mar-top-37"> <a href="javascript:;" data-dismiss="modal"
-                                                data-toggle="modal" data-target="#addVendorModal"
-                                                class="btn btn-sm modal-with-form btn-success"><i
-                                                    class="fas fa-plus"></i></a> </div>
+                                        <div class="col-lg-2  mar-top-37 pr-0">
+                                          <a href="javascript:;" (click)="openModal('form');"
+                                  class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
+                                  <a href="javascript:;" (click)="refreshVendorData()"
+                                  data-toggle="tooltip" title="Refresh vendor data"
+                                  class="btn btn-success btn-sm modal-with-form"><i
+                                      class="fas fa-sync"></i></a>
+                                                   </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-5">
@@ -243,8 +270,11 @@
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <ng-select [(ngModel)]="expenseData.countryCode" name="countryCode"
                                                 placeholder="Select Country" (change)="getStates($event)" #country="ngModel" required>
-                                                <ng-option value="{{ data.countryCode }}"
-                                                    *ngFor="let data of countries">{{ data.countryName }} </ng-option>
+                                                <!-- <ng-option value="{{ data.countryCode }}"
+                                                    *ngFor="let data of countries">{{ data.countryName }} </ng-option> -->
+                                                    <ng-option value="CA">Canada</ng-option>
+                                                    <ng-option value="US">United States</ng-option>
+                                                    <ng-option value="MX">Mexico</ng-option>
                                             </ng-select>
 
                                             <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
@@ -306,7 +336,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5"> 
+                                        <div class="col-lg-5">
                                             <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
                                                 <input type="checkbox" name="pstStatus"
                                                     [(ngModel)]="expenseData.taxes.includePST"(change)="calculateFinalTotal()"> PST</label>
@@ -363,7 +393,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <!-- <div class="row mt-3">
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -379,8 +409,8 @@
                                                 data-toggle="modal" data-target="#addCustomerModal"
                                                 class="btn modal-with-form btn-success btn-sm"><i
                                                     class="fas fa-plus"></i></a> </div>
-                                    </div>
-                                    <div class="row mt-3">
+                                    </div> -->
+                                    <!-- <div class="row mt-3">
                                         <div class="col-lg-10">
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
@@ -391,7 +421,7 @@
                                                     data.invNo }}</ng-option>
                                             </ng-select>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -446,14 +476,20 @@
                                             <label
                                                 class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
                                             <textarea class="form-control h-auto" placeholder="Enter notes of the expense transaction"rows="3" name="notes"
-                                                [(ngModel)]="expenseData.notes"></textarea>
+                                                [(ngModel)]="expenseData.notes" #Nexpense="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                <div *ngIf="Nexpense.invalid && (Nexpense.dirty || Nexpense.touched)" class="text-danger">
+                                                    <div *ngIf="Nexpense.errors.pattern">
+                                                     Only 500 characters are allowed.
+                                                    </div>
+
+                                                 </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-11 text-right">
-                                    <button type="button" class="btn btn-default mr-2">Cancel</button>
+                                    <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                     <button type="submit" (click)="addRecord()" *ngIf="!expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Save</button>
                                     <button type="submit" (click)="updateRecord()" *ngIf="expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Update</button>
                                 </div>
@@ -477,24 +513,32 @@
                 </button>
             </div>
             <div class="modal-body text-dark">
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <label class="control-label font-weight-bold">Name</label>
-                        <input type="text" class="form-control" name="categoryName" [(ngModel)]="categoryData.catName">
+                <form class="form-horizontal form-bordered" method="get" #expCatForm="ngForm">
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label class="control-label font-weight-bold">Name</label>
+                            <input type="text" class="form-control" name="categoryName" [(ngModel)]="categoryData.catName" #expCatNew="ngModel" required>
+                            <div *ngIf="expCatNew.invalid && (expCatNew.dirty || expCatNew.touched)" class="text-danger">
+                                <div *ngIf="expCatNew.errors.required">
+                                    Name is required.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-lg-12">
-                        <label class="control-label font-weight-bold">Description</label>
-                        <textarea rows="3" class="form-control h-auto" name="catDesc" [(ngModel)]="categoryData.catDesc"></textarea>
+                    <div class="form-row">
+                        <div class="form-group col-lg-12">
+                            <label class="control-label font-weight-bold">Description</label>
+                            <textarea rows="3" class="form-control h-auto" name="catDesc" [(ngModel)]="categoryData.catDesc"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="form-row mt-2">
-                    <div class="col-lg-12 text-right">
-                        <button class="btn btn-default modal-dismiss mr-2">Cancel</button>
-                        <button class="btn btn-success modal-dismiss" (click)="addCategory()">Save</button>
+                    <div class="form-row mt-2">
+                        <div class="col-lg-12 text-right">
+                            <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal" >Cancel</button>
+                            <button class="btn btn-success modal-dismiss" (click)="addCategory()" [disabled]="!expCatForm.form.valid || catDisabled">Save</button>
+                        </div>
                     </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>

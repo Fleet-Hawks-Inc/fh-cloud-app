@@ -38,7 +38,7 @@
                                             <div class="row" id="settlementListDiv">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
-                                                        Payment To/From<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                        Payment To<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
                                                     <ng-select [(ngModel)]="paymentData.paymentTo" name="paymentTo"
                                                         placeholder="Select type" #payTo="ngModel" required (change)="resetEntityVal();">
@@ -160,7 +160,7 @@
                                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <div class="row">
                                                         <div class="col-lg-5">
-                                                            <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount" placeholder="Enter amount" #amount="ngModel" required>
+                                                            <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount" min="0" placeholder="Enter amount" #amount="ngModel" required>
                                                             <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
                                                                 <div *ngIf="amount.errors.required">
                                                                     Amount is required.
@@ -208,11 +208,22 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-2" style="margin-top: 32px;">
+                                                  <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                                    class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                                                  </button>
+                                                  <a href="javascript:;" (click)="refreshAccount()"
+                                                    data-toggle="tooltip" title="Refresh account data"
+                                                    class="btn btn-success btn-sm modal-with-form"><i
+                                                        class="fas fa-sync"></i></a>
+                                                </div>
                                             </div>
                                             <div class="row pt-2" id="chequeDivDriver" *ngIf="paymentData.payMode">
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference</label>
                                                     <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference">
+
+
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date</label>
@@ -258,14 +269,20 @@
                                                         font-bold text-lg-right
                                                         pt-2">Notes
                                                     </label>
-                                                    <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes"></textarea>
+                                                    <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes" #advancenotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                    <div *ngIf="advancenotes.invalid && (advancenotes.dirty || advancenotes.touched)" class="text-danger">
+                                                        <div *ngIf="advancenotes.errors.pattern">
+                                                         Only 500 characters are allowed.
+                                                        </div>
+
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-10 text-right">
-                                            <a type="button" routerLink="/accounts/payments/advance-payments/list" class="btn btn-default mr-2">Cancel</a>
+                                            <button type="button" accounts class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
                                             <button type="button" *ngIf="!paymentID" (click)="addRecord()" [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
                                             <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()" [disabled]="!payForm.form.valid || submitDisabled"  class="btn btn-success">Update</button>
                                         </div>
@@ -279,3 +296,19 @@
         </section>
     </div>
 </section>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <app-add-account></app-add-account>
+      </div>
+    </div>
+  </div>
+</div>

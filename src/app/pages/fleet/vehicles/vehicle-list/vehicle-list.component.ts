@@ -271,7 +271,7 @@ export class VehicleListComponent implements OnInit {
       //   eventID: eventData.vehicleID,
       //   status: eventData.currentStatus
       // }
-      this.apiService.deleteData(`vehicles/delete/${eventData.vehicleID}`).subscribe((result: any) => {
+      this.apiService.deleteData(`vehicles/delete/${eventData.vehicleID}/${eventData.vehicleIdentification}`).subscribe((result: any) => {
 
         this.vehicles = [];
         this.vehicleDraw = 0;

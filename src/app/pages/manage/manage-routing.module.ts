@@ -60,7 +60,11 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./settings/manage-settings.module').then((m) => m.ManageSettingsModule) ,
-  }
+  },
+  {
+    path: 'devices',
+    loadChildren: () => import('./devices/devices.module').then((m) => m.DeviceModule) ,
+  },
 
   
   
