@@ -108,8 +108,8 @@ export class AssetListComponent implements OnInit {
       this.fetchAssetsCount();
       this.fetchGroups();
       this.initDataTable();
-      this.fetchManufacturesByIDs();
-      this.fetchModalsByIDs();
+      // this.fetchManufacturesByIDs();
+      // this.fetchModalsByIDs();
   }
 
   getSuggestions = _.debounce(function (value) {
@@ -139,17 +139,17 @@ export class AssetListComponent implements OnInit {
     });
   }
 
-  fetchManufacturesByIDs() {
-    this.apiService.getData('assetManufacturers/get/list').subscribe((result: any) => {
-      this.manufacturersObjects = result;
-    });
-  }
+  // fetchManufacturesByIDs() {
+  //   this.apiService.getData('assetManufacturers/get/list').subscribe((result: any) => {
+  //     this.manufacturersObjects = result;
+  //   });
+  // }
 
-  fetchModalsByIDs() {
-    this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
-      this.modelsObjects = result;
-    });
-  }
+  // fetchModalsByIDs() {
+  //   this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
+  //     this.modelsObjects = result;
+  //   });
+  // }
 
   someClickHandler(info: any): void {
     this.message = info.id + ' - ' + info.firstName;
@@ -216,6 +216,7 @@ export class AssetListComponent implements OnInit {
           v.assetType = v.assetType.replace("_"," ")
         })
         this.allData = result[`Items`];
+        
 
         if(this.assetID != '' || this.assetType != null) {
           this.assetStartPoint = 1;
