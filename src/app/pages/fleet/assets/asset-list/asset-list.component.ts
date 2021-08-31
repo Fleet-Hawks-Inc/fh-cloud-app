@@ -62,16 +62,18 @@ export class AssetListComponent implements OnInit {
     type: true,
     plateNo: true,
     lastLocation: true,
-    year: false,
+    year: true,
     make: true,
     model: false,
-    ownership: false,
+    ownership: true,
     currentStatus: true,
     group: false,
     aceID: false,
     aciID: false,
     gvwr: false,
     gawr: false,
+    companyName: true,
+    safetyDate: true
   }
 
   message: any;
@@ -94,6 +96,7 @@ export class AssetListComponent implements OnInit {
   assetPrevEvauatedKeys = [''];
   assetStartPoint = 1;
   assetEndPoint = this.pageLength;
+  contactsObjects = [];
 
   constructor(
     private apiService: ApiService,
@@ -110,6 +113,7 @@ export class AssetListComponent implements OnInit {
       this.initDataTable();
       this.fetchManufacturesByIDs();
       this.fetchModalsByIDs();
+      this.fetchContacts();
   }
 
   getSuggestions = _.debounce(function (value) {
@@ -148,6 +152,12 @@ export class AssetListComponent implements OnInit {
   fetchModalsByIDs() {
     this.apiService.getData('assetModels/get/list').subscribe((result: any) => {
       this.modelsObjects = result;
+    });
+  }
+
+  fetchContacts() {
+    this.apiService.getData('contacts/get/list/ownerOperator').subscribe((result: any) => {
+      this.contactsObjects = result;
     });
   }
 
@@ -213,6 +223,7 @@ export class AssetListComponent implements OnInit {
         this.getStartandEndVal();
 
         result[`Items`].map((v:any) => {
+          v.url = `/fleet/assets/detail/${v.assetID}`;
           v.assetType = v.assetType.replace("_"," ")
         })
         this.allData = result[`Items`];

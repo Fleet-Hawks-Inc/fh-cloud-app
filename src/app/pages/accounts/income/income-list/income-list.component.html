@@ -78,7 +78,7 @@
                                             <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
                                             <td>{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
                                             <td>{{ data.paymentMode }}</td>
-                                            <td>{{ data.recAmount | number }} {{ data.recCurr }}</td>
+                                            <td>{{ data.recAmount | number : '1.2-2' }} {{ data.recCurr }}</td>
                                             <td>
                                                 <div class="btn-group flex-wrap">
                                                     <button type="button" class="mr-1 btn"
