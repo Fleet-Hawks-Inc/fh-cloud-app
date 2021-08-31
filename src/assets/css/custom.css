@@ -2597,3 +2597,23 @@ input:checked + .sliderbtn:before {
 .modal.photo__main .modal-dialog {
   max-width: 250px;
 }
+
+.units-list__main .modal-content,
+.units-form__main .modal-content,
+.units-detail__main .modal-content{
+  background-color: transparent;
+  border: none;
+}
+.cus-modal-content{
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.addressbook-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+.show-search__result .map-search__results {
+  display: block !important;
+}
