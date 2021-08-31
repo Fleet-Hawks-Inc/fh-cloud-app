@@ -1322,8 +1322,8 @@ color: black;
 
 .account-body{
   margin: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
+  /* margin-left: 50px;
+  margin-right: 50px; */
 }
 
 /* PRICE PLAN */
@@ -2504,7 +2504,7 @@ input.placeholder-lowercase {
 /* on board page width according screen sizes */
 .onboardwidth {width: 95% !important;	}
 @media (min-width: 1640px) {
-	.onboardwidth {width: 75% !important;	}
+	.onboardwidth {width: 90% !important;	}
 }
 
 .addsr-scroll-y {
