@@ -77,7 +77,7 @@
                                  <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode | titlecase}}</td>
                                  <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID] | titlecase}}</td>
                                  <!-- <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td> -->
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount}}&nbsp;{{rec.recAmountCur}}</td>
+                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount | number : '1.2-2'}}&nbsp;{{rec.recAmountCur}}</td>
                               </tr>
                            </tbody>
                         </table>
