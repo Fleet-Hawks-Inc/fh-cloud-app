@@ -16,6 +16,7 @@ import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { AddTripComponent } from './add-trip/add-trip.component';
 import { TripListComponent } from './trip-list/trip-list.component';
 import { TripDetailComponent } from './trip-detail/trip-detail.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -104,7 +105,8 @@ const routes: Routes = [
     NgSelectModule,
     NgxSpinnerModule,
     ChartsModule,
-    DragDropModule
+    DragDropModule,
+    MatExpansionModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

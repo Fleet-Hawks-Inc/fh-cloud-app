@@ -234,16 +234,12 @@
                                         <tbody>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Company Name:</th>
-                                                <td>{{vendorsData.companyName}}</td>
+                                                <td>{{vendorsData.cName}}</td>
                                             </tr>
                                             <tr>
                                                 <th width="40%" class="back-color-gray">Account#:</th>
                                                 <td>{{vendorsData.accountNumber ? vendorsData.accountNumber : '-'}}</td>
                                             </tr>
-                                            <!-- <tr>
-                                                <th width="40%" class="back-color-gray">Vendor Name:</th>
-                                                <td>{{vendorsData.firstName}} {{vendorsData.lastName}}</td>
-                                            </tr> -->
                                             <tr>
                                                 <th width="40%" class="back-color-gray"> Phone:</th>
                                                 <td>{{vendorsData.workPhone}}</td>
@@ -252,10 +248,6 @@
                                                 <th width="40%" class="back-color-gray"> Email:</th>
                                                 <td>{{vendorsData.workEmail}}</td>
                                             </tr>
-                                            <!-- <tr>
-                                                <th width="40%" class="back-color-gray">Prefered Vendor:</th>
-                                                <td>{{vendorsData.preferedVendor ? 'Yes' : 'No'}}</td>
-                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -267,31 +259,31 @@
                                 <tbody *ngFor="let item of vendorAddress;">
                                     <tr>
                                         <th width="40%" class="back-color-gray">Address Type:</th>
-                                        <td>{{item.addressType}}</td>
+                                        <td>{{item.aType}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray"> Country:</th>
-                                        <td>{{item.countryName}}</td>
+                                        <td>{{item.cName}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Province/State:</th>
-                                        <td>{{item.stateName}}</td>
+                                        <td>{{item.sName}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray"> City:</th>
-                                        <td>{{item.cityName}}</td>
+                                        <td>{{item.ctyName}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Zip Code:</th>
-                                        <td>{{item.zipCode}}</td>
+                                        <td>{{item.zip}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual">
                                         <th width="40%" class="back-color-gray">Address:</th>
-                                        <td>{{item.address1}} {{item.address2}}</td>
+                                        <td>{{item.add1}} {{item.add2}}</td>
                                     </tr>
                                     <tr *ngIf="item.manual == false">
                                         <th width="40%" class="back-color-gray">Address:</th>
-                                        <td>{{item.userLocation}}</td>
+                                        <td>{{item.userLoc}}</td>
                                     </tr>
                                 </tbody>
                             </table>

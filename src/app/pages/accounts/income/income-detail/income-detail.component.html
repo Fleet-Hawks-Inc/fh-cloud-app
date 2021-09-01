@@ -5,6 +5,8 @@
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Income Transaction </div>
                     <div class="col-md-8  col-lg-8 text-right">
+                      <a routerLink="/accounts/income/edit/{{ incomeID }}"  class="btn btn-default btn-sm mr-2"><i
+                        class="fas fa-pencil-alt"></i> Edit Income</a>
                         <a routerLink="/accounts/income/list" class="btn btn-sm btn-default mr-2"><i
                                 class="fas fa-list"></i> Income Transactions</a>
                         <a routerLink="/accounts/income/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i>
@@ -37,14 +39,14 @@
                                                             Category</td>
                                                         <td width="60%">{{ categories[incomeData.categoryID] }}</td>
                                                     </tr>
-                                                    <tr>
+                                                    <!-- <tr>
                                                         <td class="back-color-gray font-weight-bold">Invoice#</td>
                                                         <td>{{ (incomeData.invoiceID) ? invoices[incomeData.invoiceID]: '-' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Customer</td>
                                                         <td>{{ (incomeData.customerID) ? customers[incomeData.customerID]: '-' }}</td>
-                                                    </tr>
+                                                    </tr> -->
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Received Amount
                                                         </td>
@@ -55,7 +57,7 @@
                                                         <td>{{ incomeData.paymentMode }}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Number</td>
+                                                        <td class="back-color-gray font-weight-bold">{{ paymentLabel }} Reference</td>
                                                         <td>{{ incomeData.paymentModeNo }}</td>
                                                     </tr>
                                                     <tr>
@@ -78,7 +80,7 @@
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <label
-                                                            class="control-label font-weight-bold text-3">Documents(s)</label>
+                                                            class="control-label font-weight-bold text-3">Document(s)</label>
                                                     </div>
                                                 </div>
                                                 <hr class="solid mt-3">
@@ -98,33 +100,29 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <table class="table table-bordered simple-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Account Name</th>
-                                                        <th>Debit</th>
-                                                        <th>Credit</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>{{ accounts[incomeData.incomeAccID] }}</td>
-                                                        <td>0.00</td>
-                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td>{{ accounts[incomeData.depositAccID] }}</td>
-                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
-                                                        <td>0.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>Total</td>
-                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
-                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                          <table class="table table-bordered table-hover">
+                                            <thead>
+                                              <tr>
+                                                <th>Account Name</th>
+                                                <th>Type</th>
+                                                <th>Debit</th>
+                                                <th>Credit</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr *ngFor="let dt of incomeData.transactionLog">
+                                                <td><span *ngIf="dt.actIDType === 'actID'">{{accounts[dt.accountID] | titlecase}}</span></td>
+                                               <td>{{dt.type | titlecase}}</td>
+                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                              </tr>
+                                              <tr>
+                                                <td colspan="2" class="font-weight-bold text-right">Total</td>
+                                                <td>{{incomeData.recAmount}} {{incomeData.recCurr}}</td>
+                                                <td>{{incomeData.recAmount}} {{incomeData.recCurr}}</td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
                                         </div>
                                     </div>
                                 </div>

@@ -19,6 +19,7 @@ export class VehicleDetailComponent implements OnInit {
   noRecordMsg = Constants.NO_RECORDS_FOUND;
   slides = [];
   docs = [];
+  pDocs = [];
   Asseturl = this.apiService.AssetUrl;
   public environment = environment;
   /**
@@ -165,6 +166,7 @@ export class VehicleDetailComponent implements OnInit {
     purchaseDate: '',
     purchaseComments: '',
     purchaseOdometer: '',
+    gstInc: false,
   };
   loan = {
     loanVendorID: '',
@@ -242,8 +244,8 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchIssues();
     this.fetchReminders();
     this.fetchDriversList();
-    this.fetchVehicleModelList();
-    this.fetchVehicleManufacturerList();
+    // this.fetchVehicleModelList();
+    // this.fetchVehicleManufacturerList();
     this.fetchGroupsList();
     this.fetchTasksList();
     this.fetchUsersList();
@@ -492,6 +494,7 @@ export class VehicleDetailComponent implements OnInit {
           purchaseDate: result.purchase.purchaseDate,
           purchaseComments: result.purchase.purchaseComments,
           purchaseOdometer: result.purchase.purchaseOdometer,
+          gstInc: result.purchase.gstInc
         };
         this.loan = {
           loanVendorID: result.loan.loanVendorID,
@@ -543,6 +546,20 @@ export class VehicleDetailComponent implements OnInit {
           });
         }
 
+        if (
+          result.purchaseDocs != undefined &&
+          result.purchaseDocs.length > 0
+        ) {
+          this.pDocs = [];
+          result.purchaseDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.pDocs.push(obj);
+          });
+        }
+
         $("#hardBreakingParametersValue").html(
           this.settings.hardBreakingParams
         );
@@ -573,9 +590,14 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
-  deleteDocument(name: string, index: string) {
-    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
-      this.docs.splice(parseInt(index), 1);
+  deleteDocument(type: string, name: string, index: string) {
+    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${type}/${name}`).subscribe((result: any) => {
+      if(type != 'purchase') {
+        this.docs.splice(parseInt(index), 1);
+      } else {
+        this.pDocs.splice(parseInt(index), 1);
+      }
+      
     });
   }
 

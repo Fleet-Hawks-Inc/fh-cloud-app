@@ -48,7 +48,8 @@ export class EventDetailComponent implements OnInit {
   assigned: string;
   deviceEventId: string;
   eventStartDateTime: string;
-  eventEndDateTime: string
+  eventEndDateTime: string;
+  eventSpeed: number;
 
   eventID = '';
   safetyNotes = [];
@@ -59,7 +60,7 @@ export class EventDetailComponent implements OnInit {
     slidesToScroll: 1,
     dots: true,
     infinite: true,
-    autoplay: true,
+    autoplay: false,
     variableWidth: true,
     autoplaySpeed: 1500,
   };
@@ -86,6 +87,12 @@ export class EventDetailComponent implements OnInit {
     this.fetchAllDriverIDs();
     this.fetchAllVehiclesIDs();
     this.mapShow();
+
+    $('#viewVideosModal').modal({
+        show: false
+    }).on('hidden.bs.modal', function(){
+      $("video").each(function () { this.pause() });
+    });
   }
 
   async fetchEventDetail() {
@@ -93,6 +100,7 @@ export class EventDetailComponent implements OnInit {
       .subscribe(async (res: any) => {
 
         let result = res[0];
+        console.log('result', result);
         this.deviceSerialNo = result.deviceSerialNo || 'NA';
         this.vehicle = result.vehicleID;
         this.trip = result.tripID;
@@ -104,10 +112,12 @@ export class EventDetailComponent implements OnInit {
         this.eventTime = await this.convertTimeFormat(result.eventTime);
         this.createdBy = result.createdBy;
         this.eventType = result.eventType;
+        this.eventSpeed = parseInt(result.speed);
         this.deviceEventId = result.deviceEventId;
-        const location = await this.getLocation(result.location);
-        this.location = location;
-        await this.setMarker(result.location);
+        this.location = result.location.label ? result.location.label : 'NA';
+        if(result.location.cords != undefined) {
+          await this.setMarker(result.location.cords);  
+        }
         this.safetyNotes = result.safetyNotes;
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
           this.eventImages = result.uploadedPhotos.map(x => ({

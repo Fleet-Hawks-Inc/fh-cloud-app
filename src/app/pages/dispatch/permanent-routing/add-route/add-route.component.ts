@@ -284,36 +284,36 @@ export class AddRouteComponent implements OnInit {
     this.errors = {};
   }
 
-  async assignLocation(elem, label, index: any = '') {
-    const result = await this.hereMap.geoCode(label);
-    const labelResult = result.items[0];
+  async assignLocation(elem, data, index: any = '') {
+    // const result = await this.hereMap.geoCode(label);
+    // const labelResult = result.items[0];
     const item = {
-      name: label,
+      name: data.address.label,
       notes: '',
-      state: '',
-      country: '',
-      lat: '',
-      lng: ''
+      state: data.address.StateName,
+      country: data.address.CountryFullName,
+      lat: data.position.lat,
+      lng: data.position.lng
     };
 
-    if(labelResult.position != undefined) {
-      item.lat = labelResult.position.lat;
-      item.lng = labelResult.position.lng;
-    }
+    //if(labelResult.position != undefined) {
+      //item.lat = labelResult.position.lat;
+      // item.lng = labelResult.position.lng;
+    //}
 
-    if (labelResult.address.countryName !== undefined) {
-      item.country = `${labelResult.address.countryName}`;
-    }
+    // if (labelResult.address.countryName !== undefined) {
+    //   item.country = `${labelResult.address.countryName}`;
+    // }
 
-    if (labelResult.address.state !== undefined) {
-      item.state = `${labelResult.address.state}`;
-    }
+    // if (labelResult.address.state !== undefined) {
+    //   item.state = `${labelResult.address.state}`;
+    // }
     if (elem === 'source') {
-      this.setSourceValue(labelResult)
+      this.setSourceValue(data)
       this.routeData.stops[0] = item;
 
     } else if (elem === 'destination') {
-      this.setDestinationValue(labelResult);
+      this.setDestinationValue(data);
       let stopLen = this.routeData.stops.length;
       if (stopLen == 0) {
         this.routeData.stops[0] = {
@@ -332,25 +332,25 @@ export class AddRouteComponent implements OnInit {
       }
 
     } else {
-      if(labelResult.position != undefined) {
-        this.routeData.stops[index]['lat'] = labelResult.position.lat;
-        this.routeData.stops[index]['lng'] = labelResult.position.lng;
+      if(data.position != undefined) {
+        this.routeData.stops[index]['lat'] = data.position.lat;
+        this.routeData.stops[index]['lng'] = data.position.lng;
       }
 
-      if (labelResult.address.countryName !== undefined) {
-        this.routeData.stops[index]['country'] = `${labelResult.address.countryName}`;
+      if (data.address.CountryFullName !== undefined) {
+        this.routeData.stops[index]['country'] = `${data.address.CountryFullName}`;
       }
 
-      if (labelResult.address.state !== undefined) {
-        this.routeData.stops[index]['state'] = `${labelResult.address.state}`;
+      if (data.address.StateName !== undefined) {
+        this.routeData.stops[index]['state'] = `${data.address.StateName}`;
       }
-      this.routeData.stops[index]['name'] = label;
+      this.routeData.stops[index]['name'] = data.address.label;
 
       if (index == 0 || index == this.routeData.stops.length - 1) {
         if (index === 0) {
-          this.setSourceValue(labelResult)
+          this.setSourceValue(data)
         } else {
-          this.setDestinationValue(labelResult);
+          this.setDestinationValue(data);
         }
       }
     }
@@ -366,22 +366,22 @@ export class AddRouteComponent implements OnInit {
     this.routeData.sourceInfo['state'] = '';
     this.routeData.sourceInfo['city'] = '';
     this.routeData.sourceInfo['zipCode'] = '';
-    this.routeData.sourceInfo['address'] = `${labelResult.title}`;
+    this.routeData.sourceInfo['address'] = `${labelResult.address.label}`;
 
-    if (labelResult.address.countryName !== undefined) {
-      this.routeData.sourceInfo['country'] = `${labelResult.address.countryName}`;
+    if (labelResult.address.CountryFullName !== undefined) {
+      this.routeData.sourceInfo['country'] = `${labelResult.address.CountryFullName}`;
     }
 
-    if (labelResult.address.state !== undefined) {
-      this.routeData.sourceInfo['state'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    if (labelResult.address.StateName !== undefined) {
+      this.routeData.sourceInfo['state'] = `${labelResult.address.StateName} (${labelResult.address.State})`;
     }
 
-    if (labelResult.address.city !== undefined) {
-      this.routeData.sourceInfo['city'] = `${labelResult.address.city}`;
+    if (labelResult.address.City !== undefined) {
+      this.routeData.sourceInfo['city'] = `${labelResult.address.City}`;
     }
 
-    if (labelResult.address.postalCode !== undefined) {
-      this.routeData.sourceInfo['zipCode'] = `${labelResult.address.postalCode}`;
+    if (labelResult.address.Zip !== undefined) {
+      this.routeData.sourceInfo['zipCode'] = `${labelResult.address.Zip}`;
     }
   }
 
@@ -392,22 +392,22 @@ export class AddRouteComponent implements OnInit {
     this.routeData.destInfo['city'] = '';
     this.routeData.destInfo['zipCode'] = '';
 
-    this.routeData.destInfo['address'] = `${labelResult.title}`;
+    this.routeData.destInfo['address'] = `${labelResult.address.label}`;
 
-    if (labelResult.address.countryName !== undefined) {
-      this.routeData.destInfo['country'] = `${labelResult.address.countryName}`;
+    if (labelResult.address.CountryFullName !== undefined) {
+      this.routeData.destInfo['country'] = `${labelResult.address.CountryFullName}`;
     }
 
-    if (labelResult.address.state !== undefined) {
-      this.routeData.destInfo['state'] = `${labelResult.address.state} (${labelResult.address.stateCode})`;
+    if (labelResult.address.StateName !== undefined) {
+      this.routeData.destInfo['state'] = `${labelResult.address.StateName} (${labelResult.address.State})`;
     }
 
-    if (labelResult.address.city !== undefined) {
-      this.routeData.destInfo['city'] = `${labelResult.address.city}`;
+    if (labelResult.address.City !== undefined) {
+      this.routeData.destInfo['city'] = `${labelResult.address.City}`;
     }
 
-    if (labelResult.address.postalCode !== undefined) {
-      this.routeData.destInfo['zipCode'] = `${labelResult.address.postalCode}`;
+    if (labelResult.address.Zip !== undefined) {
+      this.routeData.destInfo['zipCode'] = `${labelResult.address.Zip}`;
     }
   }
 
@@ -565,20 +565,14 @@ export class AddRouteComponent implements OnInit {
     }
   }
 
-  gotoVehiclePage() {
-    $('#addVehicleModelDriver').modal('show');
-  }
-
-  gotoDriverPage() {
-    $('#addDriverModelVehicle').modal('show');
-  }
-
-  gotoAssetPage() {
-    $('#addAsset').modal('show');
-  }
-
-  refreshDrivrData() {
+  refreshDriverData() {
     this.listService.fetchDrivers();
+  }
+  refreshAssetData() {
+    this.listService.fetchAssets();
+  }
+  refreshVehicleData() {
+    this.listService.fetchVehicles()
   }
 }
 

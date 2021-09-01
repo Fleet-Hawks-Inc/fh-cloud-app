@@ -1,0 +1,1074 @@
+[
+    [
+        {
+            "from": 0,
+            "to": 13808,
+            "name": "Claim Code 1",
+            "value": "claim_code_1"
+        },
+        {
+            "from": 13808.01,
+            "to": 16181,
+            "name": "Claim Code 2",
+            "value": "claim_code_2"
+        },
+        {
+            "from": 16181.01,
+            "to": 18550,
+            "name": "Claim Code 3",
+            "value": "claim_code_3"
+        },
+        {
+            "from": 18550.01,
+            "to": 20927,
+            "name": "Claim Code 4",
+            "value": "claim_code_4"
+        },
+        {
+            "from": 20927.01,
+            "to": 23300,
+            "name": "Claim Code 5",
+            "value": "claim_code_5"
+        },
+        {
+            "from": 23300.01,
+            "to": 25673,
+            "name": "Claim Code 6",
+            "value": "claim_code_6"
+        },
+        {
+            "from": 25673.01,
+            "to": 28046,
+            "name": "Claim Code 7",
+            "value": "claim_code_7"
+        },
+        {
+            "from": 28046.01,
+            "to": 30419,
+            "name": "Claim Code 8",
+            "value": "claim_code_8"
+        },
+        {
+            "from": 30419.01,
+            "to": 32729,
+            "name": "Claim Code 9",
+            "value": "claim_code_9"
+        },
+        {
+            "from": 32729.01,
+            "to": 35165,
+            "name": "Claim Code 10",
+            "value": "claim_code_10"
+        },
+        {
+            "from": "-",
+            "to": "-",
+            "name": "Claim Code E",
+            "value": "claim_code_e"
+        }
+    ],
+    [
+        {
+            "stateCode": "AB",
+            "stateName": "Alberta",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 19369,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 19369.01,
+                    "to": 22203,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 22203.01,
+                    "to": 25037,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 25037.01,
+                    "to": 27871,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 27871.01,
+                    "to": 30705,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 30705.01,
+                    "to": 33539,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 33539.01,
+                    "to": 36373,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 36373.01,
+                    "to": 39207,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 39207.01,
+                    "to": 42041,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 42041.01,
+                    "to": 44875,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 44875.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "BC",
+            "stateName": "British Columbia",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 11070,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 11070.01,
+                    "to": 13561,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 13561.01,
+                    "to": 16052,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 16052.01,
+                    "to": 18543,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 18543.01,
+                    "to": 21034,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 21034.01,
+                    "to": 23525,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 23525.01,
+                    "to": 26016,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 26016.01,
+                    "to": 28507,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 28507.01,
+                    "to": 30998,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 30998.01,
+                    "to": 33489,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 33489.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "MB",
+            "stateName": "Manitoba",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 9936,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 9936.01,
+                    "to": 11629,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 11629.01,
+                    "to": 13322,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 13322.01,
+                    "to": 15015,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 15015.01,
+                    "to": 16708,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 16708.01,
+                    "to": 18401,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 18401.01,
+                    "to": 20094,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 20094.01,
+                    "to": 21784,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 21784.01,
+                    "to": 23480,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 23480.01,
+                    "to": 25173,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 25173.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "NB",
+            "stateName": "New Brunswick",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 10564,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 10564.01,
+                    "to": 12907,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 12907.01,
+                    "to": 15250,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 15250.01,
+                    "to": 17593,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 17593.01,
+                    "to": 19936,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 19936.01,
+                    "to": 22279,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 22279.01,
+                    "to": 24622,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 24622.01,
+                    "to": 26965,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 26965.01,
+                    "to": 29308,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 29308.01,
+                    "to": 31651,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 31651.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "NL",
+            "stateName": "Newfoundland and Labrador",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 9536,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 9536.01,
+                    "to": 11595,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 11595.01,
+                    "to": 13654,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 13654.01,
+                    "to": 15713,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 15713.01,
+                    "to": 17772,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 17772.01,
+                    "to": 19831,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 19831.01,
+                    "to": 21890,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 21890.01,
+                    "to": 23949,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 23949.01,
+                    "to": 26008,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 26008.01,
+                    "to": 27,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 28067.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "NT",
+            "stateName": "Northwest Territories",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 15243,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 15243.01,
+                    "to": 17846,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 17846.01,
+                    "to": 20485,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 20485.01,
+                    "to": 23106,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 23106.01,
+                    "to": 25727,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 25727.01,
+                    "to": 28348,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 28348.01,
+                    "to": 30969,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 30969.01,
+                    "to": 33590,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 33590.01,
+                    "to": 36211,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 36211.01,
+                    "to": 38832,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 38832.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "NS",
+            "stateName": "Nova Scotia",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 10450.06,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 10450.07,
+                    "to": 12050.06,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 12050.07,
+                    "to": 13650.06,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 13650.07,
+                    "to": 15250.06,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 15250.07,
+                    "to": 16850.06,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 16850.07,
+                    "to": 18450.06,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 18450.07,
+                    "to": 20050.06,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 20050.07,
+                    "to": 21650.06,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 21650.07,
+                    "to": 23250.06,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 23250.07,
+                    "to": 24850.06,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 24850.07,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "NU",
+            "stateName": "Nunavut",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 16467,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 16467.01,
+                    "to": 19130,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 19130.01,
+                    "to": 21793,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 21793.01,
+                    "to": 24456,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 15250.01,
+                    "to": 16850,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 16850.01,
+                    "to": 18450,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 18450.01,
+                    "to": 20050,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 20050.01,
+                    "to": 21650,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 21650.01,
+                    "to": 23250,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 23250.01,
+                    "to": 24850,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 24850.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "ON",
+            "stateName": "Ontario",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 10880,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 10880.01,
+                    "to": 13224,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 13224.01,
+                    "to": 15568,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 15568.01,
+                    "to": 17912,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 17912.01,
+                    "to": 20256,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 20256.01,
+                    "to": 22600,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 22600.01,
+                    "to": 24944,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 24944.01,
+                    "to": 27288,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 27288.01,
+                    "to": 29632,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 29632.01,
+                    "to": 31976,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 31976.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "PE",
+            "stateName": "Prince Edward",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 10500,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 10500.01,
+                    "to": 12100,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 12100.01,
+                    "to": 13700,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 13700.01,
+                    "to": 15300,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 15300.01,
+                    "to": 16900,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 16900.01,
+                    "to": 18500,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 18500.01,
+                    "to": 20100,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 20100.01,
+                    "to": 21700,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 21700.01,
+                    "to": 23300,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 23300.01,
+                    "to": 24900,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 24900.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "QC",
+            "stateName": "Quebec",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 13808,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 13808.01,
+                    "to": 16181,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 16181.01,
+                    "to": 18550,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 18550.01,
+                    "to": 20927,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 20927.01,
+                    "to": 23300,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 23300.01,
+                    "to": 25673,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 25673.01,
+                    "to": 28046,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 28046.01,
+                    "to": 30419,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 30419.01,
+                    "to": 32729,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 32729.01,
+                    "to": 35165,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "SK",
+            "stateName": "Saskatchewan",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 16225,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 16225.01,
+                    "to": 18313,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 18313.01,
+                    "to": 20401,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 20401.01,
+                    "to": 22489,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 22489.01,
+                    "to": 24577,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 24577.01,
+                    "to": 26665,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 26665.01,
+                    "to": 28753,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 28753.01,
+                    "to": 30841,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 30841.01,
+                    "to": 32929,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 32929.01,
+                    "to": 35017,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": 35017.01,
+                    "to": "-",
+                    "name": "Claim Code X",
+                    "value": "claim_code_x"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        },
+        {
+            "stateCode": "YT",
+            "stateName": "Yukon",
+            "codes": [
+                {
+                    "from": 0,
+                    "to": 13808,
+                    "name": "Claim Code 1",
+                    "value": "claim_code_1"
+                },
+                {
+                    "from": 13808.01,
+                    "to": 16181,
+                    "name": "Claim Code 2",
+                    "value": "claim_code_2"
+                },
+                {
+                    "from": 16181.01,
+                    "to": 18550,
+                    "name": "Claim Code 3",
+                    "value": "claim_code_3"
+                },
+                {
+                    "from": 18550.01,
+                    "to": 20927,
+                    "name": "Claim Code 4",
+                    "value": "claim_code_4"
+                },
+                {
+                    "from": 20927.01,
+                    "to": 23300,
+                    "name": "Claim Code 5",
+                    "value": "claim_code_5"
+                },
+                {
+                    "from": 23300.01,
+                    "to": 25673,
+                    "name": "Claim Code 6",
+                    "value": "claim_code_6"
+                },
+                {
+                    "from": 25673.01,
+                    "to": 28046,
+                    "name": "Claim Code 7",
+                    "value": "claim_code_7"
+                },
+                {
+                    "from": 28046.01,
+                    "to": 30419,
+                    "name": "Claim Code 8",
+                    "value": "claim_code_8"
+                },
+                {
+                    "from": 30419.01,
+                    "to": 32729,
+                    "name": "Claim Code 9",
+                    "value": "claim_code_9"
+                },
+                {
+                    "from": 32729.01,
+                    "to": 35165,
+                    "name": "Claim Code 10",
+                    "value": "claim_code_10"
+                },
+                {
+                    "from": "-",
+                    "to": "-",
+                    "name": "Claim Code E",
+                    "value": "claim_code_e"
+                }
+            ]
+        }
+    ]
+]

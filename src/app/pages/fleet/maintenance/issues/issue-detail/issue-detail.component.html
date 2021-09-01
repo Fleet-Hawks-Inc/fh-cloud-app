@@ -38,18 +38,18 @@
            <div class="col-lg-12">
              <div class="bg-white p-3 text-dark">
                <div class="form-group row pt-3">
-                  
+
                   <div class="col-lg-12 mb-3">
                      <form class="form-horizontal form-bordered" method="get">
                         <div class=" row">
                            <div class="col-lg-12"><label class="control-label font-weight-bold text-4">Issue
                               Name:</label><span class="font-weight-bold"> {{issueName}}</span></div>
-    
-    
+
+
                                  <div class="col-lg-12 pb-4"><span class="font-weight-bold text-4">Description:
                                     </span>{{description}}</div>
-    
-    
+
+
                            <div class="col-lg-6">
                               <div class="row">
                                  <div class="col-lg-12">
@@ -117,7 +117,7 @@
                                                 {{usersList[reportedBy]}}
                                              </span></div>
                                           <div class="col-lg-3 text-right">
-    
+
                                           </div>
                                        </div>
                                     </div>
@@ -152,20 +152,20 @@
                                     </div>
                                  </div>
                               </div>
-    
+
                            </div>
 
                         </div>
                      </form>
                   </div>
-                  
+
                </div>
              </div>
            </div>
          </div>
-         
-      
-         
+
+
+
       </section>
 
 
@@ -200,7 +200,7 @@
          <div class="modal-dialog" role="document">
            <div class="modal-content">
              <div class="modal-header">
-               <h5 class="modal-title" id="issueCloseModalLabel">Corfirm Action</h5>
+               <h5 class="modal-title" id="issueCloseModalLabel">Confirm Action</h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                  <span aria-hidden="true">&times;</span>
                </button>
@@ -216,7 +216,7 @@
              </div>
              <div class="modal-footer">
                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-               <button type="button" class="btn btn-success" (click)="setStatus(issueID)" data-dismiss="modal">Close Issue</button>
+               <button type="button" class="btn btn-success" (click)="setStatus(issueID, issueName)" data-dismiss="modal">Close Issue</button>
              </div>
            </div>
          </div>

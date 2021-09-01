@@ -6,17 +6,19 @@
       <header class="page-header">
          <div class="row pr-5 " style="padding-top:10px;">
             <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-               Device #6454  <span class="badge badge-dark p-1">ACTIVE</span>
+               {{device.deviceSerialNo}}  <span class="badge badge-dark p-1">ACTIVE</span>
             </div>
             <div class="col-md-8  col-lg-8 text-right pr-4">
-               <a href="#" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Devices List</a>  
+               <a routerLink="/manage/devices/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Devices List</a>  
               
                <div class="btn-group flex-wrap">
-                  <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
+                  <a routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}" class="btn btn-default btn-sm mr-2"><i
+                     class="fas fa-pencil-alt"></i> Edit Driver</a>
+                  <!-- <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                   <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                     <a class="dropdown-item text-1" href="add-device1.php">Edit </a>
-                     <a class="modal-with-form dropdown-item text-1" href="#deleteModal">Delete</a>
-                  </div>
+                     <a class="dropdown-item text-1" routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}">Edit </a>
+                     <a class="modal-with-form dropdown-item text-1" (click)="deactivateDevice()">Deactivate</a>
+                  </div> -->
                </div>
             </div>
          </div>
@@ -38,27 +40,27 @@
                                  <tbody>
                                     <tr>
                                        <td width="40%" class="back-color-gray font-weight-bold">Device Serial</td>
-                                       <td  width="60%">Test EM21 </td>
+                                       <td  width="60%">{{device.deviceSerialNo}} </td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Device Name</td>
-                                       <td>Device Name</td>
+                                       <td>{{device.deviceName}}</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Status</td>
-                                       <td><span class="badge badge-dark p-1">ACTIVE</span></td>
+                                       <td><span class="badge badge-dark p-1">{{device.deviceStatus}}</span></td>
                                     </tr>
         
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Device Type</td>
-                                       <td>Door</td>
+                                       <td>{{device.deviceType}}</td>
                                     </tr>
             
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Description</td>
-                                       <td>This is about the door sensors.</td>
+                                       <td>{{device.description}}</td>
                                     </tr>
-              <tr>
+              <!-- <tr>
                                        <td class="back-color-gray font-weight-bold">Date Added</td>
                                        <td>2021/05/01</td>
                                     </tr>
@@ -66,7 +68,7 @@
                                        <td class="back-color-gray font-weight-bold">Date Removed</td>
                                        <td>2021/07/01</td>
                                     </tr>
-              
+               -->
                                  </tbody>
                               </table>
                            </div>
@@ -83,14 +85,26 @@
                            <div class="col-lg-12">
                               <table class="table table-bordered table-responsive-lg">
                                  <tbody>
+                                    <ng-template [ngIf]="device.vehicle" [ngIfElse]="elseBlock">
                                     <tr>
                                        <td width="40%" class="back-color-gray font-weight-bold">Associated With</td>
                                        <td  width="60%">Vehicle</td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Name</td>
-                                       <td><a class="text-info" href="vehicle-details2.php">Vehicle Name</a></td>
+                                       <td><a class="text-info" *ngIf="device.vehicle" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">{{device.vehicle.vehicleIdentification}}</a></td>
                                     </tr>
+                                 </ng-template>
+                                 <ng-template #elseBlock>
+                                    <tr>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Associated With</td>
+                                       <td  width="60%">Asset</td>
+                                    </tr>
+                                    <tr>
+                                       <td class="back-color-gray font-weight-bold">Name</td>
+                                       <td><a class="text-info" *ngIf="device.asset" routerLink="/fleet/assets/detail/{{device.asset.assetID}}">{{device.asset.assetIdentification}}</a></td>
+                                    </tr>
+                                 </ng-template>
                                  </tbody>
                               </table>
                            </div>
@@ -104,7 +118,7 @@
             </div>
            
             <!-- Delete MODAL -->
-            <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
+            <!-- <div id="deleteModal" class="modal-block modal-block-primary mfp-hide">
                <section class="card">
                   <header class="card-header">
                      <h2 class="card-title">Corfirm Action</h2>
@@ -127,7 +141,7 @@
                      </div>
                   </footer>
                </section>
-            </div>
+            </div> -->
          </div>
       </div>
    </section>

@@ -42,7 +42,7 @@ export class RouteListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchRoutes();
-    
+
   }
 
   fetchRoutes() {
@@ -60,9 +60,9 @@ export class RouteListComponent implements OnInit {
     });
   }
 
-  deleteRoute(routeID) {
+  deleteRoute(routeID, routeNo) {
     if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService.deleteData('routes/delete/' + routeID).subscribe({
+      this.apiService.deleteData(`routes/delete/${routeID}/${routeNo}`).subscribe({
         complete: () => {},
         error: () => {},
         next: (result: any) => {
@@ -94,7 +94,7 @@ export class RouteListComponent implements OnInit {
           this.routeEndPoint = this.totalRecords;
         }
 
-        if (result['LastEvaluatedKey'] !== undefined) { 
+        if (result['LastEvaluatedKey'] !== undefined) {
           let lastEvalKey = result[`LastEvaluatedKey`].routeSK.replace(/#/g,'--');
           this.routeNext = false;
           // for prev button
@@ -102,7 +102,7 @@ export class RouteListComponent implements OnInit {
             this.routePrevEvauatedKeys.push(lastEvalKey);
           }
           this.lastEvaluatedKey = lastEvalKey;
-          
+
         } else {
           this.routeNext = true;
           this.lastEvaluatedKey = '';
@@ -137,7 +137,7 @@ export class RouteListComponent implements OnInit {
           this.suggestedRoutes = result;
         }
       })
-    }    
+    }
   }, 800)
 
   searchSelectedRoute(route) {

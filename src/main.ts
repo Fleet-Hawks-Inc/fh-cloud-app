@@ -10,7 +10,8 @@ Amplify.configure({
   Auth: {
     userPoolId: environment.congitoConfig.USER_POOL_ID,
     region: environment.congitoConfig.REGION,
-    userPoolWebClientId: environment.congitoConfig.APP_CLIENT_ID
+    userPoolWebClientId: environment.congitoConfig.APP_CLIENT_ID,
+    authenticationFlowType: 'USER_PASSWORD_AUTH'
   }
 });
 

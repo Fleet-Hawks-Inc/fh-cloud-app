@@ -1,14 +1,14 @@
 <section class="body">
    <div class="inner-wrapper">
       <section role="main" class="content-body pr-0 pl-0 pt-0">
-         <header class="page-header">
+         <header class="page-header pr19 pl7">
             <div class="row" style="padding-top:10px;">
-               <div class="col-md-2 col-lg-2">
-                  <div class="input-group input-group-md mb-3">
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="input-group in put-group-md mb-3">
                      <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
                   </div>
                </div>
-               <div class="col-lg-3 col-md-3">
+               <div class="col-lg-3 col-md-3 pr-0">
                   <div class="input-daterange input-group" data-plugin-datepicker>
                      <span class="input-group-prepend">
                         <span class="input-group-text">
@@ -32,57 +32,74 @@
                </div>
 
                <div class="col-md-2 col-lg-2">
-                  <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                  <button type="submit" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">Search</button>
                   <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
               </div>
-               <div class="col-md-5 col-lg-5 text-right pr-5">
+               <div class="col-md-5 col-lg-5 text-right pr-1">
                   <a routerLink="/accounts/manual-journal/add" class="btn btn-success btn-sm ml-2"
                      style="color:white;"><i class="fas fa-plus"></i> Add Journal </a>
                </div>
             </div>
          </header>
-         <div class="row">
-            <div class="col-lg-12 pr-0">
-               <section class="card">
-                  <div class="card-body pl-3 pt-3 table-responsive">
-                     <table class="row-border hover table table-bordered table-striped mb-0 ">
-                        <thead>
-                           <tr class="bgcol2">
-                              <th class="text-2">Journal Date</th>
-                              <th class="text-2">Reference</th>
-                              <th class="text-2">Amount</th>
-                              <th class="text-2">Created By</th>
-                              <th class="text-2">Action</th>
-                           </tr> 
-                        </thead>
-                        <tbody>
-                           <tr *ngIf="journals.length === 0" class="text-center">
-                              <td colspan="5">{{ dataMessage }}</td>
-                           </tr>
-                           <tr *ngFor="let data of journals; let i=index;">
-                              <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                              <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.referenceNo }} </td>
-                              <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.debitTotalAmount }} {{ data.currency }} </td>
-                              <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.createdBy }}</td>
-                              <td>
-                                 <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                       <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                       <a class="dropdown-item" routerLink="/accounts/manual-journal/edit/{{ data.journalID }}">Edit</a>
-                                       <a class="dropdown-item" href="javascript:;" (click)="deleteJournal(data.journalID)">Delete</a>
+
+         <section class="m-2">
+            <div class="row mb-3">
+              <div class="col-lg-12">
+               <div  infiniteScroll
+               [infiniteScrollDistance]="1"
+               [infiniteScrollUpDistance]="1"
+               [infiniteScrollThrottle]="5"
+               (scrolled)="onScroll()">
+                <div class="bg-white p-3 text-dark">
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <table class="table table-bordered table-hover table-striped mb-0 simple-table">
+                           <thead>
+                              <tr class="bgcol2">
+                                 <th class="text-2">Journal#</th>
+                                 <th class="text-2">Journal Date</th>
+                                 <th class="text-2">Reference</th>
+                                 <th class="text-2">Amount</th>
+                                 <th class="text-2">Created By</th>
+                                 <th class="text-2">Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngIf="journals.length === 0" class="text-center">
+                                 <td colspan="6">{{ dataMessage }}</td>
+                              </tr>
+                              <tr *ngFor="let data of journals; let i=index;">
+                                 <td class="font-weight-bold" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.jrNo }}</td>
+                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
+                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.referenceNo }} </td>
+                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.debitTotalAmount | number }} {{ data.currency }} </td>
+                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.createdBy }}</td>
+                                 <td>
+                                    <div class="dropdown dropright">
+                                       <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                       </button>
+                                       <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                          <a class="dropdown-item" routerLink="/accounts/manual-journal/edit/{{ data.journalID }}">Edit</a>
+                                          <a class="dropdown-item" href="javascript:;" (click)="deleteJournal(data.journalID)">Delete</a>
+                                       </div>
                                     </div>
-                                 </div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
                   </div>
-               </section>
+                </div>
+               </div>
+
+              </div>
             </div>
-         </div>
+            
+         </section>
+
+
       </section>
    </div>
 </section>

@@ -53,11 +53,11 @@
                                     <tbody>
                                        <tr>
                                           <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                          <td width="60%">{{ (payModeLabel) ? payModeLabel : '-' }}</td>
+                                          <td width="60%" class="text-capitalize">{{ (payModeLabel) ? payModeLabel : '-' }}</td>
                                        </tr>
-                                       <tr>
-                                          <td width="40%" class="back-color-gray font-weight-bold">{{ payModeLabel }}#</td>
-                                          <td width="60%">{{ (paymentData.payModeNo) ? paymentData.payModeNo : '-' }}</td>
+                                       <tr *ngIf="payModeLabel">
+                                          <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ payModeLabel }} Reference</td>
+                                          <td width="60%" class="text-capitalize">{{ (paymentData.payModeNo) ? paymentData.payModeNo : '-' }}</td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray font-weight-bold">Reference#</td>
@@ -75,39 +75,56 @@
                         <div class="col-lg-6 pl-0">
                            <div class="row">
                               <div class="col-lg-12">
-                                 <table class="table table-bordered table-hover">
+                                <table class="table table-bordered table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th>Account Name</th>
+                                      <th>Type</th>
+                                      <th>Debit</th>
+                                      <th>Credit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let dt of paymentData.transactionLog">
+                                      <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                        <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                     <td>{{dt.type | titlecase}}</td>
+                                     <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                     <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2" class="font-weight-bold text-right">Total</td>
+                                      <td>{{paymentData.amount}} {{paymentData.currency}}</td>
+                                      <td>{{paymentData.amount}} {{paymentData.currency}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-lg-6 pr-0">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <h5 class="font-weight-bold text-capitalize">{{ paymentData.paymentTo }} Payments</h5>
+                                 <table class="table table-bordered">
                                     <thead>
-                                       <tr>
-                                          <th>Account Name</th>
-                                          <th>Name</th>
-                                          <th>Type</th>
-                                          <th>Debit</th>
-                                          <th>Credit</th>
-                                       </tr>
+                                        <tr class="bgcol2">
+                                            <th>Payment#</th>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr>
-                                          <td>Advance Payment Account</td>
-                                          <td>{{ entityName }}</td>
-                                          <td>Advance Payment</td>
-                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
-                                          <td>0.00</td>
-                                       </tr>
-                                       <tr>
-                                          <td>{{ accountName }}</td>
-                                          <td>{{ entityName }}</td>
-                                          <td>Advance Payment</td>
-                                          <td>0.00</td>
-                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
-
-                                       </tr>
-                                       <tr>
-                                          <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
-                                          <td>{{ paymentData.amount }} {{ paymentData.currency }}</td>
-                                       </tr>
+                                        <tr *ngIf="advancePayments.length === 0" class="text-center">
+                                            <td colspan="3">{{ noRecordMsg }} </td>
+                                         </tr>
+                                        <tr *ngFor="let data of advancePayments;">
+                                            <td>{{ data.paymentNo }}</td>
+                                            <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                            <td>{{ data.amount | number : '1.2-2' }} CAD</td>
+                                        </tr>
                                     </tbody>
-                                 </table>
+                                </table>
                               </div>
                            </div>
                         </div>

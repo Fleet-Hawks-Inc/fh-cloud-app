@@ -1322,8 +1322,8 @@ color: black;
 
 .account-body{
   margin: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
+  /* margin-left: 50px;
+  margin-right: 50px; */
 }
 
 /* PRICE PLAN */
@@ -1716,6 +1716,7 @@ text-decoration: underline;
 
   /* border dashed */
   .bordtopdas{border-top: dashed 1px #aaa;}
+  .borddas{border: dashed 1px #aaa;}
 
   /* border radius */
   .bor-radius0px{border-radius: 0px !important;}
@@ -2186,7 +2187,7 @@ table.dataTable thead th, table.dataTable thead td {
 /* clickable button */
 
 .btn-alert {
-  color: rgb(0, 0, 0); float:left; width: 175px; margin-top:0px !important;
+  color: rgb(0, 0, 0); float:left; width: 210px; margin-top:0px !important;
   background-color: #f0f1f2; border-radius:4px; padding:12px;
   background-image: none; font-size:14px;
   border-color: #f0f1f2;
@@ -2499,7 +2500,7 @@ input.placeholder-lowercase {
 /* on board page width according screen sizes */
 .onboardwidth {width: 95% !important;	}
 @media (min-width: 1640px) {
-	.onboardwidth {width: 75% !important;	}
+	.onboardwidth {width: 90% !important;	}
 }
 
 .addsr-scroll-y {
@@ -2508,9 +2509,10 @@ input.placeholder-lowercase {
 
 .addsr-scrollbar {
   position: relative;
-  height: 720px;
+  height: 685px;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-bottom: 15px;
 }
 /* toggle switch */
 
@@ -2577,3 +2579,39 @@ input:checked + .sliderbtn:before {
   max-width: 1250px !important;
   margin: 9.75rem auto !important;
 }
+
+
+.form-control[readonly] {
+  background-color: #fff;
+}
+.units-list__main .modal-dialog {
+  max-width: 1200px !important;
+}
+.mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
+  cursor: pointer;
+}
+
+.modal.photo__main .modal-dialog {
+  max-width: 250px;
+}
+
+.units-list__main .modal-content,
+.units-form__main .modal-content,
+.units-detail__main .modal-content{
+  background-color: transparent;
+  border: none;
+}
+.cus-modal-content{
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.addressbook-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+.show-search__result .map-search__results {
+  display: block !important;
+}
+
