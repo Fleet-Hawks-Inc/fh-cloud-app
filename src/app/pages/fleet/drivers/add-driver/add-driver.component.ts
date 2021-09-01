@@ -20,9 +20,7 @@ import { ModalService } from '../../../../services/modal.service';
 import Constants from '../../constants';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
-import { passwordStrength } from 'check-password-strength'
-import { ThemeService } from 'ng2-charts';
-import { NULL_EXPR } from '@angular/compiler/src/output/output_ast';
+import { passwordStrength } from 'check-password-strength';
 declare var $: any;
 @Component({
   selector: 'app-add-driver',
@@ -170,6 +168,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       medicalCardRenewal: null,
       healthCare: '',
       vehicleType: '',
+      licCntryName: '',
+      licStateName: '',
     },
     hosDetails: {
       hosStatus: null,
@@ -544,9 +544,19 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData.documentDetails[index].docStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
   }
   getLicStates(cntryCode: any) {
-    this.driverData.licenceDetails.issuedState = '';
+    this.driverData.licenceDetails.issuedState = null;
+    this.driverData.licenceDetails.licCntryName = CountryStateCity.GetSpecificCountryNameByCode(cntryCode);
     this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
   }
+
+  getLicenseStateName() {
+    if(this.driverData.licenceDetails.issuedState && this.driverData.licenceDetails.issuedCountry) {
+      this.driverData.licenceDetails.licStateName = CountryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry);
+
+      console.log('this.driverData', this.driverData);
+    }
+  }
+
   fetchLicStates(issuedCountry: any) {
     this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
   }

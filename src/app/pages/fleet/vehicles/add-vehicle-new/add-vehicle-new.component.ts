@@ -191,6 +191,7 @@ export class AddVehicleNewComponent implements OnInit {
     purchaseDate: null,
     purchaseComments: '',
     purchaseOdometer: '',
+    gstInc: true
   };
   loan = {
     loanVendorID: null,
@@ -231,6 +232,7 @@ export class AddVehicleNewComponent implements OnInit {
   selectedFileNames: Map<any, any>;
   uploadedPhotos = [];
   uploadedDocs = [];
+  purchaseDocs = [];
   existingPhotos = [];
   existingDocs = [];
   carrierID;
@@ -247,6 +249,7 @@ export class AddVehicleNewComponent implements OnInit {
   manufacturerDataSource:any=[];
   modals:any=[]
   slides = [];
+  pDocs = [];
   documentSlides = [];
   localPhotos = [];
   slideConfig = {
@@ -282,7 +285,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchVehicles();
     this.listService.fetchVendors();
     this.fetchManufacturers();
-    this.listService.fetchModels();
+    //this.listService.fetchModels();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
@@ -546,6 +549,7 @@ export class AddVehicleNewComponent implements OnInit {
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
         purchaseOdometer: this.purchase.purchaseOdometer,
+        gstInc: this.purchase.gstInc
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -575,7 +579,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
-
+    
     // create form data instance
     // console.log(data);
     // return;
@@ -591,6 +595,10 @@ export class AddVehicleNewComponent implements OnInit {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
+    // append purchase docs if any
+    for (let j = 0; j < this.purchaseDocs.length; j++) {
+      formData.append('purchaseDocs', this.purchaseDocs[j]);
+    }
     // append other fields
     formData.append('data', JSON.stringify(data));
     try {
@@ -668,6 +676,10 @@ export class AddVehicleNewComponent implements OnInit {
     if (obj === 'uploadedDocs') {
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
+      }
+    } else if(obj === 'purchase') {
+      for (let i = 0; i < files.length; i++) {
+        this.purchaseDocs.push(files[i])
       }
     } else {
       for (let i = 0; i < files.length; i++) {
@@ -825,7 +837,8 @@ export class AddVehicleNewComponent implements OnInit {
           warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
           purchaseDate: _.isEmpty(result.purchase.purchaseDate) ? null : result.purchase.purchaseDate,
           purchaseComments: result.purchase.purchaseComments,
-          purchaseOdometer: result.purchase.purchaseOdometer
+          purchaseOdometer: result.purchase.purchaseOdometer,
+          gstInc: result.purchase.gstInc
         };
         this.loan = {
           loanVendorID: result.loan.loanVendorID,
@@ -859,6 +872,16 @@ export class AddVehicleNewComponent implements OnInit {
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
         }
 
+        if (result.purchaseDocs != undefined && result.purchaseDocs.length > 0) {
+          result.purchaseDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.pDocs.push(obj);
+          })
+        }
+        
         if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
           result.uploadedDocs.map((x) => {
             let obj = {
@@ -1026,6 +1049,7 @@ export class AddVehicleNewComponent implements OnInit {
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
         purchaseOdometer: this.purchase.purchaseOdometer,
+        gstInc: this.purchase.gstInc
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -1070,6 +1094,10 @@ export class AddVehicleNewComponent implements OnInit {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
+    // append purchase docs if any
+    for (let j = 0; j < this.purchaseDocs.length; j++) {
+      formData.append('purchaseDocs', this.purchaseDocs[j]);
+    }
     //append other fields
     formData.append('data', JSON.stringify(data));
 
@@ -1229,18 +1257,33 @@ export class AddVehicleNewComponent implements OnInit {
     }
   }
 
-  deleteDocument(name: string, index: string) {
-    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${name}`).subscribe((result: any) => {
-      this.documentSlides = [];
-      this.uploadedDocs = result.Attributes.uploadedDocs;
-      this.existingDocs = result.Attributes.uploadedDocs;
-      result.Attributes.uploadedDocs.map((x) => {
+  deleteDocument(value: string, name: string, index: number) {
+    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
+      if(value != 'purchase') {
+        this.documentSlides = [];
+        this.uploadedDocs = result.Attributes.uploadedDocs;
+        this.existingDocs = result.Attributes.uploadedDocs;
+        result.Attributes.uploadedDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.documentSlides.push(obj);
+        })
+      } else {
+        this.pDocs = [];
+      this.uploadedDocs = result.Attributes.purchaseDocs;
+      this.existingDocs = result.Attributes.purchaseDocs;
+      result.Attributes.purchaseDocs.map((x) => {
         let obj = {
           name: x,
           path: `${this.Asseturl}/${result.carrierID}/${x}`
         }
-        this.documentSlides.push(obj);
+        this.pDocs.push(obj);
       })
+      }
+      
+     
     });
   }
 

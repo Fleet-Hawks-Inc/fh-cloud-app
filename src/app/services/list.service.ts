@@ -117,11 +117,11 @@ fetchReceivers() {
     this.receiverDataSource.next(result);
   });
 }
-  fetchManufacturers() {
-    this.apiService.getData('manufacturers').subscribe((result: any) => {
-      this.manufacturerDataSource.next(result.Items);
-    });
-  }
+  // fetchManufacturers() {
+  //   this.apiService.getData('manufacturers').subscribe((result: any) => {
+  //     this.manufacturerDataSource.next(result.Items);
+  //   });
+  // }
 
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
@@ -129,13 +129,13 @@ fetchReceivers() {
     });
   }
 
-  fetchModels() {
-    this.apiService
-      .getData(`vehicleModels`)
-      .subscribe((result: any) => {
-        this.modelDataSource.next(result.Items);
-      });
-  }
+  // fetchModels() {
+  //   this.apiService
+  //     .getData(`vehicleModels`)
+  //     .subscribe((result: any) => {
+  //       this.modelDataSource.next(result.Items);
+  //     });
+  // }
 
   fetchStates() {
     this.apiService
@@ -161,13 +161,13 @@ fetchReceivers() {
       });
   }
 
-  fetchAssetManufacturers() {
-    this.apiService
-      .getData(`assetManufacturers`)
-      .subscribe((result: any) => {
-        this.assetManuDataSource.next(result.Items);
-    });
-  }
+  // fetchAssetManufacturers() {
+  //   this.apiService
+  //     .getData(`assetManufacturers`)
+  //     .subscribe((result: any) => {
+  //       this.assetManuDataSource.next(result.Items);
+  //   });
+  // }
 
   fetchServicePrograms() {
     this.apiService
@@ -176,13 +176,13 @@ fetchReceivers() {
         this.serviceProgramDataSource.next(result.Items);
     });
   }
-  fetchAssetModels() {
-    this.apiService
-      .getData(`assetModels`)
-      .subscribe((result: any) => {
-        this.assetModelsDataSource.next(result.Items);
-      });
-  }
+  // fetchAssetModels() {
+  //   this.apiService
+  //     .getData(`assetModels`)
+  //     .subscribe((result: any) => {
+  //       this.assetModelsDataSource.next(result.Items);
+  //     });
+  // }
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);

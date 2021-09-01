@@ -35,6 +35,11 @@
 .map-search__results2 {
     display: none;
 }
+
+.map-search__results2 ul{
+    list-style: none;
+}
+
 .show-search__result .map-search__results2 {
     display: block !important;
 }

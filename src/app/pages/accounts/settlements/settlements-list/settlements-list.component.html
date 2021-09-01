@@ -93,14 +93,14 @@
                                                   <span *ngIf="t < data.tripIds.length-1">,</span>
                                               </span>
                                           </td>
-                                          <td>{{ data.finalTotal | number}} CAD </td>
+                                          <td>{{ data.finalTotal | number : '1.2-2' }} CAD </td>
                                           <td>
                                               <span *ngIf="data.paidAmount">
-                                                  {{ data.paidAmount | number }} CAD
+                                                  {{ data.paidAmount | number : '1.2-2' }} CAD
                                               </span>
                                               <span *ngIf="!data.paidAmount">-</span>
                                           </td>
-                                          <td>{{ data.pendingPayment | number }} CAD</td>
+                                          <td>{{ data.pendingPayment | number : '1.2-2' }} CAD</td>
                                           <td><span
                                                   class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
                                           <td>

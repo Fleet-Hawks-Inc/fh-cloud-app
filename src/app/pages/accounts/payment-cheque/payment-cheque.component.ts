@@ -11,7 +11,7 @@ declare var $: any;
   styleUrls: ['./payment-cheque.component.css']
 })
 export class PaymentChequeComponent implements OnInit {
-  @ViewChild("content", {static: true}) modalContent: TemplateRef<any>;
+  @ViewChild("chekOptions", {static: true}) modalContent: TemplateRef<any>;
   @ViewChild("previewCheque", {static: true}) previewCheque: TemplateRef<any>;
 
   carriers = [];
@@ -51,6 +51,8 @@ export class PaymentChequeComponent implements OnInit {
   cdnFund = ['*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'];
   sideVal = ['*','*','*','*','*','*','*','*','*','*','*'];
   cdnFundSmall = ['AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST'];
+  totalChars = 15;
+  prevClass = 'amt-words';
   
   constructor( private listService: ListService, private apiService: ApiService,
     private modalService: NgbModal) {
@@ -184,13 +186,15 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   arrangeNumbers() {
+    console.log('this.cheqdata.amount', this.cheqdata.amount);
     let numbers = this.cheqdata.amount.toLocaleString();
     let conv = '';
-    let arrLen = 15 - numbers.length;
+    let arrLen = this.totalChars - numbers.length;
     let sideArrLen = 11 - numbers.length;
     for (let i = 0; i < numbers.length; i++) {
       if(i == 0) {
         this.cdnFund[arrLen-1] = '$';
+        this.cdnFundSmall[arrLen-1] = this.numberToString('$');
       }
       const element = numbers[i];
       this.cdnFund[arrLen] = element;
@@ -201,11 +205,14 @@ export class PaymentChequeComponent implements OnInit {
       sideArrLen++;
     }
 
-    let newL = this.cdnFund.filter(function(value){
-      console.log('value', value);
+    console.log('this.cdnFund', this.cdnFund)
+    let astlen = this.cdnFund.filter(function(value){
       return value === '*';
     }).length;
-    // console.log('newL-=-=-=', newL);
+    console.log('astlen-=-=-=', astlen);
+    let amountLen = this.totalChars - astlen;
+    console.log('amountLen-=-=-=', amountLen);
+    this.prevClass = 'amt-words4';
   }
 
   numberToString(num) {
@@ -265,15 +272,14 @@ export class PaymentChequeComponent implements OnInit {
   fetchContact() {
     if(this.paydata.entityId != null) {
       this.apiService.getData(`contacts/detail/${this.paydata.entityId}`).subscribe((result: any) => {
-        this.cheqdata.entityName = result.Items[0].companyName;
+        this.cheqdata.entityName = result.Items[0].cName;
         this.paydata.entityName = this.cheqdata.entityName;
-        this.cheqdata.carrAddress = result.Items[0].address;
-        result.Items[0].address.map((v) => {
-          if(v.addressType === 'Office') {
+        result.Items[0].adrs.map((v) => {
+          if(v.aType === 'Office') {
             if(v.manual) {
-              this.cheqdata.carrAddress = `${v.address1}, ${v.stateName}, ${v.cityName}, ${v.countryName}, ${v.zipCode}`;
+              this.cheqdata.carrAddress = `${v.add1} ${v.add2}, ${v.sName}, ${v.ctyName}, ${v.cName}, ${v.zip}`;
             } else {
-              this.cheqdata.carrAddress = v.userLocation;
+              this.cheqdata.carrAddress = v.userLoc;
             }
           }
         })

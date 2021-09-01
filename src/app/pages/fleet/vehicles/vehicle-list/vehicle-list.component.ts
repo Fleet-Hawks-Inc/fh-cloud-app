@@ -42,15 +42,15 @@ export class VehicleListComponent implements OnInit {
     vehicleName: true,
     vehicleType: true,
     make: true,
-    model: false,
+    model: true,
     lastLocation: true,
     trip: false,
     plateNo: true,
     fuelType: true,
     status: true,
     group: false,
-    ownership: false,
-    driver: false,
+    ownership: true,
+    driver: true,
     serviceProgram: false,
     serviceDate: false,
     insuranceVendor: false,
@@ -58,6 +58,10 @@ export class VehicleListComponent implements OnInit {
     engineSummary: false,
     primaryMeter: false,
     fuelUnit: false,
+    startDate: true,
+    year: true,
+    annualSafety: true,
+    teamDriver: true
   }
 
   vehicleNext = false;
@@ -74,8 +78,8 @@ export class VehicleListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.fetchGroups();
     this.fetchVehiclesCount();
-    this.fetchVehicleModelList();
-    this.fetchVehicleManufacturerList();
+    // this.fetchVehicleModelList();
+    // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
     this.fetchServiceProgramsList();
     this.fetchVendorList();
@@ -118,11 +122,11 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  fetchVehicleManufacturerList() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
-      this.vehicleManufacturersList = result;
-    });
-  }
+  // fetchVehicleManufacturerList() {
+  //   this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+  //     this.vehicleManufacturersList = result;
+  //   });
+  // }
 
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
@@ -195,12 +199,16 @@ export class VehicleListComponent implements OnInit {
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
+        result['Items'].map((v) => {
+          v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
+        })
         this.vehicles = result['Items'];
 
         if(this.vehicleID != '') {
           this.vehicleStartPoint = 1;
           this.vehicleEndPoint = this.totalRecords;
         }
+
 
         if (result['LastEvaluatedKey'] !== undefined) {
           let lastEvalKey = result[`LastEvaluatedKey`].vehicleSK.replace(/#/g,'--');
