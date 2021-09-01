@@ -40,7 +40,7 @@
                                  <div class="text-center p-4 cerbor">
                                     <i class="fas fa-money-bill-wave text-7"></i>
                                     <br>
-                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.amount }} {{ paymentData.currency }}</p>
+                                    <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.amount | number : '1.2-2' }} {{ paymentData.currency }}</p>
                                     <p class="mb-0">AMOUNT</p>
                                  </div>
                               </div>
@@ -89,13 +89,13 @@
                                       <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
                                         <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
                                      <td>{{dt.type | titlecase}}</td>
-                                     <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
-                                     <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                     <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                     <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                                     </tr>
                                     <tr>
                                       <td colspan="2" class="font-weight-bold text-right">Total</td>
-                                      <td>{{paymentData.amount}} {{paymentData.currency}}</td>
-                                      <td>{{paymentData.amount}} {{paymentData.currency}}</td>
+                                      <td>{{paymentData.amount | number : '1.2-2'}} {{paymentData.currency}}</td>
+                                      <td>{{paymentData.amount | number : '1.2-2'}} {{paymentData.currency}}</td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -121,7 +121,7 @@
                                         <tr *ngFor="let data of advancePayments;">
                                             <td>{{ data.paymentNo }}</td>
                                             <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
-                                            <td>{{ data.amount | number }} CAD</td>
+                                            <td>{{ data.amount | number : '1.2-2' }} CAD</td>
                                         </tr>
                                     </tbody>
                                 </table>

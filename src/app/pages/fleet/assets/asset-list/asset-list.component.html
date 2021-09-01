@@ -70,12 +70,12 @@
                            <label><input type="checkbox" disabled [(ngModel)]="hideShow.plateNo"
                            name="plateNo" (change)="hideShowColumn()"> Licence Plate Number </label>
                         </a>
-                        <a class="dropdown-item text-1" href="javascript:;">
+                        <!-- <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" disabled [(ngModel)]="hideShow.lastLocation"
                            name="lastLocation" (change)="hideShowColumn()"> Last Location </label>
-                        </a>
+                        </a> -->
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.year"
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.year"
                            name="year" (change)="hideShowColumn()"> Year </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
@@ -83,16 +83,24 @@
                            name="make" (change)="hideShowColumn()"> Make </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.model"
-                           name="model" (change)="hideShowColumn()"> Model </label>
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.ownership"
+                           name="ownership" (change)="hideShowColumn()"> Ownership </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
-                           <label><input type="checkbox" [(ngModel)]="hideShow.ownership"
-                           name="ownership" (change)="hideShowColumn()"> Ownership </label>
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.companyName"
+                           name="companyName" (change)="hideShowColumn()"> Company Name </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" disabled [(ngModel)]="hideShow.safetyDate"
+                           name="safetyDate" (change)="hideShowColumn()"> Annual Safety Date </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" disabled [(ngModel)]="hideShow.currentStatus"
                            name="currentStatus" (change)="hideShowColumn()"> Status </label>
+                        </a>
+                        <a class="dropdown-item text-1" href="javascript:;">
+                           <label><input type="checkbox" [(ngModel)]="hideShow.model"
+                           name="model" (change)="hideShowColumn()"> Model </label>
                         </a>
                         <a class="dropdown-item text-1" href="javascript:;">
                            <label><input type="checkbox" [(ngModel)]="hideShow.group"
@@ -236,12 +244,13 @@
                                     <th class="col0 minWidth200">VIN</th>
                                     <th class="col2 minWidth200">Asset Type</th>
                                     <th class="col6 minWidth200">Make</th>
-                                    <th class="col4 minWidth200">Last Location</th>
+                                    <!-- <th class="col4 minWidth200">Last Location</th> -->
                                     <th class="col3 minWidth200"> Licence Plate Number</th>
-                                    <th class="col5 extra">Year</th>
-            
+                                    <th class="col5 minWidth200">Year</th>
                                     <th class="col7 extra">Model</th>
-                                    <th class="col8 extra">Ownership</th>
+                                    <th class="col8 minWidth200">Ownership</th>
+                                    <th class="col15 minWidth200">Company Name</th>
+                                    <th class="col16 minWidth200">Annual Safety Date</th>
                                     <th class="col10 extra">Group</th>
                                     <th class="col11 extra">ACE ID</th>
                                     <th class="col12 extra">ACI ID</th>
@@ -256,24 +265,29 @@
                                     <td colspan="15">{{ dataMessage }}</td>
                                 </tr>
                                  <tr class="cursorpoint text-capitalize" *ngFor="let item of allData;let i = index">
-                                    <td *ngIf="hideShow.assetName" routerLink="/fleet/assets/detail/{{item.assetID}}">
+                                    <td *ngIf="hideShow.assetName" [routerLink]="item.url">
                                        <span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span></td>
+
                                     <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
                                     <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
-                                    <td *ngIf="hideShow.make" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
+                                    <td *ngIf="hideShow.make && item.assetDetails.manufacturer">{{item.assetDetails.manufacturer}}</td>
+                                    <td *ngIf="hideShow.make && !item.assetDetails.manufacturer">-</td>
                                     <td *ngIf="hideShow.lastLocation" >Live Location</td>
                                     <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                                     <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
+
             
-                                    <td *ngIf="hideShow.model" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
-                                    <td *ngIf="hideShow.ownership" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
+                                    <td *ngIf="hideShow.model" [routerLink]="item.url" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
+                                    <td *ngIf="hideShow.ownership" [routerLink]="item.url" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
+                                    <td *ngIf="hideShow.companyName" [routerLink]="item.url" >{{ (item.assetDetails.ownerShip==='ownerOperator') ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</td>
+                                    <td *ngIf="hideShow.safetyDate" [routerLink]="item.url" >{{ item.assetDetails.annualSafetyDate | date:"yyyy/MM/dd" }}</td>
                                     <!-- extra columns -->
-                                    <td *ngIf="hideShow.group" >{{item.groupID ? groupsList[item.groupID] : '-'}}</td>
-                                    <td *ngIf="hideShow.aceID" >{{item.crossBorderDetails.ACE_ID ? item.crossBorderDetails.ACE_ID : '-'}}</td>
-                                    <td *ngIf="hideShow.aciID" >{{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
-                                    <td *ngIf="hideShow.gvwr" >{{item.assetDetails.GVWR ? item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
-                                    <td *ngIf="hideShow.gawr" >{{item.assetDetails.GAWR ? item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
-                                    <td *ngIf="hideShow.currentStatus"><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span></td>
+                                    <td *ngIf="hideShow.group" [routerLink]="item.url" >{{item.groupID ? groupsList[item.groupID] : '-'}}</td>
+                                    <td *ngIf="hideShow.aceID" [routerLink]="item.url" >{{item.crossBorderDetails.ACE_ID ? item.crossBorderDetails.ACE_ID : '-'}}</td>
+                                    <td *ngIf="hideShow.aciID" [routerLink]="item.url" >{{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
+                                    <td *ngIf="hideShow.gvwr" [routerLink]="item.url" >{{item.assetDetails.GVWR ? item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
+                                    <td *ngIf="hideShow.gawr" [routerLink]="item.url" >{{item.assetDetails.GAWR ? item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
+                                    <td *ngIf="hideShow.currentStatus" [routerLink]="item.url"><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span></td>
                                     <td>
                                        <div class="dropdown dropright">
                                           <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

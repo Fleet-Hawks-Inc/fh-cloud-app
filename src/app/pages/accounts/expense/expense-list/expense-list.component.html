@@ -124,7 +124,7 @@
                                         <td routerLink="/accounts/expense/detail">
                                             <span *ngIf="data.recurring" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
                                         </td>
-                                        <td routerLink="/accounts/expense/detail">{{ data.finalTotal | number }} {{ data.currency }}</td>
+                                        <td routerLink="/accounts/expense/detail">{{ data.finalTotal | number : '1.2-2' }} {{ data.currency }}</td>
                                         <td>
                                             <div class="btn-group flex-wrap">
                                                 <button type="button" class="mb-1 mt-1 mr-1 btn"

@@ -214,30 +214,30 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
                     <ng-select [(ngModel)]="assetsData.assetDetails.manufacturer" name="assetDetails.manufacturer"
                       class="form-control" (change)="resetModel()" placeholder="Select asset make">
-                      <ng-option *ngFor="let item of manufacturers | async" id="{{item.manufacturerID}}"
-                        value="{{item.manufacturerID}}">{{item.manufacturerName}}
+                      <ng-option *ngFor="let item of manufacturers" id="{{item.manufacturerID}}"
+                        value="{{item}}">{{item}}
                       </ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2  mar-top-37 pl-0">
-                    <a href="javascript:;" data-toggle="modal" data-target="#addAssetMakeModal"
-                      class="btn cus-btn-padd btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
-                    <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getManufactures()" data-toggle="tooltip" href="javascript:;" title="Refresh manufacturers data"><i class="fas fa-sync"></i></a>
+                    <!-- <a href="javascript:;" data-toggle="modal" data-target="#addAssetMakeModal"
+                      class="btn cus-btn-padd btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a> -->
+                    <!-- <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getManufactures()" data-toggle="tooltip" href="javascript:;" title="Refresh manufacturers data"><i class="fas fa-sync"></i></a> -->
                   </div>
                   <div class="col-lg-10 ">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
-                    <ng-select [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
+                    <ng-select (change)="fetchModels()" [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
                       name="assetDetails.model" class="form-control" id="assetSelect">
-                      <ng-container *ngFor="let model of models | async">
-                        <ng-option *ngIf="model.manufacturerID == assetsData.assetDetails.manufacturer"
-                          value="{{model.modelID}}">{{model.modelName}}</ng-option>
+                      <ng-container *ngFor="let model of models">
+                        <ng-option 
+                          value="{{model}}">{{model}}</ng-option>
                       </ng-container>
                     </ng-select>
                   </div>
                   <div class="col-lg-2  mar-top-37 pl-0">
-                    <a href="javascript:;" (click)="openProgram('models')"
+                    <!-- <a href="javascript:;" (click)="openProgram('models')"
                       class="btn cus-btn-padd btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
-                    <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getModels()" data-toggle="tooltip" href="javascript:;" title="Refresh models data"><i class="fas fa-sync"></i></a>
+                    <a class="modal-with-form btn cus-btn-padd btn-success text-light" (click)="getModels()" data-toggle="tooltip" href="javascript:;" title="Refresh models data"><i class="fas fa-sync"></i></a> -->
                   </div>
                 </div>
                 <div class="row mt-2">
