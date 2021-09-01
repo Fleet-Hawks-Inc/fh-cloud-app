@@ -20,6 +20,7 @@ export class VehicleDetailComponent implements OnInit {
   slides = [];
   docs = [];
   pDocs = [];
+  lDocs = [];
   Asseturl = this.apiService.AssetUrl;
   public environment = environment;
   /**
@@ -41,6 +42,8 @@ export class VehicleDetailComponent implements OnInit {
   VIN = '';
   year = '';
   manufacturerID = '';
+  uploadedDocs = [];
+  existingDocs = [];
   modelID = '';
   plateNumber = '';
   stateID = '';
@@ -185,6 +188,9 @@ export class VehicleDetailComponent implements OnInit {
     accountNumber: '',
     generateExpenses: '',
     notes: '',
+    loanDueDate: '',
+    lReminder: false,
+    gstInc: false,
   };
   settings = {
     primaryMeter: 'miles',
@@ -512,6 +518,9 @@ export class VehicleDetailComponent implements OnInit {
           loadEndDate: result.loan.loadEndDate,
           accountNumber: result.loan.accountNumber,
           generateExpenses: result.loan.generateExpenses,
+          loanDueDate: result.loan.loanDueDate,
+          lReminder: result.loan.lReminder,
+          gstInc: result.loan.gstInc,
           notes: result.loan.notes,
         };
         this.settings = {
@@ -560,6 +569,21 @@ export class VehicleDetailComponent implements OnInit {
           });
         }
 
+        
+        if (
+          result.loanDocs != undefined &&
+          result.loanDocs.length > 0
+        ) {
+          this.lDocs = [];
+          result.loanDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.lDocs.push(obj);
+          });
+        }
+
         $("#hardBreakingParametersValue").html(
           this.settings.hardBreakingParams
         );
@@ -590,12 +614,42 @@ export class VehicleDetailComponent implements OnInit {
     }
   }
 
-  deleteDocument(type: string, name: string, index: string) {
-    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${type}/${name}`).subscribe((result: any) => {
-      if(type != 'purchase') {
-        this.docs.splice(parseInt(index), 1);
+  deleteDocument(value: string, name: string, index: string) {
+    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
+      if(value == 'doc') {
+        this.docs = [];
+        this.uploadedDocs = result.Attributes.uploadedDocs;
+        this.existingDocs = result.Attributes.uploadedDocs;
+        result.Attributes.uploadedDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.docs.push(obj);
+        })
+      } else if(value == 'loan') {
+        this.lDocs = [];
+        console.log('loan')
+      this.uploadedDocs = result.Attributes.loanDocs;
+      this.existingDocs = result.Attributes.loanDocs;
+      result.Attributes.loanDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.lDocs.push(obj);
+      })
       } else {
-        this.pDocs.splice(parseInt(index), 1);
+        this.pDocs = [];
+      this.uploadedDocs = result.Attributes.purchaseDocs;
+      this.existingDocs = result.Attributes.purchaseDocs;
+      result.Attributes.purchaseDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.pDocs.push(obj);
+      })
       }
       
     });

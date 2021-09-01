@@ -36,7 +36,6 @@ export class DriverListComponent implements OnInit {
   countriesObject: any = {};
   citiesObject: any = {};
   vehiclesObject: any = {};
-  cyclesObject: any = {};
   groupssObject: any = {};
 
   driverID = '';
@@ -89,7 +88,6 @@ export class DriverListComponent implements OnInit {
     this.fetchAllDocumentsTypes();
     this.fetchDriversCount();
     this.fetchAllVehiclesIDs();
-    this.fetchAllCyclesIDs();
     this.fetchAllGrorups();
     $(document).ready(() => {
       setTimeout(() => {
@@ -189,12 +187,7 @@ export class DriverListComponent implements OnInit {
         this.vehiclesObject = result;
       });
   }
-  fetchAllCyclesIDs() {
-    this.apiService.getData('cycles/get/list')
-      .subscribe((result: any) => {
-        this.cyclesObject = result;
-      });
-  }
+  
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {

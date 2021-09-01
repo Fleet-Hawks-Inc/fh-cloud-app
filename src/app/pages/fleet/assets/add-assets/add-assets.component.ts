@@ -27,6 +27,7 @@ export class AddAssetsComponent implements OnInit {
   errors = {};
   form;
   quantumSelected = '';
+  pDocs = [];
   assetsData = {
     inspectionFormID:'',
     assetIdentification: '',
@@ -68,6 +69,18 @@ export class AddAssetsComponent implements OnInit {
       reminderBeforeUnit: '',
       vendor: null
     },
+    purchase: {
+      purchaseVendorID: null,
+      warrantyExpirationDate: null,
+      warrantyExpirationDateReminder: false,
+      purchasePrice: '',
+      purchasePriceCurrency: null,
+      warrantyExpirationMeter: '',
+      purchaseDate: null,
+      purchaseComments: '',
+      purchaseOdometer: '',
+      gstInc: true
+    },
     crossBorderDetails: {
       ACI_ID: '',
       ACE_ID: ''
@@ -102,6 +115,7 @@ export class AddAssetsComponent implements OnInit {
   states = [];
   uploadedPhotos = [];
   uploadedDocs = [];
+  purchaseDocs = [];
   existingPhotos = [];
   existingDocs = [];
   assetsImages = []
@@ -248,6 +262,18 @@ export class AddAssetsComponent implements OnInit {
         reminderBefore: this.assetsData.insuranceDetails.reminderBefore,
         reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
         vendor: this.assetsData.insuranceDetails.vendor
+      },
+      purchase: {
+        purchaseVendorID: this.assetsData.purchase.purchaseVendorID,
+        warrantyExpirationDate: this.assetsData.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.assetsData.purchase.warrantyExpirationDateReminder,
+        purchasePrice: this.assetsData.purchase.purchasePrice,
+        purchasePriceCurrency: this.assetsData.purchase.purchasePriceCurrency,
+        warrantyExpirationMeter: this.assetsData.purchase.warrantyExpirationMeter,
+        purchaseDate: this.assetsData.purchase.purchaseDate,
+        purchaseComments: this.assetsData.purchase.purchaseComments,
+        purchaseOdometer: this.assetsData.purchase.purchaseOdometer,
+        gstInc: this.assetsData.purchase.gstInc
       },
       crossBorderDetails:{
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
@@ -507,6 +533,10 @@ export class AddAssetsComponent implements OnInit {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
+      }
+    } else if(obj === 'purchase') {
+      for (let i = 0; i < files.length; i++) {
+        this.purchaseDocs.push(files[i])
       }
     } else {
       this.uploadedPhotos = [];

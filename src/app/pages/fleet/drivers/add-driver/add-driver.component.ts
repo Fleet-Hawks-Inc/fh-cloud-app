@@ -176,11 +176,10 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       timezone: null,
       type: null,
       hosRemarks: '',
-      hosCycle: null,
       homeTerminal: null,
       pcAllowed: false,
       ymAllowed: false,
-      hosCycleName: '',
+      hosCycleName: null,
       optZone: 'South (Canada)'
     },
     emergencyDetails: {
@@ -357,8 +356,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   async ngOnInit() {
     this.listService.fetchVehicles();
-    this.listService.fetchOwnerOperators();
-    this.listService.fetchVendors();
+   
     this.driverID = this.route.snapshot.params[`driverID`];
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
@@ -368,25 +366,15 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
     this.fetchGroups(); // fetch groups
     this.fetchCountries(); // fetch countries
-    this.fetchCycles(); // fetch cycles
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
     this.fetchTimezones(); // to fetch timezone
     this.fetchDrivers();
     await this.getCurrentuser();
-    // $(document).ready(() => {
-    //   this.form = $('#driverForm, #groupForm').validate();
-    // });
-    // for (let i = 0; i < this.driverData.documentDetails.length; i++) {
-    //   const element = this.driverData.documentDetails[i];
-    //   await this.getStates(element.issuingCountry);
-    // }
+    
     this.vehicles = this.listService.vehicleList;
-    this.ownerOperators = this.listService.ownerOperatorList;
-    this.vendors = this.listService.vendorList;
-
-  }
+    }
   async getCarrierDetails(id: string) {
     this.spinner.show();
     this.apiService.getData('carriers/' + id).subscribe(res => {
@@ -504,12 +492,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     });
   }
 
-  fetchCycles() {
-    this.apiService.getData('cycles')
-      .subscribe((result: any) => {
-        this.cycles = result.Items;
-      });
-  }
   fetchGroups() {
     this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
       this.groups = result.Items;
@@ -697,12 +679,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if(value === 'company') {
       this.driverData.corporation = null;
       this.driverData.ownerOperator = null;
+      this.listService.fetchVendors();
+      this.vendors = this.listService.vendorList;
     } else if(value === 'corporation') {
       this.driverData.vendor = null;
       this.driverData.ownerOperator = null;
     } else {
       this.driverData.vendor = null;
       this.driverData.corporation = null;
+      this.listService.fetchOwnerOperators();
+      this.ownerOperators = this.listService.ownerOperatorList;
     }
   }
 
@@ -715,15 +701,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
     this.driverData[`deletedUploads`] = this.deletedUploads;
-    if (this.driverData.hosDetails.hosCycle !== '') {
-      let cycleName = '';
-      this.cycles.map((v: any) => {
-        if (this.driverData.hosDetails.hosCycle === v.cycleID) {
-          cycleName = v.cycleName;
-        }
-      });
-      this.driverData.hosDetails.hosCycleName = cycleName;
-    }
     for(let d = 0; d < this.driverData.documentDetails.length; d++){
       const element = this.driverData.documentDetails[d];
       delete element.docStates;
@@ -1038,7 +1015,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.hosDetails.hosStatus = result.hosDetails.hosStatus;
         this.driverData.hosDetails.type = result.hosDetails.type;
         this.driverData.hosDetails.hosRemarks = result.hosDetails.hosRemarks;
-        this.driverData.hosDetails.hosCycle = result.hosDetails.hosCycle;
+        this.driverData.hosDetails.hosCycleName = result.hosDetails.hosCycleName;
         this.driverData.hosDetails.homeTerminal = result.hosDetails.homeTerminal.addressID;
         this.driverData.hosDetails.pcAllowed = result.hosDetails.pcAllowed;
         this.driverData.hosDetails.ymAllowed = result.hosDetails.ymAllowed;
@@ -1098,15 +1075,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
          }
        }
     }
-    if (this.driverData.hosDetails.hosCycle !== '') {
-      let cycleName = '';
-      this.cycles.map((v: any) => {
-        if (this.driverData.hosDetails.hosCycle === v.cycleID) {
-          cycleName = v.cycleName;
-        }
-      });
-      this.driverData.hosDetails.hosCycleName = cycleName;
-    }
+   
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -1312,7 +1281,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.driverData.hosDetails.type = 'ELD';
     } else {
       this.driverData.hosDetails.type = 'Log Book';
-      this.driverData.hosDetails.hosCycle = '';
+      this.driverData.hosDetails.hosCycleName = '';
     }
   }
 

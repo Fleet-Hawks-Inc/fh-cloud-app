@@ -180,7 +180,7 @@
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
 
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.location">2876  th Street, Edmonton, Alberta, T5J 2R4</td>
-                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycle ? cyclesObject[driver.hosDetails.hosCycle] : '-'}}</td>
+                                    <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currCycle">{{driver.hosDetails.hosCycleName ? driver.hosDetails.hosCycleName : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.assets">Live Status</td>
                                     <td routerLink="/fleet/drivers/detail/{{driver.driverID}}" style="cursor: pointer;" *ngIf="hideShow.contact">{{driver.phone}} </td>

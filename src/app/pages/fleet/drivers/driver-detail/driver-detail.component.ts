@@ -104,7 +104,6 @@ export class DriverDetailComponent implements OnInit {
   hosCycle: any;
   timezone: any;
   optzone: any;
-  cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
   countriesObject: any = {};
@@ -141,7 +140,7 @@ export class DriverDetailComponent implements OnInit {
     // this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
-    this.fetchCyclesbyIDs();
+    
     this.fetchGroupsbyIDs();
     this.fetchAllContacts();
     this.fetchDocuments();
@@ -207,7 +206,7 @@ export class DriverDetailComponent implements OnInit {
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
             this.fetchCompleteAdd(this.driverData.address);
           }
-          this.cycle = this.driverData.hosDetails.hosCycle;
+          this.cycle = this.driverData.hosDetails.hosCycleName;
           this.email = this.driverData.email;
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
@@ -303,7 +302,7 @@ export class DriverDetailComponent implements OnInit {
           this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
           this.hosYmAllowed = this.driverData.hosDetails.ymAllowed;
           this.hosType = this.driverData.hosDetails.type;
-          this.hosCycle = this.driverData.hosDetails.hosCycle;
+          this.hosCycle = this.driverData.hosDetails.hosCycleName;
           this.timezone = this.driverData.hosDetails.timezone;
           this.optzone = this.driverData.hosDetails.optZone;
           this.emerName = this.driverData.emergencyDetails.name;
@@ -340,14 +339,6 @@ export class DriverDetailComponent implements OnInit {
       }, {});
 
     })
-  }
-
-
-  fetchCyclesbyIDs() {
-    this.apiService.getData('cycles/get/list')
-      .subscribe((result: any) => {
-        this.cycleObjects = result;
-      });
   }
 
   fetchGroupsbyIDs() {
