@@ -57,17 +57,23 @@ export class DriverListComponent implements OnInit {
     currVehicle: false,
     assets: false,
     contact: false,
-    dl: false,
+    dl: true,
     document: false,
     status: true,
-    groupID: false,
+    groupID: true,
     citizenship: false,
     address: false,
     paymentType: false,
     sin: false,
     contractStart: false,
     homeTerminal: false,
-    fastNumber: false
+    fastNumber: false,
+    email: true,
+    phone: true,
+    driverType: true,
+    startDate: true,
+    licenceExpiry: true,
+    licStateName: true,
   }
 
   driverNext = false;
@@ -254,6 +260,9 @@ export class DriverListComponent implements OnInit {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
+        result.Items.map((v) => {
+          v.url = `/fleet/drivers/detail/${v.driverID}`;
+        })
         this.suggestedDrivers = [];
         this.getStartandEndVal();
         this.drivers = result[`Items`];

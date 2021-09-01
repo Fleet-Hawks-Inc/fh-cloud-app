@@ -149,11 +149,11 @@
      padding: inherit;
   }
   
-  .account-body{
+  /* .account-body{
    margin: 20px;
    margin-left: 50px;
    margin-right: 50px;
-  }
+  } */
   
   /* PRICE PLAN */
   .price-plan{
@@ -803,7 +803,7 @@
     padding: 0
   }
   .nav-tabs{
-    border-bottom: none !important;
+    /* border-bottom: none !important; */
   }
   .top-tabs.nav-tabs li .nav-link {
     color: #2e353e;

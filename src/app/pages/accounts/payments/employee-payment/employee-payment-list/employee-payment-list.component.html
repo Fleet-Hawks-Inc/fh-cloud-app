@@ -85,7 +85,7 @@
                                         <td>{{ data.paymentNo }}</td>
                                         <td>{{ data.payMode }}</td>
                                         <td>{{ employees[data.entityId] }}</td>
-                                        <td>{{ data.finalTotal | number }} CAD</td>
+                                        <td>{{ data.finalTotal | number : '1.2-2' }} CAD</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"

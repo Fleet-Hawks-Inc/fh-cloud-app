@@ -2,7 +2,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-<ng-template #content let-modal>
+<ng-template #chekOptions let-modal>
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Cheque</h4>
@@ -50,13 +50,13 @@
                                                 <td class="back-color-gray
                                                     font-weight-bold">Cheque
                                                     Date</td>
-                                                <td>{{ paydata.chequeDate }}</td>
+                                                <td>{{ paydata.chequeDate | date:"yyyy/MM/dd" }}</td>
                                             </tr>
                                             <tr>
                                                 <td class="back-color-gray
                                                     font-weight-bold">Cheque
                                                     Amount</td>
-                                                <td>{{ paydata.chequeAmount | number }}</td>
+                                                <td>{{ paydata.chequeAmount | number : '1.2-2' }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -132,14 +132,14 @@
                                                                 <td width="20%" class="p10 border_right" valign="top"></td>
                                                                 <td width="20%" class="p10 border_right" valign="top">{{ cheqdata.date | date:"dd-MMM-yyyy" }}</td>
                                                                 <td width="35%" class="p10 border_right" valign="top">{{ cheqdata.entityName }}</td>
-                                                                <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
+                                                                <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number : '1.2-2' }}</td>
                                                             
                                                         </tr>
                                                         <tr>
                                                             <td width="20%" class="p10 border_right" valign="top"></td>
                                                             <td width="20%" class="p10 border_right" valign="top"></td>
                                                             <td width="35%" class="p10 border_right text-right" valign="top">TOTAL</td>
-                                                            <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
+                                                            <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number : '1.2-2' }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -198,7 +198,7 @@
                                                     <div class="front-class mt-2 font33 text-dark font-bold" style="letter-spacing: 1.6px;">
                                                         <span *ngFor="let num of cdnFund">{{num}}</span>
                                                     </div>
-                                                    <div style="padding-top: 30px;" class="font5 text-dark amt-words">
+                                                    <div style="padding-top: 30px;" class="font5 text-dark" [ngClass]="prevClass">
                                                         <!-- <span style="word-spacing: 15.7px; padding-left: 7px;" *ngFor="let num of cdnFundSmall">{{num}}</span> -->
                                                         <ul class="text-justify">
                                                             <li class="pull-left" *ngFor="let num of cdnFundSmall">{{num}}</li>
@@ -347,14 +347,14 @@
                                                                     <td width="20%" class="p10 border_right" valign="top"></td>
                                                                     <td width="20%" class="p10 border_right" valign="top">{{ cheqdata.date | date:"dd-MMM-yyyy" }}</td>
                                                                     <td width="35%" class="p10 border_right" valign="top">{{ cheqdata.entityName }}</td>
-                                                                    <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
+                                                                    <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number : '1.2-2' }}</td>
                                                                 
                                                             </tr>
                                                             <tr>
                                                                 <td width="20%" class="p10 border_right" valign="top"></td>
                                                                 <td width="20%" class="p10 border_right" valign="top"></td>
                                                                 <td width="35%" class="p10 border_right text-right" valign="top">TOTAL</td>
-                                                                <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number }}</td>
+                                                                <td width="25%" class="p10 text-right" valign="top">{{ cheqdata.amount | number : '1.2-2' }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -413,7 +413,7 @@
                                                         <div class="front-class mt-2 font33 text-dark font-bold" style="letter-spacing: 1.6px;">
                                                             <span *ngFor="let num of cdnFund">{{num}}</span>
                                                         </div>
-                                                        <div style="padding-top: 30px;" class="font5 text-dark amt-words">
+                                                        <div style="padding-top: 30px;" class="font5 text-dark" [ngClass]="prevClass">
                                                             <!-- <span style="word-spacing: 15.7px; padding-left: 7px;" *ngFor="let num of cdnFundSmall">{{num}}</span> -->
                                                             <ul class="text-justify">
                                                                 <li class="pull-left" *ngFor="let num of cdnFundSmall">{{num}}</li>

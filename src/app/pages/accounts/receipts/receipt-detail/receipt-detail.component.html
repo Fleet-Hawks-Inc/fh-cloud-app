@@ -41,7 +41,7 @@
                       <div class="text-center p-4 cerbor">
                         <i class="fas fa-money-bill-wave text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.recAmount}}&nbsp;{{receiptData.recAmountCur}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{receiptData.recAmount | number : '1.2-2'}}&nbsp;{{receiptData.recAmountCur}}</p>
                         <p class="mb-0">AMOUNT</p>
                       </div>
                     </div>
@@ -92,9 +92,9 @@
                         <tbody>
                           <tr *ngFor="let inv of receiptData.fetchedInvoices">
                             <td>{{inv.invNo}}</td>
-                            <td>{{inv.finalAmount}} {{inv.invCur}}</td>
-                            <td>{{inv.balance}} {{inv.invCur}}</td>
-                            <td>{{inv.amountReceived}} {{inv.invCur}}</td>
+                            <td>{{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}</td>
+                            <td>{{inv.balance | number : '1.2-2'}} {{inv.invCur}}</td>
+                            <td>{{inv.amountReceived | number : '1.2-2'}} {{inv.invCur}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -118,13 +118,13 @@
                           <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
                        <td>{{customersObject[dt.name] | titlecase}}</td>
                        <td>{{dt.type | titlecase}}</td>
-                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
-                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                       <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                       <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="3" class="font-weight-bold text-right">Total</td>
-                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
-                        <td>{{receiptData.recAmount}} {{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount | number : '1.2-2'}} {{receiptData.recAmountCur}}</td>
+                        <td>{{receiptData.recAmount | number : '1.2-2'}} {{receiptData.recAmountCur}}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -33,7 +33,7 @@
                   <h2 class="text-dark mb-0 font-weight-bold text-5">{{carrier.carrierName | titlecase}}</h2>
                   <p class="text-dark">{{carrierAddress.address}},{{carrierAddress.cityName}},
                     {{carrierAddress.stateName}},
-  {{carrierAddress.countryName}},
+                    {{carrierAddress.countryName}},
                     {{carrierAddress.zipCode}}
                     <br>
                   <strong>Phone:</strong> {{carrier.phone}}<br>
@@ -151,8 +151,8 @@
                       <tr *ngFor="let dt of invoice.details; let d = index;">
                         <td class="pl-3 pt-2"><p class="text-3 text-dark mb-2">  {{dt.commodityService}}</p></td>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.qtyHours}}</p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.priceRate}}</p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{dt.amount}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2"> {{dt.priceRate | number : '1.2-2'}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{dt.amount | number : '1.2-2'}}</p></td>
                       </tr>
                     </tbody>
                   </table>
@@ -164,27 +164,27 @@
                     <tbody>
                       <tr>
                         <td width="84%" class="pr-3 pt-2 text-right"><p class="text-4 font-weight-bold text-dark mb-2">Discount <span *ngIf="invoice.discountUnit === '%'">({{invoice.discount}})%</span></p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-4 text-dark mb-2">{{invoice.discountAmount}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-4 text-dark mb-2">{{invoice.discountAmount | number : '1.2-2'}}</p></td>
                       </tr>
                       <tr>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Sub Total</p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.subTotal}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.subTotal | number : '1.2-2'}}</p></td>
                       </tr>
                       <tr>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Tax( <span class="font-weight-semibold">{{statesObjects[invoice.invStateProvince]}}</span> )</p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.taxAmount}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.taxAmount | number : '1.2-2'}}</p></td>
                       </tr>
                       <tr>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Total</p></td>
-                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.finalAmount}}</td>
+                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.finalAmount | number : '1.2-2'}}</td>
                       </tr>
                       <tr>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Amount Paid</p></td>
-                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.amountReceived}}</p></td>
+                        <td class="pr-3 pt-2 text-right"><p class="text-3 text-dark mb-2">{{invoice.amountReceived | number : '1.2-2'}}</p></td>
                       </tr>
                       <tr>
                         <td class="pr-3 pt-2 text-right"><p class="text-3 font-weight-bold text-dark mb-2">Amount Due</p></td>
-                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.balance}}</td>
+                        <td bgcolor="#f3f3f3" class="pr-3 pt-2 text-dark font-weight-bold text-right">{{invoice.balance | number : '1.2-2'}}</td>
                       </tr>
                     </tbody>
                   </table></td>
@@ -223,13 +223,13 @@
                        <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
                     <td>{{customersObjects[dt.name] | titlecase}}</td>
                     <td>{{dt.type | titlecase}}</td>
-                    <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
-                    <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                    <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                    <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                   </tr>
                   <tr>
                     <td colspan="3" class="font-weight-bold text-right">Total</td>
-                    <td>{{total}} {{invoice.invCur}}</td>
-                    <td>{{total}} {{invoice.invCur}}</td>
+                    <td>{{total | number : '1.2-2'}} {{invoice.invCur}}</td>
+                    <td>{{total | number : '1.2-2'}} {{invoice.invCur}}</td>
                   </tr>
                 </tbody>
               </table>

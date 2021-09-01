@@ -1,0 +1,25 @@
+[{
+    "oceans":["others"]
+},
+{
+    "utility":["triaxle,others"]
+},
+{
+    "others":["others"]
+},
+{
+    "stoughton":["others"]
+},
+{
+    "manac":["triaxle","belt","bottom-dumps","chip-drop","combo","flatbed","lowbeds","dollies","drop-deck","hal-round","heater-vans","reefer","others"]
+},
+{
+    "strick":["others"]
+},
+{
+    "hyundai":["precision","translead","others"]
+},
+{
+
+}
+]

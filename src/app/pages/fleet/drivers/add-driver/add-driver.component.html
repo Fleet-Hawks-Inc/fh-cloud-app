@@ -1056,7 +1056,7 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
                           placeholder="Select Province/State"
-                          (change)="onChangeHideErrors('licenceDetails.issuedState');" required #ipSlt="ngModel" [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }"
+                          (change)="onChangeHideErrors('licenceDetails.issuedState');getLicenseStateName();" required #ipSlt="ngModel" [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }"
                           >
                           <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>

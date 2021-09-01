@@ -25,7 +25,7 @@ import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
 import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
+import {DragDropModule} from '@angular/cdk/drag-drop';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -88,7 +88,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     NgbModule,
     SlickCarouselModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    DragDropModule
   ],
   declarations: [
     SidebarComponent,
