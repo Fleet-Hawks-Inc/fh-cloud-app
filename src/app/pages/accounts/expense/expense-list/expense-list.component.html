@@ -1,10 +1,10 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
+            <header class="page-header pr19 pl7">
                 <div id="fuel-expense-header" style="display:none;">
                     <form class="form-horizontal" method="get">
-                        <div class="row px-4" style="padding-top:10px;">
+                        <div class="row" style="padding-top:10px;">
                             <div class="col-md-2 col-lg-2">
                                 <select class="form-control populate">
                                     <optgroup label="">
@@ -30,15 +30,17 @@
                                     <input type="text" class="form-control" name="end">
                                 </div>
                             </div>
-                            <div class="col-md-1  col-lg-1">
+                            <div class="col-md-1 col-lg-1">
                                 <button type="submit" class="btn btn-sm btn-success">Search</button>
                             </div>
-                            <div class="col-md-6  col-lg-6 text-right pr-5">
+                            <div class="col-md-6 col-lg-6 text-right pr-1">
                                 <!-- <a routerLink="/accounts/expense/list" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Fuel Entry</a> -->
                             </div>
                         </div>
                     </form>
                 </div>
+
+
                 <div id="other-expense-header">
                     <form class="form-horizontal" method="get">
                         <div class="row px-4" style="padding-top:10px;">
@@ -86,70 +88,67 @@
                     </form>
                 </div>
             </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <section class="card">
-                      <div class="main-panel">
-                        <div infiniteScroll
-                            [infiniteScrollDistance]="1"
-                            [infiniteScrollUpDistance]="1"
-                            [infiniteScrollThrottle]="5"
-                            (scrolled)="onScroll()">
-                            <div class="card-body" style="display: block">
-                              <div class="main-panel">
-                                <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
-                                  <div class="tab-pane show active" id="allExpenses" role="tabpanel"
-                                      aria-labelledby="allExpenses-tab">
-                                      <table
-                                          class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
-                                          <thead>
-                                              <tr>
-                                                  <th>Date</th>
-                                                  <th>Expense Type</th>
-                                                  <th>Vendor</th>
-                                                  <th>Recurring</th>
-                                                  <th>Amount</th>
-                                                  <th>Action</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-                                              <tr *ngIf="expenses.length === 0" class="text-center">
-                                                  <td colspan="6">{{ dataMessage }}</td>
-                                              </tr>
-                                              <tr *ngFor="let data of expenses;">
-                                                  <td routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                                      {{ data.txnDate | date:'yyyy/MM/dd' }}
-                                                  </td>
-                                                  <td routerLink="/accounts/expense/detail">{{ categories[data.categoryID] }}</td>
-                                                  <td routerLink="/accounts/expense/detail">{{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
-                                                  <td routerLink="/accounts/expense/detail">
-                                                      <span *ngIf="data.recurring" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
-                                                  </td>
-                                                  <td routerLink="/accounts/expense/detail">{{ data.finalTotal | number }} {{ data.currency }}</td>
-                                                  <td>
-                                                      <div class="btn-group flex-wrap">
-                                                          <button type="button" class="mb-1 mt-1 mr-1 btn"
-                                                              data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                                          <div class="dropdown-menu" role="menu">
-                                                              <a class="dropdown-item text-1" routerLink="/accounts/expense/edit/{{ data.expenseID }}">Edit</a>
-                                                              <a class="dropdown-item text-1" (click)="deleteExpense(data.expenseID)">Delete</a>
-                                                          </div>
-                                                      </div>
-                                                  </td>
-                                              </tr>
-                                          </tbody>
-                                      </table>
-                                  </div>
-                              </div>
-                              </div>
 
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                        <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
+                        (scrolled)="onScroll()">
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <table class="table table-bordered table-responsive-lg table-striped mb-0 simple-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Expense Type</th>
+                                        <th>Vendor</th>
+                                        <th>Recurring</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="expenses.length === 0" class="text-center">
+                                        <td colspan="6">{{ dataMessage }}</td>
+                                    </tr>
+                                    <tr *ngFor="let data of expenses;">
+                                        <td routerLink="/accounts/expense/detail/{{ data.expenseID }}">
+                                            {{ data.txnDate | date:'yyyy/MM/dd' }}
+                                        </td>
+                                        <td routerLink="/accounts/expense/detail">{{ categories[data.categoryID] }}</td>
+                                        <td routerLink="/accounts/expense/detail">{{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
+                                        <td routerLink="/accounts/expense/detail">
+                                            <span *ngIf="data.recurring" class="text-lowercase"> {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
+                                        </td>
+                                        <td routerLink="/accounts/expense/detail">{{ data.finalTotal | number : '1.2-2' }} {{ data.currency }}</td>
+                                        <td>
+                                            <div class="btn-group flex-wrap">
+                                                <button type="button" class="mb-1 mt-1 mr-1 btn"
+                                                    data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a class="dropdown-item text-1" routerLink="/accounts/expense/edit/{{ data.expenseID }}">Edit</a>
+                                                    <a class="dropdown-item text-1" (click)="deleteExpense(data.expenseID)">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             </div>
+                         </div>
                         </div>
                       </div>
-
-                    </section>
+                   </div>
                 </div>
-            </div>
+                
+             
+             </section>
+
+
         </section>
     </div>
 </section>

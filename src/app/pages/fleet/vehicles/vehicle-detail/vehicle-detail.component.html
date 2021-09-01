@@ -303,27 +303,29 @@
                       </table>
                     </div>
                   </div>
-
-                  <div class="vehicle-common-box mt-4">
-                    <div class="row m-0">
-                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Document(s)</div>
+                  <div class="col-lg-10 mt-2 pl-0" *ngIf="pDocs.length > 0">
+                    <div class="vehicle-common-box p-3">
+                       <div class="row">
+                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">
+                                Document(s)</label></div>
+                          <div class="col-lg-6 text-right">
+                          </div>
+                       </div>
+                       <hr class="solid mt-2">
+                       <div class="row mb-1" *ngFor="let item of pDocs;let d= index">
+                          <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                {{d+1}}</a> </div>
+                          <div class="col-lg-3 text-right">
+                             <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                data-toggle="modal" data-target="#viewDocModal"></i>
+                             <a href="javascript:;" (click)="deleteDocument('doc', item.name, d)"
+                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                          </div>
+                       </div>
                     </div>
-                    <table class="table table-responsive-lg mb-0">
-                      <tbody>
-                        <tr *ngIf="docs.length == 0" style="text-align: center;">
-                          <td colspan="2">{{ noRecordMsg }}</td>
-                        </tr>
-                        <tr *ngFor="let data of docs; let i=index;">
-                          <td width="80%">Document {{ i+1}} </td>
-                          <td width="20%">
-                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument(data.name, i)" ><i class="fas fa-trash-alt"></i></a>
-                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
-                            <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                 </div>
+                  
                 </div>
               </div>
             </div>
@@ -656,6 +658,11 @@
                     <div class="col-lg-8 p-2 border-box">{{ purchase.purchasePrice }} {{purchase.purchasePriceCurrency}}</div>
                   </div>
                   <div class="row  m-0">
+                    <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">GST Included :</div>
+                    <div class="col-lg-8 p-2 border-box">{{ purchase.gstInc ? 'Yes' : 'No' }}</div>
+                  </div>
+                  
+                  <div class="row  m-0">
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Date:</div>
                     <div class="col-lg-8 p-2 border-box">{{ purchase.purchaseDate | date:"yyyy/MM/dd"  }}</div>
                   </div>
@@ -663,7 +670,26 @@
                     <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">Purchase Odometer in Miles:</div>
                     <div class="col-lg-8 p-2 border-box">{{ purchase.purchaseOdometer }}</div>
                   </div>
-
+                  <div class="vehicle-common-box mt-4">
+                    <div class="row m-0">
+                      <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Purchase Document(s)</div>
+                    </div>
+                    <table class="table table-responsive-lg mb-0">
+                      <tbody>
+                        <tr *ngIf="pDocs.length == 0" style="text-align: center;">
+                          <td colspan="2">{{ noRecordMsg }}</td>
+                        </tr>
+                        <tr *ngFor="let data of pDocs; let i=index;">
+                          <td width="80%">Document {{ i+1}} </td>
+                          <td width="20%">
+                            <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('purchase', data.name, i)" ><i class="fas fa-trash-alt"></i></a>
+                            <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
+                            <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <div class="col-lg-6">

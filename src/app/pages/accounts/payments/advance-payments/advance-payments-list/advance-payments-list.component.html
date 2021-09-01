@@ -98,9 +98,9 @@
                                               </span>
 
                                           </td>
-                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.amount | number }} {{ data.currency }}</td>
-                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.paidAmount | number }} {{ data.currency }}</td>
-                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.pendingPayment | number }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.paidAmount | number : '1.2-2' }} {{ data.currency }}</td>
+                                          <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.pendingPayment | number : '1.2-2' }} {{ data.currency }}</td>
                                           <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
                                           </td>
                                           <td>

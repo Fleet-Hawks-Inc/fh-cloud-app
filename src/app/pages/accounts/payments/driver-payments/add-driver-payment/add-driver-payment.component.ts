@@ -81,6 +81,7 @@ export class AddDriverPaymentComponent implements OnInit {
   states= [];
   claimCodes = [];
   provincalClaimCodes = [];
+  editDisabled = false;
 
   constructor(
     private listService: ListService,
@@ -374,6 +375,7 @@ export class AddDriverPaymentComponent implements OnInit {
 
   fetchPaymentDetail() {
     this.accountService.getData(`driver-payments/detail/${this.paymentID}`).subscribe((result: any) => {
+      this.editDisabled = true;
       this.paymentData = result[0];
       if(this.paymentData.payMode) {
         this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");

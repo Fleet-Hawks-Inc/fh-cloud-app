@@ -121,7 +121,7 @@
                                         <tr *ngFor="let data of advancePayments;">
                                             <td>{{ data.paymentNo }}</td>
                                             <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
-                                            <td>{{ data.amount | number }} CAD</td>
+                                            <td>{{ data.amount | number : '1.2-2' }} CAD</td>
                                         </tr>
                                     </tbody>
                                 </table>

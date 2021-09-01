@@ -528,7 +528,7 @@
                                           <div class="col-lg-3 text-right">
                                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
                                                 data-toggle="modal" data-target="#viewDocModal"></i>
-                                             <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                             <a href="javascript:;" (click)="deleteDocument('', item.name, d)"
                                                 class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                                           </div>
                                        </div>
@@ -1382,6 +1382,13 @@
                                        <ng-option value="CAD">CAD</ng-option>
                                     </ng-select>
                                  </div>
+                                 <div class="col-lg-2 mar-top-37 p-0">
+                                    <label class="mb-1 mt-2">
+                                       <input type="checkbox" checked name="purchase.gst"
+                                          [(ngModel)]="purchase.gstInc">
+                                       GST Included
+                                    </label>
+                                 </div>
                               </div>
 
                               <div class="col-lg-10 pl-0">
@@ -1395,6 +1402,33 @@
                                     </label>
                                  <input type="text" class="form-control" name="purchase.purchaseOdometer"
                                     [(ngModel)]="purchase.purchaseOdometer" placeholder="eg. 4500">
+                              </div>
+                              <div class="col-lg-10 pl-0">
+                                 <label class="control-label font-weight-bold text-lg-right pt-2">Add Purchase Document(s)</label>
+                                 <input (change)="selectDocuments($event, 'purchase')" name="purchaseDocs"
+                                    type="file" multiple class="form-control border-0 p-0">
+                              </div>
+                              <div class="col-lg-10 mt-2 pl-0" *ngIf="pDocs.length > 0">
+                                 <div class="vehicle-common-box p-3">
+                                    <div class="row">
+                                       <div class="col-lg-6"><label class="control-label font-weight-bold text-3">
+                                             Document(s)</label></div>
+                                       <div class="col-lg-6 text-right">
+                                       </div>
+                                    </div>
+                                    <hr class="solid mt-2">
+                                    <div class="row mb-1" *ngFor="let item of pDocs;let d= index">
+                                       <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                             data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                             {{d+1}}</a> </div>
+                                       <div class="col-lg-3 text-right">
+                                          <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                             data-toggle="modal" data-target="#viewDocModal"></i>
+                                          <a href="javascript:;" (click)="deleteDocument('purchase', item.name, d)"
+                                             class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                       </div>
+                                    </div>
+                                 </div>
                               </div>
                            </div>
 

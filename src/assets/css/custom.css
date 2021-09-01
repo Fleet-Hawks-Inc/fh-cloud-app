@@ -1322,8 +1322,8 @@ color: black;
 
 .account-body{
   margin: 20px;
-  margin-left: 50px;
-  margin-right: 50px;
+  /* margin-left: 50px;
+  margin-right: 50px; */
 }
 
 /* PRICE PLAN */
@@ -2504,7 +2504,7 @@ input.placeholder-lowercase {
 /* on board page width according screen sizes */
 .onboardwidth {width: 95% !important;	}
 @media (min-width: 1640px) {
-	.onboardwidth {width: 75% !important;	}
+	.onboardwidth {width: 90% !important;	}
 }
 
 .addsr-scroll-y {
@@ -2596,4 +2596,24 @@ input:checked + .sliderbtn:before {
 
 .modal.photo__main .modal-dialog {
   max-width: 250px;
+}
+
+.units-list__main .modal-content,
+.units-form__main .modal-content,
+.units-detail__main .modal-content{
+  background-color: transparent;
+  border: none;
+}
+.cus-modal-content{
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.addressbook-item {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 5px;
+}
+.show-search__result .map-search__results {
+  display: block !important;
 }

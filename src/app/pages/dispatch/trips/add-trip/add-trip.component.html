@@ -588,15 +588,14 @@
                                                     <p class="mb-0 mt-3 text-5 font-weight-bold text-dark">Miles</p>
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark"
                                                         *ngIf="orderMiles.calculateBy != '' && orderMiles.calculateBy != null && orderMiles.calculateBy != undefined && mapOrderActive == 'active'">
-                                                        {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number:
-                                                        '1.0-3'}}
+                                                        {{orderMiles.calculateBy}}: {{orderMiles.totalMiles | number : '1.2-2'}}
                                                     </p>
 
                                                     <p class="mb-0 text-4 font-weight-semibold text-dark">Actual
                                                         Miles(Pc Miler):
                                                         <span
                                                             class="mb-0 text-4 font-weight-semibold text-dark">{{actualMiles
-                                                            | number: '1.0-3' }}
+                                                            | number : '1.2-2' }}
                                                         </span>
                                                     </p>
                                                 </div>
