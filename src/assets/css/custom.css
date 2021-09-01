@@ -1726,7 +1726,7 @@ text-decoration: underline;
   .boxshadow0{box-shadow: none !important;}
 
   /* padding classes */
-  
+
   /* padding right */
   .pr2{padding-right:2px !important;}
   .pr5{padding-right:5px !important;}
@@ -1737,7 +1737,7 @@ text-decoration: underline;
   .pr32{padding-right:32px !important;}
 
   .pr123{padding-right:123px !important;}
-  
+
   /* padding bottom */
   .pb2{padding-bottom:2px !important;}
   .pb6{padding-bottom:6px !important;}
@@ -1812,10 +1812,10 @@ text-decoration: underline;
   .mr50{margin-right:50px !important;}
 
   /* margin bottom */
-  .mb2{margin-bottom:2px !important;} 
-  .mb4{margin-bottom:4px !important;} 
-  
-  
+  .mb2{margin-bottom:2px !important;}
+  .mb4{margin-bottom:4px !important;}
+
+
   /* z-index */
   .zindex9910{z-index:9910 !important;}
   .zindex9920{z-index:9920 !important;}
@@ -2370,21 +2370,17 @@ table.dataTable thead th, table.dataTable thead td {
   margin-left: 27px;
 }
 
-
 .address-book-icon {
-    position: fixed;
-    bottom: 130px;
-    left: 23px;
-    background: #ffffff;
-    z-index: 999;
-    padding: 10px;
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    border-radius: 50%;
-    box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
+  position: absolute;
+  top: 7px;
+  right: 202px;
+  background: #ffffff;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 50%;
 }
-
 .address-left-icon
 {
     position: fixed;
@@ -2454,7 +2450,7 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .tripinfoscroll {
-  overflow-x: scroll; 
+  overflow-x: scroll;
   white-space: nowrap;
 }
 
@@ -2481,7 +2477,7 @@ table.dataTable thead th, table.dataTable thead td {
   height: calc(1.3em + 0.75rem + 0.1em) !important;
 }
 
-input.placeholder-lowercase { 
+input.placeholder-lowercase {
   text-transform: uppercase;
 }
 .placeholder-lowercase::-webkit-input-placeholder { /* WebKit browsers */
@@ -2527,7 +2523,7 @@ input.placeholder-lowercase {
   height: 24px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -2584,6 +2580,7 @@ input:checked + .sliderbtn:before {
   margin: 9.75rem auto !important;
 }
 
+
 .form-control[readonly] {
   background-color: #fff;
 }
@@ -2617,3 +2614,4 @@ input:checked + .sliderbtn:before {
 .show-search__result .map-search__results {
   display: block !important;
 }
+
