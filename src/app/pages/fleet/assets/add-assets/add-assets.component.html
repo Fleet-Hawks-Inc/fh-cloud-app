@@ -804,7 +804,7 @@
                                   <div class="col-lg-3 text-right">
                                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
                                         data-toggle="modal" data-target="#viewDocModal"></i>
-                                     <a href="javascript:;" (click)="deleteDocument('purchase', item.name, d)"
+                                     <a href="javascript:;" (click)="deleteDocument('purchase', item.name)"
                                         class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                                   </div>
                                </div>
@@ -860,9 +860,188 @@
                 </div>
              </div>
           </div>
-       </div>
+         </div>
 
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+                <div class="row adddriverpl pt-2">
 
+                  <div class="col-lg-10">
+                      <label class="control-label font-weight-bold  text-lg-right text-5 pt-2">Loan
+                        Detail</label>
+                  </div>
+
+                  <div class="col-lg-5 mb-3 pb-1">
+                      <div class="row">
+                        <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
+                            <ng-select placeholder="Select Vendor" name="loan.loanVendorID"
+                              [(ngModel)]="assetsData.loan.loanVendorID">
+                              <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
+                                  {{vendor.companyName}}
+                              </ng-option>
+                            </ng-select>
+                        </div>
+                        <div class="col-lg-2  mar-top-37 pl-0">
+                            <a href="javascript:;" (click)="openModal('form');"
+                              class="btn cus-btn-padd btn-success modal-with-form mr-2" >
+                              <em class="fas fa-plus"></em></a>
+                              <a class="btn btn-success btn-sm modal-with-form" (click)="refreshVendorData()" data-toggle="tooltip" href="javascript:;" title="Refresh vendor data"><i class="fas fa-sync"></i></a>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Amount of Loan
+                              </label>
+                            <div class="row">
+                              <div class="col-lg-6">
+                                  <input type="number" min="0" class="form-control" name="loan.amountOfLoan"
+                                    [(ngModel)]="assetsData.loan.amountOfLoan" placeholder="eg. 10000, 20000">
+                              </div>
+                              <div class="col-lg-6">
+                                  <ng-select class="form-control populate" name="loan.amountOfLoanCurrency"
+                                    [(ngModel)]="assetsData.loan.amountOfLoanCurrency" placeholder="Select currency">
+                                    <optgroup label="">
+                                        <ng-option value="USD">USD</ng-option>
+                                        <ng-option value="CAD">CAD</ng-option>
+                                    </optgroup>
+                                  </ng-select>
+                              </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Annual % Rate</label>
+                            <input type="number" min="0" class="form-control" name="loan.annualPercentageRate"
+                              [(ngModel)]="assetsData.loan.annualPercentageRate" placeholder="eg. 2,3">
+                        </div>
+                        <div class="col-lg-2 mar-top-37 p-0">
+                            <label class="mb-1 mt-2">
+                              <input type="checkbox" checked name="loan.gst"
+                                  [(ngModel)]="assetsData.loan.gstInc">
+                              GST Included
+                            </label>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Down Payment</label>
+                            <div class="row">
+                              <div class="col-lg-6">
+                                  <input type="number" min="0" class="form-control" name="loan.downPayment"
+                                    [(ngModel)]="assetsData.loan.downPayment" placeholder="eg. 5000 ">
+                              </div>
+                              <div class="col-lg-6">
+                                  <ng-select class="form-control populate" name="loan.downPaymentCurrency"
+                                    [(ngModel)]="assetsData.loan.downPaymentCurrency" placeholder="Select currency">
+                                    <optgroup label="">
+                                        <ng-option value="USD">USD</ng-option>
+                                        <ng-option value="CAD">CAD</ng-option>
+                                    </optgroup>
+                                  </ng-select>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Date of Loan</label>
+                            <input (click)="d8.toggle()" readonly ngbDatepicker #d8="ngbDatepicker" class="form-control"
+                              Placeholder="yyyy/mm/dd" name="loan.dateOfLoan" [(ngModel)]="assetsData.loan.dateOfLoan" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Loan End Date</label>
+                            <input (click)="d9.toggle()" readonly ngbDatepicker #d9="ngbDatepicker" class="form-control"
+                              Placeholder="yyyy/mm/dd" name="loan.loadEndDate" [(ngModel)]="assetsData.loan.loadEndDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Loan Due Date</label>
+                            <input (click)="d10.toggle()" readonly ngbDatepicker #d10="ngbDatepicker" class="form-control"
+                              Placeholder="yyyy/mm/dd" name="loan.loanDueDate" [(ngModel)]="assetsData.loan.loanDueDate" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        </div>
+                        <div class="col-lg-2 px-0 pt-4">
+                            <div class="checkbox mt-0">
+                              <label class="m-0">
+                                  <input type="checkbox" name="loan.lReminder"
+                                    [(ngModel)]="assetsData.loan.lReminder">
+                                  Set Reminder (7 Days Before Due)
+                              </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Add Loan Document(s)</label>
+                            <input (change)="selectDocuments($event, 'loan')" name="loanDocs"
+                              type="file" multiple class="form-control border-0 p-0">
+                        </div>
+                        <div class="col-lg-10 mt-2" *ngIf="lDocs.length > 0">
+                            <div class="vehicle-common-box p-3">
+                              <div class="row">
+                                  <div class="col-lg-6"><label class="control-label font-weight-bold text-3">
+                                        Document(s)</label></div>
+                                  <div class="col-lg-6 text-right">
+                                  </div>
+                              </div>
+                              <hr class="solid mt-2">
+                              <div class="row mb-1" *ngFor="let item of lDocs;let d= index">
+                                  <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                        data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                        {{d+1}}</a> </div>
+                                  <div class="col-lg-3 text-right">
+                                    <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                        data-toggle="modal" data-target="#viewDocModal"></i>
+                                    <a href="javascript:;" (click)="deleteDocument('loan', item.name)"
+                                        class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                  </div>
+                              </div>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-5 offset-lg-1 mb-3 pb-1">
+                      <div class="row">
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Number of Payments
+                              </label>
+                            <input type="number" min="0" class="form-control" name="loan.numberOfPayments"
+                              [(ngModel)]="assetsData.loan.numberOfPayments" placeholder="eg. 10,20">
+                        </div>
+
+                        <div class="col-lg-5">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Monthly Payment
+                              </label>
+                            <div class="row">
+                              <div class="col-lg-6">
+                                  <input type="number" min="0" class="form-control" name="loan.monthlyPayment"
+                                    [(ngModel)]="assetsData.loan.monthlyPayment" placeholder="eg. 1000, 2000">
+                              </div>
+                              <div class="col-lg-6">
+                                  <ng-select class="form-control populate" name="loan.monthlyPaymentCurrency"
+                                    [(ngModel)]="assetsData.loan.monthlyPaymentCurrency" placeholder="Select currency">
+                                    <optgroup label="">
+                                        <ng-option value="USD">USD</ng-option>
+                                        <ng-option value="CAD">CAD</ng-option>
+                                    </optgroup>
+                                  </ng-select>
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Notes</label>
+                            <textarea class="form-control heighta" rows="3" name="loan.notes"
+                              [(ngModel)]="assetsData.loan.notes" placeholder="Enter notes about the loan of vehicle"
+                              #notes3="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+                            <div *ngIf="notes3.invalid && (notes3.dirty || notes3.touched)" class="text-danger">
+                              <div *ngIf="notes3.errors.pattern">
+                                  Only 500 characters are allowed.
+                              </div>
+
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+      </div>
          <div class="row mb-3">
           <div class="col-lg-12">
            <div class="bg-white p-3 text-dark">
@@ -932,7 +1111,7 @@
                   </div>
 
                 </div>
-                <div class="row mt-2" *ngIf='assetsImages?.length'>
+                <div class="row mt-2" *ngIf='assetsImages?.length > 0'>
                   <div class="col-lg-5" *ngFor="let photo of assetsImages;let i= index">
                     <div class="vehicle-photo-box">
                       <img src="{{photo.path}}" width="100%" class="img-fluid"
@@ -942,7 +1121,7 @@
                         <div class="col-lg-8">Image {{i+1}}</div>
                         <div class="col-lg-4 text-right">
                           <a href="javascript:;"  class="modal-with-form">
-                            <i class="fas fa-times text-danger" (click)="delete('image',photo.name,i)"></i>
+                            <i class="fas fa-times text-danger" (click)="deleteDocument('image',photo.name)"></i>
                           </a>
                         </div>
                       </div>
@@ -960,7 +1139,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-2" *ngIf="assetsDocs?.length">
+                <div class="row mt-2" *ngIf="assetsDocs?.length > 0">
                   <div class="col-lg-10">
                     <div class="vehicle-common-box p-3">
                       <div class="row">
@@ -976,7 +1155,7 @@
                         <div class="col-lg-3 text-right">
                           <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                             data-target="#viewDocModal"></i>
-                          <a href="javascript:;" (click)="delete('doc',doc.name,d)" class="modal-with-form"><i
+                          <a href="javascript:;" (click)="deleteDocument('doc',doc.name)" class="modal-with-form"><i
                               class="fas fa-times text-danger"></i></a>
                         </div>
                       </div>
