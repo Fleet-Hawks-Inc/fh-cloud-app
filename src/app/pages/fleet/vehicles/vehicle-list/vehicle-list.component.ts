@@ -78,8 +78,8 @@ export class VehicleListComponent implements OnInit {
     this.onboard.checkInspectionForms();
     this.fetchGroups();
     this.fetchVehiclesCount();
-    this.fetchVehicleModelList();
-    this.fetchVehicleManufacturerList();
+    // this.fetchVehicleModelList();
+    // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
     this.fetchServiceProgramsList();
     this.fetchVendorList();
@@ -122,11 +122,11 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  fetchVehicleManufacturerList() {
-    this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
-      this.vehicleManufacturersList = result;
-    });
-  }
+  // fetchVehicleManufacturerList() {
+  //   this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
+  //     this.vehicleManufacturersList = result;
+  //   });
+  // }
 
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {

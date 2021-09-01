@@ -267,12 +267,15 @@
                                  <tr class="cursorpoint text-capitalize" *ngFor="let item of allData;let i = index">
                                     <td *ngIf="hideShow.assetName" [routerLink]="item.url">
                                        <span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span></td>
-                                    <td *ngIf="hideShow.vin" [routerLink]="item.url">{{item.VIN}}</td>
-                                    <td *ngIf="hideShow.type" [routerLink]="item.url">{{item.assetType | titlecase}}</td>
-                                    <td *ngIf="hideShow.make" [routerLink]="item.url" >{{item.assetDetails.manufacturer ? manufacturersObjects[item.assetDetails.manufacturer] : '-'}}</td>
-                                    <!-- <td *ngIf="hideShow.lastLocation" >Live Location</td> -->
-                                    <td *ngIf="hideShow.plateNo" [routerLink]="item.url">{{item.assetDetails.licencePlateNumber}}</td>
-                                    <td *ngIf="hideShow.year" [routerLink]="item.url" >{{item.assetDetails.year}}</td>
+
+                                    <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.VIN}}</td>
+                                    <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
+                                    <td *ngIf="hideShow.make && item.assetDetails.manufacturer">{{item.assetDetails.manufacturer}}</td>
+                                    <td *ngIf="hideShow.make && !item.assetDetails.manufacturer">-</td>
+                                    <td *ngIf="hideShow.lastLocation" >Live Location</td>
+                                    <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
+                                    <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
+
             
                                     <td *ngIf="hideShow.model" [routerLink]="item.url" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
                                     <td *ngIf="hideShow.ownership" [routerLink]="item.url" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>

@@ -225,7 +225,7 @@ fetchApis() {
       }, (reason) => {
         this.clearAssetModal();
       });
-      this.listService.fetchAssetManufacturers(); 
+      // this.listService.fetchAssetManufacturers(); 
       this.assetManufacturers = this.listService.assetManufacturesList;
     }
   })
@@ -318,7 +318,7 @@ fetchDrivers(){
           this.hasSuccess = true;
           $('#addVehicleModelModal').modal('hide');
           this.toastr.success('Vehicle Model Added Successfully.');
-          this.listService.fetchModels();
+          //this.listService.fetchModels();
 
         }
       });
@@ -354,7 +354,7 @@ fetchDrivers(){
           this.hasSuccess = true;
           $('#addAssetMakeModal').modal('hide');
           this.toastr.success('Asset Make Added Successfully.');
-          this.listService.fetchAssetManufacturers();
+          // this.listService.fetchAssetManufacturers();
         }
       });
   }
@@ -388,8 +388,9 @@ fetchDrivers(){
           this.hasSuccess = true;
           $('#addAssetModelModal').modal('hide');
           this.toastr.success('Asset Model Added Successfully.');
-          this.listService.fetchAssetModels();
-          this.assetModelData.manufacturerID = '';
+          // this.listService.fetchAssetModels();
+          this.
+          assetModelData.manufacturerID = '';
           this.assetMakeData.manufacturerName = '';
         }
       });

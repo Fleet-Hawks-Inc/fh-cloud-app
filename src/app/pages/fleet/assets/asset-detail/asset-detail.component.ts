@@ -149,8 +149,8 @@ export class AssetDetailComponent implements OnInit {
     this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
-    this.fetchManufacturesByIDs();
-    this.fetchModalsByIDs();
+    // this.fetchManufacturesByIDs();
+    // this.fetchModalsByIDs();
     this.fetchGroups();
     this.fetchContactsByIDs();
   }
