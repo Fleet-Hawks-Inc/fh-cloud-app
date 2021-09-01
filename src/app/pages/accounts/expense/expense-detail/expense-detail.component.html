@@ -45,7 +45,7 @@
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-check text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.amount }} {{ expenseData.currency }}</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.amount | number : '1.2-2' }} {{ expenseData.currency }}</p>
                                                 <p class="mb-0">AMOUNT</p>
                                             </div>
                                         </div>
@@ -53,14 +53,14 @@
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="far fa-calendar-check text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.finalTotal }} {{ expenseData.currency }}</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.finalTotal | number : '1.2-2' }} {{ expenseData.currency }}</p>
                                                 <p class="mb-0">FINAL AMOUNT</p>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="text-center p-4"> <i class="fas fa-map-marker-alt text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ vendors[expenseData.vendorID] }}</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ (expenseData.vendorID) ? vendors[expenseData.vendorID] : '-' }}</p>
                                                 <p class="mb-0">VENDOR</p>
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Taxes</td>
-                                                        <td>GST - {{ expenseData.taxes.gstAmount }} {{ expenseData.currency }}, PST - {{ expenseData.taxes.pstAmount }} {{ expenseData.currency }}, HST - {{ expenseData.taxes.hstAmount }} {{ expenseData.currency }} </td>
+                                                        <td>GST - {{ expenseData.taxes.gstAmount | number : '1.2-2' }} {{ expenseData.currency }}, PST - {{ expenseData.taxes.pstAmount | number : '1.2-2' }} {{ expenseData.currency }}, HST - {{ expenseData.taxes.hstAmount | number : '1.2-2' }} {{ expenseData.currency }} </td>
                                                     </tr>
                                                     <tr>
                                                         <td width="40%" class="back-color-gray font-weight-bold">Country
@@ -193,13 +193,13 @@
                                                 <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
                                                   <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
                                                <td>{{dt.type | titlecase}}</td>
-                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
-                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                                               </tr>
                                               <tr>
                                                 <td colspan="2" class="font-weight-bold text-right">Total</td>
-                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
-                                                <td>{{expenseData.finalTotal}} {{expenseData.currency}}</td>
+                                                <td>{{expenseData.finalTotal | number : '1.2-2'}} {{expenseData.currency}}</td>
+                                                <td>{{expenseData.finalTotal | number : '1.2-2'}} {{expenseData.currency}}</td>
                                               </tr>
                                             </tbody>
                                           </table>
