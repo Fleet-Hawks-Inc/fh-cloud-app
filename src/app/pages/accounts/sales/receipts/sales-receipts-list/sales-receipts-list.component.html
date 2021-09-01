@@ -1,17 +1,17 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header">
+      <header class="page-header pr19 pl7">
           <form class="form-horizontal" method="get">
 
-             <div class="row px-4" style="padding-top:10px;">
-                <div class="col-md-2 col-lg-2">
+             <div class="row" style="padding-top:10px;">
+                <div class="col-md-2 col-lg-2 pr-0">
                    <div class="input-group input-group-md mb-3">
                     <input type="text" class="form-control" placeholder="Search">
                    </div>
                 </div>
 
-                <div class="col-lg-3 col-md-3">
+                <div class="col-lg-3 col-md-3 pr-0">
                    <div class="input-daterange input-group" data-plugin-datepicker>
                       <span class="input-group-prepend">
                          <span class="input-group-text">
@@ -26,62 +26,71 @@
                    </div>
                    </div>
 
-                <div class="col-md-1  col-lg-1">
+                <div class="col-md-1 col-lg-1">
                           <button type="submit" class="btn btn-sm btn-success">Search</button>
                          </div>
-                <div class="col-md-6  col-lg-6 text-right pr-5">
+                <div class="col-md-6 col-lg-6 text-right pr-1">
                    <a routerLink="/accounts/sales/receipts/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Sales Payment Received </a>
 
                 </div>
              </div>
              </form>
           </header>
-       <div class="row">
-          <div class="col pr-0">
-             <section class="card">
 
-                <div class="card-body">
-                   <table class="table table-bordered table-striped mb-0 simple-table">
-                      <thead>
-                         <tr class="bgcol2">
-                         <th class="text-2">Date</th>
-                            <th class="text-2">Payment#</th>
-                            <th class="text-2">Customer</th>
-                            <th class="text-2">Reference#</th>
-                            <th class="text-2">Invoice#</th>
-                            <th class="text-2">Payment Mode</th>
-                            <th class="text-2">Amount</th>
-
-                         </tr>
-                      </thead>
-                      <tbody>
-                         <tr>
-                         <td routerLink="/accounts/sales/receipts/detail">09/25/2020</td>
-                            <td routerLink="/accounts/sales/receipts/detail">234</td>
-                            <td routerLink="/accounts/sales/receipts/detail">Test Cutomer</td>
-                            <td routerLink="/accounts/sales/receipts/detail">4857</td>
-                                <td routerLink="/accounts/sales/receipts/detail">INV-56756, INV-5767</td>
-                                <td routerLink="/accounts/sales/receipts/detail">Cheque </td>
-                                <td>4,000 CAD</td>
-
-                         </tr>
-                         <tr>
-                         <td routerLink="/accounts/sales/receipts/detail">09/25/2020</td>
-                            <td routerLink="/accounts/sales/receipts/detail">234</td>
-                            <td routerLink="/accounts/sales/receipts/detail">Test Cutomer 3</td>
-                            <td routerLink="/accounts/sales/receipts/detail">4857</td>
-                                <td routerLink="/accounts/sales/receipts/detail">INV-56756, INV-5767</td>
-                                <td routerLink="/accounts/sales/receipts/detail">Cash </td>
-                                <td>4,000 CAD</td>
-
-                         </tr>
-                      </tbody>
-                   </table>
-
+          <section class="m-2">
+            <div class="row mb-3">
+              <div class="col-lg-12">
+                <div class="bg-white p-3 text-dark">
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <table class="table table-bordered table-striped mb-0 simple-table">
+                           <thead>
+                              <tr class="bgcol2">
+                              <th class="text-2">Date</th>
+                                 <th class="text-2">Payment#</th>
+                                 <th class="text-2">Customer</th>
+                                 <th class="text-2">Reference#</th>
+                                 <th class="text-2">Invoice#</th>
+                                 <th class="text-2">Payment Mode</th>
+                                 <th class="text-2">Amount</th>
+     
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                              <td routerLink="/accounts/sales/receipts/detail">09/25/2020</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">234</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">Test Cutomer</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">4857</td>
+                                     <td routerLink="/accounts/sales/receipts/detail">INV-56756, INV-5767</td>
+                                     <td routerLink="/accounts/sales/receipts/detail">Cheque </td>
+                                     <td>4,000 CAD</td>
+     
+                              </tr>
+                              <tr>
+                              <td routerLink="/accounts/sales/receipts/detail">09/25/2020</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">234</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">Test Cutomer 3</td>
+                                 <td routerLink="/accounts/sales/receipts/detail">4857</td>
+                                     <td routerLink="/accounts/sales/receipts/detail">INV-56756, INV-5767</td>
+                                     <td routerLink="/accounts/sales/receipts/detail">Cash </td>
+                                     <td>4,000 CAD</td>
+     
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                    
+                     
+                     
+                  </div>
                 </div>
-             </section>
-          </div>
-       </div>
+              </div>
+            </div>
+            
+          
+         </section>
+
 
 
     </section>
