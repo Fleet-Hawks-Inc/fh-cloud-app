@@ -82,6 +82,15 @@ export class AppComponent implements OnInit, AfterContentChecked {
 
       }
     }, false);
+
+    $(document).mouseup(function(e) 
+    {
+        var container = $(".show-search__result .map-search__results");
+        if (!container.is(e.target) && container.has(e.target).length === 0) 
+        {
+            $('div').removeClass('show-search__result')
+        }
+    })
   }
 
   getToken() {
