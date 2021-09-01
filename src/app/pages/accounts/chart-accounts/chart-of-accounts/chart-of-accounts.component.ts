@@ -12,7 +12,7 @@ declare var $: any;
 })
 export class ChartOfAccountsComponent implements OnInit {
   modalTitle = 'Add Account';
-  dataMessage = Constants.NO_RECORDS_FOUND;
+  dataMessage = Constants.FETCHING_DATA;
   accounts: any = [];
   newAccounts = [];
   parentMessage: '';
@@ -32,6 +32,7 @@ export class ChartOfAccountsComponent implements OnInit {
   actNo: number;
   actDesc: '';
   opnBal: number;
+  opnBalType = 'credit';
   opnBalCurrency: '';
   actDash = false;
   actDate: '';
@@ -157,12 +158,18 @@ export class ChartOfAccountsComponent implements OnInit {
 
   addAccount() {
     this.submitDisabled = true;
+    if (this.opnBal > 0) {
+      this.opnBalType = 'debit';
+   } else if (this.opnBal === 0) {
+     this.opnBalType = 'credit';
+   }
     const data = {
       actName: this.actName,
       actType: this.actType,
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -259,6 +266,11 @@ export class ChartOfAccountsComponent implements OnInit {
 
   updateAccount(ID: any) {
     this.submitDisabled = true;
+    if (this.opnBal > 0) {
+      this.opnBalType = 'debit';
+   } else if (this.opnBal === 0) {
+     this.opnBalType = 'credit';
+   }
     const data = {
       actID: ID,
       actName: this.actName,
@@ -266,6 +278,7 @@ export class ChartOfAccountsComponent implements OnInit {
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -308,6 +321,7 @@ export class ChartOfAccountsComponent implements OnInit {
         this.actNo = null;
         this.actDesc = '';
         this.opnBal = null;
+        this.opnBalType = '';
         this.opnBalCurrency = '';
         this.actDash = false;
         this.actDate = '';

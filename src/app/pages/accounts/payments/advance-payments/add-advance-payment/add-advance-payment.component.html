@@ -1,26 +1,26 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
-                <h2>Add Advance Payment</h2>
-                <div class="right-wrapper text-right">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <h2>Add Advance Payment</h2>
+        <div class="right-wrapper text-right">
 
-                    <div class="pull-right pr-2">
-                        <a routerLink="/accounts/payments/advance-payments/list"
-                            class="mt-2 mr-5 btn btn-default btn-sm"><i class="fas fa-list"></i> All Advance
-                            Payments</a>
-                    </div>
-                </div>
-            </header>
-            <section class="card mt-0">
-                <div class="card-body pr-0 pt-0 pb-0">
-                    <div class="row">
-                        <div class="col pr-0">
-                            <div class="card-body text-dark">
-                                <form class="form-horizontal form-bordered" method="get" #payForm="ngForm">
-                                    <div class="row">
-                                        <div class="col-lg-5 offset-lg-1">
-                                            <!-- <div class="row">
+          <div class="pull-right pr-2">
+            <a routerLink="/accounts/payments/advance-payments/list" class="mt-2 mr-5 btn btn-default btn-sm"><i
+                class="fas fa-list"></i> All Advance
+              Payments</a>
+          </div>
+        </div>
+      </header>
+      <section class="card mt-0">
+        <div class="card-body pr-0 pt-0 pb-0">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body text-dark">
+                <form class="form-horizontal form-bordered" method="get" #payForm="ngForm">
+                  <div class="row">
+                    <div class="col-lg-5 offset-lg-1">
+                      <!-- <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label
                                                         font-weight-bold
@@ -35,266 +35,292 @@
                                                     </div>
                                                 </div>
                                             </div> -->
-                                            <div class="row" id="settlementListDiv">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
-                                                        Payment To<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                    </label>
-                                                    <ng-select [(ngModel)]="paymentData.paymentTo" name="paymentTo"
-                                                        placeholder="Select type" #payTo="ngModel" required (change)="resetEntityVal();">
-                                                        <ng-option value="driver">Driver</ng-option>
-                                                        <ng-option value="carrier">Carrier</ng-option>
-                                                        <ng-option value="owner_operator">Owner Operator</ng-option>
-                                                        <ng-option value="employee">Employee</ng-option>
-                                                        <!-- <ng-option value="vendor">Vendor</ng-option> -->
-                                                        <!-- <ng-option value="customer">Customer</ng-option> -->
-                                                    </ng-select>
-                                                    <div *ngIf="payTo.invalid && (payTo.dirty || payTo.touched)" class="text-danger">
-                                                        <div *ngIf="payTo.errors.required">
-                                                            Advance payment to is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'driver'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Driver" #driverID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of drivers | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
+                      <div class="row" id="settlementListDiv">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Advance
+                            Payment To<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          </label>
+                          <ng-select [(ngModel)]="paymentData.paymentTo" name="paymentTo" placeholder="Select type"
+                            #payTo="ngModel" required (change)="resetEntityVal();">
+                            <ng-option value="driver">Driver</ng-option>
+                            <ng-option value="carrier">Carrier</ng-option>
+                            <ng-option value="owner_operator">Owner Operator</ng-option>
+                            <ng-option value="employee">Employee</ng-option>
+                            <!-- <ng-option value="vendor">Vendor</ng-option> -->
+                            <!-- <ng-option value="customer">Customer</ng-option> -->
+                          </ng-select>
+                          <div *ngIf="payTo.invalid && (payTo.dirty || payTo.touched)" class="text-danger">
+                            <div *ngIf="payTo.errors.required">
+                              Advance payment to is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'driver'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Driver"
+                            #driverID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of drivers | keyvalue">{{ data.value }}
+                            </ng-option>
+                          </ng-select>
 
-                                                    <div *ngIf="driverID.invalid && (driverID.dirty || driverID.touched)" class="text-danger">
-                                                        <div *ngIf="driverID.errors.required">
-                                                            Driver is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'carrier'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Carrier" #carrierID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of carriers | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="carrierID.invalid && (carrierID.dirty || carrierID.touched)" class="text-danger">
-                                                        <div *ngIf="carrierID.errors.required">
-                                                            Carrier is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'owner_operator'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner Operator" #operatorID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="operatorID.invalid && (operatorID.dirty || operatorID.touched)" class="text-danger">
-                                                        <div *ngIf="operatorID.errors.required">
-                                                            Owner Operator is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'employee'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Employee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Employee" #employeeID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of employees | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="employeeID.invalid && (employeeID.dirty || employeeID.touched)" class="text-danger">
-                                                        <div *ngIf="employeeID.errors.required">
-                                                            Employee is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'vendor'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Vendor" #vendorID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of vendors | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="vendorID.invalid && (vendorID.dirty || vendorID.touched)" class="text-danger">
-                                                        <div *ngIf="vendorID.errors.required">
-                                                            Vendor is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'customer'">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                        Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Customer" #customerID="ngModel" required>
-                                                        <ng-option value="{{ data.key }}"
-                                                            *ngFor="let data of customers | keyvalue">{{ data.value }}
-                                                        </ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="customerID.invalid && (customerID.dirty || customerID.touched)" class="text-danger">
-                                                        <div *ngIf="customerID.errors.required">
-                                                            Customer is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <div class="row">
-                                                        <div class="col-lg-5">
-                                                            <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount" min="0" placeholder="Enter amount" #amount="ngModel" required>
-                                                            <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
-                                                                <div *ngIf="amount.errors.required">
-                                                                    Amount is required.
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-5">
-                                                            <ng-select [(ngModel)]="paymentData.currency" name="currency"
-                                                                placeholder="Select currency" #currency="ngModel" required>
-                                                                <ng-option value="CAD">CAD</ng-option>
-                                                                <ng-option value="USD">USD</ng-option>
-                                                            </ng-select>
-
-                                                            <div *ngIf="currency.invalid && (currency.dirty || currency.touched)" class="text-danger">
-                                                                <div *ngIf="currency.errors.required">
-                                                                    Currency is required.
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold labelalign">Payment Mode</label>
-                                                    <ng-select [(ngModel)]="paymentData.payMode" name="payMode"
-                                                        placeholder="Select Payment Mode" (change)="changePaymentMode($event)">
-                                                        <ng-option value="cash">Cash</ng-option>
-                                                        <ng-option value="cheque">Cheque</ng-option>
-                                                        <ng-option value="eft">EFT</ng-option>
-                                                        <ng-option value="credit_card">Credit Card</ng-option>
-                                                        <ng-option value="debit_card">Debit Card</ng-option>
-                                                        <ng-option value="demand_draft">Demand Draft</ng-option>
-                                                    </ng-select>
-                                                </div>
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right">Account <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountNo="ngModel" required>
-                                                        <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
-                                                        <div *ngIf="accountNo.errors.required">
-                                                            Account# is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-2" style="margin-top: 32px;">
-                                                  <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                    class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
-                                                  </button>
-                                                  <a href="javascript:;" (click)="refreshAccount()"
-                                                    data-toggle="tooltip" title="Refresh account data"
-                                                    class="btn btn-success btn-sm modal-with-form"><i
-                                                        class="fas fa-sync"></i></a>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-2" id="chequeDivDriver" *ngIf="paymentData.payMode">
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference</label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference">
+                          <div *ngIf="driverID.invalid && (driverID.dirty || driverID.touched)" class="text-danger">
+                            <div *ngIf="driverID.errors.required">
+                              Driver is required.
+                            </div>
+                          </div>
+                        </div>
 
 
-                                                </div>
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date</label>
-                                                    <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
-                                                        placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
-                                                        #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                        [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                    </label>
-                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
-                                                    placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
-                                                    #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
-                                                    <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
-                                                        <div *ngIf="payDate.errors.required">
-                                                            Payment date is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label
-                                                        font-weight-bold
-                                                        font-bold text-lg-right
-                                                        pt-2">Reference#
-                                                    </label>
-                                                    <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
-                                                </div>
-                                            </div>
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'carrier'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Carrier"
+                            #carrierID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of carriers | keyvalue">{{ data.value }}
+                            </ng-option>
+                          </ng-select>
 
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label
+                          <div *ngIf="carrierID.invalid && (carrierID.dirty || carrierID.touched)" class="text-danger">
+                            <div *ngIf="carrierID.errors.required">
+                              Carrier is required.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'owner_operator'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner Operator"
+                            #operatorID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of ownerOperators | keyvalue">
+                              {{ data.value }}
+                            </ng-option>
+                          </ng-select>
+
+                          <div *ngIf="operatorID.invalid && (operatorID.dirty || operatorID.touched)"
+                            class="text-danger">
+                            <div *ngIf="operatorID.errors.required">
+                              Owner Operator is required.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'employee'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Employee<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Employee"
+                            #employeeID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of employees | keyvalue">{{ data.value }}
+                            </ng-option>
+                          </ng-select>
+
+                          <div *ngIf="employeeID.invalid && (employeeID.dirty || employeeID.touched)"
+                            class="text-danger">
+                            <div *ngIf="employeeID.errors.required">
+                              Employee is required.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'vendor'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Vendor"
+                            #vendorID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of vendors | keyvalue">{{ data.value }}
+                            </ng-option>
+                          </ng-select>
+
+                          <div *ngIf="vendorID.invalid && (vendorID.dirty || vendorID.touched)" class="text-danger">
+                            <div *ngIf="vendorID.errors.required">
+                              Vendor is required.
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-lg-10" *ngIf="paymentData.paymentTo === 'customer'">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                            Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Customer"
+                            #customerID="ngModel" required>
+                            <ng-option value="{{ data.key }}" *ngFor="let data of customers | keyvalue">{{ data.value }}
+                            </ng-option>
+                          </ng-select>
+
+                          <div *ngIf="customerID.invalid && (customerID.dirty || customerID.touched)"
+                            class="text-danger">
+                            <div *ngIf="customerID.errors.required">
+                              Customer is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <div class="row">
+                            <div class="col-lg-5">
+                              <input type="number" class="form-control" [(ngModel)]="paymentData.amount" name="amount"
+                                min="0" placeholder="Enter amount" #amount="ngModel" required>
+                              <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
+                                <div *ngIf="amount.errors.required">
+                                  Amount is required.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-5">
+                              <ng-select [(ngModel)]="paymentData.currency" name="currency"
+                                placeholder="Select currency" #currency="ngModel" required>
+                                <ng-option value="CAD">CAD</ng-option>
+                                <ng-option value="USD">USD</ng-option>
+                              </ng-select>
+
+                              <div *ngIf="currency.invalid && (currency.dirty || currency.touched)" class="text-danger">
+                                <div *ngIf="currency.errors.required">
+                                  Currency is required.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold labelalign">Payment Mode<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.payMode" name="payMode" placeholder="Select Payment Mode"
+                            (change)="changePaymentMode($event)">
+                            <ng-option value="cash">Cash</ng-option>
+                            <ng-option value="cheque">Cheque</ng-option>
+                            <ng-option value="eft">EFT</ng-option>
+                            <ng-option value="credit_card">Credit Card</ng-option>
+                            <ng-option value="debit_card">Debit Card</ng-option>
+                            <ng-option value="demand_draft">Demand Draft</ng-option>
+                          </ng-select>
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold font-bold text-lg-right">Account <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account"
+                            #accountNo="ngModel" required>
+                            <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} -
+                              {{ data.actName | titlecase}}</ng-option>
+                          </ng-select>
+
+                          <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
+                            <div *ngIf="accountNo.errors.required">
+                              Account# is required.
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-2" style="margin-top: 32px;">
+                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                          </button>
+                          <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
+                            title="Refresh account data" class="btn btn-success btn-sm modal-with-form"><i
+                              class="fas fa-sync"></i></a>
+                        </div>
+                      </div>
+                      <div class="row pt-2" id="chequeDivDriver" *ngIf="paymentData.payMode">
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" #payNo="ngModel"
+                            name="payModeNo" placeholder="{{ payModeLabel }} Reference" required
+                            pattern="^[a-zA-Z0-9\s]+$">
+                          <div *ngIf="payNo.invalid && (payNo.dirty || payNo.touched)" class="text-danger">
+                            <div *ngIf="payNo.errors.required">
+                              {{ paymentLabel }} reference is required.
+                            </div>
+                            <div *ngIf="payNo.errors.pattern">
+                              {{ paymentLabel }} reference must contain alphanumeric characters.
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                            placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" #payDate="ngModel"
+                            required [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                          <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                            <div *ngIf="payDate.errors.required">
+                              Payment date is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5">
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                            Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          </label>
+                          <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
+                            (click)="txnDate.toggle()" ngbDatepicker #txnDate="ngbDatepicker" class="form-control"
+                            autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel"
+                            required>
+                          <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                            <div *ngIf="payDate.errors.required">
+                              Payment date is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label class="control-label font-weight-bold  text-lg-right pt-2">Reference# </label>
+                          <input type="text" class="form-control" [(ngModel)]="paymentData.referenceNo" name="referenceNo" placeholder="Reference#">
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label class="control-label
                                                         font-weight-bold
                                                         font-bold text-lg-right
                                                         pt-2">Notes
-                                                    </label>
-                                                    <textarea class="form-control h-auto" placeholder="Enter notes" rows="4" [(ngModel)]="paymentData.notes" name="notes" #advancenotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                                                    <div *ngIf="advancenotes.invalid && (advancenotes.dirty || advancenotes.touched)" class="text-danger">
-                                                        <div *ngIf="advancenotes.errors.pattern">
-                                                         Only 500 characters are allowed.
-                                                        </div>
-
-                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mt-4">
-                                        <div class="col-lg-10 text-right">
-                                            <button type="button" accounts class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                                            <button type="button" *ngIf="!paymentID" (click)="addRecord()" [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
-                                            <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()" [disabled]="!payForm.form.valid || submitDisabled"  class="btn btn-success">Update</button>
-                                        </div>
-                                    </div>
-                                </form>
+                          </label>
+                          <textarea class="form-control h-auto" placeholder="Enter notes" rows="4"
+                            [(ngModel)]="paymentData.notes" name="notes" #advancenotes="ngModel"
+                            pattern="^[\s\S]{1,500}$"></textarea>
+                          <div *ngIf="advancenotes.invalid && (advancenotes.dirty || advancenotes.touched)"
+                            class="text-danger">
+                            <div *ngIf="advancenotes.errors.pattern">
+                              Only 500 characters are allowed.
                             </div>
+
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </div>
-            </section>
-        </section>
-    </div>
+                  </div>
+                  <div class="form-group row mt-4">
+                    <div class="col-lg-10 text-right">
+                      <button type="button" accounts class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                      <button type="button" *ngIf="!paymentID" (click)="addRecord()"
+                        [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
+                      <button type="button" *ngIf="paymentID && !paymentData.paymentLinked" (click)="updateRecord()"
+                        [disabled]="!payForm.form.valid || submitDisabled" class="btn btn-success">Update</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
 <div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
   aria-hidden="true">

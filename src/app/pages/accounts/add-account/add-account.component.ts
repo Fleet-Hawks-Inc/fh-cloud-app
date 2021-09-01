@@ -20,6 +20,7 @@ export class AddAccountComponent implements OnInit {
   actNo: number;
   actDesc: '';
   opnBal: number;
+  opnBalType = 'credit';
   opnBalCurrency: '';
   actDash = false;
   actDate: '';
@@ -42,12 +43,18 @@ export class AddAccountComponent implements OnInit {
   ngOnInit() {}
   addAccount() {
     this.submitDisabled = true;
+    if (this.opnBal > 0) {
+      this.opnBalType = 'debit';
+   } else if (this.opnBal === 0) {
+     this.opnBalType = 'credit';
+   }
     const data = {
       actName: this.actName,
       actType: this.actType,
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -55,6 +62,7 @@ export class AddAccountComponent implements OnInit {
       closingAmt: 0,
       internalActID: '',
     };
+
     this.accountService.postData('chartAc', data).subscribe({
       complete: () => { },
       error: (err: any) => {

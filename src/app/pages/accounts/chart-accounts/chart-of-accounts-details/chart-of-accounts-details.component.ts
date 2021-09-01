@@ -33,7 +33,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     startDate: null,
     endDate: null,
   };
-  merged = null;
+  merged = {};
   constructor(private accountService: AccountService,
               private toaster: ToastrService,
               private route: ActivatedRoute,
