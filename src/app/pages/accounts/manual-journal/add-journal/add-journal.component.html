@@ -85,20 +85,32 @@
                                             <div class="row">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                        Reference#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required />
+                                                        Reference#</label>
+                                                        <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" />
 
-                                                    <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
+                                                    <!-- <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required /> -->
+
+                                                    <!-- <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
                                                         <div *ngIf="refNo.errors.required">
                                                             Reference# is required.
                                                         </div>
+                                                        <div *ngIf="refNo.errors.pattern">
+                                                            Reference# must contain alphanumeric characters.
+                                                           </div>
                                                     </div>
+                                                    </div> -->
                                                 </div>
                                             </div>
                                             <div class="row pt-2">
                                                 <div class="col-lg-10">
                                                     <label class="control-label font-weight-bold text-lg-right pt-2 ">Notes</label>
-                                                    <textarea rows="3" name="notes" [(ngModel)]="journal.notes" class="form-control h-auto"></textarea>
+                                                    <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto" #Nmanual="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                                    <div *ngIf="Nmanual.invalid && (Nmanual.dirty || Nmanual.touched)" class="text-danger">
+                                                        <div *ngIf="Nmanual.errors.pattern">
+                                                         Only 500 characters are allowed.
+                                                        </div>
+                                                
+                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -128,7 +140,7 @@
                                                         <tr *ngFor="let data of journal.details; let i=index">
                                                             <td>
                                                                 <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account" (change)="checkSelectedAccount($event, i)" #accID="ngModel" required>
-                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts">{{ item.actName }} - {{ item.actNo }}</ng-option>
+                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} - {{ item.actName | titlecase}}</ng-option>
                                                                 </ng-select>
 
                                                                 <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
@@ -138,7 +150,7 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <textarea class="form-control h-auto" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
+                                                                <textarea class="form-control h-auto" placeholder="Enter description of the journal" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
                                                             </td>
                                                             <td>
                                                                 <ng-select [(ngModel)]="data.contactID" name="currency{{i}}" placeholder="Select contact">
@@ -146,10 +158,10 @@
                                                                 </ng-select>
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
+                                                                <input type="number" min="0" placeholder="0.00"name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
+                                                                <input type="number" min="0"  placeholder="0.00" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
                                                             </td>
                                                             <td>
                                                                 <a *ngIf="i>1" href="javascript:;" (click)="deleteDetail(i)"><i class="fa fa-trash"> </i> </a>
@@ -195,7 +207,7 @@
                                     </div>
                                     <div class="form-group row mt-4">
                                         <div class="col-lg-11 text-right">
-                                            <button type="button" class="btn btn-default mr-2">
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">
                                                 Cancel
                                             </button>
                                             <button *ngIf="!journalID" type="submit" (click)="addJournal()"  [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Save</button>

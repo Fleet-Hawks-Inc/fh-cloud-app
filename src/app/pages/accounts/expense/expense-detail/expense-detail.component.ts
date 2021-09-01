@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
-import  Constants  from '../../../fleet/constants'; 
+import  Constants  from '../../../fleet/constants';
 
 @Component({
   selector: 'app-expense-detail',
@@ -31,6 +31,7 @@ export class ExpenseDetailComponent implements OnInit {
     txnDate: null,
     unitType: null,
     unitID: null,
+    tripID: null,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -51,8 +52,9 @@ export class ExpenseDetailComponent implements OnInit {
     customerID: null,
     invoiceID: null,
     documents: [],
-    notes: '', 
-    finalTotal: ''
+    notes: '',
+    finalTotal: '',
+    transactionLog: []
   };
   Asseturl = this.apiService.AssetUrl;
   documentSlides = [];
@@ -60,22 +62,38 @@ export class ExpenseDetailComponent implements OnInit {
   accounts = [];
   invoices = [];
   categories = [];
+  units = [];
+  accountsObjects: any = {};
+  customersObject: any = {};
+  accountsIntObjects: any = {};
+  trips: any = {};
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.expenseID = this.route.snapshot.params['expenseID'];
+    this.expenseID = this.route.snapshot.params[`expenseID`];
     this.fetchExpenseByID();
     this.fetchVendors();
-    this.fetchAccounts();
-    this.fetchInvoices();
+    // this.fetchInvoices();
     this.fetchExpenseCategories();
+    // this.fetchCustomersByIDs();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
+    this.fetchTrips();
   }
 
   fetchExpenseByID() {
     this.accountService.getData(`expense/detail/${this.expenseID}`)
       .subscribe((result: any) => {
-        if (result[0] != undefined) {
+        if (result[0] !== undefined) {
           this.expenseData = result[0];
+          this.expenseData.transactionLog.map((v: any) => {
+            v.type = v.type.replace('_', ' ');
+          });
+          if(this.expenseData.unitType === 'vehicle') {
+            this.fetchVehicles();
+          } else {
+            this.fetchAssets();
+          }
 
           if (result[0].documents != undefined && result[0].documents.length > 0) {
             result[0].documents.map((x) => {
@@ -96,7 +114,12 @@ export class ExpenseDetailComponent implements OnInit {
         this.vendors = result;
       })
   }
-
+  fetchTrips() {
+    this.apiService.getData(`trips/get/list`)
+      .subscribe((result: any) => {
+        this.trips = result;
+      })
+  }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
@@ -108,12 +131,21 @@ export class ExpenseDetailComponent implements OnInit {
     }
   }
 
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/get/list/all`)
-      .subscribe((result: any) => {
-        this.accounts = result;
-      })
+  fetchCustomersByIDs() {
+    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+      this.customersObject = result;
+    });
   }
+  fetchAccountsByIDs() {
+   this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+     this.accountsObjects = result;
+   });
+ }
+ fetchAccountsByInternalIDs() {
+   this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+     this.accountsIntObjects = result;
+   });
+ }
 
   fetchInvoices() {
     this.accountService.getData('invoices/get/list').subscribe((res: any) => {
@@ -122,17 +154,30 @@ export class ExpenseDetailComponent implements OnInit {
   }
 
   deleteDocument(name: string, index: number) {
-    console.log('this.expenseID', this.expenseID);
     this.accountService.deleteData(`expense/uploadDelete/${this.expenseID}/${name}`).subscribe((result: any) => {
       this.documentSlides.splice(index, 1);
       this.toaster.success('Attachment deleted successfully.');
-    }); 
+    });
   }
 
   fetchExpenseCategories() {
     this.accountService.getData(`expense/categories/list`)
       .subscribe((result: any) => {
         this.categories = result;
+      })
+  }
+
+  fetchVehicles() {
+    this.apiService.getData(`vehicles/get/list`)
+      .subscribe((result: any) => {
+        this.units = result;
+      })
+  }
+
+  fetchAssets() {
+    this.apiService.getData(`assets/get/list`)
+      .subscribe((result: any) => {
+        this.units = result;
       })
   }
 }

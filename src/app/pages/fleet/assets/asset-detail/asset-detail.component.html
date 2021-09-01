@@ -9,6 +9,8 @@
                <h4 class="font-weight-bold text-4 mt-0 text-dark">Asset Details</h4>
             </div>
             <div class="col-md-8 col-lg-8 text-right pr-1">
+              <a routerLink="/fleet/assets/edit/{{assetID}}" class="btn btn-default btn-sm mr-2"><i
+                class="fas fa-pencil-alt"></i> Edit Asset</a>
              <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Assets List</a>
           </div>
          </div>
@@ -67,7 +69,7 @@
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                           <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">, {{manufacturersObjects[manufacturer]}}</span> <span *ngIf="model"> &amp;</span> {{modelsObjects[model]}}</td>
+                                           <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">{{ manufacturer}}</span> <span *ngIf="model"> &amp;</span> {{model}}</td>
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Length</td>
@@ -83,11 +85,11 @@
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">GVWR</td>
-                                           <td class="text-capitalize">{{GAWR ? GAWR : '-'}} {{GAWR_Unit}}</td>
+                                           <td class="text-capitalize">{{GVWR ? GVWR : '-'}} {{GVWR_Unit}}</td>
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">GAWR</td>
-                                           <td class="text-capitalize">{{GVWR ? GVWR : '-'}} {{GVWR_Unit}}</td>
+                                           <td class="text-capitalize">{{GAWR ? GAWR : '-'}} {{GAWR_Unit}}</td>
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Ownership</td>
@@ -97,7 +99,7 @@
                                             <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
                                             <td class="text-capitalize">{{contactsObjects[ownerOperatorName]}}</td>
                                          </tr>
-                                         <tr *ngIf="inspectionFormName != ''"> 
+                                         <tr *ngIf="inspectionFormName != ''">
                                             <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
                                                <td class="text-capitalize">
                                                    <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal" class="modal-with-form font-weight-bold">{{inspectionFormName ? inspectionFormName : '-'}}

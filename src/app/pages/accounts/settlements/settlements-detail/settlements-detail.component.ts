@@ -39,7 +39,6 @@ export class SettlementsDetailComponent implements OnInit {
             teamHours: 0,
             totalHours: 0
         },
-        expenses: [],
         addition: [],
         deduction: [],
         additionTotal: 0,
@@ -47,39 +46,59 @@ export class SettlementsDetailComponent implements OnInit {
         paymentTotal: 0,
         taxes: 0,
         finalTotal: 0,
+        subTotal: 0,
         transactionLog: [],
+        paymentInfo:{
+            lMiles: 0,
+            lMileTeam: 0,
+            eMileTeam: 0,
+            rate: 0,
+            eMiles: 0,
+            pRate: 0,
+            dRate: 0,
+            pType: '',
+            // drivers: [],
+        }
     }
+    expenses = [];
     tripsObj = [];
     accounts = [];
     operatorDetail = {
-        companyName: '',
-        paymentDetails:{
-            payrollType: ''
-        }
+        cName: '',
     };
 
     entityName = "";
     entityPaymentType = "";
-
+    accountsObjects = {};
+    accountsIntObjects = {};
+    payments = [];
     constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
 
     ngOnInit() {
-        this.settlementID = this.route.snapshot.params['settlementID'];
+        this.settlementID = this.route.snapshot.params[`settlementID`];
         this.fetchSettlementDetail();
         this.fetchTrips();
-        this.fetchAccounts();
+        this.fetchAccountsByIDs();
+        this.fetchAccountsByInternalIDs();
+        this.fetchPayments();
     }
 
     fetchSettlementDetail() {
         this.accountService.getData(`settlement/detail/${this.settlementID}`)
             .subscribe((result: any) => {
                 this.settlementData = result[0];
+                this.settlementData.transactionLog.map((v: any) => {
+                  v.type = v.type.replace('_', ' ');
+                });
+                if(this.settlementData.paymentInfo) {
+                    this.entityPaymentType = this.settlementData.paymentInfo.pType;
+                }
                 if (this.settlementData.type === 'driver') {
                     this.fetchDriverDetail(this.settlementData.entityId);
                 } else {
                     this.fetchContact(this.settlementData.entityId);
                 }
-            })
+            });
     }
 
     fetchDriverDetail(driverID) {
@@ -87,31 +106,59 @@ export class SettlementsDetailComponent implements OnInit {
             .subscribe((result: any) => {
                 this.driverDetail = result.Items[0];
                 this.entityName  = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
-                this.entityPaymentType = this.driverDetail.paymentDetails.paymentType;
-            })
+            });
     }
 
     fetchContact(contactID) {
         this.apiService.getData(`contacts/detail/${contactID}`)
             .subscribe((result: any) => {
                 this.operatorDetail = result.Items[0];
-                this.entityName  = this.operatorDetail.companyName;
-                this.entityPaymentType = this.operatorDetail.paymentDetails.payrollType;
-            })
+                this.entityName  = this.operatorDetail.cName;
+            });
     }
 
     fetchTrips() {
         this.apiService.getData(`trips/get/list`)
             .subscribe((result: any) => {
                 this.tripsObj = result;
-            })
+            });
     }
 
-    fetchAccounts() {
-        this.accountService.getData(`chartAc/get/internalID/list/all`)
-          .subscribe((result: any) => {
-            this.accounts = result;
-          })
-      }
+    fetchAccountsByIDs() {
+      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
+    }
+
+    fetchAccountsByInternalIDs() {
+      this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+        this.accountsIntObjects = result;
+      });
+    }
+
+    fetchPayments() {
+        this.accountService.getData(`driver-payments/settlement/${this.settlementID}`)
+            .subscribe((result: any) => {
+                result.map((v) => {
+                    let obj = {
+                        paymentNo: v.paymentNo,
+                        txnDate: v.txnDate,
+                        amount: 0
+                    }
+                    v.settlData.map((k) => {
+                        if(k.settlementId === this.settlementID) {
+                            obj.amount += Number(k.paidAmount);
+                        }
+                    })
+
+                    this.payments.push(obj);
+                    this.payments.sort((a, b) => {
+                        return (
+                          new Date(a.txnDate).valueOf() - new Date(b.txnDate).valueOf()
+                        );
+                    });
+                })
+            });
+    }
 
 }

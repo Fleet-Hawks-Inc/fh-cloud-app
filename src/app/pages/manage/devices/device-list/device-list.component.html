@@ -9,7 +9,7 @@
             <div class="col-md-12  col-lg-12 text-right pr-4">
               <div class="btn-group flex-wrap">
               </div>
-              <a routerLink='/fleet/devices/add' class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+              <a routerLink='/manage/devices/add' class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
                 Device</a>
 
             </div>
@@ -64,24 +64,25 @@
                     id="simple-table" role="grid">
                     <thead>
                       <tr >
-                        <th width="10%" class="col1" style="width: 136px;">Status</th>
-                        <th width="25%" class="col2" style="width: 371px;">Device Name</th>
                         <th width="10%" class="col3" style="width: 135px;">Serial</th>
-                        <th width="15%" class="col4" style="width: 213px;">Vehicle</th>
+                        <th width="25%" class="col2" style="width: 371px;">Device Name</th>
+                        <th width="15%" class="col4" style="width: 213px;">Vehicle/Asset</th>
+                        <th width="10%" class="col1" style="width: 136px;">Status</th>
                         <th id="" class="minWidth50" style="width:20px;">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-
-
-
+                      <tr *ngIf="devices.length == 0" class="text-center">
+                        <td colspan="15">{{ dataMessage }}</td>
+                    </tr>
 
                       <tr role="row" class="odd" *ngFor="let device of devices">
+                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceSerialNo}}</td>
+                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceName}}</td>
+                        <td *ngIf="device.vehicle.vehicleIdentification; else elseBlock">{{device.vehicle.vehicleIdentification}}</td>
+                        <ng-template #elseBlock><td  >{{device.asset.assetIdentification}}</td></ng-template>
                         <td ><span
-                            class="badge badge-success text-3">{{device.deviceStatus}}</span></td>
-                        <td routerLink='/fleet/devices/detail/{{device.deviceType}}/{{device.deviceSerialNo}}'>{{device.deviceName}}</td>
-                        <td routerLink='/fleet/devices/detail/{{device.deviceType}}/{{device.deviceSerialNo}}'>{{device.deviceSerialNo}}</td>
-                        <td>{{device.vehicle.vehicleIdentification}}</td>
+                          class="badge badge-success text-3">{{device.deviceStatus}}</span></td>
                         <td class="border-0">
                           <div class="dropdown dropright">
                              <button class="bg-transparent border-0" type="button"
@@ -91,9 +92,9 @@
                              </button>
                              <div class="dropdown-menu" >
                                 <a class="dropdown-item"
-                                   routerLink="/fleet/devices/edit/{{device.deviceType}}/{{device.deviceSerialNo}}">Edit</a>
+                                   routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}">Edit</a>
                                 <a href="javascript:;" class="dropdown-item"
-                                   (click)="deleteDevice(device.devicesSK)">Delete</a>
+                                   (click)="deactivateDevice(device.deviceType,device.deviceSerialNo)">Deactivate</a>
                              </div>
                           </div>
                        </td>

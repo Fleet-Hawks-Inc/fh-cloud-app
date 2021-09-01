@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../../../../services';
+import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import jspdf from 'jspdf';
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
-import pdfMake from "pdfmake/build/pdfmake";  
+import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import { isObject } from 'util';
+import * as html2pdf from 'html2pdf.js';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 declare var $: any;
 
 @Component({
@@ -89,7 +92,8 @@ export class OrderDetailComponent implements OnInit {
   additionalEmail = '';
 
   additionalDetails = {
-    dropTrailer: false,
+    sealType: '',
+    sealNo: '',
     loadType: {
       hazMat: false,
       oversize: false,
@@ -151,7 +155,17 @@ export class OrderDetailComponent implements OnInit {
   taxableAmount: any;
   invoiceData: any;
   today: any;
-  constructor(private apiService: ApiService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+  cusAddressID: string;
+  isInvoiced: boolean;
+  generateBtnDisabled = false;
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  invGenStatus = false;
+  constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
 
@@ -166,10 +180,10 @@ export class OrderDetailComponent implements OnInit {
   /**
    * fetch Asset data
    */
-  fetchOrder() {
+  async fetchOrder() {
     this.apiService
       .getData(`orders/${this.orderID}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
           this.newOrderData = result;
           result = result.Items[0];
           if(result.stateTaxID != undefined) {
@@ -183,14 +197,15 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
-          this.fetchCustomersByID();
-          this.customerPo = result.customerPO;
+          await this.fetchCustomersByID();
+          this.cusAddressID = result.cusAddressID;
           this.reference = result.reference;
           this.createdDate = result.createdDate;
           this.createdTime = result.timeCreated;
           this.additionalContactName = result.additionalContact;
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
+          this.isInvoiced = result.invoiceGenerate;
           this.shipperReceiversInfos = result.shippersReceiversInfo;
 
           for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
@@ -210,11 +225,12 @@ export class OrderDetailComponent implements OnInit {
 
               // }
 
-              
-          this.additionalDetails.dropTrailer = result.additionalDetails.dropTrailer;
+
+          this.additionalDetails.sealType = result.additionalDetails.sealType ? result.additionalDetails.sealType.replace('_', ' ') : '-';;
+          this.additionalDetails.sealNo = result.additionalDetails.sealNo;
           this.additionalDetails.loadType = result.additionalDetails.loadType;
           this.additionalDetails.refeerTemp = result.additionalDetails.refeerTemp;
-          this.additionalDetails.trailerType = result.additionalDetails.trailerType;
+          this.additionalDetails.trailerType = result.additionalDetails.trailerType ? result.additionalDetails.trailerType.replace('_', ' ') : '-';
           this.additionalDetails.uploadedDocs = result.additionalDetails.uploadedDocs;
           this.charges = result.charges;
           this.discount = result.discount;
@@ -222,8 +238,8 @@ export class OrderDetailComponent implements OnInit {
           this.taxesInfo = result.taxesInfo;
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
-          
-              
+
+
 
           this.milesArr = [];
           // for (let k = 0; k < element.receivers.length; k++) {
@@ -246,9 +262,9 @@ export class OrderDetailComponent implements OnInit {
           this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
       }
-          
+
           this.milesArr = result.shippersReceiversInfo;
-          
+
 
           let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
           let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
@@ -266,14 +282,14 @@ export class OrderDetailComponent implements OnInit {
           // this.advances = result.advance;
           // this.balance = this.totalCharges - this.advances;
           this.balance = this.totalCharges;
-          
+
           if(result.attachments != undefined && result.attachments.length > 0){
             this.attachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
+          }
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
             this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          } 
-          
+          }
+
           // if (
           //   result.uploadedDocs != undefined &&
           //   result.uploadedDocs.length > 0
@@ -349,7 +365,7 @@ export class OrderDetailComponent implements OnInit {
           //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
           // }
 
-          
+
 
 
       }, (err) => {
@@ -377,50 +393,99 @@ export class OrderDetailComponent implements OnInit {
      /*
    * Get all customers's IDs of names from api
    */
-  fetchCustomersByID() {
+ async fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
-      result = result.Items[0];
-      this.customerName = `${result.companyName}`;
 
-      if(result.address.length > 0) {
-        if(result.address[0].manual) {
-          this.customerAddress = result.address[0].address1;
-        } else {
-          this.customerAddress = result.address[0].userLocation;
+      if(result.Items.length > 0) {
+        result = result.Items[0];
+        this.customerName = `${result.cName}`;
+        let newCusAddress = result.adrs.filter((elem: any) => {
+          if(elem.addressID === this.cusAddressID){
+            return elem;
+          }
+        });
+        newCusAddress = newCusAddress[0];
+        if(result.adrs.length > 0) {
+          if(newCusAddress.manual) {
+            this.customerAddress = newCusAddress.add1;
+          } else {
+            this.customerAddress = newCusAddress.userLoc;
+          }
+          this.customerCityName = newCusAddress.ctyName;
+          this.customerStateName = newCusAddress.sName;
+          this.customerCountryName = newCusAddress.cName;
+          this.customerPhone = result.workPhone;
+          this.customerEmail = result.workEmail;
         }
       }
-      this.customerCityName = result.address[0].cityName;
-      this.customerStateName = result.address[0].stateName;
-      this.customerCountryName = result.address[0].countryName;
-      this.customerPhone = result.workPhone;
-      this.customerEmail = result.workEmail;
-      // this.customerfax = result.additionalContact.fax;
+
     });
   }
 
 
   generatePDF() {
     var data = document.getElementById('print_wrap');
-    html2canvas(data).then(canvas => {
-      var imgData = canvas.toDataURL();
-      var docDefinition = {
-        
-        pageSize: 'A4',
-        pageOrientation: 'portrait',
-        pageBreak: 'after',
-        margin: 0,
-        content: [{
-          image: imgData,
-          width: 500,
-        }],
-        pageBreakBefore: function(currentNode, followingNodesOnPage, nodesOnNextPage, previousNodesOnPage) {
-          return currentNode.headlineLevel === 1 && followingNodesOnPage.length === 0;
-        }
-      };
-      pdfMake.createPdf(docDefinition).download("invoice.pdf");
+
+    html2pdf(data, {
+      margin:       0,
+      filename:     'invoice.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+
     });
-    
+    this.saveInvoice();
+    this.fetchOrder();
+    this.invoiceGenerated();
+
+  }
+
+  saveInvoice() {
+    this.generateBtnDisabled = true;
+    this.invoiceData[`transactionLog`] = [];
+    this.invoiceData[`invNo`] = this.orderNumber;
+    this.invoiceData[`invType`] = 'orderInvoice';
+    this.invoiceData[`invStatus`] = 'open';
+    this.invoiceData[`amountReceived`] = 0;
+    this.invoiceData[`amountPaid`] = 0;
+    this.invoiceData[`fullPayment`] = false;
+    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
+    this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
+    this.invoiceData[`orderID`] = this.orderID;
    
+    this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.generateBtnDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.generateBtnDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        $('#previewInvoiceModal').modal('hide');
+        this.generateBtnDisabled = false;
+        this.toastr.success('Invoice Added Successfully.');
+      },
+    });
+  }
+
+  invoiceGenerated() {
+    this.invGenStatus = true;
+    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }
 
   previewModal() {
@@ -445,7 +510,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.docs.splice(index, 1);
     }
-    this.toastr.error('Document deleted successfully');
+    this.toastr.success('Document deleted successfully');
   }
 
   setPDFSrc(val) {
@@ -459,14 +524,14 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  
+
    /*
    * Selecting files before uploading
    */
   selectDocuments(event) {
     let files = [...event.target.files];
     let totalCount = this.docs.length+files.length;
-    
+
     if(totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
@@ -499,7 +564,7 @@ export class OrderDetailComponent implements OnInit {
       }
 
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
-        
+
         this.docs = [];
         if (result.length > 0) {
           for (let k = 0; k < result.length; k++) {
@@ -523,8 +588,8 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
             // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-                    
-            
+
+
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
@@ -562,10 +627,11 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
+        
         this.invoiceData = result[0];
         this.isInvoice = true;
       });
   }
 
-  
+
 }

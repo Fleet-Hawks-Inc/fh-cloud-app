@@ -117,11 +117,12 @@ export class AddGeofenceComponent implements OnInit {
       this.geofenceData.geofence.cords = polyCreate.geometry.coordinates;
 
       layer.on('pm:edit', ({ edlayer }) => {
-
-        const polyEdit = edlayer.toGeoJSON();
-        this.geofenceData.geofence.type = polyEdit.geometry.type;
-        this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
-
+        if(edlayer != undefined) {
+          const polyEdit = edlayer.toGeoJSON();
+          this.geofenceData.geofence.type = polyEdit.geometry.type;
+          this.geofenceData.geofence.cords = polyEdit.geometry.coordinates;
+        }
+        
       });
 
       layer.on('pm:update', ({ uplayer }) => {
@@ -387,5 +388,9 @@ export class AddGeofenceComponent implements OnInit {
       geofenceType: '',
       description: '',
     };
+  }
+
+  getTypes() {
+    this.fetchGeofenceTypes();
   }
 } 

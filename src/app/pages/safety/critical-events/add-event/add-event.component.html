@@ -44,7 +44,7 @@
                                  <div class="row">
                                     <div class="col-lg-5">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Event Date <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                       <input [(ngModel)]="event.eventDate" name="eventDate" type="text"
+                                       <input readonly [(ngModel)]="event.eventDate" name="eventDate" type="text"
                                           placeholder=" yyyy/mm/dd" (click)="d.toggle()" ngbDatepicker
                                           #d="ngbDatepicker" #date="ngModel" [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" required class="form-control">
                                        <div *ngIf="date.invalid && (date.dirty || date.touched)" class="text-danger">
@@ -71,8 +71,9 @@
                                        <ng-select [(ngModel)]="event.eventType" name="eventType"
                                           placeholder="Select event type"  #evType="ngModel" required>
                                           <ng-option value="harshAcceleration">Harsh Acceleration</ng-option>
-                                          <ng-option value="harshBreaking">Harsh Braking</ng-option>
+                                          <ng-option value="harshBrake">Harsh Brake</ng-option>
                                           <ng-option value="highSpeed">High Speed</ng-option>
+                                          <ng-option value="impactTilt">Impact/Tilt</ng-option>
                      
                                        </ng-select>
                                        <div *ngIf="evType.invalid && (evType.dirty || evType.touched)" class="text-danger">
@@ -93,7 +94,7 @@
                                     <div class="col-lg-10">
                                        <label class="control-label font-weight-bold text-lg-right pt-2">Location <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                        <input type="text" class="form-control" (keyup)="searchTerm.next($event);"
-                                          [(ngModel)]="event.locationText" #loc="ngModel" required  name="location"
+                                          [(ngModel)]="event.location.label" #loc="ngModel" required  name="location"
                                           placeholder="eg. 71 Ave NW, Calgary, AB T3B, Canada" autocomplete="off">
                                        <div *ngIf="loc.invalid && (loc.dirty || loc.touched)" class="text-danger">
                                           <div *ngIf="loc.errors.required">
@@ -116,7 +117,9 @@
                               <div class="col-lg-5 offset-lg-1">
                                  <div class="row pt-2">
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Photo(s) 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>  -->
+                                       </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedPhotos')" name="uploadedPhotos" multiple="" class="form-control p-0">
                                        <span *ngIf="photoSizeError != ''" class="text-danger">
                                           {{photoSizeError}}
@@ -124,7 +127,9 @@
                                     </div>
                             
                                     <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video <span class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
+                                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach Video(s) 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span>  -->
+                                       </label>
                                        <input type="file" (change)="selectDocuments($event, 'uploadedVideos')" name="uploadedVideos" multiple="" class="form-control p-0"> 
                                        <span *ngIf="videoSizeError != ''" class="text-danger">
                                           {{videoSizeError}}
@@ -134,14 +139,11 @@
                                  
                                  <div class="row">
                                     <div class="col-lg-10">
-                                       <label class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                       <label class="control-label font-weight-bold text-lg-right pt-2">Safety Manager Internal Notes 
+                                          <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                       </label>
                                        <textarea class="form-control h-auto" #note="ngModel" required  rows="3" placeholder="Enter notes for the Safety Manager"
                                           name="notes" [(ngModel)]="event.notes"></textarea>
-                                       <div *ngIf="note.invalid && (note.dirty || note.touched)" class="text-danger">
-                                          <div *ngIf="note.errors.required">
-                                             Notes are required.
-                                          </div>
-                                       </div>
                                        <div *ngIf="event.notes?.length > 500" class="text-danger">
                                           Only 500 characters are allowed.
                                         </div>

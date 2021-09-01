@@ -14,221 +14,245 @@
           </div>
         </form>
       </header>
-      <div class="row text-dark">
-        <div class="col pr-0">
-          <div class="card-body">
-            <section class="card form-wizard" id="w1">
-              <div class="card-body card-body-nopadding">
-                <form id="userForm" class="form-horizontal form-bordered bg-white" name="userForm" [mustMatch]="['password', 'confirmPassword']"
-                #uForm1="ngForm" novalidate="novalidate">
-                  <div class="row pt-3">
-                    <div class="col-lg-11">
-                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
-                    </div>
 
-                    <div class="col-lg-5">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Company Name <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" [(ngModel)]="userData.companyName" name="companyName"
-                            placeholder="eg. Caroll group" #UcompanyName="ngModel"  required pattern="^[a-zA-Z0-9\s\.]{4,120}$">
-                            <div *ngIf="UcompanyName.invalid && (UcompanyName.dirty || UcompanyName.touched)" class="text-danger">
-                              <div *ngIf="UcompanyName.errors.required">
-                                  Company name is required.
-                              </div>
-                              <div *ngIf="UcompanyName.errors.pattern">
-                                  Company name can only contain alphanumeric characters.
-                              </div>
-
-                          </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">DBA Name </label>
-                          <input type="text" class="form-control" placeholder="eg. Bookstore"
-                            [(ngModel)]="userData.dbaName" name="dbaName">
-                        </div>
-
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. John"
-                            [(ngModel)]="userData.firstName" name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
-                            <div *ngIf="ufName.invalid && (ufName.dirty || ufName.touched)" class="text-danger">
-                              <div *ngIf="ufName.errors.required">
-                                   First name is required.
-                              </div>
-                              <div *ngIf="ufName.errors.pattern">
-                                   First name can only contains letters.
-                              </div>
-                         </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. Smith"
-                            [(ngModel)]="userData.lastName" name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
-                            <div *ngIf="ulName.invalid && (ulName.dirty || ulName.touched)" class="text-danger">
-                              <div *ngIf="ulName.errors.required">
-                                   Last name is required.
-                              </div>
-                              <div *ngIf="ulName.errors.pattern">
-                                   Last name can only contains letters.
-                              </div>
-                         </div>
-                        </div>
+      <section class="m-2" id="w1">
+        <form id="userForm" class="form-horizontal form-bordered" name="userForm"
+          [mustMatch]="['password', 'confirmPassword']" #uForm1="ngForm" novalidate="novalidate">
 
 
-
-                      </div>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Employee ID <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="Any Numbers or Name"
-                            [(ngModel)]="userData.employeeID" name="employeeID" #ueName="ngModel" required
-                            pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
-                            <div *ngIf="ueName.invalid && (ueName.dirty || ueName.touched)" class="text-danger">
-                              <div *ngIf="ueName.errors.required">
-                                Employee ID is required.
-                              </div>
-                              <div *ngIf="ueName.errors.pattern">
-                                Employee ID can only contain alphanumeric characters.
-                              </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Date of Birth </label>
-                          <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                            (click)="staffdob.toggle()" ngbDatepicker #staffdob="ngbDatepicker"
-                            [(ngModel)]="userData.dateOfBirth" name="dateOfBirth" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                        </div>
-
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Phone <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" placeholder="eg. 2234567891"
-                            [(ngModel)]="userData.phone" name="phone" #umob="ngModel"
-                            required pattern="[0-9]{1,10}$">
-                            <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
-                              <div *ngIf="umob.errors.required">
-                                Phone is required.
-                              </div>
-                              <div *ngIf="umob.errors.pattern">
-                                Enter valid phone number eg. 2234567891.
-                              </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Email <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control text-lowercase" placeholder="eg. johnsmith@gmail.com" [disabled]="enableUserLogin"
-                            [(ngModel)]="userData.email" name="email" #uem="ngModel"
-                            required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-                            <div *ngIf="uem.invalid && (uem.dirty || uem.touched)" class="text-danger">
-                              <div *ngIf="uem.errors.required">
-                                Email is required.
-                              </div>
-                              <div *ngIf="uem.errors.pattern">
-                                Enter valid email eg. johnsmith@gmail.com
-                              </div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-12 mt-3">
-                          <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> {{imageText}}
-                            <input  class="hidden_input1 w-100" (change)="selectPhoto($event)"
-                               type="file">
-                         </div>
-                        </div>
-                        <div class="col-lg-6" *ngIf="contactID &&  profilePath != ''">
-                          <div class="vehicle-photo-box">
-                            <img src="{{profilePath}}" width="100%" class="img-fluid"
-                              style="height: 200px; object-fit: cover;">
-                            <hr class="m-3">
-                            <div class="row">
-                              <div class="col-lg-8">Profile Photo</div>
-                              <div class="col-lg-4 text-right">
-                                <!-- <i class="fas fa-times text-danger" (click)="delete(photo.name)"></i> -->
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row adddriverpl pt-3">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic Details</label>
                   </div>
-                  <div class="row pt-3">
-                    <div class="col-lg-11">
-                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
-                    </div>
-                    <div class="col-lg-12">
-                      <div class="row pt-3" *ngFor="let item of userData.address;let i = index;">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Address
-                            Type &nbsp; </label>
-                          <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}"
-                            class="form-control populate" placeholder="Select Address Type">
-                            <ng-option value="Billing Address">Billing Address</ng-option>
-                            <ng-option value="Shipping Address">Shipping Address</ng-option>
-                            <ng-option value="Office">Office</ng-option>
-                            <ng-option value="Other">Other</ng-option>
-                          </ng-select>
+
+                  <div class="col-lg-5 mb-3">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Company Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" [(ngModel)]="userData.companyName" name="companyName"
+                          placeholder="eg. Caroll group" #UcompanyName="ngModel" required
+                          pattern="^[a-zA-Z0-9\s\.]{4,120}$">
+                        <div *ngIf="UcompanyName.invalid && (UcompanyName.dirty || UcompanyName.touched)"
+                          class="text-danger">
+                          <div *ngIf="UcompanyName.errors.required">
+                            Company name is required.
+                          </div>
+                          <div *ngIf="UcompanyName.errors.pattern">
+                            Company name can only contain alphanumeric characters.
+                          </div>
 
                         </div>
-                        <div class="col-lg-4 offset-lg-1">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Type
-                            Your Location &nbsp; </label>
-                          <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
-                            (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address"
-                            [disabled]="item.manual">
-                          <div class="map-search__results bg-white">
-                            <ul class="p-0 m-0 text-left">
-                              <li *ngFor="let item of searchResults;">
-                                <a href="javascript:;"
-                                  (click)="userAddress(i, item)">{{item.address.label}}</a>
-                              </li>
-                            </ul>
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">DBA Name </label>
+                        <input type="text" class="form-control" placeholder="eg. Bookstore"
+                          [(ngModel)]="userData.dbaName" name="dbaName">
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" placeholder="eg. John" [(ngModel)]="userData.firstName"
+                          name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
+                        <div *ngIf="ufName.invalid && (ufName.dirty || ufName.touched)" class="text-danger">
+                          <div *ngIf="ufName.errors.required">
+                            First name is required.
                           </div>
-                          <div class="checkbox-custom pt-2">
-                            <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
-                              type="checkbox">
-                            <label for="man_address">Type Manually</label>
+                          <div *ngIf="ufName.errors.pattern">
+                            First name can only contains letters.
                           </div>
                         </div>
-                        <div class="col-lg-2 mar-top-37">
-                          <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearUserLocation(i)">Clear</a>
-                          <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success"
-                            href="javascript:;"><i class="fa fa-plus fa-fw"></i></a>
-                          <a *ngIf="i != 0;" (click)="removeAddress(i)" class="btn btn-danger" href="javascript:;"><i
-                              class="fa fa-minus fa-fw"></i></a>
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" placeholder="eg. Smith" [(ngModel)]="userData.lastName"
+                          name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
+                        <div *ngIf="ulName.invalid && (ulName.dirty || ulName.touched)" class="text-danger">
+                          <div *ngIf="ulName.errors.required">
+                            Last name is required.
+                          </div>
+                          <div *ngIf="ulName.errors.pattern">
+                            Last name can only contains letters.
+                          </div>
                         </div>
-                        <div class="col-lg-12">
-                          <div class="row" *ngIf="item.manual">
-                              <div class="col-lg-6 pt-4">
-                                <div class="row">
-                                  <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold text-lg-right pt-2">Select
-                                      Country</label>
-                                    <ng-select (change)="getStates($event, i)" [(ngModel)]="item.countryCode"
-                                      name="countryCode{{i}}" class="form-control populate address_country"
-                                      placeholder="Select Country">
-                                      <ng-option value="CA">Canada</ng-option>
-                                      <ng-option value="US">United States</ng-option>
-                                    </ng-select>
-                                  </div>
+                      </div>
+
+
+
+                    </div>
+                  </div>
+                  <div class="col-lg-5 offset-lg-1 mb-3">
+                    <div class="row justify-content-center">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Employee ID <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" placeholder="Any Numbers or Name"
+                          [(ngModel)]="userData.employeeID" name="employeeID" #ueName="ngModel" required
+                          pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
+                        <div *ngIf="ueName.invalid && (ueName.dirty || ueName.touched)" class="text-danger">
+                          <div *ngIf="ueName.errors.required">
+                            Employee ID is required.
+                          </div>
+                          <div *ngIf="ueName.errors.pattern">
+                            Employee ID can only contain alphanumeric characters.
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Date of Birth
+                        </label>
+                        <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
+                          (click)="staffdob.toggle()" ngbDatepicker #staffdob="ngbDatepicker"
+                          [(ngModel)]="userData.dateOfBirth" name="dateOfBirth" [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit">
+                      </div>
+
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Phone <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control" placeholder="eg. 2234567891"
+                          [(ngModel)]="userData.phone" name="phone" #umob="ngModel" required pattern="[0-9]{10}$">
+                        <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
+                          <div *ngIf="umob.errors.required">
+                            Phone is required.
+                          </div>
+                          <div *ngIf="umob.errors.pattern">
+                            Enter valid phone number eg. 2234567891.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Email <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" class="form-control text-lowercase" placeholder="eg. johnsmith@gmail.com"
+                          [disabled]="enableUserLogin" [(ngModel)]="userData.email" name="email" #uem="ngModel" required
+                          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                        <div *ngIf="uem.invalid && (uem.dirty || uem.touched)" class="text-danger">
+                          <div *ngIf="uem.errors.required">
+                            Email is required.
+                          </div>
+                          <div *ngIf="uem.errors.pattern">
+                            Enter valid email eg. johnsmith@gmail.com
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <div class="col-lg-12 mt-3">
+                        <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> {{imageText}}
+                          <input class="hidden_input1 w-100" (change)="selectPhoto($event)" type="file">
+                        </div>
+                      </div>
+                      <div class="col-lg-6" *ngIf="contactID &&  profilePath != ''">
+                        <div class="vehicle-photo-box">
+                          <img src="{{profilePath}}" width="100%" class="img-fluid"
+                            style="height: 200px; object-fit: cover;">
+                          <hr class="m-3">
+                          <div class="row">
+                            <div class="col-lg-8">Profile Photo</div>
+                            <div class="col-lg-4 text-right">
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row adddriverpl pt-3">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Address</label>
+                  </div>
+
+                  <div class="col-lg-12 mb-3">
+                    <div class="row pt-3" *ngFor="let item of userData.address;let i = index;">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Address
+                          Type &nbsp; </label>
+                        <ng-select [(ngModel)]="item.addressType" name="addressType{{i}}" class="form-control populate"
+                          placeholder="Select Address Type">
+                          <ng-option value="Billing Address">Billing Address</ng-option>
+                          <ng-option value="Shipping Address">Shipping Address</ng-option>
+                          <ng-option value="Office">Office</ng-option>
+                          <ng-option value="Other">Other</ng-option>
+                        </ng-select>
+
+                      </div>
+                      <div class="col-lg-4 offset-lg-1">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Type
+                          Your Location &nbsp; </label>
+                        <input type="text" [(ngModel)]="item.userLocation" name="userLocation{{i}}"
+                          (keyup)="searchTerm.next($event);" class="form-control" placeholder="Type Address"
+                          [disabled]="item.manual">
+                        <div class="map-search__results bg-white">
+                          <ul class="p-0 m-0 text-left">
+                            <li *ngFor="let item of searchResults;">
+                              <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="checkbox-custom pt-2">
+                          <input [(ngModel)]="item.manual" name="manual{{i}}" (change)="manAddress($event, i)"
+                            type="checkbox">
+                          <label for="man_address">Type Manually</label>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 mar-top-37">
+                        <a href="javascript:;" class="btn btn-dark mr-2" (click)="clearUserLocation(i)">Clear</a>
+                        <a *ngIf="i == 0;" (click)="addAddress();" class="btn btn-success" href="javascript:;"><i
+                            class="fa fa-plus fa-fw"></i></a>
+                        <a *ngIf="i != 0;" (click)="removeAddress(i)" class="btn btn-danger" href="javascript:;"><i
+                            class="fa fa-minus fa-fw"></i></a>
+                      </div>
+                      <div class="col-lg-12">
+                        <div class="row" *ngIf="item.manual">
+                          <div class="col-lg-6 pt-4">
+                            <div class="row">
+                              <div class="col-lg-5">
+                                <label class="control-label font-weight-bold text-lg-right pt-2">Select
+                                  Country</label>
+                                <ng-select (change)="getStates($event, i)" [(ngModel)]="item.countryCode"
+                                  name="countryCode{{i}}" class="form-control populate address_country"
+                                  placeholder="Select Country">
+                                  <ng-option value="CA">Canada</ng-option>
+                                  <ng-option value="US">United States</ng-option>
+                                </ng-select>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Role
+                                <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [multiple]="true" class="form-control populate"
+                                [(ngModel)]="userData.userLoginData.userRoles" name="roles"
+                                placeholder="Select User Roles" #roles="ngModel" [required]="userData.loginEnabled">
+                                <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}
+                                </ng-option>
+                              </ng-select>
+                              <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="text-danger">
+                                <div *ngIf="roles.errors.required">
+                                  User Role is required.
                                   <div class="col-lg-5 offset-lg-1">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                       Province/State</label>
-                                    <ng-select (change)="getCities($event, i,item.countryCode)" [(ngModel)]="item.stateCode"
-                                      name="stateCode{{i}}" class="form-control populate address_state"
-                                      placeholder="Select province/state">
+                                    <ng-select (change)="getCities($event, i,item.countryCode)"
+                                      [(ngModel)]="item.stateCode" name="stateCode{{i}}"
+                                      class="form-control populate address_state" placeholder="Select province/state">
                                       <ng-option *ngFor="let state of item.states" value="{{state.stateCode}}">
                                         {{state.stateName}}</ng-option>
                                     </ng-select>
@@ -261,254 +285,301 @@
                                   <div class="col-lg-10">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                       2</label>
-                                    <input [(ngModel)]="item.address2" name="address2{{i}}" type="text" class="form-control"
-                                      placeholder="eg. 03, Business Hub Center">
+                                    <input [(ngModel)]="item.address2" name="address2{{i}}" type="text"
+                                      class="form-control" placeholder="eg. 03, Business Hub Center">
                                   </div>
                                 </div>
                               </div>
 
+                            </div>
                           </div>
                         </div>
+
                       </div>
 
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-11">
-                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">User Account</label>
-                    </div>
-                    <div class="col-lg-5">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract Start Date
-                            </label>
-                          <input [(ngModel)]="userData.userAccount.contractStartDate" name="contractStartDate"
-                            type="text" placeholder="yyyy/mm/dd" (click)="contStart.toggle()" ngbDatepicker
-                            #contStart="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                        </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract End Date
-                            </label>
-                          <input [(ngModel)]="userData.userAccount.contractEndDate" name="contractEndDate" type="text"
-                            placeholder="yyyy/mm/dd" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
-                            class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Designation </label>
-                          <ng-select [(ngModel)]="userData.userAccount.designation" name="designation"
-                            class="form-control" placeholder="Select Designation">
-                            <ng-option value="Executive">Executive</ng-option>
-                            <ng-option value="Manager">Manager</ng-option>
-                          </ng-select>
-                        </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">Department </label>
-                          <ng-select [(ngModel)]="userData.userAccount.department" name="department"
-                            class="form-control" placeholder="Select Department">
-                            <ng-option value="Fleet">Fleet</ng-option>
-                            <ng-option value="Operations">Operations</ng-option>
-                            <ng-option value="Safety">Safety</ng-option>
-                            <ng-option value="Maintenance">Maintenance</ng-option>
-                            <ng-option value="Dispatch">Dispatch</ng-option>
-                            <ng-option value="Compliance">Compliance</ng-option>
-                            <ng-option value="Road Assistance">Road Assistance</ng-option>
-                            <ng-option value="Accounts">Accounts</ng-option>
-                          </ng-select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="checkbox-custom pt-2">
-                        <input  type="checkbox" [(ngModel)]="userData.loginEnabled"
-                          name="loginEnabled" >
-                        <label for="enableLogin">Enable Login</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="userData.loginEnabled">
-                    <div class="col-lg-5">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Username <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
-                            placeholder="eg. John.Smith"  class="form-control text-lowercase" [disabled]="enableUserLogin" #uuName="ngModel" [required]="userData.loginEnabled" pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
+                </div>
+              </div>
 
-                            maxlength="30">
-                            <div *ngIf="uuName.invalid && (uuName.dirty || uuName.touched)" class="text-danger">
-                              <div *ngIf="uuName.errors.required">
-                                Username is required.
-                              </div>
-                              <div *ngIf="uuName.errors.pattern">
-                                Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
-    
-                              </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Type <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select class="form-control populate" [(ngModel)]="userData.userLoginData.userType"
-                            name="userType"  placeholder="Select User Type" #usertype="ngModel" [required]="userData.loginEnabled">
-                            <ng-option value="Super Admin">Super Admin</ng-option>
-                            <!-- <ng-option value="Full Admin">Full Admin</ng-option>
-                            <ng-option value="Read Only Admin">Read Only Admin</ng-option>
-                            <ng-option value="Dispatch">Dispatch</ng-option>
-                            <ng-option value="Maintenance">Maintenance</ng-option>
-                            <ng-option value="Safety Manager">Safety Manager</ng-option>
-                            <ng-option value="Other">Other</ng-option> -->
-                          </ng-select>
-                          <div *ngIf="usertype.invalid && (usertype.dirty || usertype.touched)" class="text-danger">
-                            <div *ngIf="usertype.errors.required">
-                              User type is required.
-                            </div>
-                            
+              <div class="row mb-3">
+                <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                    <div class="form-group row adddriverpl pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right text-5 pt-2">User Account</label>
+                      </div>
+
+                      <div class="col-lg-5 mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract Start
+                              Date
+                            </label>
+                            <input [(ngModel)]="userData.userAccount.contractStartDate" name="contractStartDate"
+                              type="text" placeholder="yyyy/mm/dd" (click)="contStart.toggle()" ngbDatepicker
+                              #contStart="ngbDatepicker" class="form-control" autocomplete="off"
+                              [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                          </div>
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract End Date
+                            </label>
+                            <input [(ngModel)]="userData.userAccount.contractEndDate" name="contractEndDate" type="text"
+                              placeholder="yyyy/mm/dd" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
+                              class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                              [maxDate]="futureDatesLimit">
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Password <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                               <div class="input-group">
-                                <input  id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"  placeholder="eg. $John@01"  (change)="onChangeHideErrors('password')" name="password"  #pwd="ngModel" [required]="userData.loginEnabled" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\-\.]).{8,20}$" [type]="fieldTextType ? 'text' : 'password'" (input) ="validatePassword($event.target.value)"  class="form-control"
-                                  />
-                                  <div class="input-group-append">
-                                    <span class="input-group-text eye">
-                                      <i class="fa" [ngClass]="{
-                                        'fa-eye-slash': !fieldTextType,
-                                        'fa-eye': fieldTextType
-                                      }"
-                                      (click)="toggleFieldTextType()"></i>
-                                    </span>
-                                 </div>
-                              </div>
-                              <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
-                                <div *ngIf="pwd.errors.required">
-                                  Password is required.
-                                </div>
-                                <div *ngIf="pwd.errors.pattern">
-                                  <div class="row">
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
-                                      </p>
-                                    </div>
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
-                                      
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
-                                        
-                                    </div>
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
-                                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
-                                        
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Confirm Password <span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span>
+                      <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Designation
                             </label>
-                            <div class="input-group">
-                              <input  id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword" [disabled]="enableUserLogin"  name="confirmPassword"  (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" [required]="userData.loginEnabled"   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"/>
-                                <div class="input-group-append">
-                                  <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{
-                                      'fa-eye-slash': !cpwdfieldTextType,
-                                      'fa-eye': cpwdfieldTextType
-                                    }"
-                                    (click)="togglecpwdfieldTextType()"></i>
-                                  </span>
-                               </div>
-                            </div>
-                          <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
-                            <div *ngIf="cpwd.errors.required">
-                              Confirm password is required.
-                            </div>
-                            <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                            <ng-select [(ngModel)]="userData.userAccount.designation" name="designation"
+                              class="form-control" placeholder="Select Designation">
+                              <ng-option value="Executive">Executive</ng-option>
+                              <ng-option value="Manager">Manager</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">Department
+                            </label>
+                            <ng-select [(ngModel)]="userData.userAccount.department" name="department"
+                              class="form-control" placeholder="Select Department">
+                              <ng-option value="Fleet">Fleet</ng-option>
+                              <ng-option value="Operations">Operations</ng-option>
+                              <ng-option value="Safety">Safety</ng-option>
+                              <ng-option value="Maintenance">Maintenance</ng-option>
+                              <ng-option value="Dispatch">Dispatch</ng-option>
+                              <ng-option value="Compliance">Compliance</ng-option>
+                              <ng-option value="Road Assistance">Road Assistance</ng-option>
+                              <ng-option value="Accounts">Accounts</ng-option>
+                            </ng-select>
                           </div>
                         </div>
+                      </div>
+
+                      <div class="col-11 mb-3">
+                        <div class="checkbox-custom pt-2">
+                          <input type="checkbox" [(ngModel)]="userData.loginEnabled" name="loginEnabled">
+                          <label for="enableLogin">Enable Login</label>
                         </div>
+                      </div>
+
+
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-lg-11">
-                      <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment Details</label>
-                    </div>
-                    <div class="col-lg-5">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Payroll Type <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType"
-                            class="form-control" placeholder="Select Payroll Type" #upayrolltype="ngModel" required >
-                            <ng-option value="Hours">Hours</ng-option>
-                            <ng-option value="Flat">Flat</ng-option>
-                          </ng-select>
-                          <div *ngIf="upayrolltype.invalid && (upayrolltype.dirty || upayrolltype.touched)" class="text-danger">
-                            <div *ngIf="upayrolltype.errors.required">
-                              Payroll type is required.
-                            </div>
-                          
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3" *ngIf="userData.loginEnabled">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row adddriverpl pt-3">
+
+                  <div class="col-lg-5 mb-3">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Username <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
+                          placeholder="eg. John.Smith" class="form-control text-lowercase" [disabled]="enableUserLogin"
+                          #uuName="ngModel" [required]="userData.loginEnabled"
+                          pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$" maxlength="30">
+                        <div *ngIf="uuName.invalid && (uuName.dirty || uuName.touched)" class="text-danger">
+                          <div *ngIf="uuName.errors.required">
+                            Username is required.
+                          </div>
+                          <div *ngIf="uuName.errors.pattern">
+                            Username should be at-least 6 characters long and can be a combination of numbers,
+                            letters and dot(.).
+
                           </div>
                         </div>
-                        <div class="col-lg-3">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Rate </label>
-                          <input [(ngModel)]="userData.paymentDetails.payrollRate" name="payrollRate" type="text"
-                            class="form-control" placeholder="eg. $20 ,$40 ,$60">
-                        </div>
-                        <div class="col-lg-3">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">&nbsp;</label>
-                          <ng-select [(ngModel)]="userData.paymentDetails.payrollRateUnit" name="payrollRateUnit"
-                            class="form-control pt-1" placeholder="Select Rate Unit">
-                            <ng-option value="CAD">CAD</ng-option>
-                            <ng-option value="USD">USD</ng-option>
-                          </ng-select>
-                        </div>
-                        <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">WCB# </label>
-                          <input [(ngModel)]="userData.paymentDetails.WCB" name="WCB" type="text" class="form-control"
-                            placeholder="7 digits , 1 is alphabetical and 6 is numeric , eg. A123456">
+                      </div>
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold  text-dark text-lg-right pt-2">User Role <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <ng-select [multiple]="true" class="form-control populate"
+                          [(ngModel)]="userData.userLoginData.userRoles" name="roles" placeholder="Select User Type"
+                          #roles="ngModel" [required]="userData.loginEnabled">
+                          <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}
+                          </ng-option>
+                        </ng-select>
+                        <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="text-danger">
+                          <div *ngIf="roles.errors.required">
+                            User Role is required.
+                          </div>
+
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row">
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Pay Period </label>
-                          <ng-select [(ngModel)]="userData.paymentDetails.payPeriod" name="payPeriod"
-                            class="form-control" placeholder="Select Pay Period">
-                            <ng-option value="Weekly">Weekly</ng-option>
-                            <ng-option value="Biweekly">Biweekly</ng-option>
-                            <ng-option value="Monthly">Monthly</ng-option>
-                            <ng-option value="Quaterly">Quaterly</ng-option>
-                            <ng-option value="Annually">Annually</ng-option>
-                          </ng-select>
+                  </div>
+
+                  <div class="col-lg-5 offset-lg-1 mb-3">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Password <span
+                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="input-group">
+                          <input id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"
+                            placeholder="eg. $John@01" (change)="onChangeHideErrors('password')" name="password"
+                            #pwd="ngModel" [required]="userData.loginEnabled"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\-\.]).{8,20}$"
+                            [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
+                            class="form-control" />
+                          <div class="input-group-append">
+                            <span class="input-group-text eye">
+                              <i class="fa" [ngClass]="{
+                                  'fa-eye-slash': !fieldTextType,
+                                  'fa-eye': fieldTextType
+                                }" (click)="toggleFieldTextType()"></i>
+                            </span>
+                          </div>
                         </div>
-                        <div class="col-lg-6">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">SIN <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control"
-                            placeholder=" 9 digits , eg.123456789" #usin="ngModel" required
-                            pattern="^[0-9]{9}$" maxlength="9">
+                        <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                          <div *ngIf="pwd.errors.required">
+                            Password is required.
+                          </div>
+                          <div *ngIf="pwd.errors.pattern">
+                            <div class="row">
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                    </i></span> 8 characters minimum</p>
+                                <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                    </i></span> atleast 1 number
+                                </p>
+                              </div>
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                    <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                    </i></span> atleast 1 uppercase</p>
+
+                                <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                    [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                      [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                    </i></span> atleast 1 lowercase</p>
+
+                              </div>
+                              <div class="col-lg-12">
+                                <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                    [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                      [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                  atleast 1 special character(!@#$%^&*.-)</p>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Confirm Password
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <div class="input-group">
+                          <input id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword"
+                            [disabled]="enableUserLogin" name="confirmPassword"
+                            (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel"
+                            [required]="userData.loginEnabled" [type]="cpwdfieldTextType ? 'text' : 'password'"
+                            placeholder="Confirm password" class="form-control" />
+                          <div class="input-group-append">
+                            <span class="input-group-text eye">
+                              <i class="fa" [ngClass]="{
+                                'fa-eye-slash': !cpwdfieldTextType,
+                                'fa-eye': cpwdfieldTextType
+                              }" (click)="togglecpwdfieldTextType()"></i>
+                            </span>
+                          </div>
+                        </div>
+                        <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
+                          <div *ngIf="cpwd.errors.required">
+                            Confirm password is required.
+                          </div>
+                          <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+                <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                    <div class="form-group row adddriverpl pt-3">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Payment Details</label>
+                      </div>
+
+                      <div class="col-lg-5 mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Payroll Type
+                              <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType"
+                              class="form-control" placeholder="Select Payroll Type" #upayrolltype="ngModel" required>
+                              <ng-option value="Hours">Hours</ng-option>
+                              <ng-option value="Flat">Flat</ng-option>
+                            </ng-select>
+                            <div *ngIf="upayrolltype.invalid && (upayrolltype.dirty || upayrolltype.touched)"
+                              class="text-danger">
+                              <div *ngIf="upayrolltype.errors.required">
+                                Payroll type is required.
+                              </div>
+
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Rate </label>
+                            <input [(ngModel)]="userData.paymentDetails.payrollRate" name="payrollRate" type="text"
+                              class="form-control" placeholder="eg. $20 ,$40 ,$60">
+                          </div>
+                          <div class="col-lg-3">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">&nbsp;</label>
+                            <ng-select [(ngModel)]="userData.paymentDetails.payrollRateUnit" name="payrollRateUnit"
+                              class="form-control pt-1" placeholder="Select Rate Unit">
+                              <ng-option value="CAD">CAD</ng-option>
+                              <ng-option value="USD">USD</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">WCB# </label>
+                            <input [(ngModel)]="userData.paymentDetails.WCB" name="WCB" type="text" class="form-control"
+                              placeholder="7 digits , 1 is alphabetical and 6 is numeric , eg. A123456">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 offset-lg-1 mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Pay Period
+                            </label>
+                            <ng-select [(ngModel)]="userData.paymentDetails.payPeriod" name="payPeriod"
+                              class="form-control" placeholder="Select Pay Period">
+                              <ng-option value="Weekly">Weekly</ng-option>
+                              <ng-option value="Biweekly">Biweekly</ng-option>
+                              <ng-option value="Monthly">Monthly</ng-option>
+                              <ng-option value="Quaterly">Quaterly</ng-option>
+                              <ng-option value="Annually">Annually</ng-option>
+                            </ng-select>
+                          </div>
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">SIN <span
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control"
+                              placeholder=" 9 digits , eg.123456789" #usin="ngModel" required pattern="^[0-9]{9}$"
+                              maxlength="9">
                             <div *ngIf="usin.invalid && (usin.dirty || usin.touched)" class="text-danger">
                               <div *ngIf="usin.errors.required">
                                 SIN is required.
@@ -517,34 +588,45 @@
                                 SIN must contain 9 numbers.
                               </div>
                             </div>
-                        </div>
+                          </div>
 
-                        <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Health Care# </label>
-                          <input type="text" class="form-control" [(ngModel)]="userData.paymentDetails.healthCare"
-                            name="healthCare" placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB">
+                          <div class="col-lg-12">
+                            <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Health Care#
+                            </label>
+                            <input type="text" class="form-control" [(ngModel)]="userData.paymentDetails.healthCare"
+                              name="healthCare"
+                              placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB">
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="col-lg-11 text-right mt-3">
+                      <div class="col-lg-11 text-right mb-3">
 
-                      <button class="btn btn-default mr-1" data-dismiss="modal" type="button" (click)="cancel()">Cancel</button>
-                        <!-- if there is some error in validation  -->
-                      <button type="button" class="btn btn-success mr-1" (click)="addUser()" *ngIf="!contactID && !uForm1.form.valid" [disabled]="!uForm1.form.valid" >Save</button>
-                     <!-- if validations are ok and now the button will disable on submit click  -->
-                      <button type="button" class="btn btn-success mr-1" (click)="addUser()" *ngIf="!contactID && uForm1.form.valid" [disabled]="userDisabled" >Save</button>
-                         <!---- update case -->
-                      <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()" *ngIf="contactID  && !uForm1.form.valid"  [disabled]="!uForm1.form.valid" >Update</button>
-                      <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()" *ngIf="contactID && uForm1.form.valid" [disabled]="userDisabled">Update</button>
-                        
+                        <button class="btn btn-default mr-1" data-dismiss="modal" type="button"
+                          (click)="cancel()">Cancel</button>
+
+                        <button type="button" class="btn btn-success mr-1" (click)="addUser()"
+                          *ngIf="!contactID && !uForm1.form.valid" [disabled]="!uForm1.form.valid">Save</button>
+
+                        <button type="button" class="btn btn-success mr-1" (click)="addUser()"
+                          *ngIf="!contactID && uForm1.form.valid" [disabled]="userDisabled">Save</button>
+
+                        <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()"
+                          *ngIf="contactID  && !uForm1.form.valid" [disabled]="!uForm1.form.valid">Update</button>
+                        <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()"
+                          *ngIf="contactID && uForm1.form.valid" [disabled]="userDisabled">Update</button>
+
+                      </div>
+
+
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
-            </section>
-          </div>
-        </div>
-      </div>
+
+
+        </form>
+      </section>
+
     </section>
   </div>
 </section>

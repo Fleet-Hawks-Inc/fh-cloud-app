@@ -4,6 +4,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import {Auth} from 'aws-amplify';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html',
@@ -17,23 +21,26 @@ export class AddInvoiceComponent implements OnInit {
     private apiService: ApiService,
     private toaster: ToastrService,
     private route: ActivatedRoute,
+    private location: Location,
     private router: Router) { }
     pageTitle = 'Add Invoice';
-    dateMinLimit = { year: 1950, month: 1, day: 1 };
+    dateMinLimit = { year: 2021, month: 1, day: 1 };
     date = new Date();
     futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     users: any = [];
   invoiceData = {
     invNo: '',
-    txnDate: null,
+    txnDate: moment().format('YYYY-MM-DD'),
     invRef: '',
     invCur: null,
     invDueDate: null,
     invPayTerms: '',
-    invCustomerID: null,
+    customerID: null,
+    cusAddressID: null,
     invSalesman: null,
     invSubject: '',
     amountReceived: 0,
+    amountPaid: 0,
     fullPayment: false,
     balance: 0,
     details: [{
@@ -51,25 +58,25 @@ export class AddInvoiceComponent implements OnInit {
     invType: 'manual',
     subTotal: 0,
     taxesInfo: [],
-    totalAmount: 0,
+    finalAmount: 0,
     taxAmount: 0,
     transactionLog: [],
     discountAmount: 0
   };
   midAmt = 0; // midAmt is sum of all the amount values in details table
-  totalAmount: any = 0;
+  finalAmount: any = 0;
   customersObjects = {};
   /**
    * Customer related properties
    */
   customers: any = [];
-  customerSelected = {
+  customerSelected = [{
     additionalContact: [],
-    address: [],
+    adrs: [],
     officeAddr: false,
     email: '',
     phone: ''
-  };
+  }];
   notOfficeAddress = false;
   /**
    * Accounts
@@ -90,13 +97,21 @@ export class AddInvoiceComponent implements OnInit {
     }
   ];
   invID: string;
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
+  submitDisabled = false;
+  currentUser:any = '';
   ngOnInit() {
     this.listService.fetchCustomers();
+    this.getCurrentuser();
     this.customers = this.listService.customersList;
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
     this.fetchStateTaxes();
-    this.fetchUsers();
+   // this.fetchUsers();
+    this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
       this.pageTitle = 'Edit Invoice';
@@ -111,23 +126,63 @@ export class AddInvoiceComponent implements OnInit {
       this.users = result;
     });
   }
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
+  }
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+    this.invoiceData.invSalesman = this.currentUser;
+}
   selectedCustomer(customerID: any) {
     this.apiService
-      .getData(`contacts/detail/${customerID}`)      .subscribe((result: any) => {
+      .getData(`contacts/detail/${customerID}`)
+      .subscribe((result: any) => {
         if (result.Items.length > 0) {
-          this.customerSelected = result.Items[0];
-          for (const element of this.customerSelected.address) {
-            if (element.addressType === 'Office') {
-              this.notOfficeAddress = false;
-              this.customerSelected.officeAddr = true;
-              this.customerSelected.email = result.Items[0].workEmail;
-              this.customerSelected.phone = result.Items[0].workPhone;
-            } else {
+
+          this.customerSelected = result.Items;
+          for (let i = 0; i < this.customerSelected[0].adrs.length; i++) {
+            const element = this.customerSelected[0].adrs[i];
+            element[`isChecked`] = false;
+          }
+          if (this.invID) {
+            this.customerSelected[0].adrs.filter( elem => {
+              if (elem.addressID === this.invoiceData.cusAddressID) {
+                elem.isChecked = true;
+              }
+            });
+          } else {
+            this.customerSelected[0].adrs[0].isChecked = true;
+            if (this.customerSelected[0].adrs.length > 0) {
+              this.invoiceData.cusAddressID = this.customerSelected[0].adrs[0].addressID;
+            }
+            const addressLength = this.customerSelected[0].adrs.length;
+            const getType = this.customerSelected[0].adrs[0].aType;
+
+            if (addressLength === 1 && (getType === '' || getType === null)) {
               this.notOfficeAddress = true;
+            } else {
+              this.notOfficeAddress = false;
             }
           }
         }
+
       });
+  }
+  getAddressID(value: boolean, i: number, id: string) {
+    if (value === true) {
+      this.invoiceData.cusAddressID = id;
+      for (let index = 0; index < this.customerSelected[0].adrs.length; index++) {
+        const element = this.customerSelected[0].adrs[index];
+        element.isChecked = false;
+      }
+      this.customerSelected[0].adrs[i].isChecked = true;
+    }
   }
   getInvDueDate(e: any) {
  if (e === '15') {
@@ -242,16 +297,45 @@ export class AddInvoiceComponent implements OnInit {
 
   deleteDetail(amount: number, d: number) {
     this.invoiceData.details.splice(d, 1);
+    this.calculateAmount();
   }
 
   addInvoice() {
-    this.invoiceData.balance = this.invoiceData.totalAmount;
-    this.accountService.postData(`invoices`, this.invoiceData).subscribe((res) => {
-      this.toaster.success('Invoice Added Successfully.');
-      this.router.navigateByUrl('/accounts/invoices/list');
+    this.invoiceData.balance = this.invoiceData.finalAmount;
+    this.submitDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.accountService.postData(`invoices`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice Added Successfully.');
+        this.cancel();
+      },
     });
   }
-
   async calculateAmount() {
     this.midAmt = 0;
     for (const element of this.invoiceData.details) {
@@ -268,20 +352,20 @@ export class AddInvoiceComponent implements OnInit {
       this.invoiceData.subTotal = this.midAmt - this.invoiceData.discount;
       this.invoiceData.discountAmount = this.invoiceData.discount;
     }
-    this.totalAmount = (this.invoiceData.subTotal).toFixed(0);
+    this.finalAmount = (this.invoiceData.subTotal).toFixed(2);
     const gst = this.invoiceData.taxesInfo[0].amount ? this.invoiceData.taxesInfo[0].amount : 0;
     const pst = this.invoiceData.taxesInfo[1].amount ? this.invoiceData.taxesInfo[1].amount : 0;
     const hst = this.invoiceData.taxesInfo[2].amount ? this.invoiceData.taxesInfo[2].amount : 0;
-    const totalTax = Number(gst)  + Number(pst) + Number(hst);
-    const taxAmount =  Number(this.totalAmount) * totalTax / 100;
-    this.invoiceData.taxAmount = taxAmount;
-    const final = Number(this.totalAmount) + taxAmount;
+    const totalTax = parseInt(gst, 10)  + parseInt(pst, 10) + parseInt(hst, 10);
+    const taxAmount =  parseInt(this.finalAmount, 10) * totalTax / 100;
+    this.invoiceData.taxAmount = +taxAmount.toFixed(2);
+    const final = parseInt(this.finalAmount, 10) + taxAmount;
 
-    this.invoiceData.totalAmount = final;
+    this.invoiceData.finalAmount = final;
     this.newTaxes = this.invoiceData.taxesInfo;
     if (this.invoiceData.subTotal > 0) {
       for (const element of this.newTaxes) {
-        element.taxAmount = (this.invoiceData.subTotal * element.amount) / 100;
+        element.taxAmount = +((this.invoiceData.subTotal * element.amount) / 100).toFixed(2);
       }
     }
   }
@@ -289,6 +373,7 @@ export class AddInvoiceComponent implements OnInit {
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
       this.invoiceData = res[0];
+      this.selectedCustomer(this.invoiceData.customerID);
       this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
       this.fetchStateTaxes();
       this.invoiceData.details = res[0].details;
@@ -314,10 +399,39 @@ export class AddInvoiceComponent implements OnInit {
       });
   }
   updateInvoice() {
-    this.invoiceData.balance = this.invoiceData.totalAmount;
-    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe((res) => {
-      this.toaster.success('Invoice Updated Successfully.');
-      this.router.navigateByUrl('/accounts/invoices/list');
+    this.submitDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.invoiceData.balance = this.invoiceData.finalAmount;
+    this.accountService.putData(`invoices/update/${this.invID}`, this.invoiceData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice Updated Successfully.');
+        this.cancel();
+      },
     });
   }
     /*
@@ -327,5 +441,15 @@ export class AddInvoiceComponent implements OnInit {
       this.apiService.getData('contacts/get/list').subscribe((result: any) => {
         this.customersObjects = result;
       });
+    }
+
+    refreshCustomerData() {
+      this.listService.fetchCustomers();
+    }
+    openModal(unit: string) {
+      this.listService.triggerModal(unit);
+
+      localStorage.setItem('isOpen', 'true');
+      this.listService.changeButton(false);
     }
 }

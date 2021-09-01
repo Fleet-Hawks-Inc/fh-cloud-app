@@ -42,7 +42,7 @@
                                             <div class="text-center p-4 cerbor"> <i
                                                     class="fas fa-money-bill-wave text-7"></i>
                                                 <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ settlementData.finalTotal }} CAD</p>
+                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ settlementData.finalTotal | number : '1.2-2' }} CAD</p>
                                                 <p class="mb-0">SETTLED AMOUNT</p>
                                             </div>
                                         </div>
@@ -60,7 +60,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Total Miles</td>
-                                                        <td>{{ settlementData.miles.tripsTotal }}</td>
+                                                        <td>{{ settlementData.miles.tripsTotal | number : '1.2-2' }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Total Hours</td>
@@ -89,13 +89,13 @@
                                                     <tr *ngIf="settlementData.type == 'driver'">
                                                         <td class="back-color-gray font-weight-bold">Individual Miles
                                                         </td>
-                                                        <td>{{ settlementData.miles.driverTotal }}
-                                                            &nbsp;<strong> Loaded: </strong>{{ settlementData.miles.driverLoaded }}<strong> Empty: </strong>{{ settlementData.miles.driverEmpty }}
+                                                        <td>{{ settlementData.miles.driverTotal | number : '1.2-2' }}
+                                                            &nbsp;<strong> Loaded: </strong>{{ settlementData.miles.driverLoaded | number : '1.2-2' }}<strong> Empty: </strong>{{ settlementData.miles.driverEmpty | number : '1.2-2' }}
                                                         </td>
                                                     </tr>
                                                     <tr *ngIf="settlementData.type == 'driver'">
                                                         <td class="back-color-gray font-weight-bold">Team Miles</td>
-                                                        <td>{{ settlementData.miles.tripsTeam }}
+                                                        <td>{{ settlementData.miles.tripsTeam | number : '1.2-2' }}
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -126,7 +126,7 @@
                                                         <td>{{ tripsObj[data.tripID] }}</td>
                                                         <td>{{ data.chargeName }}</td>
                                                         <td>{{ (data.desc) ? data.desc : '-' }}</td>
-                                                        <td>{{ data.amount }} {{ data.currency }}</td>
+                                                        <td>{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -150,7 +150,30 @@
                                                         <td>{{ tripsObj[data.tripID] }}</td>
                                                         <td>{{ data.chargeName }}</td>
                                                         <td>{{ (data.desc) ? data.desc : '-' }}</td>
-                                                        <td>{{ data.amount }} {{ data.currency }}</td>
+                                                        <td>{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-lg-12">
+                                            <h5 class="font-weight-bold text-capitalize">{{ (settlementData.type === 'owner_operator') ? 'Owner Operator' : settlementData.type }} Payments</h5>
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr class="bgcol2">
+                                                        <th>Payment#</th>
+                                                        <th>Date</th>
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="payments.length === 0" class="text-center">
+                                                        <td colspan="3">{{ noRecordMsg }} </td>
+                                                     </tr>
+                                                    <tr *ngFor="let data of payments;">
+                                                        <td>{{ data.paymentNo }}</td>
+                                                        <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td>{{ data.amount | number : '1.2-2' }} CAD</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -160,7 +183,7 @@
                                 <div class="col-lg-6">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <h5 class="font-weight-bold">Trip Expenses</h5>
+                                            <h5 class="font-weight-bold">Trip Expenses</h5> 
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr class="bgcol2">
@@ -171,14 +194,14 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr *ngIf="settlementData.expenses.length === 0" class="text-center">
+                                                    <tr *ngIf="expenses.length === 0" class="text-center">
                                                         <td colspan="4">{{ noRecordMsg }} </td>
                                                     </tr>
-                                                    <tr *ngFor="let data of settlementData.expenses">
+                                                    <tr *ngFor="let data of expenses">
                                                         <td>{{ tripsObj[data.tripID] }}</td>
                                                         <td>{{ data.expName }}</td>
                                                         <td>{{ (data.desc) ? data.desc : '-' }}</td>
-                                                        <td>{{ data.amount }} {{ data.currency }}</td>
+                                                        <td>{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -186,34 +209,30 @@
                                         <div class="col-lg-12" *ngIf="settlementData.transactionLog">
                                             <h5 class="font-weight-bold">Journal</h5>
                                             <table class="table table-bordered table-hover">
-                                                <thead>
-                                                    <tr class="bgcol2">
-                                                        <th>Account Name</th>
-                                                        <th>Name</th>
-                                                        <th>Type</th>
-                                                        <th>Debit</th>
-                                                        <th>Credit</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let transaction of settlementData.transactionLog">
-                                                        <td>{{ accounts[transaction.accountID] }}</td>
-                                                        <td>
-                                                            <span *ngIf="settlementData.type === 'driver'">
-                                                                {{ driverDetail.firstName }} {{ driverDetail.lastName }}
-                                                            </span>
-                                                            
-                                                        </td>
-                                                        <td>{{ transaction.type }}</td>
-                                                        <td>{{ (transaction.trxType == 'debit') ? transaction.amount  : '0.00' }} {{ transaction.currency }}</td>
-                                                        <td>{{ (transaction.trxType == 'credit') ? transaction.amount : '0.00' }} {{ transaction.currency }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                                        <td>{{ settlementData.finalTotal }} CAD</td>
-                                                        <td>{{ settlementData.finalTotal }} CAD</td>
-                                                    </tr>
-                                                </tbody>
+                                              <thead>
+                                                <tr>
+                                                  <th>Account Name</th>
+                                                  <th>Name</th>
+                                                  <th>Type</th>
+                                                  <th>Debit</th>
+                                                  <th>Credit</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr *ngFor="let dt of settlementData.transactionLog">
+                                                  <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                                    <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                                 <td>{{entityName | titlecase}}</td>
+                                                 <td>{{dt.type | titlecase}}</td>
+                                                 <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                                 <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                                </tr>
+                                                <tr>
+                                                  <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                                  <td>{{settlementData.subTotal | number : '1.2-2'}} CAD</td>
+                                                  <td>{{settlementData.subTotal | number : '1.2-2'}} CAD</td>
+                                                </tr>
+                                              </tbody>
                                             </table>
                                         </div>
                                     </div>

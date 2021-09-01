@@ -17,17 +17,17 @@
               <div class="logiconm mr-3">
                 <i class="fas fa-user logicon text-5"></i>
               </div>
-              <input name="username" type="text" placeholder="Username"
-                class="form-control login form-control-lg" [(ngModel)]="userName" #login="ngModel" required />
-                <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
-                  <div class="pl-4 ml-2" *ngIf="login.errors.required" >
-                    Username is required.
-                  </div>
-                  <!-- <div *ngIf="login.errors.pattern">
+              <input name="username" type="text" placeholder="Username" class="form-control login form-control-lg"
+                [(ngModel)]="userName" #login="ngModel" required />
+              <div *ngIf="login.invalid && (login.dirty || login.touched)" class="text-danger w100">
+                <div class="pl-4 ml-2" *ngIf="login.errors.required">
+                  Username is required.
+                </div>
+                <!-- <div *ngIf="login.errors.pattern">
                       The length of  Username must be 6 characters and may contain combination of lowercase letters, numbers and special character(.).
                   </div> -->
 
-                </div>
+              </div>
 
             </div>
           </div>
@@ -38,20 +38,20 @@
               <div class="logiconm mr-3">
                 <i class="fa fa-lock logicon text-5"></i>
               </div>
-              <input name="pwd"  [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg"
-                [(ngModel)]="password" #password1="ngModel" required autocomplete="new-password"/>
+              <input name="pwd" [type]="fieldTextType ? 'text' : 'password'" placeholder="Password"
+                class="form-control login form-control-lg" [(ngModel)]="password" #password1="ngModel" required
+                autocomplete="new-password" />
 
-                <div class="input-group-append " >
-                  <span class="input-group-text eye">
-                    <i class="fa" [ngClass]="{
+              <div class="input-group-append ">
+                <span class="input-group-text eye">
+                  <i class="fa" [ngClass]="{
                       'fa-eye-slash': !fieldTextType,
                       'fa-eye': fieldTextType
-                    }"
-                    (click)="toggleFieldTextType()"></i>
-                  </span>
-               </div>
-               <div *ngIf="password1.invalid && (password1.dirty || password1.touched)" class="text-danger w100">
-                <div  class="pl-4 ml-2" *ngIf="password1.errors.required" >
+                    }" (click)="toggleFieldTextType()"></i>
+                </span>
+              </div>
+              <div *ngIf="password1.invalid && (password1.dirty || password1.touched)" class="text-danger w100">
+                <div class="pl-4 ml-2" *ngIf="password1.errors.required">
                   Password is required.
                 </div>
                 <!-- <div *ngIf="password1.errors.pattern">
@@ -62,20 +62,25 @@
           </div>
 
           <div class="row">
-            <p *ngIf="hasError" class="text text-danger ml-5" >{{Error}}</p>
+            <p *ngIf="hasError" class="text text-danger ml-5">{{Error}}</p>
           </div>
           <div class="d-flex flex-row-reverse text-dark">
-            <a  [routerLink]="['/forgotPassword']" ><span class="text-dark font-weight-semibold">Forgot Password?</span></a>
+            <a [routerLink]="['/forgotPassword']"><span class="text-dark font-weight-semibold">Forgot
+                Password?</span></a>
           </div>
           <div class="row">
             <div class="col-sm-12 pl-signin text-center">
-              <button *ngIf="!loginForm.form.valid" type="button" [disabled]="!loginForm.form.valid" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">Sign In</button>
-              <button *ngIf="loginForm.form.valid" id="btnsubmit" type="submit" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn" (click)="loginAction1()" [disabled]="submitDisabled">Sign In</button>
+              <button *ngIf="!loginForm.form.valid" type="button" [disabled]="!loginForm.form.valid"
+                class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">Sign In</button>
+              <button *ngIf="loginForm.form.valid" id="btnsubmit" type="submit"
+                class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn" (click)="loginAction1()"
+                [disabled]="submitDisabled">Sign In</button>
             </div>
 
             <div class="col-sm-12 mt-2 ml-3 mr-3 pt-1 text-center">
 
-              <a [routerLink]="['/onboard']" class="font-weight-semibold">Do not have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
+              <a href="javascript:;" data-target="#userSignUp" data-toggle="modal" class="font-weight-semibold">Do not
+                have an account yet?&nbsp;&nbsp;<span class="text-4 text-underline text-info">Sign Up</span></a>
 
             </div>
           </div>
@@ -89,3 +94,262 @@
 
   </div>
 </section>
+
+
+
+
+<div class="modal fade" id="userSignUp" tabindex="-1" role="dialog" aria-labelledby="userSignUp" aria-hidden="true"
+  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" style="max-width: 80%;">
+    <div class="modal-content">
+
+      <section  style="background:#dddddd;">
+        <div class="p-2">
+          <section role="main" class="account-body">
+            <div class="row text-dark">
+              <div class="col pl-0 pr-0">
+                <section class="card" style="align-items: center;">
+                  <div class="card-body pr-5 pl-5 onboardwidth">
+                    <form id="carrierForm" class="form-horizontal form-bordered bg-white" name="carrierForm"
+                      [mustMatch]="['newPassword', 'confirmPassword']" #cForm="ngForm" novalidate="novalidate">
+                      <div class="row text-center">
+                        <div class="col-lg-12">
+                          <p class="mb-1"><img src="./assets/img/logologin.png" alt="FH Admin" /></p>
+                          <h2 class="mt-1">Create Your Fleet Hawks Account</h2>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Basic
+                            Detail</label>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">First Name<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="firstName" type="text" class="form-control" [(ngModel)]="firstName"
+                                name="firstName" placeholder="eg. John" #fName="ngModel" required
+                                pattern="^[a-zA-Z\s]{1,30}$">
+                              <div *ngIf="fName.invalid && (fName.dirty || fName.touched)" class="text-danger">
+                                <div *ngIf="fName.errors.required">
+                                  First name is required.
+                                </div>
+                                <div *ngIf="fName.errors.pattern">
+                                  First name must contain letters.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Last Name<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="lstname" type="text" class="form-control" [(ngModel)]="lastName"
+                                name="lastName" placeholder="eg. Smith" #lName="ngModel" required
+                                pattern="^[a-zA-Z\s]{1,30}$">
+                              <div *ngIf="lName.invalid && (lName.dirty || lName.touched)" class="text-danger">
+                                <div *ngIf="lName.errors.required">
+                                  Last name is required.
+                                </div>
+                                <div *ngIf="lName.errors.pattern">
+                                  Last name must contain letters.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class=" row">
+                            <div class="col-lg-10">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Username<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="un" type="text" class="form-control text-lowercase" [(ngModel)]="newUserName"
+                                name="userName" minlength="6" placeholder="eg. john.smith" #uName1="ngModel" required
+                                pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$">
+                              <div *ngIf="uName1.invalid && (uName1.dirty || uName1.touched)" class="text-danger">
+                                <div *ngIf="uName1.errors.required">
+                                  Username is required.
+                                </div>
+                                <div *ngIf="uName1.errors.pattern">
+                                  Username should be at-least 6 characters long and can be a combination of numbers,
+                                  letters
+                                  and dot(.).
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <div class="input-group">
+                                <input id="pd" [(ngModel)]="newPassword" name="newPassword" #pwd="ngModel" required
+                                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                                  [type]="fieldTextType1 ? 'text' : 'password'"
+                                  (input)="validatePassword($event.target.value)" placeholder="Password"
+                                  class="form-control" />
+                                <div class="input-group-append">
+                                  <span class="input-group-text eye">
+                                    <i class="fa" [ngClass]="{
+                                          'fa-eye-slash': !fieldTextType1,
+                                          'fa-eye': fieldTextType1
+                                        }" (click)="toggleFieldTextType1()"></i>
+                                  </span>
+                                </div>
+
+                              </div>
+                              <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                                <div *ngIf="pwd.errors.required">
+                                  Password is required.
+                                </div>
+                                <div *ngIf="pwd.errors.pattern">
+                                  <div class="row">
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2  mb-1"> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                          </i></span> 8 characters minimum</p>
+                                      <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                          </i></span> atleast 1 number</p>
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                          </i></span> atleast 1 uppercase</p>
+
+                                      <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
+                                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                          </i></span> atleast 1 lowercase</p>
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                      <p class="text-dark pt-2 mb-1 "><span class="pr-1"
+                                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                        atleast 1 special character(!@#$%^&*.-)</p>
+
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <div class="input-group">
+                                <input id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword" #cpwd1="ngModel"
+                                  required [type]="cpwdfieldTextType ? 'text' : 'password'"
+                                  placeholder="Confirm password" class="form-control" />
+                                <div class="input-group-append">
+                                  <span class="input-group-text eye">
+                                    <i class="fa" [ngClass]="{
+                                          'fa-eye-slash': !cpwdfieldTextType,
+                                          'fa-eye': cpwdfieldTextType
+                                        }" (click)="togglecpwdfieldTextType()"></i>
+                                  </span>
+                                </div>
+                              </div>
+                              <div *ngIf="cpwd1.invalid && (cpwd1.dirty || cpwd1.touched)" class="text-danger">
+                                <div *ngIf="cpwd1.errors.required">
+                                  Confirm password is required.
+                                </div>
+                                <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Phone<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="phn" type="text" class="form-control" [(ngModel)]="phone" name="phone"
+                                placeholder="eg. 2234567891" #ph="ngModel" required pattern="^[0-9]{10}$">
+                              <div *ngIf="ph.invalid && (ph.dirty || ph.touched)" class="text-danger">
+                                <div *ngIf="ph.errors.required">
+                                  Phone number is required.
+                                </div>
+                                <div *ngIf="ph.errors.pattern">
+                                  Enter valid phone number eg. 2234567891
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-5">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Fax<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="fax" type="text" class="form-control" [(ngModel)]="fax" name="fax"
+                                #fx="ngModel" placeholder="eg. 2234567891" required pattern="^[0-9]{10}$">
+                              <div *ngIf="fx.invalid && (fx.dirty || fx.touched)" class="text-danger">
+                                <div *ngIf="fx.errors.required">
+                                  Fax number is required.
+                                </div>
+                                <div *ngIf="fx.errors.pattern">
+                                  Enter valid fax number eg. 2234567891
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class=" row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                              <label class="control-label  font-weight-bold text-lg-right pt-2">Email<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <input id="mail" type="text" class="form-control text-lowercase" [(ngModel)]="newEmail"
+                                name="email" placeholder="eg. johnsmith@gmail.com" #em="ngModel" required
+                                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                              <div *ngIf="em.invalid && (em.dirty || em.touched)" class="text-danger">
+                                <div *ngIf="em.errors.required">
+                                  Email is required.
+                                </div>
+                                <div *ngIf="em.errors.pattern">
+                                  Enter valid email eg. johnsmith@test.com.
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-10">
+                              <label class="control-label font-weight-bold text-lg-right pt-2">How did you find us?
+                              </label>
+                              <ng-select class="form-control populate" [(ngModel)]="findingWay"
+                                placeholder="Select way how did u find us?" name="findingWay">
+                                <ng-option value="Google">Google</ng-option>
+                                <ng-option value="Bing">Bing</ng-option>
+                                <ng-option value="Referral">Referral</ng-option>
+                              </ng-select>
+                            </div>
+                          </div>
+                          <div class="row mt-2 ">
+
+                            <div class="col-lg-12 text-right">
+                              <button type="button" data-dismiss="modal" aria-label="Close" class="btn btn-default mr-2">Cancel</button>
+                              <button type="button" class="btn btn-success" (click)="onSubmit()"
+                                [disabled]="!cForm.form.valid">Sign Up</button>
+          
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+
+</div>

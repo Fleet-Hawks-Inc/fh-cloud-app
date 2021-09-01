@@ -11,21 +11,16 @@
                                 value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
                         </ng-select>
                     </div>
-                    <div class="col-md-2 col-lg-2">
-                        <div class="mb-3">
-                            <ng-select class="form-control p-0" [(ngModel)]="filter.location"
-                                placeholder="Search by location">
-                                <ng-option *ngFor="let item of newEvents;" value="{{item.location}}">{{item.location}}</ng-option>
-                            </ng-select>
-                        </div>
-                    </div>
+                    
                     <div class="col-md-2  col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <!-- <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date"> -->
                             <input 
                                 [(ngModel)]="filter.date" name="date" 
                                 type="text" 
-                                placeholder="Search By Incident Date"
+                                placeholder="yyyy/mm/dd"
+                                [maxDate]="birthDateMaxLimit" 
+                                [minDate]="birthDateMinLimit"
                                 (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
                                 class="form-control" autocomplete="off"> 
                         </div>
@@ -40,9 +35,8 @@
                         </a>
                     </div>
                     
-                    <div class="col-4 text-right pr-1">
-                        <a href="javascript:;" class="modal-with-form btn btn-success btn-sm mx-2 "
-                            style="color:white;"><i class="fas fa-download"></i> Fetch Event</a>
+                    <div class="col-6 text-right pr-1">
+                        
                         <a href="javascript:;" routerLink="/safety/incidents/add-incident"
                             class="btn btn-success btn-sm mx-2" style="color:white;"><i class="fas fa-plus"></i> Add
                             Incident</a>
@@ -72,6 +66,9 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link navtabs" id="under-review-tab" href="javascript:;" (click)="fetchTabData('investigating')">Investigating</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link navtabs" id="coaching-tab" href="javascript:;" (click)="fetchTabData('coaching')">Coaching</a>
                                             </li>
                                             <li class="nav-item">
                                                 <a class="nav-link navtabs" id="resolved-tab" data-toggle="tab" href="javascript:;" (click)="fetchTabData('closed')">Closed</a>
@@ -107,7 +104,8 @@
                                                             <td class="text-capitalize">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
                                                             <td class="text-capitalize">{{convertTimeFormat(data.eventTime)}}</td>
                                                             <td class="text-capitalize">{{data.eventSource}}</td>
-                                                            <td class="text-capitalize">{{ data.location }}</td>
+                                                            <td class="text-capitalize"><span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
+                                                                <span *ngIf="data.location.label === undefined">NA</span></td>
                                                             
                                                             <td class="text-capitalize">{{ data.severity }}</td>
                                                             <td class="text-capitalize">{{ data.assigned }}</td>
@@ -122,7 +120,7 @@
                                                     </tbody>
                                                     <tbody *ngIf="events.length == 0">
                                                         <tr>
-                                                            <td colspan="9" class="no-data-available">No record(s) found</td>
+                                                            <td colspan="9" class="no-data-available"> {{dataMessage}}</td>
                                                         </tr>
                                                     <tbody>
                                                 </table>

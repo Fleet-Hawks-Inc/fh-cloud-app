@@ -20,6 +20,9 @@ import { DriverPaymentsDetailComponent } from "./driver-payments/driver-payments
 import { AddEmployeePaymentComponent } from "./employee-payment/add-employee-payment/add-employee-payment.component";
 import { EmployeePaymentListComponent } from "./employee-payment/employee-payment-list/employee-payment-list.component";
 import { EmployeePaymentDetailComponent } from "./employee-payment/employee-payment-detail/employee-payment-detail.component";
+import { AddAccountModule } from "../add-account/add-account.module";
+import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -88,19 +91,15 @@ const routes: Routes = [
   { path: "advance-payments/list", component: AdvancePaymentsListComponent },
   { path: "advance-payments/add", component: AddAdvancePaymentComponent },
   { path: "advance-payments/edit/:paymentID", component: AddAdvancePaymentComponent },
-  {
-    path: "advance-payments/detail/:paymentID",
-    component: AdvancePaymentsDetailComponent,
-  },
+  { path: "advance-payments/detail/:paymentID", component: AdvancePaymentsDetailComponent },
   { path: "driver-payments/list", component: DriverPaymentsListComponent },
   { path: "driver-payments/add", component: AddDriverPaymentComponent },
-  { path: "driver-payments/detail", component: DriverPaymentsDetailComponent },
+  { path: "driver-payments/edit/:paymentID", component: AddDriverPaymentComponent },
+  { path: "driver-payments/detail/:paymentID", component: DriverPaymentsDetailComponent },
   { path: "employee-payments/list", component: EmployeePaymentListComponent },
   { path: "employee-payments/add", component: AddEmployeePaymentComponent },
-  {
-    path: "employee-payments/detail",
-    component: EmployeePaymentDetailComponent,
-  },
+  { path: "employee-payments/edit/:paymentID", component: AddEmployeePaymentComponent },
+  { path: "employee-payments/detail/:paymentID", component: EmployeePaymentDetailComponent },
 ];
 
 @NgModule({
@@ -114,6 +113,7 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
+    PaymentChequeComponent
   ],
   imports: [
     CommonModule, 
@@ -123,6 +123,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    AddAccountModule,
+    InfiniteScrollModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },

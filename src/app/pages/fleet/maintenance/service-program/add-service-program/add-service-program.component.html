@@ -102,9 +102,13 @@
                                 </div>
                               </div>
                               <div class="col-lg-2 mar-top-37 px-0" *ngIf="i == 0">
-                                 <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn cus-btn-padd btn-success modal-with-form">
+                                 <a href="javascript:;" data-toggle="modal" data-target="#addServiceTaskModal" class="btn cus-btn-padd btn-success modal-with-form mr-1">
                                     <em class="fas fa-plus"></em>
                                  </a>
+                                 <a href="javascript:;" (click)="getTasks()"
+                                 data-toggle="tooltip" title="Refresh task data"
+                                 class="btn btn-success btn-sm modal-with-form"><i
+                                       class="fas fa-sync"></i></a>
                               </div>
                            </div>
                         </div>
@@ -214,9 +218,13 @@
                          </div>
                              </div>
                              <div class="col-lg-2  mar-top-37 px-0">
-                                <a href="javascript:;" data-toggle="modal" data-target="#addVehicleModelDriver"  class="btn cus-btn-padd btn-success modal-with-form">
-                                   <em class="fas fa-plus"></em>
-                                </a>
+                              <a class="btn btn-success btn-sm cus-btn-pad mr-1"
+                              href="javascript:;" routerLink="/fleet/vehicles/add" target="_blank"><i
+                                  class="fas fa-plus"></i></a>
+                              <a href="javascript:;" (click)="refreshVehicleData()"
+                              data-toggle="tooltip" title="Refresh vehicle data"
+                              class="btn btn-success btn-sm modal-with-form"><i
+                                 class="fas fa-sync"></i></a>
                              </div>
                           </div>
                        </div>

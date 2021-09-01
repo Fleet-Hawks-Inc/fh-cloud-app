@@ -7,6 +7,7 @@ describe("Fuel Test", function () {
       cy.request({
         method: 'DELETE',
         url: serviceUrl,
+        failOnStatusCode: false,
         headers: {
           'Authorization': `Bearer ${authToken}`,
           "Content-type": "application/json"
@@ -54,8 +55,8 @@ describe("Fuel Test", function () {
 
     cy.get('div:nth-of-type(5) input[name="odometer"]').clear();
     cy.get('div:nth-of-type(5) input[name="odometer"]').type('4500');//odometer
-    cy.get('.col-10 > .btn-success').click();//save button
-    cy.wait(5000);
+   cy.get('div:nth-of-type(6) > .col-lg-12.text-right .btn.btn-success.cus-btn-padd').click();//save button
+    cy.wait(4000);
     Cypress.on('uncaught:exception', (err, runnable) => {
       return false
     });
@@ -116,9 +117,8 @@ describe("Fuel Test", function () {
     cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get('.ng-star-inserted > .nav > :nth-child(5) > .nav-link').click();
-    cy.get('.btn.mb-1.mr-1.mt-1 > .fa-ellipsis-v.fas').click();
-    // cy.get('[href="\#\/fleet\/fuel\/edit\/1ukgwiO2cW1IICJPvCHNzhbFXIA"]').last().click();
-    cy.get(':nth-child(10) > .btn-group > .dropdown-menu > a.dropdown-item').click();
+    cy.get(':nth-child(1) > :nth-child(10) > .btn-group > .mb-1').first().click();
+    cy.get(':nth-child(1) > :nth-child(10) > .btn-group > .dropdown-menu > a.dropdown-item').last().click();
     cy.url().then(url => {
       console.log('url', url);
       let newUrl = url.split('/');
@@ -137,7 +137,7 @@ describe("Fuel Test", function () {
     cy.get(':nth-child(2) > .input-group > .form-control').type(Cypress.config('testerPassword'));
     cy.get('#btnsubmit').click();
     cy.get('.ng-star-inserted > .nav > :nth-child(5) > .nav-link').click();
-    cy.get('.table-responsive tr:nth-of-type(1) .fa-ellipsis-v').first().click();
+    cy.get(':nth-child(1) > :nth-child(10) > .btn-group > .mb-1').first().click();
     cy.get('.show [role] [type]').last().click();
     cy.getLocalStorage('congnitoAT').then((data) => {
       authToken = data;

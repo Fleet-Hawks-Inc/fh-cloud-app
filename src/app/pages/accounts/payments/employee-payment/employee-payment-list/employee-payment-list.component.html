@@ -1,127 +1,117 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header">
-         <form class="form-horizontal" method="get">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pr-0 pl-0 pt-0">
+            <header class="page-header">
+                <form class="form-horizontal" method="get">
 
-            <div class="row px-4" style="padding-top:10px;">
-               <div class="col-md-2 col-lg-2">
-                  <div class="input-group input-group-md mb-3">
-                   <input type="text" class="form-control" placeholder="Search">
-                  </div>
-               </div>
-
-               <div class="col-lg-3 col-md-3">
-                  <div class="input-daterange input-group" data-plugin-datepicker>
-                     <span class="input-group-prepend">
-                        <span class="input-group-text">
-                           <i class="fas fa-calendar-alt"></i>
-                        </span>
-                     </span>
-                     <input type="text" class="form-control" name="start">
-                     <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                        to
-                     </span>
-                     <input type="text" class="form-control" name="end">
-                  </div>
-                  </div>
-
-               <div class="col-md-1  col-lg-1">
-                         <button type="submit" class="btn btn-sm btn-success">Search</button>
+                    <div class="row px-4" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
+                            </div>
                         </div>
-               <div class="col-md-6  col-lg-6 text-right pr-5">
-                  <a routerLink="/accounts/payments/employee-payments/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Payment </a>
 
-               </div>
+                        <div class="col-lg-3 col-md-3">
+                            <div class="input-daterange input-group"
+                                data-plugin-datepicker>
+                                <span class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
+                                </span>
+                                <input [(ngModel)]="filter.startDate" name="startDate"
+                                    type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                                    ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit"
+                                    [maxDate]="futureDatesLimit">
+                                <span class="input-group-text border-left-0
+                                    border-right-0 rounded-0">
+                                    to
+                                </span>
+                                <input [(ngModel)]="filter.endDate" name="endDate"
+                                    type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                                    ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                    autocomplete="off" [minDate]="dateMinLimit"
+                                    [maxDate]="futureDatesLimit">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2  col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
+                        </div>
+                        <div class="col-md-5 col-lg-5 text-right pr-5">
+                            <a
+                                routerLink="/accounts/payments/employee-payments/add"
+                                class="btn btn-success btn-sm ml-2"
+                                style="color:white;"><i class="fas fa-plus"></i>
+                                Add Payment </a>
+
+                        </div>
+                    </div>
+                </form>
+            </header>
+            <div class="row">
+                <div class="col pr-0">
+                    <section class="card">
+                      <div class="main-panel">
+                        <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
+                        (scrolled)="onScroll()">
+                            <div class="card-body" style="display: block">
+                              <div class="main-panel">
+                                <table class="table table-bordered table-striped
+                                mb-0 simple-table">
+                                <thead>
+                                    <tr class="bgcol2">
+                                        <th class="text-2">Date</th>
+                                        <th class="text-2">Payment#</th>
+                                        <th class="text-2">Payment Mode</th>
+                                        <th class="text-2">Employee </th>
+                                        <th class="text-2">Amount</th>
+                                        <th class="text-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngIf="payments.length === 0" class="text-center">
+                                        <td colspan="6">
+                                            {{ dataMessage }}
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let data of payments; let i=index">
+                                        <td routerLink="/accounts/payments/employee-payments/detail/{{data.paymentID}}">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                                        <td>{{ data.paymentNo }}</td>
+                                        <td>{{ data.payMode }}</td>
+                                        <td>{{ employees[data.entityId] }}</td>
+                                        <td>{{ data.finalTotal | number : '1.2-2' }} CAD</td>
+                                        <td>
+                                            <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                <a class="dropdown-item"
+                                                    routerLink="/accounts/payments/employee-payments/edit/{{ data.paymentID }}">Edit</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                              </div>
+
+                            </div>
+                        </div>
+                      </div>
+
+                    </section>
+                </div>
             </div>
-            </form>
-         </header>
-      <div class="row">
-         <div class="col pr-0">
-            <section class="card">
-
-               <div class="card-body">
-                  <table class="table table-bordered table-striped mb-0 simple-table">
-                     <thead>
-                        <tr class="bgcol2">
-                        <th class="text-2">Date</th>
-                           <th class="text-2">Payment#</th>
-                           <th class="text-2">Payment Mode</th>
-                           <th class="text-2">Employee </th>
-                           <th class="text-2">Amount</th>
-                           <th class="text-2">Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                        <td routerLink="/accounts/payments/employee-payments/detail">05/25/2020</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">234</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Cheque</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Manjot</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">CAD 34230</td>
-                           <td><div class="btn-group flex-wrap">
-                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">Edit</a>
-                                    <a class="dropdown-item text-1" href="#">Delete</a>
-                                 </div>
-                              </div></td>
-
-                        </tr>
-                        <tr>
-                        <td routerLink="/accounts/payments/employee-payments/detail">05/25/2020</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">234</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Cash</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Baljit</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">CAD 34230</td>
-                           <td><div class="btn-group flex-wrap">
-                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">Edit</a>
-                                    <a class="dropdown-item text-1" href="#">Delete</a>
-                                 </div>
-                              </div></td>
-
-                        </tr>
-                        <tr>
-                        <td routerLink="/accounts/payments/employee-payments/detail">05/25/2020</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">234</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Cheque</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Dilpreet</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">CAD 34230</td>
-                           <td><div class="btn-group flex-wrap">
-                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">Edit</a>
-                                    <a class="dropdown-item text-1" href="#">Delete</a>
-                                 </div>
-                              </div></td>
-
-                        </tr>
-                        <tr>
-                        <td routerLink="/accounts/payments/employee-payments/detail">05/25/2020</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">234</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Cheque</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">Manjot</td>
-                           <td routerLink="/accounts/payments/employee-payments/detail">CAD 34230</td>
-                           <td><div class="btn-group flex-wrap">
-                                 <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                 <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item text-1" href="#">Edit</a>
-                                    <a class="dropdown-item text-1" href="#">Delete</a>
-                                 </div>
-                              </div></td>
-
-                        </tr>
-                     </tbody>
-                  </table>
-
-               </div>
-            </section>
-         </div>
-      </div>
-
-
-   </section>
-  </div>
-</section>>
+        </section>
+    </div>
+</section>

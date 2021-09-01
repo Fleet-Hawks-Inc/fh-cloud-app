@@ -1,448 +1,651 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-          <h2>Payment</h2>
-          <div class="right-wrapper text-right">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
+            <header class="page-header">
+                <h2>Payment</h2>
+                <div class="right-wrapper text-right">
 
-              <div class="pull-right pr-2">
-                  <a routerLink="/accounts/payments/employee-payments/list" class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i
-                          class="fas fa-list"></i> All Payments</a>
-              </div>
-          </div>
-      </header>
-      <section class="card mt-0 mb-4">
-          <div class="card-body">
-              <div class="row">
-                  <div class="col pr-0">
-                      <div class="card-body text-dark">
-                          <form class="form-horizontal form-bordered" method="get">
-                              <div class="row">
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row" id="settlementListDiv">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Employee Name
-                                              </label>
-                                              <select data-plugin-selectTwo class="form-control populate"
-                                              >
-                                                  <optgroup>
-                                                      <option value="Driver">Jatinder</option>
-                                                      <option value="Carrier">Manjot</option>
-                                                      <option value="OwnerOperator">Taranjit</option>
-                                                  </optgroup>
-                                              </select>
-                                          </div>
+                    <div class="pull-right pr-2">
+                        <a routerLink="/accounts/payments/employee-payments/list"
+                            class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i class="fas fa-list"></i> All Payments</a>
+                    </div>
+                </div>
+            </header>
+            <section class="card mt-0 mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col pr-0">
+                            <div class="card-body text-dark">
+                                <form class="form-horizontal form-bordered" method="get" #empPaymentForm="ngForm">
+                                    <div class="row">
+                                        <div class="col-lg-5 offset-lg-1">
+                                            <div class="row" id="settlementListDiv">
+                                                <div class="col-lg-10">
+                                                    <label
+                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Employee
+                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type"
+                                                        placeholder="Select Employee" (change)="fetchEmployeDetail()" [disabled]="submitDisabled" #empID="ngModel" required>
+                                                        <ng-option value="{{ data.key }}"
+                                                            *ngFor="let data of employees | keyvalue">{{ data.value }}
+                                                        </ng-option>
+                                                    </ng-select>
 
-                                      </div>
-                                  </div>
-                                  <div class="col-lg-5">
-                                      <div class="row" id="settlementListDiv">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                                                  Date
-                                              </label>
-                                              <input type="date" class="form-control">
-                                          </div>
+                                                    <div *ngIf="empID.invalid && (empID.dirty || empID.touched)" class="text-danger">
+                                                        <div *ngIf="empID.errors.required">
+                                                            Employee is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="row" id="settlementListDiv">
+                                                <div class="col-lg-10">
+                                                    <label
+                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                        Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="txDnate.toggle()"
+                                                        ngbDatepicker #txDnate="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #txnDate="ngModel" required>
+                                                    <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)" class="text-danger">
+                                                        <div *ngIf="txnDate.errors.required">
+                                                            Payment date is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row pt-2">
-                                  <div class="col-lg-5 offset-lg-1">
-                                      <div class="row">
-                                          <div class="col-lg-10">
-                                              <label
-                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Department
-                                                  </label>
-                                              <select data-plugin-selectTwo class="form-control populate">
-                                                  <optgroup label="Select Department">
-                                                      <option value="1">Select</option>
-                                                      <option value="1">Dispatch</option>
-                                                      <option value="2">Operations</option>
-                                                      <option value="2">Sales</option>
-                                                  </optgroup>
-                                              </select>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="row">
-                                  <div class="col-lg-12">
-                                      <h4>Last Payments</h4>
-                                  </div>
-                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="row">
+                                        <div class="col-lg-5 offset-lg-1">
+                                            <div class="row" id="settlementListDiv">
+                                                <div class="col-lg-10">
+                                                    <label
+                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment# <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                    </label>
+                                                    <input [(ngModel)]="paymentData.paymentNo" name="paymentNo" type="text" class="form-control" #payNum="ngModel" required placeholder="eg. 1254A">
+                                                    <div *ngIf="payNum.invalid && (payNum.dirty || payNum.touched)" class="text-danger">
+                                                        <div *ngIf="payNum.errors.required">
+                                                            Payment date is required.
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                              <!-- Employee PAYMENT DIV -->
-                              <div id="employeePaymentDiv">
-                                  <div class="row">
-                                      <div class="col-lg-10 offset-lg-1">
-                                          <table class="table table-bordered table-striped mb-0 simple-table">
-                                              <thead>
-                                                 <tr class="bgcol2">
-                                                    <th><input type="checkbox"></th>
-                                                    <th class="text-2">Payment#/Date</th>
-                                                    <th class="text-2">Payment Mode Information</th>
-                                                    <th class="text-2">Employee Information</th>
-                                                    <th class="text-2">Amount</th>
-                                                 </tr>
-                                              </thead>
-                                              <tbody>
-                                                 <tr>
-                                                    <td><input type="checkbox"></td>
-                                                    <td>234<br>05/25/2020 07:41 AM</td>
-                                                    <td>Cheque<br>Ref.# :<strong>3456</strong><br>Date:<strong>05/25/2020</strong></td>
-                                                    <td>Name: <strong>Manjot</strong><br>Department: <strong>Dispatch</strong><br>Designation:<strong>Manager</strong></td>
-                                                    <td>Total Amount: <strong>CAD 3423</strong><br>Add:&nbsp;<strong>CAD 100</strong>&nbsp;&nbsp;Deduct:&nbsp;<strong>CAD 150</strong><br>Taxes:<strong>CAD 350</strong></td>
+                                            </div>
+                                        </div>
+                                    </div> -->
 
-                                                 </tr>
-                                              </tbody>
-                                           </table>
-                                      </div>
-                                  </div>
-                                  <div class="row pt-2">
-                                      <div class="col-lg-12">
-                                          <h4>Payment Information</h4>
-                                      </div>
-                                  </div>
-                                  <div class="row pt-2">
-                                      <div class="col-lg-10 offset-lg-1">
-                                          <div class="row">
-                                              <div class="col-lg-3">
-                                                  <label
-                                                  class="control-label font-weight-bold font-bold text-lg-right pt-2">Payroll Type
-                                                  </label>
-                                              <select data-plugin-selectTwo class="form-control populate" id="payrollTypeList" onchange="payrollType()">
-                                                  <optgroup label="Select Payroll Type">
-                                                      <option value="1">Select</option>
-                                                      <option value="hours">Hours</option>
-                                                      <option value="flat">Flat</option>
-                                                  </optgroup>
-                                              </select>
-                                              </div>
-                                              <div id="payrollHourDiv" style="display: none;">
-                                                  <div class="col-lg-3">
-                                                      <label
-                                                      class="control-label font-weight-bold font-bold text-lg-right pt-2">Hours
-                                                      </label>
-                                                     <input type="text" class="form-control">
+                                    <div class="row pt-3" *ngIf="advancePayments.length > 0">
+                                        <div class="col-lg-12">
+                                            <h4>Advance Payments</h4>
+                                        </div>
+                                        <div class="col-lg-10 offset-lg-1">
+                                            <table
+                                                class="table table-bordered table-responsive-lg  table-striped simple-table">
+                                                <thead>
+                                                    <tr class="bgcol2">
+                                                        <th></th>
+                                                        <th class="text-2">Payment#</th>
+                                                        <th class="text-2">Payment Date</th>
+                                                        <th class="text-2">Account#</th>
+                                                        <th class="text-2">Amount</th>
+                                                        <th class="text-2">Paid Amount</th>
+                                                        <th class="text-2">Status</th>
+                                                        <th class="text-2">Full Payment</th>
+                                                        <th class="text-2">Payment</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="advancePayments.length === 0" class="text-center">
+                                                        <td colspan="10">{{ dataMessage }} </td>
+                                                    </tr>
+                                                    <tr *ngFor="let data of advancePayments; let i=index">
+                                                        <td>
+                                                            <input type="checkbox" name="stl{{i}}" [(ngModel)]="data.selected" (change)="selectedAdvancepayments()">
+                                                        </td>
+                                                        <td>{{ data.paymentNo }}</td>
+                                                        <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td>{{ accList[data.accountID] }}</td>
+                                                        <td>{{ data.pendingPayment }} {{ data.currency }}</td>
+                                                        <td>{{ data.prevPaidAmount }}</td>
+                                                        <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span> </td>
+                                                        <td class="text-center">
+                                                            <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{i}}" (change)="assignFullPayment(i, data)">
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" [(ngModel)]="data.paidAmount" (input)="paymentCalculation(); checkInput('advAmount')" name="advPaidAmount{{i}}" [disabled]="data.paidStatus">
+                                                            <label id="stlErr{{i}}" class="error">{{ data.errText  }}</label>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" *ngIf="lastExist">
+                                        <div class="col-lg-12">
+                                            <h4>Last Payments</h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Employee PAYMENT DIV -->
+                                    <div id="employeePaymentDiv">
+                                        <div class="row" *ngIf="lastExist">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <table class="table table-bordered table-striped mb-0 simple-table">
+                                                    <thead>
+                                                        <tr class="bgcol2">
+                                                            <th class="text-2">Payment#/Date</th>
+                                                            <th class="text-2">Payment Mode Information</th>
+                                                            <th class="text-2">Employee Information</th>
+                                                            <th class="text-2">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{ lastAdded.paymentNo }}<br>{{ lastAdded.txnDate | date: "yyyy/MM/dd" }}</td>
+                                                            <td>{{ lastAdded.payMode }}<br>Ref.#
+                                                                :<strong> {{ lastAdded.payModeNo }}</strong><br>Date:<strong> {{ lastAdded.payModeDate | date: "yyyy/MM/dd" }}</strong>
+                                                            </td>
+                                                            <td>Name: <strong> {{ employees[lastAdded.entityId] }}</strong>
+                                                                <br>Department: <strong> {{ (empdetail.userAccount.department) ? empdetail.userAccount.department : '-' }}</strong>
+                                                                <br>Designation:<strong> {{ (empdetail.userAccount.designation) ? empdetail.userAccount.designation : '-' }}</strong>
+                                                            </td>
+                                                            <td>Total Amount:
+                                                                <strong> {{ lastAdded.finalTotal }} CAD</strong>
+                                                                <br>Add:&nbsp;
+                                                                <strong> {{ lastAdded.additionTotal }} CAD</strong>
+                                                                &nbsp;&nbsp;Deduct:&nbsp;
+                                                                <strong> {{ lastAdded.deductionTotal }} CAD</strong>
+                                                                <br>Taxes:<strong> {{ lastAdded.taxes }} CAD </strong>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-12">
+                                                <h4>Payment Information</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <label
+                                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Payroll Type<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                        </label>
+                                                        <ng-select [(ngModel)]="paymentData.payroll.type" name="payrollType" placeholder="Select Payroll Type" disabled>
+                                                            <ng-option value="flat">Flat</ng-option>
+                                                            <ng-option value="hourly">Hours</ng-option>
+                                                        </ng-select>
+                                                    </div>
+                                                    <div id="payrollHourDiv" style="display: flex;" *ngIf="paymentData.payroll.type === 'hourly'">
+                                                        <div class="col-lg-3">
+                                                            <label
+                                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Hours<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                            </label>
+                                                            <input type="text" class="form-control" name="hours" [(ngModel)]="paymentData.payroll.hours" (input)="EmpRateCalc()" placeholder="e.g 8" #rllHOur="ngModel" required>
+                                                            <div *ngIf="rllHOur.invalid && (rllHOur.dirty || rllHOur.touched)" class="text-danger">
+                                                                <div *ngIf="rllHOur.errors.required">
+                                                                    Hours are required.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <label
+                                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Rate/Hour<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                            </label>
+                                                            <input type="text" class="form-control" name="perHour" [(ngModel)]="paymentData.payroll.perHour" placeholder="e.g 10" disabled #hourRate="ngModel" required>
+                                                            <div *ngIf="hourRate.invalid && (hourRate.dirty || hourRate.touched)" class="text-danger">
+                                                                <div *ngIf="hourRate.errors.required">
+                                                                    Rate/Hour is required.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="payrollFlatDiv" *ngIf="paymentData.payroll.type === 'flat'">
+                                                        <div class="col-lg-8">
+                                                            <label
+                                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Flat
+                                                                Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                            </label>
+                                                            <input type="text" class="form-control" name="amount" [(ngModel)]="paymentData.payroll.amount" (input)="empFlatRate()" placeholder="e.g 50" #flAmount="ngModel" required>
+                                                            <div *ngIf="flAmount.invalid && (flAmount.dirty || flAmount.touched)" class="text-danger">
+                                                                <div *ngIf="flAmount.errors.required">
+                                                                    Flat amount is required.
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <h4 class="font-weight-bold">Addition</h4>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <table class="table table-bordered" id="otherChargesTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Charge Name</th>
+                                                            <th>Description</th>
+                                                            <th>Amount</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let data of paymentData.addition; let i=index;">
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
+                                                            <td>{{ data.chargeName }}</td>
+                                                            <td>{{ data.desc }}</td>
+                                                            <td>{{ data.amount }} {{ data.currency }}</td>
+                                                            <td>
+                                                                <span class="badge badge-dark p-2" (click)="delRow(i, 'additional')"><i class="fas fa-trash-alt text-light"></i></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input [(ngModel)]="additionRowData.eventDate" name="setDate" type="text" placeholder="yyyy/mm/dd" (click)="setDate.toggle()"
+                                                                ngbDatepicker #setDate="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="additionRowData.chargeName" name="addChargeName" placeholder="Enter charge name">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="additionRowData.desc" name="adDescription" placeholder="Enter description">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="additionRowData.amount" name="adAmount" placeholder="Enter amount">
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-success btn-sm" (click)="addAdditionalExp()"><i class="fas fa-plus"></i> Add</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col-lg-3 offset-lg-8 pr-5">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 text-right"><label
+                                                                    class="control-label font-weight-bold">Total
+                                                                    Addition</label></div>
+                                                            <div class="col-lg-6">
+                                                                <input type="text" class="form-control" name="additionTotal" [(ngModel)]="paymentData.additionTotal" placeholder="e.g 150" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-1 text-right">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <h4 class="font-weight-bold">Deduction</h4>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <table class="table table-bordered" id="otherChargesTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Charge Name</th>
+                                                            <th>Description</th>
+                                                            <th>Amount</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let data of paymentData.deduction; let i=index;">
+                                                            <td>{{ data.eventDate | date:"yyyy/MM/dd" }}</td>
+                                                            <td>{{ data.chargeName }}</td>
+                                                            <td>{{ data.desc }}</td>
+                                                            <td>{{ data.amount }} {{ data.currency }}</td>
+                                                            <td>
+                                                                <span class="badge badge-dark p-2" (click)="delRow(i, 'deduction')"><i class="fas fa-trash-alt text-light"></i></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <input [(ngModel)]="deductionRowData.eventDate" name="dedDate" type="text" placeholder="yyyy/mm/dd" (click)="dedDate.toggle()"
+                                                                ngbDatepicker #dedDate="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="deductionRowData.chargeName" name="dedChargeName" placeholder="Enter charge name">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="deductionRowData.desc" name="dedDescription" placeholder="Enter description">
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control" [(ngModel)]="deductionRowData.amount" name="dedAmount" placeholder="Enter amount">
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-success btn-sm" (click)="adddeductionExp()"><i class="fas fa-plus"></i> Add</button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="row">
+                                                    <div class="col-lg-3 offset-lg-8 pr-5">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 text-right"><label
+                                                                    class="control-label font-weight-bold">Total
+                                                                    Deduction</label></div>
+                                                            <div class="col-lg-6">
+                                                                <input type="text" class="form-control" name="deductionTotal" [(ngModel)]="paymentData.deductionTotal" placeholder="e.g 150" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-1 text-right">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-lg-5 offset-lg-1">
+                                                <div class="row">
+
+
+                                                    <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold labelalign">Payment
+                                                            Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <ng-select [(ngModel)]="paymentData.payMode" name="payMode"
+                                                            placeholder="Select Payment Mode" (change)="changePaymentMode($event)" #payMode="ngModel" required>
+                                                            <ng-option value="cash">Cash</ng-option>
+                                                            <ng-option value="cheque">Cheque</ng-option>
+                                                            <ng-option value="eft">EFT</ng-option>
+                                                            <ng-option value="credit_card">Credit Card</ng-option>
+                                                            <ng-option value="debit_card">Debit Card</ng-option>
+                                                            <ng-option value="demand_draft">Demand Draft</ng-option>
+                                                        </ng-select>
+
+                                                        <div *ngIf="payMode.invalid && (payMode.dirty || payMode.touched)" class="text-danger">
+                                                            <div *ngIf="payMode.errors.required">
+                                                                Payment mode is required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                      <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account" #accountID="ngModel" required>
+                                                          <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{
+                                                              data.actName | titlecase}}</ng-option>
+                                                      </ng-select>
+
+                                                      <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
+                                                          <div *ngIf="accountID.errors.required">
+                                                              Account is required.
+                                                          </div>
+                                                      </div>
                                                   </div>
-                                                  <div class="col-lg-3">
-                                                      <label
-                                                      class="control-label font-weight-bold font-bold text-lg-right pt-2">Rate/Hour
-                                                      </label>
-                                                     <input type="text" class="form-control">
+                                                  <div class="col-lg-2" style="margin-top: 32px;">
+                                                    <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                                      class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                                                    </button>
+                                                    <a href="javascript:;" (click)="refreshAccount()"
+                                                      data-toggle="tooltip" title="Refresh account data"
+                                                      class="btn btn-success btn-sm modal-with-form"><i
+                                                          class="fas fa-sync"></i></a>
+                                                  </div>
+                                                </div>
+                                                <div class="row pt-1"  *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
+                                                    <div class="col-lg-5">
+                                                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$">
+                                                        <div *ngIf="payNoo.invalid && (payNoo.dirty || payNoo.touched)" class="text-danger">
+                                                            <div *ngIf="payNoo.errors.required">
+                                                                {{ payModeLabel }} Reference is required.
+                                                            </div>
+                                                            <div *ngIf="payNoo.errors.pattern">
+                                                                {{ payModeLabel }} Reference must contain alphanumeric characters.
+                                                               </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-5">
+                                                        <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                        <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                                                            placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                                                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+
+                                                        <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                                                            <div *ngIf="payDate.errors.required">
+                                                                {{ payModeLabel }} Date is required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1" id="chequeDivDriver" *ngIf="paymentData.payMode && paymentData.payMode === 'cheque'">
+                                                  <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                      <input type="text" class="form-control" placeholder="hello" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" readonly="paymentData.payMode && paymentData.payMode === 'cheque'">
+
+                                                  </div>
+                                                  <div class="col-lg-5">
+                                                      <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                      <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                                                          placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                                                          #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+
+                                                      <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                                                          <div *ngIf="payDate.errors.required">
+                                                              {{ payModeLabel }} Date is required.
+                                                          </div>
+                                                      </div>
                                                   </div>
                                               </div>
-                                              <div id="payrollFlatDiv" style="display: none;">
-                                                  <div class="col-lg-8">
-                                                      <label
-                                                      class="control-label font-weight-bold font-bold text-lg-right pt-2">Flat Amount
-                                                      </label>
-                                                     <input type="text" class="form-control">
+                                            </div>
+                                            <div class="col-lg-3 offset-lg-2">
+                                                <div class="row">
+                                                    <div class="col-lg-6 text-right"><label
+                                                            class="control-label font-weight-bold">
+                                                            Amount</label></div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="paymentTotal" [(ngModel)]="paymentData.paymentTotal" placeholder="e.g 150" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Other
+                                                            Charges</label></div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Add</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="aitionTotal" [(ngModel)]="paymentData.additionTotal" placeholder="e.g 150" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right"><label
+                                                            class="control-label font-weight-bold">Deduct</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="dedddd" [(ngModel)]="paymentData.deductionTotal" placeholder="e.g 150" disabled>
+                                                    </div>
+                                                    <div class="col-lg-6 offset-lg-6 pt-2"><a href="javascript:;" (click)="openPayrollModel()"
+                                                            class="btn btn-success font-weight-semibold modal-with-form btn-sm">Calculate
+                                                            Payroll</a></div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right"><label
+                                                            class="control-label font-weight-bold">Taxes</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="taxes" [(ngModel)]="paymentData.taxes" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('tax')" disabled>
+                                                        <label class="error" *ngIf="taxErr">{{ taxErr }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                  <div class="col-lg-6 text-right"><label
+                                                          class="control-label font-weight-bold">CPP</label>
                                                   </div>
+                                                  <div class="col-lg-6">
+                                                      <input type="text" class="form-control" name="taxdata.cpp" [(ngModel)]="paymentData.taxdata.cpp" placeholder="e.g 150" (input)="calculateFinalTotal()" disabled>
 
+                                                  </div>
                                               </div>
+                                              <div class="row pt-1">
+                                                <div class="col-lg-6 text-right"><label
+                                                        class="control-label font-weight-bold">EI</label>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <input type="text" class="form-control" name="taxdata.ei" [(ngModel)]="paymentData.taxdata.ei" placeholder="e.g 150" (input)="calculateFinalTotal()" disabled>
 
-                                          </div>
-                                      </div>
-                                  </div>
-                                  <div class="row pt-2">
-                             <div class="col-lg-10 offset-lg-1">
-                                <h4 class="font-weight-bold">Addition</h4>
-                             </div>
-                             <div class="col-lg-10 offset-lg-1">
-                                <table class="table table-bordered" id="otherChargesTable">
-                                   <thead>
-                                      <tr><th>Date</th>
+                                                </div>
+                                            </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right"><label
+                                                            class="control-label font-weight-bold">Advance</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="advance" [(ngModel)]="paymentData.advance" placeholder="e.g 150" (input)="calculateFinalTotal(); checkInput('advance');" disabled>
+                                                        <label class="error">{{ advErr }}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-1">
+                                                    <div class="col-lg-6 text-right"><label
+                                                            class="control-label font-weight-bold">Net
+                                                            Payable</label></div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" name="finalTotal" [(ngModel)]="paymentData.finalTotal" placeholder="e.g 150" disabled>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                         <th>Charge Name</th>
-                                         <th>Description</th>
-                                         <th>Amount</th>
-                                         <th>Action</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr>
-                                      <td>Jun 12,2020</td>
-                                         <td>Food</td>
-                                         <td>Had lunch with client</td>
-                                         <td>CAD 34</td>
-                                         <td><span class="badge badge-dark p-2"><i
-                                            class="fas fa-trash-alt text-light"></i></span>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                      <td><input type="text"  class="form-control"></td>
-                                         <td><input type="text"  class="form-control"></td>
-                                         <td><input type="text"  class="form-control"></td>
-                                         <td><input type="text"  class="form-control"></td>
-                                         <td><button type="button" class="btn btn-success btn-sm"
-                                            onclick="insertRow()"><i
-                                            class="fas fa-plus"></i> Add</button></td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                                <div class="row">
-                                   <div class="col-lg-3 offset-lg-8 pr-5">
-                                      <div class="row">
-                                         <div class="col-lg-6 text-right"><label class="control-label font-weight-bold">Total Addition</label></div>
-                                         <div class="col-lg-6"><input type="text" class="form-control" value="345.67"></div>
-                                      </div>
-                                   </div>
-                                   <div class="col-lg-1 text-right">
+                                    <div class="form-group row mt-4">
+                                        <div class="col-lg-11 text-right">
+                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                                            <button type="button" class="btn btn-success modal-with-form mr-2" *ngIf="paymentData.payMode == 'cheque'" (click)="showCheque()">Cheque preview</button>
+                                            <button class="btn btn-success" (click)="addRecord()" [disabled]="!empPaymentForm.form.valid || submitDisabled" *ngIf="!paymentID">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+</section>
 
-                                   </div>
+<!-- payroll calculation modal -->
+<div class="modal fade" id="payrollModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 600px;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Taxes</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <section class="card">
+                                <div class="card-body" style="display: block;">
+                                    <div class="form-group text-dark">
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Pay Period</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.payPeriod" name="payPeriod" placeholder="Select Pay Period" (change)="calculatePayroll()">
+                                                    <ng-option value="{{ data.payCount }}" *ngFor="let data of payPeriods">{{ data.name }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">State</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.stateCode" name="stateCode" placeholder="Select State" (change)="assignProvincalCode()">
+                                                    <ng-option value="{{ data.stateCode }}" *ngFor="let data of states">{{ data.stateName }}
+                                                    </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Federal Claim Code</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.federalCode" name="federalCode" placeholder="Select Federal Claim Code" disabled>
+                                                    <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
+                                                    <ng-container *ngFor="let data of claimCodes[0]">
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e'">{{ data.from | number : '1.2-2' }} - {{ data.to | number : '1.2-2' }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Provincial Claim Code</label>
+                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" disabled>
+                                                    <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
+                                                    <ng-container *ngFor="let data of provincalClaimCodes">
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number : '1.2-2' }} - {{ data.to | number : '1.2-2' }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_x'">Greater than {{ data.from | number : '1.2-2' }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
+                                                    </ng-container>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Federal Tax</label>
+                                                <input type="text" class="form-control" name="pro_fedtax" [(ngModel)]="paymentData.taxdata.federalTax" disabled>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">Provincial Tax</label>
+                                                <input type="text" class="form-control" name="pro_provtax" [(ngModel)]="paymentData.taxdata.provincialTax" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">CPP (Canada Pension Plan)</label>
+                                                <input type="text" class="form-control" name="pro_cpp" [(ngModel)]="paymentData.taxdata.cpp" disabled>
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label class="control-label font-weight-bold">EI (Employment Insurance)</label>
+                                                <input type="text" class="form-control" name="pro_ei" [(ngModel)]="paymentData.taxdata.ei" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                             </div>
-                          </div>
-                          <div class="row">
-                             <div class="col-lg-10 offset-lg-1">
-                                <h4 class="font-weight-bold">Deduction</h4>
-                             </div>
-                             <div class="col-lg-10 offset-lg-1">
-                                <table class="table table-bordered" id="otherChargesTable">
-                                   <thead>
-                                      <tr>
-                                      <th>Date</th>
-                                         <th>Charge Name</th>
-                                         <th>Description</th>
-                                         <th>Amount</th>
-                                         <th>Action</th>
-                                      </tr>
-                                   </thead>
-                                   <tbody>
-                                      <tr>
-                                      <td>Jun 13, 2020</td>
-                                         <td>one thing</td>
-                                         <td>no reason to deduct</td>
-                                         <td>CAD 34</td>
-                                         <td><span class="badge badge-dark p-2"><i
-                                            class="fas fa-trash-alt text-light"></i></span>
-                                         </td>
-                                      </tr>
-                                      <tr>
-                                      <td><input type="text"  class="form-control"></td>
-                                         <td><input type="text" class="form-control"></td>
-                                         <td><input type="text"  class="form-control"></td>
-                                         <td><input type="text"  class="form-control"></td>
-                                         <td><button type="button" class="btn btn-success btn-sm"
-                                            onclick="insertRow()"><i
-                                            class="fas fa-plus"></i> Add</button></td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                                <div class="row">
-                                   <div class="col-lg-3 offset-lg-8 pr-5">
-                                      <div class="row">
-                                         <div class="col-lg-6 text-right"><label class="control-label font-weight-bold">Total Deduction</label></div>
-                                         <div class="col-lg-6"><input type="text" class="form-control" value="345.67"></div>
-                                      </div>
-                                   </div>
-                                   <div class="col-lg-1 text-right">
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                                  <div class="row pt-2">
-                                      <div class="col-lg-5 offset-lg-1">
-                                          <div class="row">
-                                              <div class="col-lg-5">
-                                                  <label class="control-label font-weight-bold">Select
-                                                      Account</label>
-
-                                                  <select data-plugin-selectTwo class="form-control populate">
-                                                      <optgroup>
-                                                          <option value="1">Account 1</option>
-                                                          <option value="2">Account 2</option>
-                                                          <option value="2">Account 3</option>
-                                                      </optgroup>
-                                                  </select>
-                                              </div>
-                                              <div class="col-lg-1" style="margin-top: 32px;">
-                                                  <a href="#addAccountModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-5"><label
-                                                      class="control-label font-weight-bold  labelalign">Payment
-                                                      Mode</label>
-                                                  <select data-plugin-selectTwo class="form-control populate"
-                                                      id="paymentModeListDriver"
-                                                      onchange="paymentModeDriver()">
-                                                      <optgroup>
-                                                          <option value="select">Select</option>
-                                                          <option value="Cash">Cash</option>
-                                                          <option value="Cheque">Cheque</option>
-                                                          <option value="EFT">EFT</option>
-                                                          <option value="creditCard">Credit Card</option>
-                                                          <option value="debitCard">Debit Card</option>
-                                                          <option value="demandDraft">Demand Draft</option>
-                                                      </optgroup>
-                                                  </select>
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <!-- <label
-                                                  class="control-label font-weight-bold  labelalign">Payment Date</label>
-                                                 <input type="date" class="form-control"> -->
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="chequeDivDriver" style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Cheque
-                                                      Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Cheque
-                                                      Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="cashDivDriver" style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Cash
-                                                      Reference Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Cash
-                                                      Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="eftDivDriver" style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">EFT
-                                                      Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">EFT
-                                                      Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="creditCardDivDriver"
-                                              style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Credit
-                                                      Card Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Credit
-                                                      Card Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="debitCardDivDriver"
-                                              style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Debit
-                                                      Card Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Debit
-                                                      Card Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                          <div class="row pt-1" id="demandDraftDivDriver"
-                                              style="display: none;">
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Demand
-                                                      Draft Number</label>
-                                                  <input type="text" class="form-control">
-                                              </div>
-                                              <div class="col-lg-5">
-                                                  <label
-                                                      class="control-label font-weight-bold  labelalign">Demand
-                                                      Draft Date</label>
-                                                  <input type="date" class="form-control">
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <div class="col-lg-3 offset-lg-2">
-                                          <div class="row">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">
-                                                      Amount</label></div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="345.67"></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Other
-                                                      Charges</label></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Add</label></div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="345.67"></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Deduct</label>
-                                              </div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="345.67"></div>
-                                                      <div class="col-lg-6 offset-lg-6 pt-2"><a href="#payrollModal"
-                                                          class="btn btn-default modal-with-form btn-sm">Calculate
-                                                          Payroll</a></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Taxes</label>
-                                              </div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="345.67"></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Adance</label>
-                                              </div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="300"></div>
-                                          </div>
-                                          <div class="row pt-1">
-                                              <div class="col-lg-6 text-right"><label
-                                                      class="control-label font-weight-bold">Net
-                                                      Payable</label></div>
-                                              <div class="col-lg-6"><input type="text" class="form-control"
-                                                      value="345.67"></div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="form-group row mt-4">
-                                  <div class="col-lg-11 text-right">
-                                      <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                                      <button class="btn btn-success">Save</button>
-
-                                  </div>
-                              </div>
-                          </form>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </section>
-  </section>
+<app-payment-cheque></app-payment-cheque>
+<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Account</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <app-add-account></app-add-account>
+      </div>
+    </div>
   </div>
-</section>>
+</div>

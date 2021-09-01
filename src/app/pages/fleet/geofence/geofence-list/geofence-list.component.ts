@@ -98,10 +98,10 @@ export class GeofenceListComponent implements OnInit {
         setTimeout(() => {
           let new_cords = [];
           for (let i = 0; i < cords[0].length - 1; i++) {
-  
+
             for (let j = 0; j < cords[0][i].length - 1; j++) {
               new_cords.push([cords[0][i][j + 1], cords[0][i][j]]);
-  
+
             }
           }
           this.map = this.LeafletMap.initGeoFenceMap();
@@ -109,8 +109,8 @@ export class GeofenceListComponent implements OnInit {
           this.map.fitBounds(poly.getBounds());
         },
           100);
-      } 
-     
+      }
+
     }
   }
 
@@ -156,7 +156,7 @@ export class GeofenceListComponent implements OnInit {
         }
       });
   }, 800)
-  
+
 
   fetchGeofenceTypes() {
     this.apiService.getData('geofenceTypes')
@@ -172,10 +172,10 @@ export class GeofenceListComponent implements OnInit {
     this.suggestedGeofences = [];
   }
 
-  deactivateGeofence(value, geofenceID) {
+  deactivateGeofence(value, geofenceID, geofenceName: string) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`geofences/isDeleted/${geofenceID}/${value}`)
+      .deleteData(`geofences/isDeleted/${geofenceID}/${geofenceName}/${value}`)
       .subscribe((result: any) => {
         this.geofences = [];
         this.geoDraw = 0;
@@ -238,7 +238,7 @@ export class GeofenceListComponent implements OnInit {
             this.geoPrevEvauatedKeys.push(result['LastEvaluatedKey'].geofenceID);
           }
           this.lastEvaluatedKey = result['LastEvaluatedKey'].geofenceID;
-          
+
         } else {
           this.geoNext = true;
           this.lastEvaluatedKey = '';
@@ -257,7 +257,7 @@ export class GeofenceListComponent implements OnInit {
         }
         this.spinner.hide();
       }, err => {
-        
+
       });
   }
 
