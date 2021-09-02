@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import {environment} from '../../../../../environments/environment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import Constants from 'src/app/pages/manage/constants';
 declare var $: any;
 
 @Component({
@@ -30,7 +31,8 @@ export class AssetDetailComponent implements OnInit {
   public assetData: any;
   public deviceData;
   carrierID;
-
+  noRecordMsg: string = Constants.NO_RECORDS_FOUND;
+  
   assetIdentification: string;
   VIN: string;
   assetType: string;
