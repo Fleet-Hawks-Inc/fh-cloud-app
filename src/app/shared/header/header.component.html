@@ -61,10 +61,18 @@
     </div>
 
     <div class="header-right">
-        <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal"
+        <!-- <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal"
             class="modal-with-form address-book-icon" title="Address Book">
             <i class="far fa-address-book text-dark" style="font-size:20px;"></i>
-        </a>
+        </a> -->
+        <a
+  href="javascript:;"
+  (click)="openModal('list')"
+  class="modal-with-form address-book-icon"
+  title="Address Book"
+>
+  <i class="far fa-address-book text-dark" style="font-size: 16px"></i>
+</a>
         <div id="userbox" class="userbox mt-0">
 
             <a href="#" data-toggle="dropdown">

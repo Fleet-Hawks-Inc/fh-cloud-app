@@ -63,14 +63,24 @@ export class SettlementsListComponent implements OnInit {
       });
   }
 
-  fetchSettlements() {
+  fetchSettlements(refresh?: boolean) {
+    let searchParam = null;
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.settlements = [];
+    }
     if (this.lastItemSK !== 'end') {
+      if (this.filter.settlementNo !== null && this.filter.settlementNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.settlementNo}"`);
+     } else {
+       searchParam = null;
+     }
       this.accountService
       .getData(
-        `settlement/paging?type=${this.filter.type}&settlementNo=${this.filter.settlementNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        `settlement/paging?type=${this.filter.type}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
       )
       .subscribe((result: any) => {
-        if (result.length == 0) {
+        if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if (result.length > 0) {
@@ -154,6 +164,6 @@ export class SettlementsListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchSettlements(); 
+    this.fetchSettlements();
   }
 }
