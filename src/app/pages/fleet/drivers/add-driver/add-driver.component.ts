@@ -28,7 +28,7 @@ declare var $: any;
   styleUrls: ['./add-driver.component.css'],
 })
 export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeactivate {
-  @ViewChild('driverForm', null) driverForm: NgForm;
+  @ViewChild('driverForm') driverForm: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   // driverSession = JSON.parse(localStorage.getItem('driver'));

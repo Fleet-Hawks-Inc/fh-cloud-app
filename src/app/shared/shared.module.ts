@@ -9,10 +9,10 @@ import { HeaderComponent } from './header/header.component';
 import { FixedRightSidebarComponent } from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
 import { AddressBookComponent } from './popups/address-book/address-book.component';
 import { SharedModalsComponent } from './popups/shared-modals/shared-modals.component';
-import { AddDriverComponent } from '../pages/fleet/drivers/add-driver/add-driver.component'
+
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AddVehicleNewComponent } from '../pages/fleet/vehicles/add-vehicle-new/add-vehicle-new.component';
+
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 // ngselect2
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -96,10 +96,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MultiSidebarComponents,
     HeaderComponent,
     FixedRightSidebarComponent,
-    AddressBookComponent,
-    AddDriverComponent,
-    AddServiceProgramComponent,
-    AddVehicleNewComponent,
+    AddressBookComponent,    
+    AddServiceProgramComponent,    
     SharedModalsComponent,
     AllCarriersComponent,
     MustMatchDirective,
