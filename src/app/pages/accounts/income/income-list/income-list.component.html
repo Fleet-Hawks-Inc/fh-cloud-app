@@ -78,10 +78,10 @@
                                               <td colspan="9">{{ dataMessage }}</td>
                                           </tr>
                                           <tr *ngFor="let data of incomeAccounts">
-                                              <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                              <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
-                                              <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.paymentMode }}</td>
-                                              <td routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.recAmount | number : '1.2-2' }} {{ data.recCurr }}</td>
+                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
+                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
+                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.paymentMode }}</td>
+                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.recAmount | number : '1.2-2' }} {{ data.recCurr }}</td>
                                               <td>
                                                   <div class="btn-group flex-wrap">
                                                       <button type="button" class="mr-1 btn"

@@ -53,88 +53,84 @@
             <section class="m-2">
                 <div class="row mb-3">
                    <div class="col-lg-12">
-                    <div infiniteScroll
-                    [infiniteScrollDistance]="1"
-                    [infiniteScrollUpDistance]="1"
-                    [infiniteScrollThrottle]="5"
-                    (scrolled)="onScroll()">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row">
-                            <div class="col-lg-12">
-                                <table class="table table-bordered table-striped mb-0 simple-table">
-                                  <thead>
-                                      <tr class="bgcol2">
-                                          <th class="text-2">Settlement#</th>
-                                          <th class="text-2">Settlement Date</th>
-                                          <th class="text-2">Settlement Type</th>
-                                          <th class="text-2">Trip#</th>
-                                          <th class="text-2">Settled Amount</th>
-                                          <th class="text-2">Paid Amount</th>
-                                          <th class="text-2">Balance</th>
-                                          <th class="text-2">Status</th>
-                                          <th class="text-2">Action</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-                                      <tr *ngIf="settlements.length === 0" class="text-center">
-                                          <td colspan="10">{{ dataMessage }}</td>
-                                      </tr>
-                                      <tr *ngFor="let data of settlements; let i=index;">
-                                          <td class="cursorpoint font-weight-bold" [routerLink]="data.url">{{ data.setNo }}</td>
-                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate |
-                                              date:"yyyy/MM/dd" }}</td>
-                                          <td class="cursorpoint text-capitalize" [routerLink]="data.url"><strong >{{ data.entityType }}</strong>:
-                                              <span *ngIf="data.type === 'driver'"> {{ drivers[data.entityId] }} </span>
-                                              <span *ngIf="data.type === 'carrier'"> {{ carriers[data.entityId] }} </span>
-                                              <span *ngIf="data.type === 'owner_operator'"> {{ ownerOperators[data.entityId] }}</span>
-                                          </td>
-                                          <td class="cursorpoint" [routerLink]="data.url">
-                                              <span *ngFor="let trp of data.tripIds; let t=index;">
-                                                  {{ tripsObj[trp] }}
-                                                  <span *ngIf="t < data.tripIds.length-1">,</span>
-                                              </span>
-                                          </td>
-                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.finalTotal | number : '1.2-2' }} CAD </td>
-                                          <td class="cursorpoint" [routerLink]="data.url">
-                                              <span *ngIf="data.paidAmount">
-                                                  {{ data.paidAmount | number : '1.2-2' }} CAD
-                                              </span>
-                                              <span *ngIf="!data.paidAmount">-</span>
-                                          </td>
-                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.pendingPayment | number : '1.2-2' }} CAD</td>
-                                          <td class="cursorpoint" [routerLink]="data.url"><span
-                                                  class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
-                                          <td>
-                                              <div class="dropdown dropright">
-                                                  <button class="bg-transparent border-0" type="button"
-                                                      id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                      aria-haspopup="true" aria-expanded="false" [disabled]="data.paymentLinked">
-                                                      <i class="fas fa-ellipsis-v"></i>
-                                                  </button>
-                                                  <div class="dropdown-menu"
-                                                      attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                      <a class="dropdown-item"
-                                                          routerLink="/accounts/settlements/edit/{{ data.sttlID }}" >Edit</a>
-                                                      <a class="dropdown-item" href="javascript:;" (click)="deleteSettlement(data.sttlID)">Delete</a>
-                                                  </div>
+                    <section class="card">
+                      <div class="main-panel">
+                        <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
+                        (scrolled)="onScroll()">
+                        <div class="card-body" style="display: block">
+                          <div class="main-panel">
+                            <table class="table table-bordered table-striped mb-0 simple-table">
+                              <thead>
+                                  <tr class="bgcol2">
+                                      <th class="text-2">Settlement#</th>
+                                      <th class="text-2">Settlement Date</th>
+                                      <th class="text-2">Settlement Type</th>
+                                      <th class="text-2">Trip#</th>
+                                      <th class="text-2">Settled Amount</th>
+                                      <th class="text-2">Paid Amount</th>
+                                      <th class="text-2">Balance</th>
+                                      <th class="text-2">Status</th>
+                                      <th class="text-2">Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr *ngIf="settlements.length === 0" class="text-center">
+                                      <td colspan="10">{{ dataMessage }}</td>
+                                  </tr>
+                                  <tr *ngFor="let data of settlements; let i=index;">
+                                      <td class="cursorpoint font-weight-bold" [routerLink]="data.url">{{ data.setNo }}</td>
+                                      <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate |
+                                          date:"yyyy/MM/dd" }}</td>
+                                      <td class="cursorpoint text-capitalize" [routerLink]="data.url"><strong >{{ data.entityType }}</strong>:
+                                          <span *ngIf="data.type === 'driver'"> {{ drivers[data.entityId] }} </span>
+                                          <span *ngIf="data.type === 'carrier'"> {{ carriers[data.entityId] }} </span>
+                                          <span *ngIf="data.type === 'owner_operator'"> {{ ownerOperators[data.entityId] }}</span>
+                                      </td>
+                                      <td class="cursorpoint" [routerLink]="data.url">
+                                          <span *ngFor="let trp of data.tripIds; let t=index;">
+                                              {{ tripsObj[trp] }}
+                                              <span *ngIf="t < data.tripIds.length-1">,</span>
+                                          </span>
+                                      </td>
+                                      <td class="cursorpoint" [routerLink]="data.url">{{ data.finalTotal | number : '1.2-2' }} CAD </td>
+                                      <td class="cursorpoint" [routerLink]="data.url">
+                                          <span *ngIf="data.paidAmount">
+                                              {{ data.paidAmount | number : '1.2-2' }} CAD
+                                          </span>
+                                          <span *ngIf="!data.paidAmount">-</span>
+                                      </td>
+                                      <td class="cursorpoint" [routerLink]="data.url">{{ data.pendingPayment | number : '1.2-2' }} CAD</td>
+                                      <td class="cursorpoint" [routerLink]="data.url"><span
+                                              class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span></td>
+                                      <td>
+                                          <div class="dropdown dropright">
+                                              <button class="bg-transparent border-0" type="button"
+                                                  id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                  aria-haspopup="true" aria-expanded="false" [disabled]="data.paymentLinked">
+                                                  <i class="fas fa-ellipsis-v"></i>
+                                              </button>
+                                              <div class="dropdown-menu"
+                                                  attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                  <a class="dropdown-item"
+                                                      routerLink="/accounts/settlements/edit/{{ data.sttlID }}" >Edit</a>
+                                                  <a class="dropdown-item" href="javascript:;" (click)="deleteSettlement(data.sttlID)">Delete</a>
                                               </div>
-                                          </td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                              </div>
-                            </div>
-
-                         </div>
+                                          </div>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                          </div>
+                          </div>
+                          </div>
                       </div>
+                    </section>
                     </div>
                    </div>
-                </div>
-
              </section>
-
-
-
         </section>
     </div>
 </section>
