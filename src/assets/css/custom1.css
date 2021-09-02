@@ -679,7 +679,7 @@ label.error {
 .form-control {
     height: 31px;
 }
-.address-book-icon {
+/* .address-book-icon {
     position: fixed;
     bottom: 30px;
     left: 23px;
@@ -690,7 +690,7 @@ label.error {
     text-align: center;
     border-radius: 50%;
     box-shadow: 0em 0 0.4em 0 rgb(15 22 33 / 60%);
-}
+} */
 .dropdown-item.active, .dropdown-item:active {
     background-color: #47a447;
 }
