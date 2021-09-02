@@ -80,6 +80,7 @@ export class AddTripComponent implements OnInit {
         mapFrom: 'order',
         iftaMiles: [],
         split:[],
+        stlLink: false,
     };
     ltlOrders = [];
     ftlOrders = [];
@@ -1202,16 +1203,11 @@ export class AddTripComponent implements OnInit {
         this.tripData.loc = selectedLocations;
         this.tripData.stlStatus = stlStatus;
         this.tripData.carrierIDs = selectedCarrierids;
-        for (let i = 0; i < this.splitArr.length; i++) {
-            const element = this.splitArr[i];
-            this.tripData.split[i] = [];
-            element.map((v) => {
-                this.tripData.split[i].push(v.planID);
-            })
-        }
+        this.splitTripArr();
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
+        console.log('this.tripData', this.tripData);
         this.apiService.postData('trips', this.tripData).subscribe({
             complete: () => {
             },
@@ -1530,7 +1526,7 @@ export class AddTripComponent implements OnInit {
                 if(result.split) {
                     result.split.map((x, cind) => {
                         this.splitArr[cind] = [];
-                        x.map((c) => {
+                        x.plan.map((c) => {
                             this.trips.map((t) => {
                                 if(t.planID === c) {
                                     this.dummySplitArr.push(t.planID);
@@ -1705,13 +1701,14 @@ export class AddTripComponent implements OnInit {
 
             this.tripData.tripPlanning.push(obj);
         }
-        for (let i = 0; i < this.splitArr.length; i++) {
-            const element = this.splitArr[i];
-            this.tripData.split[i] = [];
-            element.map((v) => {
-                this.tripData.split[i].push(v.planID);
-            })
-        }
+        this.splitTripArr();
+        // for (let i = 0; i < this.splitArr.length; i++) {
+        //     const element = this.splitArr[i];
+        //     this.tripData.split[i] = [];
+        //     element.map((v) => {
+        //         this.tripData.split[i].push(v.planID);
+        //     })
+        // }
         this.tripData.driverIDs = selectedDriverids;
         this.tripData.vehicleIDs = selectedVehicles;
         this.tripData.assetIDs = selectedAssets;
@@ -1756,6 +1753,47 @@ export class AddTripComponent implements OnInit {
                 this.cancel();
             },
         });
+    }
+
+    splitTripArr() {
+        this.tripData.split = [];
+        for (let i = 0; i < this.splitArr.length; i++) {
+            const element = this.splitArr[i];
+            let obz = {
+                plan: [],
+                stlStatus: [],
+                settlmnt: false,
+                assgnIds: [],
+            }
+            this.tripData.split[i] = obz;
+            element.map((v) => {
+                let stlStr = '';
+                if(v.carrierID != '' && v.carrierID != null && v.carrierID != undefined) {
+                    if(!this.tripData.split[i].assgnIds.includes(v.carrierID))  {
+                        stlStr = `${v.carrierID}:false`;
+                        this.tripData.split[i].assgnIds.push(v.carrierID);
+                        this.tripData.split[i].stlStatus.push(stlStr);
+                    }
+                }
+
+                if(v.driverID != '' && v.driverID != null && v.driverID != undefined) {
+                    if(!this.tripData.split[i].assgnIds.includes(v.driverID)) {
+                        stlStr = `${v.driverID}:false`;
+                        this.tripData.split[i].assgnIds.push(v.driverID);
+                        this.tripData.split[i].stlStatus.push(stlStr);
+                    }
+                }
+
+                if(v.coDriverID != '' && v.coDriverID != null && v.coDriverID != undefined) {
+                    if(!this.tripData.split[i].assgnIds.includes(v.coDriverID)) {
+                        stlStr = `${v.coDriverID}:false`;
+                        this.tripData.split[i].assgnIds.push(v.coDriverID);
+                        this.tripData.split[i].stlStatus.push(stlStr);
+                    }
+                }
+                this.tripData.split[i].plan.push(v.planID);
+            })
+        }
     }
 
     getCurrentuser = async () => {

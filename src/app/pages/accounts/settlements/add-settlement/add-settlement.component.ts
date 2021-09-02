@@ -25,6 +25,7 @@ export class AddSettlementComponent implements OnInit {
         fromDate: null,
         toDate: null,
         tripIds: [],
+        trpData: [],
         miles: {
             tripsTotal: 0,
             driverTotal: 0,
@@ -124,6 +125,12 @@ export class AddSettlementComponent implements OnInit {
     finalTripExpenses = [];
     editDisabled = false;
     driversObj = [];
+    drvrPay = 0;
+    teamMiles = 0;
+    ownDelCouunt = 0;
+    ownerLoadedM = 0;
+    ownerEmptyM = 0;
+    delvCount = 0;
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -208,6 +215,8 @@ export class AddSettlementComponent implements OnInit {
                 if(result.Items.length === 0) {
                     this.tripMsg = Constants.NO_RECORDS_FOUND;
                 }
+                let entStat = `${this.settlementData.entityId}:false`;
+
                 for (let i = 0; i < this.trips.length; i++) {
                     const element = this.trips[i];
                     element.pickupLocation = '';
@@ -216,6 +225,8 @@ export class AddSettlementComponent implements OnInit {
                     let pickCount = 1;
                     let dropCount = 1;
                     element.selected = false;
+                    element.subSelected = false;
+                    element.splitArr = [];
 
                     for (let j = 0; j < element.tripPlanning.length; j++) {
                         const plan = element.tripPlanning[j];
@@ -237,6 +248,65 @@ export class AddSettlementComponent implements OnInit {
                         }
                     }
 
+                    if(element.split && element.split.length > 0) {
+                        element.split.map((main) => {
+                            let arrr = {
+                                selected: false,
+                                trips: []
+                            };
+                            
+                            main.plan.map((c) => {
+                                if(this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
+                                    if(main.stlStatus.includes(entStat)) {
+
+                                        if(this.settlementData.type === 'driver') {
+                                            element.tripPlanning.map((trp) => {
+                                                if(c === trp.planID) {
+                                                    if(this.settlementData.entityId === trp.driverID || this.settlementData.entityId === trp.coDriverID) {
+                                                        trp.planLoc =  this.setTripLoc(trp);
+                                                        arrr.trips.push(trp);
+                                                    }
+                                                }
+                                            })
+                                        } else if(this.settlementData.type === 'carrier') {
+                                            element.tripPlanning.map((trp) => {
+                                                if(c === trp.planID) {
+                                                    if(this.settlementData.entityId === trp.carrierID) {
+                                                        trp.planLoc =  this.setTripLoc(trp);
+                                                        arrr.trips.push(trp);
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                } else if(this.settlementData.type === 'owner_operator') {
+                                    let exstPlanIDs = [];
+                                    for (let index = 0; index < this.operatorDriversList.length; index++) {
+                                        const drvr = this.operatorDriversList[index];
+                                        entStat = `${drvr}:false`;
+                                        if(main.stlStatus.includes(entStat)) {
+                                            element.tripPlanning.map((trp) => {
+                                                if(c === trp.planID) {
+                                                    if(!exstPlanIDs.includes(trp.planID)) {
+                                                        exstPlanIDs.push(trp.planID);
+                                                        if(this.operatorDriversList.includes(trp.driverID) || this.operatorDriversList.includes(trp.coDriverID)) {
+                                                            trp.planLoc =  this.setTripLoc(trp);
+                                                            arrr.trips.push(trp);
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    }
+                                }
+                                
+                            })
+                            if(arrr.trips.length > 0) {
+                                element.splitArr.push(arrr);
+                            }
+                            
+                        })
+                    }
                 }
 
                 let stlObj = result.Items.reduce((a: any, b: any) => {
@@ -246,6 +316,18 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
+
+    setTripLoc(trp) {
+        let planLoc = '';
+        if(trp.locMan) {
+            planLoc = `${trp.locData.addr}, ${trp.locData.ctName}, ${trp.locData.sName}, ${trp.locData.cName} ${trp.locData.zip}`;
+        } else {
+            planLoc = trp.location;
+        }
+
+        return planLoc;
+    }
+
     fetchExpenseCategories() {
       this.accountService.getData(`expense/categories/list`)
         .subscribe((result: any) => {
@@ -386,7 +468,7 @@ export class AddSettlementComponent implements OnInit {
         }
     }
 
-    selectedTrip() {
+    resetCal() {
         this.settlementData.tripIds = [];
         this.settlementData.miles.tripsLoaded = 0;
         this.settlementData.miles.tripsTotal = 0;
@@ -409,7 +491,10 @@ export class AddSettlementComponent implements OnInit {
             v.hours = 0;
             v.payment = 0;
         })
+    }
 
+    selectedTrip() {
+        this.resetCal();
         this.paymentCalculation(this.trips);
         if(this.settledTrips.length > 0) {
             this.paymentCalculation(this.settledTrips);
@@ -417,193 +502,271 @@ export class AddSettlementComponent implements OnInit {
     }
 
     paymentCalculation(trips) {
-        let drvrPay = 0;
-        let teamMiles = 0;
-        let ownDelCouunt = 0;
+        this.drvrPay = 0;
+        this.teamMiles = 0;
+        this.ownDelCouunt = 0;
+        let subTripCount = 0;
+        this.delvCount = 0;
         for (let i = 0; i < trips.length; i++) {
             const element = trips[i];
-            let deliveryCount = 0;
+            if(element.splitArr) {
+                element.splitArr.map((v) => {
+                    if(v.selected) {
+                        subTripCount++;
+                    }
+                })
+            }
             if (element.selected) {
                 this.filterExpenses(element.tripID);
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
                 }
                 this.selectedTrips.push(element);
+                this.wholeTripPlanCalculation(element);
 
-                if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
-                    for (let t = 0; t < element.tripPlanning.length; t++) {
-                        const plan = element.tripPlanning[t];
-                        this.settlementData.miles.tripsTotal += Number(plan.miles);
+            } else if (!element.selected && subTripCount > 0) {
+                this.subTripPlanCalculation(element);
+            }
+        }
+        
+    }
 
-                        if (plan.coDriverID) {
-                            if (plan.driverID === this.driverId || plan.coDriverID === this.driverId) {
-                                teamMiles += Number(plan.miles);
-                                this.settlementData.miles.tripsTeam = Number(teamMiles.toFixed(2));
-                            }
-                        }
-
-                        if(this.settlementData.type != 'carrier') {
-                            if (plan.mileType === 'loaded') {
-                                this.settlementData.miles.tripsLoaded += Number(plan.miles);
-                            } else if (plan.mileType === 'empty') {
-                                this.settlementData.miles.tripsEmpty += Number(plan.miles);
-                            }
-
-                            if (plan.type === 'Delivery') {
-                                deliveryCount += 1;
-                            }
-                        } else {
-                            if(plan.carrierID == this.settlementData.entityId) {
-                                if (plan.mileType === 'loaded') {
-                                    this.settlementData.miles.tripsLoaded += Number(plan.miles);
-                                } else if (plan.mileType === 'empty') {
-                                    this.settlementData.miles.tripsEmpty += Number(plan.miles);
-                                }
-
-                                if (plan.type === 'Delivery') {
-                                    deliveryCount += 1;
-                                }
-                            }
-                        }
-                        
-
-                        // if (plan.type === 'Delivery') {
-                        //     deliveryCount += 1;
-                        // }
-
-                        // selected driver miles calculation
-                        if (plan.driverID === this.driverId || plan.coDriverID === this.driverId) {
-                            this.settlementData.miles.driverTotal += Number(plan.miles);
-                            if (plan.mileType === 'loaded') {
-                                if (plan.coDriverID) {
-                                    this.settlementData.miles.driverLoadedTeam += Number(plan.miles);
-                                } else {
-                                    this.settlementData.miles.driverLoaded += Number(plan.miles);
-                                }
-                            } else if (plan.mileType === 'empty') {
-                                if (plan.coDriverID) {
-                                    this.settlementData.miles.driverEmptyTeam += Number(plan.miles);
-                                } else {
-                                    this.settlementData.miles.driverEmpty += Number(plan.miles);
-                                }
-                            }
+    wholeTripPlanCalculation(element) {
+        if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
+            for (let t = 0; t < element.tripPlanning.length; t++) {
+                const plan = element.tripPlanning[t];
+                this.driverCarrMilesCal(plan);
+            }
+            this.driverCarrPaymentCal();
+            this.calculateFinalTotal();
+        } else if(this.settlementData.type === 'owner_operator') {
+            element.tripPlanning.map((plan) => {
+                if(this.operatorDriversList.includes(plan.driverID) || this.operatorDriversList.includes(plan.coDriverID)) {
+                    if (plan.type === 'Delivery') {
+                        this.ownDelCouunt += 1;
+                    }
+                }
+            })
+            for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
+                const oprElement = this.settlementData.miles.drivers[index];
+                let paymentInfor = oprElement.paymentDetails;
+                let driverDeliveryCount = 0;
+                oprElement.loaded = 0;
+                oprElement.empty = 0;
+                this.drvrPay = 0;
+                for (let t = 0; t < element.tripPlanning.length; t++) {
+                    const plan = element.tripPlanning[t];
+                    if(plan.driverID === oprElement.driverID || plan.coDriverID === oprElement.driverID) {
+                        if(plan.type === 'Delivery') {
+                            driverDeliveryCount += 1;
                         }
                     }
+                    // driver's miles
+                    this.oprDriverMilesCalc(plan, oprElement);
+                }
+                this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
+            }
 
-                    if (this.settlementData.type === 'driver') {
-                        // driver_hours will be from ELD
-                        this.settlementData.miles.driverHours = 0;
-                        if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
-                            let loadedMilesPayment = this.settlementData.miles.driverLoaded * Number(this.settlementData.paymentInfo.lMiles) + this.settlementData.miles.driverLoadedTeam * Number(this.settlementData.paymentInfo.lMileTeam);
-                            let emptyMilesPayment = this.settlementData.miles.driverEmpty * Number(this.settlementData.paymentInfo.eMiles) + this.settlementData.miles.driverEmptyTeam * Number(this.settlementData.paymentInfo.eMileTeam);
-                            this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
+            // final payment will be according to owner operator values
+            if(this.contactDetail) {
+                this.oprFinalCal();
+            }
+        }
 
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
-                            this.settlementData.paymentTotal = this.settlementData.miles.driverHours * Number(this.settlementData.paymentInfo.rate);
+        
+    }
 
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
-                            this.settlementData.paymentTotal = deliveryCount * Number(this.settlementData.paymentInfo.dRate);
-                        }
+    oprFinalCal() {
+        if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
+            let loadedMilesPayment = 0;
+            let emptyMilesPayment = 0;
+            loadedMilesPayment = this.settlementData.miles.tripsLoaded * Number(this.settlementData.paymentInfo.lMiles);
+            emptyMilesPayment = this.settlementData.miles.tripsEmpty * Number(this.settlementData.paymentInfo.eMiles);
 
-                        // total_hours and team_hours will be from ELD
-                        if (element.driverIDs.length > 1) {
-                            // this.settlementData.miles.tripsTeam = teamMiles;
-                            this.settlementData.miles.teamHours = 0;
-                        }
-                        this.settlementData.miles.totalHours = 0;
+            this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
+        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
+            this.settlementData.paymentTotal = this.settlementData.miles.totalHours * Number(this.settlementData.paymentInfo.pRate);
+        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
+            this.settlementData.paymentTotal = this.ownDelCouunt * Number(this.settlementData.paymentInfo.dRate);
+        }
 
-                    } else if (this.settlementData.type === 'carrier') {
-                        if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
-                            let loadedMilesPayment = 0;
-                            let emptyMilesPayment = 0;
-                            loadedMilesPayment = this.settlementData.miles.tripsLoaded * Number(this.settlementData.paymentInfo.lMiles);
-                            emptyMilesPayment = this.settlementData.miles.tripsEmpty * Number(this.settlementData.paymentInfo.eMiles);
+        this.calculateFinalTotal();
+    }
 
-                            this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
-                            this.settlementData.paymentTotal = this.settlementData.miles.totalHours * Number(this.settlementData.paymentInfo.pRate);
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
-                            this.settlementData.paymentTotal = deliveryCount * Number(this.settlementData.paymentInfo.dRate);
-                        }
-                        // ELD data
-                        // this.settlementData.miles.totalHours += Number('2');
+    oprDriverMilesCalc(plan, oprElement) {
+        if(plan.driverID === oprElement.driverID || plan.coDriverID === oprElement.driverID) {
+            this.settlementData.miles.tripsTotal += Number(plan.miles);
+            if (plan.mileType === 'loaded') {
+                this.settlementData.miles.tripsLoaded += Number(plan.miles);
+            } else if (plan.mileType === 'empty') {
+                this.settlementData.miles.tripsEmpty += Number(plan.miles);
+            }
+
+            oprElement.total += Number(plan.miles);
+            if (plan.mileType === 'loaded') {
+                oprElement.loaded += Number(plan.miles);
+                this.ownerLoadedM += Number(plan.miles);
+            } else if (plan.mileType === 'empty') {
+                oprElement.empty += Number(plan.miles);
+                this.ownerEmptyM += Number(plan.miles);
+            }
+        }
+    }
+
+    oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount) {
+        paymentInfor.driverID = oprElement.driverID;
+        // this.settlementData.paymentInfo.drivers.push(paymentInfor);
+        if (paymentInfor.paymentType === 'Pay Per Mile') {
+            paymentInfor.loadedMiles = (paymentInfor.loadedMiles) ? paymentInfor.loadedMiles : 0;
+            paymentInfor.emptyMiles = (paymentInfor.emptyMiles) ? paymentInfor.emptyMiles : 0;
+            paymentInfor.rate = (paymentInfor.rate) ? paymentInfor.rate : 0;
+            paymentInfor.deliveryRate = (paymentInfor.deliveryRate) ? paymentInfor.deliveryRate : 0;
+            let loadedMilesPayment = oprElement.loaded * Number(paymentInfor.loadedMiles);
+            let emptyMilesPayment = oprElement.empty * Number(paymentInfor.emptyMiles);
+            this.drvrPay = loadedMilesPayment + emptyMilesPayment;
+        } else if (paymentInfor.paymentType === 'Pay Per Hour') {
+            this.settlementData.paymentTotal = oprElement.hours * Number(paymentInfor.rate);
+        } else if (paymentInfor.paymentType === 'Pay Per Delivery') {
+            this.settlementData.paymentTotal = driverDeliveryCount * Number(paymentInfor.deliveryRate);
+        }
+        oprElement.payment += this.drvrPay;
+    }
+
+    driverCarrMilesCal(plan) {
+        this.settlementData.miles.tripsTotal += Number(plan.miles);
+
+        if (plan.coDriverID) {
+            if (plan.driverID === this.driverId || plan.coDriverID === this.driverId) {
+                this.teamMiles += Number(plan.miles);
+                this.settlementData.miles.tripsTeam = Number(this.teamMiles.toFixed(2));
+            }
+        }
+
+        if(this.settlementData.type != 'carrier') {
+            if (plan.mileType === 'loaded') {
+                this.settlementData.miles.tripsLoaded += Number(plan.miles);
+            } else if (plan.mileType === 'empty') {
+                this.settlementData.miles.tripsEmpty += Number(plan.miles);
+            }
+
+            if (plan.type === 'Delivery') {
+                this.delvCount += 1;
+            }
+        } else {
+            if(plan.carrierID == this.settlementData.entityId) {
+                if (plan.mileType === 'loaded') {
+                    this.settlementData.miles.tripsLoaded += Number(plan.miles);
+                } else if (plan.mileType === 'empty') {
+                    this.settlementData.miles.tripsEmpty += Number(plan.miles);
+                }
+
+                if (plan.type === 'Delivery') {
+                    this.delvCount += 1;
+                }
+            }
+        }
+
+        // selected driver miles calculation
+        if (plan.driverID === this.driverId || plan.coDriverID === this.driverId) {
+            this.settlementData.miles.driverTotal += Number(plan.miles);
+            if (plan.mileType === 'loaded') {
+                if (plan.coDriverID) {
+                    this.settlementData.miles.driverLoadedTeam += Number(plan.miles);
+                } else {
+                    this.settlementData.miles.driverLoaded += Number(plan.miles);
+                }
+            } else if (plan.mileType === 'empty') {
+                if (plan.coDriverID) {
+                    this.settlementData.miles.driverEmptyTeam += Number(plan.miles);
+                } else {
+                    this.settlementData.miles.driverEmpty += Number(plan.miles);
+                }
+            }
+        }
+    }
+
+    driverCarrPaymentCal() {
+        if (this.settlementData.type === 'driver') {
+            // driver_hours will be from ELD
+            this.settlementData.miles.driverHours = 0;
+            if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
+                let loadedMilesPayment = this.settlementData.miles.driverLoaded * Number(this.settlementData.paymentInfo.lMiles) + this.settlementData.miles.driverLoadedTeam * Number(this.settlementData.paymentInfo.lMileTeam);
+                let emptyMilesPayment = this.settlementData.miles.driverEmpty * Number(this.settlementData.paymentInfo.eMiles) + this.settlementData.miles.driverEmptyTeam * Number(this.settlementData.paymentInfo.eMileTeam);
+                this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
+
+            } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
+                this.settlementData.paymentTotal = this.settlementData.miles.driverHours * Number(this.settlementData.paymentInfo.rate);
+
+            } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
+                this.settlementData.paymentTotal = this.delvCount * Number(this.settlementData.paymentInfo.dRate);
+            }
+            this.settlementData.miles.totalHours = 0;
+
+        } else if (this.settlementData.type === 'carrier') {
+            if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
+                let loadedMilesPayment = 0;
+                let emptyMilesPayment = 0;
+                loadedMilesPayment = this.settlementData.miles.tripsLoaded * Number(this.settlementData.paymentInfo.lMiles);
+                emptyMilesPayment = this.settlementData.miles.tripsEmpty * Number(this.settlementData.paymentInfo.eMiles);
+
+                this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
+            } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
+                this.settlementData.paymentTotal = this.settlementData.miles.totalHours * Number(this.settlementData.paymentInfo.pRate);
+            } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
+                this.settlementData.paymentTotal = this.delvCount * Number(this.settlementData.paymentInfo.dRate);
+            }
+        }
+    }
+
+    subTripPlanCalculation(tripData) {
+        for (let index = 0; index < tripData.splitArr.length; index++) {
+            const sub = tripData.splitArr[index];
+            if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
+                if(sub.selected) {
+                    for (let j = 0; j < sub.trips.length; j++) {
+                        const plan = sub.trips[j];
+                        this.driverCarrMilesCal(plan);
                     }
-                } else if(this.settlementData.type === 'owner_operator') {
-                    let loadedM = 0;
-                    let emptyM = 0;
-                    
-                    element.tripPlanning.map((plan) => {
-                        if(this.operatorDriversList.includes(plan.driverID) || this.operatorDriversList.includes(plan.coDriverID)) {
-                            if (plan.type === 'Delivery') {
-                                ownDelCouunt += 1;
-                            }
+                    this.driverCarrPaymentCal();
+                }
+            } else if(this.settlementData.type === 'owner_operator') {
+                // let loadedM = 0;
+                // let emptyM = 0;
+                
+                sub.trips.map((plan) => {
+                    if(this.operatorDriversList.includes(plan.driverID) || this.operatorDriversList.includes(plan.coDriverID)) {
+                        if (plan.type === 'Delivery') {
+                            this.ownDelCouunt += 1;
                         }
-                    })
-                    for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
-                        const oprElement = this.settlementData.miles.drivers[index];
-                        let paymentInfor = oprElement.paymentDetails;
-                        let driverDeliveryCount = 0;
-                        oprElement.loaded = 0;
-                        oprElement.empty = 0;
-                        drvrPay = 0;
-                        for (let t = 0; t < element.tripPlanning.length; t++) {
-                            const plan = element.tripPlanning[t];
+                    }
+                })
+                for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
+                    const oprElement = this.settlementData.miles.drivers[index];
+                    let paymentInfor = oprElement.paymentDetails;
+                    let driverDeliveryCount = 0;
+                    oprElement.loaded = 0;
+                    oprElement.empty = 0;
+                    this.drvrPay = 0;
+                    if(sub.selected) {
+                        for (let j = 0; j < sub.trips.length; j++) {
+                            const plan = sub.trips[j];
 
-                            // driver's miles
                             if(plan.driverID === oprElement.driverID || plan.coDriverID === oprElement.driverID) {
-                                this.settlementData.miles.tripsTotal += Number(plan.miles);
-                                if (plan.mileType === 'loaded') {
-                                    this.settlementData.miles.tripsLoaded += Number(plan.miles);
-                                } else if (plan.mileType === 'empty') {
-                                    this.settlementData.miles.tripsEmpty += Number(plan.miles);
-                                }
-                                if (plan.type === 'Delivery') {
+                                if(plan.type === 'Delivery') {
                                     driverDeliveryCount += 1;
                                 }
-
-                                oprElement.total += Number(plan.miles);
-                                if (plan.mileType === 'loaded') {
-                                    oprElement.loaded += Number(plan.miles);
-                                    loadedM += Number(plan.miles);
-                                } else if (plan.mileType === 'empty') {
-                                    oprElement.empty += Number(plan.miles);
-                                    emptyM += Number(plan.miles);
-                                }
                             }
-                        }
-                        paymentInfor.driverID = oprElement.driverID;
-                        // this.settlementData.paymentInfo.drivers.push(paymentInfor);
-                        if (paymentInfor.paymentType === 'Pay Per Mile') {
-                            paymentInfor.loadedMiles = (paymentInfor.loadedMiles) ? paymentInfor.loadedMiles : 0;
-                            paymentInfor.emptyMiles = (paymentInfor.emptyMiles) ? paymentInfor.emptyMiles : 0;
-                            paymentInfor.rate = (paymentInfor.rate) ? paymentInfor.rate : 0;
-                            paymentInfor.deliveryRate = (paymentInfor.deliveryRate) ? paymentInfor.deliveryRate : 0;
-                            let loadedMilesPayment = oprElement.loaded * Number(paymentInfor.loadedMiles);
-                            let emptyMilesPayment = oprElement.empty * Number(paymentInfor.emptyMiles);
-                            drvrPay = loadedMilesPayment + emptyMilesPayment;
-                        } else if (paymentInfor.paymentType === 'Pay Per Hour') {
-                            this.settlementData.paymentTotal = oprElement.hours * Number(paymentInfor.rate);
-                        } else if (paymentInfor.paymentType === 'Pay Per Delivery') {
-                            this.settlementData.paymentTotal = driverDeliveryCount * Number(paymentInfor.deliveryRate);
-                        }
-                        oprElement.payment += drvrPay;
-                    }
 
-                    // final payment will be according to owner operator values
-                    if(this.contactDetail) {
-                        if (this.settlementData.paymentInfo.pType === 'Pay Per Mile') {
-                            let loadedMilesPayment = 0;
-                            let emptyMilesPayment = 0;
-                            loadedMilesPayment = this.settlementData.miles.tripsLoaded * Number(this.settlementData.paymentInfo.lMiles);
-                            emptyMilesPayment = this.settlementData.miles.tripsEmpty * Number(this.settlementData.paymentInfo.eMiles);
-
-                            this.settlementData.paymentTotal = loadedMilesPayment + emptyMilesPayment;
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Hour') {
-                            this.settlementData.paymentTotal = this.settlementData.miles.totalHours * Number(this.settlementData.paymentInfo.pRate);
-                        } else if (this.settlementData.paymentInfo.pType === 'Pay Per Delivery') {
-                            this.settlementData.paymentTotal = ownDelCouunt * Number(this.settlementData.paymentInfo.dRate);
+                            // driver's miles
+                            this.oprDriverMilesCalc(plan, oprElement);
                         }
+                        this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
                     }
+                }
+    
+                // final payment will be according to owner operator values
+                if(this.contactDetail) {
+                    this.oprFinalCal();
                 }
             }
         }
@@ -750,20 +913,20 @@ export class AddSettlementComponent implements OnInit {
     }
 
     fetchExpenses(trips: any) {
-        for (const trip of trips) {
-            this.accountService.getData(`expense/trip-expenses/${trip.tripID}`).subscribe((result: any) => {
-                for (const exp of result) {
-                    const expobj = {
-                        tripID: exp.tripID,
-                        categoryID: exp.categoryID,
-                        notes: exp.notes,
-                        amount: exp.amount,
-                        currency: exp.currency,
-                    };
-                    this.tripExpenses.push(expobj);
-                }
-            });
-        }
+        // for (const trip of trips) {
+        //     this.accountService.getData(`expense/trip-expenses/${trip.tripID}`).subscribe((result: any) => {
+        //         for (const exp of result) {
+        //             const expobj = {
+        //                 tripID: exp.tripID,
+        //                 categoryID: exp.categoryID,
+        //                 notes: exp.notes,
+        //                 amount: exp.amount,
+        //                 currency: exp.currency,
+        //             };
+        //             this.tripExpenses.push(expobj);
+        //         }
+        //     });
+        // }
     }
 
     filterExpenses(tripID: any) {
@@ -880,7 +1043,6 @@ export class AddSettlementComponent implements OnInit {
         if(carrierID != undefined) {
             this.apiService.getData(`contacts/detail/${carrierID}`)
             .subscribe((result: any) => {
-                console.log('result.Items', result.Items);
                 result.Items[0].data.map((v) => {
                     let curKey = Object.keys(v);
                     if(this.settlementData.type === 'carrier') {
@@ -1078,4 +1240,34 @@ export class AddSettlementComponent implements OnInit {
         }
     }
     
+    selSubTrip(tripInd, subTripInd) {
+        let selCount = 0;
+        this.trips[tripInd].splitArr.map((v) => {
+            if(v.selected) {
+                selCount++;
+            }
+        })
+        if(selCount > 0) {
+            this.trips[tripInd].subSelected = true;
+            this.trips[tripInd].indeterminate = true;
+        } else {
+            this.trips[tripInd].subSelected = false;
+            this.trips[tripInd].indeterminate = false;
+        }
+        this.resetCal();
+        this.paymentCalculation(this.trips);
+    }
+
+    subTrpStat(tripIndex) {
+        let data = this.trips[tripIndex];
+        if(data.selected) {
+            this.trips[tripIndex].splitArr.map((v) => {
+                v.selected = true;
+            })
+        } else {
+            this.trips[tripIndex].splitArr.map((v) => {
+                v.selected = false;
+            })
+        }
+    }
 }
