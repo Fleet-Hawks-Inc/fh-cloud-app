@@ -1,17 +1,17 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pr-0 pl-0 pt-0">
-            <header class="page-header">
+            <header class="page-header pr19 pl7">
                 <form class="form-horizontal" method="get">
 
-                    <div class="row px-4" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2 pr-0">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-3">
+                        <div class="col-lg-3 col-md-3 pr-0">
                             <div class="input-daterange input-group"
                                 data-plugin-datepicker>
                                 <span class="input-group-prepend">
@@ -36,13 +36,12 @@
                             </div>
                         </div>
 
-                        <div class="col-md-2  col-lg-2">
-                            <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" class="btn btn-sm btn-success mr-3" (click)="searchFilter()">Search</button>
                             <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                         </div>
-                        <div class="col-md-5 col-lg-5 text-right pr-5">
-                            <a
-                                routerLink="/accounts/payments/employee-payments/add"
+                        <div class="col-md-5 col-lg-5 text-right pr-1">
+                            <a routerLink="/accounts/payments/employee-payments/add"
                                 class="btn btn-success btn-sm ml-2"
                                 style="color:white;"><i class="fas fa-plus"></i>
                                 Add Payment </a>
@@ -51,17 +50,18 @@
                     </div>
                 </form>
             </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <section class="card">
-                      <div class="main-panel">
+
+            <section class="m-2">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
                         <div infiniteScroll
                         [infiniteScrollDistance]="1"
                         [infiniteScrollUpDistance]="1"
                         [infiniteScrollThrottle]="5"
                         (scrolled)="onScroll()">
-                            <div class="card-body" style="display: block">
-                              <div class="main-panel">
+                         <div class="form-group row">
+                            <div class="col-lg-12">
                                 <table class="table table-bordered table-striped
                                 mb-0 simple-table">
                                 <thead>
@@ -85,7 +85,7 @@
                                         <td>{{ data.paymentNo }}</td>
                                         <td>{{ data.payMode }}</td>
                                         <td>{{ employees[data.entityId] }}</td>
-                                        <td>{{ data.finalTotal | number }} CAD</td>
+                                        <td>{{ data.finalTotal | number : '1.2-2' }} CAD</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
@@ -103,15 +103,17 @@
                                     </tr>
                                 </tbody>
                             </table>
-                              </div>
-
                             </div>
+                         </div>
                         </div>
                       </div>
-
-                    </section>
+                   </div>
                 </div>
-            </div>
+          
+             </section>
+
+
+      
         </section>
     </div>
 </section>

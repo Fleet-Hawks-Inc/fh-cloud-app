@@ -104,21 +104,21 @@ export class ListService {
     });
   }
 
-  fetchShippers() {
-    this.apiService.getData("contacts/get/type/consignor").subscribe((result: any) => {
-      this.shipperDataSource.next(result);
-    });
-  }
-  fetchReceivers() {
-    this.apiService.getData("contacts/get/type/consignee").subscribe((result: any) => {
-      this.receiverDataSource.next(result);
-    });
-  }
-  fetchManufacturers() {
-    this.apiService.getData('manufacturers').subscribe((result: any) => {
-      this.manufacturerDataSource.next(result.Items);
-    });
-  }
+fetchShippers() {
+  this.apiService.getData("contacts/get/type/consignor").subscribe((result: any) => {
+    this.shipperDataSource.next(result);
+  });
+}
+fetchReceivers() {
+  this.apiService.getData("contacts/get/type/consignee").subscribe((result: any) => {
+    this.receiverDataSource.next(result);
+  });
+}
+  // fetchManufacturers() {
+  //   this.apiService.getData('manufacturers').subscribe((result: any) => {
+  //     this.manufacturerDataSource.next(result.Items);
+  //   });
+  // }
 
   fetchCountries() {
     this.apiService.getData('countries').subscribe((result: any) => {
@@ -126,13 +126,13 @@ export class ListService {
     });
   }
 
-  fetchModels() {
-    this.apiService
-      .getData(`vehicleModels`)
-      .subscribe((result: any) => {
-        this.modelDataSource.next(result.Items);
-      });
-  }
+  // fetchModels() {
+  //   this.apiService
+  //     .getData(`vehicleModels`)
+  //     .subscribe((result: any) => {
+  //       this.modelDataSource.next(result.Items);
+  //     });
+  // }
 
   fetchStates() {
     this.apiService
@@ -158,13 +158,13 @@ export class ListService {
       });
   }
 
-  fetchAssetManufacturers() {
-    this.apiService
-      .getData(`assetManufacturers`)
-      .subscribe((result: any) => {
-        this.assetManuDataSource.next(result.Items);
-      });
-  }
+  // fetchAssetManufacturers() {
+  //   this.apiService
+  //     .getData(`assetManufacturers`)
+  //     .subscribe((result: any) => {
+  //       this.assetManuDataSource.next(result.Items);
+  //   });
+  // }
 
   fetchServicePrograms() {
     this.apiService
@@ -173,13 +173,13 @@ export class ListService {
         this.serviceProgramDataSource.next(result.Items);
       });
   }
-  fetchAssetModels() {
-    this.apiService
-      .getData(`assetModels`)
-      .subscribe((result: any) => {
-        this.assetModelsDataSource.next(result.Items);
-      });
-  }
+  // fetchAssetModels() {
+  //   this.apiService
+  //     .getData(`assetModels`)
+  //     .subscribe((result: any) => {
+  //       this.assetModelsDataSource.next(result.Items);
+  //     });
+  // }
   fetchVehicles() {
     this.apiService.getData(`vehicles`).subscribe((result: any) => {
       this.vehicleDataSource.next(result.Items);

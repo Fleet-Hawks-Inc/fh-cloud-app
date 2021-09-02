@@ -5,6 +5,7 @@ import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/fleet/constants';
@@ -782,19 +783,19 @@ export class NewAddressBookComponent implements OnInit {
     }
   }
 
-  uploadDriverImg(event): void {
-    if (event.target.files[0]) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = e => this.profilePath = reader.result;
-      reader.readAsDataURL(file);
+  // uploadDriverImg(event): void {
+  //   if (event.target.files[0]) {
+  //     const file = event.target.files[0];
+  //     const reader = new FileReader();
+  //     reader.onload = e => this.profilePath = reader.result;
+  //     reader.readAsDataURL(file);
 
-      this.uploadedPhotos.push(file)
-      if(this.uploadedPhotos.length > 0) {
-        this.imageText = 'Change Photo';
-      }
-    }
-  }
+  //     this.uploadedPhotos.push(file)
+  //     if(this.uploadedPhotos.length > 0) {
+  //       this.imageText = 'Change Photo';
+  //     }
+  //   }
+  // }
 
   clearBankLocation(data, i: any, bankIndex: any) {
     data.adrs[bankIndex].userLoc = '';
@@ -866,6 +867,7 @@ export class NewAddressBookComponent implements OnInit {
 
   async addEntry () {
     
+    this.hideErrors();
     this.unitDisabled = true;
 
     for (let i = 0; i < this.unitData.adrs.length; i++) {
@@ -900,9 +902,9 @@ export class NewAddressBookComponent implements OnInit {
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
+    // for(let i = 0; i < this.uploadedPhotos.length; i++){
+    //   formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    // }
 
     //append other fields
     formData.append('data', JSON.stringify(this.unitData));
@@ -1225,7 +1227,6 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   onModalScrollDown() {
-    console.log('scrolled')
     this.fetchUnits();
   }
 

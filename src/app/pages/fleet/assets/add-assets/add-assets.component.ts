@@ -3,6 +3,7 @@ import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
@@ -120,7 +121,8 @@ export class AddAssetsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private location: Location,
-              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
+              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+              private httpClient:HttpClient) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -129,8 +131,9 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    this.listService.fetchAssetManufacturers();
-    this.listService.fetchAssetModels();
+    // this.listService.fetchAssetManufacturers();
+    // this.listService.fetchAssetModels();
+    this.fetchManufacturers();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
     this.fetchGroups();
@@ -148,9 +151,44 @@ export class AddAssetsComponent implements OnInit {
     });
 
     this.vendors = this.listService.vendorList;
-    this.manufacturers = this.listService.assetManufacturesList;
-    this.models = this.listService.assetModelsList;
+   // this.manufacturers = this.listService.assetManufacturesList;
+    //this.models = this.listService.assetModelsList;
     this.ownOperators = this.listService.ownerOperatorList;
+  }
+
+  fetchManufacturers() {
+    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
+      data.forEach(element => {
+
+        this.manufacturers.push(Object.keys(element)[0].toUpperCase())
+
+      });
+
+    });
+  }
+  fetchModels() {
+    this.models = [];
+    let manufacturer: any = '';
+    
+    if (this.assetsData.assetDetails.manufacturer !== null) {
+      manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
+    
+    }
+    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
+      data.forEach(element => {
+    
+        let output = [];
+        if (element[manufacturer]) {
+          element[manufacturer].forEach(element => {
+            output.push(element.toUpperCase());
+
+          });
+          this.models = output;
+        }
+      });
+
+    });
+
   }
   getYears() {
     var max = new Date().getFullYear(),
@@ -181,13 +219,13 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-  getManufactures(){
-    this.listService.fetchAssetManufacturers();
-  }
+  // getManufactures(){
+  //   this.listService.fetchAssetManufacturers();
+  // }
 
-  getModels(){
-    this.listService.fetchAssetModels();
-  }
+  // getModels(){
+  //   this.listService.fetchAssetModels();
+  // }
 
   openModal(unit: string) {
     this.listService.triggerModal(unit);

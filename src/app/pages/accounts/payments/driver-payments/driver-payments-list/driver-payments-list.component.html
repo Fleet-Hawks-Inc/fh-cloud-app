@@ -1,17 +1,17 @@
 <section class="body">
    <div class="inner-wrapper">
       <section role="main" class="content-body pr-0 pl-0 pt-0">
-         <header class="page-header">
+         <header class="page-header pr19 pl7">
             <form class="form-horizontal" method="get">
 
-               <div class="row px-4" style="padding-top:10px;">
-                  <div class="col-md-2 col-lg-2">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <div class="input-group input-group-md mb-3">
                         <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
                      </div>
                   </div>
 
-                  <div class="col-lg-3 col-md-3">
+                  <div class="col-lg-3 col-md-3 pr-0">
                      <div class="input-daterange input-group" data-plugin-datepicker>
                         <span class="input-group-prepend">
                            <span class="input-group-text">
@@ -33,7 +33,7 @@
                            [maxDate]="futureDatesLimit">
                      </div>
                   </div>
-                  <div class="col-md-2  col-lg-2">
+                  <div class="col-md-2 col-lg-2 pr-0">
                      <ng-select [(ngModel)]="filter.type" name="type"
                         placeholder="Select type" #paymenttTO="ngModel" required>
                         <ng-option value="driver">Driver</ng-option>
@@ -46,7 +46,8 @@
                      <button type="submit" class="btn btn-sm btn-success mr-2" (click)="searchFilter()">Search</button>
                      <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                   </div>
-                  <div class="col-md-3 col-lg-3 text-right pr-5">
+
+                  <div class="col-md-3 col-lg-3 text-right pr-1">
                      <a routerLink="/accounts/payments/driver-payments/add" class="btn btn-success btn-sm ml-2"
                         style="color:white;"><i class="fas fa-plus"></i> Add Payment </a>
 
@@ -54,82 +55,86 @@
                </div>
             </form>
          </header>
-         <div class="row">
-            <div class="col pr-0">
-               <section class="card">
-                <div class="main-panel">
+
+         <section class="m-2">
+            <div class="row mb-3">
+              <div class="col-lg-12">
+                <div class="bg-white p-3 text-dark">
                   <div infiniteScroll
                   [infiniteScrollDistance]="1"
                   [infiniteScrollUpDistance]="1"
                   [infiniteScrollThrottle]="5"
                   (scrolled)="onScroll()">
-                  <div class="card-body" style="display: block">
-                    <div class="main-panel">
-                      <table class="table table-bordered table-striped mb-0 simple-table">
-                        <thead>
-                           <tr class="bgcol2">
-                              <th class="text-2">Payment#</th>
-                              <th class="text-2">Date</th>
-                              <th class="text-2">Payment Mode Information</th>
-                              <th class="text-2">Settlement#</th>
-                              <th class="text-2">Paid To</th>
-                              <th class="text-2">Amount</th>
-                              <th class="text-2">Action</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr class="text-center" *ngIf="payments.length === 0">
-                              <td colspan="7">
-                                 {{ dataMessage }}
-                              </td>
-                           </tr>
-                           <tr *ngFor="let data of payments; let i=index;">
-
-                              <td class="font-weight-bold">{{ data.paymentNo }}</td>
-                              <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
-                               date:"yyyy/MM/dd" }}</td>
-                              <td>{{ data.payMode }}</td>
-                              <td>
-                                 <span *ngFor="let stl of data.settlData; let s=index;">
-                                    <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
-                                    <span *ngIf="s< data.settlementIds.length-1">,</span>
-                                 </span>
-                              </td>
-                              <td>
-                                 <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
-                                 <span *ngIf="data.paymentTo === 'driver'">
-                                    {{ drivers[data.entityId] }}
-                                 </span>
-                                 <span *ngIf="data.paymentTo !== 'driver'">
-                                    {{ contacts[data.entityId] }}
-                                 </span>
-                              </td>
-                              <td>{{ data.finalAmount | number }} CAD</td>
-                              <td>
-                                 <div class="dropdown dropright">
-                                    <button class="bg-transparent border-0" type="button"
-                                       id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                       <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                    <div class="dropdown-menu"
-                                       attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                       <a class="dropdown-item"
-                                          routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
+                  <div class="form-group row">
+                     <div class="col-lg-12">
+                        <table class="table table-bordered table-striped mb-0 simple-table">
+                           <thead>
+                              <tr class="bgcol2">
+                                 <th class="text-2">Payment#</th>
+                                 <th class="text-2">Date</th>
+                                 <th class="text-2">Payment Mode Information</th>
+                                 <th class="text-2">Settlement#</th>
+                                 <th class="text-2">Paid To</th>
+                                 <th class="text-2">Amount</th>
+                                 <th class="text-2">Action</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr class="text-center" *ngIf="payments.length === 0">
+                                 <td colspan="7">
+                                    {{ dataMessage }}
+                                 </td>
+                              </tr>
+                              <tr *ngFor="let data of payments; let i=index;">
+   
+                                 <td class="font-weight-bold">{{ data.paymentNo }}</td>
+                                 <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
+                                  date:"yyyy/MM/dd" }}</td>
+                                 <td>{{ data.payMode }}</td>
+                                 <td>
+                                    <span *ngFor="let stl of data.settlData; let s=index;">
+                                       <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
+                                       <span *ngIf="s< data.settlementIds.length-1">,</span>
+                                    </span>
+                                 </td>
+                                 <td>
+                                    <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
+                                    <span *ngIf="data.paymentTo === 'driver'">
+                                       {{ drivers[data.entityId] }}
+                                    </span>
+                                    <span *ngIf="data.paymentTo !== 'driver'">
+                                       {{ contacts[data.entityId] }}
+                                    </span>
+                                 </td>
+                                 <td>{{ data.finalAmount | number : '1.2-2' }} CAD</td>
+                                 <td>
+                                    <div class="dropdown dropright">
+                                       <button class="bg-transparent border-0" type="button"
+                                          id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                          aria-haspopup="true" aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                       </button>
+                                       <div class="dropdown-menu"
+                                          attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                          <a class="dropdown-item"
+                                             routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
+                                       </div>
                                     </div>
-                                 </div>
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                    </div>
+                                 </td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
                   </div>
                </div>
                 </div>
-
-               </section>
+              </div>
             </div>
-         </div>
+         
+         </section>
+
+
+         
       </section>
    </div>
 </section>

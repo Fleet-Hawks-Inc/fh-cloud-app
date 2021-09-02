@@ -50,7 +50,7 @@
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Received Amount
                                                         </td>
-                                                        <td>{{ incomeData.recAmount }} {{ incomeData.recCurr }}</td>
+                                                        <td>{{ incomeData.recAmount | number : '1.2-2' }} {{ incomeData.recCurr }}</td>
                                                     </tr>
                                                     <tr>
                                                         <td class="back-color-gray font-weight-bold">Payment Mode</td>
@@ -113,13 +113,13 @@
                                               <tr *ngFor="let dt of incomeData.transactionLog">
                                                 <td><span *ngIf="dt.actIDType === 'actID'">{{accounts[dt.accountID] | titlecase}}</span></td>
                                                <td>{{dt.type | titlecase}}</td>
-                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
-                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                               <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                                               </tr>
                                               <tr>
                                                 <td colspan="2" class="font-weight-bold text-right">Total</td>
-                                                <td>{{incomeData.recAmount}} {{incomeData.recCurr}}</td>
-                                                <td>{{incomeData.recAmount}} {{incomeData.recCurr}}</td>
+                                                <td>{{incomeData.recAmount | number : '1.2-2'}} {{incomeData.recCurr}}</td>
+                                                <td>{{incomeData.recAmount | number : '1.2-2'}} {{incomeData.recCurr}}</td>
                                               </tr>
                                             </tbody>
                                           </table>
