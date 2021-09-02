@@ -12,7 +12,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   payments = [];
   filter = {
-    amount: '',
+    paymentNo: null,
     startDate: null,
     endDate: null,
     type: null,
@@ -31,20 +31,26 @@ export class AdvancePaymentsListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.fetchPayments()
+    this.fetchPayments();
     this.fetchDrivers();
     this.fetchContactsList();
   }
 
   fetchPayments(refresh?: boolean) {
+    let searchParam = null;
     if (refresh === true) {
       this.lastItemSK = '';
       this.payments = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`advance/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
+     } else {
+       searchParam = null;
+     }
+      this.accountService.getData(`advance/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
-        if (result.length == 0) {
+        if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if (result.length > 0) {
@@ -54,6 +60,7 @@ export class AdvancePaymentsListComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           result.map((v) => {
+            v.url = `/accounts/payments/advance-payments/detail/${ v.paymentID }`;
             v.paymentTo = v.paymentTo.replace("_"," ");
             if(v.payMode) {
               v.payMode = v.payMode.replace("_"," ");
@@ -98,7 +105,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.type !== null || this.filter.paymentNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -129,8 +136,8 @@ export class AdvancePaymentsListComponent implements OnInit {
         startDate: null,
         endDate: null,
         type: null,
-        amount: ''
-    }
+        paymentNo: null
+    };
     this.payments = [];
     this.lastItemSK = '';
     this.fetchPayments();

@@ -198,7 +198,7 @@
                                                 </div>
                                                 <div class="col-lg-5">
                                                     <label class="control-label font-weight-bold font-bold text-lg-right">Account <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountNo="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account" #accountNo="ngModel" required>
                                                         <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                     </ng-select>
 

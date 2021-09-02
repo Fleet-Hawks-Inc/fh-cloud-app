@@ -7,7 +7,7 @@
                <div class="row px-4" style="padding-top:10px;">
                   <div class="col-md-2 col-lg-2">
                      <div class="input-group input-group-md mb-3">
-                        <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
+                        <input type="text" class="form-control" placeholder="Search by payment#" name="paymentNo" [(ngModel)]="filter.paymentNo">
                      </div>
                   </div>
 
@@ -85,26 +85,26 @@
                            </tr>
                            <tr *ngFor="let data of payments; let i=index;">
 
-                              <td class="font-weight-bold">{{ data.paymentNo }}</td>
-                              <td routerLink="/accounts/payments/driver-payments/detail/{{ data.paymentID }}">{{ data.txnDate |
+                              <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
+                              <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate |
                                date:"yyyy/MM/dd" }}</td>
-                              <td>{{ data.payMode }}</td>
-                              <td>
+                              <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
+                              <td class="cursorpoint" [routerLink]="data.url">
                                  <span *ngFor="let stl of data.settlData; let s=index;">
                                     <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
                                     <span *ngIf="s< data.settlementIds.length-1">,</span>
                                  </span>
                               </td>
-                              <td>
+                              <td class="cursorpoint" [routerLink]="data.url">
                                  <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
                                  <span *ngIf="data.paymentTo === 'driver'">
-                                    {{ drivers[data.entityId] }}
+                                    {{ drivers[data.entityId] | titlecase}}
                                  </span>
                                  <span *ngIf="data.paymentTo !== 'driver'">
-                                    {{ contacts[data.entityId] }}
+                                    {{ contacts[data.entityId] | titlecase}}
                                  </span>
                               </td>
-                              <td>{{ data.finalAmount | number : '1.2-2' }} CAD</td>
+                              <td class="cursorpoint" [routerLink]="data.url">{{ data.finalAmount | number : '1.2-2' }} CAD</td>
                               <td>
                                  <div class="dropdown dropright">
                                     <button class="bg-transparent border-0" type="button"

@@ -7,7 +7,7 @@
                     <div class="row px-4" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
+                                <input type="text" class="form-control" placeholder="Search by payment#" name="paymentNo" [(ngModel)]="filter.paymentNo">
                             </div>
                         </div>
 
@@ -66,8 +66,8 @@
                                 mb-0 simple-table">
                                 <thead>
                                     <tr class="bgcol2">
-                                        <th class="text-2">Date</th>
                                         <th class="text-2">Payment#</th>
+                                        <th class="text-2">Date</th>
                                         <th class="text-2">Payment Mode</th>
                                         <th class="text-2">Employee </th>
                                         <th class="text-2">Amount</th>
@@ -81,11 +81,11 @@
                                         </td>
                                     </tr>
                                     <tr *ngFor="let data of payments; let i=index">
-                                        <td routerLink="/accounts/payments/employee-payments/detail/{{data.paymentID}}">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
-                                        <td>{{ data.paymentNo }}</td>
-                                        <td>{{ data.payMode }}</td>
-                                        <td>{{ employees[data.entityId] }}</td>
-                                        <td>{{ data.finalTotal | number : '1.2-2' }} CAD</td>
+                                        <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
+                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
+                                        <td class="cursorpoint" [routerLink]="data.url">{{ employees[data.entityId] }}</td>
+                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.finalTotal | number : '1.2-2' }} CAD</td>
                                         <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
