@@ -26,6 +26,7 @@ declare var $: any;
   selector: 'app-add-driver',
   templateUrl: './add-driver.component.html',
   styleUrls: ['./add-driver.component.css'],
+  exportAs: 'driverForm'
 })
 export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeactivate {
   @ViewChild('driverForm') driverForm: NgForm;
@@ -290,19 +291,19 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   finaltimezones: any = [];
   nullVar = null;
   constructor(private apiService: ApiService,
-              private httpClient: HttpClient,
-              private toastr: ToastrService,
-              private route: ActivatedRoute,
-              private spinner: NgxSpinnerService,
-              private HereMap: HereMapService,
-              private ngbCalendar: NgbCalendar,
-              private domSanitizer: DomSanitizer,
-              private location: Location,
-              private modalService: NgbModal,
-              private modalServiceOwn: ModalService,
-              private dateAdapter: NgbDateAdapter<string>,
-              private router: Router,
-              private listService: ListService,
+    private httpClient: HttpClient,
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private HereMap: HereMapService,
+    private ngbCalendar: NgbCalendar,
+    private domSanitizer: DomSanitizer,
+    private location: Location,
+    private modalService: NgbModal,
+    private modalServiceOwn: ModalService,
+    private dateAdapter: NgbDateAdapter<string>,
+    private router: Router,
+    private listService: ListService,
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -528,16 +529,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   fetchCountries() {
     this.docCountries = CountryStateCity.GetAllCountries();
   }
-   getStates(countryCode: any, index: any) {
+  getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = '';
     this.driverData.address[index].cityName = '';
     this.driverData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
-   getCities(stateCode: any, index: any, countryCode: any) {
-     this.driverData.address[index].cityName = '';
-     this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-     this.driverData.address[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-     this.driverData.address[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+  getCities(stateCode: any, index: any, countryCode: any) {
+    this.driverData.address[index].cityName = '';
+    this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.driverData.address[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.driverData.address[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
   }
   getDocStates(cntryCode: any, index: any) {
     this.driverData.documentDetails[index].issuingState = '';
@@ -550,7 +551,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   getLicenseStateName() {
-    if(this.driverData.licenceDetails.issuedState && this.driverData.licenceDetails.issuedCountry) {
+    if (this.driverData.licenceDetails.issuedState && this.driverData.licenceDetails.issuedCountry) {
       this.driverData.licenceDetails.licStateName = CountryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry);
 
       console.log('this.driverData', this.driverData);
@@ -560,23 +561,23 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   fetchLicStates(issuedCountry: any) {
     this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
   }
- fetchStates(countryCode: any, index: any) {
-  let states  = CountryStateCity.GetStatesByCountryCode([countryCode]);
-  this.driverData.address[index].states = states;
- }
- fetchCities(countryCode: any, stateCode: any, index: any) {
-   this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-}
- editAddress(address: any) {
-  for (let a = 0; a < address.length; a++) {
-    const countryCode = address[a].countryCode;
-    const stateCode = address[a].stateCode;
-    this.fetchStates(countryCode, a);
-    this.fetchCities(countryCode, stateCode, a);
+  fetchStates(countryCode: any, index: any) {
+    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.driverData.address[index].states = states;
   }
- }
-  fetchDocStates(docs){
-    for(let d=0; d < docs.length; d++){
+  fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.driverData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  editAddress(address: any) {
+    for (let a = 0; a < address.length; a++) {
+      const countryCode = address[a].countryCode;
+      const stateCode = address[a].stateCode;
+      this.fetchStates(countryCode, a);
+      this.fetchCities(countryCode, stateCode, a);
+    }
+  }
+  fetchDocStates(docs) {
+    for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
       this.driverData.documentDetails[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
     }
@@ -612,18 +613,18 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
 
   selectPhoto(event, name: any) {
-    if(name === null || this.driverProfileSrc === '') {
-     this.uploadedPhotos = [];
-     const files = [...event.target.files];
-     this.uploadedPhotos.push(files[0]);
+    if (name === null || this.driverProfileSrc === '') {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
     } else {
-     this.uploadedPhotos = [];
-     const files = [...event.target.files];
-     this.uploadedPhotos.push(files[0]);
-     this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => { });
 
     }
-   }
+  }
 
   removeProfile() {
     this.driverProfileSrc = 'assets/img/driver/driver.png';
@@ -685,11 +686,11 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.toastr.success('Group added successfully');
         $('#addDriverGroupModal').modal('hide');
         this.groupData = {
-        groupType: 'drivers',
-        groupName: '',
-        groupMembers: '',
-        description: '',
-      };
+          groupType: 'drivers',
+          groupName: '',
+          groupMembers: '',
+          description: '',
+        };
       },
     });
   }
@@ -698,16 +699,16 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
     let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
 
-    if(result.items != undefined && result.items.length > 0) {
+    if (result.items != undefined && result.items.length > 0) {
       return result.items[0].position;
     }
   }
 
   changeCompany(value) {
-    if(value === 'company') {
+    if (value === 'company') {
       this.driverData.corporation = null;
       this.driverData.ownerOperator = null;
-    } else if(value === 'corporation') {
+    } else if (value === 'corporation') {
       this.driverData.vendor = null;
       this.driverData.ownerOperator = null;
     } else {
@@ -718,91 +719,91 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   async onAddDriver() {
     if (this.abstractDocs.length > 0) {
-    this.hasError = false;
-    this.hasSuccess = false;
-    // this.spinner.show();
-    this.hideErrors();
-    this.driverData.createdDate = this.driverData.createdDate;
-    this.driverData.createdTime = this.driverData.createdTime;
-    this.driverData[`deletedUploads`] = this.deletedUploads;
-    if (this.driverData.hosDetails.hosCycle !== '') {
-      let cycleName = '';
-      this.cycles.map((v: any) => {
-        if (this.driverData.hosDetails.hosCycle === v.cycleID) {
-          cycleName = v.cycleName;
-        }
-      });
-      this.driverData.hosDetails.hosCycleName = cycleName;
-    }
-    for(let d = 0; d < this.driverData.documentDetails.length; d++){
-      const element = this.driverData.documentDetails[d];
-      delete element.docStates;
-    }
-    for (let i = 0; i < this.driverData.address.length; i++) {
-      const element = this.driverData.address[i];
-      delete element.states;
-      delete element.cities;
-      // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
-      //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-      //   ${element.stateCode} ${element.countryCode}`;
-      //   let result = await this.HereMap.geoCode(fullAddress);
-      //   result = result.items[0];
-      //   if (result != undefined) {
-      //     element.geoCords.lat = result.position.lat;
-      //     element.geoCords.lng = result.position.lng;
-      //   }
-      // }
-      if(element.manual === true){
-        let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
+      this.hasError = false;
+      this.hasSuccess = false;
+      // this.spinner.show();
+      this.hideErrors();
+      this.driverData.createdDate = this.driverData.createdDate;
+      this.driverData.createdTime = this.driverData.createdTime;
+      this.driverData[`deletedUploads`] = this.deletedUploads;
+      if (this.driverData.hosDetails.hosCycle !== '') {
+        let cycleName = '';
+        this.cycles.map((v: any) => {
+          if (this.driverData.hosDetails.hosCycle === v.cycleID) {
+            cycleName = v.cycleName;
+          }
+        });
+        this.driverData.hosDetails.hosCycleName = cycleName;
+      }
+      for (let d = 0; d < this.driverData.documentDetails.length; d++) {
+        const element = this.driverData.documentDetails[d];
+        delete element.docStates;
+      }
+      for (let i = 0; i < this.driverData.address.length; i++) {
+        const element = this.driverData.address[i];
+        delete element.states;
+        delete element.cities;
+        // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
+        //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        //   ${element.stateCode} ${element.countryCode}`;
+        //   let result = await this.HereMap.geoCode(fullAddress);
+        //   result = result.items[0];
+        //   if (result != undefined) {
+        //     element.geoCords.lat = result.position.lat;
+        //     element.geoCords.lng = result.position.lng;
+        //   }
+        // }
+        if (element.manual === true) {
+          let data = {
+            address1: element.address1,
+            address2: element.address2,
+            cityName: element.cityName,
+            stateName: element.stateName,
+            countryName: element.countryName,
+            zipCode: element.zipCode
+          }
 
-         $('#addErr'+i).css('display','none');
-         let result = await this.newGeoCode(data);
+          $('#addErr' + i).css('display', 'none');
+          let result = await this.newGeoCode(data);
 
-         if(result == null) {
-            $('#addErr'+i).css('display','block');
+          if (result == null) {
+            $('#addErr' + i).css('display', 'block');
             return false;
           }
-         if(result != undefined || result != null){
-           element.geoCords = result;
-         }
+          if (result != undefined || result != null) {
+            element.geoCords = result;
+          }
 
-       }
-    }
-
-    // create form data instance
-    const formData = new FormData();
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-
-    // append docs if any
-    for (let j = 0; j < this.uploadedDocs.length; j++) {
-      if(this.uploadedDocs[j] !== undefined){
-        for (let k = 0; k < this.uploadedDocs[j].length; k++) {
-          let file = this.uploadedDocs[j][k];
-          formData.append(`uploadedDocs-${j}`, file);
         }
       }
-    }
 
-    // append abstact history docs if any
-    for (let k = 0; k < this.abstractDocs.length; k++) {
-      formData.append('abstractDocs', this.abstractDocs[k]);
-    }
+      // create form data instance
+      const formData = new FormData();
+      // append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
 
-    // append other fields
-    formData.append('data', JSON.stringify(this.driverData));
+      // append docs if any
+      for (let j = 0; j < this.uploadedDocs.length; j++) {
+        if (this.uploadedDocs[j] !== undefined) {
+          for (let k = 0; k < this.uploadedDocs[j].length; k++) {
+            let file = this.uploadedDocs[j][k];
+            formData.append(`uploadedDocs-${j}`, file);
+          }
+        }
+      }
 
-    this.submitDisabled = true;
-    try {
+      // append abstact history docs if any
+      for (let k = 0; k < this.abstractDocs.length; k++) {
+        formData.append('abstractDocs', this.abstractDocs[k]);
+      }
+
+      // append other fields
+      formData.append('data', JSON.stringify(this.driverData));
+
+      this.submitDisabled = true;
+      try {
 
         this.apiService.postData('drivers', formData, true).subscribe({
           complete: () => { },
@@ -841,14 +842,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.router.navigateByUrl('/fleet/drivers/list');
           },
         });
-    } catch (error) {
-      this.submitDisabled = false;
-      return 'error found';
-    }
-  } else {
+      } catch (error) {
+        this.submitDisabled = false;
+        return 'error found';
+      }
+    } else {
       this.errorAbstract = true;
       this.toastr.error('Abstract history document is required.');
-     }
+    }
   }
 
   async userAddress(i, item) {
@@ -881,19 +882,19 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     from(Object.keys(this.errors))
       .subscribe((v) => {
 
-        if(v==='userName' || v==='email' || v==='employeeContractorId' || v==='CDL_Number' || v==='SIN'){
+        if (v === 'userName' || v === 'email' || v === 'employeeContractorId' || v === 'CDL_Number' || v === 'SIN') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error')
 
         }
-        if(v==='abstractDocs'){
+        if (v === 'abstractDocs') {
           $('[name="' + v + '"]')
-          .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
+            .after('<label class="text-danger"> Abstract history document is mandatory.</label>');
         }
-        if (v === 'cognito'){
+        if (v === 'cognito') {
           this.toastr.error(this.errors[v]);
-         }
+        }
       });
 
   }
@@ -956,13 +957,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        this.driverData.DOB = _.isEmpty(result.DOB) ?  null : result.DOB;
-        this.driverData.startDate = _.isEmpty(result.startDate) ?  null : result.startDate;
-        this.driverData.terminationDate = _.isEmpty(result.terminationDate) ?  null : result.terminationDate;
-        this.driverData.contractStart = _.isEmpty(result.contractStart) ?  null : result.contractStart;
-        this.driverData.contractEnd = _.isEmpty(result.contractEnd) ?  null : result.contractEnd;
+        this.driverData.DOB = _.isEmpty(result.DOB) ? null : result.DOB;
+        this.driverData.startDate = _.isEmpty(result.startDate) ? null : result.startDate;
+        this.driverData.terminationDate = _.isEmpty(result.terminationDate) ? null : result.terminationDate;
+        this.driverData.contractStart = _.isEmpty(result.contractStart) ? null : result.contractStart;
+        this.driverData.contractEnd = _.isEmpty(result.contractEnd) ? null : result.contractEnd;
         this.driverData.crossBorderDetails.fastExpiry = _.isEmpty(result.crossBorderDetails.fastExpiry) ? null : result.crossBorderDetails.fastExpiry;
-        this.driverData.licenceDetails.licenceExpiry = _.isEmpty(result.licenceDetails.licenceExpiry) ?  null : result.licenceDetails.licenceExpiry;
+        this.driverData.licenceDetails.licenceExpiry = _.isEmpty(result.licenceDetails.licenceExpiry) ? null : result.licenceDetails.licenceExpiry;
         this.driverData.citizenship = result.citizenship;
         this.driverData.assignedVehicle = result.assignedVehicle;
         this.driverData.groupID = result.groupID;
@@ -1001,7 +1002,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             uploadedDocs: docmnt
           });
           if (result.documentDetails[i].uploadedDocs !== undefined && result.documentDetails[i].uploadedDocs.length > 0) {
-          this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+            this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
           }
         }
         this.driverData.documentDetails = this.newDocuments;
@@ -1064,85 +1065,85 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
   async onUpdateDriver() {
     if (this.abstractDocs.length > 0 || this.absDocs.length > 0) {
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.hideErrors();
-    this.submitDisabled = true;
-    this.driverData[`driverID`] = this.driverID;
-    this.driverData.createdDate = this.driverData.createdDate;
-    this.driverData.createdTime = this.driverData.createdTime;
-    this.driverData[`deletedUploads`] = this.deletedUploads;
-    for(let d = 0; d < this.driverData.documentDetails.length; d++){
-      const element = this.driverData.documentDetails[d];
-      delete element.docStates;
-    }
-    for (let i = 0; i < this.driverData.address.length; i++) {
-      const element = this.driverData.address[i];
-      delete element.states;
-      delete element.cities;
-      // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
-      //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-      //   ${element.stateCode} ${element.countryCode}`;
-      //   let result = await this.HereMap.geoCode(fullAddress);
+      this.hasError = false;
+      this.hasSuccess = false;
+      this.hideErrors();
+      this.submitDisabled = true;
+      this.driverData[`driverID`] = this.driverID;
+      this.driverData.createdDate = this.driverData.createdDate;
+      this.driverData.createdTime = this.driverData.createdTime;
+      this.driverData[`deletedUploads`] = this.deletedUploads;
+      for (let d = 0; d < this.driverData.documentDetails.length; d++) {
+        const element = this.driverData.documentDetails[d];
+        delete element.docStates;
+      }
+      for (let i = 0; i < this.driverData.address.length; i++) {
+        const element = this.driverData.address[i];
+        delete element.states;
+        delete element.cities;
+        // if (element.countryCode !== '' || element.stateCode !== '' || element.cityName !== '') {
+        //   const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
+        //   ${element.stateCode} ${element.countryCode}`;
+        //   let result = await this.HereMap.geoCode(fullAddress);
 
-      //   result = result.items[0];
-      //   if (result != undefined) {
-      //     element.geoCords.lat = result.position.lat;
-      //     element.geoCords.lng = result.position.lng;
-      //   }
-      // }
-      if(element.manual === true){
-        let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
+        //   result = result.items[0];
+        //   if (result != undefined) {
+        //     element.geoCords.lat = result.position.lat;
+        //     element.geoCords.lng = result.position.lng;
+        //   }
+        // }
+        if (element.manual === true) {
+          let data = {
+            address1: element.address1,
+            address2: element.address2,
+            cityName: element.cityName,
+            stateName: element.stateName,
+            countryName: element.countryName,
+            zipCode: element.zipCode
+          }
 
-         let result = await this.newGeoCode(data);
+          let result = await this.newGeoCode(data);
 
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
-    }
-    if (this.driverData.hosDetails.hosCycle !== '') {
-      let cycleName = '';
-      this.cycles.map((v: any) => {
-        if (this.driverData.hosDetails.hosCycle === v.cycleID) {
-          cycleName = v.cycleName;
-        }
-      });
-      this.driverData.hosDetails.hosCycleName = cycleName;
-    }
-    // create form data instance
-    const formData = new FormData();
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-
-    for (let j = 0; j < this.uploadedDocs.length; j++) {
-      if(this.uploadedDocs[j] !== undefined){
-        for (let k = 0; k < this.uploadedDocs[j].length; k++) {
-          let file = this.uploadedDocs[j][k];
-          formData.append(`uploadedDocs-${j}`, file);
+          if (result != undefined) {
+            element.geoCords = result;
+          }
         }
       }
-    }
+      if (this.driverData.hosDetails.hosCycle !== '') {
+        let cycleName = '';
+        this.cycles.map((v: any) => {
+          if (this.driverData.hosDetails.hosCycle === v.cycleID) {
+            cycleName = v.cycleName;
+          }
+        });
+        this.driverData.hosDetails.hosCycleName = cycleName;
+      }
+      // create form data instance
+      const formData = new FormData();
+      // append photos if any
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
 
-    // append abstact history docs if any
-    for (let k = 0; k < this.abstractDocs.length; k++) {
-      formData.append('abstractDocs', this.abstractDocs[k]);
-    }
+      for (let j = 0; j < this.uploadedDocs.length; j++) {
+        if (this.uploadedDocs[j] !== undefined) {
+          for (let k = 0; k < this.uploadedDocs[j].length; k++) {
+            let file = this.uploadedDocs[j][k];
+            formData.append(`uploadedDocs-${j}`, file);
+          }
+        }
+      }
+
+      // append abstact history docs if any
+      for (let k = 0; k < this.abstractDocs.length; k++) {
+        formData.append('abstractDocs', this.abstractDocs[k]);
+      }
 
 
-    // append other fields
-    formData.append('data', JSON.stringify(this.driverData));
+      // append other fields
+      formData.append('data', JSON.stringify(this.driverData));
 
-    try {
+      try {
 
         this.apiService.putData('drivers', formData, true).subscribe({
           complete: () => { },
@@ -1180,13 +1181,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
           },
         });
-    } catch (error) {
-      this.submitDisabled = false;
+      } catch (error) {
+        this.submitDisabled = false;
+      }
+    } else {
+      this.errorAbstract = true;
+      this.toastr.error('Abstract history document is required.');
     }
-  } else {
-    this.errorAbstract = true;
-    this.toastr.error('Abstract history document is required.');
-   }
   }
 
   changePaymentModeForm(value) {
@@ -1296,20 +1297,20 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       this.assetsDocs[index].splice(dIndex, 1);
       this.deletedUploads.push(name);
     } else if (type === 'profile') {
-  this.driverProfileSrc = '';
-  this.uploadedPhotos = [];
-  this.driverData.driverImage = '';
-  this.deletedUploads.push(name);
-  $('#driverProfileModal').modal('hide');
+      this.driverProfileSrc = '';
+      this.uploadedPhotos = [];
+      this.driverData.driverImage = '';
+      this.deletedUploads.push(name);
+      $('#driverProfileModal').modal('hide');
     } else {
       this.absDocs.splice(index, 1);
       this.driverData.abstractDocs.splice(index, 1);
       this.deletedUploads.push(name);
     }
-   // this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
+    // this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
   }
   localDelete(type: string, name: string, index: any, dIndex: any) {
-    if(type === 'doc') {
+    if (type === 'doc') {
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(index, 1);
     } else {
@@ -1339,7 +1340,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     }
 
     this.apiService.getData(`carriers/${this.currentUserCarrier}`).subscribe(result => {
-      if(result.Items[0].addressDetails !== undefined) {
+      if (result.Items[0].addressDetails !== undefined) {
         result.Items[0].addressDetails.map(e => {
           if (e.addressType === 'yard') {
             this.carrierYards.push(e);
@@ -1373,31 +1374,31 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     let passwordVerify = passwordStrength(password)
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
-    } else{
+    } else {
       this.passwordValidation.lowerCase = false;
     }
 
     if (passwordVerify.contains.includes('uppercase')) {
       this.passwordValidation.upperCase = true;
-    } else{
+    } else {
       this.passwordValidation.upperCase = false;
     }
     if (passwordVerify.contains.includes('symbol')) {
       this.passwordValidation.specialCharacters = true;
-    } else{
+    } else {
       this.passwordValidation.specialCharacters = false;
     }
     if (passwordVerify.contains.includes('number')) {
       this.passwordValidation.number = true;
-    } else{
+    } else {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
       this.passwordValidation.length = true
-    } else{
+    } else {
       this.passwordValidation.length = false;
     }
-    if(password.includes('.')|| password.includes('-')){
+    if (password.includes('.') || password.includes('-')) {
       this.passwordValidation.specialCharacters = true;
     }
   }
