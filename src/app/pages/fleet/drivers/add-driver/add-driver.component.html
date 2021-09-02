@@ -646,7 +646,7 @@
                       <div class="map-search__results bg-white">
                         <ul class="p-0 m-0 text-left">
                           <li *ngFor="let item of searchResults;">
-                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
+                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address}}</a>
                           </li>
                         </ul>
                       </div>
@@ -715,10 +715,11 @@
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
                         </div>
-                        <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+                        
                       </div>
                     </div>
                   </div>
+                  <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                 </div>
               </div>
             </div>

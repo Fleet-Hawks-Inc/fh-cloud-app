@@ -89,7 +89,7 @@
                 <div class="row mb-3">
                    <div class="col-lg-12">
                       <div class="bg-white p-3 text-dark">
-                         <div class="form-group row">
+                         <div class="form-group row text-capitalize">
                             <div class="col-lg-12 pl-0 pr-0">
                                 <div class="m-2">
                                     <ul class="nav nav-tabs mb-3 top-tabs" id="top-tabs" role="tablist">
@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'all'}" id="allTrips" role="tabpanel" aria-labelledby="allTrips-tab" *ngIf="activeTab == 'all'">
-                                        <table class="row-border hover table table-bordered table-striped mb-0" id="allTripsDT">
+                                        <table class="row-border hover table table-bordered table-striped mb-0 text-capitalize" id="allTripsDT">
                                             <thead>
                                                 <tr>
                                                     <th>Trip#</th>
@@ -221,7 +221,7 @@
                                     </div>
 
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'confirmed'}" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab" *ngIf="activeTab == 'confirmed'">
-                                        <table class="row-border hover table table-bordered table-striped mb-0" id="confirmedTripsDT">
+                                        <table class="row-border hover table table-bordered table-striped text-capitalize mb-0" id="confirmedTripsDT">
                                             <thead>
                                                 <tr>
                                                     <th>Trip#</th>
@@ -302,7 +302,7 @@
                                     </div>
 
                                     <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab == 'dispatched'}" id="dispatched" role="tabpanel" aria-labelledby="dispatched-tab" *ngIf="activeTab == 'dispatched'">
-                                        <table class="row-border hover table table-bordered table-striped mb-0" id="dispatchedTripsDT">
+                                        <table class="row-border hover table table-bordered table-striped mb-0 text-capitalize" id="dispatchedTripsDT">
                                             <thead>
                                                 <tr>
                                                     <th>Trip#</th>
