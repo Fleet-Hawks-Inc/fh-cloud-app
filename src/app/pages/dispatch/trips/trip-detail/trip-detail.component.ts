@@ -244,7 +244,7 @@ export class TripDetailComponent implements OnInit {
         if(result.split) {
           result.split.map((x, cind) => {
               this.splitArr[cind] = [];
-              x.map((c) => {
+              x.plan.map((c) => {
                   this.trips.map((t) => {
                       if(t.planID === c) {
                         this.splitArr[cind].push(t);
