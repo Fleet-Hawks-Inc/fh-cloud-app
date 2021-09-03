@@ -91,6 +91,25 @@
       </div>
     </div>
   </div>
+  <div class="form-row mt-3">
+    <div class="col-lg-2 col-sm-12 col-xs-12">
+       <label class="control-label font-weight-bold mb-0 text-3 text-dark">Opening Balance</label>
+    </div>
+    <div class="col-lg-6">
+       <div class="btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline btn-yesno mr-2 mb-2"
+             [class.active]="opnBalType === 'debit'"
+             (click)="onChangeType('debit')">
+             <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" checked
+                hidden value="debit"> Debit </label>
+          <label class="btn btn-outline btn-yesno mr-2 mb-2"
+             [class.active]="opnBalType === 'credit'"
+             (click)="onChangeType('credit')">
+             <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" hidden
+                value="credit"> Credit </label>
+       </div>
+    </div>
+ </div>
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <div class="checkbox-custom">

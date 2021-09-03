@@ -289,6 +289,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   }
   finaltimezones: any = [];
   nullVar = null;
+  uploadedPic = '';
+  showUploadedPicModal = false;
   constructor(private apiService: ApiService,
               private httpClient: HttpClient,
               private toastr: ToastrService,
@@ -357,7 +359,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   async ngOnInit() {
     this.listService.fetchVehicles();
-   
+
     this.driverID = this.route.snapshot.params[`driverID`];
     if (this.driverID) {
       this.pageTitle = 'Edit Driver';
@@ -373,7 +375,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.fetchTimezones(); // to fetch timezone
     this.fetchDrivers();
     await this.getCurrentuser();
-    
+
     this.vehicles = this.listService.vehicleList;
     }
   async getCarrierDetails(id: string) {
@@ -593,18 +595,35 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   }
 
-  selectPhoto(event, name: any) {
-    if(name === null || this.driverProfileSrc === '') {
-     this.uploadedPhotos = [];
-     const files = [...event.target.files];
-     this.uploadedPhotos.push(files[0]);
-    } else {
-     this.uploadedPhotos = [];
-     const files = [...event.target.files];
-     this.uploadedPhotos.push(files[0]);
-     this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
+  selectPhoto(event, name: any, type: string) {
+    if (type === 'Add') {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+       const reader = new FileReader();
+       this.showUploadedPicModal = true;
+       reader.onload = (e: any) => {
+         this.uploadedPic = e.target.result;
+       };
+       reader.readAsDataURL(files[i]);
+       this.imageTitle = 'Change';
+     }
+     } else {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        this.showUploadedPicModal = true;
+        reader.onload = (e: any) => {
+          this.uploadedPic = e.target.result;
+        };
+        reader.readAsDataURL(files[i]);
+      }
+      this.deletedUploads.push(name);
+     }
 
-    }
    }
 
   removeProfile() {
@@ -720,7 +739,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       const element = this.driverData.address[i];
       delete element.states;
       delete element.cities;
-      
+
       if(element.manual === true){
         let data = {
            address1: element.address1,
@@ -744,7 +763,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
       } else {
         $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true) {
+        if(element.isSuggest != true && element.userLocation !== '') {
           $('#addErr'+i).css('display','block');
           return;
         }
@@ -848,7 +867,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   async getAddressDetail(id) {
     let result = await this.apiService
-    .getData(`pcMiles/detail/${id}`).toPromise();  
+    .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
   }
 
@@ -926,7 +945,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             if(this.driverData.address[a].manual) {
               this.driverData.address[a].isSuggest = false;
             } else {
-              this.driverData.address[a].isSuggest = true;  
+              this.driverData.address[a].isSuggest = true;
             }
             const countryCode = this.driverData.address[a].countryCode;
             const stateCode = this.driverData.address[a].stateCode;
@@ -1069,7 +1088,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
       const element = this.driverData.address[i];
       delete element.states;
       delete element.cities;
-      
+
       if(element.manual === true){
         let data = {
            address1: element.address1,
@@ -1093,13 +1112,13 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
        } else {
         $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true) {
+        if(element.isSuggest != true  && element.userLocation !== '') {
           $('#addErr'+i).css('display','block');
           return;
         }
       }
     }
-   
+
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -1283,8 +1302,18 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
   this.uploadedPhotos = [];
   this.driverData.driverImage = '';
   this.deletedUploads.push(name);
+  this.imageTitle = 'Add';
   $('#driverProfileModal').modal('hide');
-    } else {
+    } else if (type === 'uploaded') {
+      this.uploadedPic = '';
+      this.driverProfileSrc = '';
+      this.showUploadedPicModal = false;
+      this.uploadedPhotos = [];
+      // this.driverData.driverImage = '';
+      this.deletedUploads.push(this.driverData.driverImage);
+      $('#driverPicUploadedModal').modal('hide');
+      this.imageTitle = 'Add';
+        } else {
       this.absDocs.splice(index, 1);
       this.driverData.abstractDocs.splice(index, 1);
       this.deletedUploads.push(name);
@@ -1292,7 +1321,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
    // this.apiService.deleteData(`drivers/uploadDelete/${name}`).subscribe((result: any) => {});
   }
   localDelete(type: string, name: string, index: any, dIndex: any) {
-    if(type === 'doc') {
+    if (type === 'doc') {
       this.driverData.documentDetails[index].uploadedDocs.splice(dIndex, 1);
       this.assetsDocs[index].splice(index, 1);
     } else {
