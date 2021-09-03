@@ -373,13 +373,14 @@
                             </div>
                           </div>
                           <div class="col-lg-5">
-                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != ''"
+                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != '' && !showUploadedPicModal"
                                 data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
-                                <div *ngIf="!driverID" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                  <input [disabled]="driverID" class="hidden_input1 w-100" (change)="selectPhoto($event,nullVar)" type="file">
-                               </div>
-                               <div *ngIf="driverID" class="btn btn-sm btn-success pull-right"><i class="fas fa-plus"></i> {{imageTitle}} Photo
-                                <input [disabled]="!driverID" class="hidden_input" (change)="selectPhoto($event,driverData.driverImage)" type="file">
+
+                                <button type="button" data-toggle="modal" *ngIf="showUploadedPicModal"
+                                data-target="#driverPicUploadedModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
+
+                               <div  class="btn btn-sm btn-success pull-right" style="position: relative;"><i class="fas fa-plus"></i> {{imageTitle}} Photo
+                                <input  class="hidden_input" style="position: absolute; top: 0px; left: 0px; width: 100px;" (change)="selectPhoto($event,driverData.driverImage, imageTitle)" type="file">
                              </div>
                           </div>
                         </div>
@@ -715,7 +716,7 @@
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
                         </div>
-                        
+
                       </div>
                     </div>
                   </div>
@@ -1615,7 +1616,7 @@
                           <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
                           <ng-option value="Canada South 70 hour / 7 day">Canada South 70 hour / 7 day</ng-option>
                           <ng-option value="Canada South 120 hour / 14 day">Canada South 120 hour / 14 day</ng-option>
-                          
+
                         </ng-select>
                         <div *ngIf="cycle1.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="cycle1.errors.required">
@@ -1827,6 +1828,34 @@
             <div class="col-lg-12 text-right">
               <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
               title="Delete profile picture" (click)="delete('profile',driverData.driverImage, nullVar,nullVar)"></i>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="driverPicUploadedModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverPicUploadedModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Profile Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <img [src]="uploadedPic" class="img-fluid rounded" height="200px" width="100%">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 text-right">
+              <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
+              title="Delete profile picture" (click)="delete('uploaded',driverData.driverImage, nullVar,nullVar)"></i>
             </div>
           </div>
       </div>
