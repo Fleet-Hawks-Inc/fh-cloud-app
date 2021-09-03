@@ -236,10 +236,10 @@
                             pattern="^[a-zA-Z0-9\s]+$">
                           <div *ngIf="payNo.invalid && (payNo.dirty || payNo.touched)" class="text-danger">
                             <div *ngIf="payNo.errors.required">
-                              {{ paymentLabel }} reference is required.
+                              {{ payModeLabel }} reference is required.
                             </div>
                             <div *ngIf="payNo.errors.pattern">
-                              {{ paymentLabel }} reference must contain alphanumeric characters.
+                              {{ payModeLabel }} reference must contain alphanumeric characters.
                             </div>
                           </div>
 
