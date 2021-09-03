@@ -51,6 +51,9 @@ export class InvoiceListComponent implements OnInit {
 
 
   ngOnInit() {
+
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
     this.invoices = [];
     this.orderInvoices = [];
     this.fetchCustomersByIDs();
@@ -118,6 +121,8 @@ export class InvoiceListComponent implements OnInit {
     }
   }
   getInvoices(refresh?: boolean) {
+    console.log('this.lastItemSK', this.lastItemSK);
+    console.log('this.lastItemOrderSK', this.lastItemOrderSK);
     let searchParam = null;
     let searchParamOrder = null;
     if (refresh === true) {
@@ -144,16 +149,16 @@ export class InvoiceListComponent implements OnInit {
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-            } else {
-              this.lastItemSK = 'end';
-            }
             result.map((v) => {
               v.invStatus = v.invStatus.replace('_', ' ');
               this.invoices.push(v);
             });
             this.categorizeInvoices(this.invoices);
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+            } else {
+              this.lastItemSK = 'end';
+            }
           }
         });
     }
@@ -180,23 +185,23 @@ export class InvoiceListComponent implements OnInit {
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
-            } else {
-              this.lastItemOrderSK = 'end';
-            }
             result.map((v) => {
               v.invStatus = v.invStatus.replace('_', ' ');
               this.orderInvoices.push(v);
             });
             this.categorizeOrderInvoices(this.orderInvoices);
-
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
+            } else {
+              this.lastItemOrderSK = 'end';
+            }
           }
         });
     }
 
   }
   onScroll() {
+    console.log('hello scroll');
     this.getInvoices();
   }
   routeFn(invID: string, type: string) {

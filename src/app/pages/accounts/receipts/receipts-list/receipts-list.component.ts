@@ -23,6 +23,7 @@ export class ReceiptsListComponent implements OnInit {
   constructor(private accountService: AccountService, private toaster: ToastrService, private toastr: ToastrService, private apiService: ApiService,) { }
 
   ngOnInit() {
+    this.lastItemSK = '';
     this.receipts = [];
     this.fetchReceipts();
     this.fetchCustomersByIDs();
@@ -41,19 +42,20 @@ export class ReceiptsListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
+            result.map((v) => {
+              this.receipts.push(v);
+            });
             if (result[result.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
-            result.map((v) => {
-              this.receipts.push(v);
-            });
           }
         });
     }
   }
   onScroll() {
+    console.log('hello scroll receipts');
     this.fetchReceipts();
   }
   deleteReceipt(recID: string) {
