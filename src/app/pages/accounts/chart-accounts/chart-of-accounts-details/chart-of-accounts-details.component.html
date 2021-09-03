@@ -100,22 +100,22 @@
                     <tbody>
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Opening Balance</td>
-                        <td></td>
-                        <td>{{account.opnBal | number : '1.2-2'}}&nbsp; {{account.opnBalCurrency}}</td>
+                        <td><span *ngIf="account.opnBalType === 'debit'">{{account.opnBal | number : '1.2-2'}}&nbsp; {{account.opnBalCurrency}}</span></td>
+                        <td><span *ngIf="account.opnBalType === 'credit'">{{account.opnBal | number : '1.2-2'}}&nbsp; {{account.opnBalCurrency}}</span></td>
                         <td></td>
                       </tr>
                       <tr *ngFor="let trx of account.transactionLog; let i= index">
                         <td>{{i+1}}</td>
                         <td>{{trx.txnDate | date:"yyyy/MM/dd"}}</td>
-                        <td><span *ngIf="trx.name !== undefined">{{merged[trx.name] |  titlecase}}</span>
+                        <td><span *ngIf="trx.name !== undefined || trx.name !== null">{{merged[trx.name] |  titlecase}}</span>
 
-                          <span *ngIf="trx.name === undefined">-</span>
+                          <span *ngIf="trx.name === undefined || trx.name === null">-</span>
                         </td>
                         <td>{{trx.type | titlecase}}</td>
                         <td>{{trx.desc | titlecase}}</td>
                         <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount | number : '1.2-2'}}&nbsp; {{trx.currency}}</span></td>
                         <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount | number : '1.2-2'}}&nbsp; {{trx.currency}}</span></td>
-                        <td>{{trx.trxRunTotal | absoluteValue | number : '1.2-2'}}&nbsp; <span>{{trx.runTotalType}}</span></td>
+                        <td>{{trx.trxRunTotal | absoluteValue  | number : '1.2-2'}}&nbsp; <span>{{trx.runTotalType}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Closing Balance</td>

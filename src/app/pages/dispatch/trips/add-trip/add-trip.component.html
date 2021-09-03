@@ -327,7 +327,7 @@
                                                                 <li *ngFor="let item of searchResults;">
                                                                     <a href="javascript:;"
                                                                         (click)="assignLocation('editLoc', item, i)"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -424,7 +424,7 @@
                                                                 <li *ngFor="let item of searchResults;">
                                                                     <a href="javascript:;"
                                                                         (click)="assignLocation('loc', item,'')"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -926,46 +926,54 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="card-body text-dark table-scroll-y table-scrollplan" data-select2-id="279">
+               <div class="trip-search__main">
+                <table class="table table-bordered table-responsive-lg table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th width="25%">Vehicle</th>
+                            <th width="25%">Asset</th>
+                            <th width="25%">Driver</th>
+                            <th>Co-Driver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
+                                    bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID"
+                                    id="vehicleSelect" (change)="vehicleChange($event,'change')">
+                                </ng-select>
+                            </td>
+                            <td>
+                                <ng-select name="informationAsset" [(ngModel)]="informationAsset"
+                                    id="informationAsset" [items]="assets" bindLabel="assetIdentification"
+                                    [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
+                                </ng-select>
+                            </td>
+                            <td>
+                                <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername"
+                                    id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName"
+                                    (change)="driverChange($event,'driver','change')">
+                                </ng-select>
+                            </td>
+                            <td>
+                                <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername"
+                                    id="coDriverSelect" [items]="codrivers" bindLabel="fullName"
+                                    bindValue="userName" (change)="driverChange($event,'codriver','change')">
+                                </ng-select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+               </div>
+                <div class="card-body text-dark table-scroll-y table-scrollplan p-0" data-select2-id="279">
                     <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
-                        <thead>
-                            <tr>
-                                <th width="25%">Vehicle</th>
-                                <th width="25%">Asset</th>
-                                <th width="25%">Driver</th>
-                                <th>Co-Driver</th>
-                            </tr>
-                        </thead>
+                        
                         <tbody>
+                            
                             <tr>
-                                <td>
-                                    <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
-                                        bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID"
-                                        id="vehicleSelect" (change)="vehicleChange($event,'change')">
-                                    </ng-select>
-                                </td>
-                                <td>
-                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset"
-                                        id="informationAsset" [items]="assets" bindLabel="assetIdentification"
-                                        [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
-                                    </ng-select>
-                                </td>
-                                <td>
-                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername"
-                                        id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName"
-                                        (change)="driverChange($event,'driver','change')">
-                                    </ng-select>
-                                </td>
-                                <td>
-                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername"
-                                        id="coDriverSelect" [items]="codrivers" bindLabel="fullName"
-                                        bindValue="userName" (change)="driverChange($event,'codriver','change')">
-                                    </ng-select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table>
+                                <td width="25%">
+                                    <table class="w-100">
                                         <!-- <thead>head</thead> -->
                                         <tbody>
                                             <tr *ngFor="let vehicle of vehicles">
@@ -995,8 +1003,8 @@
                                         </tbody>
                                     </table>
                                 </td>
-                                <td>
-                                    <table>
+                                <td width="25%">
+                                    <table class="w-100">
                                         <tbody>
                                             <tr *ngFor="let asset of assets">
                                                 <td class="assetClass" id="asset_{{ asset.assetID }}"
@@ -1013,8 +1021,8 @@
                                         </tbody>
                                     </table>
                                 </td>
-                                <td>
-                                    <table>
+                                <td width="25%">
+                                    <table class="w-100">
                                         <tbody>
                                             <tr *ngFor="let driver of drivers">
                                                 <td class="driverClass" id="drivr_{{driver.driverID}}"
@@ -1041,8 +1049,8 @@
 
                                     </table>
                                 </td>
-                                <td>
-                                    <table>
+                                <td width="25%">
+                                    <table class="w-100">
                                         <tbody>
                                             <tr *ngFor="let driver of codrivers">
                                                 <td class="codriverClass" id="codrivr_{{driver.driverID}}"

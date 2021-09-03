@@ -1,5 +1,5 @@
 <ng-template #allUnitModal let-modal>
-  <div class="cus-modal-content" cdkDragBoundary=".cus-modal-content" cdkDrag>
+  <div class="cus-modal-content">
     <div class="modal-header pr-0">
       <div class="row w-100 align-items-center">
         <div class="col-2">
@@ -95,8 +95,8 @@
 
       <div class="card-body p-0">
         <form class="form-horizontal form-bordered" method="get">
-          <div class="mb-3">
-            <ul class="nav nav-tabs top-tabs align-items-center" id="top-tabs" role="tablist">
+          <div class="mb-0">
+            <ul class="nav border-0 nav-tabs top-tabs align-items-center" id="top-tabs" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all"
                   role="tab" aria-controls="all" aria-selected="false"
@@ -1012,7 +1012,7 @@
 </a>
 
 <ng-template #newUnitModal let-modal>
-  <div class="cus-modal-content" cdkDragBoundary=".cus-modal-content" cdkDrag>
+  <div class="cus-modal-content">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title" *ngIf="!updateButton">Add Entry</h4>
       <h4 class="modal-title" id="modal-basic-title" *ngIf="updateButton">Update Entry</h4>
@@ -1070,27 +1070,23 @@
                   >Do you want this entry to act as
                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                 </label>
+               
                 <ng-select
                   [(ngModel)]="unitData.eTypes"
                   name="eTypes"
                   [multiple]="true"
-                  [disabled]="updateButton"
                   (change)="unitChange($event)"
+                  [clearOnBackspace]="false"
+                  [hideSelected]="true"
                   #eType="ngModel"
-                  class="form-control populate h-auto"
+                  class="form-control text-capitalize populate h-auto"
                   placeholder="Do you want this entry to act as"
                   required
+                  [disabled]="updateButton"
                   [ngClass]="{ 'error' : contactForm.submitted && eType.invalid }"
                 >
-                  <ng-option value="broker">Broker</ng-option>
-                  <ng-option value="carrier">Carrier</ng-option>
-                  <ng-option value="shipper">Shipper</ng-option>
-                  <ng-option value="receiver">Receiver</ng-option>
-    
-                  <ng-option value="customer">Customer</ng-option>
-                  <ng-option value="fc">Factoring Company</ng-option>
-                  <ng-option value="owner_operator">Owner Operator</ng-option>
-                  <ng-option value="vendor">Vendor</ng-option>
+                  <ng-option *ngFor="let item of unitTypes" value="{{item.value}}">{{item.label}}</ng-option>
+                  
                 </ng-select>
                 <div
                   *ngIf="eType.invalid && contactForm.submitted"
@@ -1101,7 +1097,8 @@
               </div>
               <div class="col-lg-3">
                 <label class="control-label font-weight-bold text-lg-right pt-2"
-                  >Company Name
+                  >
+                   Company Name
                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                 </label>
                 <input
@@ -1262,11 +1259,11 @@
                       class="form-control"
                       placeholder="eg. John"
                       #bfName="ngModel"
-                      pattern="^[a-zA-Z]{2,30}$"
                       [ngClass]="{ 'error' : contactForm.submitted && bfName.invalid }"
-                      required
+                      [attr.required]="isBroker" 
                     />
-                    <div
+                    
+                    <!-- <div
                       *ngIf="bfName.invalid && contactForm.submitted" 
                       class="text-danger"
                     >
@@ -1276,7 +1273,7 @@
                       <div *ngIf="bfName.errors.pattern">
                         Contact First name can only contains letters.
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-3" *ngIf="unit.brokerData.type === 'individual'">
                     <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -1497,21 +1494,9 @@
                           class="form-control"
                           placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
                           #fastcardcarrier="ngModel"
-                          pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
-                          maxlength="14"
+                            maxlength="14"
                         />
-                        <div
-                          *ngIf="
-                            fastcardcarrier.invalid &&
-                            (fastcardcarrier.dirty || fastcardcarrier.touched)
-                          "
-                          class="text-danger"
-                        >
-                          <div *ngIf="fastcardcarrier.errors.pattern">
-                            Fast Card should be of 14 numbers beginning with
-                            4270/4110 and ending with 00/01.
-                          </div>
-                        </div>
+                        
                       </div>
     
                       <!-- fast expiry -->
@@ -1528,17 +1513,8 @@
                         <input
                           [(ngModel)]="unit.carrierData.fastExp"
                           name="fastExp"
-                          readonly
-                          type="text"
-                          placeholder="yyyy/mm/dd"
-                          placement="bottom-right"
-                          (click)="carrexp.toggle()"
-                          ngbDatepicker
-                          #carrexp="ngbDatepicker"
-                          class="form-control"
-                          autocomplete="off"
-                          [minDate]="dateMinLimit"
-                          [maxDate]="futureDatesLimit"
+                          readonly (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
+                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"
                         />
                       </div>
     
@@ -2063,7 +2039,7 @@
                               <div class="map-search__results bg-white" style="width: 96.5%; margin-top: 5px;">
                                 <ul class="p-0 m-0 text-left">
                                   <li *ngFor="let item of searchResults;">
-                                    <a href="javascript:;" (click)="userAddress('bank', bank, i, item)">{{item.address.label}}</a>
+                                    <a href="javascript:;" (click)="userAddress('bank', bank, i, item)">{{item.address}}</a>
                                   </li>
                                 </ul>
                               </div>
@@ -2420,22 +2396,9 @@
                                   class="form-control"
                                   placeholder="14 digits,beginning with 4270 or 4110 and ending with 00 or 01 or 02 (42700012345601)"
                                   #customerfastcard="ngModel"
-                                  pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
                                   maxlength="14"
                                 />
-                                <div
-                                  *ngIf="
-                                    customerfastcard.invalid &&
-                                    (customerfastcard.dirty ||
-                                      customerfastcard.touched)
-                                  "
-                                  class="text-danger"
-                                >
-                                  <div *ngIf="customerfastcard.errors.pattern">
-                                    Fast Card should be of 14 numbers beginning with
-                                    4270/4110 and ending with 00/01.
-                                  </div>
-                                </div>
+                                
                               </div>
                               <div class="col-3">
                                 <label
@@ -2578,21 +2541,9 @@
                               class="form-control"
                               placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
                               #fastcardowner="ngModel"
-                              pattern="^[4270|4110]{4}[0-9]{8}[00|01]{2}$"
                               maxlength="14"
                             />
-                            <div
-                              *ngIf="
-                                fastcardowner.invalid &&
-                                (fastcardowner.dirty || fastcardowner.touched)
-                              "
-                              class="text-danger"
-                            >
-                              <div *ngIf="fastcardowner.errors.pattern">
-                                Fast Card should be of 14 numbers beginning with
-                                4270/4110 and ending with 00/01.
-                              </div>
-                            </div>
+                            
                           </div>
                           <div class="col-3">
                             <label
@@ -3046,7 +2997,7 @@
                         <a
                           href="javascript:;"
                           (click)="userAddress('unit', unitData, i, item)"
-                          >{{ item.address.label }}</a
+                          >{{ item.address }}</a
                         >
                       </li>
                     </ul>
@@ -3083,6 +3034,7 @@
                     ><i class="fa fa-minus fa-fw"></i
                   ></a>
                 </div>
+                <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                 <div *ngIf="item.manual" class="row pl-3 w100">
                   <div class="col-6 pt-4">
                     <div class="row">
@@ -3300,19 +3252,8 @@
                       class="form-control text-lowercase"
                       placeholder="eg. johnsmith@gmail.com "
                       #customerem1="ngModel"
-                      pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$"
                     />
-                    <div
-                      *ngIf="
-                        customerem1.invalid &&
-                        (customerem1.dirty || customerem1.touched)
-                      "
-                      class="text-danger"
-                    >
-                      <div *ngIf="customerem1.errors.pattern">
-                        Enter valid email eg. johnsmith@gmail.com .
-                      </div>
-                    </div>
+
                   </div>
                   <div class="col-4">
                     <label class="control-label font-weight-bold text-lg-right pt-2"
@@ -3373,7 +3314,7 @@
 <!-- Detail Page Coding Starting from here -->
 
 <ng-template #unitDetailModal let-modal class="abc">
-  <div class="cus-modal-content" cdkDragBoundary=".cus-modal-content" cdkDrag>
+  <div class="cus-modal-content">
     <div class="modal-header">
       <h5 class="modal-title text-capitalize" *ngIf="unitData.cName">{{unitData.cName}}'s Details</h5>
       <button type="button"

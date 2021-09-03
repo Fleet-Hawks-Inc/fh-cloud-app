@@ -39,9 +39,9 @@ export class EventListComponent implements OnInit {
   birthDateMaxLimit: any;
   status_values: any = ["open", "investigating", "coaching", "closed"];
   lastItemSK: string = '';
-  
+
   constructor(private apiService: ApiService, private safetyService: SafetyService, private router: Router, private toaster: ToastrService,
-    private spinner: NgxSpinnerService, private hereMapService: HereMapService) { 
+    private spinner: NgxSpinnerService, private hereMapService: HereMapService) {
       const date = new Date();
       this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
       this.birthDateMaxLimit = { year: date.getFullYear(), month: 12, day: 31 };
@@ -56,7 +56,7 @@ export class EventListComponent implements OnInit {
   async getLocation(location: string) {
     try {
       const cords = location.split(',');
-      
+
       if (cords.length == 2) {
         const params = {
           lat: cords[0].trim(),
@@ -82,10 +82,10 @@ export class EventListComponent implements OnInit {
 
     cords = `${cords.lng},${cords.lat}`;
     let result = await this.apiService.getData(`pcMiles/reverse/${cords}`).toPromise();
-    
+
  }
 
-  
+
   fetchVehicles() {
     this.apiService.getData('vehicles')
       .subscribe((result: any) => {
@@ -105,7 +105,7 @@ export class EventListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.events = result;
-         
+
       })
   }
 
@@ -117,7 +117,7 @@ export class EventListComponent implements OnInit {
     if (this.lastItemSK != 'end') {
       this.safetyService.getData(`critical-events?lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
-          
+
           if (result.length == 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
@@ -126,14 +126,14 @@ export class EventListComponent implements OnInit {
               const element = result[index];
               this.events.push(element)
             }
-            
+            console.log('this.events', this.events);
             if (this.events[this.events.length - 1].sk != undefined) {
               this.lastItemSK = encodeURIComponent(this.events[this.events.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
           }
-         
+
         })
     }
 
@@ -158,7 +158,7 @@ export class EventListComponent implements OnInit {
   }
 
   resetFilter() {
-    
+
     if(this.filter.date != '' || this.filter.vehicleID != '' || this.filter.vehicleID != null) {
       this.lastItemSK = '';
       this.events = [];
@@ -167,7 +167,7 @@ export class EventListComponent implements OnInit {
         vehicleID: null,
         date: ''
       };
-      
+
     } else {
       return false;
     }
