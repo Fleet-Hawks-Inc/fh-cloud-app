@@ -62,6 +62,8 @@ export class NewAddressBookComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   
   newArr = [];
+  isBroker: boolean = false;
+  bType: boolean = false;
   unitData = {
     cName: '',
     dba: '',
@@ -102,6 +104,41 @@ export class NewAddressBookComponent implements OnInit {
     data: []
   }
 
+  unitTypes = [
+    {
+      value: 'broker',
+      label: 'broker',
+    },
+    {
+      value: 'carrier',
+      label: 'carrier',
+    },
+    {
+      value: 'shipper',
+      label: 'shipper',
+    },
+    {
+      value: 'receiver',
+      label: 'receiver',
+    },
+    {
+      value: 'customer',
+      label: 'customer',
+    },
+    {
+      value: 'fc',
+      label: 'factoring company',
+    },
+    {
+      value: 'owner_operator',
+      label: 'owner operator',
+    },{
+      value: 'vendor',
+      label: 'vendor',
+    },
+    
+  ]
+
   errors = {};
   errorClass = false;
   errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
@@ -112,6 +149,7 @@ export class NewAddressBookComponent implements OnInit {
   countries = [];
   states = [];
   cities = [];
+  selectedItems = [];
   lastKey: any = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -143,6 +181,41 @@ export class NewAddressBookComponent implements OnInit {
         this.lastKey = '';
         this.fetchUnits();
       } else if(res === 'form') {
+        this.bType = false;
+        this.unitTypes = [
+          {
+            value: 'broker',
+            label: 'broker',
+          },
+          {
+            value: 'carrier',
+            label: 'carrier',
+          },
+          {
+            value: 'shipper',
+            label: 'shipper',
+          },
+          {
+            value: 'receiver',
+            label: 'receiver',
+          },
+          {
+            value: 'customer',
+            label: 'customer',
+          },
+          {
+            value: 'fc',
+            label: 'factoring company',
+          },
+          {
+            value: 'owner_operator',
+            label: 'owner operator',
+          },{
+            value: 'vendor',
+            label: 'vendor',
+          },
+          
+        ]
         this.updateButton = false;
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
@@ -461,7 +534,7 @@ export class NewAddressBookComponent implements OnInit {
         if(!this.newArr.includes('broker')){
           let data = {
             brokerData : {
-              type: 'individual',
+              type: 'company',
               dot: '',
               fn: '',
               ln: '',
@@ -484,7 +557,7 @@ export class NewAddressBookComponent implements OnInit {
               mc: '',
               dot: '',
               fast: '',
-              fastExp: '',
+              fastExp: null,
               ccc: '',
               scac: '',
               cvor: '',
@@ -570,7 +643,7 @@ export class NewAddressBookComponent implements OnInit {
               dot: '',
               mc: '',
               fast: '',
-              fastExp: '',
+              fastExp: null,
               csa: false,
               ctpat: false,
               pip: false,
@@ -706,7 +779,7 @@ export class NewAddressBookComponent implements OnInit {
       }
       
     })
-    
+
   }
 
 
@@ -716,6 +789,11 @@ export class NewAddressBookComponent implements OnInit {
         if(value == 'company') {
           elem.brokerData.fn = '';
           elem.brokerData.ln = '';
+          this.bType = false;
+          this.isBroker = false;
+        } else {
+          this.bType = true;
+          this.isBroker = true;
         }
         elem.brokerData.type = value;
       }
@@ -884,7 +962,7 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async addEntry () {
-    
+    console.log('data', this.unitData)
     this.hideErrors();
     this.unitDisabled = true;
 
@@ -913,7 +991,7 @@ export class NewAddressBookComponent implements OnInit {
         }
       } else {
         $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true) {
+        if(element.isSuggest != true && element.userLoc != '') {
           $('#addErr'+i).css('display','block');
           return;
         }
@@ -1028,21 +1106,31 @@ export class NewAddressBookComponent implements OnInit {
       delete element.cities;
       
       if(element.manual === true){
-       let data = {
-          address1: element.add1,
-          address2: element.add2,
-          cityName: element.ctyName,
-          stateName: element.sName,
-          countryName: element.cName,
-          zipCode: element.zip
-        }
-
-        let result = await this.newGeoCode(data);
-        
-        if(result != undefined){
-          element.geoCords = result;
-        }
-      }
+        let data = {
+           address1: element.add1,
+           address2: element.add2,
+           cityName: element.ctyName,
+           stateName: element.sName,
+           countryName: element.cName,
+           zipCode: element.zip
+         }
+         $('#addErr'+i).css('display','none');
+         let result = await this.newGeoCode(data);
+ 
+         if(result == null) {
+           $('#addErr'+i).css('display','block');
+           return false;
+         }
+         if(result != undefined || result != null){
+           element.geoCords = result;
+         }
+       } else {
+         $('#addErr'+i).css('display','none');
+         if(element.isSuggest != true && element.userLoc != '') {
+           $('#addErr'+i).css('display','block');
+           return;
+         }
+       }
     }
     
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
@@ -1201,8 +1289,9 @@ export class NewAddressBookComponent implements OnInit {
     this.updateButton = true;
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
+      
       this.unitData.eTypes = res.eTypes;
-      this.newArr = this.unitData.eTypes;
+      this.newArr = res.eTypes;
       this.unitData.cName = res.cName;
       this.unitData.dba = res.dba;
       this.unitData.workEmail = res.workEmail;

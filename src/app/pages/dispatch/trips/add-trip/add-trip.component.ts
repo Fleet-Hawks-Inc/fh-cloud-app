@@ -1406,20 +1406,35 @@ export class AddTripComponent implements OnInit {
     async assignLocation(elem, item, index) {
         // await this.resetMap();
         if (elem == 'editLoc') {
-            this.trips[index].locationName = item.address.label;
-            this.trips[index]['lat'] = item.position.lat;
-            this.trips[index]['lng'] = item.position.lng;
+            this.trips[index].locationName = item.address;
+            let result = await this.getAddressDetail(item.place_id)
+            if(result != undefined) {
+                this.trips[index]['lat'] = result.position.lat;
+                this.trips[index]['lng'] = result.position.lng;
+            }
+            
 
             this.actualMiles = 0;
             await this.getMiles()
             await this.resetMap();
         } else {
-            this.textFieldValues.locationName = item.address.label;
-            this.textFieldValues.lat = item.position.lat;
-            this.textFieldValues.lng = item.position.lng;
+            this.textFieldValues.locationName = item.address;
+            let result = await this.getAddressDetail(item.place_id)
+            if(result != undefined) {
+                this.textFieldValues.lat = result.position.lat;
+                this.textFieldValues.lng = result.position.lng;
+            }
+           
         }
         this.searchResults = false;
         $('td').removeClass('show-search__result');
+    }
+
+
+    async getAddressDetail(id) {
+        let result = await this.apiService
+        .getData(`pcMiles/detail/${id}`).toPromise();  
+        return result;
     }
 
     fetchTripDetail() {
