@@ -23,7 +23,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Pay
                                                         To <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="paymentData.paymentTo" name="pamentTo"
-                                                        placeholder="Select type" #paymenttTO="ngModel" required (change)="resetEntityVal()">
+                                                        placeholder="Select type" #paymenttTO="ngModel" required (change)="resetEntityVal()" [disabled]="editDisabled">
                                                         <ng-option value="driver">Driver</ng-option>
                                                         <ng-option value="carrier">Carrier</ng-option>
                                                         <ng-option value="owner_operator">Owner Operator</ng-option>
@@ -57,7 +57,7 @@
                                                     <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
                                                         placeholder="yyyy/mm/dd" (click)="txnDate.toggle()" ngbDatepicker
                                                         #txnDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                        [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #paymntDate="ngModel" required>
+                                                        [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #paymntDate="ngModel" required [disabled]="editDisabled">
 
                                                     <div *ngIf="paymntDate.invalid && (paymntDate.dirty || paymntDate.touched)" class="text-danger">
                                                         <div *ngIf="paymntDate.errors.required">
@@ -75,7 +75,7 @@
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Driver" #driverID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Driver" #driverID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of drivers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -93,7 +93,7 @@
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Carrier" #carrID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Carrier" #carrID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of carriers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -111,7 +111,7 @@
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">
                                                         Select Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner Operator" #oprID="ngModel" required>
+                                                    <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner Operator" #oprID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -130,14 +130,14 @@
                                             <input [(ngModel)]="paymentData.fromDate" name="fromDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
                                                 #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" [disabled]="editDisabled">
                                         </div>
                                         <div class="col-lg-2">
                                             <label class="control-label font-weight-bold pt-2">To Date</label>
                                             <input [(ngModel)]="paymentData.toDate" name="toDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
                                                 #toDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" [disabled]="editDisabled">
                                         </div>
                                         <div class="col-lg-2">
                                             <button class="btn btn-success mar-top-37" *ngIf="!paymentID" [disabled]="searchDisabled" (click)="fetchSettlements()">Search</button>
@@ -318,7 +318,7 @@
                                                             class="control-label font-weight-bold  labelalign">Payment
                                                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                         <ng-select [(ngModel)]="paymentData.payMode" name="payMode"
-                                                            placeholder="Select Payment Mode" (change)="changePaymentMode($event)" #payMode="ngModel" required>
+                                                            placeholder="Select Payment Mode" (change)="changePaymentMode($event)" #payMode="ngModel" required [disabled]="editDisabled">
                                                             <ng-option value="cash">Cash</ng-option>
                                                             <ng-option value="cheque">Cheque</ng-option>
                                                             <ng-option value="eft">EFT</ng-option>
@@ -336,7 +336,7 @@
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold">Select
                                                             Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountID="ngModel" required>
+                                                        <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountID="ngModel" required [disabled]="editDisabled">
                                                             <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{
                                                                 data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                         </ng-select>
@@ -346,7 +346,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-2" style="margin-top: 32px;">
+                                                    <div class="col-lg-2" style="margin-top: 32px;" *ngIf="!paymentID">
                                                       <button type="button" data-target="#addAccountModal" data-toggle="modal"
                                                         class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
                                                       </button>
@@ -359,7 +359,7 @@
                                                 <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo" placeholder="{{ payModeLabel }} Reference" #modeNo="ngModel" [required]="paymentData.payMode && paymentData.payMode !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$" [disabled]="editDisabled">
                                                         <div *ngIf="modeNo.invalid && (modeNo.dirty || modeNo.touched)" class="text-danger">
                                                             <div *ngIf="modeNo.errors.required">
                                                                 {{ payModeLabel }} Reference is required.
@@ -374,7 +374,7 @@
                                                         <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                                                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                                                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel" required>
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel" required [disabled]="editDisabled">
 
                                                         <div *ngIf="modeDate.invalid && (modeDate.dirty || modeDate.touched)" class="text-danger">
                                                             <div *ngIf="modeDate.errors.required">
@@ -394,7 +394,7 @@
                                                       <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                                                           placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                                                           #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+                                                          [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required [disabled]="editDisabled">
 
                                                       <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
                                                           <div *ngIf="payDate.errors.required">
@@ -527,7 +527,7 @@
                                                 <ng-select [(ngModel)]="paymentData.taxdata.federalCode" name="federalCode" placeholder="Select Federal Claim Code" disabled>
                                                     <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
                                                     <ng-container *ngFor="let data of claimCodes[0]">
-                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e'">{{ data.from | number }} - {{ data.to | number }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e'">{{ data.from | number : '1.2-2' }} - {{ data.to | number : '1.2-2' }} ({{ data.name }})</ng-option>
                                                         <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
                                                     </ng-container>
                                                 </ng-select>
@@ -538,8 +538,8 @@
                                                 <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" >
                                                     <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
                                                     <ng-container *ngFor="let data of provincalClaimCodes">
-                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number }} - {{ data.to | number }} ({{ data.name }})</ng-option>
-                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_x'">Greater than {{ data.from | number }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number : '1.2-2' }} - {{ data.to | number : '1.2-2' }} ({{ data.name }})</ng-option>
+                                                        <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_x'">Greater than {{ data.from | number : '1.2-2' }} ({{ data.name }})</ng-option>
                                                         <ng-option value="{{ data.value }}" *ngIf="data.value == 'claim_code_e'">No Tax ({{ data.name }})</ng-option>
                                                     </ng-container>
                                                 </ng-select>

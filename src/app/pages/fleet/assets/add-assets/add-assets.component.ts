@@ -3,6 +3,7 @@ import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +28,8 @@ export class AddAssetsComponent implements OnInit {
   errors = {};
   form;
   quantumSelected = '';
+  pDocs = [];
+  lDocs = [];
   assetsData = {
     inspectionFormID:'',
     assetIdentification: '',
@@ -68,6 +71,39 @@ export class AddAssetsComponent implements OnInit {
       reminderBeforeUnit: '',
       vendor: null
     },
+    purchase: {
+      purchaseVendorID: null,
+      warrantyExpirationDate: null,
+      warrantyExpirationDateReminder: false,
+      purchasePrice: '',
+      purchasePriceCurrency: null,
+      warrantyExpirationMeter: '',
+      purchaseDate: null,
+      purchaseComments: '',
+      purchaseOdometer: '',
+      gstInc: true
+    },
+    loan: {
+      loanVendorID: null,
+      amountOfLoan: '',
+      amountOfLoanCurrency: null,
+      aspiration: '',
+      annualPercentageRate: '',
+      gstInc: true,
+      downPayment: '',
+      downPaymentCurrency: null,
+      dateOfLoan: null,
+      monthlyPayment: '',
+      monthlyPaymentCurrency: null,
+      firstPaymentDate: '',
+      numberOfPayments: '',
+      loadEndDate: null,
+      accountNumber: '',
+      generateExpenses: '',
+      notes: '',
+      loanDueDate: '',
+      lReminder: true,
+    },
     crossBorderDetails: {
       ACI_ID: '',
       ACE_ID: ''
@@ -102,6 +138,8 @@ export class AddAssetsComponent implements OnInit {
   states = [];
   uploadedPhotos = [];
   uploadedDocs = [];
+  purchaseDocs = [];
+  loanDocs = [];
   existingPhotos = [];
   existingDocs = [];
   assetsImages = []
@@ -120,7 +158,8 @@ export class AddAssetsComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private location: Location,
-              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer) {
+              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+              private httpClient:HttpClient) {
       this.selectedFileNames = new Map<any, any>();
   }
 
@@ -129,8 +168,9 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    this.listService.fetchAssetManufacturers();
-    this.listService.fetchAssetModels();
+    // this.listService.fetchAssetManufacturers();
+    // this.listService.fetchAssetModels();
+    this.fetchManufacturers();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
     this.fetchGroups();
@@ -148,9 +188,44 @@ export class AddAssetsComponent implements OnInit {
     });
 
     this.vendors = this.listService.vendorList;
-    this.manufacturers = this.listService.assetManufacturesList;
-    this.models = this.listService.assetModelsList;
+   // this.manufacturers = this.listService.assetManufacturesList;
+    //this.models = this.listService.assetModelsList;
     this.ownOperators = this.listService.ownerOperatorList;
+  }
+
+  fetchManufacturers() {
+    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
+      data.forEach(element => {
+
+        this.manufacturers.push(Object.keys(element)[0].toUpperCase())
+
+      });
+
+    });
+  }
+  fetchModels() {
+    this.models = [];
+    let manufacturer: any = '';
+    
+    if (this.assetsData.assetDetails.manufacturer !== null) {
+      manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
+    
+    }
+    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
+      data.forEach(element => {
+    
+        let output = [];
+        if (element[manufacturer]) {
+          element[manufacturer].forEach(element => {
+            output.push(element.toUpperCase());
+
+          });
+          this.models = output;
+        }
+      });
+
+    });
+
   }
   getYears() {
     var max = new Date().getFullYear(),
@@ -181,13 +256,13 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-  getManufactures(){
-    this.listService.fetchAssetManufacturers();
-  }
+  // getManufactures(){
+  //   this.listService.fetchAssetManufacturers();
+  // }
 
-  getModels(){
-    this.listService.fetchAssetModels();
-  }
+  // getModels(){
+  //   this.listService.fetchAssetModels();
+  // }
 
   openModal(unit: string) {
     this.listService.triggerModal(unit);
@@ -249,6 +324,36 @@ export class AddAssetsComponent implements OnInit {
         reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
         vendor: this.assetsData.insuranceDetails.vendor
       },
+      purchase: {
+        purchaseVendorID: this.assetsData.purchase.purchaseVendorID,
+        warrantyExpirationDate: this.assetsData.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.assetsData.purchase.warrantyExpirationDateReminder,
+        purchasePrice: this.assetsData.purchase.purchasePrice,
+        purchasePriceCurrency: this.assetsData.purchase.purchasePriceCurrency,
+        warrantyExpirationMeter: this.assetsData.purchase.warrantyExpirationMeter,
+        purchaseDate: this.assetsData.purchase.purchaseDate,
+        purchaseComments: this.assetsData.purchase.purchaseComments,
+        purchaseOdometer: this.assetsData.purchase.purchaseOdometer,
+        gstInc: this.assetsData.purchase.gstInc
+      },
+      loan: {
+        loanVendorID: this.assetsData.loan.loanVendorID,
+        amountOfLoan: this.assetsData.loan.amountOfLoan,
+        amountOfLoanCurrency: this.assetsData.loan.amountOfLoanCurrency,
+        annualPercentageRate: this.assetsData.loan.annualPercentageRate,
+        gstInc: this.assetsData.loan.gstInc,
+        downPayment: this.assetsData.loan.downPayment,
+        downPaymentCurrency: this.assetsData.loan.downPaymentCurrency,
+        dateOfLoan: this.assetsData.loan.dateOfLoan,
+        monthlyPayment: this.assetsData.loan.monthlyPayment,
+        monthlyPaymentCurrency: this.assetsData.loan.monthlyPaymentCurrency,
+        numberOfPayments: this.assetsData.loan.numberOfPayments,
+        loadEndDate: this.assetsData.loan.loadEndDate,
+        generateExpenses: this.assetsData.loan.generateExpenses,
+        notes: this.assetsData.loan.notes,
+        loanDueDate: this.assetsData.loan.loanDueDate,
+        lReminder: this.assetsData.loan.lReminder,
+      },
       crossBorderDetails:{
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
         ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
@@ -269,9 +374,19 @@ export class AddAssetsComponent implements OnInit {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
+    // append purchase docs if any
+    for(let k = 0; k < this.purchaseDocs.length; k++){
+      formData.append('purchaseDocs', this.purchaseDocs[k]);
+    }
+
+    // append loan docs if any
+    for(let l = 0; l < this.loanDocs.length; l++){
+      formData.append('loanDocs', this.loanDocs[l]);
+    }
+
     // append other fields
     formData.append('data', JSON.stringify(data));
-
+    
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -374,6 +489,37 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.insuranceDetails.reminderBefore = result.insuranceDetails.reminderBefore;
         this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
         this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
+
+        
+        this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID,
+        this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate,
+        this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice,
+        this.assetsData.purchase.purchasePriceCurrency = result.purchase.purchasePriceCurrency,
+        this.assetsData.purchase.warrantyExpirationMeter = result.purchase.warrantyExpirationMeter,
+        this.assetsData.purchase.purchaseDate = result.purchase.purchaseDate,
+        this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments,
+        this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer,
+        this.assetsData.purchase.gstInc = result.purchase.gstInc
+        
+        
+        this.assetsData.loan.loanVendorID = result.loan.loanVendorID,
+        this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan,
+        this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency,
+        this.assetsData.loan.annualPercentageRate = result.loan.annualPercentageRate,
+        this.assetsData.loan.downPayment = result.loan.downPayment,
+        this.assetsData.loan.downPaymentCurrency = result.loan.downPaymentCurrency,
+        this.assetsData.loan.monthlyPaymentCurrency = result.loan.monthlyPaymentCurrency,
+        this.assetsData.loan.dateOfLoan = result.loan.dateOfLoan,
+        this.assetsData.loan.monthlyPayment = result.loan.monthlyPayment,
+        this.assetsData.loan.numberOfPayments = result.loan.numberOfPayments,
+        this.assetsData.loan.loadEndDate = result.loan.loadEndDate,
+        this.assetsData.loan.generateExpenses = result.loan.generateExpenses,
+        this.assetsData.loan.loanDueDate = result.loan.loanDueDate,
+        this.assetsData.loan.lReminder = result.loan.lReminder,
+        this.assetsData.loan.gstInc = result.loan.gstInc,
+        this.assetsData.loan.notes = result.loan.notes,
+        
+        
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
@@ -388,6 +534,14 @@ export class AddAssetsComponent implements OnInit {
 
         if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
           this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        }
+
+        if(result.loanDocs !== undefined && result.loanDocs.length > 0) {
+          this.lDocs = result.loanDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        }
+
+        if(result.purchaseDocs !== undefined && result.purchaseDocs.length > 0) {
+          this.pDocs = result.purchaseDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
 
         this.spinner.hide(); // loader hide
@@ -508,6 +662,14 @@ export class AddAssetsComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
+    } else if(obj === 'purchase') {
+      for (let i = 0; i < files.length; i++) {
+        this.purchaseDocs.push(files[i])
+      }
+    } else if(obj === 'loan') {
+      for (let i = 0; i < files.length; i++) {
+        this.loanDocs.push(files[i])
+      }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
@@ -599,19 +761,59 @@ export class AddAssetsComponent implements OnInit {
   }
 
 // delete uploaded images and documents
-delete(type: string, name: string, index: any) {
-  if (type === 'doc') {
-    this.assetsDocs.splice(index, 1);
-    this.existingDocs.splice(index, 1);
-    this.deleteUploadedFile(type, name);
-  } else {
-    this.assetsImages.splice(index, 1);
-    this.existingPhotos.splice(index, 1);
-    this.deleteUploadedFile(type, name);
-  }
-}
-deleteUploadedFile(type: string, name: string) { // delete from aws
-  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+// delete(type: string, name: string, index: any) {
+//   if (type === 'doc') {
+//     this.assetsDocs.splice(index, 1);
+//     this.existingDocs.splice(index, 1);
+//     this.deleteUploadedFile(type, name);
+//   } else {
+//     this.assetsImages.splice(index, 1);
+//     this.existingPhotos.splice(index, 1);
+//     this.deleteUploadedFile(type, name);
+//   }
+// }
+// deleteUploadedFile(type: string, name: string) { // delete from aws
+//   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+// }
+
+deleteDocument(type: string, name: string) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+    if (type == 'doc') {
+      this.assetsDocs = [];
+      this.uploadedDocs = result.Attributes.uploadedDocs;
+      this.existingDocs = result.Attributes.uploadedDocs;
+      result.Attributes.uploadedDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.assetsDocs.push(obj);
+      })
+    } else if (type == 'loan') {
+      this.lDocs = [];
+      console.log('loan')
+      this.uploadedDocs = result.Attributes.loanDocs;
+      this.existingDocs = result.Attributes.loanDocs;
+      result.Attributes.loanDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.lDocs.push(obj);
+      })
+    } else {
+      this.pDocs = [];
+      this.uploadedDocs = result.Attributes.purchaseDocs;
+      this.existingDocs = result.Attributes.purchaseDocs;
+      result.Attributes.purchaseDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.pDocs.push(obj);
+      })
+    }
+   });
 }
 
 clearAssetGroup() {

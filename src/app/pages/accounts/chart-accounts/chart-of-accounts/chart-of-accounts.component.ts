@@ -48,6 +48,7 @@ export class ChartOfAccountsComponent implements OnInit {
   Success = '';
   submitDisabled = false;
   deactivatePredefined = true;
+  addPredefined = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
@@ -55,6 +56,7 @@ export class ChartOfAccountsComponent implements OnInit {
     this.fetchAccounts();
   }
   preAccounts() {
+    this.addPredefined = true;
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
       this.toaster.success('Predefined  Accounts Created.');
       this.fetchAccounts();

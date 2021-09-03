@@ -199,6 +199,7 @@ export class AddVehicleNewComponent implements OnInit {
     amountOfLoanCurrency: null,
     aspiration: '',
     annualPercentageRate: '',
+    gstInc: true,
     downPayment: '',
     downPaymentCurrency: null,
     dateOfLoan: null,
@@ -210,6 +211,8 @@ export class AddVehicleNewComponent implements OnInit {
     accountNumber: '',
     generateExpenses: '',
     notes: '',
+    loanDueDate: '',
+    lReminder: true,
   };
   settings = {
     primaryMeter: 'miles',
@@ -233,8 +236,11 @@ export class AddVehicleNewComponent implements OnInit {
   uploadedPhotos = [];
   uploadedDocs = [];
   purchaseDocs = [];
+  loanDocs = [];
   existingPhotos = [];
   existingDocs = [];
+  existPDocs = []
+  existLDocs = [];
   carrierID;
   programs = [];
   vendors: any = [];
@@ -250,6 +256,7 @@ export class AddVehicleNewComponent implements OnInit {
   modals:any=[]
   slides = [];
   pDocs = [];
+  lDocs = [];
   documentSlides = [];
   localPhotos = [];
   slideConfig = {
@@ -285,7 +292,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.fetchVehicles();
     this.listService.fetchVendors();
     this.fetchManufacturers();
-    this.listService.fetchModels();
+    //this.listService.fetchModels();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
@@ -557,6 +564,7 @@ export class AddVehicleNewComponent implements OnInit {
         amountOfLoanCurrency: this.loan.amountOfLoanCurrency,
         aspiration: this.loan.aspiration,
         annualPercentageRate: this.loan.annualPercentageRate,
+        gstInc: this.loan.gstInc,
         downPayment: this.loan.downPayment,
         downPaymentCurrency: this.loan.downPaymentCurrency,
         dateOfLoan: this.loan.dateOfLoan,
@@ -568,6 +576,8 @@ export class AddVehicleNewComponent implements OnInit {
         accountNumber: this.loan.accountNumber,
         generateExpenses: this.loan.generateExpenses,
         notes: this.loan.notes,
+        loanDueDate: this.loan.loanDueDate,
+        lReminder: this.loan.lReminder,
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
@@ -581,8 +591,6 @@ export class AddVehicleNewComponent implements OnInit {
     };
     
     // create form data instance
-    // console.log(data);
-    // return;
     const formData = new FormData();
 
     // append photos if any
@@ -599,6 +607,12 @@ export class AddVehicleNewComponent implements OnInit {
     for (let j = 0; j < this.purchaseDocs.length; j++) {
       formData.append('purchaseDocs', this.purchaseDocs[j]);
     }
+
+    // append loan docs if any
+    for (let j = 0; j < this.loanDocs.length; j++) {
+      formData.append('loanDocs', this.loanDocs[j]);
+    }
+    
     // append other fields
     formData.append('data', JSON.stringify(data));
     try {
@@ -680,6 +694,10 @@ export class AddVehicleNewComponent implements OnInit {
     } else if(obj === 'purchase') {
       for (let i = 0; i < files.length; i++) {
         this.purchaseDocs.push(files[i])
+      }
+    } else if(obj === 'loan') {
+      for (let i = 0; i < files.length; i++) {
+        this.loanDocs.push(files[i])
       }
     } else {
       for (let i = 0; i < files.length; i++) {
@@ -846,6 +864,7 @@ export class AddVehicleNewComponent implements OnInit {
           amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
           aspiration: result.loan.aspiration,
           annualPercentageRate: result.loan.annualPercentageRate,
+          gstInc: result.loan.gstInc,
           downPayment: result.loan.downPayment,
           downPaymentCurrency: result.loan.downPaymentCurrency,
           dateOfLoan: _.isEmpty(result.loan.dateOfLoan) ? null : result.loan.dateOfLoan,
@@ -856,7 +875,9 @@ export class AddVehicleNewComponent implements OnInit {
           loadEndDate: _.isEmpty(result.loan.loadEndDate) ? null : result.loan.loadEndDate,
           accountNumber: result.loan.accountNumber,
           generateExpenses: result.loan.generateExpenses,
-          notes: result.loan.notes
+          notes: result.loan.notes,
+          loanDueDate: result.loan.loanDueDate,
+          lReminder: result.loan.lReminder,
         };
         this.settings = {
           primaryMeter: result.settings.primaryMeter,
@@ -868,6 +889,8 @@ export class AddVehicleNewComponent implements OnInit {
         };
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
+        this.existPDocs = result.purchaseDocs;
+        this.existLDocs = result.loanDocs;
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
           this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
         }
@@ -879,6 +902,15 @@ export class AddVehicleNewComponent implements OnInit {
               path: `${this.Asseturl}/${result.carrierID}/${x}`
             }
             this.pDocs.push(obj);
+          })
+        }
+        if (result.loanDocs != undefined && result.loanDocs.length > 0) {
+          result.loanDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`
+            }
+            this.lDocs.push(obj);
           })
         }
         
@@ -1068,6 +1100,9 @@ export class AddVehicleNewComponent implements OnInit {
         accountNumber: this.loan.accountNumber,
         generateExpenses: this.loan.generateExpenses,
         notes: this.loan.notes,
+        loanDueDate: this.loan.loanDueDate,
+        lReminder: this.loan.lReminder,
+        gstInc: this.loan.gstInc,
       },
       settings: {
         primaryMeter: this.settings.primaryMeter,
@@ -1079,6 +1114,8 @@ export class AddVehicleNewComponent implements OnInit {
       },
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs,
+      purchaseDocs: this.existPDocs,
+      loanDocs: this.existLDocs,
       activeTab: this.activeTab
     };
     // create form data instance
@@ -1098,6 +1135,12 @@ export class AddVehicleNewComponent implements OnInit {
     for (let j = 0; j < this.purchaseDocs.length; j++) {
       formData.append('purchaseDocs', this.purchaseDocs[j]);
     }
+
+     // append loan docs if any
+     for (let j = 0; j < this.loanDocs.length; j++) {
+      formData.append('loanDocs', this.loanDocs[j]);
+    }
+    
     //append other fields
     formData.append('data', JSON.stringify(data));
 
@@ -1257,9 +1300,9 @@ export class AddVehicleNewComponent implements OnInit {
     }
   }
 
-  deleteDocument(value: string, name: string, index: number) {
+  deleteDocument(value: any, name: string, index: number) {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-      if(value != 'purchase') {
+      if(value == 'doc') {
         this.documentSlides = [];
         this.uploadedDocs = result.Attributes.uploadedDocs;
         this.existingDocs = result.Attributes.uploadedDocs;
@@ -1270,6 +1313,17 @@ export class AddVehicleNewComponent implements OnInit {
           }
           this.documentSlides.push(obj);
         })
+      } else if(value == 'loan') {
+        this.lDocs = [];
+      this.uploadedDocs = result.Attributes.loanDocs;
+      this.existingDocs = result.Attributes.loanDocs;
+      result.Attributes.loanDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.lDocs.push(obj);
+      })
       } else {
         this.pDocs = [];
       this.uploadedDocs = result.Attributes.purchaseDocs;

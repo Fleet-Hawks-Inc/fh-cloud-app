@@ -22,6 +22,7 @@ export class IncomeListComponent implements OnInit {
     endDate: null,
     categoryID: null,
   };
+  searchDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -36,7 +37,11 @@ export class IncomeListComponent implements OnInit {
    // this.fetchInvoices();
   }
 
-  fetchAccounts() {
+  fetchAccounts(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.incomeAccounts = [];
+    }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
@@ -44,6 +49,7 @@ export class IncomeListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if(result.length > 0) {
+         // this.searchDisabled = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -108,6 +114,7 @@ export class IncomeListComponent implements OnInit {
 
   searchFilter() {
     if(this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+     // this.searchDisabled = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
