@@ -63,14 +63,24 @@ export class SettlementsListComponent implements OnInit {
       });
   }
 
-  fetchSettlements() {
+  fetchSettlements(refresh?: boolean) {
+    let searchParam = null;
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.settlements = [];
+    }
     if (this.lastItemSK !== 'end') {
+      if (this.filter.settlementNo !== null && this.filter.settlementNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.settlementNo}"`);
+     } else {
+       searchParam = null;
+     }
       this.accountService
       .getData(
-        `settlement/paging?type=${this.filter.type}&settlementNo=${this.filter.settlementNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        `settlement/paging?type=${this.filter.type}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
       )
       .subscribe((result: any) => {
-        if (result.length == 0) {
+        if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if (result.length > 0) {
@@ -80,6 +90,7 @@ export class SettlementsListComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           result.map((v) => {
+            v.url = `/accounts/settlements/detail/${ v.sttlID }`;
             v.entityType = v.type.replace("_", " ");
             v.status = v.status.replace("_", " ");
             if (v.status == undefined) {
@@ -102,7 +113,7 @@ export class SettlementsListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.settlementNo !== "" || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.type !== null || this.filter.settlementNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -133,7 +144,7 @@ export class SettlementsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: "",
+      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = '';
@@ -154,6 +165,6 @@ export class SettlementsListComponent implements OnInit {
   }
 
   onScroll() {
-    this.fetchSettlements(); 
+    this.fetchSettlements();
   }
 }

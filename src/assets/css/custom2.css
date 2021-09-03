@@ -74,81 +74,15 @@
   .add_topnav_vehicle ul li:hover{color: #fff; background: #aaa; text-decoration: none;}
   .add_topnav_vehicle ul li.active{color: #fff; background: #aaa;; text-decoration: none;}
   
-  /* ADD VEHICLE INFORMATION */
-  #vehicle_new_details
-  {
-   display: block;
-  }
-  #vehicle_new_lifecycle,
-  #vehicle_new_specifications,
-  #vehicle_new_wheels,
-  #vehicle_new_engine,
-  #vehicle_new_settings,
-  #vehicle_new_fluids
-  {
-  display: none;
-  }
+   
   
-  .sub-heading-new-vehicle
-  {
-  font-size: 1rem;
-  color: black;
-  }
-  
-  /* Stock Quantity */
-  .table-stock-qty-td
-  {
-   vertical-align: middle!important;
-  }
-  
-  /* Stock Assignment Add button setting */
-  .mar-top-asg-stock-btn
-  {
-      margin-top: 37px;
-  }
-  
-  .mar-top-30
-  {
-      margin-top: 30px;
-  }
-  .mar-top-37
-  {
-      margin-top: 37px;
-  }
   /* CURSOR POINTER */
   .cursor_pointer{
     cursor: pointer;
   }
   
   
-  /* BUSINESS PAGE CSS */
-   .business_image_style{
-     height: 250px;
-     width: 250px;
-     border-radius: 5%;
-   }
-   .margin_50
-   {
-     margin-top: 50px;
-   }
-  
-   /* TEXT UNDERLINE */
-   .text-underline{
-     text-decoration: underline;
-   }
-  
-  .businessmaps{width: 200px;position: absolute;right: 20px;top: 10px;}
-  
-  .wizard-tabs ul > li.active .badge {
-   background-color: #000!important;
-  }
-  
-  .business-radio-box
-  {
-   border: 0.5px solid;
-     padding: inherit;
-  }
-  
+    
   /* .account-body{
    margin: 20px;
    margin-left: 50px;

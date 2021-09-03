@@ -88,7 +88,6 @@ export class ScorecardDetailComponent implements OnInit {
         this.eventData.driver = element;
         this.eventData.driver.driverImage = `${this.Asseturl}/${element.carrierID}/${element.driverImage}`;
 
-        this.fetchCycle(element.hosDetails.hosCycle);
         this.fetchHomeTerminal(element.hosDetails.homeTerminal);
 
         let eventtim = <any>'00:00:00';
@@ -136,13 +135,6 @@ export class ScorecardDetailComponent implements OnInit {
           })
 
         this.spinner.hide();
-      })
-  }
-
-  fetchCycle(cycleID) {
-    this.apiService.getData('cycles/'+cycleID)
-      .subscribe((result: any) => {
-          this.eventData.driver.cycleName = result.Items[0].cycleName;
       })
   }
 

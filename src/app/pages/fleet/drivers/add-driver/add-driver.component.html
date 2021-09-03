@@ -646,7 +646,7 @@
                       <div class="map-search__results bg-white">
                         <ul class="p-0 m-0 text-left">
                           <li *ngFor="let item of searchResults;">
-                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
+                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address}}</a>
                           </li>
                         </ul>
                       </div>
@@ -715,10 +715,11 @@
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
                         </div>
-                        <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+                        
                       </div>
                     </div>
                   </div>
+                  <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                 </div>
               </div>
             </div>
@@ -1607,11 +1608,14 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycle" name="hosDetails.hosCycle"
-                          (change)="onChangeHideErrors('hosDetails.hosCycle')" class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
+                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycleName" name="hosDetails.hosCycleName"
+                          (change)="onChangeHideErrors('hosDetails.hosCycleName')" class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
                           placeholder="Select the cycle for the driver" #cycle1="ngModel" [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                          <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
-                            {{cycle.cycleName}}</ng-option>
+                          <ng-option value="USA 60 hour / 7 day">USA 60 hour / 7 day</ng-option>
+                          <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
+                          <ng-option value="Canada South 70 hour / 7 day">Canada South 70 hour / 7 day</ng-option>
+                          <ng-option value="Canada South 120 hour / 14 day">Canada South 120 hour / 14 day</ng-option>
+                          
                         </ng-select>
                         <div *ngIf="cycle1.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="cycle1.errors.required">

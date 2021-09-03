@@ -20,7 +20,7 @@ export class DriverPaymentsListComponent implements OnInit {
     startDate: null,
     endDate: null,
     type: null,
-    amount: ''
+    paymentNo: null
   }
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -54,9 +54,19 @@ export class DriverPaymentsListComponent implements OnInit {
       });
   }
 
-  fetchDriverPayments() {
+  fetchDriverPayments(refresh?: boolean) {
+    let searchParam = null;
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.payments = [];
+    }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`driver-payments/paging?type=${this.filter.type}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
+     } else {
+       searchParam = null;
+     }
+      this.accountService.getData(`driver-payments/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -68,7 +78,8 @@ export class DriverPaymentsListComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           result.map((v) => {
-            if(v.payMode) {
+            v.url = `/accounts/payments/driver-payments/detail/${ v.paymentID }`;
+            if (v.payMode) {
               v.payMode = v.payMode.replace("_"," ");
             } else {
               v.payMode = '-';
@@ -91,7 +102,7 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.type !== null || this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -123,13 +134,13 @@ export class DriverPaymentsListComponent implements OnInit {
         startDate: null,
         endDate: null,
         type: null,
-        amount: ''
+        paymentNo: null
     }
     this.lastItemSK = '';
     this.fetchDriverPayments();
   }
 
   onScroll() {
-    this.fetchDriverPayments(); 
+    this.fetchDriverPayments();
   }
 }

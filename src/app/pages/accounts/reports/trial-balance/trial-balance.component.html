@@ -1,8 +1,11 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <div class="row pr-5 " style="padding-top:10px;">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2 pr-0">
+            <h4 class="font-weight-bold mt-0 text-dark">Trial Balance</h4>
+          </div>
           <div class="col-lg-2">
             <select class="form-control populate">
               <option value="2">This Month</option>
@@ -18,114 +21,107 @@
           </div>
           <div class="col-lg-2">
             <button type="button" class="btn btn-success btn-sm">Calculate</button>
-
           </div>
         </div>
       </header>
-      <section class="card mt-0 mb-4">
-        <div class="card-body">
-          <div class="row">
-            <div class="col pr-0">
-              <div class="text-dark">
-                <form class="form-horizontal form-bordered" method="get">
-                  <div class=" row">
-                    <div class="col-lg-12">
-                      <h3 class="font-weight-bold">Trial Balance</h3>
-                    </div>
-                  </div>
-                  <div class="row mt-4">
-                    <div class="col-lg-11">
-                      <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                          <tr>
-                            <th width="10%">Account Number</th>
-                            <th>Account Name</th>
-                            <th>Account Type</th>
-                            <th width="10%">Debit</th>
-                            <th width="10%">Credit</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>1001</td>
-                            <td>Cash on Hand</td>
-                            <td>Assets</td>
-                            <td>100.00</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>1002</td>
-                            <td>Chequing</td>
-                            <td>Assets</td>
-                            <td>477.00</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>1062</td>
-                            <td>Accounts Receivable</td>
-                            <td>Assets</td>
-                            <td>123.00</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>1484</td>
-                            <td>Prepaid Expenses</td>
-                            <td>Assets</td>
-                            <td>50.00</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>2621</td>
-                            <td>Accounts Payable</td>
-                            <td>Expenses</td>
-                            <td></td>
-                            <td>100.00</td>
-                          </tr>
-                          <tr>
-                            <td>8000</td>
-                            <td>Sales-Products</td>
-                            <td>Assets</td>
-                            <td></td>
-                            <td>590.00</td>
-                          </tr>
-                          <tr>
-                            <td>8230</td>
-                            <td>Other Income</td>
-                            <td>Assets</td>
-                            <td></td>
-                            <td>300.00</td>
-                          </tr>
-                          <tr>
-                            <td>8320</td>
-                            <td>Cost of Goods Sold</td>
-                            <td>Expenses</td>
-                            <td>100.00</td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td>9270</td>
-                            <td>General Expenses</td>
-                            <td>Expenses</td>
-                            <td></td>
-                            <td>50.00</td>
-                          </tr>
-                          <tr>
-                            <td></td>
-                            <td></td>
-                            <td class="font-weight-bold text-4">Total</td>
-                            <td class="font-weight-bold text-4">1040</td>
-                            <td class="font-weight-bold text-4">1040</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </form>
+
+      <section class="m-2">
+        <div class="row mb-3">
+         <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
+           <div class="form-group row">
+              <div class="col-lg-12">
+                <table class="table table-bordered table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th width="10%">Account Number</th>
+                      <th>Account Name</th>
+                      <th>Account Type</th>
+                      <th width="10%">Debit</th>
+                      <th width="10%">Credit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1001</td>
+                      <td>Cash on Hand</td>
+                      <td>Assets</td>
+                      <td>100.00</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>1002</td>
+                      <td>Chequing</td>
+                      <td>Assets</td>
+                      <td>477.00</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>1062</td>
+                      <td>Accounts Receivable</td>
+                      <td>Assets</td>
+                      <td>123.00</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>1484</td>
+                      <td>Prepaid Expenses</td>
+                      <td>Assets</td>
+                      <td>50.00</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>2621</td>
+                      <td>Accounts Payable</td>
+                      <td>Expenses</td>
+                      <td></td>
+                      <td>100.00</td>
+                    </tr>
+                    <tr>
+                      <td>8000</td>
+                      <td>Sales-Products</td>
+                      <td>Assets</td>
+                      <td></td>
+                      <td>590.00</td>
+                    </tr>
+                    <tr>
+                      <td>8230</td>
+                      <td>Other Income</td>
+                      <td>Assets</td>
+                      <td></td>
+                      <td>300.00</td>
+                    </tr>
+                    <tr>
+                      <td>8320</td>
+                      <td>Cost of Goods Sold</td>
+                      <td>Expenses</td>
+                      <td>100.00</td>
+                      <td></td>
+                    </tr>
+                    <tr>
+                      <td>9270</td>
+                      <td>General Expenses</td>
+                      <td>Expenses</td>
+                      <td></td>
+                      <td>50.00</td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td class="font-weight-bold text-4">Total</td>
+                      <td class="font-weight-bold text-4">1040</td>
+                      <td class="font-weight-bold text-4">1040</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </div>
+              
+           </div>
           </div>
+         </div>
         </div>
-      </section>
+     </section>
+
     </section>
   </div>
 </section>
