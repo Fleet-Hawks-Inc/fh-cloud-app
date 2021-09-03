@@ -1112,7 +1112,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
        } else {
         $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true) {
+        if(element.isSuggest != true  && element.userLocation !== '') {
           $('#addErr'+i).css('display','block');
           return;
         }
