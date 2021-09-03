@@ -227,6 +227,7 @@ export class AddSettlementComponent implements OnInit {
                     element.selected = false;
                     element.subSelected = false;
                     element.splitArr = [];
+                    element.indeterminate = false;
 
                     for (let j = 0; j < element.tripPlanning.length; j++) {
                         const plan = element.tripPlanning[j];
@@ -470,6 +471,7 @@ export class AddSettlementComponent implements OnInit {
 
     resetCal() {
         this.settlementData.tripIds = [];
+        this.settlementData.trpData = [];
         this.settlementData.miles.tripsLoaded = 0;
         this.settlementData.miles.tripsTotal = 0;
         this.settlementData.miles.tripsEmpty = 0;
@@ -516,19 +518,33 @@ export class AddSettlementComponent implements OnInit {
                     }
                 })
             }
-            if (element.selected) {
+            if (element.selected && subTripCount == 0) {
                 this.filterExpenses(element.tripID);
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
+                    let obj = {
+                        id: element.tripID,
+                        plan: [],
+                    }
+                    this.settlementData.trpData.push(obj);
                 }
                 this.selectedTrips.push(element);
                 this.wholeTripPlanCalculation(element);
 
-            } else if (!element.selected && subTripCount > 0) {
-                this.subTripPlanCalculation(element);
+            } else if (element.indeterminate && subTripCount > 0) {
+                this.filterExpenses(element.tripID);
+                if (!this.settlementData.tripIds.includes(element.tripID)) {
+                    this.settlementData.tripIds.push(element.tripID);
+                    let obj = {
+                        id: element.tripID,
+                        plan: [],
+                    }
+                    this.settlementData.trpData.push(obj);
+                }
+                this.selectedTrips.push(element);
+                this.subTripPlanCalculation(element, element.tripID);
             }
         }
-        
     }
 
     wholeTripPlanCalculation(element) {
@@ -572,8 +588,6 @@ export class AddSettlementComponent implements OnInit {
                 this.oprFinalCal();
             }
         }
-
-        
     }
 
     oprFinalCal() {
@@ -718,55 +732,72 @@ export class AddSettlementComponent implements OnInit {
         }
     }
 
-    subTripPlanCalculation(tripData) {
+    subTripPlanCalculation(tripData, tripID) {
+        let planIds = [];
         for (let index = 0; index < tripData.splitArr.length; index++) {
             const sub = tripData.splitArr[index];
-            if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
-                if(sub.selected) {
+            if(sub.selected) {
+                if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
                     for (let j = 0; j < sub.trips.length; j++) {
                         const plan = sub.trips[j];
+                        if(!planIds.includes(plan.planID)) {
+                            planIds.push(plan.planID);
+                            this.settlementData.trpData.map((k) => {
+                                if(k.id === tripID) {
+                                    k.plan.push(plan.planID)
+                                }
+                            })
+                        }
                         this.driverCarrMilesCal(plan);
                     }
                     this.driverCarrPaymentCal();
-                }
-            } else if(this.settlementData.type === 'owner_operator') {
-                // let loadedM = 0;
-                // let emptyM = 0;
-                
-                sub.trips.map((plan) => {
-                    if(this.operatorDriversList.includes(plan.driverID) || this.operatorDriversList.includes(plan.coDriverID)) {
-                        if (plan.type === 'Delivery') {
-                            this.ownDelCouunt += 1;
-                        }
-                    }
-                })
-                for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
-                    const oprElement = this.settlementData.miles.drivers[index];
-                    let paymentInfor = oprElement.paymentDetails;
-                    let driverDeliveryCount = 0;
-                    oprElement.loaded = 0;
-                    oprElement.empty = 0;
-                    this.drvrPay = 0;
-                    if(sub.selected) {
-                        for (let j = 0; j < sub.trips.length; j++) {
-                            const plan = sub.trips[j];
-
-                            if(plan.driverID === oprElement.driverID || plan.coDriverID === oprElement.driverID) {
-                                if(plan.type === 'Delivery') {
-                                    driverDeliveryCount += 1;
-                                }
+                } else if(this.settlementData.type === 'owner_operator') {
+                    // let loadedM = 0;
+                    // let emptyM = 0;
+                    
+                    sub.trips.map((plan) => {
+                        if(this.operatorDriversList.includes(plan.driverID) || this.operatorDriversList.includes(plan.coDriverID)) {
+                            if(!planIds.includes(plan.planID)) {
+                                planIds.push(plan.planID);
+                                this.settlementData.trpData.map((k) => {
+                                    if(k.id === tripID) {
+                                        k.plan.push(plan.planID)
+                                    }
+                                })
                             }
-
-                            // driver's miles
-                            this.oprDriverMilesCalc(plan, oprElement);
+                            if (plan.type === 'Delivery') {
+                                this.ownDelCouunt += 1;
+                            }
                         }
-                        this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
+                    })
+                    for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
+                        const oprElement = this.settlementData.miles.drivers[index];
+                        let paymentInfor = oprElement.paymentDetails;
+                        let driverDeliveryCount = 0;
+                        oprElement.loaded = 0;
+                        oprElement.empty = 0;
+                        this.drvrPay = 0;
+                        if(sub.selected) {
+                            for (let j = 0; j < sub.trips.length; j++) {
+                                const plan = sub.trips[j];
+
+                                if(plan.driverID === oprElement.driverID || plan.coDriverID === oprElement.driverID) {
+                                    if(plan.type === 'Delivery') {
+                                        driverDeliveryCount += 1;
+                                    }
+                                }
+
+                                // driver's miles
+                                this.oprDriverMilesCalc(plan, oprElement);
+                            }
+                            this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
+                        }
                     }
-                }
-    
-                // final payment will be according to owner operator values
-                if(this.contactDetail) {
-                    this.oprFinalCal();
+        
+                    // final payment will be according to owner operator values
+                    if(this.contactDetail) {
+                        this.oprFinalCal();
+                    }
                 }
             }
         }
@@ -788,7 +819,6 @@ export class AddSettlementComponent implements OnInit {
             })
         }
         this.submitDisabled = true;
-        console.log('this.settlementData', this.settlementData);
         this.accountService.postData('settlement', this.settlementData).subscribe({
             complete: () => { },
             error: (err: any) => {
@@ -1242,14 +1272,22 @@ export class AddSettlementComponent implements OnInit {
     
     selSubTrip(tripInd, subTripInd) {
         let selCount = 0;
+        let subtripCount = 0;
         this.trips[tripInd].splitArr.map((v) => {
+            subtripCount += 1; 
             if(v.selected) {
                 selCount++;
             }
         })
         if(selCount > 0) {
             this.trips[tripInd].subSelected = true;
-            this.trips[tripInd].indeterminate = true;
+            if(selCount === subtripCount) {
+                // this.trips[tripInd].indeterminate = false;
+                this.trips[tripInd].selected = true;
+            } else {
+                this.trips[tripInd].indeterminate = true;
+                this.trips[tripInd].selected = false;
+            }
         } else {
             this.trips[tripInd].subSelected = false;
             this.trips[tripInd].indeterminate = false;
@@ -1260,6 +1298,7 @@ export class AddSettlementComponent implements OnInit {
 
     subTrpStat(tripIndex) {
         let data = this.trips[tripIndex];
+        this.trips[tripIndex].indeterminate = false;
         if(data.selected) {
             this.trips[tripIndex].splitArr.map((v) => {
                 v.selected = true;
