@@ -122,7 +122,7 @@
                                                         <a class="dropdown-item" href="javascript:;"
                                                             (click)="deactivateAsset(document.isDeleted, document.docID, document.documentNumber)">Delete</a>
                                                         <a target="_blank" class="dropdown-item"
-                                                            href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs}}">Download
+                                                            href="{{Asseturl}}/{{document.carrierID}}/{{document.uploadedDocs[0]}}">Download
                                                             File</a>
                                                     </div>
                                                 </div>
@@ -207,7 +207,8 @@
     <div class="modal-dialog" style="max-width: 600px;" role="document">
 
         <div class="modal-content">
-            <form class="form-horizontal" method="get" name="form" id="form_" #doc="ngForm">
+            <form class="form-horizontal" method="get" name="form" id="form_" #docForm="ngForm"
+             (ngSubmit)="docID ? docForm.form.valid && onUpdateDocument() : docForm.form.valid && onAddDocument()" novalidate ngNativeValidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -245,11 +246,11 @@
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <ng-select [(ngModel)]="documentData.tripID" name="tripID" placeholder="Select Trip"
-                                class="form-control" #dTrip="ngModel" required>
+                                class="form-control" #dTrip="ngModel" required [ngClass]="{ 'error' : docForm.submitted && dTrip.invalid }">
                                 <ng-option *ngFor="let trip of trips;" value="{{trip.tripID}}">{{trip.tripNo}}
                                 </ng-option>
                             </ng-select>
-                            <div *ngIf="dTrip.invalid && (dTrip.dirty || dTrip.touched)" class="text-danger">
+                            <div *ngIf="dTrip.invalid && docForm.submitted" class="text-danger">
                                 <div>
 
                                     <div *ngIf="dTrip.errors.required">
@@ -267,7 +268,7 @@
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <ng-select [(ngModel)]="documentData.docType" name="docType"
-                                placeholder="Select Document Type" class="form-control" #docTypeName="ngModel" required>
+                                placeholder="Select Document Type" class="form-control" #docTypeName="ngModel" required [ngClass]="{ 'error' : docForm.submitted && docTypeName.invalid }">
 
                                 <ng-option value="BOL">BOL</ng-option>
                                 <ng-option value="POD">POD</ng-option>
@@ -275,7 +276,7 @@
                                 <ng-option value="Load Confirmation">Load Confirmation</ng-option>
 
                             </ng-select>
-                            <div *ngIf="docTypeName.invalid && (docTypeName.dirty || docTypeName.touched)"
+                            <div *ngIf="docTypeName.invalid && docForm.submitted"
                                 class="text-danger">
                                 <div>
 
@@ -318,21 +319,18 @@
                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs"
+                            <!-- <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs"
                                 name="uploadedDocs" id="uploadedDocs" type="file" class="form-control choosefileLH"
-                                observeFiles #dPhoto="ngModel" required>
-                            <div *ngIf="dPhoto.invalid && (dPhoto.dirty || dPhoto.touched)" class="text-danger">
+                                observeFiles #dPhoto="ngModel" required> -->
+                                <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file" class="form-control choosefileLH"
+                                >
+                            <!-- <div *ngIf="dPhoto.invalid && (dPhoto.dirty || dPhoto.touched)" class="text-danger">
                                 <div>
-
                                     <div *ngIf="dPhoto.errors.required">
                                         Choose file is required.
                                     </div>
-
-
-
                                 </div>
-
-                            </div>
+                            </div> -->
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, png). The maximum
                                 file size can be 15MB.</span>
@@ -357,14 +355,11 @@
                               </div>
                             </div>
                     </div>
-
                 </div>
                 <div class="modal-footer">
-
                     <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
-                    <button *ngIf="ifEdit" (click)="updateDocument()"
-                        class="btn btn-success modal-confirm">Update</button>
-                    <button *ngIf="!ifEdit" (click)="addDocument()" class="btn btn-success modal-confirm" [disabled]="!doc.form.valid">Save</button>
+                    <button type="submit" *ngIf="docID" class="btn btn-success modal-confirm">Update</button>
+                    <button type="submit" *ngIf="!docID" class="btn btn-success modal-confirm">Save</button>
                 </div>
             </form>
         </div>

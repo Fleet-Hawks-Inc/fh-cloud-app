@@ -82,7 +82,27 @@ export class CompanyDocumentsComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  getSuggestions = _.debounce(function (searchvalue) {
+    this.suggestions = [];
+    if(searchvalue !== '') {
+      this.apiService.getData('documents/get/suggestions/' + searchvalue).subscribe({
+        complete: () => {},
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = [];
+          for (let i = 0; i < result.length; i++) {
+            const element = result[i];
 
+            let obj = {
+              id: element.docID,
+              name: element.documentNumber
+            };
+            this.suggestions.push(obj);
+          }
+        }
+      });
+    }
+  }, 800);
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -138,7 +158,8 @@ export class CompanyDocumentsComponent implements OnInit {
 
     if(condition) {
       this.uploadeddoc = [];
-      this.uploadeddoc.push(files[0])
+      this.uploadeddoc = files;
+      console.log('this.uploadeddoc in select function', this.uploadeddoc);
     }
   }
 
@@ -161,17 +182,17 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  addDocument() {
+  onAddDocument() {
     this.hideErrors();
     this.spinner.show();
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for(let i = 0; i < this.uploadeddoc.length; i++){
       formData.append('uploadedDocs', this.uploadeddoc[i]);
     }
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(this.documentData));
 
     this.apiService.postData('documents', formData, true).
@@ -263,6 +284,7 @@ export class CompanyDocumentsComponent implements OnInit {
       .subscribe((result: any) => {
 
         result = result.Items[0];
+        console.log('result', result);
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
@@ -271,18 +293,19 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.description = result.description;
         this.documentData['timeCreated'] = result.timeCreated;
         this.documentData.dateCreated = result.dateCreated;
-        this.documentData['uploadedDocs'] = result.uploadedDocs;
+        this.documentData.uploadedDocs = result.uploadedDocs;
+       // this.uploadeddoc = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
     $('#addDocumentModal').modal('show');
   }
 
-  updateDocument() {
+  onUpdateDocument() {
 
     this.documentData['docID'] = this.currentID;
     // create form data instance
     const formData = new FormData();
-
+    console.log('this.uploadeddoc', this.uploadeddoc);
     //append photos if any
     for(let i = 0; i < this.uploadeddoc.length; i++){
       formData.append('uploadedDocs', this.uploadeddoc[i]);
@@ -317,6 +340,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.documentData.documentNumber = '';
           this.documentData.docType = '';
           this.documentData.tripID = '';
+          this.documentData.uploadedDocs = [];
           // this.documentData.documentName = '';
           this.documentData.description = '';
           this.lastEvaluatedKey='';
@@ -353,6 +377,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.suggestions = [];
         this.getStartandEndVal();
         this.documents = result['Items'];
+        console.log('this.documents', this.documents);
         if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
           this.docEndPoint = this.totalRecords;
@@ -448,27 +473,7 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  getSuggestions = _.debounce(function (searchvalue) {
-    this.suggestions = [];
-    if(searchvalue !== '') {
-      this.apiService.getData('documents/get/suggestions/'+searchvalue).subscribe({
-        complete: () => {},
-        error: () => { },
-        next: (result: any) => {
-          this.suggestions = [];
-          for (let i = 0; i < result.length; i++) {
-            const element = result[i];
 
-            let obj = {
-              id: element.docID,
-              name: element.documentNumber
-            };
-            this.suggestions.push(obj)
-          }
-        }
-      })
-    }
-  }, 800)
 
   searchSelectedRoute(document) {
     this.filterValues.docID = document.id;
