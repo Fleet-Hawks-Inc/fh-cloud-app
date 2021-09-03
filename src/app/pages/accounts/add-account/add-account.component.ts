@@ -20,7 +20,7 @@ export class AddAccountComponent implements OnInit {
   actNo: number;
   actDesc: '';
   opnBal: number;
-  opnBalType = 'credit';
+  opnBalType = 'debit';
   opnBalCurrency: '';
   actDash = false;
   actDate: '';
@@ -43,11 +43,6 @@ export class AddAccountComponent implements OnInit {
   ngOnInit() {}
   addAccount() {
     this.submitDisabled = true;
-    if (this.opnBal > 0) {
-      this.opnBalType = 'debit';
-   } else if (this.opnBal === 0) {
-     this.opnBalType = 'credit';
-   }
     const data = {
       actName: this.actName,
       actType: this.actType,
@@ -97,6 +92,7 @@ export class AddAccountComponent implements OnInit {
         this.actDesc = '';
         this.opnBal = null;
         this.opnBalCurrency = '';
+        this.opnBalType = 'debit';
         this.actDash = false;
         this.actDate = '';
         this.closingAmt = null;
@@ -106,7 +102,9 @@ export class AddAccountComponent implements OnInit {
       },
     });
   }
-
+  onChangeType(value: any) {
+    this.opnBalType = value;
+}
   hideModal() {
     $('#addAccountModal').modal('hide');
     this.transLog = false;

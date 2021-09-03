@@ -113,20 +113,20 @@
                         </td>
                         <td>{{trx.type | titlecase}}</td>
                         <td>{{trx.desc | titlecase}}</td>
-                        <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
-                        <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount}}&nbsp; {{trx.currency}}</span></td>
+                        <td><span *ngIf="trx.trxType === 'debit'">{{trx.amount | number : '1.2-2'}}&nbsp; {{trx.currency}}</span></td>
+                        <td><span *ngIf="trx.trxType === 'credit'">{{trx.amount | number : '1.2-2'}}&nbsp; {{trx.currency}}</span></td>
                         <td>{{trx.trxRunTotal | absoluteValue}}&nbsp; <span>{{trx.runTotalType}}</span></td>
                       </tr>
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Closing Balance</td>
                         <td></td>
-                        <td>{{account.closingAmt | absoluteValue}}&nbsp;{{account.opnBalCurrency}}</td>
+                        <td>{{account.closingAmt | absoluteValue | number : '1.2-2'}}&nbsp;{{account.opnBalCurrency}}</td>
                         <td></td>
                       </tr>
                       <tr>
                         <td colspan="5" class="text-right font-weight-bold">Period Variance</td>
                         <td></td>
-                        <td>{{periodVariance | absoluteValue}}&nbsp;{{account.opnBalCurrency}}
+                        <td>{{periodVariance | absoluteValue | number : '1.2-2'}}&nbsp;{{account.opnBalCurrency}}
                         </td>
                         <td></td>
                       </tr>
