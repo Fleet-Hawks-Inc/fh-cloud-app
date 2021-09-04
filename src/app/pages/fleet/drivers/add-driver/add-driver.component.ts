@@ -28,7 +28,7 @@ declare var $: any;
   styleUrls: ['./add-driver.component.css'],
 })
 export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeactivate {
-  @ViewChild('driverForm', null) driverForm: NgForm;
+  @ViewChild('driverF', null) driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
   // driverSession = JSON.parse(localStorage.getItem('driver'));
@@ -334,7 +334,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
    * Unsaved Changes
    */
   canLeave(): boolean {
-    if (this.driverForm.dirty && !this.isSubmitted) {
+    if (this.driverF.dirty && !this.isSubmitted) {
       if (!this.modalService.hasOpenModals()) {
         this.modalService.open(UnsavedChangesComponent, { size: 'sm' });
       }
@@ -1112,7 +1112,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
 
        } else {
         $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true  && element.userLocation !== '') {
+        if(element.isSuggest != true && element.userLocation !== '') {
           $('#addErr'+i).css('display','block');
           return;
         }

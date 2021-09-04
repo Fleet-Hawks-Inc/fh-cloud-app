@@ -29,7 +29,7 @@
                 *ngIf="suggestions?.length > 0"
                 class="result-suggestions text-capitalize"
               >
-                <ul>
+                <ul class="m-0">
                   <li
                     *ngFor="
                       let suggestedUser of suggestions
@@ -51,6 +51,7 @@
             <div class="col-2 p-0">
               <button
                 type="submit"
+                [disabled]="isSearched"
                 (click)="searchFilter()"
                 class="btn cus-btn-padd btn-success mr-3"
               >
@@ -96,7 +97,7 @@
       <div class="card-body p-0">
         <form class="form-horizontal form-bordered" method="get">
           <div class="mb-0">
-            <ul class="nav border-0 nav-tabs top-tabs align-items-center" id="top-tabs" role="tablist">
+            <ul class="nav border-0 nav-tabs top-tabs align-items-center" id="addressbook-tabs" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="all-tab" data-toggle="tab" href="#all"
                   role="tab" aria-controls="all" aria-selected="false"
@@ -154,7 +155,7 @@
                 >Add new entry</a>
             </ul>
           </div>
-          <div class="tab-content shadow-none border-0 p-0" id="myTabContent">
+          <div class="tab-content shadow-none border-0 p-0" id="addressbook-content">
             <div
               class="tab-pane fade px-2 py-3 shadow-none"
               id="customer"
@@ -1070,7 +1071,7 @@
                   >Do you want this entry to act as
                   <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                 </label>
-               
+                <!-- [disabled]="updateButton" -->
                 <ng-select
                   [(ngModel)]="unitData.eTypes"
                   name="eTypes"
@@ -1082,10 +1083,10 @@
                   class="form-control text-capitalize populate h-auto"
                   placeholder="Do you want this entry to act as"
                   required
-                  [disabled]="updateButton"
+                  id="etype"
                   [ngClass]="{ 'error' : contactForm.submitted && eType.invalid }"
                 >
-                  <ng-option *ngFor="let item of unitTypes" value="{{item.value}}">{{item.label}}</ng-option>
+                  <ng-option *ngFor="let item of unitTypes" value="{{item.value}}" [disabled]="item.disabled">{{item.label}}</ng-option>
                   
                 </ng-select>
                 <div
@@ -3034,7 +3035,6 @@
                     ><i class="fa fa-minus fa-fw"></i
                   ></a>
                 </div>
-                <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                 <div *ngIf="item.manual" class="row pl-3 w100">
                   <div class="col-6 pt-4">
                     <div class="row">
@@ -3150,6 +3150,10 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-12">
+                  <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+                </div>
+                
               </div>
             </div>
             <!-- Address end -->
