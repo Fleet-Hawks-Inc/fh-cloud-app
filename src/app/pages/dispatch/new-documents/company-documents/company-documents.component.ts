@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
-import {SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 declare var $: any;
 import * as moment from 'moment';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import  Constants  from '../../../fleet/constants';
+import Constants from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
 import * as _ from 'lodash';
 
@@ -42,6 +42,7 @@ export class CompanyDocumentsComponent implements OnInit {
   Success = '';
   errors = {};
   carrierID: any;
+  submitDisabled = false;
   documentData = {
     categoryType: 'company',
     tripID: null,
@@ -65,12 +66,12 @@ export class CompanyDocumentsComponent implements OnInit {
   };
   lastEvaluatedKey = '';
   suggestions = [];
-  currentID: string;
+  currentID = null;
   uploadeddoc = [];
   newDoc: any;
   tripsObjects: any = {};
   currentUser;
-
+  docError = false; // to show error if doc is not uploaded
   docNext = false;
   docPrev = true;
   docDraw = 0;
@@ -84,9 +85,9 @@ export class CompanyDocumentsComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
-    if(searchvalue !== '') {
+    if (searchvalue !== '') {
       this.apiService.getData('documents/get/suggestions/' + searchvalue).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: () => { },
         next: (result: any) => {
           this.suggestions = [];
@@ -121,15 +122,31 @@ export class CompanyDocumentsComponent implements OnInit {
       // this.form = $('#form_').validate();
     });
   }
+  /*
+   * Get all trips from api
+   */
+  fetchTrips() {
+    this.apiService.getData('trips').subscribe((result: any) => {
+      this.trips = result.Items;
+    });
+  }
 
+  /*
+  * Get all trips from api
+  */
+  fetchTripsByIDs() {
+    this.apiService.getData('trips/get/list').subscribe((result: any) => {
+      this.tripsObjects = result;
+    });
+  }
   fetchDocumentsCount() {
-    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + "&to=" + this.filterValues.end).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
+        if (this.filterValues.searchValue != '' || this.filterValues.start != '' || this.filterValues.end != '') {
           this.docEndPoint = this.totalRecords;
         }
         this.initDataTable();
@@ -148,7 +165,7 @@ export class CompanyDocumentsComponent implements OnInit {
 
 
       if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
-      && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+        && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
         $('#uploadedDocs').val('');
         condition = false;
         this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
@@ -156,16 +173,15 @@ export class CompanyDocumentsComponent implements OnInit {
       }
     }
 
-    if(condition) {
+    if (condition) {
       this.uploadeddoc = [];
       this.uploadeddoc = files;
-      console.log('this.uploadeddoc in select function', this.uploadeddoc);
     }
   }
 
   fetchDocuments = () => {
     this.totalRecords = 0;
-    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end).subscribe({
+    this.apiService.getData('documents/get/count?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + "&to=" + this.filterValues.end).subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -183,51 +199,59 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   onAddDocument() {
-    this.hideErrors();
-    this.spinner.show();
-    // create form data instance
-    const formData = new FormData();
+    if (this.uploadeddoc.length > 0) {
+      this.submitDisabled = true;
+      this.hideErrors();
+      this.spinner.show();
+      // create form data instance
+      const formData = new FormData();
 
-    // append photos if any
-    for(let i = 0; i < this.uploadeddoc.length; i++){
-      formData.append('uploadedDocs', this.uploadeddoc[i]);
+      // append photos if any
+      for (let i = 0; i < this.uploadeddoc.length; i++) {
+        formData.append('uploadedDocs', this.uploadeddoc[i]);
+      }
+      // append other fields
+      formData.append('data', JSON.stringify(this.documentData));
+
+      this.apiService.postData('documents', formData, true).
+
+        subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.submitDisabled = false;
+                  // this.throwErrors();
+                },
+                error: () => {this.submitDisabled = false; },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.spinner.hide();
+            this.toastr.success('Document Added successfully');
+            $('#addDocumentModal').modal('hide');
+            this.documentData.documentNumber = '';
+            this.documentData.docType = null;
+            this.documentData.tripID = null;
+            // this.documentData.documentName = '';
+            this.documentData.description = '';
+            this.lastEvaluatedKey = '';
+            this.fetchDocumentsCount();
+            this.submitDisabled = false;
+          }
+        });
+    } else {
+      this.docError = true;
     }
-    // append other fields
-    formData.append('data', JSON.stringify(this.documentData));
 
-    this.apiService.postData('documents', formData, true).
-
-    subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-        next: (res) => {
-          this.spinner.hide();
-          this.toastr.success('Document Added successfully');
-          $('#addDocumentModal').modal('hide');
-          this.documentData.documentNumber = '';
-          this.documentData.docType = null;
-          this.documentData.tripID = null;
-          // this.documentData.documentName = '';
-          this.documentData.description = '';
-          this.lastEvaluatedKey='';
-          this.fetchDocumentsCount();
-        }
-      });
   }
 
   throwErrors() {
@@ -251,23 +275,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.errors = {};
   }
 
-  /*
-   * Get all trips from api
-   */
-  fetchTrips() {
-    this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
-    });
-  }
 
-   /*
-   * Get all trips from api
-   */
-  fetchTripsByIDs() {
-    this.apiService.getData('trips/get/list').subscribe((result: any) => {
-      this.tripsObjects = result;
-    });
-  }
 
   /*
     * Fetch Document details before updating
@@ -275,7 +283,7 @@ export class CompanyDocumentsComponent implements OnInit {
   editDocument(id: any) {
     this.spinner.show();
     this.currentID = id;
-
+    this.docError = false;
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = '';
@@ -284,69 +292,79 @@ export class CompanyDocumentsComponent implements OnInit {
       .subscribe((result: any) => {
 
         result = result.Items[0];
-        console.log('result', result);
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.documentData.documentNumber = result.documentNumber;
         // this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;
         this.documentData.description = result.description;
-        this.documentData['timeCreated'] = result.timeCreated;
+        this.documentData[`timeCreated`] = result.timeCreated;
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
-       // this.uploadeddoc = result.uploadedDocs;
+        // this.uploadeddoc = result.uploadedDocs;
         this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
       });
     $('#addDocumentModal').modal('show');
   }
 
   onUpdateDocument() {
-
-    this.documentData['docID'] = this.currentID;
-    // create form data instance
-    const formData = new FormData();
-    console.log('this.uploadeddoc', this.uploadeddoc);
-    //append photos if any
-    for(let i = 0; i < this.uploadeddoc.length; i++){
-      formData.append('uploadedDocs', this.uploadeddoc[i]);
-    }
-    //append other fields
-    formData.append('data', JSON.stringify(this.documentData));
-
-    this.apiService.putData('documents', formData, true).
-
-    subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-               val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              // this.throwErrors();
-            },
-            error: () => { },
-            next: () => { },
-          });
-      },
-        next: (res) => {
-
-          this.toastr.success('Document Updated successfully');
-          $('#addDocumentModal').modal('hide');
-          this.documentData.documentNumber = '';
-          this.documentData.docType = '';
-          this.documentData.tripID = '';
-          this.documentData.uploadedDocs = [];
-          // this.documentData.documentName = '';
-          this.documentData.description = '';
-          this.lastEvaluatedKey='';
-          this.initDataTable();
+    if (this.uploadeddoc.length > 0 || this.documentData.uploadedDocs.length > 0) {
+      this.submitDisabled = true;
+      this.documentData[`docID`] = this.currentID;
+      // create form data instance
+      const formData = new FormData();
+      //append photos if any
+      if (this.uploadeddoc.length > 0) {
+        for (let i = 0; i < this.uploadeddoc.length; i++) {
+          formData.append('uploadedDocs', this.uploadeddoc[i]);
         }
-      });
+      }
+
+      //append other fields
+      formData.append('data', JSON.stringify(this.documentData));
+
+      this.apiService.putData('documents', formData, true).
+
+        subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.submitDisabled = false;
+                  // this.throwErrors();
+                },
+                error: () => {
+                  this.submitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+
+            this.toastr.success('Document Updated successfully');
+            $('#addDocumentModal').modal('hide');
+            this.documentData.documentNumber = '';
+            this.documentData.docType = null;
+            this.documentData.tripID = '';
+            this.documentData.uploadedDocs = [];
+            // this.documentData.documentName = '';
+            this.documentData.description = '';
+            this.lastEvaluatedKey = '';
+            this.currentID = null;
+            this.initDataTable();
+            this.submitDisabled = false;
+          }
+        });
+    } else {
+      this.docError = true;
+    }
   }
 
   deactivateAsset(value, docID, docNo: any) {
@@ -369,22 +387,21 @@ export class CompanyDocumentsComponent implements OnInit {
   initDataTable() {
     this.spinner.show();
 
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start +"&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + "&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.suggestions = [];
         this.getStartandEndVal();
         this.documents = result['Items'];
-        console.log('this.documents', this.documents);
         if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
           this.docStartPoint = 1;
           this.docEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g, '--');
           this.docNext = false;
           // for prev button
           if (!this.docPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -398,7 +415,7 @@ export class CompanyDocumentsComponent implements OnInit {
           this.docEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.docEndPoint) {
+        if (this.totalRecords < this.docEndPoint) {
           this.docEndPoint = this.totalRecords;
         }
 
@@ -420,16 +437,16 @@ export class CompanyDocumentsComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.filterValues.startDate===null) this.filterValues.startDate=''
-    if(this.filterValues.endDate===null) this.filterValues.endDate=''
-    if (this.filterValues.startDate != '' || this.filterValues.endDate != '' ||  this.filterValues.searchValue != '') {
-      if(this.filterValues.startDate != '' && this.filterValues.endDate == '') {
+    if (this.filterValues.startDate === null) this.filterValues.startDate = ''
+    if (this.filterValues.endDate === null) this.filterValues.endDate = ''
+    if (this.filterValues.startDate != '' || this.filterValues.endDate != '' || this.filterValues.searchValue != '') {
+      if (this.filterValues.startDate != '' && this.filterValues.endDate == '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      } else if(this.filterValues.startDate == '' && this.filterValues.endDate != '') {
+      } else if (this.filterValues.startDate == '' && this.filterValues.endDate != '') {
         this.toastr.error('Please select both start and end dates.');
         return false;
-      }else if(this.filterValues.startDate>this.filterValues.endDate){
+      } else if (this.filterValues.startDate > this.filterValues.endDate) {
         this.toastr.error('Start date should be less then end date');
         return false;
       } else {
@@ -488,16 +505,16 @@ export class CompanyDocumentsComponent implements OnInit {
 
   // next button func
   nextResults() {
-    this.docNext=true;
-    this.docPrev=true;
+    this.docNext = true;
+    this.docPrev = true;
     this.docDraw += 1;
     this.initDataTable();
   }
 
   // prev button func
   prevResults() {
-    this.docPrev=true;
-    this.docNext=true;
+    this.docPrev = true;
+    this.docNext = true;
     this.docDraw -= 1;
     this.lastEvaluatedKey = this.docPrevEvauatedKeys[this.docDraw];
     this.initDataTable();
@@ -512,6 +529,7 @@ export class CompanyDocumentsComponent implements OnInit {
 
   openDocumentModal() {
     this.fetchLastDocumentNumber();
+    this.currentID = null;
     this.documentData = {
       categoryType: 'company',
       tripID: null,
@@ -532,11 +550,10 @@ export class CompanyDocumentsComponent implements OnInit {
     $("#routeNotes").modal('show');
   }
 
-  fetchLastDocumentNumber(){
+  fetchLastDocumentNumber() {
     this.apiService.getData('documents/get/last/number').subscribe((result) => {
-        // console.log('result', result);
-        this.documentNumberDisabled = true;
-        this.documentData.documentNumber = result.toString();
+      this.documentNumberDisabled = true;
+      this.documentData.documentNumber = result.toString();
     });
   }
 }

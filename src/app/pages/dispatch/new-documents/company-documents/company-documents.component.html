@@ -208,7 +208,7 @@
 
         <div class="modal-content">
             <form class="form-horizontal" method="get" name="form" id="form_" #docForm="ngForm"
-             (ngSubmit)="docID ? docForm.form.valid && onUpdateDocument() : docForm.form.valid && onAddDocument()" novalidate ngNativeValidate>
+             (ngSubmit)="currentID ? docForm.form.valid && onUpdateDocument() : docForm.form.valid && onAddDocument()" novalidate ngNativeValidate>
                 <div class="modal-header">
                     <h5 class="modal-title" id="addDocumentModalLabel">{{modalTitle}} Document</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -319,18 +319,11 @@
                             <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
                                 <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <!-- <input (change)="selectDoc($event)" [(ngModel)]="documentData.uploadedDocs"
-                                name="uploadedDocs" id="uploadedDocs" type="file" class="form-control choosefileLH"
-                                observeFiles #dPhoto="ngModel" required> -->
                                 <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file" class="form-control choosefileLH"
-                                >
-                            <!-- <div *ngIf="dPhoto.invalid && (dPhoto.dirty || dPhoto.touched)" class="text-danger">
-                                <div>
-                                    <div *ngIf="dPhoto.errors.required">
-                                        Choose file is required.
-                                    </div>
+                               >
+                                <div *ngIf="(docError && documentData.uploadedDocs.length === 0 && currentID) || (docError && uploadeddoc.length === 0 && !currentID)">
+                                  <label class ="text-danger">Add Document</label>
                                 </div>
-                            </div> -->
                             <span>
                                 Acceptable formats (pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg, png). The maximum
                                 file size can be 15MB.</span>
@@ -358,8 +351,8 @@
                 </div>
                 <div class="modal-footer">
                     <button data-dismiss="modal" class="btn btn-default modal-dismiss">Cancel</button>
-                    <button type="submit" *ngIf="docID" class="btn btn-success modal-confirm">Update</button>
-                    <button type="submit" *ngIf="!docID" class="btn btn-success modal-confirm">Save</button>
+                    <button type="submit" *ngIf="currentID" [disabled]="submitDisabled" class="btn btn-success modal-confirm">Update</button>
+                    <button type="submit" *ngIf="!currentID" [disabled]="submitDisabled" class="btn btn-success modal-confirm">Save</button>
                 </div>
             </form>
         </div>
