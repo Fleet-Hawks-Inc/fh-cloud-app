@@ -180,56 +180,106 @@
                                                         <tr class="text-center" *ngIf="settledTrips.length === 0">
                                                             <td colspan="11">{{ noRecordMsg }}</td>
                                                         </tr>
-                                                        <tr *ngFor="let trp of settledTrips; let t=index;">
-                                                            <td *ngIf="!settlementData.paymentLinked">
-                                                                <span *ngIf="settledTrips.length > 1">
-                                                                    <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)">
-                                                                        <i class="fa fa-trash"></i>
-                                                                    </a>
-                                                                </span>
+                                                        <ng-container *ngFor="let trp of settledTrips; let t=index;">
+                                                            <tr>
+                                                                <td *ngIf="!settlementData.paymentLinked">
+                                                                    <span *ngIf="settledTrips.length > 1">
+                                                                        <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </a>
+                                                                    </span>
 
-                                                                <span *ngIf="settledTrips.length === 1">
-                                                                    <!-- <a href="javascript:;">  -->
-                                                                        <i class="fa fa-trash" style="color: #CCC"></i>
-                                                                    <!-- </a> -->
-                                                                </span>
+                                                                    <span *ngIf="settledTrips.length === 1">
+                                                                        <!-- <a href="javascript:;">  -->
+                                                                            <i class="fa fa-trash" style="color: #CCC"></i>
+                                                                        <!-- </a> -->
+                                                                    </span>
 
-                                                            </td>
-                                                            <td>{{ trp.tripNo }}</td>
-                                                            <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
-                                                            <td>
-                                                                <span *ngFor="let ord of trp.orderId">
-                                                                    {{ orders[ord] }}
-                                                                </span>
-                                                            </td>
-                                                            <td [innerHTML]="trp.pickupLocation"></td>
-                                                            <td [innerHTML]="trp.dropLocation"></td>
-                                                            <td>
-                                                                <span *ngFor="let drv of trp.driverIDs; let d=index">
-                                                                    {{ driversObj[drv] }}
-                                                                    <span *ngIf="d<trp.driverIDs.length-1">,</span>
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <span *ngFor="let veh of trp.vehicleIDs; let v=index">
-                                                                    {{ vehicles[veh] }}
-                                                                    <span *ngIf="v<trp.vehicleIDs.length-1">,</span>
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <span *ngFor="let ast of trp.assetIDs; let a=index">
-                                                                    {{ assets[ast] }}
-                                                                    <span *ngIf="a<trp.assetIDs.length-1">,</span>
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <span *ngFor="let carr of trp.carrID; let c=index">
-                                                                    {{ carriers[carr] }}
-                                                                    <span *ngIf="c<trp.carrID.length-1">,</span>
-                                                                </span>
-                                                            </td>
-                                                            <td><span class="badge badge-dark p-1">DELIVERED</span></td>
-                                                        </tr>
+                                                                </td>
+                                                                <td>{{ trp.tripNo }}</td>
+                                                                <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
+                                                                <td>
+                                                                    <span *ngFor="let ord of trp.orderId">
+                                                                        {{ orders[ord] }}
+                                                                    </span>
+                                                                </td>
+                                                                <td [innerHTML]="trp.pickupLocation"></td>
+                                                                <td [innerHTML]="trp.dropLocation"></td>
+                                                                <td>
+                                                                    <span *ngFor="let drv of trp.driverIDs; let d=index">
+                                                                        {{ driversObj[drv] }}
+                                                                        <span *ngIf="d<trp.driverIDs.length-1">,</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span *ngFor="let veh of trp.vehicleIDs; let v=index">
+                                                                        {{ vehicles[veh] }}
+                                                                        <span *ngIf="v<trp.vehicleIDs.length-1">,</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span *ngFor="let ast of trp.assetIDs; let a=index">
+                                                                        {{ assets[ast] }}
+                                                                        <span *ngIf="a<trp.assetIDs.length-1">,</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span *ngFor="let carr of trp.carrID; let c=index">
+                                                                        {{ carriers[carr] }}
+                                                                        <span *ngIf="c<trp.carrID.length-1">,</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td><span class="badge badge-dark p-1">DELIVERED</span></td>
+                                                            </tr>
+                                                            <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
+                                                                <tr>
+                                                                    <td>
+                                                                        
+                                                                    </td>
+                                                                    <td colspan="10">
+                                                                        <div *ngFor="let spltLine of splt.trips">
+                                                                            <table class="table">
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <table class="table table-bordered">
+                                                                                                <tbody>
+                                                                                                    <tr>
+                                                                                                        <td>{{ spltLine.date | date:"yyyy/MM/dd" }}</td>
+                                                                                                        <td>
+                                                                                                            <span>
+                                                                                                                <b>{{ spltLine.type }} Location: </b>{{ spltLine.planLoc }}
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <span *ngIf="spltLine.driverID"><b>Driver: </b> {{ driversObj[spltLine.driverID] }} <br></span>
+                                                                                                            <span *ngIf="spltLine.coDriverID"><b>Co-driver: </b> {{ driversObj[spltLine.coDriverID] }}</span>
+                                                                                                            <span *ngIf="spltLine.carrierID"><b>Carrier: </b> {{ carriers[spltLine.carrierID] }}</span>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <span *ngIf="spltLine.vehicleID"><b>Vehile: </b> {{ vehicles[spltLine.vehicleID] }} <br></span>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <span *ngIf="spltLine.assetID.length > 0">
+                                                                                                                <b>Asset(s): </b>
+                                                                                                                <span *ngFor="let ast of spltLine.assetID; let a=index">
+                                                                                                                    {{ assets[ast] }}
+                                                                                                                    <span *ngIf="a<spltLine.assetID.length-1">,<br></span>
+                                                                                                                </span>
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </ng-container>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -271,7 +321,7 @@
                                                         <ng-container *ngFor="let trp of trips; let t=index;">
                                                             <tr>
                                                                 <td>
-                                                                    <input type="checkbox" (change)="selectedTrip(); subTrpStat(t)" [(ngModel)]="trp.selected" name="chk{{t}}" [indeterminate]="trp.indeterminate">
+                                                                    <input type="checkbox" (change)="selectedTrip(t, 'y'); fetchExpenses(trp.tripID, t)" [(ngModel)]="trp.selected" name="chk{{t}}" [indeterminate]="trp.indeterminate">
                                                                 </td>
                                                                 <td>{{ trp.tripNo }}</td>
                                                                 <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
@@ -333,6 +383,7 @@
                                                                                                         <td>
                                                                                                             <span *ngIf="spltLine.driverID"><b>Driver: </b> {{ driversObj[spltLine.driverID] }} <br></span>
                                                                                                             <span *ngIf="spltLine.coDriverID"><b>Co-driver: </b> {{ driversObj[spltLine.coDriverID] }}</span>
+                                                                                                            <span *ngIf="spltLine.carrierID"><b>Carrier: </b> {{ carriers[spltLine.carrierID] }}</span>
                                                                                                         </td>
                                                                                                         <td>
                                                                                                             <span *ngIf="spltLine.vehicleID"><b>Vehile: </b> {{ vehicles[spltLine.vehicleID] }} <br></span>
@@ -626,7 +677,7 @@
                                                         <tr *ngFor="let data of finalTripExpenses">
                                                             <td>{{ tripsObject[data.tripID] }}</td>
                                                             <td>{{ categories[data.categoryID] }}</td>
-                                                            <td>{{ data.notes }}</td>
+                                                            <td>{{ (data.notes) ? data.notes : '-' }}</td>
                                                             <td>{{ data.amount }} {{ data.currency }}</td>
                                                         </tr>
                                                     </tbody>

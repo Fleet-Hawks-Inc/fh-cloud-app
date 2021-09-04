@@ -28,9 +28,13 @@
      <section role="main" class="content-body p-0">
         <header class="page-header">
            <div class="row" style="padding-top:10px;">
-              <div class="col-md-4 col-lg-4">
-                 <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}} {{getOrderNumber}}</h4>
+              <div class="col-md-4 col-lg-4" *ngIf="!getOrderID">
+                 <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
               </div>
+               <div class="col-md-4 col-lg-4 text-dark" *ngIf="getOrderID">
+                  <span class="font-weight-bold text-4">{{ pageTitle }} - #{{ getOrderNumber }} </span> 
+                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{ ifStatus }}</span>
+               </div>
               <div class="col-md-8 col-lg-8 text-right">
                  <!--- <a class="btn btn-success btn-sm modal-with-form" href="#bolTemplateModal">Create BOL</a>  -->
                  <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
