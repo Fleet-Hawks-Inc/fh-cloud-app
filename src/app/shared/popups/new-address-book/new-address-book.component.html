@@ -1514,6 +1514,7 @@
                         <input
                           [(ngModel)]="unit.carrierData.fastExp"
                           name="fastExp"
+                          placement="bottom-right"
                           readonly (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
                             type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"
                         />
