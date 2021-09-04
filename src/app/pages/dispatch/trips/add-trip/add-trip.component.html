@@ -925,7 +925,7 @@
                 <h4 class="modal-title">Assign</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-capitalize">
                <div class="trip-search__main">
                 <table class="table table-bordered table-responsive-lg table-striped mb-0">
                     <thead>
@@ -966,7 +966,7 @@
                     </tbody>
                 </table>
                </div>
-                <div class="card-body text-dark table-scroll-y table-scrollplan p-0" data-select2-id="279">
+                <div class="card-body text-dark table-scroll-y table-scrollplan p-0 scrolling-div" data-select2-id="279">
                     <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
                         
                         <tbody>
@@ -1010,7 +1010,7 @@
                                                 <td class="assetClass" id="asset_{{ asset.assetID }}"
                                                     (click)="assetsChange(asset,'click')">
                                                     <div class="">
-                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"> {{
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"> {{
                                                             asset.assetIdentification }}</p>
                                                         <span class="driverstatus"><i class="fas fa-map-marker-alt"></i>
                                                             Kingston,
@@ -1028,7 +1028,7 @@
                                                 <td class="driverClass" id="drivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'driver','click')">
                                                     <div class="">
-                                                        <p class="mb-1 text-4 font-weight-semibold text-dark"><span
+                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><span
                                                                 class="offduty pull-right">OFF</span> {{ driver.fullName
                                                             }}</p>
                                                         <span class="driverstatus"> Crescent Road Vancouver, BC V6T
@@ -1055,7 +1055,7 @@
                                             <tr *ngFor="let driver of codrivers">
                                                 <td class="codriverClass" id="codrivr_{{driver.driverID}}"
                                                     (click)="driverChange(driver,'codriver','click')">
-                                                    {{ driver.fullName }} <span class="offduty pull-right">OFF</span>
+                                                    <span class="font-weight-bold">{{ driver.fullName }}</span> <span class="offduty pull-right">OFF</span>
                                                     <span class="driverstatus"><i class="fas fa-clock"></i> <span
                                                             class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
                                                         mins</span>
@@ -1159,9 +1159,9 @@
                                                     Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                 <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode" #adrCountry="ngModel" required 
                                                     name="countryCode" class="form-control populate" placeholder="Select Country">
-                                                    <ng-option *ngFor="let country of countries" value="{{ country.countryCode }}">
-                                                        {{ country.countryName }}
-                                                    </ng-option>
+                                                    <ng-option value="CA">Canada</ng-option>
+                                                    <ng-option value="US">United States</ng-option>
+                                                    <ng-option value="MX">Mexico</ng-option>
                                                 </ng-select>
                                                 <div *ngIf="adrCountry.invalid && (adrCountry.dirty || adrCountry.touched)" class="text-danger">
                                                     <div *ngIf="adrCountry.errors.required">
