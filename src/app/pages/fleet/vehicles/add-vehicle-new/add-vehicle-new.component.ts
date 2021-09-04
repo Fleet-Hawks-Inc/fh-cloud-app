@@ -1368,4 +1368,8 @@ export class AddVehicleNewComponent implements OnInit {
     this.listService.fetchVendors();
   }
 
+  refreshOpData() {
+    this.listService.fetchOwnerOperators();
+  }
+
 }

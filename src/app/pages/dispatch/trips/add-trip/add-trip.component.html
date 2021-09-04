@@ -3,8 +3,12 @@
         <section role="main" class="content-body pl-0 pt-0 pr-0">
             <header class="page-header pr8 pl11">
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4">
+                    <div class="col-md-4 col-lg-4" *ngIf="!tripID">
                         <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
+                    </div>
+                    <div class="col-md-4 col-lg-4 text-dark" *ngIf="tripID">
+                        <span class="font-weight-bold text-4">{{ pageTitle }} - #{{ tripData.tripNo }} </span> <span
+                            class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{ tripData.tripStatus }}</span>
                     </div>
 
                     <div class="col-md-8 col-lg-8 text-right">

@@ -40,7 +40,7 @@
                                 class="btn btn-sm btn-success mr-3">Search</button>
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
-                        <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons">
+                        <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons" *ngIf="!environment">
                             <div class="btn-group flex-wrap" style="min-width:190px;">
                                 <button type="button" class="mr15 {margin-right:50px !important;} driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                                 <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
@@ -162,18 +162,18 @@
                                     <table class="row-border hover table table-bordered table-striped mb-0">
                                         <thead>
                                             <tr>
-                                                <th class="col2 minWidth200">Vehicle Name/Number</th>
-                                                <th class="col1 minWidth200">VIN</th>
-                                                <th class="minWidth200">Start Date</th>
-                                                <th class="col4 minWidth200">Make</th>
-                                                <th class="minWidth200">Model</th>
-                                                <th class="minWidth200">Year</th>
-                                                <th class="minWidth200">Annual Safety Date</th>
-                                                <th class="minWidth200">Ownership</th>
-                                                <th class="minWidth200">Driver Assigned</th>
-                                                <th class="minWidth200">Team Driver Assigned</th>
+                                                <th class="col2 ">Vehicle Name/Number</th>
+                                                <th class="col1 ">VIN</th>
+                                                <th class="">Start Date</th>
+                                                <th class="col4 ">Make</th>
+                                                <th class="">Model</th>
+                                                <th class="">Year</th>
+                                                <th class="">Annual Safety Date</th>
+                                                <th class="">Ownership</th>
+                                                <th class="">Driver Assigned</th>
+                                                <th class="">Team Driver Assigned</th>
                                                 <th class="col7 extra">Trip</th>
-                                                <th class="col8 minWidth130">Plate Number</th>
+                                                <th class="col8 ">Plate Number</th>
                                                 <th class="col10 minWidth120">Status</th>
                                                 <th class="col11 extra">Group</th>
                                                 <th class="col14 extra">Service Program</th>

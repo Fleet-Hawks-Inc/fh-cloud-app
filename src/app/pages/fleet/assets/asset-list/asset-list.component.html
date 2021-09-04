@@ -50,7 +50,7 @@
                   <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
                   <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                </div>
-               <div class="col-md-6 col-lg-6 text-right page-buttons pr-1">
+               <div class="col-md-6 col-lg-6 text-right page-buttons pr-1" *ngIf="!environment">
                   <div class="btn-group flex-wrap" style="min-width:190px;">
                      <button type="button" class="mr-2 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                      <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
@@ -240,23 +240,23 @@
                            <table class="row-border hover table table-bordered table-striped mb-0">
                               <thead>
                                  <tr>
-                                    <th class="col1 minWidth200">Asset Name/Number</th>
-                                    <th class="col0 minWidth200">VIN</th>
-                                    <th class="col2 minWidth200">Asset Type</th>
-                                    <th class="col6 minWidth200">Make</th>
-                                    <!-- <th class="col4 minWidth200">Last Location</th> -->
-                                    <th class="col3 minWidth200"> Licence Plate Number</th>
-                                    <th class="col5 minWidth200">Year</th>
+                                    <th class="col1">Asset Name/Number</th>
+                                    <th class="col0">VIN</th>
+                                    <th class="col2">Asset Type</th>
+                                    <th class="col6">Make</th>
+                                    <!-- <th class="col4">Last Location</th> -->
+                                    <th class="col3"> Licence Plate Number</th>
+                                    <th class="col5">Year</th>
                                     <th class="col7 extra">Model</th>
-                                    <th class="col8 minWidth200">Ownership</th>
-                                    <th class="col15 minWidth200">Company Name</th>
-                                    <th class="col16 minWidth200">Annual Safety Date</th>
+                                    <th class="col8">Ownership</th>
+                                    <th class="col15">Company Name</th>
+                                    <th class="col16">Annual Safety Date</th>
                                     <th class="col10 extra">Group</th>
                                     <th class="col11 extra">ACE ID</th>
                                     <th class="col12 extra">ACI ID</th>
                                     <th class="col13 extra">GVWR</th>
                                     <th class="col14 extra">GAWR</th>
-                                    <th class="col9 minWidth120">Status</th>
+                                    <th class="col9 ">Status</th>
                                     <th class="minWidth50">Actions</th>
                                  </tr>
                               </thead>
@@ -272,7 +272,7 @@
                                     <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
                                     <td *ngIf="hideShow.make && item.assetDetails.manufacturer">{{item.assetDetails.manufacturer}}</td>
                                     <td *ngIf="hideShow.make && !item.assetDetails.manufacturer">-</td>
-                                    <td *ngIf="hideShow.lastLocation" >Live Location</td>
+                                    
                                     <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
                                     <td *ngIf="hideShow.year" >{{item.assetDetails.year}}</td>
 
