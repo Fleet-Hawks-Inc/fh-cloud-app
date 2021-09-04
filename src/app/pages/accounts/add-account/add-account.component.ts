@@ -20,6 +20,7 @@ export class AddAccountComponent implements OnInit {
   actNo: number;
   actDesc: '';
   opnBal: number;
+  opnBalType = 'debit';
   opnBalCurrency: '';
   actDash = false;
   actDate: '';
@@ -48,6 +49,7 @@ export class AddAccountComponent implements OnInit {
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -55,6 +57,7 @@ export class AddAccountComponent implements OnInit {
       closingAmt: 0,
       internalActID: '',
     };
+
     this.accountService.postData('chartAc', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -89,6 +92,7 @@ export class AddAccountComponent implements OnInit {
         this.actDesc = '';
         this.opnBal = null;
         this.opnBalCurrency = '';
+        this.opnBalType = 'debit';
         this.actDash = false;
         this.actDate = '';
         this.closingAmt = null;
@@ -98,7 +102,9 @@ export class AddAccountComponent implements OnInit {
       },
     });
   }
-
+  onChangeType(value: any) {
+    this.opnBalType = value;
+}
   hideModal() {
     $('#addAccountModal').modal('hide');
     this.transLog = false;

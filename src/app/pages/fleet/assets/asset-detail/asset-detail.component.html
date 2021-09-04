@@ -214,7 +214,7 @@
                                                <div class="col-lg-8"> Image {{i+1}}</div>
                                                <div class="col-lg-4 text-right">
                                                   <a href="javascript:;" class="modal-with-form">
-                                                     <i class="fas fa-times text-danger" (click)="delete('image',item.name,i)"></i>
+                                                     <i class="fas fa-times text-danger" (click)="deleteDocument('image',item.name)"></i>
                                                   </a>
                                                </div>
                                             </div>
@@ -224,6 +224,99 @@
                                 </div>
                              </div>
                           </div>
+
+                         <div class="row">
+                           <div class="col-lg-12">
+                              <label class="control-label font-weight-bold text-lg-right text-dark text-4">Loan Details</label>
+   
+                           </div>
+                           <div class="col-lg-12">
+                            <table class="table table-bordered table-responsive-lg text-capitalize">
+                               <tbody>
+                                  <tr>
+                                     <td width="40%" class="back-color-gray font-weight-bold">Loan Vendor</td>
+                                     <td  width="60%">{{ contactsObjects[loan.loanVendorID] }} </td>
+   
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Amount of Loan</td>
+                                     <td>{{ loan.amountOfLoan }} {{loan.amountOfLoanCurrency}}</td>
+   
+   
+                                  </tr>
+   
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Annual Percentage Rate</td>
+                                     <td>{{ (loan.annualPercentageRate != '') ? loan.annualPercentageRate+'%' : '' }}</td>
+                                  </tr>
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">GST Included</td>
+                                     <td class="text-small">{{ loan.gstInc ? 'Yes' : 'No' }}</td>
+                                  </tr>
+   
+                                  <tr>
+                                     <td class="back-color-gray font-weight-bold">Down Payment</td>
+                                     <td class="text-capitalize">{{ loan.downPayment }} {{loan.downPaymentCurrency}}</td>
+                                  </tr>
+   
+                                  <tr>
+                                    <td class="back-color-gray font-weight-bold">Date of Loan</td>
+                                    <td class="text-capitalize">{{ loan.dateOfLoan | date:"yyyy/MM/dd"  }}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Loan End Date</td>
+                                    <td class="text-capitalize">{{ loan.loadEndDate | date:"yyyy/MM/dd"  }}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Loan Due Date</td>
+                                    <td class="text-capitalize">{{ loan.loanDueDate | date:"yyyy/MM/dd"  }}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Loan Due Date Reminder</td>
+                                    <td class="text-capitalize">{{ loan.lReminder  }}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Number of Payments</td>
+                                    <td class="text-capitalize">{{ loan.numberOfPayments }}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Monthly Payment</td>
+                                    <td class="text-capitalize">{{ loan.monthlyPayment }} {{loan.monthlyPaymentCurrency}}</td>
+                                 </tr>
+   
+                                 <tr>
+                                    <td class="back-color-gray font-weight-bold">Notes</td>
+                                    <td class="text-capitalize">{{ loan.notes }}</td>
+                                 </tr>
+                               </tbody>
+                            </table>
+                            <div class="vehicle-common-box mt-4">
+                              <div class="row m-0">
+                                <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Loan Document(s)</div>
+                              </div>
+                              <table class="table table-responsive-lg mb-0">
+                                <tbody>
+                                  <tr *ngIf="lDocs.length == 0" style="text-align: center;">
+                                    <td colspan="2">{{ noRecordMsg }}</td>
+                                  </tr>
+                                  <tr *ngFor="let data of lDocs; let i=index;">
+                                    <td width="80%">Document {{ i+1}} </td>
+                                    <td width="20%">
+                                      <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('loan', data.name)" ><i class="fas fa-trash-alt"></i></a>
+                                      <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
+                                      <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                           </div>
+                         </div>
                        </div>
 
 
@@ -243,7 +336,7 @@
 
                           </div>
                           <div class="col-lg-12">
-                           <table class="table table-bordered table-responsive-lg">
+                           <table class="table table-bordered table-responsive-lg text-capitalize">
                               <tbody>
                                  <tr>
                                     <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
@@ -274,6 +367,77 @@
                            </table>
                           </div>
 
+                          <div class="col-lg-12">
+                           <label class="control-label font-weight-bold text-lg-right text-dark text-4">Purchase Details</label>
+
+                        </div>
+                        <div class="col-lg-12">
+                         <table class="table table-bordered table-responsive-lg text-capitalize">
+                            <tbody>
+                               <tr>
+                                  <td width="40%" class="back-color-gray font-weight-bold">Purchase Vendor</td>
+                                  <td  width="60%">{{ contactsObjects[purchase.purchaseVendorID] }} </td>
+
+                               </tr>
+                               <tr>
+                                  <td class="back-color-gray font-weight-bold">Purchase Price</td>
+                                  <td>{{ purchase.purchasePrice }} {{purchase.purchasePriceCurrency}}</td>
+
+
+                               </tr>
+
+                               <tr>
+                                  <td class="back-color-gray font-weight-bold">GST Included</td>
+                                  <td>{{ purchase.gstInc ? 'Yes' : 'No' }}</td>
+                               </tr>
+                               <tr>
+                                  <td class="back-color-gray font-weight-bold">Purchase Date</td>
+                                  <td class="text-small">{{ purchase.purchaseDate | date:"yyyy/MM/dd"  }}</td>
+                               </tr>
+
+                               <tr>
+                                  <td class="back-color-gray font-weight-bold">Purchase Odometer in Miles</td>
+                                  <td class="text-capitalize">{{ purchase.purchaseOdometer }}</td>
+                               </tr>
+
+                               <tr>
+                                 <td class="back-color-gray font-weight-bold">Warranty Expiration Date</td>
+                                 <td class="text-capitalize">{{ purchase.warrantyExpirationDate | date:"yyyy/MM/dd"  }}</td>
+                              </tr>
+
+                              <tr>
+                                 <td class="back-color-gray font-weight-bold">Warranty Expiration Meter</td>
+                                 <td class="text-capitalize">{{ purchase.warrantyExpirationMeter }}</td>
+                              </tr>
+
+                              <tr>
+                                 <td class="back-color-gray font-weight-bold">Purchase Comments</td>
+                                 <td class="text-capitalize">{{ purchase.purchaseComments }}</td>
+                              </tr>
+                            </tbody>
+                         </table>
+                         <div class="vehicle-common-box mt-4">
+                           <div class="row m-0">
+                             <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Purchase Document(s)</div>
+                           </div>
+                           <table class="table table-responsive-lg mb-0">
+                             <tbody>
+                               <tr *ngIf="pDocs.length == 0" style="text-align: center;">
+                                 <td colspan="2">{{ noRecordMsg }}</td>
+                               </tr>
+                               <tr *ngFor="let data of pDocs; let i=index;">
+                                 <td width="80%">Document {{ i+1}} </td>
+                                 <td width="20%">
+                                   <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('purchase', data.name)" ><i class="fas fa-trash-alt"></i></a>
+                                   <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
+                                   <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                                 </td>
+                               </tr>
+                             </tbody>
+                           </table>
+                         </div>
+                        </div>
+
                             <div class="col-lg-12 mt-3">
                                   <label class="control-label font-weight-bold text-3">Map Location:</label>
                                   <div id="map" style="height: 400px;width: 100%;"></div>
@@ -290,7 +454,7 @@
                                      <div class="col-lg-3 text-right">
                                         <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
                                            data-target="#viewDocModal"></em>
-                                        <a href="javascript:;" (click)="delete('doc',doc.name,d)" class="modal-with-form">
+                                        <a href="javascript:;" (click)="deleteDocument('doc',doc.name)" class="modal-with-form">
                                            <em class="fas fa-times text-danger"></em></a>
                                      </div>
                                   </div>

@@ -182,67 +182,67 @@
                                  <tr *ngIf="drivers.length == 0" class="text-center">
                                     <td colspan="14">{{dataMessage}}</td>
                                 </tr>
-                                 <tr *ngFor="let driver of drivers;let i = index;">
-                                    <td *ngIf="hideShow.name" [routerLink]="driver.url" class="cursorpoint">
-                                       <span class="font-weight-bold line-height-lg text-capitalize">
-                                          {{driver.firstName}} {{driver.lastName}}</span>
-                                    </td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.email }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.phone }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.driverType }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.startDate | date: "yyyy/MM/dd" }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.CDL_Number }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ driver.licenceDetails.licenceExpiry | date: "yyyy/MM/dd" }}</td>
-                                    <td class="cursorpoint" [routerLink]="driver.url">{{ (driver.licenceDetails.licStateName) ? driver.licenceDetails.licStateName : '-' }}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.document">
-                                       <span class="font-weight-bold">Type: </span>
-                                          {{documentsTypesObects[driver.documentDetails[0].documentType]}} <br>
-                                          <span class="font-weight-bold">Issue Province/State:
-                                       </span> {{driver.documentDetails[0].issuingState}}
-                                       <span *ngIf="driver.documentDetails.length === 2" class="badge badge-dark p-1 text-uppercase">+1</span>
-                                       <span *ngIf="driver.documentDetails.length === 3" class="badge badge-dark p-1 text-uppercase">+2</span>
-                                    </td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.address">
-                                       <div *ngIf="driver.address != undefined">
-                                          <div *ngIf="driver.address[0].manual">
-                                             <span *ngIf="driver.address[0].address1">
-                                                {{ driver.address[0].address1 }} {{ driver.address[0].address2}}, {{ driver.address[0].cityName }}, {{ driver.address[0].stateName }}, {{ driver.address[0].countryName }}
-                                             </span>
-                                             <span *ngIf="!driver.address[0].address1">-</span>
-                                          </div>
-                                          <div *ngIf="!driver.address[0].manual">
-                                             {{ (driver.address[0].userLocation) ? driver.address[0].userLocation : '-' }}
-                                          </div>
+                                <tr *ngFor="let driver of drivers;let i = index;">
+                                 <td *ngIf="hideShow.name" [routerLink]="driver.url" class="cursorpoint">
+                                    <span class="font-weight-bold line-height-lg text-capitalize">
+                                       {{driver.firstName}} {{driver.lastName}}</span>
+                                 </td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.email }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.phone }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.driverType }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.startDate | date: "yyyy/MM/dd" }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.CDL_Number }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.licenceDetails.licenceExpiry | date: "yyyy/MM/dd" }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">{{ (driver.licenceDetails.licStateName) ? driver.licenceDetails.licStateName : '-' }}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.currVehicle">{{driver.assignedVehicle ? vehiclesObject[driver.assignedVehicle] : '-'}}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.document">
+                                    <span class="font-weight-bold">Type: </span>
+                                       {{documentsTypesObects[driver.documentDetails[0].documentType]}} <br>
+                                       <span class="font-weight-bold">Issue Province/State:
+                                    </span> {{driver.documentDetails[0].issuingState}}
+                                    <span *ngIf="driver.documentDetails.length === 2" class="badge badge-dark p-1 text-uppercase">+1</span>
+                                    <span *ngIf="driver.documentDetails.length === 3" class="badge badge-dark p-1 text-uppercase">+2</span>
+                                 </td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.address">
+                                    <div *ngIf="driver.address != undefined">
+                                       <div *ngIf="driver.address[0].manual">
+                                          <span *ngIf="driver.address[0].address1">
+                                             {{ driver.address[0].address1 }} {{ driver.address[0].address2}}, {{ driver.address[0].cityName }}, {{ driver.address[0].stateName }}, {{ driver.address[0].countryName }}
+                                          </span>
+                                          <span *ngIf="!driver.address[0].address1">-</span>
                                        </div>
-                                       <span *ngIf="driver.address === undefined || driver.address === ''">-</span>
-                                    </td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.paymentType">{{(driver.paymentDetails.paymentType) ? driver.paymentDetails.paymentType : '-'}}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.sin">{{(driver.SIN) ? driver.SIN : '-'}}</td>
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
+                                       <div *ngIf="!driver.address[0].manual">
+                                          {{ (driver.address[0].userLocation) ? driver.address[0].userLocation : '-' }}
+                                       </div>
+                                    </div>
+                                    <span *ngIf="driver.address === undefined || driver.address === ''">-</span>
+                                 </td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.paymentType">{{(driver.paymentDetails.paymentType) ? driver.paymentDetails.paymentType : '-'}}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.sin">{{(driver.SIN) ? driver.SIN : '-'}}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.fastNumber">{{driver.crossBorderDetails.fast_ID ? driver.crossBorderDetails.fast_ID : '-'}}</td>
 
-                                    <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.status">
-                                       <span class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
-                                    </td>
-                                    <td class="border-0">
-                                       <div class="dropdown dropright">
-                                          <button class="bg-transparent border-0" type="button"
-                                             id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
-                                             aria-expanded="false">
-                                             <i class="fas fa-ellipsis-v"></i>
-                                          </button>
-                                          <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                             <a class="dropdown-item"
-                                                routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
-                                             <a href="javascript:;" class="dropdown-item"
-                                                (click)="deactivateDriver(driver)">Deactivate</a>
-                                          </div>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.status">
+                                    <span class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
+                                 </td>
+                                 <td class="border-0">
+                                    <div class="dropdown dropright">
+                                       <button class="bg-transparent border-0" type="button"
+                                          id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                          aria-expanded="false">
+                                          <i class="fas fa-ellipsis-v"></i>
+                                       </button>
+                                       <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                          <a class="dropdown-item"
+                                             routerLink="/fleet/drivers/edit/{{driver.driverID}}">Edit</a>
+                                          <a href="javascript:;" class="dropdown-item"
+                                             (click)="deactivateDriver(driver)">Deactivate</a>
                                        </div>
-                                    </td>
-                                 </tr>
+                                    </div>
+                                 </td>
+                              </tr>
                               </tbody>
                            </table>
                         </div>

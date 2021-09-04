@@ -51,6 +51,8 @@ export class InvoiceListComponent implements OnInit {
 
 
   ngOnInit() {
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
     this.invoices = [];
     this.orderInvoices = [];
     this.fetchCustomersByIDs();
@@ -117,7 +119,8 @@ export class InvoiceListComponent implements OnInit {
       this.total = +(this.total).toFixed(2);
     }
   }
-  getInvoices(refresh?: boolean) {
+  async getInvoices(refresh?: boolean) {
+    console.log('get invoices function');
     let searchParam = null;
     let searchParamOrder = null;
     if (refresh === true) {
@@ -144,15 +147,19 @@ export class InvoiceListComponent implements OnInit {
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              element.invStatus = element.invStatus.replace('_', ' ');
+              this.invoices.push(element);
+            }
+            console.log('this.invoices', this.invoices);
+            console.log('this.lastItemSK before', this.lastItemSK);
+            if (this.invoices[this.invoices.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
+              console.log('this.lastItemSK after', this.lastItemSK);
             } else {
               this.lastItemSK = 'end';
             }
-            result.map((v) => {
-              v.invStatus = v.invStatus.replace('_', ' ');
-              this.invoices.push(v);
-            });
             this.categorizeInvoices(this.invoices);
           }
         });
@@ -197,6 +204,9 @@ export class InvoiceListComponent implements OnInit {
 
   }
   onScroll() {
+    console.log('hello scroll invoices');
+    console.log('this.orderInvoices', this.orderInvoices);
+    console.log('this.invoices', this.invoices);
     this.getInvoices();
   }
   routeFn(invID: string, type: string) {
