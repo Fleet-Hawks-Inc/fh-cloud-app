@@ -104,8 +104,8 @@
                                        <div class="map-search__results" *ngIf="searchResults">
                                           <ul class="p-0 m-0 text-left bg-white" >
                                              <li *ngFor="let item of searchResults;">
-                                                <a href="javascript:;" (click)="assignLocation(item.position,item.address.label)"
-                                                   title="{{item.address.label}}">{{item.address.label}}</a>
+                                                <a href="javascript:;" (click)="assignLocation(item)"
+                                                   title="{{item.address}}">{{item.address}}</a>
                                              </li>
                                           </ul>
                                        </div>

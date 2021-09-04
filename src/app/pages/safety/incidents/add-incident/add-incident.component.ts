@@ -249,17 +249,25 @@ export class AddIncidentComponent implements OnInit {
         });
     }
 
-    async assignLocation(position: any,title:string) {
-        if (position) {
-            this.event.location.cords = `${position.lat},${position.lng}`;
-            this.event.location.label = title;
+    async getAddressDetail(id) {
+        let result = await this.apiService
+        .getData(`pcMiles/detail/${id}`).toPromise();
+        return result;
+    }
+
+    async assignLocation(item: any) {
+        let result = await this.getAddressDetail(item.place_id)
+        if(result != undefined) {
+            this.event.location.cords = `${result.position.lat},${result.position.lng}`;
+            this.event.location.label = item.address;
             this.searchResults = false;
             this.isSuggest = true;
             $('div').removeClass('show-search__result');
         } else {
-            this.event.location.label = title;
+            this.event.location.label = item.address;
             this.event.location.cords = '0,0';
-        }
+        } 
+       
     }
 
      /*
