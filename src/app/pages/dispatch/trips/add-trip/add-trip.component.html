@@ -327,7 +327,7 @@
                                                                 <li *ngFor="let item of searchResults;">
                                                                     <a href="javascript:;"
                                                                         (click)="assignLocation('editLoc', item, i)"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -424,7 +424,7 @@
                                                                 <li *ngFor="let item of searchResults;">
                                                                     <a href="javascript:;"
                                                                         (click)="assignLocation('loc', item,'')"
-                                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                        title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
                                                         </td>
