@@ -95,10 +95,14 @@
                                            <td class="back-color-gray font-weight-bold">Ownership</td>
                                            <td class="text-capitalize">{{ownerShip ? ownerShip : '-' | titlecase}}</td>
                                         </tr>
-                                        <tr *ngIf="ownerShip === 'ownerOperator'">
-                                            <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
-                                            <td class="text-capitalize">{{contactsObjects[ownerOperatorName]}}</td>
+                                        <tr *ngIf="ownerShip === 'rented'">
+                                            <td class="back-color-gray font-weight-bold">Rented Company Name</td>
+                                            <td class="text-capitalize">{{rentCompany ? rentCompany : '-'}}</td>
                                          </tr>
+                                         <tr *ngIf="ownerShip === 'ownerOperator'">
+                                          <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
+                                          <td class="text-capitalize">{{contactsObjects[ownerOperatorName]}}</td>
+                                       </tr>
                                          <tr *ngIf="inspectionFormName != ''">
                                             <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
                                                <td class="text-capitalize">

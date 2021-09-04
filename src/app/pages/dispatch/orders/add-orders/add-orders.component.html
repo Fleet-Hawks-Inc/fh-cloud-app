@@ -545,11 +545,9 @@
                                                                   class="form-control populate address_country"
                                                                   placeholder="Select Country"
                                                                 >
-                                                                  <ng-option
-                                                                    *ngFor="let country of countries"
-                                                                    value="{{ country.countryCode }}"
-                                                                    >{{ country.countryName }}</ng-option
-                                                                  >
+                                                                <ng-option value="CA">Canada</ng-option>
+                                                                <ng-option value="US">United States</ng-option>
+                                                                <ng-option value="MX">Mexico</ng-option>
                                                                 </ng-select>
                                                                </div>
 
@@ -741,6 +739,7 @@
                                                                                  <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
                                                                                  <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
                                                                                  <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                                 <ng-option value="Package" data-select2-id="295">Package</ng-option>
                                                                            </ng-select>
 
 
@@ -995,11 +994,9 @@
                                                                   class="form-control populate address_country"
                                                                   placeholder="Select Country"
                                                                 >
-                                                                  <ng-option
-                                                                    *ngFor="let country of countries"
-                                                                    value="{{ country.countryCode }}"
-                                                                    >{{ country.countryName }}</ng-option
-                                                                  >
+                                                                <ng-option value="CA">Canada</ng-option>
+                                                                <ng-option value="US">United States</ng-option>
+                                                                <ng-option value="MX">Mexico</ng-option>
                                                                 </ng-select>
                                                                </div>
 
@@ -1217,6 +1214,7 @@
                                                                                     <ng-option value="Crate" data-select2-id="292">Crate</ng-option>
                                                                                     <ng-option value="Cases" data-select2-id="293">Cases</ng-option>
                                                                                     <ng-option value="Pallets" data-select2-id="294">Pallets</ng-option>
+                                                                                    <ng-option value="Package" data-select2-id="295">Package</ng-option>
                                                                               </ng-select>
                                                                               <!-- <div *ngIf="qty.invalid && (qty.dirty || qty.touched)" class="text-danger">
                                                                                  <div *ngIf="qty.errors.required">

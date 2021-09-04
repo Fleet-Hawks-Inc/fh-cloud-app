@@ -55,6 +55,7 @@ export class AddAssetsComponent implements OnInit {
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
+      rentCompany: '',
       licenceCountryCode: null,
       licenceStateCode: null,
       licencePlateNumber: '',
@@ -101,7 +102,7 @@ export class AddAssetsComponent implements OnInit {
       accountNumber: '',
       generateExpenses: '',
       notes: '',
-      loanDueDate: '',
+      loanDueDate: null,
       lReminder: true,
     },
     crossBorderDetails: {
@@ -138,6 +139,8 @@ export class AddAssetsComponent implements OnInit {
   states = [];
   uploadedPhotos = [];
   uploadedDocs = [];
+  existPDocs = []
+  existLDocs = [];
   purchaseDocs = [];
   loanDocs = [];
   existingPhotos = [];
@@ -307,6 +310,7 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        rentCompany: this.assetsData.assetDetails.rentCompany,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -390,6 +394,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -473,6 +478,10 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'ownerOperator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
+        if (result.assetDetails.ownerShip === 'rented') {
+          this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
+        }
+        
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
         this.getStates(result.assetDetails.licenceCountryCode);
@@ -524,6 +533,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
+        this.existPDocs = result.purchaseDocs;
+        this.existLDocs = result.loanDocs;
 
         if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.assetsImages = result.uploadedPhotos.map((x: any) => ({
@@ -581,6 +592,7 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        rentCompany: this.assetsData.assetDetails.rentCompany,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -598,13 +610,46 @@ export class AddAssetsComponent implements OnInit {
         reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
         vendor: this.assetsData.insuranceDetails.vendor
       },
+      purchase: {
+        purchaseVendorID: this.assetsData.purchase.purchaseVendorID,
+        warrantyExpirationDate: this.assetsData.purchase.warrantyExpirationDate,
+        warrantyExpirationDateReminder: this.assetsData.purchase.warrantyExpirationDateReminder,
+        purchasePrice: this.assetsData.purchase.purchasePrice,
+        purchasePriceCurrency: this.assetsData.purchase.purchasePriceCurrency,
+        warrantyExpirationMeter: this.assetsData.purchase.warrantyExpirationMeter,
+        purchaseDate: this.assetsData.purchase.purchaseDate,
+        purchaseComments: this.assetsData.purchase.purchaseComments,
+        purchaseOdometer: this.assetsData.purchase.purchaseOdometer,
+        gstInc: this.assetsData.purchase.gstInc
+      },
+      loan: {
+        loanVendorID: this.assetsData.loan.loanVendorID,
+        amountOfLoan: this.assetsData.loan.amountOfLoan,
+        amountOfLoanCurrency: this.assetsData.loan.amountOfLoanCurrency,
+        annualPercentageRate: this.assetsData.loan.annualPercentageRate,
+        gstInc: this.assetsData.loan.gstInc,
+        downPayment: this.assetsData.loan.downPayment,
+        downPaymentCurrency: this.assetsData.loan.downPaymentCurrency,
+        dateOfLoan: this.assetsData.loan.dateOfLoan,
+        monthlyPayment: this.assetsData.loan.monthlyPayment,
+        monthlyPaymentCurrency: this.assetsData.loan.monthlyPaymentCurrency,
+        numberOfPayments: this.assetsData.loan.numberOfPayments,
+        loadEndDate: this.assetsData.loan.loadEndDate,
+        generateExpenses: this.assetsData.loan.generateExpenses,
+        notes: this.assetsData.loan.notes,
+        loanDueDate: this.assetsData.loan.loanDueDate,
+        lReminder: this.assetsData.loan.lReminder,
+      },
       crossBorderDetails: {
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
         ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
       },
       uploadedPhotos: this.existingPhotos,
-      uploadedDocs: this.existingDocs
+      uploadedDocs: this.existingDocs,
+      purchaseDocs: this.existPDocs,
+      loanDocs: this.existLDocs
     };
+
     // create form data instance
     const formData = new FormData();
 
@@ -617,14 +662,22 @@ export class AddAssetsComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
+    // append purchase docs if any
+    for(let k = 0; k < this.purchaseDocs.length; k++){
+      formData.append('purchaseDocs', this.purchaseDocs[k]);
+    }
 
+    // append loan docs if any
+    for(let l = 0; l < this.loanDocs.length; l++){
+      formData.append('loanDocs', this.loanDocs[l]);
+    }
     //append other fields
     formData.append('data', JSON.stringify(data));
 
     this.apiService.putData('assets/', formData, true).subscribe({
-    // this.apiService.putData('assets', this.assetsData).subscribe({
       complete: () => { },
       error: (err) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -676,6 +729,7 @@ export class AddAssetsComponent implements OnInit {
           this.uploadedPhotos.push(files[i])
       }
     }
+
   }
 
 
@@ -791,7 +845,6 @@ deleteDocument(type: string, name: string) { // delete from aws
       })
     } else if (type == 'loan') {
       this.lDocs = [];
-      console.log('loan')
       this.uploadedDocs = result.Attributes.loanDocs;
       this.existingDocs = result.Attributes.loanDocs;
       result.Attributes.loanDocs.map((x) => {

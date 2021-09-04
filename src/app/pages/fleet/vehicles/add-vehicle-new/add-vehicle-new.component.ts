@@ -73,7 +73,7 @@ export class AddVehicleNewComponent implements OnInit {
   repeatByTime = '';
   repeatByTimeUnit = '';
   reapeatbyOdometerMiles = '';
-  annualSafetyDate = '';
+  annualSafetyDate = null;
   annualSafetyReminder = true;
   currentStatus = null;
   ownership = null;
@@ -89,7 +89,7 @@ export class AddVehicleNewComponent implements OnInit {
   inspectionFormID = null;
   lifeCycle = {
     inServiceDate: '',
-    startDate: '',
+    startDate: null,
     inServiceOdometer: '',
     estimatedServiceYears: '',
     estimatedServiceMonths: '',
@@ -211,7 +211,7 @@ export class AddVehicleNewComponent implements OnInit {
     accountNumber: '',
     generateExpenses: '',
     notes: '',
-    loanDueDate: '',
+    loanDueDate: null,
     lReminder: true,
   };
   settings = {

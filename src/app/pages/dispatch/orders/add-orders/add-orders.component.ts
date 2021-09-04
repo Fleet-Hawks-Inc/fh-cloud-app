@@ -491,13 +491,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersObjects = res;
     });
 
-    // this.listService.shipperObjectList.subscribe(res => {
-    //   this.shippersObjects = res;
-    // });
-
-    this.fetchCountries();
-
-
+    
   }
 
 
@@ -2274,13 +2268,7 @@ export class AddOrdersComponent implements OnInit {
 
   }
 
-   /*
-   * Get all countries from api
-   */
-   fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries();
-  }
-
+   
   getStates(countryCode: string, str: string, i: number, w: number) {
     let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
 
