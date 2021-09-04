@@ -187,12 +187,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -277,12 +281,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -358,12 +366,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -439,12 +451,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -520,12 +536,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -601,12 +621,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -681,12 +705,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
@@ -761,12 +789,16 @@
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1">{{ trip.tripStatus }}</span></td>
+                                                    <td>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
+                                                        <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
+                                                        
+                                                    </td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
                                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                                aria-haspopup="true" aria-expanded="false">
+                                                                aria-haspopup="true" aria-expanded="false" [disabled]="trip.canEdit" >
                                                                 <i class="fas fa-ellipsis-v"></i>
                                                             </button>
                                                             <div class="dropdown-menu"
