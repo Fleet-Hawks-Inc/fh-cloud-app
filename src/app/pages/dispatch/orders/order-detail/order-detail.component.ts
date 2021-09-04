@@ -165,6 +165,7 @@ export class OrderDetailComponent implements OnInit {
   Error = '';
   Success = '';
   invGenStatus = false;
+  orderStatus = '';
   constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
@@ -197,6 +198,7 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
+          this.orderStatus = result.orderStatus;
           await this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;
           this.reference = result.reference;

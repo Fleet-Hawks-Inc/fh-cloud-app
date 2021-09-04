@@ -227,7 +227,7 @@
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
                                                         (click)="assignLocation('source', item)"
-                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        title="{{item.address}}">{{item.address}}</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -415,7 +415,7 @@
                                                 <li *ngFor="let item of searchResults;">
                                                     <a href="javascript:;"
                                                         (click)="assignLocation('destination', item)"
-                                                        title="{{item.address.label}}">{{item.address.label}}</a>
+                                                        title="{{item.address}}">{{item.address}}</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -661,7 +661,7 @@
                                                                                 *ngFor="let item of searchResults;">
                                                                                 <a href="javascript:;"
                                                                                     (click)="assignLocation('stops', item, i)"
-                                                                                    title="{{item.address.label}}">{{item.address.label}}</a>
+                                                                                    title="{{item.address}}">{{item.address}}</a>
                                                                             </li>
                                                                         </ul>
                                                                     </div>

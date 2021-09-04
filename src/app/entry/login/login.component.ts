@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   cpwdfieldTextType:boolean;
 
   submitDisabled = false;
+  submitCarrierDisabled = false;
   passwordValidation = {
     upperCase: false,
     lowerCase: false,
@@ -140,7 +141,7 @@ confirmPassword:any;
           }else{
             this.router.navigate(['/Map-Dashboard'])
           }
-          
+
         })
         }
         const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
@@ -249,7 +250,8 @@ confirmPassword:any;
 
   }
 
-  onSubmit(){
+  onAddCarrier(){
+    this.submitCarrierDisabled = true;
     const data:any={
       entityType:'carrier',
       firstName:this.firstName,
@@ -279,20 +281,28 @@ confirmPassword:any;
             complete: () => {
 
               this.throwErrors();
-              this.submitDisabled = true;
+              this.submitCarrierDisabled = false;
             },
             error: () => { },
-            next: () => { this.submitDisabled = true; },
+            next: () => { this.submitCarrierDisabled = false; },
           });
       },
       next:(res)=>{
         this.toaster.success("Carrier is Created successfully")
         this.cancel();
+        this.submitCarrierDisabled = false;
+        this.firstName = null;
+        this.lastName = null;
+        this.newUserName = null;
+        this.newPassword = null;
+        this.phone = null;
+        this.fax = null;
+        this.newEmail = null;
+        this.findingWay = null;
+        this.confirmPassword = null;
       }
-     })
-  }
-  catch(error){
-
+     });
+  } catch (error) {
     this.errors[error.context.key] = error.message;
   }
 

@@ -276,6 +276,14 @@ export class TripListComponent implements OnInit {
         element.showStatus = false;
         this.tonuTrips.push(result.Items[i]);
       }
+      if(!element.stlLink) {
+        element.stlLink = false;
+      }
+      if(element.tripStatus == 'delivered' || element.stlLink) {
+        element.canEdit = true;
+      } else {
+        element.canEdit = false;
+      }
 
       trpArr.push(result.Items[i]);
     }
