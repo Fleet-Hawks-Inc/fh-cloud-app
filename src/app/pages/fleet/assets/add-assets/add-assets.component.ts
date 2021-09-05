@@ -55,6 +55,7 @@ export class AddAssetsComponent implements OnInit {
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
+      rentCompany: '',
       licenceCountryCode: null,
       licenceStateCode: null,
       licencePlateNumber: '',
@@ -101,7 +102,7 @@ export class AddAssetsComponent implements OnInit {
       accountNumber: '',
       generateExpenses: '',
       notes: '',
-      loanDueDate: '',
+      loanDueDate: null,
       lReminder: true,
     },
     crossBorderDetails: {
@@ -309,6 +310,7 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        rentCompany: this.assetsData.assetDetails.rentCompany,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -392,6 +394,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -475,6 +478,10 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'ownerOperator') {
           this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
         }
+        if (result.assetDetails.ownerShip === 'rented') {
+          this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
+        }
+        
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
         this.getStates(result.assetDetails.licenceCountryCode);
@@ -585,6 +592,7 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
+        rentCompany: this.assetsData.assetDetails.rentCompany,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -642,7 +650,6 @@ export class AddAssetsComponent implements OnInit {
       loanDocs: this.existLDocs
     };
 
-    console.log('data', data);
     // create form data instance
     const formData = new FormData();
 
@@ -670,6 +677,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService.putData('assets/', formData, true).subscribe({
       complete: () => { },
       error: (err) => {
+        this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -722,10 +730,6 @@ export class AddAssetsComponent implements OnInit {
       }
     }
 
-    console.log('uploadedDocs', this.uploadedDocs)
-    console.log('purchaseDocs', this.purchaseDocs)
-    console.log('loanDocs', this.loanDocs)
-    console.log('uploadedPhotos', this.uploadedPhotos)
   }
 
 
@@ -841,7 +845,6 @@ deleteDocument(type: string, name: string) { // delete from aws
       })
     } else if (type == 'loan') {
       this.lDocs = [];
-      console.log('loan')
       this.uploadedDocs = result.Attributes.loanDocs;
       this.existingDocs = result.Attributes.loanDocs;
       result.Attributes.loanDocs.map((x) => {

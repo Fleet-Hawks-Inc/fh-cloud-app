@@ -423,10 +423,17 @@
                       <ng-option value="owned">Owned</ng-option>
                       <ng-option value="leased">Leased</ng-option>
                       <ng-option value="rented">Rented</ng-option>
+                      <ng-option value="interchange">Interchange</ng-option>
                       <ng-option value="ownerOperator">Owner Operator</ng-option>
                     </ng-select>
                   </div>
 
+                  <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'rented'">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Rented Company Name</label>
+
+                    <input placeholder="Select Rented Company Name"[(ngModel)]="assetsData.assetDetails.rentCompany" name="assetDetails.rentCompany"
+                      class="form-control populate " />
+                  </div>
                   <div class="col-lg-5" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator</label>
 

@@ -1143,7 +1143,7 @@ export class AddTripComponent implements OnInit {
                 obj.locMan = element.locMan;
                 obj.planID = element.planID;
 
-                if(element.driverID != '' && element.driverID != undefined) {
+                if(element.driverID != '' && element.driverID != undefined  && element.driverID != null) {
                     if(!selectedDriverids.includes(element.driverID)) {
                         selectedDriverids.push(element.driverID);
                         let driverStatus = element.driverID + ':false';
@@ -1151,10 +1151,10 @@ export class AddTripComponent implements OnInit {
                     }
                 }
 
-                if(element.coDriverID != '' && element.coDriverID != undefined) {
+                if(element.coDriverID != '' && element.coDriverID != undefined && element.coDriverID != null) {
                     if(!selectedDriverids.includes(element.coDriverID)) {
                         selectedDriverids.push(element.coDriverID);
-                        let driverStatus = element.driverID + ':false';
+                        let driverStatus = element.coDriverID + ':false';
                         stlStatus.push(driverStatus);
                     }
                 }
@@ -1679,7 +1679,7 @@ export class AddTripComponent implements OnInit {
             obj.codriverUsername = element.coDriverUsername;
             obj.carrierID = element.carrierID;
 
-            if(element.driverID != '' && element.driverID != undefined) {
+            if(element.driverID != '' && element.driverID != undefined && element.driverID != null) {
                 if(!selectedDriverids.includes(element.driverID)) {
                     selectedDriverids.push(element.driverID);
                     let driverStatus = element.driverID + ':false';
@@ -1687,7 +1687,7 @@ export class AddTripComponent implements OnInit {
                 }
             }
 
-            if(element.coDriverID != '' && element.coDriverID != undefined) {
+            if(element.coDriverID != '' && element.coDriverID != undefined && element.coDriverID != null) {
                 if(!selectedDriverids.includes(element.coDriverID)) {
                     selectedDriverids.push(element.coDriverID);
                     let driverStatus = element.coDriverID + ':false';
@@ -1701,7 +1701,7 @@ export class AddTripComponent implements OnInit {
                 }
             }
 
-            if(element.carrierID != null && element.carrierID != undefined) {
+            if(element.carrierID != null && element.carrierID != undefined && element.carrierID != null) {
                 if(!selectedCarrierids.includes(element.carrierID)) {
                     selectedCarrierids.push(element.carrierID);
                     let carrStatus = element.carrierID + ':false';
