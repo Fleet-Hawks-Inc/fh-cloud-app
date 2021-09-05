@@ -81,6 +81,7 @@ export class TripDetailComponent implements OnInit {
   expenses = [];
   categories = [];
   splitArr = [];
+  showEdit = false;
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -156,6 +157,11 @@ export class TripDetailComponent implements OnInit {
       subscribe((result: any) => {
         result = result.Items[0];
 
+        if(result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
+          this.showEdit = false;
+        } else {
+          this.showEdit = true;
+        }
         if (result.documents == undefined) {
           result.documents = [];
         }
