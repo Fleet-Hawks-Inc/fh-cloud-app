@@ -937,7 +937,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     this.apiService
       .getData(`drivers/${this.driverID}`)
       .subscribe(async (result: any) => {
-        result = result.Items[0];
+        result = result.Items[0]; 
         this.fetchLicStates(result.licenceDetails.issuedCountry);
         this.driverData.address = result.address;
         if (result.address !== undefined) {
@@ -953,6 +953,14 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
             this.fetchCities(countryCode, stateCode, a);
           }
         }
+        if(result.corporationType === 'owner_operator') {
+          this.listService.fetchOwnerOperators();
+          this.ownerOperators = this.listService.ownerOperatorList;
+        }
+        if(result.corporationType === 'company') {
+          this.listService.fetchVendors();
+          this.vendors = this.listService.vendorList;
+        }
         this.driverData.driverType = result.driverType;
         this.driverData.employeeContractorId = result.employeeContractorId;
         this.driverData.corporationType = result.corporationType;
@@ -964,7 +972,7 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.userName = result.userName;
         this.driverData.firstName = result.firstName;
         this.driverData.lastName = result.lastName;
-        this.driverData.DOB = _.isEmpty(result.DOB) ?  null : result.DOB;
+        this.driverData.DOB = _.isEmpty(result.DOB) ?  null : result.DOB; 
         this.driverData.startDate = _.isEmpty(result.startDate) ?  null : result.startDate;
         this.driverData.terminationDate = _.isEmpty(result.terminationDate) ?  null : result.terminationDate;
         this.driverData.contractStart = _.isEmpty(result.contractStart) ?  null : result.contractStart;
@@ -1045,6 +1053,8 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
         this.driverData.CDL_Number = result.CDL_Number;
         this.driverData.licenceDetails.issuedCountry = result.licenceDetails.issuedCountry;
         this.driverData.licenceDetails.issuedState = result.licenceDetails.issuedState;
+        this.driverData.licenceDetails.licCntryName = result.licenceDetails.licCntryName;
+        this.driverData.licenceDetails.licStateName = result.licenceDetails.licStateName;
         this.driverData.licenceDetails.licenceExpiry = result.licenceDetails.licenceExpiry;
         this.driverData.licenceDetails.licenceNotification = result.licenceDetails.licenceNotification;
         this.driverData.licenceDetails.WCB = result.licenceDetails.WCB;
