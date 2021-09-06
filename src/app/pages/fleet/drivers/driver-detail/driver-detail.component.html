@@ -9,6 +9,8 @@
 
           <div class="col-md-10 col-lg-10 text-right pr-1">
             <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
+              data-target="#driverPasswordModal" href="javascript:;">Change Password</a>
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
               data-target="#driverOtherDetailsModal" href="javascript:;">Driver Detailed Information</a>
               <a routerLink="/fleet/drivers/edit/{{driverID}}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i> Edit Driver</a>
@@ -700,4 +702,23 @@
 			</div>
 		</div>
 	</div>
+</div>
+<!-- Change password modal -->
+<div class="modal fade" id="driverPasswordModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverPasswordModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+        <div class="row">
+          <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
