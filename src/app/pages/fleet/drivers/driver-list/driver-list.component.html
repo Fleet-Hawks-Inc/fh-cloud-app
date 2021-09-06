@@ -191,7 +191,10 @@
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.email }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.phone }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.driverType }}</td>
-                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.startDate | date: "yyyy/MM/dd" }}</td>
+                                 <td class="cursorpoint" [routerLink]="driver.url">
+                                    <span *ngIf="driver.driverType != 'contractor'">{{ driver.startDate | date: "yyyy/MM/dd" }}</span>
+                                    <span *ngIf="driver.driverType == 'contractor'">{{ driver.contractStart | date: "yyyy/MM/dd" }}</span>
+                                 </td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.CDL_Number }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.licenceDetails.licenceExpiry | date: "yyyy/MM/dd" }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ (driver.licenceDetails.licStateName) ? driver.licenceDetails.licStateName : '-' }}</td>

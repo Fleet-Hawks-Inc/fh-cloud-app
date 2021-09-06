@@ -21,7 +21,7 @@ export class JournalListComponent implements OnInit {
     endDate: null,
   }
   lastItemSK = '';
-
+  loaded = false;
   constructor(private toaster: ToastrService, private accountService: AccountService) { }
 
   ngOnInit() {
@@ -49,6 +49,7 @@ export class JournalListComponent implements OnInit {
             result.map((v) => {
               this.journals.push(v);
             });
+            this.loaded = true;
           }
       });
     }
@@ -108,6 +109,8 @@ export class JournalListComponent implements OnInit {
   }
 
   onScroll() {
+    if(this.loaded) {
     this.fetchJournals();
+    }
   }
 }

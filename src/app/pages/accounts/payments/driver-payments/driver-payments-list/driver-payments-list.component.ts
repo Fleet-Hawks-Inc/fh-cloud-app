@@ -26,7 +26,7 @@ export class DriverPaymentsListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
-
+  loaded = false;
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
@@ -89,7 +89,8 @@ export class DriverPaymentsListComponent implements OnInit {
               k.status = k.status.replace("_"," ");
             });
             this.payments.push(v);
-          })
+          });
+          this.loaded = true;
         }
       });
     }
@@ -141,6 +142,8 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
     this.fetchDriverPayments();
+    }
   }
 }

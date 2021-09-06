@@ -44,6 +44,8 @@ export class InvoiceListComponent implements OnInit {
   };
   lastItemSK = '';
   lastItemOrderSK = '';
+  loaded = false;
+  loadedOrder = false;
   constructor(private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
@@ -143,6 +145,7 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
@@ -156,6 +159,7 @@ export class InvoiceListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
+            this.loaded = true;
             this.categorizeInvoices(this.invoices);
           }
         });
@@ -184,6 +188,7 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
@@ -197,10 +202,7 @@ export class InvoiceListComponent implements OnInit {
             } else {
               this.lastItemOrderSK = 'end';
             }
-            // result.map((v) => {
-            //   v.invStatus = v.invStatus.replace('_', ' ');
-            //   this.orderInvoices.push(v);
-            // });
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(this.orderInvoices);
 
           }
@@ -210,7 +212,9 @@ export class InvoiceListComponent implements OnInit {
   }
 
   onScroll() {
-    this.getInvoices();
+    if(this.loaded && this.loadedOrder) {
+      this.getInvoices();
+    }
   }
   routeFn(invID: string, type: string) {
     if (type === 'manual') {

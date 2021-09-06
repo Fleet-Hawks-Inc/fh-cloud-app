@@ -253,6 +253,16 @@ export class TripListComponent implements OnInit {
           }
         }
       }
+
+      if(!element.stlLink) {
+        element.stlLink = false;
+      }
+      if(element.tripStatus == 'delivered' || element.tripStatus == 'cancelled' || element.tripStatus == 'tonu' || element.stlLink) {
+        element.canEdit = true;
+      } else {
+        element.canEdit = false;
+      }
+      
       if (element.tripStatus == 'confirmed') {
         element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);

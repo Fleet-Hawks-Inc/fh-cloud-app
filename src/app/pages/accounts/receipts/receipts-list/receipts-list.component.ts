@@ -20,6 +20,7 @@ export class ReceiptsListComponent implements OnInit {
     endDate: null,
     recNo: null
   };
+  loaded = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private toastr: ToastrService, private apiService: ApiService,) { }
 
   ngOnInit() {
@@ -52,13 +53,15 @@ export class ReceiptsListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
+            this.loaded = true;
           }
         });
     }
   }
   onScroll() {
-    console.log('hello scroll receipts');
-    this.fetchReceipts();
+    if (this.loaded) {
+      this.fetchReceipts();
+    }
   }
   deleteReceipt(recID: string) {
     this.accountService.deleteData(`receipts/delete/${recID}`).subscribe((res) => {

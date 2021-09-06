@@ -290,7 +290,8 @@ export class PaymentChequeComponent implements OnInit {
 
   saveDownload() {
     this.generatePDF();
-    $('#chequeModal').modal('hide');
+    // $('#chequeModal').modal('hide');
+    this.modalService.dismissAll();
     this.listService.triggerPaymentSave(this.cheqdata.type);
   }
 }
