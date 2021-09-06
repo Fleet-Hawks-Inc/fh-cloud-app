@@ -963,6 +963,9 @@ export class AddTripComponent implements OnInit {
             this.tempTextFieldValues.vehicleID = $event.vehicleID;
             $(".vehicleClass").removeClass('td_border');
             $("#veh_" + $event.vehicleID).addClass('td_border');
+            
+            $('.trips-vehicle__listing').animate({scrollTop: $("#veh_" + $event.vehicleID).position().top}, "slow");
+            
         }
     }
 
@@ -995,7 +998,7 @@ export class AddTripComponent implements OnInit {
                 }
                 $(".driverClass").removeClass('td_border');
                 $("#drivr_" + $event.driverID).addClass('td_border');
-
+                $('.trips-drivers__listing').animate({scrollTop: $("#drivr_" + $event.driverID).position().top}, "slow");
                 await this.spinner.hide();
 
             } else if (type === 'codriver') {
@@ -1008,6 +1011,8 @@ export class AddTripComponent implements OnInit {
                 }
                 $(".codriverClass").removeClass('td_border');
                 $("#codrivr_" + $event.driverID).addClass('td_border');
+                $('.trips-codrivers__listing').animate({scrollTop: $("#codrivr_" + $event.driverID).position().top}, "slow");
+              
             }
         }
     }
@@ -1033,6 +1038,11 @@ export class AddTripComponent implements OnInit {
                     }
                     this.tempTextFieldValues.trailer.push(objj);
                 }
+                if( $event.length > 0) {
+                    let lastItem = $event[$event.length - 1];
+                    $('.trips-assets__listing').animate({scrollTop: $("#asset_" + lastItem  .assetID).position().top}, "slow");
+                }
+                
             } else {
                 let arayy = [];
                 $("#asset_" + $event.assetID).addClass('td_border');
