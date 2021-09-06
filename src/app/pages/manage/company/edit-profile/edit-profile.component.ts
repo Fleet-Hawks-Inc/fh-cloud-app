@@ -239,10 +239,30 @@ export class EditProfileComponent implements OnInit {
   }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
+    this.addressDetails[i][`addressID`] = '';
+    this.addressDetails[i].geoCords.lat = '';
+    this.addressDetails[i].geoCords.lng = '';
+    this.addressDetails[i].countryCode = '';
+    this.addressDetails[i].stateCode = '';
+    this.addressDetails[i].countryName = '';
+    this.addressDetails[i].stateName = '';
+    this.addressDetails[i].cityName = '';
+    this.addressDetails[i].zipCode = '';
+    this.addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   clearBankLocation(i: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    this.banks[bankIndex].addressDetails[i][`addressID`] = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+    this.banks[bankIndex].addressDetails[i].countryName = '';
+    this.banks[bankIndex].addressDetails[i].countryCode = '';
+    this.banks[bankIndex].addressDetails[i].stateCode = '';
+    this.banks[bankIndex].addressDetails[i].stateName = '';
+    this.banks[bankIndex].addressDetails[i].cityName = '';
+    this.banks[bankIndex].addressDetails[i].zipCode = '';
+    this.banks[bankIndex].addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
@@ -251,6 +271,8 @@ export class EditProfileComponent implements OnInit {
       this.addressDetails[i][`userLocation`] = '';
       this.addressDetails[i].countryCode = '';
       this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
       this.addressDetails[i].cityName = '';
       this.addressDetails[i].zipCode = '';
       this.addressDetails[i].address = '';
@@ -264,6 +286,8 @@ export class EditProfileComponent implements OnInit {
       this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
       this.banks[bankIndex].addressDetails[i].countryCode = '';
       this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
       this.banks[bankIndex].addressDetails[i].cityName = '';
       this.banks[bankIndex].addressDetails[i].zipCode = '';
       this.banks[bankIndex].addressDetails[i].address = '';
