@@ -121,7 +121,7 @@ export class InvoiceListComponent implements OnInit {
       this.total = +(this.total).toFixed(2);
     }
   }
-  getInvoices(refresh?: boolean) {
+  async getInvoices(refresh?: boolean) {
     let searchParam = null;
     let searchParamOrder = null;
     if (refresh === true) {
@@ -156,7 +156,6 @@ export class InvoiceListComponent implements OnInit {
             }
             if (this.invoices[this.invoices.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
-              // console.log('this.lastItemSK after', this.lastItemSK);
             } else {
               this.lastItemSK = 'end';
             }

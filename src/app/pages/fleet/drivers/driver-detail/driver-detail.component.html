@@ -706,7 +706,7 @@
 <!-- Change password modal -->
 <div class="modal fade" id="driverPasswordModal" tabindex="-1" role="dialog"
   aria-labelledby="driverPasswordModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1024px;">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Change Password</h5>
@@ -715,9 +715,98 @@
         </button>
       </div>
       <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
+        <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm"  [mustMatch]="['password', 'confirmPassword']"
+        (ngSubmit)="driverF.form.valid && onChangePassword()" novalidate #driverF="ngForm" ngNativeValidate >
         <div class="row">
-          <div class="col-lg-6 font-weight-bold text-4 text-dark">Basic Details</div>
+          <div class="col-lg-12">
+            <label class="control-label font-weight-bold text-lg-right pt-2">Password <span
+                class="mandfield text-2 ml-1"><sup>*</sup></span>
+            </label>
+            <div class="input-group">
+              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"
+                (change)="onChangeHideErrors('password')" name="password"
+                 #pwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
+                  (input) ="validatePassword($event.target.value)" class="form-control"
+                />
+                <div class="input-group-append">
+                  <span class="input-group-text eye">
+                    <i class="fa" [ngClass]="{
+                      'fa-eye-slash': !fieldTextType,
+                      'fa-eye': fieldTextType
+                    }"
+                    (click)="toggleFieldTextType()"></i>
+                  </span>
+               </div>
+            </div>
+              <div *ngIf="pwd.invalid && driverF.submitted" class="text-danger">
+                <div *ngIf="pwd.errors.required">
+                  Password is required.
+                </div>
+                <div *ngIf="pwd.errors.pattern">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
+                      </p>
+                    </div>
+                    <div class="col-lg-12">
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
+
+                    </div>
+                    <div class="col-lg-12">
+                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="col-lg-12">
+            <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
+                class="mandfield text-2 ml-1"><sup>*</sup></span>
+            </label>
+              <div class="input-group">
+                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
+                (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required
+                 [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
+                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text eye">
+                      <i class="fa" [ngClass]="{
+                        'fa-eye-slash': !cpwdfieldTextType,
+                        'fa-eye': cpwdfieldTextType
+                      }"
+                      (click)="togglecpwdfieldTextType()"></i>
+                    </span>
+                 </div>
+              </div>
+            <div *ngIf="cpwd.invalid && driverF.submitted" class="text-danger">
+              <div *ngIf="cpwd.errors.required">
+                Confirm password is required.
+              </div>
+              <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
+            </div>
+          </div>
         </div>
+        <div class="row mt-3">
+          <div class="col-lg-11 text-right pb-1 pt-1 pr-2">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="cus-btn-padd btn btn-success">Save</button>
+          </div>
+        </div>
+        </form>
+
       </div>
     </div>
   </div>
