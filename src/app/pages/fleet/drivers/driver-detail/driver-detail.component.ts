@@ -12,6 +12,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
+import { passwordStrength } from 'check-password-strength';
 declare var $: any;
 @Component({
   selector: 'app-driver-detail',
@@ -131,6 +132,13 @@ export class DriverDetailComponent implements OnInit {
   corporation: any;
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  };
   submitDisabled = false;
   driverPwdData = {password : '' , confirmPassword: ''};
   errors = {};
@@ -180,6 +188,12 @@ export class DriverDetailComponent implements OnInit {
       this.driverList = result;
     });
   }
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
+  }
     // Show password
     toggleFieldTextType() {
       this.fieldTextType = !this.fieldTextType;
@@ -187,8 +201,43 @@ export class DriverDetailComponent implements OnInit {
     togglecpwdfieldTextType() {
       this.cpwdfieldTextType = !this.cpwdfieldTextType;
     }
+    validatePassword(password) {
+      let passwordVerify = passwordStrength(password)
+      if (passwordVerify.contains.includes('lowercase')) {
+        this.passwordValidation.lowerCase = true;
+      } else{
+        this.passwordValidation.lowerCase = false;
+      }
+
+      if (passwordVerify.contains.includes('uppercase')) {
+        this.passwordValidation.upperCase = true;
+      } else{
+        this.passwordValidation.upperCase = false;
+      }
+      if (passwordVerify.contains.includes('symbol')) {
+        this.passwordValidation.specialCharacters = true;
+      } else{
+        this.passwordValidation.specialCharacters = false;
+      }
+      if (passwordVerify.contains.includes('number')) {
+        this.passwordValidation.number = true;
+      } else{
+        this.passwordValidation.number = false;
+      }
+      if (passwordVerify.length >= 8) {
+        this.passwordValidation.length = true
+      } else{
+        this.passwordValidation.length = false;
+      }
+      if(password.includes('.')|| password.includes('-')){
+        this.passwordValidation.specialCharacters = true;
+      }
+    }
     onChangePassword() {
-        let data = {
+        this.submitDisabled = true;
+        this.hideErrors();
+        const data = {
+          userName: this.userName,
           password: this.driverPwdData.password
         };
         this.apiService.postData('drivers/password', data).subscribe({
@@ -225,6 +274,13 @@ export class DriverDetailComponent implements OnInit {
           };
           },
         });
+    }
+    pwdModalClose(){
+      $('#driverPasswordModal').modal('hide');
+      this.driverPwdData = {
+        password: '',
+        confirmPassword: '',
+      };
     }
     throwErrors() {
       from(Object.keys(this.errors))

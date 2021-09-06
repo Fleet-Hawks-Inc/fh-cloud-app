@@ -710,8 +710,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Change Password</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        <button type="button" class="close" (click)="pwdModalClose()" aria-label="Close">
+          <i class="far fa-window-close" style="font-size:25px;"> </i>
         </button>
       </div>
       <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
@@ -723,7 +723,7 @@
                 class="mandfield text-2 ml-1"><sup>*</sup></span>
             </label>
             <div class="input-group">
-              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"
+              <input  id="pd"  [(ngModel)]="driverPwdData.password"  placeholder="eg.  $John@01"
                 (change)="onChangeHideErrors('password')" name="password"
                  #pwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
@@ -776,7 +776,7 @@
                 class="mandfield text-2 ml-1"><sup>*</sup></span>
             </label>
               <div class="input-group">
-                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
+                <input  id="cnf" [(ngModel)]="driverPwdData.confirmPassword" name="confirmPassword"
                 (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required
                  [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
                   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
@@ -800,8 +800,8 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col-lg-11 text-right pb-1 pt-1 pr-2">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <div class="col-lg-12 text-right">
+            <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
             <button type="submit" class="cus-btn-padd btn btn-success">Save</button>
           </div>
         </div>
