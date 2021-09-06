@@ -44,6 +44,8 @@ export class InvoiceListComponent implements OnInit {
   };
   lastItemSK = '';
   lastItemOrderSK = '';
+  loaded = false;
+  loadedOrder = false;
   constructor(private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
@@ -119,8 +121,7 @@ export class InvoiceListComponent implements OnInit {
       this.total = +(this.total).toFixed(2);
     }
   }
-  async getInvoices(refresh?: boolean) {
-    console.log('get invoices function');
+  getInvoices(refresh?: boolean) {
     let searchParam = null;
     let searchParamOrder = null;
     if (refresh === true) {
@@ -144,6 +145,7 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
@@ -152,19 +154,22 @@ export class InvoiceListComponent implements OnInit {
               element.invStatus = element.invStatus.replace('_', ' ');
               this.invoices.push(element);
             }
-            console.log('this.invoices', this.invoices);
-            console.log('this.lastItemSK before', this.lastItemSK);
             if (this.invoices[this.invoices.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
-              console.log('this.lastItemSK after', this.lastItemSK);
+              // console.log('this.lastItemSK after', this.lastItemSK);
             } else {
               this.lastItemSK = 'end';
             }
+            this.loaded = true;
             this.categorizeInvoices(this.invoices);
           }
         });
     }
     // Order invoices
+    searchParamOrder = this.getOrderInvoices(refresh, searchParamOrder);
+
+  }
+  private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
     if (refresh === true) {
       this.lastItemOrderSK = '';
       this.orderInvoices = [];
@@ -176,7 +181,7 @@ export class InvoiceListComponent implements OnInit {
     }
     if (this.lastItemOrderSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '' && this.filter.invNo !== '%22null%22') {
-         searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
       } else {
         searchParamOrder = null;
       }
@@ -184,30 +189,33 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              element.invStatus = element.invStatus.replace('_', ' ');
+              this.orderInvoices.push(element);
+            }
+            if (this.orderInvoices[this.orderInvoices.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(this.orderInvoices[this.orderInvoices.length - 1].sk);
             } else {
               this.lastItemOrderSK = 'end';
             }
-            result.map((v) => {
-              v.invStatus = v.invStatus.replace('_', ' ');
-              this.orderInvoices.push(v);
-            });
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(this.orderInvoices);
 
           }
         });
     }
-
+    return searchParamOrder;
   }
+
   onScroll() {
-    console.log('hello scroll invoices');
-    console.log('this.orderInvoices', this.orderInvoices);
-    console.log('this.invoices', this.invoices);
-    this.getInvoices();
+    if(this.loaded && this.loadedOrder) {
+      this.getInvoices();
+    }
   }
   routeFn(invID: string, type: string) {
     if (type === 'manual') {
