@@ -2614,3 +2614,8 @@ input:checked + .sliderbtn:before {
 .show-search__result .map-search__results {
   display: block !important;
 }
+
+/* 04.09.21 account classes */
+.detailbox{
+  min-height: 125px;
+}

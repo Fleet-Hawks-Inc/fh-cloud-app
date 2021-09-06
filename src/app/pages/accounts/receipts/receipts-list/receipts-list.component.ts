@@ -20,9 +20,11 @@ export class ReceiptsListComponent implements OnInit {
     endDate: null,
     recNo: null
   };
+  loaded = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private toastr: ToastrService, private apiService: ApiService,) { }
 
   ngOnInit() {
+    this.lastItemSK = '';
     this.receipts = [];
     this.fetchReceipts();
     this.fetchCustomersByIDs();
@@ -30,6 +32,7 @@ export class ReceiptsListComponent implements OnInit {
   }
 
   fetchReceipts(refresh?: boolean) {
+    console.log('hello fetch receipts');
     if (refresh === true) {
       this.lastItemSK = '';
       this.receipts = [];
@@ -41,20 +44,24 @@ export class ReceiptsListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              this.receipts.push(element);
+            }
+            if (this.receipts[this.receipts.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(this.receipts[this.receipts.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
-            result.map((v) => {
-              this.receipts.push(v);
-            });
+            this.loaded = true;
           }
         });
     }
   }
   onScroll() {
-    this.fetchReceipts();
+    if (this.loaded) {
+      this.fetchReceipts();
+    }
   }
   deleteReceipt(recID: string) {
     this.accountService.deleteData(`receipts/delete/${recID}`).subscribe((res) => {

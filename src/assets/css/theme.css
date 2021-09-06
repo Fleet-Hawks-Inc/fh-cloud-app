@@ -12231,8 +12231,8 @@ html .scroll-to-top {
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 	background: #282d36;
-	border-radius: 7px 7px 0 0;
-	bottom: 0px;
+	border-radius: 7px 7px;
+	bottom: 50px;
 	color: #FFF;
 	display: block;
 	height: 9px;

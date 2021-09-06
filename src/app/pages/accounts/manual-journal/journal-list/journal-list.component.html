@@ -46,9 +46,8 @@
             <div class="row mb-3">
               <div class="col-lg-12">
                <div  infiniteScroll
-               [infiniteScrollDistance]="1"
-               [infiniteScrollUpDistance]="1"
-               [infiniteScrollThrottle]="5"
+               [infiniteScrollDistance]="2"
+               [infiniteScrollThrottle]="300"
                (scrolled)="onScroll()">
                 <div class="bg-white p-3 text-dark">
                   <div class="form-group row">
@@ -90,13 +89,16 @@
                            </tbody>
                         </table>
                      </div>
+                     <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end'">
+<button type="button" class="btn btn-dark btn-sm text-light"  (click)="onScroll()">Load More..</button>
+                     </div>
                   </div>
                 </div>
                </div>
 
               </div>
             </div>
-            
+
          </section>
 
 

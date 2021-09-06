@@ -41,60 +41,52 @@
           </header>
 
 
-          <section class="m-2">
+          <section class="m-2 card">
             <div class="row mb-3">
               <div class="col-lg-12">
-               <div infiniteScroll
-               [infiniteScrollDistance]="1"
-               [infiniteScrollUpDistance]="1"
-               [infiniteScrollThrottle]="5"
-               (scrolled)="onScroll()">
-                <div class="bg-white p-3 text-dark">
-                  <div class="form-group row">
-                     <div class="col-lg-12">
+                <div class="main-panel">
+                  <div infiniteScroll
+                  [infiniteScrollDistance]="2"
+                  [infiniteScrollThrottle]="300"
+                  (scrolled)="onScroll()">
+                    <div class="card-body p-3" style="display: block;">
+                      <div class="main-panel">
                         <table class="table table-bordered table-striped mb-0 simple-table">
-                           <thead>
-                              <tr class="bgcol2">
-                                <th class="text-2">Receipt#</th>
-                                 <th class="text-2">Date</th>
-                                 <th class="text-2">Invoice#</th>
-                                 <th class="text-2">Customer</th>
-                                 <th class="text-2">Payment Mode</th>
-                                 <th class="text-2">Account</th>
-                                 <!-- <th class="text-2">Factoring Company</th> -->
-                                 <th class="text-2">Amount</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                             <tr *ngIf="receipts.length == 0" class="text-center">
-                               <td colspan="9">{{ dataMessage }}</td>
-                           </tr>
-                              <tr *ngFor="let rec of receipts">
-                                <td class="cursorpoint font-weight-bold" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate | date : 'yyyy/MM/dd'}}</td>
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}} &nbsp;</span></td>
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID] | titlecase}}</td>
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode | titlecase}}</td>
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID] | titlecase}}</td>
-                                 <!-- <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td> -->
-                                 <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount | number : '1.2-2'}}&nbsp;{{rec.recAmountCur}}</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
-                     
+                          <thead>
+                             <tr class="bgcol2">
+                               <th class="text-2">Receipt#</th>
+                                <th class="text-2">Date</th>
+                                <th class="text-2">Invoice#</th>
+                                <th class="text-2">Customer</th>
+                                <th class="text-2">Payment Mode</th>
+                                <th class="text-2">Account</th>
+                                <!-- <th class="text-2">Factoring Company</th> -->
+                                <th class="text-2">Amount</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="receipts.length == 0" class="text-center">
+                              <td colspan="9">{{ dataMessage }}</td>
+                          </tr>
+                             <tr *ngFor="let rec of receipts">
+                               <td class="cursorpoint font-weight-bold" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate | date : 'yyyy/MM/dd'}}</td>
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}} &nbsp;</span></td>
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID] | titlecase}}</td>
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode | titlecase}}</td>
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID] | titlecase}}</td>
+                                <!-- <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td> -->
+                                <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount | number : '1.2-2'}}&nbsp;{{rec.recAmountCur}}</td>
+                             </tr>
+                          </tbody>
+                       </table>
+                      </div>
+                   </div>
                   </div>
                 </div>
-               </div>
-
-
               </div>
             </div>
-       
-            
          </section>
-
-
     </section>
   </div>
 </section>
