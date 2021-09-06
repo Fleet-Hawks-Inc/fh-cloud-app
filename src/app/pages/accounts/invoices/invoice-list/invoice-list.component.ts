@@ -165,6 +165,10 @@ export class InvoiceListComponent implements OnInit {
         });
     }
     // Order invoices
+    searchParamOrder = this.getOrderInvoices(refresh, searchParamOrder);
+
+  }
+  private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
     if (refresh === true) {
       this.lastItemOrderSK = '';
       this.orderInvoices = [];
@@ -176,7 +180,7 @@ export class InvoiceListComponent implements OnInit {
     }
     if (this.lastItemOrderSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '' && this.filter.invNo !== '%22null%22') {
-         searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
       } else {
         searchParamOrder = null;
       }
@@ -187,22 +191,24 @@ export class InvoiceListComponent implements OnInit {
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              element.invStatus = element.invStatus.replace('_', ' ');
+              this.orderInvoices.push(element);
+            }
+            if (this.orderInvoices[this.orderInvoices.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(this.orderInvoices[this.orderInvoices.length - 1].sk);
             } else {
               this.lastItemOrderSK = 'end';
             }
-            result.map((v) => {
-              v.invStatus = v.invStatus.replace('_', ' ');
-              this.orderInvoices.push(v);
-            });
             this.categorizeOrderInvoices(this.orderInvoices);
 
           }
         });
     }
-
+    return searchParamOrder;
   }
+
   onScroll() {
     console.log('hello scroll invoices');
     console.log('this.orderInvoices', this.orderInvoices);
