@@ -179,38 +179,84 @@ export class AddAccountComponent implements OnInit {
   /**
    * address
    */
-  clearUserLocation(i) {
+   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
+    this.addressDetails[i].geoCords.lat = '';
+    this.addressDetails[i].geoCords.lng = '';
+    this.addressDetails[i].countryCode = '';
+    this.addressDetails[i].stateCode = '';
+    this.addressDetails[i].countryName = '';
+    this.addressDetails[i].stateName = '';
+    this.addressDetails[i].cityName = '';
+    this.addressDetails[i].zipCode = '';
+    this.addressDetails[i].address = '';
+    $('div').removeClass('show-search__result');
+  }
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+    this.banks[bankIndex].addressDetails[i].countryName = '';
+    this.banks[bankIndex].addressDetails[i].countryCode = '';
+    this.banks[bankIndex].addressDetails[i].stateCode = '';
+    this.banks[bankIndex].addressDetails[i].stateName = '';
+    this.banks[bankIndex].addressDetails[i].cityName = '';
+    this.banks[bankIndex].addressDetails[i].zipCode = '';
+    this.banks[bankIndex].addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
       this.addressDetails[i].countryCode = '';
       this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
       this.addressDetails[i].cityName = '';
       this.addressDetails[i].zipCode = '';
       this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     }
-  }
-  clearBankLocation(i: any, bankIndex: any) {
-    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
-    $('div').removeClass('show-search__result');
   }
   manBankAddress(event, i, bankIndex) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
       this.banks[bankIndex].addressDetails[i].countryCode = '';
       this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
       this.banks[bankIndex].addressDetails[i].cityName = '';
       this.banks[bankIndex].addressDetails[i].zipCode = '';
       this.banks[bankIndex].addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
     }
   }
   getStates(countryCode: any, index: any) {
@@ -417,7 +463,7 @@ if (event === 'mailing') {
     }
     if (this.yardAddress && this.yardDefault) {
       const data = {
-        carrierID:this.carrierID,
+        carrierID: this.carrierID,
         entityType: 'carrier',
         CCC: this.CCC,
         DBAName: this.DBAName,
