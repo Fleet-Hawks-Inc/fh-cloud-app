@@ -23,7 +23,8 @@ export class EmployeePaymentListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
-  constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
+  loaded = false;
+  constructor( private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchEmployees();
@@ -63,7 +64,8 @@ export class EmployeePaymentListComponent implements OnInit {
             v.url = `/accounts/payments/employee-payments/detail/${v.paymentID}`;
             v.payMode = v.payMode.replace('_', ' ');
             this.payments.push(v);
-          })
+          });
+          this.loaded = true;
         }
 
       })
@@ -109,6 +111,8 @@ export class EmployeePaymentListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
     this.fetchPayments();
+    }
   }
 }

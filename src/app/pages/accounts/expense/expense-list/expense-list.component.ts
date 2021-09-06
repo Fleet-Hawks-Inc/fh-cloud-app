@@ -26,7 +26,7 @@ export class ExpenseListComponent implements OnInit {
     typeId: null,
   }
   lastItemSK = '';
-
+  loaded = false;
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -54,6 +54,7 @@ export class ExpenseListComponent implements OnInit {
           result.map((v) => {
             this.expenses.push(v);
           });
+          this.loaded = true;
         }
       });
     }
@@ -86,7 +87,7 @@ export class ExpenseListComponent implements OnInit {
     this.accountService.getData(`expense/categories/list`)
       .subscribe((result: any) => {
         this.categories = result;
-      })
+      });
   }
 
   searchFilter() {
@@ -130,6 +131,8 @@ export class ExpenseListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
     this.fetchExpenses();
+    }
   }
 }
