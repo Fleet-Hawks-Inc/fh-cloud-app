@@ -269,6 +269,8 @@ export class EditProfileComponent implements OnInit {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
       this.addressDetails[i].countryCode = '';
       this.addressDetails[i].stateCode = '';
       this.addressDetails[i].countryName = '';
@@ -278,12 +280,24 @@ export class EditProfileComponent implements OnInit {
       this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     }
   }
   manBankAddress(event, i, bankIndex) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
       this.banks[bankIndex].addressDetails[i].countryCode = '';
       this.banks[bankIndex].addressDetails[i].stateCode = '';
       this.banks[bankIndex].addressDetails[i].countryName = '';
@@ -293,6 +307,16 @@ export class EditProfileComponent implements OnInit {
       this.banks[bankIndex].addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
     }
   }
   async getAddressDetail(id) {
