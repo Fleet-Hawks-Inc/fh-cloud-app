@@ -284,17 +284,85 @@ export class AddRouteComponent implements OnInit {
     this.errors = {};
   }
 
+  async getAddressDetail(id) {
+    let result = await this.apiService
+    .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
+  }
+
   async assignLocation(elem, data, index: any = '') {
     // const result = await this.hereMap.geoCode(label);
     // const labelResult = result.items[0];
-    const item = {
-      name: data.address.label,
+    let item = {
+      name: '',
       notes: '',
-      state: data.address.StateName,
-      country: data.address.CountryFullName,
-      lat: data.position.lat,
-      lng: data.position.lng
+      state: '',
+      country: '',
+      lat: '',
+      lng: ''
     };
+    let result = await this.getAddressDetail(data.place_id)
+    if(result != undefined) {
+      item = {
+        name: data.address,
+        notes: '',
+        state: result.address.StateName,
+        country: result.address.CountryFullName,
+        lat: result.position.lat,
+        lng: result.position.lng
+      };
+
+      if (elem === 'source') {
+        this.setSourceValue(data, result)
+        this.routeData.stops[0] = item;
+  
+      } else if (elem === 'destination') {
+        this.setDestinationValue(data, result);
+        let stopLen = this.routeData.stops.length;
+        if (stopLen == 0) {
+          this.routeData.stops[0] = {
+            name: '',
+            notes: '',
+            country: '',
+            state: '',
+            lat: '',
+            lng: ''
+          };
+          this.routeData.stops[1] = item;
+        } else if (stopLen == 1 || stopLen == 2) {
+          this.routeData.stops[1] = item;
+        } else if (stopLen > 2) {
+          this.routeData.stops[stopLen - 1] = item;
+        }
+  
+      } else {
+        if(result.position != undefined) {
+          this.routeData.stops[index]['lat'] = result.position.lat;
+          this.routeData.stops[index]['lng'] = result.position.lng;
+        }
+  
+        if (result.address.CountryFullName !== undefined) {
+          this.routeData.stops[index]['country'] = `${result.address.CountryFullName}`;
+        }
+  
+        if (result.address.StateName !== undefined) {
+          this.routeData.stops[index]['state'] = `${result.address.StateName}`;
+        }
+        this.routeData.stops[index]['name'] = data.address;
+  
+        if (index == 0 || index == this.routeData.stops.length - 1) {
+          if (index === 0) {
+            this.setSourceValue(data, result)
+          } else {
+            this.setDestinationValue(data, result);
+          }
+        }
+      }
+      this.searchResults = false;
+      this.reinitMap();
+      $('div').removeClass('show-search__result');
+    }
+    
 
     //if(labelResult.position != undefined) {
       //item.lat = labelResult.position.lat;
@@ -308,106 +376,58 @@ export class AddRouteComponent implements OnInit {
     // if (labelResult.address.state !== undefined) {
     //   item.state = `${labelResult.address.state}`;
     // }
-    if (elem === 'source') {
-      this.setSourceValue(data)
-      this.routeData.stops[0] = item;
-
-    } else if (elem === 'destination') {
-      this.setDestinationValue(data);
-      let stopLen = this.routeData.stops.length;
-      if (stopLen == 0) {
-        this.routeData.stops[0] = {
-          name: '',
-          notes: '',
-          country: '',
-          state: '',
-          lat: '',
-          lng: ''
-        };
-        this.routeData.stops[1] = item;
-      } else if (stopLen == 1 || stopLen == 2) {
-        this.routeData.stops[1] = item;
-      } else if (stopLen > 2) {
-        this.routeData.stops[stopLen - 1] = item;
-      }
-
-    } else {
-      if(data.position != undefined) {
-        this.routeData.stops[index]['lat'] = data.position.lat;
-        this.routeData.stops[index]['lng'] = data.position.lng;
-      }
-
-      if (data.address.CountryFullName !== undefined) {
-        this.routeData.stops[index]['country'] = `${data.address.CountryFullName}`;
-      }
-
-      if (data.address.StateName !== undefined) {
-        this.routeData.stops[index]['state'] = `${data.address.StateName}`;
-      }
-      this.routeData.stops[index]['name'] = data.address.label;
-
-      if (index == 0 || index == this.routeData.stops.length - 1) {
-        if (index === 0) {
-          this.setSourceValue(data)
-        } else {
-          this.setDestinationValue(data);
-        }
-      }
-    }
-    this.searchResults = false;
-    this.reinitMap();
-    $('div').removeClass('show-search__result');
+    
 
   }
 
-  setSourceValue(labelResult) {
+  setSourceValue(labelResult, data) {
     this.routeData.sourceInfo['address'] = '';
     this.routeData.sourceInfo['country'] = '';
     this.routeData.sourceInfo['state'] = '';
     this.routeData.sourceInfo['city'] = '';
     this.routeData.sourceInfo['zipCode'] = '';
-    this.routeData.sourceInfo['address'] = `${labelResult.address.label}`;
+    this.routeData.sourceInfo['address'] = `${labelResult.address}`;
 
-    if (labelResult.address.CountryFullName !== undefined) {
-      this.routeData.sourceInfo['country'] = `${labelResult.address.CountryFullName}`;
+    if (data.address.CountryFullName !== undefined) {
+      this.routeData.sourceInfo['country'] = `${data.address.CountryFullName}`;
     }
 
-    if (labelResult.address.StateName !== undefined) {
-      this.routeData.sourceInfo['state'] = `${labelResult.address.StateName} (${labelResult.address.State})`;
+    if (data.address.StateName !== undefined) {
+      this.routeData.sourceInfo['state'] = `${data.address.StateName} (${data.address.State})`;
     }
 
-    if (labelResult.address.City !== undefined) {
-      this.routeData.sourceInfo['city'] = `${labelResult.address.City}`;
+    if (data.address.City !== undefined) {
+      this.routeData.sourceInfo['city'] = `${data.address.City}`;
     }
 
-    if (labelResult.address.Zip !== undefined) {
-      this.routeData.sourceInfo['zipCode'] = `${labelResult.address.Zip}`;
+    if (data.address.Zip !== undefined) {
+      this.routeData.sourceInfo['zipCode'] = `${data.address.Zip}`;
     }
   }
 
-  setDestinationValue(labelResult) {
+  setDestinationValue(labelResult, data) {
     this.routeData.destInfo['address'] = '';
     this.routeData.destInfo['country'] = '';
     this.routeData.destInfo['state'] = '';
     this.routeData.destInfo['city'] = '';
     this.routeData.destInfo['zipCode'] = '';
 
-    this.routeData.destInfo['address'] = `${labelResult.address.label}`;
+    this.routeData.destInfo['address'] = `${labelResult.address}`;
 
-    if (labelResult.address.CountryFullName !== undefined) {
-      this.routeData.destInfo['country'] = `${labelResult.address.CountryFullName}`;
+    if (data.address.CountryFullName !== undefined) {
+      this.routeData.destInfo['country'] = `${data.address.CountryFullName}`;
     }
 
-    if (labelResult.address.StateName !== undefined) {
-      this.routeData.destInfo['state'] = `${labelResult.address.StateName} (${labelResult.address.State})`;
+    if (data.address.StateName !== undefined) {
+      this.routeData.destInfo['state'] = `${data.address.StateName} (${data.address.State})`;
     }
 
-    if (labelResult.address.City !== undefined) {
-      this.routeData.destInfo['city'] = `${labelResult.address.City}`;
+    if (data.address.City !== undefined) {
+      this.routeData.destInfo['city'] = `${data.address.City}`;
     }
 
-    if (labelResult.address.Zip !== undefined) {
-      this.routeData.destInfo['zipCode'] = `${labelResult.address.Zip}`;
+    if (data.address.Zip !== undefined) {
+      this.routeData.destInfo['zipCode'] = `${data.address.Zip}`;
     }
   }
 

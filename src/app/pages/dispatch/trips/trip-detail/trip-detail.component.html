@@ -10,7 +10,7 @@
                     </div>
 
                     <div class="col-md-8 col-lg-8 text-right pr-1">
-                      <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" class="btn btn-default btn-sm mr-2"><i
+                      <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit" class="btn btn-default btn-sm mr-2"><i
                         class="fas fa-pencil-alt"></i> Edit Trip</a>
                         <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
                         <!-- <div class="btn-group flex-wrap mr-2">

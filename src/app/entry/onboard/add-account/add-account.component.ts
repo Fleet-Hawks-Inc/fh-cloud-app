@@ -58,7 +58,7 @@ export class AddAccountComponent implements OnInit {
 
   addressDetails = [{
     addressType: 'yard',
-    defaultYard: false,
+    defaultYard: true,
     countryName: '',
     countryCode: '',
     stateCode: '',
@@ -132,7 +132,7 @@ export class AddAccountComponent implements OnInit {
     number: false,
     specialCharacters: false,
     length: false
-  }
+  };
   siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
   constructor(private apiService: ApiService,
               private toaster: ToastrService,
@@ -153,21 +153,18 @@ export class AddAccountComponent implements OnInit {
 
   getCarrierData(){
     this.apiService.getData('carriers/getCarrier').subscribe((res)=>{
-      if(res.Items.length>0){
-        let data=res.Items[0]
-
-        this.firstName=data.firstName
-        this.lastName=data.lastName
-        this.phone=data.phone
-        this.fax=data.fax
-        this.userName=data.userName
-        this.email=data.email
-        this.findingWay=data.findingWay
-        this.carrierID=data.carrierID
-
-
+      if(res.Items.length > 0) {
+        let data = res.Items[0];
+        this.firstName = data.firstName;
+        this.lastName = data.lastName;
+        this.phone = data.phone;
+        this.fax = data.fax;
+        this.userName = data.userName;
+        this.email = data.email;
+        this.findingWay = data.findingWay;
+        this.carrierID = data.carrierID;
       }
-    })
+    });
   }
   geocodingSearch(value) {
     this.HereMap.geoCode(value);
@@ -182,38 +179,84 @@ export class AddAccountComponent implements OnInit {
   /**
    * address
    */
-  clearUserLocation(i) {
+   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
+    this.addressDetails[i].geoCords.lat = '';
+    this.addressDetails[i].geoCords.lng = '';
+    this.addressDetails[i].countryCode = '';
+    this.addressDetails[i].stateCode = '';
+    this.addressDetails[i].countryName = '';
+    this.addressDetails[i].stateName = '';
+    this.addressDetails[i].cityName = '';
+    this.addressDetails[i].zipCode = '';
+    this.addressDetails[i].address = '';
+    $('div').removeClass('show-search__result');
+  }
+  clearBankLocation(i: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+    this.banks[bankIndex].addressDetails[i].countryName = '';
+    this.banks[bankIndex].addressDetails[i].countryCode = '';
+    this.banks[bankIndex].addressDetails[i].stateCode = '';
+    this.banks[bankIndex].addressDetails[i].stateName = '';
+    this.banks[bankIndex].addressDetails[i].cityName = '';
+    this.banks[bankIndex].addressDetails[i].zipCode = '';
+    this.banks[bankIndex].addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
       this.addressDetails[i].countryCode = '';
       this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
       this.addressDetails[i].cityName = '';
       this.addressDetails[i].zipCode = '';
       this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     }
-  }
-  clearBankLocation(i: any, bankIndex: any) {
-    this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
-    $('div').removeClass('show-search__result');
   }
   manBankAddress(event, i, bankIndex) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
       this.banks[bankIndex].addressDetails[i].countryCode = '';
       this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
       this.banks[bankIndex].addressDetails[i].cityName = '';
       this.banks[bankIndex].addressDetails[i].zipCode = '';
       this.banks[bankIndex].addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
     }
   }
   getStates(countryCode: any, index: any) {
@@ -288,33 +331,48 @@ export class AddAccountComponent implements OnInit {
   }
 
   async userAddress(i, item) {
-    this.addressDetails[i][`userLocation`] = item.address.label;
-    this.addressDetails[i].geoCords.lat = item.position.lat;
-    this.addressDetails[i].geoCords.lng = item.position.lng;
-    this.addressDetails[i].countryName = item.address.CountryFullName;
-    this.addressDetails[i].countryCode = item.address.Country;
-    this.addressDetails[i].stateCode = item.address.State;
-    this.addressDetails[i].stateName = item.address.StateName;
-    this.addressDetails[i].cityName = item.address.City;
-    this.addressDetails[i].zipCode = item.address.Zip;
-    this.addressDetails[i].address = item.address.StreetAddress;
-    $('div').removeClass('show-search__result');
+    this.addressDetails[i][`userLocation`] = item.address;
+    let result = await this.getAddressDetail(item.place_id);
+    if(result != undefined) {
+      this.addressDetails[i].geoCords.lat = result.position.lat;
+      this.addressDetails[i].geoCords.lng = result.position.lng;
+      this.addressDetails[i].countryName = result.address.CountryFullName;
+      this.addressDetails[i].countryCode = result.address.Country;
+      this.addressDetails[i].stateCode = result.address.State;
+      this.addressDetails[i].stateName = result.address.StateName;
+      this.addressDetails[i].cityName = result.address.City;
+      this.addressDetails[i].zipCode = result.address.Zip;
+      this.addressDetails[i].address = result.address.StreetAddress;
+      $('div').removeClass('show-search__result');
+    }
+
   }
+
+  async getAddressDetail(id) {
+    let result = await this.apiService
+    .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
+  }
+
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
   async bankAddress(i, item, bankIndex: any) {
-    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
-    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
-    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
-    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
-    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
-    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
-    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
-    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
-    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
-    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
-    $('div').removeClass('show-search__result');
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address;
+    const result = await this.getAddressDetail(item.place_id);
+    if (result !== undefined) {
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = result.position.lat;
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = result.position.lng;
+      this.banks[bankIndex].addressDetails[i].countryName = result.address.CountryFullName;
+      this.banks[bankIndex].addressDetails[i].countryCode = result.address.Country;
+      this.banks[bankIndex].addressDetails[i].stateCode = result.address.State;
+      this.banks[bankIndex].addressDetails[i].stateName = result.address.StateName;
+      this.banks[bankIndex].addressDetails[i].cityName = result.address.City;
+      this.banks[bankIndex].addressDetails[i].zipCode = result.address.Zip;
+      this.banks[bankIndex].addressDetails[i].address = result.address.StreetAddress;
+      $('div').removeClass('show-search__result');
+    }
   }
   defaultYardFn(e: any, index: number) {
     if (e === true) {
@@ -339,7 +397,7 @@ if (event === 'mailing') {
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
     });
   }
-  async onSubmit() {
+  async onAddCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
@@ -405,7 +463,7 @@ if (event === 'mailing') {
     }
     if (this.yardAddress && this.yardDefault) {
       const data = {
-        carrierID:this.carrierID,
+        carrierID: this.carrierID,
         entityType: 'carrier',
         CCC: this.CCC,
         DBAName: this.DBAName,
@@ -544,15 +602,9 @@ if (event === 'mailing') {
       this.passwordValidation.length = true;
     } else {
       this.passwordValidation.length = false;
-
-
     }
     if (password.includes('.') || password.includes('-')) {
       this.passwordValidation.specialCharacters = true;
     }
-
-
   }
-
-
 }

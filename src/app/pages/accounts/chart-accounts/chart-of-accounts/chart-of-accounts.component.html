@@ -29,6 +29,9 @@
 						<button type="button" class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset</button>
 					</div>
 					<div class="col-md-6 col-lg-6 text-right pr-1">
+						<a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+							<i class="fas fa-sync"></i>
+						</a>
           				  <button type="button" class="btn btn-default btn-sm mr-1"  *ngIf="!deactivatePredefined" (click)="preAccounts()" [disabled]="addPredefined">Add Predefined</button>
 						<button (click)="showAcModal()" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
 					</div>
@@ -146,14 +149,14 @@
 							<div class="row">
 								<div class="col-lg-3 pr-0">
 									<!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
-									<input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog">
+									<input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog">
 									<div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
 										<div *ngIf="actBal.errors.required"> Account balance is required. </div>
 									</div>
 								</div>
 								<div class="col-lg-3 pl-0">
 									<!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
-									<ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog">
+									<ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
 										<ng-option value="CAD">CAD</ng-option>
 										<ng-option value="USD">USD</ng-option>
 									</ng-select>
@@ -165,7 +168,7 @@
 									<label class="control-label font-weight-bold">as of</label>
 								</div>
 								<div class="col-lg-4 pr-0">
-									<input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog">
+									<input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" [disabled]="transLog">
 									<div *ngIf="accountDate.invalid && (accountDate.dirty || accountDate.touched)" class="text-danger">
 										<div *ngIf="accountDate.errors.required"> Account date is required. </div>
 									</div>
@@ -173,8 +176,27 @@
 							</div>
 						</div>
 					</div>
+          <div class="form-row mt-3" *ngIf="!transLog">
+            <div class="col-lg-2 col-sm-12 col-xs-12">
+               <label class="control-label font-weight-bold mb-0 text-3 text-dark">Opening Balance</label>
+            </div>
+            <div class="col-lg-6">
+               <div class="btn-group-toggle" data-toggle="buttons">
+                  <label class="btn btn-outline btn-yesno mr-2 mb-2"
+                     [class.active]="opnBalType === 'debit'"
+                     (click)="onChangeType('debit')">
+                     <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" checked
+                        hidden value="debit"> Debit </label>
+                  <label class="btn btn-outline btn-yesno mr-2 mb-2"
+                     [class.active]="opnBalType === 'credit'"
+                     (click)="onChangeType('credit')">
+                     <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" hidden
+                        value="credit"> Credit </label>
+               </div>
+            </div>
+         </div>
 					<div class="form-row mt-2">
-						<div class="form-group col-lg-12">
+						<div class="form-group col-lg-5">
 							<div class="checkbox-custom">
 								<input type="checkbox" class="form-control" [(ngModel)]="actDash" name="actDash">
 								<label class="control-label font-weight-bold">Add To Dashboard Watch List</label>

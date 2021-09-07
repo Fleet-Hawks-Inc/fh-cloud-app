@@ -138,13 +138,14 @@ export class EditProfileComponent implements OnInit {
     if (this.companyID) {
       this.fetchCarrier();
     }
-    $(document).ready(() => {
-      this.companyForm = $('#companyForm').validate();
-    });
+    // $(document).ready(() => {
+    //   this.companyForm = $('#companyForm').validate();
+    // });
   }
   headerComponentFunction() {
     this.headerFnService.callHeaderFn();
   }
+
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
@@ -238,37 +239,90 @@ export class EditProfileComponent implements OnInit {
   }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
+    this.addressDetails[i][`addressID`] = '';
+    this.addressDetails[i].geoCords.lat = '';
+    this.addressDetails[i].geoCords.lng = '';
+    this.addressDetails[i].countryCode = '';
+    this.addressDetails[i].stateCode = '';
+    this.addressDetails[i].countryName = '';
+    this.addressDetails[i].stateName = '';
+    this.addressDetails[i].cityName = '';
+    this.addressDetails[i].zipCode = '';
+    this.addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   clearBankLocation(i: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+    this.banks[bankIndex].addressDetails[i][`addressID`] = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+    this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+    this.banks[bankIndex].addressDetails[i].countryName = '';
+    this.banks[bankIndex].addressDetails[i].countryCode = '';
+    this.banks[bankIndex].addressDetails[i].stateCode = '';
+    this.banks[bankIndex].addressDetails[i].stateName = '';
+    this.banks[bankIndex].addressDetails[i].cityName = '';
+    this.banks[bankIndex].addressDetails[i].zipCode = '';
+    this.banks[bankIndex].addressDetails[i].address = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
       this.addressDetails[i].countryCode = '';
       this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
       this.addressDetails[i].cityName = '';
       this.addressDetails[i].zipCode = '';
       this.addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.addressDetails[i][`userLocation`] = '';
+      this.addressDetails[i].geoCords.lat = '';
+      this.addressDetails[i].geoCords.lng = '';
+      this.addressDetails[i].countryCode = '';
+      this.addressDetails[i].stateCode = '';
+      this.addressDetails[i].countryName = '';
+      this.addressDetails[i].stateName = '';
+      this.addressDetails[i].cityName = '';
+      this.addressDetails[i].zipCode = '';
+      this.addressDetails[i].address = '';
     }
   }
   manBankAddress(event, i, bankIndex) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
       this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
       this.banks[bankIndex].addressDetails[i].countryCode = '';
       this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
       this.banks[bankIndex].addressDetails[i].cityName = '';
       this.banks[bankIndex].addressDetails[i].zipCode = '';
       this.banks[bankIndex].addressDetails[i].address = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.banks[bankIndex].addressDetails[i][`userLocation`] = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = '';
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = '';
+      this.banks[bankIndex].addressDetails[i].countryCode = '';
+      this.banks[bankIndex].addressDetails[i].stateCode = '';
+      this.banks[bankIndex].addressDetails[i].countryName = '';
+      this.banks[bankIndex].addressDetails[i].stateName = '';
+      this.banks[bankIndex].addressDetails[i].cityName = '';
+      this.banks[bankIndex].addressDetails[i].zipCode = '';
+      this.banks[bankIndex].addressDetails[i].address = '';
     }
+  }
+  async getAddressDetail(id) {
+    let result = await this.apiService
+    .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
   }
   getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
@@ -345,38 +399,49 @@ export class EditProfileComponent implements OnInit {
       this.searchResults = res;
     });
   }
+  setYardDefault(event: any, index: number) {
+    if (event === 'mailing') {
+      this.addressDetails[index].defaultYard = false;
+    }
+      }
   async userAddress(i, item) {
-    console.log('item', item);
-    this.addressDetails[i][`userLocation`] = item.address.label;
-    this.addressDetails[i].geoCords.lat = item.position.lat;
-    this.addressDetails[i].geoCords.lng = item.position.lng;
-    this.addressDetails[i].countryName = item.address.CountryFullName;
-    this.addressDetails[i].countryCode = item.address.Country;
-    this.addressDetails[i].stateCode = item.address.State;
-    this.addressDetails[i].stateName = item.address.StateName;
-    this.addressDetails[i].cityName = item.address.City;
-    this.addressDetails[i].zipCode = item.address.Zip;
-    this.addressDetails[i].address = item.address.StreetAddress;
-    $('div').removeClass('show-search__result');
+    this.addressDetails[i][`userLocation`] = item.address;
+    const result = await this.getAddressDetail(item.place_id);
+    if (result !== undefined) {
+      this.addressDetails[i].geoCords.lat = result.position.lat;
+      this.addressDetails[i].geoCords.lng = result.position.lng;
+      this.addressDetails[i].countryName = result.address.CountryFullName;
+      this.addressDetails[i].countryCode = result.address.Country;
+      this.addressDetails[i].stateCode = result.address.State;
+      this.addressDetails[i].stateName = result.address.StateName;
+      this.addressDetails[i].cityName = result.address.City;
+      this.addressDetails[i].zipCode = result.address.Zip;
+      this.addressDetails[i].address = result.address.StreetAddress;
+      $('div').removeClass('show-search__result');
+    }
+
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
   async bankAddress(i, item, bankIndex: any) {
-    console.log('item', item);
-    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address.label;
-    this.banks[bankIndex].addressDetails[i].geoCords.lat = item.position.lat;
-    this.banks[bankIndex].addressDetails[i].geoCords.lng = item.position.lng;
-    this.banks[bankIndex].addressDetails[i].countryName = item.address.CountryFullName;
-    this.banks[bankIndex].addressDetails[i].countryCode = item.address.Country;
-    this.banks[bankIndex].addressDetails[i].stateCode = item.address.State;
-    this.banks[bankIndex].addressDetails[i].stateName = item.address.StateName;
-    this.banks[bankIndex].addressDetails[i].cityName = item.address.City;
-    this.banks[bankIndex].addressDetails[i].zipCode = item.address.Zip;
-    this.banks[bankIndex].addressDetails[i].address = item.address.StreetAddress;
-    $('div').removeClass('show-search__result');
+    this.banks[bankIndex].addressDetails[i][`userLocation`] = item.address;
+    const result = await this.getAddressDetail(item.place_id);
+    if (result !== undefined) {
+      this.banks[bankIndex].addressDetails[i].geoCords.lat = result.position.lat;
+      this.banks[bankIndex].addressDetails[i].geoCords.lng = result.position.lng;
+      this.banks[bankIndex].addressDetails[i].countryName = result.address.CountryFullName;
+      this.banks[bankIndex].addressDetails[i].countryCode = result.address.Country;
+      this.banks[bankIndex].addressDetails[i].stateCode = result.address.State;
+      this.banks[bankIndex].addressDetails[i].stateName = result.address.StateName;
+      this.banks[bankIndex].addressDetails[i].cityName = result.address.City;
+      this.banks[bankIndex].addressDetails[i].zipCode = result.address.Zip;
+      this.banks[bankIndex].addressDetails[i].address = result.address.StreetAddress;
+      $('div').removeClass('show-search__result');
+    }
+
   }
-  async UpdateCarrier() {
+  async onUpdateCarrier() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
@@ -488,9 +553,9 @@ export class EditProfileComponent implements OnInit {
       const formData = new FormData();
 
       // append photos if any
-      for (let i = 0; i < this.uploadedPhotos.length; i++) {
-        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-      }
+      // for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      //   formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      // }
       // append other fields
       formData.append('data', JSON.stringify(data));
 
@@ -523,6 +588,7 @@ export class EditProfileComponent implements OnInit {
       });
     } else {
       this.toaster.error('Yard address is mandatory and atleast one yard as default is mandatory');
+      this.submitDisabled = false;
     }
   }
   updateUser() {

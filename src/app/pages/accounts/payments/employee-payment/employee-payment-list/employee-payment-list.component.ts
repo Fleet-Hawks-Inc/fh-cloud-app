@@ -17,13 +17,14 @@ export class EmployeePaymentListComponent implements OnInit {
   filter = {
     startDate: null,
     endDate: null,
-    amount: ''
+    paymentNo: null
   }
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
-  constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
+  loaded = false;
+  constructor( private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
     this.fetchEmployees();
@@ -36,9 +37,19 @@ export class EmployeePaymentListComponent implements OnInit {
     })
   }
 
-  fetchPayments() {
+  fetchPayments(refresh?: boolean) {
+    let searchParam = null;
+    if (refresh === true) {
+      this.lastItemSK = '';
+      this.payments = [];
+    }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`employee-payments/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
+     } else {
+       searchParam = null;
+     }
+      this.accountService.getData(`employee-payments/paging?paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -48,19 +59,21 @@ export class EmployeePaymentListComponent implements OnInit {
           } else {
             this.lastItemSK = 'end';
           }
-  
+
           result.map((v) => {
-            v.payMode = v.payMode.replace("_", " ");
+            v.url = `/accounts/payments/employee-payments/detail/${v.paymentID}`;
+            v.payMode = v.payMode.replace('_', ' ');
             this.payments.push(v);
-          })
+          });
+          this.loaded = true;
         }
-        
+
       })
     }
   }
 
   searchFilter() {
-    if (this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -90,14 +103,28 @@ export class EmployeePaymentListComponent implements OnInit {
       this.filter = {
           startDate: null,
           endDate: null,
-          amount: ''
-      }
+          paymentNo: null
+      };
       this.payments = [];
       this.lastItemSK = '';
       this.fetchPayments();
   }
 
   onScroll() {
-    this.fetchPayments(); 
+    if (this.loaded) {
+    this.fetchPayments();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+        startDate: null,
+        endDate: null,
+        paymentNo: null
+    };
+    this.payments = [];
+    this.lastItemSK = '';
+    this.fetchPayments();
   }
 }

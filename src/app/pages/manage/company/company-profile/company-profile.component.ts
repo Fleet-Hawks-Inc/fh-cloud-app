@@ -53,11 +53,13 @@ export class CompanyProfileComponent implements OnInit {
             this.showData = true;
           }
           this.fetchAddress(this.carriers.addressDetails);
-          if (this.carriers.uploadedLogo !== '') {
-            this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-          } else {
-            this.logoSrc = 'assets/img/logo.png';
-          }
+          this.logoSrc = 'assets/img/logo.png';
+          // below code is commented as fleet hawks logo will be used for now not company logo
+          // if (this.carriers.uploadedLogo !== '' || this.carriers.uploadedLogo !== undefined) {
+          //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+          // } else {
+          //   this.logoSrc = 'assets/img/logo.png';
+          // }
         });
   }
 

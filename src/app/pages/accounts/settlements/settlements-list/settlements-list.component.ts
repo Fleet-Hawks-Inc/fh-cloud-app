@@ -26,7 +26,7 @@ export class SettlementsListComponent implements OnInit {
     settlementNo: "",
   };
   lastItemSK = '';
-
+  loaded = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -90,6 +90,7 @@ export class SettlementsListComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           result.map((v) => {
+            v.url = `/accounts/settlements/detail/${ v.sttlID }`;
             v.entityType = v.type.replace("_", " ");
             v.status = v.status.replace("_", " ");
             if (v.status == undefined) {
@@ -100,6 +101,7 @@ export class SettlementsListComponent implements OnInit {
             v.paidAmount = v.paidAmount.toFixed(2);
             this.settlements.push(v);
           });
+          this.loaded = true;
         }
       });
     }
@@ -112,7 +114,7 @@ export class SettlementsListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.settlementNo !== "" || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.type !== null || this.filter.settlementNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -143,7 +145,7 @@ export class SettlementsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: "",
+      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = '';
@@ -164,6 +166,21 @@ export class SettlementsListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
+    this.fetchSettlements();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      type: null,
+      settlementNo: null,
+    };
+    this.settlements = [];
+    this.lastItemSK = '';
     this.fetchSettlements();
   }
 }

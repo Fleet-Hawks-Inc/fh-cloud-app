@@ -62,6 +62,8 @@ export class NewAddressBookComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   
   newArr = [];
+  isBroker: boolean = false;
+  bType: boolean = false;
   unitData = {
     cName: '',
     dba: '',
@@ -87,7 +89,8 @@ export class NewAddressBookComponent implements OnInit {
       houseNo: '',
       street: '',
       states: [],
-      cities: []
+      cities: [],
+      isSuggest: false
     }],
     addlCnt: [{
       flName: '',
@@ -101,6 +104,49 @@ export class NewAddressBookComponent implements OnInit {
     data: []
   }
 
+  unitTypes = [
+    {
+      value: 'broker',
+      label: 'broker',
+      disabled: false
+    },
+    {
+      value: 'carrier',
+      label: 'carrier',
+      disabled: false
+    },
+    {
+      value: 'shipper',
+      label: 'shipper',
+      disabled: false
+    },
+    {
+      value: 'receiver',
+      label: 'receiver',
+      disabled: false
+    },
+    {
+      value: 'customer',
+      label: 'customer',
+      disabled: false
+    },
+    {
+      value: 'fc',
+      label: 'factoring company',
+      disabled: false
+    },
+    {
+      value: 'owner_operator',
+      label: 'owner operator',
+      disabled: false
+    },{
+      value: 'vendor',
+      label: 'vendor',
+      disabled: false
+    },
+    
+  ]
+
   errors = {};
   errorClass = false;
   errorClassMsg = 'Password and Confirm Password must match and can not be empty.';
@@ -108,9 +154,12 @@ export class NewAddressBookComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = '';
 
+  isSearched: boolean = false;
+
   countries = [];
   states = [];
   cities = [];
+  selectedItems = [];
   lastKey: any = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -138,10 +187,62 @@ export class NewAddressBookComponent implements OnInit {
           this.carriers = [];
         }, (reason) => {
           this.units = [];
+          this.customers = [];
+          this.brokers = [];
+          this.vendors = [];
+          this.receivers = [];
+          this.shippers = [];
+          this.owners = [];
+          this.fcCompanies = [];
+          this.carriers = [];
         });
         this.lastKey = '';
         this.fetchUnits();
       } else if(res === 'form') {
+        this.bType = false;
+        this.unitTypes = [
+          {
+            value: 'broker',
+            label: 'broker',
+            disabled: false
+          },
+          {
+            value: 'carrier',
+            label: 'carrier',
+            disabled: false
+          },
+          {
+            value: 'shipper',
+            label: 'shipper',
+            disabled: false
+          },
+          {
+            value: 'receiver',
+            label: 'receiver',
+            disabled: false
+          },
+          {
+            value: 'customer',
+            label: 'customer',
+            disabled: false
+          },
+          {
+            value: 'fc',
+            label: 'factoring company',
+            disabled: false
+          },
+          {
+            value: 'owner_operator',
+            label: 'owner operator',
+            disabled: false
+          },{
+            value: 'vendor',
+            label: 'vendor',
+            disabled: false
+          },
+          
+        ]
+        this.updateButton = false;
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
@@ -224,13 +325,19 @@ export class NewAddressBookComponent implements OnInit {
 
   async searchFilter() {
     if(this.filterVal.cName != '') {
-        
+      this.isSearched = true;
+        $('#addressbook-content .tab-pane').removeClass('active show');
+        $('#all').addClass('active show');
+        $('#addressbook-tabs .nav-link').removeClass('active');
+        $('#addressbook-tabs #all-tab').addClass('active');
+        this.setActiveDiv('all');
         this.filterVal.cName = this.filterVal.cName.toLowerCase().trim();
         this.suggestions = [];
         this.units = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastKey = '';
         this.fetchUnits();
+        
       } else {
         return false
       }
@@ -337,7 +444,8 @@ export class NewAddressBookComponent implements OnInit {
         houseNo: '',
         street: '',
         states: [],
-        cities: []
+        cities: [],
+        isSuggest: false
       }],
       addlCnt: [{
         flName: '',
@@ -398,33 +506,48 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async userAddress(unit: string, data: any, i: number, item: any) {
-    if(unit === 'unit') {
-      data.adrs[i].userLoc = item.address.label;
-      data.adrs[i].geoCords.lat = item.position.lat;
-      data.adrs[i].geoCords.lng = item.position.lng;
-      data.adrs[i].cName = item.address.CountryFullName;
-      data.adrs[i].sName = item.address.StateName;
-      data.adrs[i].ctyName = item.address.City;
-
-      data.adrs[i].cCode = item.address.Country;
-      data.adrs[i].sCode = item.address.State;
-      data.adrs[i].zip = item.address.Zip;
-      data.adrs[i].street = item.address.StreetAddress;
+      data.adrs[i].userLoc = item.address;
+      let result = await this.getAddressDetail(item.place_id)
+      if(unit === 'unit') {
+     
+        if(result != undefined) {
+          data.adrs[i].geoCords.lat = result.position.lat;
+          data.adrs[i].geoCords.lng = result.position.lng;
+          data.adrs[i].cName = result.address.CountryFullName;
+          data.adrs[i].sName = result.address.StateName;
+          data.adrs[i].ctyName = result.address.City;
+    
+          data.adrs[i].cCode = result.address.Country;
+          data.adrs[i].sCode = result.address.State;
+          data.adrs[i].zip = result.address.Zip;
+          data.adrs[i].street = result.address.StreetAddress;
+          data.adrs[i].isSuggest = true;
+        }
+     
     } else {
-      data.adrs[i].userLoc = item.address.label;
-      data.adrs[i].geoCords.lat = item.position.lat;
-      data.adrs[i].geoCords.lng = item.position.lng;
-      data.adrs[i].cName = item.address.CountryFullName;
-      data.adrs[i].cCode = item.address.Country;
-      data.adrs[i].sCode = item.address.State;
-      data.adrs[i].sName = item.address.StateName;
-      data.adrs[i].ctyName = item.address.City;
-      data.adrs[i].zip = item.address.Zip;
-      data.adrs[i].add = item.address.StreetAddress;
+      if(result != undefined) {
+        data.adrs[i].geoCords.lat = result.position.lat;
+        data.adrs[i].geoCords.lng = result.position.lng;
+        data.adrs[i].cName = result.address.CountryFullName;
+        data.adrs[i].cCode = result.address.Country;
+        data.adrs[i].sCode = result.address.State;
+        data.adrs[i].sName = result.address.StateName;
+        data.adrs[i].ctyName = result.address.City;
+        data.adrs[i].zip = result.address.Zip;
+        data.adrs[i].add = result.address.StreetAddress;
+        data.adrs[i].isSuggest = true;
+      }
+      
     }
     
     
     $('div').removeClass('show-search__result');
+  }
+
+  async getAddressDetail(id) {
+    let result = await this.apiService
+    .getData(`pcMiles/detail/${id}`).toPromise();  
+    return result;
   }
 
   delAdditionalContact(index: number) {
@@ -443,7 +566,7 @@ export class NewAddressBookComponent implements OnInit {
         if(!this.newArr.includes('broker')){
           let data = {
             brokerData : {
-              type: 'individual',
+              type: 'company',
               dot: '',
               fn: '',
               ln: '',
@@ -466,7 +589,7 @@ export class NewAddressBookComponent implements OnInit {
               mc: '',
               dot: '',
               fast: '',
-              fastExp: '',
+              fastExp: null,
               ccc: '',
               scac: '',
               cvor: '',
@@ -552,7 +675,7 @@ export class NewAddressBookComponent implements OnInit {
               dot: '',
               mc: '',
               fast: '',
-              fastExp: '',
+              fastExp: null,
               csa: false,
               ctpat: false,
               pip: false,
@@ -688,7 +811,7 @@ export class NewAddressBookComponent implements OnInit {
       }
       
     })
-    
+
   }
 
 
@@ -698,6 +821,11 @@ export class NewAddressBookComponent implements OnInit {
         if(value == 'company') {
           elem.brokerData.fn = '';
           elem.brokerData.ln = '';
+          this.bType = false;
+          this.isBroker = false;
+        } else {
+          this.bType = true;
+          this.isBroker = true;
         }
         elem.brokerData.type = value;
       }
@@ -866,7 +994,6 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async addEntry () {
-    
     this.hideErrors();
     this.unitDisabled = true;
 
@@ -874,7 +1001,6 @@ export class NewAddressBookComponent implements OnInit {
       const element = this.unitData.adrs[i];
       delete element.states;
       delete element.cities;
-      
       if(element.manual === true){
        let data = {
           address1: element.add1,
@@ -884,11 +1010,23 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-
+        $('#addErr'+i).css('display','none');
         let result = await this.newGeoCode(data);
-        
+
+        if(result == null) {
+          $('#addErr'+i).css('display','block');
+          this.unitDisabled = false;
+          return false;
+        }
         if(result != undefined || result != null){
           element.geoCords = result;
+        }
+      } else {
+        $('#addErr'+i).css('display','none');
+        if(element.isSuggest != true && element.userLoc != '') {
+          $('#addErr'+i).css('display','block');
+          this.unitDisabled = false;
+          return;
         }
       }
     }
@@ -901,12 +1039,6 @@ export class NewAddressBookComponent implements OnInit {
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
-    // for(let i = 0; i < this.uploadedPhotos.length; i++){
-    //   formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    // }
-
-    //append other fields
     formData.append('data', JSON.stringify(this.unitData));
      
     this.apiService.postData('contacts', formData, true).
@@ -1007,21 +1139,31 @@ export class NewAddressBookComponent implements OnInit {
       delete element.cities;
       
       if(element.manual === true){
-       let data = {
-          address1: element.add1,
-          address2: element.add2,
-          cityName: element.ctyName,
-          stateName: element.sName,
-          countryName: element.cName,
-          zipCode: element.zip
-        }
-
-        let result = await this.newGeoCode(data);
-        
-        if(result != undefined){
-          element.geoCords = result;
-        }
-      }
+        let data = {
+           address1: element.add1,
+           address2: element.add2,
+           cityName: element.ctyName,
+           stateName: element.sName,
+           countryName: element.cName,
+           zipCode: element.zip
+         }
+         $('#addErr'+i).css('display','none');
+         let result = await this.newGeoCode(data);
+ 
+         if(result == null) {
+           $('#addErr'+i).css('display','block');
+           return false;
+         }
+         if(result != undefined || result != null){
+           element.geoCords = result;
+         }
+       } else {
+         $('#addErr'+i).css('display','none');
+         if(element.isSuggest != true && element.userLoc != '') {
+           $('#addErr'+i).css('display','block');
+           return;
+         }
+       }
     }
     
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
@@ -1068,7 +1210,6 @@ export class NewAddressBookComponent implements OnInit {
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
         this.emptyTabs();
-        this.fetchUnits();
         this.listService.triggerModal('list');
         this.toastr.success('Entry updated successfully');
       },
@@ -1142,7 +1283,7 @@ export class NewAddressBookComponent implements OnInit {
         }
           this.allData = this.units;
         }
-        
+        this.isSearched = false;
       })
     }
     
@@ -1160,12 +1301,18 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async resetFilter() {
-   
+    
       if(this.filterVal.cName != '') {
+        $('#addressbook-content .tab-pane').removeClass('active show');
+        $('#all').addClass('active show');
+        $('#addressbook-tabs .nav-link').removeClass('active');
+        $('#addressbook-tabs #all-tab').addClass('active');
+        this.setActiveDiv('all');
         this.customers = [];
         this.filterVal.cName = '';
         this.suggestions = [];
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastKey = '';
         this.units = [];
         this.fetchUnits();
       } else {
@@ -1179,13 +1326,30 @@ export class NewAddressBookComponent implements OnInit {
     this.updateButton = true;
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
+      
       this.unitData.eTypes = res.eTypes;
-      this.newArr = this.unitData.eTypes;
+
+      this.unitTypes.filter((item: any) => {
+      if(this.unitData.eTypes.includes(item.value)) {
+          let index = this.unitTypes.indexOf(item)
+          this.unitTypes[index].disabled = true; 
+        }
+      })
+      
+      this.newArr = res.eTypes;
       this.unitData.cName = res.cName;
       this.unitData.dba = res.dba;
       this.unitData.workEmail = res.workEmail;
       this.unitData.workPhone = res.workPhone;
       this.unitData.adrs = res.adrs;
+      for (let index = 0; index < this.unitData.adrs.length; index++) {
+        const element = this.unitData.adrs[index];
+        if(element.manual) {
+          element.isSuggest = false;
+        } else {
+          element.isSuggest = true;  
+        }
+      }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
 
@@ -1270,7 +1434,8 @@ export class NewAddressBookComponent implements OnInit {
         houseNo: '',
         street: '',
         states: [],
-        cities: []
+        cities: [],
+        isSuggest: false
       }],
       addlCnt: [{
         flName: '',

@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
-                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;">
+                        <div class="btn-group flex-wrap mr-3" style="min-width:190px;" *ngIf="!environment">
                             <button type="button" class="mb-1 driverbtn btn btn-default btn-md dropdown-toggle toggleright"
                                 data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                             <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start"
@@ -86,6 +86,11 @@
                                 
                             </div>
                         </div>
+                        
+                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                            <i class="fas fa-sync"></i>
+                        </a>
+
                         <a [routerLink]="" (click)="openTransferModal()"
                             class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
                             Transfer</a>
@@ -138,6 +143,9 @@
                     </div>
 
                     <div class="col-md-4 col-lg-4 text-right pr-1 page-buttons">
+                        <a href="javascript:;" (click)="refreshReqData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                            <i class="fas fa-sync"></i>
+                        </a>
                         <a [routerLink]="" (click)="openTransferModal()"
                             class="modal-with-form btn btn-success btn-sm mr-3"><i class="fas fa-exchange-alt"></i>
                             Transfer</a>

@@ -253,6 +253,16 @@ export class TripListComponent implements OnInit {
           }
         }
       }
+
+      if(!element.stlLink) {
+        element.stlLink = false;
+      }
+      if(element.tripStatus == 'delivered' || element.tripStatus == 'cancelled' || element.tripStatus == 'tonu' || element.stlLink) {
+        element.canEdit = true;
+      } else {
+        element.canEdit = false;
+      }
+      
       if (element.tripStatus == 'confirmed') {
         element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);
@@ -836,5 +846,32 @@ export class TripListComponent implements OnInit {
         }
       }
     }
+  }
+
+  refreshData() {
+    this.trips = [];
+      this.tripsFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: null,
+        start: '',
+        end: ''
+      };
+      this.records = false;
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.lastEvaluatedKey = '';
+      $("#categorySelect").text('Search by category');
+      this.tripDraw = 0;
+      this.activeTab = 'all';
+      this.confirmedTrips = [];
+      this.dispatchedTrips = [];
+      this.startedTrips = [];
+      this.enrouteTrips = [];
+      this.cancelledTrips = [];
+      this.deliveredTrips = [];
+      this.tonuTrips = [];
+      this.fetchTripsCount();
+      this.getStartandEndVal('all');
   }
 }

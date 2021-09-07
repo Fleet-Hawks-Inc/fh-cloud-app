@@ -470,9 +470,15 @@ export class VehicleListComponent implements OnInit {
     this.vehicleDraw = 0;
   }
 
-  createNewSK() {
-    this.apiService.getData('vehicles/get/new-sk').subscribe((result: any) => {
-
-    });
+  refreshData() {
+    this.vehicleID = '';
+    this.suggestedVehicles = [];
+    this.vehicleIdentification = '';
+    this.currentStatus = null;
+    this.vehicles = [];
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchVehiclesCount();
+    this.resetCountResult();
   }
 }

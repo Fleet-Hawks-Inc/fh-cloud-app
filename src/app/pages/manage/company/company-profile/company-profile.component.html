@@ -19,11 +19,12 @@
         <div class="col-lg-12 pr-1 pl-2">
           <div class="bg-white">
             <div class="row p-3">
-              <div class="col-1">
-               <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc" class="img-fluid"></span>
+              <div class="col-2">
+               <img [src]="logoSrc" class="img-fluid mt-1">
+               <!-- <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc" class="img-fluid"></span> -->
               </div>
-              <div class="col-11 text-dark">
-                <h1 class="font-weight-semibold text-7">{{carriers.carrierName | uppercase}}</h1>
+              <div class="col-10 text-dark">
+                <h1 class="font-weight-semibold text-7 text-capitalize mt-0">{{carriers.carrierName}}</h1>
               </div>
 
               <div class="col-lg-12 mt-3">
@@ -46,9 +47,9 @@
                     <tr>
 
                       <td class="back-color-gray">How did you find us?</td>
-                      <td>{{carriers.findingWay}}</td>
+                      <td>{{carriers.findingWay ? carriers.findingWay : '-'}}</td>
                         <td class="back-color-gray">Fax</td>
-                      <td>{{carriers.fax}}</td>
+                      <td>{{carriers.fax ? carriers.fax : '-'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -58,12 +59,11 @@
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Business Detail</h2>
                 <table class="table table-bordered table-responsive-lg">
                   <tbody>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td width="20%" class="back-color-gray">Registered Company Name</td>
-                      <td width="30%">{{carriers.carrierName | titlecase}}</td>
+                      <td width="30%">{{carriers.carrierName}}</td>
                       <td width="20%" class="back-color-gray">DBA Name</td>
-                      <td width="30%"><span *ngIf="carriers.DBAName !== ''">{{carriers.DBAName | titlecase}}</span>
-                                      <span *ngIf="carriers.DBAName === ''">-</span></td>
+                      <td width="30%">{{carriers.DBAName ? carriers.DBAName : '-' }}</td>
                     </tr>
                     <tr>
                       <td class="back-color-gray">Number of Fleets</td>
@@ -128,23 +128,23 @@
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
                 <table class="table table-bordered table-responsive-lg" *ngFor="let address of carriers.addressDetails">
                   <tbody>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td width="20%" class="back-color-gray">Address Type</td>
-                      <td width="30%">{{address.addressType | titlecase}} <span *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span></td>
+                      <td width="30%">{{address.addressType ? address.addressType : '-'}} <span *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span></td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%">{{address.address}}</td>
+                      <td width="30%">{{address.address ? address.address : '-'}}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td class="back-color-gray">Country</td>
-                      <td>{{address.countryName}}</td>
+                      <td>{{address.countryName ? address.countryName : '-'}}</td>
                       <td class="back-color-gray">Province/State</td>
-                      <td>{{address.stateName}}</td>
+                      <td>{{address.stateName ? address.stateName : '-'}}</td>
                     </tr>
-                    <tr>
+                    <tr  class="text-capitalize">
                       <td class="back-color-gray">City</td>
-                      <td>{{address.cityName}}</td>
+                      <td>{{address.cityName ? address.cityName : '-'}}</td>
                       <td class="back-color-gray">Zip Code</td>
-                      <td>{{address.zipCode}}</td>
+                      <td>{{address.zipCode ? address.zipCode : '-'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -155,42 +155,42 @@
                 <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
                 <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks" >
                   <tbody>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td width="20%" class="back-color-gray">Bank Name</td>
-                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName | titlecase}}</span></td>
+                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName  : '-'}}</span></td>
                       <td width="20%" class="back-color-gray">Routing#</td>
-                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber}}</span></td>
+                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ? bank.routingNumber : '-'}}</span></td>
                     </tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td class="back-color-gray">Account#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber ?  bank.accountNumber : '-'}}</span></td>
                       <td class="back-color-gray">Transit#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber : '-'}}</span></td>
                     </tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td class="back-color-gray">Institution#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber}}</span></td>
+                      <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber : '-'}}</span></td>
                     </tr>
                   </tbody>
                   <tbody *ngFor="let address of bank.addressDetails">
                     <tr>  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Address</h2></tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td width="20%" class="back-color-gray">Address Type</td>
-                      <td width="30%">{{address.addressType | titlecase}}</td>
+                      <td width="30%">{{address.addressType ? address.addressType : '-'}}</td>
                       <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%">{{address.address}}</td>
+                      <td width="30%">{{address.address  ? address.address :'-'}}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td class="back-color-gray">Country</td>
-                      <td>{{address.countryName}}</td>
+                      <td>{{address.countryName ? address.countryName : '-'}}</td>
                       <td class="back-color-gray">Province/State</td>
-                      <td>{{address.stateName}}</td>
+                      <td>{{address.stateName ? address.stateName : '-'}}</td>
                     </tr>
-                    <tr>
+                    <tr class="text-capitalize">
                       <td class="back-color-gray">City</td>
-                      <td>{{address.cityName}}</td>
+                      <td>{{address.cityName ? address.cityName : '-'}}</td>
                       <td class="back-color-gray">Zip Code</td>
-                      <td>{{address.zipCode}}</td>
+                      <td>{{address.zipCode ? address.zipCode : '-'}}</td>
                     </tr>
                   </tbody>
                 </table>

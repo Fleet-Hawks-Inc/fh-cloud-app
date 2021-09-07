@@ -8,16 +8,16 @@ export const environment = {
 
 
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
- // BaseUrl: 'http://localhost:3000/api/v1/',
-  AccountServiceUrl: 'http://localhost:4002/api/v1/',
-  SafetyServiceUrl: 'http://localhost:4000/api/v1/',
-  // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
- // SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
+  //BaseUrl: 'http://localhost:3000/api/v1/',
+  //AccountServiceUrl: 'http://localhost:4002/api/v1/',
+  // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+  AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
 
 
   isFleetEnabled: true,
   isDispatchEnabled: true,
-  isComplianceEnabled: true,
+  isComplianceEnabled: false,
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,

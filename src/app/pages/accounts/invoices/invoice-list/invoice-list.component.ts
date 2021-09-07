@@ -44,6 +44,8 @@ export class InvoiceListComponent implements OnInit {
   };
   lastItemSK = '';
   lastItemOrderSK = '';
+  loaded = false;
+  loadedOrder = false;
   constructor(private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
@@ -51,6 +53,8 @@ export class InvoiceListComponent implements OnInit {
 
 
   ngOnInit() {
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
     this.invoices = [];
     this.orderInvoices = [];
     this.fetchCustomersByIDs();
@@ -117,7 +121,7 @@ export class InvoiceListComponent implements OnInit {
       this.total = +(this.total).toFixed(2);
     }
   }
-  getInvoices(refresh?: boolean) {
+  async getInvoices(refresh?: boolean) {
     let searchParam = null;
     let searchParamOrder = null;
     if (refresh === true) {
@@ -141,23 +145,30 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loaded = true;
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              element.invStatus = element.invStatus.replace('_', ' ');
+              this.invoices.push(element);
+            }
+            if (this.invoices[this.invoices.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(this.invoices[this.invoices.length - 1].sk);
             } else {
               this.lastItemSK = 'end';
             }
-            result.map((v) => {
-              v.invStatus = v.invStatus.replace('_', ' ');
-              this.invoices.push(v);
-            });
+            this.loaded = true;
             this.categorizeInvoices(this.invoices);
           }
         });
     }
     // Order invoices
+    searchParamOrder = this.getOrderInvoices(refresh, searchParamOrder);
+
+  }
+  private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
     if (refresh === true) {
       this.lastItemOrderSK = '';
       this.orderInvoices = [];
@@ -169,7 +180,7 @@ export class InvoiceListComponent implements OnInit {
     }
     if (this.lastItemOrderSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '' && this.filter.invNo !== '%22null%22') {
-         searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
       } else {
         searchParamOrder = null;
       }
@@ -177,27 +188,33 @@ export class InvoiceListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
-            if (result[result.length - 1].sk !== undefined) {
-              this.lastItemOrderSK = encodeURIComponent(result[result.length - 1].sk);
+            for (let index = 0; index < result.length; index++) {
+              const element = result[index];
+              element.invStatus = element.invStatus.replace('_', ' ');
+              this.orderInvoices.push(element);
+            }
+            if (this.orderInvoices[this.orderInvoices.length - 1].sk !== undefined) {
+              this.lastItemOrderSK = encodeURIComponent(this.orderInvoices[this.orderInvoices.length - 1].sk);
             } else {
               this.lastItemOrderSK = 'end';
             }
-            result.map((v) => {
-              v.invStatus = v.invStatus.replace('_', ' ');
-              this.orderInvoices.push(v);
-            });
+            this.loadedOrder = true;
             this.categorizeOrderInvoices(this.orderInvoices);
 
           }
         });
     }
-
+    return searchParamOrder;
   }
+
   onScroll() {
-    this.getInvoices();
+    if(this.loaded && this.loadedOrder) {
+      this.getInvoices();
+    }
   }
   routeFn(invID: string, type: string) {
     if (type === 'manual') {
@@ -437,6 +454,34 @@ export class InvoiceListComponent implements OnInit {
     this.fetchInvoices();
     this.getInvoices();
 
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      invNo: null
+    };
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
+    this.total = 0;
+    this.openInvoices = [];
+    this.openTotal = 0;
+    this.paidInvoices = [];
+    this.paidTotal = 0;
+    this.emailedInvoices = [];
+    this.emailedTotal = 0;
+    this.partiallyPaidInvoices = [];
+    this.partiallyPaidTotal = 0;
+    this.voidedInvoices = [];
+    this.voidedTotal = 0;
+    this.invoices = [];
+    this.orderInvoices = [];
+    this.fetchedManualInvoices = [];
+    this.fetchedOrderInvoices = [];
+    this.fetchInvoices();
+    this.getInvoices();
   }
 
 }

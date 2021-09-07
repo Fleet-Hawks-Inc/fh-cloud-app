@@ -32,6 +32,7 @@ export class ChartOfAccountsComponent implements OnInit {
   actNo: number;
   actDesc: '';
   opnBal: number;
+  opnBalType = 'debit';
   opnBalCurrency: '';
   actDash = false;
   actDate: '';
@@ -75,6 +76,7 @@ export class ChartOfAccountsComponent implements OnInit {
     this.actDesc = '';
     this.opnBal = null;
     this.opnBalCurrency = '';
+    this.opnBalType = 'debit';
     this.actDash = false;
     this.actDate = '';
     this.closingAmt = null;
@@ -83,6 +85,9 @@ export class ChartOfAccountsComponent implements OnInit {
     this.transLog = false;
     this.modalTitle = 'Add Account';
     $('#addAccountModal').modal('show');
+  }
+  onChangeType(value: any) {
+      this.opnBalType = value;
   }
   searchAccounts() {
     if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
@@ -165,6 +170,7 @@ export class ChartOfAccountsComponent implements OnInit {
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -208,6 +214,7 @@ export class ChartOfAccountsComponent implements OnInit {
         this.actDesc = '';
         this.opnBal = null;
         this.opnBalCurrency = '';
+        this.opnBalType = 'debit';
         this.actDash = false;
         this.actDate = '';
         this.closingAmt = null;
@@ -231,6 +238,7 @@ export class ChartOfAccountsComponent implements OnInit {
       this.actDesc = '';
       this.opnBal = null;
       this.opnBalCurrency = '';
+      this.opnBalType = 'debit';
       this.actDash = false;
       this.actDate = '';
       this.closingAmt = null;
@@ -247,6 +255,7 @@ export class ChartOfAccountsComponent implements OnInit {
       this.actDesc = res.actDesc;
       this.opnBal = res.opnBal;
       this.opnBalCurrency = res.opnBalCurrency;
+      this.opnBalType = res.opnBalType;
       this.actDash = res.actDash;
       this.actDate = res.actDate;
       this.closingAmt = res.closingAmt;
@@ -268,6 +277,7 @@ export class ChartOfAccountsComponent implements OnInit {
       actNo: this.actNo,
       actDesc: this.actDesc,
       opnBal: this.opnBal,
+      opnBalType: this.opnBalType,
       opnBalCurrency: this.opnBalCurrency,
       actDash: this.actDash,
       actDate: this.actDate,
@@ -310,6 +320,7 @@ export class ChartOfAccountsComponent implements OnInit {
         this.actNo = null;
         this.actDesc = '';
         this.opnBal = null;
+        this.opnBalType = 'debit';
         this.opnBalCurrency = '';
         this.actDash = false;
         this.actDate = '';
@@ -324,5 +335,16 @@ export class ChartOfAccountsComponent implements OnInit {
   hideModal() {
     $('#addAccountModal').modal('hide');
     this.transLog = false;
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      actType: null,
+      actName: null,
+    };
+    this.lastItemSK = '';
+    this.accounts = [];
+    this.fetchAccounts();
   }
 }
