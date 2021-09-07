@@ -7,8 +7,8 @@ import { Auth } from 'aws-amplify';
 import { from, Subject, throwError } from 'rxjs';
 import jwt_decode from "jwt-decode";
 import { passwordStrength } from 'check-password-strength'
-import { map } from 'rxjs/operators'
-import { ToastrService } from 'ngx-toastr'
+import {map} from 'rxjs/operators'
+import {ToastrService} from 'ngx-toastr'
 declare var $: any;
 
 @Component({
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   error = '';
   fieldTextType: boolean;
   fieldTextType1: boolean;
-  cpwdfieldTextType: boolean;
+  cpwdfieldTextType:boolean;
 
   submitDisabled = false;
   submitCarrierDisabled = false;
@@ -41,15 +41,15 @@ export class LoginComponent implements OnInit {
     specialCharacters: false,
     length: false
   }
-  firstName: any;
-  lastName: any;
-  newUserName: any;
-  newPassword: any;
-  phone: any;
-  fax: any;
-  newEmail: any;
-  findingWay: any;
-  confirmPassword: any;
+  firstName:any;
+  lastName:any;
+  newUserName:any;
+  newPassword:any;
+  phone:any;
+  fax:any;
+  newEmail:any;
+  findingWay:any;
+confirmPassword:any;
 
 
 
@@ -125,154 +125,147 @@ export class LoginComponent implements OnInit {
     if ((this.userName) && (this.password)) {
       try {
         this.userName = this.userName.trim();
-        let loginResponse = await Auth.signIn(this.userName, this.password);
-        if (loginResponse) {
-          let carrierID = await this.apiService.getCarrierID();
-          this.apiService.getData(`carriers/${carrierID}`).subscribe((res) => {
-            if ('isProfileComplete' in res.Items[0]) {
-              if (res.Items[0].isProfileComplete) {
+        let loginResponse=await Auth.signIn(this.userName, this.password);
+        if(loginResponse){
+        let carrierID=await this.apiService.getCarrierID();
+        this.apiService.getData(`carriers/${carrierID}`).subscribe((res)=>{
+          if('isProfileComplete' in res.Items[0]){
+            if(res.Items[0].isProfileComplete){
 
-                this.router.navigate(['/Map-Dashboard'])
-              }
-              else {
-                this.router.navigate(['/onboard'])
-              }
-              localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
-            } else {
               this.router.navigate(['/Map-Dashboard'])
             }
-            else {
+            else{
               this.router.navigate(['/onboard'])
             }
-            localStorage.setItem("isProfileComplete", res.Items[0].isProfileComplete)
-          }else {
+            localStorage.setItem("isProfileComplete",res.Items[0].isProfileComplete)
+          }else{
             this.router.navigate(['/Map-Dashboard'])
           }
 
         })
-      }
-        const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
-      const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
-      const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
-      localStorage.setItem('congnitoAT', at);
-      const decodedToken: any = jwt_decode(jwt);
-
-      if (decodedToken.userType == 'driver') {
-        this.submitDisabled = false;
-        Auth.signOut();
-        localStorage.clear();
-        this.hasError = true;
-        this.Error = 'You are not authorized to perform this action';
-
-      } else {
-        this.submitDisabled = false;
-        localStorage.setItem('currentLoggedUserName', this.userName);
-
-        if (!isActivatedUser.carrierID) {
-          this.hasError = true;
-          this.Error = 'Unable to find carrier information';
-          localStorage.setItem('signOut', 'true'); //trigger flag
-        } else {
-
-          /**
-           * For the Role Management
-           * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}
-           */
-          const user: User = {
-            id: '1',
-            username: 'admin',
-            firstName: 'Admin',
-            lastName: 'User',
-            role: Role.FleetManager
-          };
-          localStorage.setItem('LoggedIn', 'true');
-          localStorage.setItem('signOut', 'false'); //trigger flag
-          localStorage.setItem('accessToken', jwt);//save token in session storage
-          await this.router.navigate(['/Map-Dashboard']);
-          localStorage.setItem('user', JSON.stringify(user));
         }
+        const isActivatedUser = (await Auth.currentSession()).getIdToken().payload;
+        const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
+        const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
+        localStorage.setItem('congnitoAT', at);
+        var decodedToken:any = jwt_decode(jwt);
+
+        if (decodedToken.userType == 'driver') {
+          this.submitDisabled = false;
+          Auth.signOut();
+          localStorage.clear();
+          this.hasError = true;
+          this.Error = 'You are not authorized to perform this action';
+
+        } else {
+          this.submitDisabled = false;
+          localStorage.setItem('currentLoggedUserName', this.userName);
+
+          if (!isActivatedUser.carrierID) {
+            this.hasError = true;
+            this.Error = 'Unable to find carrier information';
+            localStorage.setItem('signOut', 'true'); //trigger flag
+          } else {
+
+            /**
+             * For the Role Management
+             * @type {{id: string; username: string; firstName: string; lastName: string; role: Role}}
+             */
+            const user: User = {
+              id: '1',
+              username: 'admin',
+              firstName: 'Admin',
+              lastName: 'User',
+              role: Role.FleetManager
+            };
+            localStorage.setItem('LoggedIn', 'true');
+            localStorage.setItem('signOut', 'false'); //trigger flag
+            localStorage.setItem('accessToken', jwt);//save token in session storage
+            await this.router.navigate(['/Map-Dashboard']);
+            localStorage.setItem('user', JSON.stringify(user));
+          }
+        }
+      } catch (err) {
+        this.submitDisabled = false;
+        this.hasError = true;
+        this.Error = err.message || 'Error during login';
       }
-    } catch (err) {
+    }
+    else {
       this.submitDisabled = false;
       this.hasError = true;
-      this.Error = err.message || 'Error during login';
+      this.Error = 'Username and password is required'
+
     }
   }
-    else {
-  this.submitDisabled = false;
-  this.hasError = true;
-  this.Error = 'Username and password is required'
-
-}
-  }
-// Show password
-toggleFieldTextType1() {
-  this.fieldTextType1 = !this.fieldTextType1;
-}
-togglecpwdfieldTextType() {
-  this.cpwdfieldTextType = !this.cpwdfieldTextType;
-}
-submitConfirmationCode = async () => {
-  if (this.signUpCode !== '') {
-    await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
-  } else {
-    this.Error = 'Invalid Sigup Code';
-  }
-}
-
-validatePassword(password) {
-  let passwordVerify = passwordStrength(password)
-  if (passwordVerify.contains.includes('lowercase')) {
-    this.passwordValidation.lowerCase = true;
-  } else {
-    this.passwordValidation.lowerCase = false;
+    // Show password
+    toggleFieldTextType1() {
+      this.fieldTextType1 = !this.fieldTextType1;
+    }
+    togglecpwdfieldTextType() {
+      this.cpwdfieldTextType = !this.cpwdfieldTextType;
+    }
+  submitConfirmationCode = async () => {
+    if (this.signUpCode !== '') {
+      await Auth.verifyCurrentUserAttributeSubmit('email', this.signUpCode);
+    } else {
+      this.Error = 'Invalid Sigup Code';
+    }
   }
 
-  if (passwordVerify.contains.includes('uppercase')) {
-    this.passwordValidation.upperCase = true;
-  } else {
-    this.passwordValidation.upperCase = false;
-  }
-  if (passwordVerify.contains.includes('symbol')) {
-    this.passwordValidation.specialCharacters = true;
-  } else {
-    this.passwordValidation.specialCharacters = false;
-  }
-  if (passwordVerify.contains.includes('number')) {
-    this.passwordValidation.number = true;
-  } else {
-    this.passwordValidation.number = false;
-  }
-  if (passwordVerify.length >= 8) {
-    this.passwordValidation.length = true;
-  } else {
-    this.passwordValidation.length = false;
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else {
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else {
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else {
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else {
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true;
+    } else {
+      this.passwordValidation.length = false;
+
+
+    }
+    if (password.includes('.') || password.includes('-')) {
+      this.passwordValidation.specialCharacters = true;
+    }
 
 
   }
-  if (password.includes('.') || password.includes('-')) {
-    this.passwordValidation.specialCharacters = true;
-  }
 
-
-}
-
-onAddCarrier(){
-  this.submitCarrierDisabled = true;
-  const data: any = {
-    entityType: 'carrier',
-    firstName: this.firstName,
-    lastName: this.lastName,
-    userName: this.newUserName,
-    password: this.newPassword,
-    phone: this.phone,
-    email: this.newEmail,
-    fax: this.fax,
-    findingWay: this.findingWay
-  }
-  try {
-    this.apiService.postData('carriers/onBoard', data).subscribe({
-      complete: () => {
+  onAddCarrier(){
+    this.submitCarrierDisabled = true;
+    const data:any={
+      entityType:'carrier',
+      firstName:this.firstName,
+      lastName:this.lastName,
+      userName:this.newUserName,
+      password:this.newPassword,
+      phone:this.phone,
+      email:this.newEmail,
+      fax:this.fax,
+      findingWay:this.findingWay
+    }
+    try{
+    this.apiService.postData('carriers/onBoard',data).subscribe({
+      complete:()=>{
 
       },
       error: (err: any) => {
@@ -294,7 +287,7 @@ onAddCarrier(){
             next: () => { this.submitCarrierDisabled = false; },
           });
       },
-      next: (res) => {
+      next:(res)=>{
         this.toaster.success("Carrier is Created successfully")
         this.cancel();
         this.submitCarrierDisabled = false;
@@ -308,26 +301,26 @@ onAddCarrier(){
         this.findingWay = null;
         this.confirmPassword = null;
       }
-    });
+     });
   } catch (error) {
     this.errors[error.context.key] = error.message;
   }
 
-}
-cancel() {
-  $('#userSignUp').modal('hide');
-}
-throwErrors() {
-  from(Object.keys(this.errors))
-    .subscribe((v) => {
-      if (v === 'userName' || v === 'email' || v === 'carrierName') {
-        $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
-      }
-      if (v === 'cognito') {
-        this.toaster.error(this.errors[v]);
-      }
-    });
-}
+  }
+  cancel() {
+    $('#userSignUp').modal('hide');
+  }
+  throwErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        if (v === 'userName' || v === 'email' || v === 'carrierName') {
+          $('[name="' + v + '"]')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
+        }
+        if (v === 'cognito') {
+          this.toaster.error(this.errors[v]);
+        }
+      });
+  }
 }
