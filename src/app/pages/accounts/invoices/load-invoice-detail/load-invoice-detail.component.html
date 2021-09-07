@@ -136,9 +136,9 @@
                                                 <tbody>
                                                   <tr class="item" *ngFor="let commodity of pick.commodity;">
                                                     <td colspan="2">{{commodity.name}}</td>
-                                                    <td>{{commodity.pu}}</td>
-                                                    <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                    <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                    <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
+                                                    <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                    <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                   </tr>
 
@@ -196,11 +196,9 @@
                                                     <tr class="item" *ngFor="let commodity of drop.commodity;">
                                                       <td class="text-capitalize" colspan="2">
                                                         {{commodity.name}}</td>
-                                                      <td>{{commodity.del}}</td>
-                                                      <td>{{commodity.quantity}}
-                                                        {{commodity.quantityUnit}}</td>
-                                                      <td>{{commodity.weight}}
-                                                        {{commodity.weightUnit}}</td>
+                                                        <td>{{commodity.del ? commodity.del : "NA"}}</td>
+                                                      <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                    <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                     </tr>
 
