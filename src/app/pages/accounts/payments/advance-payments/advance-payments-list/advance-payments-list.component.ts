@@ -149,4 +149,17 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.fetchPayments();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+        startDate: null,
+        endDate: null,
+        type: null,
+        paymentNo: null
+    };
+    this.payments = [];
+    this.lastItemSK = '';
+    this.fetchPayments();
+  }
 }

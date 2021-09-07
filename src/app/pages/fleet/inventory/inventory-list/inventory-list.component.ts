@@ -7,6 +7,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../constants';
 import { ListService } from '../../../../services';
 import * as _ from 'lodash';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-inventory-list',
@@ -14,7 +15,7 @@ import * as _ from 'lodash';
   styleUrls: ['./inventory-list.component.css']
 })
 export class InventoryListComponent implements OnInit {
-
+  environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
   dataMessageReq: string = Constants.FETCHING_DATA;
   items = [];
@@ -230,11 +231,6 @@ export class InventoryListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
-
-        if (this.itemID !== '' || this.vendorID !== null || this.category !== null) {
-          this.inventoryEndPoint = this.totalRecords;
-        }
-
         this.initDataTable();
       },
     });
@@ -291,10 +287,6 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('inv');
 
         this.items = result[`Items`];
-        if (this.vendorID != null || this.category != null || this.itemID != null) {
-          this.inventoryStartPoint = 1;
-          this.inventoryEndPoint = this.totalRecords;
-        }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
           const lastEvalKey = result[`LastEvaluatedKey`].warehouseSK.replace(/#/g, '--');
@@ -339,7 +331,6 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('req');
 
         this.requiredItems = result[`Items`];
-        console.log('this.requiredItems', this.requiredItems);
         if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
           this.requiredInventoryStartPoint = 1;
           this.requiredInventoryEndPoint = this.totalRecordsRequired;
@@ -654,8 +645,33 @@ export class InventoryListComponent implements OnInit {
     } else {
       return false
     }
+  }
+  refreshData() {
+    this.itemID = '';
+    this.itemName = '';
+    this.groupName = '';
+    this.companyName = '';
+    this.vendorID = null;
+    this.category = null;
+    this.lastEvaluatedKey = '';
+    this.fetchItemsCount();
+    this.items = [];
+    this.suggestedItems = [];
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.resetCountResult('inv');
+  }
 
-
-
+  refreshReqData() {
+    this.requiredItemName = '';
+    this.requiredCompanyName = '';
+    this.requiredPartNumber = '';
+    this.requiredItemID = null;
+    this.requiredLastEvaluatedKey = '';
+    this.requiredVendorID = null;
+    this.fetchRequiredItemsCount();
+    this.requiredSuggestedPartNo = [];
+    this.requiredItems = [];
+    this.dataMessageReq = Constants.FETCHING_DATA;
+    this.resetCountResult('req');
   }
 }

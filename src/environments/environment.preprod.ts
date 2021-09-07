@@ -3,7 +3,7 @@ export const environment = {
   isFeatureEnabled: true,
   isFleetEnabled: true,
   isDispatchEnabled: true,
-  isComplianceEnabled: true,
+  isComplianceEnabled: false,
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,

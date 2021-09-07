@@ -224,4 +224,16 @@ export class ListContactRenewComponent implements OnInit {
     this.contactRenewEndPoint = this.pageLength;
     this.contactRenewDraw = 0;
   }
+
+  refreshData() {
+    this.contactID = null;
+    this.firstName = '';
+    this.searchServiceTask = null;
+    this.filterStatus = null;
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.remindersData = [];
+    this.getRemindersCount();
+    this.resetCountResult();
+  }
 }

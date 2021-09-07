@@ -146,4 +146,17 @@ export class DriverPaymentsListComponent implements OnInit {
     this.fetchDriverPayments();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.payments = [];
+    this.filter = {
+        startDate: null,
+        endDate: null,
+        type: null,
+        paymentNo: null
+    }
+    this.lastItemSK = '';
+    this.fetchDriverPayments();
+  }
 }

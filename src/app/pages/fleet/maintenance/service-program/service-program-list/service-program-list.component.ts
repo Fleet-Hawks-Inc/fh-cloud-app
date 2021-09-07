@@ -39,7 +39,6 @@ export class ServiceProgramListComponent implements  OnInit {
 
   ngOnInit() {
     this.fetchProgramsCount();
-    this.initDataTable();
   }
 
   fetchProgramsCount() {
@@ -52,6 +51,8 @@ export class ServiceProgramListComponent implements  OnInit {
         if(this.programeName != '') {
           this.serviceProgramEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -106,7 +107,6 @@ export class ServiceProgramListComponent implements  OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
       this.fetchProgramsCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -118,7 +118,6 @@ export class ServiceProgramListComponent implements  OnInit {
       this.programeName = '';
       this.programs = [];
       this.fetchProgramsCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -135,7 +134,6 @@ export class ServiceProgramListComponent implements  OnInit {
         this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchProgramsCount();
-        this.initDataTable();
         this.toastr.success('Service Program Deleted Successfully!');
       });
     }
@@ -186,5 +184,14 @@ export class ServiceProgramListComponent implements  OnInit {
   setData(value) {
     this.programeName = value.trim();
     this.suggestions = [];
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.programeName = '';
+    this.programs = [];
+    this.lastEvaluatedKey = '';
+    this.fetchProgramsCount();
+    this.resetCountResult();
   }
 }
