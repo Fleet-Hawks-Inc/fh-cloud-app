@@ -549,7 +549,6 @@ export class EditProfileComponent implements OnInit {
         data.MC = null;
         data.DOT = null;
       }
-      console.log('data', data);
       // create form data instance
       const formData = new FormData();
 
