@@ -272,7 +272,7 @@
 
                                  <ng-select notFoundText="Please type to add name" [(ngModel)]="orderData.additionalContact" [addTag]="true" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
-                                    <ng-option value="{{ data.fullName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.fullName }}</ng-option>
+                                    <ng-option value="{{ data.flName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.flName }}</ng-option>
                                  </ng-select>
 
                               </div>
@@ -698,7 +698,7 @@
                                                                      <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                         >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="Pickup Number"></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                        title="Pickup Number"></i>
 
                                                                      </label>
 
@@ -717,9 +717,7 @@
                                                                <div class="row mt-3 mr-4">
                                                                   <div class="col-6">
                                                                      <div class="col-lg-12 p-0">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity</label>
                                                                      </div>
                                                                      <div class="row">
                                                                         <div class="col-lg-6">
@@ -752,9 +750,7 @@
                                                                   </div>
                                                                   <div class="col-6">
                                                                      <div class="col-lg-12 p-0">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight</label>
                                                                      </div>
                                                                      <div class="row">
 
@@ -1158,10 +1154,7 @@
                                                                         >DEL# &nbsp;<i
                                                                         class="fas fa-question-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="Delivery Number "></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-
-
-                                                                     </label>
+                                                                        title="Delivery Number "></i></label>
 
                                                                      <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{i}}{{y}}{{z}}"
 
@@ -1187,9 +1180,7 @@
                                                                <div class="row mt-3">
 
                                                                   <div class="col-6">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity</label>
                                                                         <div class="row">
                                                                            <div class="col-lg-6">
 
@@ -1235,9 +1226,7 @@
                                                                         </div>
                                                                   </div>
                                                                   <div class="col-6">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                     </label>
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight</label>
                                                                      <div class="row">
                                                                         <div class="col-lg-6">
 

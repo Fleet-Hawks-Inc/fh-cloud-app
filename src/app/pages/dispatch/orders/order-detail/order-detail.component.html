@@ -8,7 +8,7 @@
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
                         <button [disabled]="isInvoiced" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
-                            Generate Invoice</button>
+                            Invoice</button>
                         <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Order</a>
                         <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
@@ -128,7 +128,7 @@
                                         </div>
                                         <div class="row m-0">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
-                                                Additonal Contact Name:
+                                                Additional Contact Name:
                                             </div>
                                             <div class="col-lg-8 p-2 border-box">
                                                 {{ additionalContactName }}
@@ -257,8 +257,7 @@
                                                                                                 date:'yyyy/MM/dd hh:mm a' }}
                                                                                             </p>
                                                                                             <p class="mb-0 text-dark">
-                                                                                                <strong>Customer PO#</strong>
-                                                                                                <span *ngFor="let po of pick.customerPO">
+                                                                                                <strong>Customer PO#</strong> <span *ngFor="let po of pick.customerPO" class="mr-1">
                                                                                                     <span class="badge badge-dark">
                                                                                                         {{po}}
                                                                                                     </span>
@@ -294,15 +293,15 @@
                                                                                                     <tr
                                                                                                         *ngFor="let commodity of pick.commodity;let l = index">
                                                                                                         <td>{{l+1}}</td>
-                                                                                                        <td class="text-capitalize">{{commodity.name ? commodity.name : '-'}}
+                                                                                                        <td class="text-capitalize">{{commodity.name ? commodity.name : 'NA'}}
                                                                                                         </td>
-                                                                                                        <td>{{commodity.pu ? commodity.pu : '-'}}
+                                                                                                        <td>{{commodity.pu ? commodity.pu : 'NA'}}
                                                                                                         </td>
-                                                                                                        <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 0}}
-                                                                                                            {{commodity.quantityUnit}}
+                                                                                                        <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 'NA'}}
+                                                                                                            {{commodity.quantity ? commodity.quantityUnit : ''}}
                                                                                                         </td>
-                                                                                                        <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 0}}
-                                                                                                            {{commodity.weightUnit}}
+                                                                                                        <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 'NA'}}
+                                                                                                            {{commodity.weight ? commodity.weightUnit : ''}}
                                                                                                         </td>
                                                                                                     </tr>
 
@@ -415,13 +414,13 @@
                                                                                                 <tr
                                                                                                     *ngFor="let commodity of drop.commodity;let m = index">
                                                                                                     <td>{{m+1}}</td>
-                                                                                                    <td  class="text-capitalize">{{commodity.name ? commodity.name : '-'}}</td>
-                                                                                                    <td>{{commodity.del ? commodity.del : '-'}}</td>
-                                                                                                    <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 0}}
-                                                                                                        {{commodity.quantityUnit}}
+                                                                                                    <td  class="text-capitalize">{{commodity.name ? commodity.name : 'NA'}}</td>
+                                                                                                    <td>{{commodity.del ? commodity.del : 'NA'}}</td>
+                                                                                                    <td  class="text-capitalize">{{commodity.quantity ? commodity.quantity : 'NA'}}
+                                                                                                        {{commodity.quantity ? commodity.quantityUnit : ''}}
                                                                                                     </td>
-                                                                                                    <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 0}}
-                                                                                                        {{commodity.weightUnit}}
+                                                                                                    <td  class="text-capitalize">{{commodity.weight ? commodity.weight : 'NA'}}
+                                                                                                        {{commodity.weight ? commodity.weightUnit : ''}}
                                                                                                     </td>
                                                                                                 </tr>
 
@@ -989,9 +988,9 @@
                                                                                             <tbody>
                                                                                                 <tr class="item" *ngFor="let commodity of pick.commodity;">
                                                                                                     <td colspan="2">{{commodity.name}}</td>
-                                                                                                    <td>{{commodity.pu}}</td>
-                                                                                                    <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                                                                    <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                                                                    <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
+                                                                                                    <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                                    <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                                                                 </tr>
 
@@ -1041,9 +1040,9 @@
                                                                                     <tbody>
                                                                                         <tr class="item" *ngFor="let commodity of drop.commodity;">
                                                                                             <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.del}}</td>
-                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                                                            <td>{{commodity.del ? commodity.del : 'NA'}}</td>
+                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                                                         </tr>
 
@@ -1374,9 +1373,9 @@
                                                                                     <tbody>
                                                                                         <tr class="item" *ngFor="let commodity of pick.commodity;">
                                                                                             <td colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.pu}}</td>
-                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                                                            <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
+                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                                                         </tr>
 
@@ -1433,9 +1432,9 @@
                                                                                     <tbody>
                                                                                         <tr class="item" *ngFor="let commodity of drop.commodity;">
                                                                                             <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.del}}</td>
-                                                                                            <td>{{commodity.quantity}} {{commodity.quantityUnit}}</td>
-                                                                                            <td>{{commodity.weight}} {{commodity.weightUnit}}</td>
+                                                                                            <td>{{commodity.del ? commodity.del : "NA"}}</td>
+                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
 
                                                                                         </tr>
 
