@@ -416,4 +416,29 @@ export class OrdersListComponent implements OnInit {
       }
     }
   }
+
+  refreshData() {
+      this.orderFiltr = {
+        searchValue: '',
+        startDate: '',
+        endDate: '',
+        category: null,
+        start: '',
+        end: ''
+      };
+      $("#categorySelect").text('Search by category');
+      this.records = false;
+      this.orders = [];
+      this.lastEvaluatedKey = '';
+      this.confirmOrders = [];
+      this.dispatchOrders = [];
+      this.deliveredOrders = [];
+      this.cancelledOrders = [];
+      this.invoicedOrders = [];
+      this.partiallyOrders = [];
+      this.tonuOrders = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      // this.fetchAllTypeOrderCount();
+      this.fetchOrdersCount();
+  }
 }

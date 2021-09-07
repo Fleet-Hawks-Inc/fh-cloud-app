@@ -456,4 +456,32 @@ export class InvoiceListComponent implements OnInit {
 
   }
 
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      invNo: null
+    };
+    this.lastItemSK = '';
+    this.lastItemOrderSK = '';
+    this.total = 0;
+    this.openInvoices = [];
+    this.openTotal = 0;
+    this.paidInvoices = [];
+    this.paidTotal = 0;
+    this.emailedInvoices = [];
+    this.emailedTotal = 0;
+    this.partiallyPaidInvoices = [];
+    this.partiallyPaidTotal = 0;
+    this.voidedInvoices = [];
+    this.voidedTotal = 0;
+    this.invoices = [];
+    this.orderInvoices = [];
+    this.fetchedManualInvoices = [];
+    this.fetchedOrderInvoices = [];
+    this.fetchInvoices();
+    this.getInvoices();
+  }
+
 }

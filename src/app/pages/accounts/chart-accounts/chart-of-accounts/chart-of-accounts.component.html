@@ -29,6 +29,9 @@
 						<button type="button" class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset</button>
 					</div>
 					<div class="col-md-6 col-lg-6 text-right pr-1">
+						<a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+							<i class="fas fa-sync"></i>
+						</a>
           				  <button type="button" class="btn btn-default btn-sm mr-1"  *ngIf="!deactivatePredefined" (click)="preAccounts()" [disabled]="addPredefined">Add Predefined</button>
 						<button (click)="showAcModal()" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Account</button>
 					</div>

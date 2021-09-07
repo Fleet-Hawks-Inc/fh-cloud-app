@@ -158,4 +158,17 @@ export class IncomeListComponent implements OnInit {
     this.fetchAccounts();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      amount: '',
+      startDate: null,
+      endDate: null,
+      categoryID: null,
+    }
+    this.lastItemSK = '';
+    this.incomeAccounts = [];
+    this.fetchAccounts();
+  }
 }

@@ -32,13 +32,18 @@ export class ReceiptsListComponent implements OnInit {
   }
 
   fetchReceipts(refresh?: boolean) {
-    console.log('hello fetch receipts');
+    let searchParam = null;
     if (refresh === true) {
       this.lastItemSK = '';
       this.receipts = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`receipts/paging?recNo=${this.filter.recNo}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
+      if (this.filter.recNo !== null && this.filter.recNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.recNo}"`);
+     } else {
+       searchParam = null;
+     }
+      this.accountService.getData(`receipts/paging?recNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -118,6 +123,18 @@ export class ReceiptsListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      recNo: null
+    };
+    this.receipts = [];
+    this.lastItemSK = '';
+    this.fetchReceipts();
+  }
+
+  refreshData() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,
