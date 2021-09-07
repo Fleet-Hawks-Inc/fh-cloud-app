@@ -70,7 +70,7 @@ const routes: Routes = [
 ];
 @NgModule({
   declarations: [
-    // AddDriverComponent,
+    AddDriverComponent,
     DriverListComponent,
     DriverDetailComponent,
   ],

@@ -430,4 +430,16 @@ export class AssetListComponent implements OnInit {
     this.assetEndPoint = this.pageLength;
     this.assetDraw = 0;
   }
+
+  refreshData() {
+    this.assetID = '';
+    this.assetIdentification = '';
+    this.assetType = null;
+    this.suggestedAssets = [];
+    this.allData = [];
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchAssetsCount();
+    this.resetCountResult();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { HereMapService } from '../../../../services';
 import { ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
@@ -8,16 +8,23 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import Constants from '../../constants';
+import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { map } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { passwordStrength } from 'check-password-strength';
+declare var $: any;
 @Component({
   selector: 'app-driver-detail',
   templateUrl: './driver-detail.component.html',
   styleUrls: ['./driver-detail.component.css']
 })
 export class DriverDetailComponent implements OnInit {
+  @ViewChild('driverF') driverF: NgForm;
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   platform: any;
-  profile: string = '';
+  profile = '';
   driverName: string;
   CDL: string;
   phone: string;
@@ -104,7 +111,6 @@ export class DriverDetailComponent implements OnInit {
   hosCycle: any;
   timezone: any;
   optzone: any;
-  cycleObjects: any = {};
   yardsObjects: any = {};
   statesObject: any = {};
   countriesObject: any = {};
@@ -124,7 +130,23 @@ export class DriverDetailComponent implements OnInit {
   corporationType: any;
   vendor: any;
   corporation: any;
-
+  fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
+  passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  };
+  submitDisabled = false;
+  driverPwdData = {password : '' , confirmPassword: ''};
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  Success = '';
   constructor(
     private hereMap: HereMapService,
     private apiService: ApiService,
@@ -132,6 +154,7 @@ export class DriverDetailComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
+    private toastr: ToastrService,
   ) {
     // this.getCarrierID();
   }
@@ -141,7 +164,7 @@ export class DriverDetailComponent implements OnInit {
     // this.hereMap.mapInit();
     this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
-    this.fetchCyclesbyIDs();
+
     this.fetchGroupsbyIDs();
     this.fetchAllContacts();
     this.fetchDocuments();
@@ -165,35 +188,145 @@ export class DriverDetailComponent implements OnInit {
       this.driverList = result;
     });
   }
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
+  }
+    // Show password
+    toggleFieldTextType() {
+      this.fieldTextType = !this.fieldTextType;
+    }
+    togglecpwdfieldTextType() {
+      this.cpwdfieldTextType = !this.cpwdfieldTextType;
+    }
+    validatePassword(password) {
+      let passwordVerify = passwordStrength(password)
+      if (passwordVerify.contains.includes('lowercase')) {
+        this.passwordValidation.lowerCase = true;
+      } else{
+        this.passwordValidation.lowerCase = false;
+      }
+
+      if (passwordVerify.contains.includes('uppercase')) {
+        this.passwordValidation.upperCase = true;
+      } else{
+        this.passwordValidation.upperCase = false;
+      }
+      if (passwordVerify.contains.includes('symbol')) {
+        this.passwordValidation.specialCharacters = true;
+      } else{
+        this.passwordValidation.specialCharacters = false;
+      }
+      if (passwordVerify.contains.includes('number')) {
+        this.passwordValidation.number = true;
+      } else{
+        this.passwordValidation.number = false;
+      }
+      if (passwordVerify.length >= 8) {
+        this.passwordValidation.length = true
+      } else{
+        this.passwordValidation.length = false;
+      }
+      if(password.includes('.')|| password.includes('-')){
+        this.passwordValidation.specialCharacters = true;
+      }
+    }
+    onChangePassword() {
+        this.submitDisabled = true;
+        this.hideErrors();
+        const data = {
+          userName: this.userName,
+          password: this.driverPwdData.password
+        };
+        this.apiService.postData('drivers/password', data).subscribe({
+          complete: () => { },
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  this.submitDisabled = false;
+
+                },
+                error: () => {
+                  this.submitDisabled = false;
+                },
+                next: () => { },
+              });
+          },
+          next: (res) => {
+            this.response = res;
+            this.hasSuccess = true;
+            this.submitDisabled = false;
+            this.toastr.success('Password updated successfully');
+            $('#driverPasswordModal').modal('hide');
+            this.driverPwdData = {
+            password: '',
+            confirmPassword: '',
+          };
+          },
+        });
+    }
+    pwdModalClose(){
+      $('#driverPasswordModal').modal('hide');
+      this.driverPwdData = {
+        password: '',
+        confirmPassword: '',
+      };
+    }
+    throwErrors() {
+      from(Object.keys(this.errors))
+        .subscribe((v) => {
+          $('[name="' + v + '"]')
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
+        });
+      // this.vehicleForm.showErrors(this.errors);
+    }
+
+    hideErrors() {
+      from(Object.keys(this.errors))
+        .subscribe((v) => {
+          $('[name="' + v + '"]')
+            .removeClass('error')
+            .next()
+            .remove('label')
+        });
+      this.errors = {};
+    }
   fetchHomeTerminal(homeTerminal) {
     if (homeTerminal !== undefined) {
       if (homeTerminal.manual) {
         let combineAddress: any;
-        if (homeTerminal.address != '') {
+        if (homeTerminal.address !== '') {
           combineAddress = `${homeTerminal.address}`;
         }
-        if (homeTerminal.cityName != '') {
+        if (homeTerminal.cityName !== '') {
           combineAddress += `,` + `${homeTerminal.cityName}`;
         }
-        if (homeTerminal.stateCode != '') {
+        if (homeTerminal.stateCode !== '') {
           combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal.stateCode, homeTerminal.countryCode);
         }
-        if (homeTerminal.countryCode != '') {
+        if (homeTerminal.countryCode !== '') {
           combineAddress += `,` + CountryStateCity.GetSpecificCountryNameByCode(homeTerminal.countryCode);
         }
-        if (homeTerminal.zipCode != '') {
+        if (homeTerminal.zipCode !== '') {
           combineAddress += ` - ${homeTerminal.zipCode}`;
         }
         this.homeTerminal = combineAddress;
-      }
-      else {
+      } else {
         this.homeTerminal = homeTerminal.userLocation;
       }
     }
   }
-  /**
-  * fetch Asset data
-  */
   fetchDriver() {
     this.spinner.show(); // loader init
     this.apiService
@@ -207,7 +340,7 @@ export class DriverDetailComponent implements OnInit {
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
             this.fetchCompleteAdd(this.driverData.address);
           }
-          this.cycle = this.driverData.hosDetails.hosCycle;
+          this.cycle = this.driverData.hosDetails.hosCycleName;
           this.email = this.driverData.email;
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
@@ -303,7 +436,7 @@ export class DriverDetailComponent implements OnInit {
           this.hosPcAllowed = this.driverData.hosDetails.pcAllowed;
           this.hosYmAllowed = this.driverData.hosDetails.ymAllowed;
           this.hosType = this.driverData.hosDetails.type;
-          this.hosCycle = this.driverData.hosDetails.hosCycle;
+          this.hosCycle = this.driverData.hosDetails.hosCycleName;
           this.timezone = this.driverData.hosDetails.timezone;
           this.optzone = this.driverData.hosDetails.optZone;
           this.emerName = this.driverData.emergencyDetails.name;
@@ -342,14 +475,6 @@ export class DriverDetailComponent implements OnInit {
     })
   }
 
-
-  fetchCyclesbyIDs() {
-    this.apiService.getData('cycles/get/list')
-      .subscribe((result: any) => {
-        this.cycleObjects = result;
-      });
-  }
-
   fetchGroupsbyIDs() {
     this.apiService.getData('groups/get/list')
       .subscribe((result: any) => {
@@ -373,7 +498,7 @@ export class DriverDetailComponent implements OnInit {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+    if (ext === 'doc' || ext === 'docx' || ext === 'xlsx') {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);

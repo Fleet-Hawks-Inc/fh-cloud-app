@@ -568,7 +568,12 @@ export class CalendarViewComponent implements OnInit {
         }
       })
     }
+  }
 
-    
+  refreshData() {
+    this.events = [];
+    this.tempTrips = [];
+    this.fetchAllTrips();
+    this.fetchTrips();
   }
 }

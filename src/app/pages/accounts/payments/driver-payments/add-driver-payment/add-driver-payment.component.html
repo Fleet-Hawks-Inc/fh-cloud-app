@@ -336,7 +336,7 @@
                                                     <div class="col-lg-5">
                                                         <label class="control-label font-weight-bold">Select
                                                             Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                        <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Income Account" #accountID="ngModel" required [disabled]="editDisabled">
+                                                        <ng-select [(ngModel)]="paymentData.accountID" name="accountID" placeholder="Select Account" #accountID="ngModel" required [disabled]="editDisabled">
                                                             <ng-option value="{{ data.actID }}" *ngFor="let data of accounts | async">{{
                                                                 data.actNo }} - {{ data.actName | titlecase}}</ng-option>
                                                         </ng-select>
@@ -535,7 +535,7 @@
 
                                             <div class="form-group col-lg-6">
                                                 <label class="control-label font-weight-bold">Provincial Claim Code</label>
-                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" >
+                                                <ng-select [(ngModel)]="paymentData.taxdata.provincialCode" name="provincialCode" placeholder="Select Provincial Claim Code" disabled>
                                                     <ng-option value="claim_code_0">No Claim Amount(Claim Code 0)</ng-option>
                                                     <ng-container *ngFor="let data of provincalClaimCodes">
                                                         <ng-option value="{{ data.value }}" *ngIf="data.value != 'claim_code_e' && data.value != 'claim_code_x'">{{ data.from | number : '1.2-2' }} - {{ data.to | number : '1.2-2' }} ({{ data.name }})</ng-option>

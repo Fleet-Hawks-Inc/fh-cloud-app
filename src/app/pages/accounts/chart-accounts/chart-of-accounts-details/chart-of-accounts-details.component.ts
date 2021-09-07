@@ -19,6 +19,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     actDesc: '',
     opnBal: 0,
     opnBalCurrency: '',
+    opnBalType: 'debit',
     actDash: false,
     actDate: '',
     closingAmt: 0,
@@ -33,7 +34,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     startDate: null,
     endDate: null,
   };
-  merged = null;
+  merged = {};
   constructor(private accountService: AccountService,
               private toaster: ToastrService,
               private route: ActivatedRoute,
@@ -61,7 +62,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   fetchAccount() {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
-      console.log('this.account', this.account);
       for (const element of this.account.transactionLog) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
@@ -107,6 +107,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
           actDesc: '',
           opnBal: 0,
           opnBalCurrency: '',
+          opnBalType: 'debit',
           actDash: false,
           actDate: '',
           closingAmt: 0,
@@ -127,7 +128,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.fetchAccount();
   }
   fetchDetails() {
-
     this.accountService.getData(`chartAc/search/detail-page?actID=${this.actID}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}`)
       .subscribe((result: any) => {
         this.account = result[0];

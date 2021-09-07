@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import {environment} from '../../../../../environments/environment';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import Constants from 'src/app/pages/manage/constants';
 declare var $: any;
 
 @Component({
@@ -30,7 +31,8 @@ export class AssetDetailComponent implements OnInit {
   public assetData: any;
   public deviceData;
   carrierID;
-
+  noRecordMsg: string = Constants.NO_RECORDS_FOUND;
+  
   assetIdentification: string;
   VIN: string;
   assetType: string;
@@ -52,6 +54,7 @@ export class AssetDetailComponent implements OnInit {
   GVWR_Unit: string;
   ownerShip: string;
   remarks: string;
+  rentCompany: string;
   startDate: string;
   currentStatus: string;
   annualSafetyDate: string;
@@ -67,6 +70,42 @@ export class AssetDetailComponent implements OnInit {
   devices: any;
   allDevices = [];
 
+  pDocs = [];
+  lDocs = [];
+
+  purchase = {
+    purchaseVendorID: '',
+    warrantyExpirationDate: '',
+    purchasePrice: '',
+    purchasePriceCurrency: '',
+    warrantyExpirationMeter: '',
+    purchaseDate: '',
+    purchaseComments: '',
+    purchaseOdometer: '',
+    gstInc: false,
+  };
+  loan = {
+    loanVendorID: '',
+    amountOfLoan: '',
+    amountOfLoanCurrency: '',
+    aspiration: '',
+    annualPercentageRate: '',
+    downPayment: '',
+    downPaymentCurrency: '',
+    dateOfLoan: '',
+    monthlyPayment: '',
+    monthlyPaymentCurrency: '',
+    firstPaymentDate: '',
+    numberOfPayments: '',
+    loadEndDate: '',
+    accountNumber: '',
+    generateExpenses: '',
+    notes: '',
+    loanDueDate: '',
+    lReminder: false,
+    gstInc: false,
+  };
+
   ACEID: string;
   ACIID: string;
   errors = {};
@@ -74,6 +113,7 @@ export class AssetDetailComponent implements OnInit {
   groupsObjects: any = {};
   contactsObjects: any = {};
   uploadedDocs = [];
+  existingDocs = [];
   uploadedPhotos = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
 
@@ -218,6 +258,7 @@ export class AssetDetailComponent implements OnInit {
           this.GVWR = result.assetDetails.GVWR;
           this.GVWR_Unit = result.assetDetails.GVWR_Unit;
           this.ownerShip = result.assetDetails.ownerShip;
+          this.rentCompany = result.assetDetails.rentCompany;
           this.remarks = result.assetDetails.remarks;
           this.dateOfIssue = result.insuranceDetails.dateOfIssue;
           this.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
@@ -226,6 +267,39 @@ export class AssetDetailComponent implements OnInit {
           this.reminderBefore = result.insuranceDetails.reminderBefore;
           this.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
           this.vendor = result.insuranceDetails.vendor;
+          console.log('result', result);
+          this.purchase = {
+            purchaseVendorID: result.purchase.purchaseVendorID,
+            warrantyExpirationDate: result.purchase.warrantyExpirationDate,
+            purchasePrice: result.purchase.purchasePrice,
+            purchasePriceCurrency: result.purchase.purchasePriceCurrency,
+            warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
+            purchaseDate: result.purchase.purchaseDate,
+            purchaseComments: result.purchase.purchaseComments,
+            purchaseOdometer: result.purchase.purchaseOdometer,
+            gstInc: result.purchase.gstInc
+          };
+          this.loan = {
+            loanVendorID: result.loan.loanVendorID,
+            amountOfLoan: result.loan.amountOfLoan,
+            amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
+            aspiration: result.loan.aspiration,
+            annualPercentageRate: result.loan.annualPercentageRate,
+            downPayment: result.loan.downPayment,
+            downPaymentCurrency: result.loan.downPaymentCurrency,
+            monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
+            dateOfLoan: result.loan.dateOfLoan,
+            monthlyPayment: result.loan.monthlyPayment,
+            firstPaymentDate: result.loan.firstPaymentDate,
+            numberOfPayments: result.loan.numberOfPayments,
+            loadEndDate: result.loan.loadEndDate,
+            accountNumber: result.loan.accountNumber,
+            generateExpenses: result.loan.generateExpenses,
+            loanDueDate: result.loan.loanDueDate,
+            lReminder: result.loan.lReminder,
+            gstInc: result.loan.gstInc,
+            notes: result.loan.notes,
+          };
 
           this.ACEID = result.crossBorderDetails.ACE_ID;
           this.ACIID = result.crossBorderDetails.ACI_ID;
@@ -235,6 +309,34 @@ export class AssetDetailComponent implements OnInit {
               path: `${this.Asseturl}/${result.carrierID}/${x}`,
               name: x,
             }));
+          } 
+          if (
+            result.purchaseDocs != undefined &&
+            result.purchaseDocs.length > 0
+          ) {
+            this.pDocs = [];
+            result.purchaseDocs.map((x) => {
+              let obj = {
+                name: x,
+                path: `${this.Asseturl}/${result.carrierID}/${x}`
+              }
+              this.pDocs.push(obj);
+            });
+          }
+  
+          
+          if (
+            result.loanDocs != undefined &&
+            result.loanDocs.length > 0
+          ) {
+            this.lDocs = [];
+            result.loanDocs.map((x) => {
+              let obj = {
+                name: x,
+                path: `${this.Asseturl}/${result.carrierID}/${x}`
+              }
+              this.lDocs.push(obj);
+            });
           }
 
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
@@ -346,44 +448,80 @@ export class AssetDetailComponent implements OnInit {
   }
 
 // delete uploaded images and documents
-delete(type: string, name: string, index: any) {
+// delete(type: string, name: string, index: any) {
 
-  delete this.assetDataDetail.carrierID;
-  delete this.assetDataDetail.timeModified;
-  delete this.assetDataDetail.isDelActiveSK;
-  delete this.assetDataDetail.assetSK;
-  delete this.assetDataDetail.carrierID;
-  delete this.assetDataDetail.timeModified;
-  if (type === 'doc') {
-    this.assetsDocs.splice(index, 1);
-    this.assetDataDetail.uploadedDocs.splice(index, 1);
-    this.deleteUploadedFile(type, name);
-    try {
-      const formData = new FormData();
-      formData.append('data', JSON.stringify(this.assetDataDetail));
-      this.apiService.putData('assets', formData, true).subscribe({
-        complete: () => { this.fetchAsset(); }
-      });
-    } catch (error) {
-      console.error(error);
+//   delete this.assetDataDetail.carrierID;
+//   delete this.assetDataDetail.timeModified;
+//   delete this.assetDataDetail.isDelActiveSK;
+//   delete this.assetDataDetail.assetSK;
+//   delete this.assetDataDetail.carrierID;
+//   delete this.assetDataDetail.timeModified;
+//   if (type === 'doc') {
+//     this.assetsDocs.splice(index, 1);
+//     this.assetDataDetail.uploadedDocs.splice(index, 1);
+//     this.deleteUploadedFile(type, name);
+//     try {
+//       const formData = new FormData();
+//       formData.append('data', JSON.stringify(this.assetDataDetail));
+//       this.apiService.putData('assets', formData, true).subscribe({
+//         complete: () => { this.fetchAsset(); }
+//       });
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   } else {
+//     this.assetsImages.splice(index, 1);
+//     this.assetDataDetail.uploadedPhotos.splice(index, 1);
+//     this.deleteUploadedFile(type, name);
+//     try {
+//       const formData = new FormData();
+//       formData.append('data', JSON.stringify(this.assetDataDetail));
+//       this.apiService.putData('assets', formData, true).subscribe({
+//         complete: () => { this.fetchAsset(); }
+//       });
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   }
+// }
+deleteDocument(type: string, name: string) { // delete from aws
+  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+    if(type == 'doc') {
+      this.assetsDocs = [];
+      this.uploadedDocs = result.Attributes.uploadedDocs;
+      this.existingDocs = result.Attributes.uploadedDocs;
+      result.Attributes.uploadedDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
+        }
+        this.assetsDocs.push(obj);
+      })
+    } else if(type == 'loan') {
+      this.lDocs = [];
+      console.log('loan')
+    this.uploadedDocs = result.Attributes.loanDocs;
+    this.existingDocs = result.Attributes.loanDocs;
+    result.Attributes.loanDocs.map((x) => {
+      let obj = {
+        name: x,
+        path: `${this.Asseturl}/${result.carrierID}/${x}`
+      }
+      this.lDocs.push(obj);
+    })
+    } else {
+      this.pDocs = [];
+    this.uploadedDocs = result.Attributes.purchaseDocs;
+    this.existingDocs = result.Attributes.purchaseDocs;
+    result.Attributes.purchaseDocs.map((x) => {
+      let obj = {
+        name: x,
+        path: `${this.Asseturl}/${result.carrierID}/${x}`
+      }
+      this.pDocs.push(obj);
+    })
     }
-  } else {
-    this.assetsImages.splice(index, 1);
-    this.assetDataDetail.uploadedPhotos.splice(index, 1);
-    this.deleteUploadedFile(type, name);
-    try {
-      const formData = new FormData();
-      formData.append('data', JSON.stringify(this.assetDataDetail));
-      this.apiService.putData('assets', formData, true).subscribe({
-        complete: () => { this.fetchAsset(); }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-}
-deleteUploadedFile(type: string, name: string) { // delete from aws
-  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+   });
 }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);

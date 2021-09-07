@@ -35,6 +35,10 @@
                                     <a class="dropdown-item text-1" href="javascript:;">Export</a>
                                 </div>
                             </div>
+                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                                <i class="fas fa-sync"></i>
+                            </a>
+                            
                             <a  routerLink="/fleet/maintenance/service-program/add" class="btn btn-success btn-sm" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Service Program</a>
 

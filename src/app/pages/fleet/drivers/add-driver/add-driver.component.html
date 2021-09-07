@@ -14,7 +14,7 @@
         </div>
       </header>
 
-      <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
+      <form id="driverF" class="form-horizontal form-bordered text-capitalize" name="driverF"  [mustMatch]="['password', 'confirmPassword']"
         (ngSubmit)="driverID ? driverF.form.valid && onUpdateDriver() : driverF.form.valid && onAddDriver()" novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
@@ -373,13 +373,14 @@
                             </div>
                           </div>
                           <div class="col-lg-5">
-                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != ''"
+                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != '' && !showUploadedPicModal"
                                 data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
-                                <div *ngIf="!driverID" class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add Photo
-                                  <input [disabled]="driverID" class="hidden_input1 w-100" (change)="selectPhoto($event,nullVar)" type="file">
-                               </div>
-                               <div *ngIf="driverID" class="btn btn-sm btn-success pull-right"><i class="fas fa-plus"></i> {{imageTitle}} Photo
-                                <input [disabled]="!driverID" class="hidden_input" (change)="selectPhoto($event,driverData.driverImage)" type="file">
+
+                                <button type="button" data-toggle="modal" *ngIf="showUploadedPicModal"
+                                data-target="#driverPicUploadedModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
+
+                               <div  class="btn btn-sm btn-success pull-right" style="position: relative;"><i class="fas fa-plus"></i> {{imageTitle}} Photo
+                                <input  class="hidden_input" style="position: absolute; top: 0px; left: 0px; width: 100px;" (change)="selectPhoto($event,driverData.driverImage, imageTitle)" type="file">
                              </div>
                           </div>
                         </div>
@@ -646,7 +647,7 @@
                       <div class="map-search__results bg-white">
                         <ul class="p-0 m-0 text-left">
                           <li *ngFor="let item of searchResults;">
-                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address.label}}</a>
+                            <a href="javascript:;" (click)="userAddress(i, item)">{{item.address}}</a>
                           </li>
                         </ul>
                       </div>
@@ -715,10 +716,11 @@
                               placeholder="eg. Rocky View County, AB, Canada">
                           </div>
                         </div>
-                        <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+
                       </div>
                     </div>
                   </div>
+                  <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
                 </div>
               </div>
             </div>
@@ -1096,7 +1098,7 @@
                         </label>
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
-                          name="licenceDetails.medicalCardRenewal" type="text" data-plugin-datepicker=""
+                          name="licenceDetails.medicalCardRenewal" type="text"
                           class="form-control" placeholder="yyyy/mm/dd">
                       </div>
                       <div class="col-lg-5">
@@ -1607,11 +1609,14 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Cycle <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycle" name="hosDetails.hosCycle"
-                          (change)="onChangeHideErrors('hosDetails.hosCycle')" class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
+                        <ng-select [(ngModel)]="driverData.hosDetails.hosCycleName" name="hosDetails.hosCycleName"
+                          (change)="onChangeHideErrors('hosDetails.hosCycleName')" class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
                           placeholder="Select the cycle for the driver" #cycle1="ngModel" [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
-                          <ng-option class="text-capitalize" *ngFor="let cycle of cycles" value="{{cycle.cycleID}}">
-                            {{cycle.cycleName}}</ng-option>
+                          <ng-option value="USA 60 hour / 7 day">USA 60 hour / 7 day</ng-option>
+                          <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
+                          <ng-option value="Canada South 70 hour / 7 day">Canada South 70 hour / 7 day</ng-option>
+                          <ng-option value="Canada South 120 hour / 14 day">Canada South 120 hour / 14 day</ng-option>
+
                         </ng-select>
                         <div *ngIf="cycle1.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="cycle1.errors.required">
@@ -1823,6 +1828,34 @@
             <div class="col-lg-12 text-right">
               <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
               title="Delete profile picture" (click)="delete('profile',driverData.driverImage, nullVar,nullVar)"></i>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="driverPicUploadedModal" tabindex="-1" role="dialog"
+  aria-labelledby="driverPicUploadedModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Profile Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <img [src]="uploadedPic" class="img-fluid rounded" height="200px" width="100%">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 text-right">
+              <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
+              title="Delete profile picture" (click)="delete('uploaded',driverData.driverImage, nullVar,nullVar)"></i>
             </div>
           </div>
       </div>

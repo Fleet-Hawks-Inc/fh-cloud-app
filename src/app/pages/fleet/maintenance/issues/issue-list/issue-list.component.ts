@@ -57,7 +57,6 @@ export class IssueListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAssetList();
     this.fetchUsersList();
-    this.initDataTable();
     this.fetchAllAssets();
     this.fetchAllVehicles();
     $(document).ready(() => {
@@ -116,6 +115,8 @@ export class IssueListComponent implements OnInit {
         if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
           this.issuesEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -130,7 +131,6 @@ export class IssueListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchIssuesCount();
         this.issues = [];
-        this.initDataTable();
         this.toastr.success('Issue Deleted Successfully!');
       });
     }
@@ -188,7 +188,6 @@ export class IssueListComponent implements OnInit {
       this.fetchIssuesCount();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
-      this.initDataTable();
     } else {
       return false;
     }
@@ -205,7 +204,6 @@ export class IssueListComponent implements OnInit {
       this.fetchIssuesCount();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -250,5 +248,19 @@ export class IssueListComponent implements OnInit {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.allAssets = result.Items;
     });
+  }
+
+  refreshData() {
+    this.unitID = null;
+    this.unitName = '';
+    this.issueName = '';
+    this.issueStatus = null;
+    this.assetUnitID = null;
+    this.suggestedIssues = [];
+    this.lastEvaluatedKey = '';
+    this.fetchIssuesCount();
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.issues = [];
+    this.resetCountResult();
   }
 }

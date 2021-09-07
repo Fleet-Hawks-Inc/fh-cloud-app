@@ -5,7 +5,7 @@
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2 pr-0">
                         <div class="input-group input-group-md mb-3">
-                            <input type="text" class="form-control" placeholder="Search by amount" name="amount" [(ngModel)]="filter.amount">
+                            <input type="text" class="form-control" placeholder="Search by advance payment#" name="paymentNo" [(ngModel)]="filter.paymentNo">
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 pr-0">
@@ -18,7 +18,7 @@
                             <input [(ngModel)]="filter.startDate" name="startDate"
                                 type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
                                 ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                                autocomplete="off" [minDate]="dateMinLimit"
+                                autocomplete="off" [minDate]="dateMinLimit" readonly
                                 [maxDate]="futureDatesLimit">
                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                 to
@@ -26,7 +26,7 @@
                             <input [(ngModel)]="filter.endDate" name="endDate"
                                 type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
                                 ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                                autocomplete="off" [minDate]="dateMinLimit"
+                                autocomplete="off" [minDate]="dateMinLimit" readonly
                                 [maxDate]="futureDatesLimit">
                         </div>
                     </div>
@@ -37,8 +37,8 @@
                             <ng-option value="carrier">Carrier</ng-option>
                             <ng-option value="owner_operator">Owner Operator</ng-option>
                             <ng-option value="employee">Employee</ng-option>
-                            <ng-option value="vendor">Vendor</ng-option>
-                            <ng-option value="customer">Customer</ng-option>
+                            <!-- <ng-option value="vendor">Vendor</ng-option>
+                            <ng-option value="customer">Customer</ng-option> -->
                         </ng-select>
                     </div>
 
@@ -47,6 +47,9 @@
                         <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
                     </div>
                     <div class="col-md-3 col-lg-3 text-right pr-1">
+                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+							<i class="fas fa-sync"></i>
+						</a>
                         <a routerLink="/accounts/payments/advance-payments/add" class="btn btn-success btn-sm ml-2"
                             style="color:white;"><i class="fas fa-plus"></i> Add Advance Payment </a>
 
@@ -66,77 +69,77 @@
                          <div class="form-group row">
                             <div class="col-lg-12">
                                 <table class="table table-bordered table-striped mb-0 simple-table">
-                                    <thead>
-                                        <tr class="bgcol2">
-                                            <th class="text-2">Advance Payment#</th>
-                                            <th class="text-2">Date</th>
-                                            <th class="text-2">Payment Mode</th>
-                                            <th class="text-2">Paid To</th>
-                                            <th class="text-2">Advance Amount</th>
-                                            <th class="text-2">Deducted Amount</th>
-                                            <th class="text-2">Balance</th>
-                                            <th class="text-2">Status</th>
-                                            <th class="text-2">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngIf="payments.length === 0" class="text-center">
-                                            <td colspan="9">{{ dataMessage }} </td>
-                                        </tr>
-                                        <tr *ngFor="let data of payments; let i=index;">
-  
-                                            <td class="font-weight-bold">{{ data.paymentNo }} </td>
-                                            <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">
-                                              {{ data.txnDate | date:"yyyy/MM/dd" }}
+                                  <thead>
+                                      <tr class="bgcol2">
+                                          <th class="text-2">Advance Payment#</th>
+                                          <th class="text-2">Date</th>
+                                          <th class="text-2">Payment Mode</th>
+                                          <th class="text-2">Paid To</th>
+                                          <th class="text-2">Advance Amount</th>
+                                          <th class="text-2">Deducted Amount</th>
+                                          <th class="text-2">Balance</th>
+                                          <th class="text-2">Status</th>
+                                          <th class="text-2">Action</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr *ngIf="payments.length === 0" class="text-center">
+                                          <td colspan="9">{{ dataMessage }} </td>
+                                      </tr>
+                                      <tr *ngFor="let data of payments; let i=index;">
+
+                                          <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }} </td>
+                                          <td class="cursorpoint" [routerLink]="data.url">
+                                            {{ data.txnDate | date:"yyyy/MM/dd" }}
+                                        </td>
+                                          <td class="cursorpoint"  [routerLink]="data.url" class="text-capitalize">{{ data.payMode }}</td>
+                                          <td class="cursorpoint"  [routerLink]="data.url"><strong class="text-capitalize">{{ data.paymentTo }}</strong>:
+                                              <span *ngIf="data.paymentTo === 'driver'">
+                                                  {{ drivers[data.entityId] | titlecase}}
+                                              </span>
+
+                                              <span *ngIf="data.paymentTo !== 'driver'">
+                                                  {{ contacts[data.entityId] | titlecase }}
+                                              </span>
+
                                           </td>
-                                            <td  routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}" class="text-capitalize">{{ data.payMode }}</td>
-                                            <td><strong class="text-capitalize">{{ data.paymentTo }}</strong>:
-                                                <span *ngIf="data.paymentTo === 'driver'">
-                                                    {{ drivers[data.entityId] | titlecase}}
-                                                </span>
-  
-                                                <span *ngIf="data.paymentTo !== 'driver'">
-                                                    {{ contacts[data.entityId] | titlecase }}
-                                                </span>
-  
-                                            </td>
-                                            <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
-                                            <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.paidAmount | number : '1.2-2' }} {{ data.currency }}</td>
-                                            <td routerLink="/accounts/payments/advance-payments/detail/{{ data.paymentID }}">{{ data.pendingPayment | number : '1.2-2' }} {{ data.currency }}</td>
-                                            <td><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown dropright">
-                                                    <button class="bg-transparent border-0" type="button"
-                                                        id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                        aria-haspopup="true" aria-expanded="false" [disabled]="data.status === 'deducted' ||  data.status === 'partially deducted'">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu"
-                                                        attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                        <a class="dropdown-item"
-                                                            routerLink="/accounts/payments/advance-payments/edit/{{ data.paymentID }}">Edit</a>
-                                                        <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
-                                                            (click)="deletePayment(data.paymentID)">Void</a>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.amount | number : '1.2-2' }} {{ data.currency }}</td>
+                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.paidAmount | number : '1.2-2' }} {{ data.currency }}</td>
+                                          <td class="cursorpoint" [routerLink]="data.url">{{ data.pendingPayment | number : '1.2-2' }} {{ data.currency }}</td>
+                                          <td class="cursorpoint"  [routerLink]="data.url"><span class="badge badge-dark p-1 text-uppercase">{{ data.status }}</span>
+                                          </td>
+                                          <td>
+                                              <div class="dropdown dropright">
+                                                  <button class="bg-transparent border-0" type="button"
+                                                      id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                      aria-haspopup="true" aria-expanded="false" [disabled]="data.status === 'deducted' ||  data.status === 'partially deducted'">
+                                                      <i class="fas fa-ellipsis-v"></i>
+                                                  </button>
+                                                  <div class="dropdown-menu"
+                                                      attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                      <a class="dropdown-item"
+                                                          routerLink="/accounts/payments/advance-payments/edit/{{ data.paymentID }}">Edit</a>
+                                                      <a class="dropdown-item" href="javascript:;" *ngIf="!data.paymentLinked"
+                                                          (click)="deletePayment(data.paymentID)">Void</a>
+                                                  </div>
+                                              </div>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+                              </table>
                             </div>
-                            
+
                          </div>
                         </div>
                       </div>
                    </div>
                 </div>
-                
-        
+
+
              </section>
 
 
-         
+
         </section>
     </div>
 </section>
