@@ -133,4 +133,16 @@ export class ReceiptsListComponent implements OnInit {
     this.lastItemSK = '';
     this.fetchReceipts();
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      recNo: null
+    };
+    this.receipts = [];
+    this.lastItemSK = '';
+    this.fetchReceipts();
+  }
 }

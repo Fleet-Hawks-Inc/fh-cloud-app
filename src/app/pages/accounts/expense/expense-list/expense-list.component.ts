@@ -135,4 +135,17 @@ export class ExpenseListComponent implements OnInit {
     this.fetchExpenses();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      amount: '',
+      startDate: null,
+      endDate: null,
+      typeId: null,
+    };
+    this.lastItemSK = '';
+    this.expenses = [];
+    this.fetchExpenses();
+  }
 }

@@ -119,4 +119,16 @@ export class JournalListComponent implements OnInit {
     this.fetchJournals();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      jrNo: null,
+      startDate: null,
+      endDate: null
+    };
+    this.lastItemSK = '';
+    this.journals = [];
+    this.fetchJournals();
+  }
 }

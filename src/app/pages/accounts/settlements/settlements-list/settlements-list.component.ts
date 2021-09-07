@@ -170,4 +170,17 @@ export class SettlementsListComponent implements OnInit {
     this.fetchSettlements();
     }
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      type: null,
+      settlementNo: null,
+    };
+    this.settlements = [];
+    this.lastItemSK = '';
+    this.fetchSettlements();
+  }
 }

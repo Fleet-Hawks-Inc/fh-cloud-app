@@ -78,6 +78,11 @@
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
                             </div>
+                            
+                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                                <i class="fas fa-sync"></i>
+                            </a>
+
                             <a href="javascript:;" routerLink="/dispatch/trips/add-trip"  class="btn btn-success btn-sm" style="color:white;"><i class="fas fa-plus"></i> Add Trip</a>
                         </div>
 
@@ -215,8 +220,8 @@
                                         </table>
                                     </div>
                                     <div class="row mt-3 dtPaginate" *ngIf="records && activeTab == 'all'">
-                                        <div class="col-6">
-                                            Showing {{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries
+                                        <div class="col-6 ">
+                                            Showing <span class="text-lowercase">{{ tripStartPoint }} to {{ tripEndPoint }} of {{ totalRecords }} enteries</span>
                                         </div>
                                         <div class="col-6 text-right">
                                             <button type="button" class="btn btn-default mr-2" (click)="prevResults('all')" [disabled]="tripPrev">Prev</button>
