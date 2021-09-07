@@ -296,6 +296,8 @@ pageTitle = 'Add Other Expense';
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
     this.expenseData.stlStatus = this.expenseData.tripID;
+    console.log('this.expenseData', this.expenseData);
+    return;
     // create form data instance
     const formData = new FormData();
 
@@ -372,9 +374,9 @@ pageTitle = 'Add Other Expense';
         this.response = res;
         $('#addExpenseTypeModal').modal('hide');
         this.categoryData = {
-          catName:'',
-          catDesc:''
-        }
+          catName: '',
+          catDesc: ''
+        };
         this.toaster.success('Expense type added successfully.');
       },
     });
@@ -418,6 +420,8 @@ pageTitle = 'Add Other Expense';
       this.expenseData.finalTotal += +this.expenseData.taxes.pstAmount;
       this.expenseData.taxAmount += this.expenseData.taxes.pstAmount;
     }
+    this.expenseData.taxAmount = +this.expenseData.taxAmount.toFixed(2);
+    this.expenseData.finalTotal = this.expenseData.finalTotal.toFixed(2);
   }
 
   changeDepAcc(val) {
