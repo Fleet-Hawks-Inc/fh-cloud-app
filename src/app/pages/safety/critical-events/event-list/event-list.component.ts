@@ -199,4 +199,14 @@ export class EventListComponent implements OnInit {
     this.fetchEvents();
   }
 
+  refreshData() {
+    this.lastItemSK = '';
+    this.events = [];
+    this.fetchEvents();
+    this.filter = {
+      vehicleID: null,
+      date: ''
+    };
+  }
+
 }

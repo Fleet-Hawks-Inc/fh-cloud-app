@@ -23,7 +23,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   drivers = [];
   contacts = [];
   lastItemSK = '';
-
+  loaded = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -71,7 +71,8 @@ export class AdvancePaymentsListComponent implements OnInit {
             v.paidAmount = v.amount - v.pendingPayment;
             v.paidAmount = v.paidAmount.toFixed(2);
             this.payments.push(v);
-          })
+          });
+          this.loaded = true;
         }
       });
     }
@@ -144,6 +145,21 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
+    this.fetchPayments();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+        startDate: null,
+        endDate: null,
+        type: null,
+        paymentNo: null
+    };
+    this.payments = [];
+    this.lastItemSK = '';
     this.fetchPayments();
   }
 }

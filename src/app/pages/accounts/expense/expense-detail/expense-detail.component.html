@@ -3,7 +3,9 @@
         <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> Expense Details</div>
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Expense Details</h4>
+                    </div>
                     <div class="col-md-8 col-lg-8 text-right pr-1">
                       <a routerLink="/accounts/expense/edit/{{ expenseID }}"  class="btn btn-default btn-sm mr-3"><i
                         class="fas fa-pencil-alt"></i> Edit Expense</a>
@@ -23,10 +25,10 @@
                                     class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">
                                     Expenses Details</label> -->
                             </div>
-                            <div class="col-lg-12 mb-4">
+                            <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="text-center cmaindiv p-4"> <i
+                                        <div class="text-center cmaindiv detailbox p-4"> <i
                                                 class="far fa-calendar-alt text-7"></i>
                                             <br>
                                             <p class="mb-0 text-5 font-weight-bold text-dark">
@@ -36,14 +38,14 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="text-center p-4 cmaindiv"> <i class="fa fa-user text-7"></i>
+                                        <div class="text-center p-4 cmaindiv detailbox"> <i class="fa fa-user text-7"></i>
                                             <br>
                                             <p class="mb-0 text-5 font-weight-bold text-dark">{{ categories[expenseData.categoryID] }}</p>
                                             <p class="mb-0">EXPENSE TYPE</p>
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="text-center p-4 cmaindiv"> <i
+                                        <div class="text-center p-4 cmaindiv detailbox"> <i
                                                 class="far fa-calendar-check text-7"></i>
                                             <br>
                                             <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.amount | number : '1.2-2' }} {{ expenseData.currency }}</p>
@@ -51,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="text-center p-4 cmaindiv"> <i
+                                        <div class="text-center p-4 cmaindiv detailbox"> <i
                                                 class="far fa-calendar-check text-7"></i>
                                             <br>
                                             <p class="mb-0 text-5 font-weight-bold text-dark">{{ expenseData.finalTotal | number : '1.2-2' }} {{ expenseData.currency }}</p>
@@ -59,7 +61,7 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <div class="text-center cmaindiv p-4"> <i class="fas fa-map-marker-alt text-7"></i>
+                                        <div class="text-center cmaindiv detailbox p-4"> <i class="fas fa-map-marker-alt text-7"></i>
                                             <br>
                                             <p class="mb-0 text-5 font-weight-bold text-dark">{{ (expenseData.vendorID) ? vendors[expenseData.vendorID] : '-' }}</p>
                                             <p class="mb-0">VENDOR</p>

@@ -556,4 +556,21 @@ export class CompanyDocumentsComponent implements OnInit {
       this.documentData.documentNumber = result.toString();
     });
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.documents = [];
+    this.suggestions = [];
+    this.filterValues = {
+      docID: '',
+      searchValue: '',
+      startDate: '',
+      endDate: '',
+      start: <any>'',
+      end: <any>''
+    };
+    this.lastEvaluatedKey = '';
+    this.resetCountResult();
+    this.fetchDocumentsCount();
+  }
 }

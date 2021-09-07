@@ -18,8 +18,8 @@
                      </div>
                      <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                         <ul>
-                           <li 
-                              *ngFor="let suggestedDriver of suggestedDrivers" 
+                           <li
+                              *ngFor="let suggestedDriver of suggestedDrivers"
                               class="cursorpoint"
                               (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
                               class="text-capitalize"
@@ -29,18 +29,15 @@
                   </div>
                   <div class="col-md-2 col-lg-2 pr-1">
                      <ng-select
-                        [(ngModel)]="currentStatus"
-                        name="currentStatus"
-                        placeholder="Select type"
-                        class="form-control form-control-sm populate">
-
-                        <ng-option value="All">All</ng-option>
-                        <ng-option value="On Duty">On Duty</ng-option>
-                        <ng-option value="Off Duty">Off Duty</ng-option>
-                        <ng-option value="Sleeper">Sleeper</ng-option>
-                        <ng-option value="Driving">Driving</ng-option>
-
-                  </ng-select>
+                         [(ngModel)]="driverType"
+                         name="driverType"
+                         placeholder="Driver type"
+                         class="form-control form-control-sm populate">
+ 
+                         <ng-option value="contractor">Contractor</ng-option>
+                         <ng-option value="employee">Employee</ng-option>
+ 
+                     </ng-select>
                   </div>
 
                   <div class="col-md-2 col-lg-2">
@@ -49,7 +46,7 @@
                   </div>
 
                   <div class="col-md-6 text-right pr-1 page-buttons">
-                     <div class="btn-group flex-wrap" style="min-width:190px;">
+                     <div class="btn-group flex-wrap" style="min-width:190px;" *ngIf="!environment">
                         <button type="button" class="mr-3 driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
                         <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
                            <a class="dropdown-item text-1" href="javascript:;">
@@ -138,7 +135,9 @@
                            <a class="dropdown-item text-1" href="javascript:;" (click)="export()">Export</a>
                         </div>
                      </div>
-
+                     <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                        <i class="fas fa-sync"></i>
+                     </a>
                      <a routerLink="/fleet/drivers/add" class="btn btn-success btn-sm " style="color:white;"><i class="fas fa-plus"></i> Add Driver</a>
                   </div>
                </div>
@@ -156,14 +155,14 @@
                               <thead>
                                  <tr>
                                     <th id="" class="col1 minWidth200">Name</th>
-                                    <th id="" class="col2 minWidth120">Duty Status</th>
+                                    <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
                                     <th id="" class="minWidth120">Email</th>
                                     <th id="" class="minWidth120">Phone</th>
                                     <th id="" class="minWidth120">Driver Type</th>
                                     <th id="" class="minWidth120">Start Date</th>
                                     <th id="" class="minWidth120">CDL#</th>
                                     <th id="" class="minWidth120">Licence Expiry</th>
-                                    <th id="" class="minWidth120">Licence Issued Province/ State</th>
+                                    <th id="" class="minWidth120">Licence Province</th>
                                     <th id="" class="col12 extra">Current Vehicle</th>
                                     <th id="" class="col13 extra">Assets</th>
                                     <th id="" class="col16 extra">Document</th>
@@ -187,7 +186,7 @@
                                     <span class="font-weight-bold line-height-lg text-capitalize">
                                        {{driver.firstName}} {{driver.lastName}}</span>
                                  </td>
-                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td>
+                                 <!-- <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td> -->
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.email }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.phone }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.driverType }}</td>
@@ -259,14 +258,14 @@
                            </div>
                        </div>
                      </div>
-                     
+
                   </div>
                 </div>
               </div>
             </div>
-            
-          
-            
+
+
+
          </section>
 
 
@@ -575,7 +574,7 @@
                </div>
             </div>
          </div>
-        
+
       </section>
    </div>
 </section>

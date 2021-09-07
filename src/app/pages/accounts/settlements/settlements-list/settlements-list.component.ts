@@ -26,7 +26,7 @@ export class SettlementsListComponent implements OnInit {
     settlementNo: "",
   };
   lastItemSK = '';
-
+  loaded = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -101,6 +101,7 @@ export class SettlementsListComponent implements OnInit {
             v.paidAmount = v.paidAmount.toFixed(2);
             this.settlements.push(v);
           });
+          this.loaded = true;
         }
       });
     }
@@ -165,6 +166,21 @@ export class SettlementsListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
+    this.fetchSettlements();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      type: null,
+      settlementNo: null,
+    };
+    this.settlements = [];
+    this.lastItemSK = '';
     this.fetchSettlements();
   }
 }

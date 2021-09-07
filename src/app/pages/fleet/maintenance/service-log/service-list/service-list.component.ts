@@ -281,4 +281,16 @@ export class ServiceListComponent implements OnInit {
     this.serviceLogEndPoint = this.pageLength;
     this.serviceLogDraw = 0;
   }
+
+  refreshData() {
+    this.vehicleID = null;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.vehicleIdentification = '';
+    this.assetID = null;
+    this.taskID = null;
+    this.logs = [];
+    this.lastEvaluatedKey = '';
+    this.fetchLogsCount();
+    this.resetCountResult();
+  }
 }

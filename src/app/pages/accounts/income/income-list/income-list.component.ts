@@ -27,7 +27,7 @@ export class IncomeListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
-
+  loaded = false;
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -70,10 +70,11 @@ export class IncomeListComponent implements OnInit {
               v.paymentMode = 'Cheque';
             }
             this.incomeAccounts.push(v);
-          })
+          });
+          this.loaded = true;
         }
 
-      })
+      });
     }
   }
 
@@ -153,6 +154,21 @@ export class IncomeListComponent implements OnInit {
   }
 
   onScroll() {
+    if (this.loaded) {
+    this.fetchAccounts();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      amount: '',
+      startDate: null,
+      endDate: null,
+      categoryID: null,
+    }
+    this.lastItemSK = '';
+    this.incomeAccounts = [];
     this.fetchAccounts();
   }
 }
