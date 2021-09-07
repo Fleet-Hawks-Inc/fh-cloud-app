@@ -69,7 +69,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   ],
   imports: [
     CommonModule,
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
