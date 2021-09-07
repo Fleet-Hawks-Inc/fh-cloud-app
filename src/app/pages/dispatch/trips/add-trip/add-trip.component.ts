@@ -14,6 +14,7 @@ import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { v4 as uuidv4 } from 'uuid';
 import { split } from 'lodash';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 
 declare var $: any;
@@ -38,7 +39,7 @@ export class AddTripComponent implements OnInit {
     public searchTerm = new Subject<string>();
     carriers = [];
     routes = [];
-    constructor(private apiService: ApiService, private route: ActivatedRoute,
+    constructor(private apiService: ApiService,  private modalService: NgbModal, private route: ActivatedRoute,
         private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService,
         private location: Location, private hereMap: HereMapService) { }
     public orderMiles={
@@ -208,6 +209,11 @@ export class AddTripComponent implements OnInit {
     locDisabled = false;
     dummySplitArr = [];
     disableSplit = false;
+
+    assetData = {
+        assetIdentification: '',
+        isTemp: true,
+    }
 
     async ngOnInit() {
 
@@ -947,6 +953,16 @@ export class AddTripComponent implements OnInit {
             this.textFieldValues.carrierID = event.target.value;
             this.textFieldValues.carrierName = event.target.options[event.target.options.selectedIndex].text;
         }
+    }
+
+    openManualAsset(modal: any){
+        let ngbModalOptions: NgbModalOptions = {
+            backdrop : 'static',
+            keyboard : false,
+            windowClass: 'asset-manual__main',
+            backdropClass: 'light-blue-backdrop'
+          };
+        this.modalService.open(modal, ngbModalOptions)
     }
 
     vehicleChange($event, type) {
@@ -2255,6 +2271,36 @@ export class AddTripComponent implements OnInit {
             this.splitArr.splice(index, 1);
             this.disableSplit = false;
         }
+    }
+
+
+    addManualAsset() {
+        this.submitDisabled = true;
+        this.apiService.postData('assets/addManualAsset', this.assetData).subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              this.submitDisabled = false;
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                     this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                  },
+                  error: () => {
+                   },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              this.submitDisabled = false;
+              this.response = res;
+              this.toastr.success('Asset added successfully.');
+            },
+          });
     }
 }
 

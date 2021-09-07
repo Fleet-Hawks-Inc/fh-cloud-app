@@ -935,7 +935,12 @@
                     <thead>
                         <tr>
                             <th width="25%">Vehicle</th>
-                            <th width="25%">Asset</th>
+                            <th width="25%">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Asset</span>
+                                    <span><button (click)="openManualAsset(manualAssetModel)" class="btn btn-success btn-sm">Manual Asset</button></span>
+                                </div>
+                            </th>
                             <th width="25%">Driver</th>
                             <th>Co-Driver</th>
                         </tr>
@@ -1237,3 +1242,39 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #manualAssetModel let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Add Manual Asset</h5>
+      <button type="button"
+        (click)="modal.dismiss()"
+        class="close" data-dismiss="modal" aria-label="Close">
+        <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
+      </button>
+    </div>
+    <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #ManualAssetF="ngForm"
+        (ngSubmit)="ManualAssetF.form.valid && addManualAsset()" novalidate ngNativeValidate>
+        <div class="modal-body text-dark">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="manual-asset__main">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" [(ngModel)]="assetData.assetIdentification" name="assetIdentification" maxlength="20"
+                        class="form-control" placeholder="eg. Box asset" #assetName="ngModel" required
+                        [ngClass]="{ 'error' : ManualAssetF.submitted && assetName.invalid }">
+                        <div *ngIf="assetName.invalid && ManualAssetF.submitted" class="text-danger">
+                            <div *ngIf="assetName.errors.required">
+                            Asset name/number is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default mr-2">Close</button>
+            <button type="submit" [disabled]="submitDisabled" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+  </ng-template>

@@ -1074,7 +1074,6 @@ export class NewAddressBookComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastKey = '';
         this.emptyTabs();
-        this.fetchUnits();
         this.showMainModal();
         
         if(this.unitData.eTypes.includes('owner_operator')) {
