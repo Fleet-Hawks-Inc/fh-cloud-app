@@ -18,8 +18,8 @@
                      </div>
                      <div *ngIf="suggestedDrivers?.length > 0" class="result-suggestions">
                         <ul>
-                           <li 
-                              *ngFor="let suggestedDriver of suggestedDrivers" 
+                           <li
+                              *ngFor="let suggestedDriver of suggestedDrivers"
                               class="cursorpoint"
                               (click)="setDriver(suggestedDriver.driverID, suggestedDriver.firstName, suggestedDriver.lastName)"
                               class="text-capitalize"
@@ -163,7 +163,7 @@
                                     <th id="" class="minWidth120">Start Date</th>
                                     <th id="" class="minWidth120">CDL#</th>
                                     <th id="" class="minWidth120">Licence Expiry</th>
-                                    <th id="" class="minWidth120">Licence Issued Province/ State</th>
+                                    <th id="" class="minWidth120">Licence Province</th>
                                     <th id="" class="col12 extra">Current Vehicle</th>
                                     <th id="" class="col13 extra">Assets</th>
                                     <th id="" class="col16 extra">Document</th>
@@ -259,14 +259,14 @@
                            </div>
                        </div>
                      </div>
-                     
+
                   </div>
                 </div>
               </div>
             </div>
-            
-          
-            
+
+
+
          </section>
 
 
@@ -575,7 +575,7 @@
                </div>
             </div>
          </div>
-        
+
       </section>
    </div>
 </section>
