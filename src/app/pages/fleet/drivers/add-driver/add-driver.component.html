@@ -14,7 +14,7 @@
         </div>
       </header>
 
-      <form id="driverForm" class="form-horizontal form-bordered text-capitalize" name="driverForm" #driverForm="ngForm" [mustMatch]="['password', 'confirmPassword']"
+      <form id="driverF" class="form-horizontal form-bordered text-capitalize" name="driverF"  [mustMatch]="['password', 'confirmPassword']"
         (ngSubmit)="driverID ? driverF.form.valid && onUpdateDriver() : driverF.form.valid && onAddDriver()" novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
