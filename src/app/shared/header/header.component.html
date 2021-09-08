@@ -1,6 +1,6 @@
 <header class="header">
     <div class="logo-container">
-        <a href="#" class="logo">
+        <a routerLink="/Map-Dashboard" class="logo">
             <img [src]="logoSrc" width="" height="" alt="FH Admin Logo" class="img-fluid" />
         </a>
         <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html"
@@ -61,17 +61,13 @@
     </div>
 
     <div class="header-right">
-        <!-- <a href="javascript:;" data-toggle="modal" data-target="#allContactsModal"
-            class="modal-with-form address-book-icon" title="Address Book">
-            <i class="far fa-address-book text-dark" style="font-size:20px;"></i>
-        </a> -->
         <a
   href="javascript:;"
   (click)="openModal('list')"
   class="modal-with-form address-book-icon"
   title="Address Book"
 >
-  <i class="far fa-address-book text-dark" style="font-size: 16px"></i>
+  <i class="far fa-address-book text-dark" style="font-size: 18px"></i>
 </a>
 
         <div id="userbox" class="userbox mt-0">
