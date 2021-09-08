@@ -43,7 +43,7 @@ export class AddAssetsComponent implements OnInit {
     assetDetails: {
       year: null,
       manufacturer: null,
-      model: null,
+      model:null,
       length: 0,
       lengthUnit: null,
       height: '',
@@ -207,12 +207,13 @@ export class AddAssetsComponent implements OnInit {
     });
   }
   fetchModels() {
+
     this.models = [];
     let manufacturer: any = '';
     
     if (this.assetsData.assetDetails.manufacturer !== null) {
       manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
-    
+
     }
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
@@ -224,6 +225,7 @@ export class AddAssetsComponent implements OnInit {
 
           });
           this.models = output;
+          
         }
       });
 
