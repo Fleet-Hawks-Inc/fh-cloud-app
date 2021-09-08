@@ -696,7 +696,7 @@
                       </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <!-- <div class="row mb-3">
                         <div class="col-lg-12">
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row">
@@ -762,7 +762,7 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group row text-right mt-3">
                       <div class="col-lg-12 pr-3">
@@ -920,14 +920,14 @@
 <!-- order modal end -->
 
 <!-- new asset modal -->
-<div id="assetModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+<ng-template #assignAssetModel let-modal>
+    <div class="modal-dialog modal-lg m-0">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Assign</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body text-capitalize">
                <div class="trip-search__main">
@@ -935,7 +935,12 @@
                     <thead>
                         <tr>
                             <th width="25%">Vehicle</th>
-                            <th width="25%">Asset</th>
+                            <th width="25%">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Asset</span>
+                                    <span><button (click)="openManualAsset(manualAssetModel)" class="btn btn-success btn-sm">Manual Asset</button></span>
+                                </div>
+                            </th>
                             <th width="25%">Driver</th>
                             <th>Co-Driver</th>
                         </tr>
@@ -970,108 +975,116 @@
                     </tbody>
                 </table>
                </div>
-                <div class="card-body text-dark table-scroll-y table-scrollplan p-0 scrolling-div" data-select2-id="279">
+                <div class="card-body text-dark table-scroll-y p-0 scrolling-div" data-select2-id="279">
                     <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
                         
                         <tbody>
                             
                             <tr>
                                 <td width="25%">
-                                    <table class="w-100">
-                                        <!-- <thead>head</thead> -->
-                                        <tbody>
-                                            <tr *ngFor="let vehicle of vehicles">
-                                                <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}"
-                                                    (click)="vehicleChange(vehicle,'click')">
-                                                    <div class="">
-                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><i
-                                                                class="fas fa-truck-moving" data-toggle="tooltip"
-                                                                data-placement="bottom" title=""
-                                                                data-original-title="Vehicle"></i> {{
-                                                            vehicle.vehicleIdentification }}</p>
-                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"
-                                                                data-toggle="tooltip" data-placement="bottom" title=""
-                                                                data-original-title="Loation"></i> Kingston, Toronto, ON
-                                                            K7L 5K4
-                                                        </span>
-                                                        <span class="driverstatus">Current Status:
-                                                            <span class="badge badge-pills badge-dark p-1"
-                                                                data-toggle="tooltip" data-placement="bottom" title=""
-                                                                data-original-title="Current Status">ON
-                                                                ROAD<span></span>
+                                   <div class="assign--trips__scroll trips-vehicle__listing">
+                                        <table class="w-100">
+                                            <!-- <thead>head</thead> -->
+                                            <tbody>
+                                                <tr *ngFor="let vehicle of vehicles">
+                                                    <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}"
+                                                        (click)="vehicleChange(vehicle,'click')">
+                                                        <div class="">
+                                                            <p class="mb-1 text-4 font-weight-bold text-dark"><i
+                                                                    class="fas fa-truck-moving" data-toggle="tooltip"
+                                                                    data-placement="bottom" title=""
+                                                                    data-original-title="Vehicle"></i> {{
+                                                                vehicle.vehicleIdentification }}</p>
+                                                            <span class="driverstatus"><i class="fas fa-map-marker-alt"
+                                                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                                                    data-original-title="Loation"></i> Kingston, Toronto, ON
+                                                                K7L 5K4
                                                             </span>
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                            <span class="driverstatus">Current Status:
+                                                                <span class="badge badge-pills badge-dark p-1"
+                                                                    data-toggle="tooltip" data-placement="bottom" title=""
+                                                                    data-original-title="Current Status">ON
+                                                                    ROAD<span></span>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                   </div>
                                 </td>
                                 <td width="25%">
-                                    <table class="w-100">
-                                        <tbody>
-                                            <tr *ngFor="let asset of assets">
-                                                <td class="assetClass" id="asset_{{ asset.assetID }}"
-                                                    (click)="assetsChange(asset,'click')">
-                                                    <div class="">
-                                                        <p class="mb-1 text-4 font-weight-bold text-dark"> {{
-                                                            asset.assetIdentification }}</p>
-                                                        <span class="driverstatus"><i class="fas fa-map-marker-alt"></i>
-                                                            Kingston,
-                                                            Toronto, ON K7L 5K4</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <div class="assign--trips__scroll trips-assets__listing">
+                                        <table class="w-100">
+                                            <tbody>
+                                                <tr *ngFor="let asset of assets">
+                                                    <td class="assetClass" id="asset_{{ asset.assetID }}"
+                                                        (click)="assetsChange(asset,'click')">
+                                                        <div class="">
+                                                            <p class="mb-1 text-4 font-weight-bold text-dark"> {{
+                                                                asset.assetIdentification }}</p>
+                                                            <span class="driverstatus"><i class="fas fa-map-marker-alt"></i>
+                                                                Kingston,
+                                                                Toronto, ON K7L 5K4</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </td>
                                 <td width="25%">
-                                    <table class="w-100">
-                                        <tbody>
-                                            <tr *ngFor="let driver of drivers">
-                                                <td class="driverClass" id="drivr_{{driver.driverID}}"
-                                                    (click)="driverChange(driver,'driver','click')">
-                                                    <div class="">
-                                                        <p class="mb-1 text-4 font-weight-bold text-dark"><span
-                                                                class="offduty pull-right">OFF</span> {{ driver.fullName
-                                                            }}</p>
-                                                        <span class="driverstatus"> Crescent Road Vancouver, BC V6T
-                                                            1Z2</span>
+                                    <div class="assign--trips__scroll trips-drivers__listing">
+                                        <table class="w-100">
+                                            <tbody>
+                                                <tr *ngFor="let driver of drivers">
+                                                    <td class="driverClass" id="drivr_{{driver.driverID}}"
+                                                        (click)="driverChange(driver,'driver','click')">
+                                                        <div class="">
+                                                            <p class="mb-1 text-4 font-weight-bold text-dark"><span
+                                                                    class="offduty pull-right">OFF</span> {{ driver.fullName
+                                                                }}</p>
+                                                            <span class="driverstatus"> Crescent Road Vancouver, BC V6T
+                                                                1Z2</span>
+                                                            <span class="driverstatus"><i class="fas fa-clock"></i> <span
+                                                                    class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
+                                                                mins</span>
+                                                            <span class="driverstatus"><i class="fa fa-clock"></i> <span
+                                                                    class="font-weight-bold">HOS:</span> 7 hrs 30
+                                                                mins</span>
+                                                            <span class="driverstatus"><i class="fas fa-user"></i> <span
+                                                                    class="font-weight-bold">On Duty Hours:</span> 2 hr 30
+                                                                mins</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </td>
+                                <td width="25%">
+                                    <div class="assign--trips__scroll trips-codrivers__listing">
+                                        <table class="w-100">
+                                            <tbody>
+                                                <tr *ngFor="let driver of codrivers">
+                                                    <td class="codriverClass" id="codrivr_{{driver.driverID}}"
+                                                        (click)="driverChange(driver,'codriver','click')">
+                                                        <span class="font-weight-bold">{{ driver.fullName }}</span> <span class="offduty pull-right">OFF</span>
                                                         <span class="driverstatus"><i class="fas fa-clock"></i> <span
                                                                 class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
                                                             mins</span>
                                                         <span class="driverstatus"><i class="fa fa-clock"></i> <span
-                                                                class="font-weight-bold">HOS:</span> 7 hrs 30
-                                                            mins</span>
+                                                                class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
                                                         <span class="driverstatus"><i class="fas fa-user"></i> <span
                                                                 class="font-weight-bold">On Duty Hours:</span> 2 hr 30
                                                             mins</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </td>
-                                <td width="25%">
-                                    <table class="w-100">
-                                        <tbody>
-                                            <tr *ngFor="let driver of codrivers">
-                                                <td class="codriverClass" id="codrivr_{{driver.driverID}}"
-                                                    (click)="driverChange(driver,'codriver','click')">
-                                                    <span class="font-weight-bold">{{ driver.fullName }}</span> <span class="offduty pull-right">OFF</span>
-                                                    <span class="driverstatus"><i class="fas fa-clock"></i> <span
-                                                            class="font-weight-bold">Cycle Reset In:</span> 2 hrs 30
-                                                        mins</span>
-                                                    <span class="driverstatus"><i class="fa fa-clock"></i> <span
-                                                            class="font-weight-bold">HOS:</span> 7 hrs 30 mins</span>
-                                                    <span class="driverstatus"><i class="fas fa-user"></i> <span
-                                                            class="font-weight-bold">On Duty Hours:</span> 2 hr 30
-                                                        mins</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -1082,7 +1095,7 @@
                 <div class="row">
                     <div class="col-md-12 text-right">
 
-                        <button class="btn btn-default modal-dismiss mr-2" data-dismiss="modal"> Cancel</button>
+                        <button (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss mr-2" data-dismiss="modal"> Cancel</button>
                         <a href="javascript:;" class="btn btn-success mr-2" (click)="saveAssetModalData('')"> Assign</a>
                         <a href="javascript:;" *ngIf="tempTextFieldValues.type == 'edit'" class="btn btn-success mr-2"
                             (click)="showConfirmationPopup()"> Assign for all</a>
@@ -1093,7 +1106,7 @@
         </div>
 
     </div>
-</div>
+</ng-template>
 
 <!-- confirmation modal -->
 <div class="modal fade" id="assignConfirmationModal" role="dialog" tabindex="-1">
@@ -1229,3 +1242,39 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #manualAssetModel let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Add Manual Asset</h5>
+      <button type="button"
+        (click)="modal.dismiss()"
+        class="close" data-dismiss="modal" aria-label="Close">
+        <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
+      </button>
+    </div>
+    <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #ManualAssetF="ngForm"
+        (ngSubmit)="ManualAssetF.form.valid && addManualAsset()" novalidate ngNativeValidate>
+        <div class="modal-body text-dark">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="manual-asset__main">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <input type="text" [(ngModel)]="assetData.assetIdentification" name="assetIdentification" maxlength="20"
+                        class="form-control" placeholder="eg. Box asset" #assetName="ngModel" required
+                        [ngClass]="{ 'error' : ManualAssetF.submitted && assetName.invalid }">
+                        <div *ngIf="assetName.invalid && ManualAssetF.submitted" class="text-danger">
+                            <div *ngIf="assetName.errors.required">
+                            Asset name/number is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default mr-2">Close</button>
+            <button type="submit" [disabled]="submitDisabled" class="btn btn-success">Submit</button>
+        </div>
+    </form>
+  </ng-template>
