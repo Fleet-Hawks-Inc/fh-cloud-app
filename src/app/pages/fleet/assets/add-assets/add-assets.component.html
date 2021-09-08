@@ -36,7 +36,7 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification" maxlength="20"
                       class="form-control" placeholder="eg. Box asset" #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
-                      [ngClass]="{ 'error' : assetF.submitted && aName.invalid }">
+                      [ngClass]="{ 'error' : assetF.submitted && aName.invalid }" [disabled]="editDisabled">
                       <div *ngIf="aName.invalid && assetF.submitted" class="text-danger">
                         <div *ngIf="aName.errors.required">
                           Asset name/number is required.
