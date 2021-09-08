@@ -16,12 +16,12 @@ export class JournalListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   filter = {
-    amount: '',
+    jrNo: null,
     startDate: null,
     endDate: null,
   }
   lastItemSK = '';
-
+  loaded = false;
   constructor(private toaster: ToastrService, private accountService: AccountService) { }
 
   ngOnInit() {
@@ -29,12 +29,18 @@ export class JournalListComponent implements OnInit {
   }
 
   async fetchJournals(refresh?: boolean) {
+    let searchParam = null;
     if (refresh === true) {
       this.lastItemSK = '';
       this.journals = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`journal/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
+      if (this.filter.jrNo !== null && this.filter.jrNo !== '') {
+        searchParam = encodeURIComponent(`"${this.filter.jrNo}"`);
+     } else {
+       searchParam = null;
+     }
+      this.accountService.getData(`journal/paging?jrNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async(result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -49,6 +55,7 @@ export class JournalListComponent implements OnInit {
             result.map((v) => {
               this.journals.push(v);
             });
+            this.loaded = true;
           }
       });
     }
@@ -70,7 +77,7 @@ export class JournalListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.filter.amount !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if(this.filter.jrNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -98,16 +105,30 @@ export class JournalListComponent implements OnInit {
   resetFilter() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-      amount: '',
+      jrNo: null,
       startDate: null,
       endDate: null
-    }
+    };
     this.lastItemSK = '';
     this.journals = [];
     this.fetchJournals();
   }
 
   onScroll() {
+    if(this.loaded) {
+    this.fetchJournals();
+    }
+  }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      jrNo: null,
+      startDate: null,
+      endDate: null
+    };
+    this.lastItemSK = '';
+    this.journals = [];
     this.fetchJournals();
   }
 }

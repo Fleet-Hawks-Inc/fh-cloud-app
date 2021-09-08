@@ -202,4 +202,15 @@ export class RouteListComponent implements OnInit {
     this.routeEndPoint = this.pageLength;
     this.routeDraw = 0;
   }
+
+  refreshData() {
+    this.searchedRouteId = '';
+    this.searchedRouteName = '';
+    this.routes = [];
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.suggestedRoutes = [];
+    this.fetchRoutes();
+    this.resetCountResult();
+  }
 }

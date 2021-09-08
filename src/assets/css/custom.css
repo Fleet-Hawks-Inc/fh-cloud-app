@@ -2620,3 +2620,8 @@ input:checked + .sliderbtn:before {
 .trips-assign__main.modal .modal-dialog {
   max-width: 1200px;
 }
+/* 04.09.21 account classes */
+.detailbox{
+  min-height: 125px;
+
+}

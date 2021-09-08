@@ -41,6 +41,7 @@ export class DriverListComponent implements OnInit {
   driverID = '';
   driverName = '';
   dutyStatus = '';
+  driverType = null;
   suggestedDrivers = [];
   homeworld: Observable<{}>;
 
@@ -162,7 +163,7 @@ export class DriverListComponent implements OnInit {
   }
 
   fetchDriversCount() {
-    this.apiService.getData('drivers/get/count?driver=' + this.driverID + '&dutyStatus=' + this.dutyStatus).subscribe({
+    this.apiService.getData(`drivers/get/count?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}`).subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -248,7 +249,7 @@ export class DriverListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('drivers/fetch/records?driver=' + this.driverID + '&dutyStatus=' + this.dutyStatus + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`)
       .subscribe((result: any) => {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -311,7 +312,7 @@ export class DriverListComponent implements OnInit {
     }
   }
   searchFilter() {
-    if (this.driverName !== '' || this.dutyStatus !== '') {
+    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== '') {
       this.driverName = this.driverName.toLowerCase();
       if (this.driverID == '') {
         this.driverID = this.driverName;
@@ -326,11 +327,12 @@ export class DriverListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.driverName !== '' || this.dutyStatus !== '') {
+    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== '') {
       this.drivers = [];
       this.driverID = '';
       this.dutyStatus = '';
       this.driverName = '';
+      this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDriversCount();
       this.driverDraw = 0;
@@ -506,5 +508,18 @@ export class DriverListComponent implements OnInit {
     this.driverStartPoint = 1;
     this.driverEndPoint = this.pageLength;
     this.driverDraw = 0;
+  }
+
+  refreshData() {
+    this.drivers = [];
+    this.driverID = '';
+    this.dutyStatus = '';
+    this.driverName = '';
+    this.driverType = null;
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchDriversCount();
+    this.driverDraw = 0;
+    this.resetCountResult();
   }
 }

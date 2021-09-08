@@ -1,13 +1,17 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
-                <h2>Settlement</h2>
-                <div class="right-wrapper text-right">
-                    <div class="pull-right pr-2"> <a routerLink="/accounts/settlements/list"
-                            class="mb-1 mt-1 mr-1 mr-5 btn  btn-default"><i class="fas fa-list"></i> All Settlements</a>
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-md-2 col-lg-2">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Settlement</h4>
+                    </div>
+                    <div class="col-md-10 col-lg-10 pr-1 text-right">
+                        <a routerLink="/accounts/settlements/list"
+                            class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Settlements</a>
                     </div>
                 </div>
+                
             </header>
             <section class="card mt-0">
                 <div class="card-body pr-0 pt-0 pb-0">
@@ -361,45 +365,39 @@
 
                                                             <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
                                                                 <tr>
-                                                                    <td>
-                                                                        <input type="checkbox" (change)="selSubTrip(t, sp)" id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}">
+                                                                    <td colspan="2">
+                                                                        <span class="mt-1"><input type="checkbox" (change)="selSubTrip(t, sp)" id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}"></span>
                                                                         {{ trp.tripNo }} ({{sp+1}}) 
                                                                     </td>
-                                                                    <td colspan="10">
+                                                                    <td colspan="9">
                                                                         <div *ngFor="let spltLine of splt.trips">
-                                                                            <table class="table">
+                                                                            <table class="table table-bordered">
                                                                                 <tbody>
                                                                                     <tr>
-                                                                                        <td>
-                                                                                            <table class="table table-bordered">
-                                                                                                <tbody>
-                                                                                                    <tr>
-                                                                                                        <td>{{ spltLine.date | date:"yyyy/MM/dd" }}</td>
-                                                                                                        <td>
-                                                                                                            <span>
-                                                                                                                <b>{{ spltLine.type }} Location: </b>{{ spltLine.planLoc }}
-                                                                                                            </span>
-                                                                                                        </td>
-                                                                                                        <td>
+                                                                                        <td width="14%" >{{ spltLine.date | date:"yyyy/MM/dd" }}</td>
+                                                                                        <td width="42%">
+                                                                                            <span>
+                                                                                                <b>{{ spltLine.type }} Location: </b>{{ spltLine.planLoc }}
+                                                                                            </span>
+                                                                                        </td>
+                                                                                       <td>
                                                                                                             <span *ngIf="spltLine.driverID"><b>Driver: </b> {{ driversObj[spltLine.driverID] }} <br></span>
                                                                                                             <span *ngIf="spltLine.coDriverID"><b>Co-driver: </b> {{ driversObj[spltLine.coDriverID] }}</span>
                                                                                                             <span *ngIf="spltLine.carrierID"><b>Carrier: </b> {{ carriers[spltLine.carrierID] }}</span>
                                                                                                         </td>
-                                                                                                        <td>
+                                                                                        <td>
                                                                                                             <span *ngIf="spltLine.vehicleID"><b>Vehile: </b> {{ vehicles[spltLine.vehicleID] }} <br></span>
                                                                                                         </td>
-                                                                                                        <td>
-                                                                                                            <span *ngIf="spltLine.assetID.length > 0">
+                                                                                        <td>
+
+                                                                                            <span *ngIf="spltLine.assetID.length > 0">
                                                                                                                 <b>Asset(s): </b>
                                                                                                                 <span *ngFor="let ast of spltLine.assetID; let a=index">
                                                                                                                     {{ assets[ast] }}
                                                                                                                     <span *ngIf="a<spltLine.assetID.length-1">,<br></span>
                                                                                                                 </span>
                                                                                                             </span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
+
                                                                                         </td>
                                                                                     </tr>
                                                                                 </tbody>

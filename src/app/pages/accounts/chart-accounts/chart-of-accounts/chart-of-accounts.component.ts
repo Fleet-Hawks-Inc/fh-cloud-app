@@ -336,4 +336,15 @@ export class ChartOfAccountsComponent implements OnInit {
     $('#addAccountModal').modal('hide');
     this.transLog = false;
   }
+
+  refreshData() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      actType: null,
+      actName: null,
+    };
+    this.lastItemSK = '';
+    this.accounts = [];
+    this.fetchAccounts();
+  }
 }

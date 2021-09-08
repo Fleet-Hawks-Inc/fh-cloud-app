@@ -233,4 +233,16 @@ export class VehicleRenewListComponent implements OnInit {
     this.vehicleRenewDraw = 0;
   }
 
+  refreshData() {
+    this.vehicleID = null;
+      this.vehicleIdentification = '';
+      this.searchServiceTask = null;
+      this.filterStatus = null;
+      this.lastEvaluatedKey = '';
+      this.remindersData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.getRemindersCount();
+      this.resetCountResult();
+  }
+
 }

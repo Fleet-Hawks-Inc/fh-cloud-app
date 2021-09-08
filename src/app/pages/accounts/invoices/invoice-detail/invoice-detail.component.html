@@ -1,13 +1,15 @@
 <section class="body" *ngIf="showDetails">
  <div class="inner-wrapper">
   <section role="main" class="content-body pt-0 pr-0 pl-0">
-    <header class="page-header pr-5">
-      <div class="row pr-1 mr-1" style="padding-top:10px;">
-        <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> <h5 class="m-0 font-weight-bold">Invoice# - {{invoice.invNo}} <span class="badge badge-dark p-1">{{invoice.invStatus | uppercase}}</span></h5></div>
-        <div class="col-md-8 col-lg-8 text-right">
-          <a  routerLink="/accounts/invoices/edit/{{invID}}"  class="btn btn-default btn-sm mr-2"><i
+    <header class="page-header pr19 pl7">
+      <div class="row" style="padding-top:10px;">
+        <div class="col-md-4 col-lg-4">
+          <h5 class="m-0 font-weight-bold text-4 mt-1 text-dark">Invoice# - {{invoice.invNo}} <span class="badge badge-dark p-1">{{invoice.invStatus | uppercase}}</span></h5>
+        </div>
+        <div class="col-md-8 col-lg-8 text-right pr-1">
+          <a  routerLink="/accounts/invoices/edit/{{invID}}"  class="btn btn-default btn-sm mr-3"><i
             class="fas fa-pencil-alt"></i> Edit Invoice</a>
-            <button class="btn btn-sm btn-success mr-1" (click)="generatePDF()">Print Invoice</button>
+            <button class="btn btn-sm btn-success mr-3" (click)="generatePDF()">Print Invoice</button>
            <a routerLink="/accounts/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Invoices</a>
         </div>
       </div>

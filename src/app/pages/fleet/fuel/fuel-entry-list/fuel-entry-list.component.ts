@@ -206,6 +206,8 @@ export class FuelEntryListComponent implements OnInit {
         if(this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
           this.fuelEndPoint = this.totalRecords;
         }
+
+        this.initDataTable();
       },
     });
   }
@@ -248,7 +250,6 @@ export class FuelEntryListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.fuelEntriesCount();
-        this.initDataTable();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
@@ -337,7 +338,6 @@ export class FuelEntryListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.fuelEntriesCount();
-      this.initDataTable();
     } else {
       return false;
     }
@@ -354,7 +354,6 @@ export class FuelEntryListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.fuelEntriesCount();
-      this.initDataTable();
       this.resetCountResult();
     } else {
       return false;
@@ -409,5 +408,19 @@ export class FuelEntryListComponent implements OnInit {
         }
       });
     });
+  }
+
+  refreshData() {
+    this.unitID = null;
+    this.fromDate = '';
+    this.toDate = '';
+    this.assetUnitID = null;
+    this.start = '';
+    this.end = '';
+    this.lastEvaluatedKey = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fuelList = [];
+    this.fuelEntriesCount();
+    this.resetCountResult();
   }
 }

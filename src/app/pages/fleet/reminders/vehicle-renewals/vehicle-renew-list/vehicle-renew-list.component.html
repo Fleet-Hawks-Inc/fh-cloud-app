@@ -45,6 +45,11 @@
                                 <a class="dropdown-item text-1" href="">Export</a>
                             </div>
                         </div>
+
+                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                            <i class="fas fa-sync"></i>
+                        </a>
+                        
                         <a routerLink="/fleet/reminders/vehicle-renewals/add" class="btn btn-sm btn-success"><i
                                 class="fas fa-plus"></i> Add Vehicle Renewal Reminder</a>
 

@@ -245,4 +245,14 @@ export class IncidentListComponent implements OnInit {
     }
     return time.join (''); // return adjusted time or original string
   }
+
+  refreshData() {
+    this.lastItemSK = '';
+    this.events = [];
+    this.fetchEvents();
+    this.filter = {
+      date: null,
+      driverID: null,
+    };
+  }
 }
