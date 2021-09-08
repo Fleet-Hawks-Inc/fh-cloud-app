@@ -89,6 +89,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule
   ],
-  providers: [unsavedChangesGuard]
+  providers: [unsavedChangesGuard,
+    {provide: NgbDateAdapter, useClass: CustomAdapter},
+    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},]
 })
-export class InventroysModule { }
+export class InventoryModule { }

@@ -1,6 +1,7 @@
 import {  Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
+import {formatDate} from '@angular/common';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -37,7 +38,7 @@ export class AddAssetsComponent implements OnInit {
     VIN: '',
     startDate:  moment().format('YYYY-MM-DD'),
     assetType: null,
-    currentStatus: null,
+    currentStatus: 'active',
     createdDate: '',
     createdTime: '',
     assetDetails: {
@@ -126,7 +127,7 @@ export class AddAssetsComponent implements OnInit {
   models: any = [];
   groups = [];
 
-
+  isRequired: boolean = true;
 
   response: any = '';
   hasError = false;
@@ -157,6 +158,7 @@ export class AddAssetsComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  editDisabled = false;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
@@ -199,9 +201,7 @@ export class AddAssetsComponent implements OnInit {
   fetchManufacturers() {
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
-
         this.manufacturers.push(Object.keys(element)[0].toUpperCase())
-
       });
 
     });
@@ -261,14 +261,6 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-  // getManufactures(){
-  //   this.listService.fetchAssetManufacturers();
-  // }
-
-  // getModels(){
-  //   this.listService.fetchAssetModels();
-  // }
-
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
@@ -278,9 +270,24 @@ export class AddAssetsComponent implements OnInit {
   refreshVendorData() {
     this.listService.fetchVendors();
   }
-
+  refreshOpData() {
+    this.listService.fetchOwnerOperators();
+  }
   openProgram(value) {
     this.listService.separateModals(value);
+  }
+
+  changeComp(value){
+    if(value === 'interchange') {
+      this.isRequired = false;
+      this.assetsData.assetDetails.annualSafetyDate = '';
+    } else {
+      this.isRequired = true;
+      this.assetsData.VIN = '';
+      this.assetsData.assetDetails.year = null;
+      this.assetsData.assetDetails.licenceCountryCode = null;
+      this.assetsData.assetDetails.licenceStateCode = null;
+    }
   }
 
   /*
@@ -367,6 +374,13 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
+    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    let currentDate = new Date();
+    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
+    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
+    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
+    
     // create form data instance
     const formData = new FormData();
 
@@ -454,6 +468,7 @@ export class AddAssetsComponent implements OnInit {
     this.apiService
       .getData('assets/' + this.assetID)
       .subscribe((result: any) => {
+        this.editDisabled = true;
         result = result.Items[0];
         this.assetsData[`assetID`] = this.assetID;
         this.assetsData.assetIdentification = result.assetIdentification;
@@ -482,6 +497,11 @@ export class AddAssetsComponent implements OnInit {
         }
         if (result.assetDetails.ownerShip === 'rented') {
           this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
+        }
+        if (result.assetDetails.ownerShip === 'interchange') {
+          this.isRequired = false;
+        } else {
+          this.isRequired = true;
         }
         
         this.assetsData.currentStatus = result.currentStatus;
@@ -651,6 +671,12 @@ export class AddAssetsComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs
     };
+    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    let currentDate = new Date();
+    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
+    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
+    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
 
     // create form data instance
     const formData = new FormData();
@@ -801,7 +827,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   getStates(countryCode) {
-    this.assetsData.assetDetails.licenceStateCode = '';
+    this.assetsData.assetDetails.licenceStateCode = null;
     this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
 

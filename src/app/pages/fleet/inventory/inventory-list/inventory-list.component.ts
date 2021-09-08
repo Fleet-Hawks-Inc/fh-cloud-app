@@ -242,9 +242,6 @@ export class InventoryListComponent implements OnInit {
       error: () => { },
       next: (result: any) => {
         this.totalRecordsRequired = result.Count;
-        if (this.requiredItemID != null || this.requiredVendorID != null || this.requiredPartNumber != '') {
-          this.requiredInventoryEndPoint = this.totalRecords;
-        }
 
         this.initDataTableRequired();
       },
@@ -331,10 +328,6 @@ export class InventoryListComponent implements OnInit {
         this.getStartandEndVal('req');
 
         this.requiredItems = result[`Items`];
-        if (this.requiredVendorID != null || this.requiredItemID != null || this.requiredPartNumber != '') {
-          this.requiredInventoryStartPoint = 1;
-          this.requiredInventoryEndPoint = this.totalRecordsRequired;
-        }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
           const lastEvalKey = result[`LastEvaluatedKey`].warehouseSK.replace(/#/g, '--');

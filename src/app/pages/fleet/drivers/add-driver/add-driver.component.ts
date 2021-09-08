@@ -725,7 +725,6 @@ export class AddDriverComponent implements OnInit, OnDestroy, CanComponentDeacti
     if (this.abstractDocs.length > 0) {
     this.hasError = false;
     this.hasSuccess = false;
-    // this.spinner.show();
     this.hideErrors();
     this.driverData.createdDate = this.driverData.createdDate;
     this.driverData.createdTime = this.driverData.createdTime;
