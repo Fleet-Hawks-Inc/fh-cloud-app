@@ -5,19 +5,19 @@
     "volvo": ["vhd","vnl","vnm","vnr","vnx","vn","vah", "others"]
   },
   {
-    "mercedes-benz": ["others", "actros","antos","arocs","atego","axor","econic", "f-series","l-series","lp-series","m-series","l-series","n-series","sk"]
+    "mercedes-benz": ["actros","antos","arocs","atego","axor","econic", "f-series","l-series","lp-series","m-series","l-series","n-series","sk","others"]
   },
   {
-    "international": ["others","lonestar","lt-series","rh-series","prostar","transtar","9900l","cv-series","durastar","mv-series","hv-series","hx-series","workstar"]
+    "international": ["lonestar","lt-series","rh-series","prostar","transtar","9900l","cv-series","durastar","mv-series","hv-series","hx-series","workstar","others"]
   },
   {
-    "kenworth": ["others","t680","t680e","t800","w990","w900l","t180","c500"]
+    "kenworth": ["t680","t680e","t800","w990","w900l","t180","c500","others"]
   },
   {
-    "peterbilt": ["others","579","389","567","520","367","365","548","537","536","535","220","579EV","520EV","220EV"]
+    "peterbilt": ["579","389","567","520","367","365","548","537","536","535","220","579EV","520EV","220EV","others"]
   },
   {
-    "mack": ["others","anthem","pinnacle","granite","lr","terrapro","md-series"]
+    "mack": ["anthem","pinnacle","granite","lr","terrapro","md-series","others"]
   },
   {
     "others": ["others"]
