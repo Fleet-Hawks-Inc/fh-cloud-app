@@ -251,4 +251,8 @@ export class IssueListComponent implements OnInit {
       this.allAssets = result.Items;
     });
   }
+
+  cloneIssue(id: string) {
+
+  }
 }
