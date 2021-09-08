@@ -2617,3 +2617,6 @@ input:checked + .sliderbtn:before {
 .asset-manual__main.modal .modal-dialog {
   max-width: 500px;
 }
+.trips-assign__main.modal .modal-dialog {
+  max-width: 1200px;
+}

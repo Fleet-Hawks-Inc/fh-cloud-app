@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { DomSanitizer} from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+
+import { HttpClient } from '@angular/common/http';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 declare var $: any;
 
@@ -80,7 +82,7 @@ export class AddInventoryComponent implements OnInit {
   warehoseForm = '';
   hasWarehouseSuccess = false;
   warehouseSuccess = '';
-  pdfSrc: any;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   states = [];
   cities = [];
 
@@ -92,6 +94,7 @@ export class AddInventoryComponent implements OnInit {
   submitDisabled = false;
   Error = '';
   Success = '';
+  categories: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -99,6 +102,7 @@ export class AddInventoryComponent implements OnInit {
     private router: Router,
     private domSanitizer: DomSanitizer,
     private toastr: ToastrService,
+    private httpClient: HttpClient,
     private listService: ListService
   ) {
     this.itemID = this.route.snapshot.params[`itemID`];
@@ -200,6 +204,8 @@ export class AddInventoryComponent implements OnInit {
   ngOnInit() {
     this.listService.fetchVendors();
     this.fetchWarehouses();
+
+    this.fetchCategories();
 
     this.vendors = this.listService.vendorList;
   }
@@ -529,5 +535,14 @@ export class AddInventoryComponent implements OnInit {
 
   getVendors() {
     this.listService.fetchVendors();
+  }
+
+  fetchCategories() {
+    this.httpClient.get('assets/jsonFiles/inventory/category.json').subscribe((data: any) => {
+      data.forEach(element => {
+        this.categories.push(element)
+      });
+
+    });
   }
 }

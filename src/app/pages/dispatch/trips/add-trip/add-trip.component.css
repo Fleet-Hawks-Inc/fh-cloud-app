@@ -63,5 +63,6 @@ canvas {
 }
 .assign--trips__scroll {
     max-height: 650px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

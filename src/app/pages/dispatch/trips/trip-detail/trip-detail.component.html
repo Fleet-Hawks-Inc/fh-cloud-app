@@ -482,13 +482,13 @@
                                         <table class="table table-responsive-sm table-bordered table-sm mb-0">
                                             <thead>
                                                 <tr class="back-color-gray">
-                                                    <th>
+                                                    <th colspan="4">
                                                         <h3 class="my-1 text-5"><b>Planned</b></h3>
                                                     </th>
 
-                                                    <th colspan="2">
+                                                    <!-- <th colspan="2">
                                                         <h3 class="my-1 text-5"><b>Notifications</b></h3>
-                                                    </th>
+                                                    </th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -499,6 +499,23 @@
                                                         </span>
                                                     </td>
                                                     <td>
+                                                        <span class="line-height-xl"> <i class="fa fa-calendar-alt"></i>
+                                                            {{ stops }} Stop(s)
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="line-height-xl">
+                                                            <i class="fa fa-map-marker-alt"></i> Pick-up
+                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ trips[0].pickupTime }} </span>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="line-height-xl">
+                                                            <i class="fa fa-map-marker-alt"></i> Delivery
+                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ lastDelivery }} </span>
+                                                        </span>
+                                                    </td>
+                                                    <!-- <td>
                                                         <span
                                                             class="line-height-xl font-weight-semibold mb-0 mt-0 text-3 text-dark">Notify
                                                             Dispatcher
@@ -513,14 +530,10 @@
                                                         </span>
                                                         <span *ngIf="!tripData.notifications">No</span>
 
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="line-height-xl"> <i class="fa fa-calendar-alt"></i>
-                                                            {{ stops }} Stop(s)
-                                                        </span>
-                                                    </td>
+                                                <!-- <tr>
+                                                    
 
                                                     <td>
                                                         <span
@@ -537,14 +550,9 @@
                                                         </span>
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="line-height-xl">
-                                                            <i class="fa fa-map-marker-alt"></i> Pick-up
-                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ trips[0].pickupTime }} </span>
-                                                        </span>
-                                                    </td>
+                                                </tr> -->
+                                                <!-- <tr>
+                                                    
 
                                                     <td>
                                                         <span
@@ -561,14 +569,9 @@
                                                         </span>
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <span class="line-height-xl">
-                                                            <i class="fa fa-map-marker-alt"></i> Delivery
-                                                            {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span *ngIf="trips.length > 0">{{ lastDelivery }} </span>
-                                                        </span>
-                                                    </td>
+                                                </tr> -->
+                                                <!-- <tr>
+                                                    
 
                                                     <td>
                                                         <span
@@ -608,7 +611,7 @@
                                                         </span>
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
                                         </table>
                                     </div>

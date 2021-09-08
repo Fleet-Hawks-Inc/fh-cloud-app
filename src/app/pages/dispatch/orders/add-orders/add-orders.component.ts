@@ -1071,32 +1071,48 @@ export class AddOrdersComponent implements OnInit {
   addCommodity(arr: string, parentIndex: number, i: number) {
 
     if (arr === "shipper") {
-      let ttlLen = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.length -1;
-      let lastItem = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity[ttlLen];
-      if(lastItem.name != '' && lastItem.pu != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
-        this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
-          name: '',
-          quantity: '',
-          quantityUnit: '',
-          weight: '',
-          weightUnit: '',
-          pu : ''
-        });
-      }
+      this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        pu : ''
+      });
+      // let ttlLen = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.length -1;
+      // let lastItem = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity[ttlLen];
+      // if(lastItem.name != '' && lastItem.pu != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
+      //   this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
+      //     name: '',
+      //     quantity: '',
+      //     quantityUnit: '',
+      //     weight: '',
+      //     weightUnit: '',
+      //     pu : ''
+      //   });
+      // }
 
     } else {
-      let ttlLen = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.length -1;
-      let lastItem = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity[ttlLen];
-      if(lastItem.name != '' && lastItem.del != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
-        this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
-          name: '',
-          quantity: '',
-          quantityUnit: '',
-          weight: '',
-          weightUnit: '',
-          del: ''
-        });
-      }
+      this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        del: ''
+      });
+      // let ttlLen = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.length -1;
+      // let lastItem = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity[ttlLen];
+      // if(lastItem.name != '' && lastItem.del != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
+      //   this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
+      //     name: '',
+      //     quantity: '',
+      //     quantityUnit: '',
+      //     weight: '',
+      //     weightUnit: '',
+      //     del: ''
+      //   });
+      // }
 
     }
   }

@@ -124,8 +124,9 @@
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
-                                                        <a routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</a>
-                                                        <button type="button" class="dropdown-item text-1"
+                                                        <button *ngIf="issue.currentStatus != 'CLOSED'" routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</button>
+                                                        <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button>
+                                                        <button *ngIf="issue.currentStatus != 'CLOSED'" type="button" class="dropdown-item text-1"
                                                             (click)="deleteIssue(issue.issueID, issue.issueName)">
                                                             Delete
                                                         </button>
