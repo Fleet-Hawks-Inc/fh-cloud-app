@@ -31,7 +31,7 @@
                                     </label>
                                     <input type="text" class="form-control" name="vehicleIdentification"
                                        [(ngModel)]="vehicleIdentification" placeholder="eg. Semi Truck or 2344"
-                                       #vName="ngModel" required pattern="^[a-zA-Z0-9\s]+$" [ngClass]="{ 'error' : vehicleF.submitted && vName.invalid }">
+                                       #vName="ngModel" required pattern="^[a-zA-Z0-9\s]+$" [ngClass]="{ 'error' : vehicleF.submitted && vName.invalid }" [disabled]="editDisabled">
                                     <div *ngIf="vName.invalid && vehicleF.submitted" class="text-danger">
                                        <div *ngIf="vName.errors.required">
                                           Vehicle name/number is required.

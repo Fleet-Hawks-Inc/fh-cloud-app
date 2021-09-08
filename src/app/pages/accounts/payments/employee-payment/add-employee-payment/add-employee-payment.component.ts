@@ -126,6 +126,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   states= [];
   claimCodes = [];
   provincalClaimCodes = [];
+  showModal = false;
 
   constructor(private listService: ListService, private route: ActivatedRoute, private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private httpClient: HttpClient) { }
 
@@ -569,6 +570,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   showCheque() {
+    this.showModal = true;
     let obj = {
       entityId: this.paymentData.entityId,
       chequeDate: this.paymentData.payModeDate,
@@ -576,7 +578,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       type: 'employee',
       chequeNo: this.paymentData.payModeNo,
       currency: 'CAD',
-      formType: (this.paymentID) ? 'edit' : 'add'
+      formType: (this.paymentID) ? 'edit' : 'add',
+      showModal: this.showModal,
     }
     this.listService.openPaymentChequeModal(obj);
   }
