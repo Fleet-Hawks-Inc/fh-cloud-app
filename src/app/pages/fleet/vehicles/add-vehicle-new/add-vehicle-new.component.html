@@ -11,7 +11,7 @@
          </header>
 
          <form class="form-horizontal form-bordered" method="get" name="form" id="form_"
-         (ngSubmit)="vehicleID ? vehicleF.form.valid && onUpdateVehicle() || vehicleF.form.invalid && scrollError() : vehicleF.form.valid && onAddVehicle() || vehicleF.form.invalid && scrollError()" #vehicleF="ngForm" novalidate ngNativeValidate>
+         (ngSubmit)="vehicleID ? (vehicleF.form.valid ? onUpdateVehicle() : scrollError()) : (vehicleF.form.valid ? onAddVehicle() : scrollError())" #vehicleF="ngForm" novalidate ngNativeValidate>
             <section class="m-2">
                <div class="row mb-3">
                   <div class="col-12">

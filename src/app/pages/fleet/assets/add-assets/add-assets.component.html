@@ -16,7 +16,7 @@
 
       <section class="m-2">
         <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #assetF="ngForm"
-        (ngSubmit)="assetID ? assetF.form.valid && onUpdateAsset() || assetF.form.invalid && scrollError(): assetF.form.valid && onAddAsset() || assetF.form.invalid && scrollError()" novalidate #assetF="ngForm" ngNativeValidate>
+        (ngSubmit)="assetID ? (assetF.form.valid ? onUpdateAsset() : scrollError()): (assetF.form.valid ? onAddAsset() : scrollError())" novalidate #assetF="ngForm" ngNativeValidate>
 
         <div class="row mb-3">
          <div class="col-lg-12">
