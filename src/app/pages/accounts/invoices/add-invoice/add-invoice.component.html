@@ -280,7 +280,7 @@
                                 </div>
                               </td>
                               <td class="text-center">
-                               <span *ngIf="d>0"><i class="fas fa-trash" (click)="deleteDetail(dt.amount,d)"></i></span>
+                               <button type="button"  [disabled]="d===0"><i class="fas fa-trash" (click)="deleteDetail(dt.amount,d)"></i></button>
                               </td>
                             </tr>
                           </tbody>

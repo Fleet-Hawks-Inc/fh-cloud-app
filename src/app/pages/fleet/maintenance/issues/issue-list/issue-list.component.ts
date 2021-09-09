@@ -249,7 +249,7 @@ export class IssueListComponent implements OnInit {
       this.allAssets = result.Items;
     });
   }
-
+  
   refreshData() {
     this.unitID = null;
     this.unitName = '';
@@ -262,5 +262,9 @@ export class IssueListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.issues = [];
     this.resetCountResult();
+
+  }
+  
+  cloneIssue(id: string) {
   }
 }

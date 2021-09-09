@@ -1,6 +1,7 @@
 import {  Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
+import {formatDate} from '@angular/common';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -37,13 +38,13 @@ export class AddAssetsComponent implements OnInit {
     VIN: '',
     startDate:  moment().format('YYYY-MM-DD'),
     assetType: null,
-    currentStatus: null,
+    currentStatus: 'active',
     createdDate: '',
     createdTime: '',
     assetDetails: {
       year: null,
       manufacturer: null,
-      model: null,
+      model:null,
       length: 0,
       lengthUnit: null,
       height: '',
@@ -126,7 +127,7 @@ export class AddAssetsComponent implements OnInit {
   models: any = [];
   groups = [];
 
-
+  isRequired: boolean = true;
 
   response: any = '';
   hasError = false;
@@ -200,24 +201,23 @@ export class AddAssetsComponent implements OnInit {
   fetchManufacturers() {
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
-
         this.manufacturers.push(Object.keys(element)[0].toUpperCase())
-
       });
 
     });
   }
   fetchModels() {
+
     this.models = [];
     let manufacturer: any = '';
-    
+
     if (this.assetsData.assetDetails.manufacturer !== null) {
       manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
-    
+
     }
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
-    
+
         let output = [];
         if (element[manufacturer]) {
           element[manufacturer].forEach(element => {
@@ -225,6 +225,7 @@ export class AddAssetsComponent implements OnInit {
 
           });
           this.models = output;
+
         }
       });
 
@@ -260,14 +261,6 @@ export class AddAssetsComponent implements OnInit {
       });
   }
 
-  // getManufactures(){
-  //   this.listService.fetchAssetManufacturers();
-  // }
-
-  // getModels(){
-  //   this.listService.fetchAssetModels();
-  // }
-
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
@@ -277,9 +270,34 @@ export class AddAssetsComponent implements OnInit {
   refreshVendorData() {
     this.listService.fetchVendors();
   }
-
+  refreshOpData() {
+    this.listService.fetchOwnerOperators();
+  }
   openProgram(value) {
     this.listService.separateModals(value);
+  }
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
+
+  changeComp(value){
+    if(value === 'interchange') {
+      this.isRequired = false;
+      this.assetsData.assetDetails.annualSafetyDate = '';
+    } else {
+      this.isRequired = true;
+      this.assetsData.VIN = '';
+      this.assetsData.assetDetails.year = null;
+      this.assetsData.assetDetails.licenceCountryCode = null;
+      this.assetsData.assetDetails.licenceStateCode = null;
+    }
   }
 
   /*
@@ -366,6 +384,13 @@ export class AddAssetsComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs
     };
+    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    let currentDate = new Date();
+    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
+    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
+    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
+
     // create form data instance
     const formData = new FormData();
 
@@ -391,7 +416,7 @@ export class AddAssetsComponent implements OnInit {
 
     // append other fields
     formData.append('data', JSON.stringify(data));
-    
+
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -483,7 +508,12 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'rented') {
           this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
         }
-        
+        if (result.assetDetails.ownerShip === 'interchange') {
+          this.isRequired = false;
+        } else {
+          this.isRequired = true;
+        }
+
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
         this.getStates(result.assetDetails.licenceCountryCode);
@@ -501,7 +531,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
         this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
 
-        
+
         this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID,
         this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate,
         this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice,
@@ -511,8 +541,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments,
         this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer,
         this.assetsData.purchase.gstInc = result.purchase.gstInc
-        
-        
+
+
         this.assetsData.loan.loanVendorID = result.loan.loanVendorID,
         this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan,
         this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency,
@@ -529,8 +559,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.loan.lReminder = result.loan.lReminder,
         this.assetsData.loan.gstInc = result.loan.gstInc,
         this.assetsData.loan.notes = result.loan.notes,
-        
-        
+
+
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
@@ -651,6 +681,12 @@ export class AddAssetsComponent implements OnInit {
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs
     };
+    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    let currentDate = new Date();
+    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
+    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
+    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
 
     // create form data instance
     const formData = new FormData();
@@ -801,7 +837,7 @@ export class AddAssetsComponent implements OnInit {
   }
 
   getStates(countryCode) {
-    this.assetsData.assetDetails.licenceStateCode = '';
+    this.assetsData.assetDetails.licenceStateCode = null;
     this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
   }
 

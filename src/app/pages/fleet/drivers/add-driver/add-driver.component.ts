@@ -820,17 +820,16 @@ export class AddDriverComponent
 
   async onAddDriver() {
     if (this.abstractDocs.length > 0) {
-      this.hasError = false;
-      this.hasSuccess = false;
-      // this.spinner.show();
-      this.hideErrors();
-      this.driverData.createdDate = this.driverData.createdDate;
-      this.driverData.createdTime = this.driverData.createdTime;
-      this.driverData[`deletedUploads`] = this.deletedUploads;
-      for (let d = 0; d < this.driverData.documentDetails.length; d++) {
-        const element = this.driverData.documentDetails[d];
-        delete element.docStates;
-      }
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    this.driverData.createdDate = this.driverData.createdDate;
+    this.driverData.createdTime = this.driverData.createdTime;
+    this.driverData[`deletedUploads`] = this.deletedUploads;
+    for(let d = 0; d < this.driverData.documentDetails.length; d++){
+      const element = this.driverData.documentDetails[d];
+      delete element.docStates;
+    }
 
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];

@@ -118,6 +118,7 @@ export class JournalListComponent implements OnInit {
     if(this.loaded) {
     this.fetchJournals();
     }
+    this.loaded = false;
   }
 
   refreshData() {
