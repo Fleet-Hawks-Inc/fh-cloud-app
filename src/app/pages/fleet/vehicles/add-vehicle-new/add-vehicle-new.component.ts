@@ -276,6 +276,7 @@ export class AddVehicleNewComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  editDisabled = false;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
     private domSanitizer: DomSanitizer) {
@@ -728,6 +729,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.apiService
       .getData('vehicles/' + this.vehicleID)
       .subscribe((result: any) => {
+        this.editDisabled = true;
         result = result.Items[0];
         this.vehicleIdentification = result.vehicleIdentification;
         this.vehicleType = result.vehicleType;

@@ -82,6 +82,7 @@ export class AddDriverPaymentComponent implements OnInit {
   claimCodes = [];
   provincalClaimCodes = [];
   editDisabled = false;
+  showModal = false;
 
   constructor(
     private listService: ListService,
@@ -552,6 +553,7 @@ export class AddDriverPaymentComponent implements OnInit {
   }
 
   showCheque() {
+    this.showModal = true;
     let obj = {
       entityId: this.paymentData.entityId,
       chequeDate: this.paymentData.payModeDate,
@@ -559,7 +561,8 @@ export class AddDriverPaymentComponent implements OnInit {
       type: this.paymentData.paymentTo,
       chequeNo: this.paymentData.payModeNo,
       currency: 'CAD',
-      formType: (this.paymentID) ? 'edit' : 'add'
+      formType: (this.paymentID) ? 'edit' : 'add',
+      showModal: this.showModal,
     }
     this.listService.openPaymentChequeModal(obj);
   }

@@ -184,7 +184,7 @@ users = [];
  
 fetchApis() {
   this.listService.otherModelList.subscribe((res: any) => {
-    if(res === 'program') {
+    if(res === 'veh-program') {
       let ngbModalOptions: NgbModalOptions = {
         backdrop : 'static',
         keyboard : false,
