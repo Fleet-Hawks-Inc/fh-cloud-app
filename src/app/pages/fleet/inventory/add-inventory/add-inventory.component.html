@@ -1,14 +1,6 @@
 <section class="body">
-  <!-- start: header -->
-  <app-header></app-header>
-
-  <!-- end: header -->
-
+  
   <div class="inner-wrapper">
-    <!-- start: sidebar -->
-    <app-sidebar></app-sidebar>
-    <!-- end: sidebar -->
-
     <section role="main" class="content-body pl-1 pr-0 pt-0">
       <header class="page-header pr8 pl11">
           <div class="row" style="padding-top:10px;">
@@ -72,13 +64,12 @@
                     <ng-select
                       class="form-control populate"
                       name="category"
+                      [addTag]="true"
                       [(ngModel)]="category"
                       placeholder="Select inventory category of inventory part"
                       #Category="ngModel"
                       required>
-                        <ng-option value="hardware">Hardware</ng-option>
-                        <ng-option value="brakes">Brakes</ng-option>
-
+                        <ng-option *ngFor="let item of categories;" value="{{item.value}}">{{item.name}}</ng-option>
                     </ng-select>
 
                     <div *ngIf="Category.invalid && (Category.dirty || Category.touched)" class="text-danger">

@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, HereMapService, ListService } from 'src/app/services';
-import { from, Subject, throwError } from 'rxjs';
+import { from, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
@@ -10,6 +10,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/fleet/constants';
 import { CountryStateCity } from '../../utilities/countryStateCities';
+import * as CostExplorer from 'aws-sdk/clients/costexplorer';
 declare var $: any;
 
 @Component({
@@ -164,10 +165,22 @@ export class NewAddressBookComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-
+  modalSubscription: Subscription;
+  
   constructor( private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService, private listService: ListService) {
+    
+   }
+
+  ngOnInit() {
+    this.searchLocation();
+    this.fetchCountries();
+
     this.listService.addressList.subscribe((res: any) => {
+
+
+      console.log('res', res);
       if(res === 'list') {
+        // console.log('list');
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
@@ -260,11 +273,6 @@ export class NewAddressBookComponent implements OnInit {
         this.modalService.dismissAll();
       }
     })
-   }
-
-  ngOnInit() {
-    this.searchLocation();
-    this.fetchCountries();
   }
 
   /*
@@ -609,7 +617,7 @@ export class NewAddressBookComponent implements OnInit {
               aTax: false,
               wsib: false,
               wsibAcc: '',
-              wsibExp: '',
+              wsibExp: null,
               banks: [{
                 bName: '',
                 acc: '',
@@ -1074,7 +1082,6 @@ export class NewAddressBookComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastKey = '';
         this.emptyTabs();
-        this.fetchUnits();
         this.showMainModal();
         
         if(this.unitData.eTypes.includes('owner_operator')) {

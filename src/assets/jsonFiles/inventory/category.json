@@ -1,0 +1,34 @@
+[
+	{
+		"value": "belts",
+		"name": "Belts"
+	},
+	{
+		"value": "brakes",
+		"name": "Brakes"
+	},
+	{
+		"value": "electrical",
+		"name": "Electrical"
+	},
+	{
+		"value": "filters",
+		"name": "Filters"
+	},
+	{
+		"value": "fluids",
+		"name": "Fluids"
+	},
+	{
+		"value": "miscellaneous",
+		"name": "Miscellaneous"
+	},
+	{
+		"value": "suspension",
+		"name": "Suspension"
+	},
+	{
+		"value": "tires",
+		"name": "Tires"
+	}
+]

@@ -5,7 +5,6 @@ import { Observable, Subject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
 import { HttpClient } from "@angular/common/http"
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
-import { NewAddressBookComponent } from "../shared/popups/new-address-book/new-address-book.component";
 @Injectable({
   providedIn: "root",
 })

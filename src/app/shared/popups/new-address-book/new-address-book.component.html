@@ -1003,14 +1003,6 @@
 </ng-template>
 
 <!-- Add entry Modal -->
-<a
-  href="javascript:;"
-  (click)="openModal('list')"
-  class="modal-with-form address-book-icon"
-  title="Address Book"
->
-  <i class="far fa-address-book text-dark" style="font-size: 16px"></i>
-</a>
 
 <ng-template #newUnitModal let-modal>
   <div class="cus-modal-content">
@@ -1312,8 +1304,7 @@
                         class="fas fa-exclamation-circle"
                         data-toggle="tooltip"
                         data-placement="top"
-                        title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
-                                                  in other words hauling cargo across state lines."
+                        title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce, in other words hauling cargo across state lines."
                       ></i>
                     </label>
     
@@ -2129,8 +2120,7 @@
                                 class="fas fa-exclamation-circle"
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
-                                                    in other words hauling cargo across state lines."
+                                title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce, in other words hauling cargo across state lines."
                             ></i>
                             </label>
     
@@ -2196,8 +2186,7 @@
                                 class="fas fa-exclamation-circle"
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
-                                                    in other words hauling cargo across state lines."
+                                title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce, in other words hauling cargo across state lines."
                             ></i>
                             </label>
     
@@ -2345,8 +2334,7 @@
                                     class="fas fa-exclamation-circle"
                                     data-toggle="tooltip"
                                     data-placement="top"
-                                    title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce,
-                                                                in other words hauling cargo across state lines."
+                                    title="MC number (Motor Carrier number) is also an interstate operating authority and unique identifier assigned by the FMCSA to moving companies operating in interstate commerce, in other words hauling cargo across state lines."
                                   ></i>
                                 </label>
                                 <input
@@ -3217,6 +3205,7 @@
                   </div>
                   <div class="col-2 text-right mt-2">
                     <button
+                     type="button"
                       [disabled]="additionalDisabled"
                       *ngIf="ad == 0"
                       id="add-document"
@@ -3559,10 +3548,10 @@
               </div>
   
               <div class="row">
-                <div class="col-lg-12 mb-2 mt-2">
+                <div class="col-6 mb-2 mt-2">
                   <label class="control-label  font-weight-bold text-lg-right text-5 pt-2"> Carrier Bank Details</label>
                </div>
-               <div class="col-12 w-100">
+               <div class="col-6 w-100">
                 <table style="float: left" class="table table-bordered" *ngFor="let bank of item.carrierData.banks">
                   <tbody>
                     <tr>
