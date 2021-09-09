@@ -203,8 +203,8 @@
                   </div>
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
-                    <ng-select [(ngModel)]="assetsData.assetDetails.manufacturer" name="assetDetails.manufacturer"
-                      class="form-control" (change)="resetModel()" placeholder="Select asset make">
+                    <ng-select (change)="fetchModels()" [(ngModel)]="assetsData.assetDetails.manufacturer" name="assetDetails.manufacturer"
+                      class="form-control"  placeholder="Select asset make">
                       <ng-option *ngFor="let item of manufacturers" id="{{item.manufacturerID}}"
                         value="{{item}}">{{item}}
                       </ng-option>
@@ -217,12 +217,12 @@
                   </div>
                   <div class="col-lg-10 ">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
-                    <ng-select (change)="fetchModels()" [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
-                      name="assetDetails.model" class="form-control" id="assetSelect">
-                      <ng-container *ngFor="let model of models">
-                        <ng-option 
+                    <ng-select  [(ngModel)]="assetsData.assetDetails.model"
+                      name="model" class="form-control" id="assetSelect">
+                      
+                        <ng-option *ngFor="let model of models"
                           value="{{model}}">{{model}}</ng-option>
-                      </ng-container>
+                      
                     </ng-select>
                   </div>
                   <div class="col-lg-2  mar-top-37 pl-0">
