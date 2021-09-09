@@ -1,6 +1,6 @@
 # Fleet Manager Application
 
-|Environment| Deployment Status|
+|Environment| Deployment Status| 
 |------|-------|
 |Development |[![Build Status](https://jenkins.fleethawks.com/buildStatus/icon?job=fh-cloud-app%2Fdevelop)](https://jenkins.fleethawks.com/job/fh-cloud-app/job/develop/) |
 |Pre-Prod|[![Build Status](https://jenkins.fleethawks.com/buildStatus/icon?job=fh-cloud-app%2Fmaster)](https://jenkins.fleethawks.com/job/fh-cloud-app/job/master/) |
