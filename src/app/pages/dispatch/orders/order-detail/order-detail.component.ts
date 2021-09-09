@@ -204,7 +204,12 @@ export class OrderDetailComponent implements OnInit {
           this.reference = result.reference;
           this.createdDate = result.createdDate;
           this.createdTime = result.timeCreated;
-          this.additionalContactName = result.additionalContact;
+          if(result.additionalContact != null && result.additionalContact.label != undefined) {
+            this.additionalContactName = result.additionalContact.label;
+          } else {
+            this.additionalContactName = result.additionalContact;
+          }
+          
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
           this.isInvoiced = result.invoiceGenerate;

@@ -272,7 +272,7 @@
 
                                  <ng-select notFoundText="Please type to add name" [(ngModel)]="orderData.additionalContact" [addTag]="true" name="orderData.additionalContact" class="form-control populate"
                                     placeholder="Select Additonal Contact" (change)="setAdditionalContact($event)">
-                                    <ng-option value="{{ data.fullName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.fullName }}</ng-option>
+                                    <ng-option value="{{ data.flName }}" *ngFor="let data of cusAdditionalContact; let idx = index;">{{ data.flName }}</ng-option>
                                  </ng-select>
 
                               </div>
@@ -686,19 +686,11 @@
                                                             </div>
                                                             <div *ngFor="let commodity of pick.commodity; let z = index;">
                                                                <div class="row mt-3 mr-4 align-items-center">
-
-                                                                  <div class="col-lg-6">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
-                                                                     </label>
-                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{i}}{{w}}{{z}}" class="form-control" >
-
-                                                                  </div>
-                                                                  <div class="col-lg-5">
+                                                                  <div class="col-6">
                                                                      <label class="control-label font-weight-bold labelmt text-3 text-dark"
                                                                         >PU# &nbsp;<i class="fas fa-question-circle" data-toggle="tooltip"
                                                                         data-placement="top"
-                                                                        title="Pickup Number"></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                        title="Pickup Number"></i>
 
                                                                      </label>
 
@@ -706,8 +698,16 @@
                                                                         name="pu{{i}}{{w}}{{z}}" type="text" class="form-control" >
 
                                                                   </div>
+                                                                  <div class="col-5">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                                        <!-- <span class="mandfield text-2 ml-1"><sup>*</sup></span> -->
+                                                                     </label>
+                                                                     <input placeholder="eg. cakes" type="text" [(ngModel)]="commodity.name" name="name_{{i}}{{w}}{{z}}" class="form-control" >
+
+                                                                  </div>
+                                                                  
                                                                   <div class="col-lg-1 text-right mt-4 pl-0">
-                                                                     <a class="btn btn-success btn-sm mt-2" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
+                                                                     <a class="btn btn-danger btn-sm mt-2" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('shipper', i, w, z)"><i class="fas fa-minus"></i> </a>
                                                                      <a class="btn btn-success btn-sm btn btn-success btn-sm mt-2" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('shipper', i, w)"><i class="fas fa-plus"></i></a>
                                                                   </div>
                                                                </div>
@@ -717,9 +717,7 @@
                                                                <div class="row mt-3 mr-4">
                                                                   <div class="col-6">
                                                                      <div class="col-lg-12 p-0">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity</label>
                                                                      </div>
                                                                      <div class="row">
                                                                         <div class="col-lg-6">
@@ -752,9 +750,7 @@
                                                                   </div>
                                                                   <div class="col-6">
                                                                      <div class="col-lg-12 p-0">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight</label>
                                                                      </div>
                                                                      <div class="row">
 
@@ -1137,6 +1133,26 @@
                                                             <div *ngFor="let commodity of dropItem.commodity; let z = index;">
                                                                <div class="row mt-3">
                                                                   <div class="col-6">
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
+                                                                        >DEL# &nbsp;<i
+                                                                        class="fas fa-question-circle" data-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="Delivery Number "></i></label>
+
+                                                                     <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{i}}{{y}}{{z}}"
+
+                                                                        type="text" class="form-control" >
+                                                                        <!-- <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
+                                                                           <div *ngIf="delNum.errors.pattern">
+                                                                         Delivery Number must contains number only.
+                                                                            </div>
+                                                                       </div> -->
+                                                                     <!-- <span class="text-danger"
+                                                                        *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].del == ''">
+                                                                        This Field is required
+                                                                     </span> -->
+                                                                  </div>
+                                                                  <div class="col-5">
                                                                      <div class="col-lg-12 p-0">
                                                                         <label class="control-label font-weight-bold labelmt text-3 text-dark">Commodity
                                                                            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -1153,29 +1169,7 @@
                                                                      </div>
                                                                   </div>
 
-                                                                  <div class="col-5">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark"
-                                                                        >DEL# &nbsp;<i
-                                                                        class="fas fa-question-circle" data-toggle="tooltip"
-                                                                        data-placement="top"
-                                                                        title="Delivery Number "></i> <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-
-
-                                                                     </label>
-
-                                                                     <input placeholder="eg. 1458,16325" [(ngModel)]="commodity.del" name="pu{{i}}{{y}}{{z}}"
-
-                                                                        type="text" class="form-control" >
-                                                                        <!-- <div *ngIf="delNum.invalid && (delNum.dirty || delNum.touched)" class="text-danger">
-                                                                           <div *ngIf="delNum.errors.pattern">
-                                                                         Delivery Number must contains number only.
-                                                                            </div>
-                                                                       </div> -->
-                                                                     <!-- <span class="text-danger"
-                                                                        *ngIf="isReceiverSubmit &&  shippersReceivers[i].receivers.commodity[z].del == ''">
-                                                                        This Field is required
-                                                                     </span> -->
-                                                                  </div>
+                                                                  
                                                                   <div class="col-lg-1 text-right mt-4 pl-0">
                                                                      <a class="btn btn-danger btn-sm mt-2" href="javascript:;" *ngIf="z != 0" (click)="removeCommodity('receiver', i, y, z)"><i class="fas fa-minus"></i> </a>
                                                                      <a class="btn btn-success btn-sm mt-2" href="javascript:;" *ngIf="z == 0" (click)="addCommodity('receiver', i, y)"><i class="fas fa-plus"></i></a>
@@ -1187,9 +1181,7 @@
                                                                <div class="row mt-3">
 
                                                                   <div class="col-6">
-                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity
-                                                                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                        </label>
+                                                                        <label class="control-label font-weight-bold labelmt text-3 text-dark">Quantity</label>
                                                                         <div class="row">
                                                                            <div class="col-lg-6">
 
@@ -1235,9 +1227,7 @@
                                                                         </div>
                                                                   </div>
                                                                   <div class="col-6">
-                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight
-                                                                        <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                                     </label>
+                                                                     <label class="control-label font-weight-bold labelmt text-3 text-dark">Weight</label>
                                                                      <div class="row">
                                                                         <div class="col-lg-6">
 

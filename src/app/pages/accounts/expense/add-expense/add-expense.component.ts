@@ -260,6 +260,7 @@ pageTitle = 'Add Other Expense';
           this.expenseData = result[0];
 
           this.expenseData.transactionLog = result[0].transactionLog;
+          this.expenseData.taxAmount = result[0].taxAmount;
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
           this.states = CountryStateCity.GetStatesByCountryCode([result[0].countryCode]);
@@ -296,8 +297,6 @@ pageTitle = 'Add Other Expense';
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
     this.expenseData.stlStatus = this.expenseData.tripID;
-    console.log('this.expenseData', this.expenseData);
-    return;
     // create form data instance
     const formData = new FormData();
 

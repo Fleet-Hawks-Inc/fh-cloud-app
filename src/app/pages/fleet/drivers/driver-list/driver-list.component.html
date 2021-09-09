@@ -189,7 +189,7 @@
                                  <!-- <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.dutyStatus"><span class="badge badge-dark p-1">ON</span></td> -->
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.email }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">{{ driver.phone }}</td>
-                                 <td class="cursorpoint" [routerLink]="driver.url">{{ driver.driverType }}</td>
+                                 <td class="cursorpoint text-capitalize" [routerLink]="driver.url">{{ driver.driverType }}</td>
                                  <td class="cursorpoint" [routerLink]="driver.url">
                                     <span *ngIf="driver.driverType != 'contractor'">{{ driver.startDate | date: "yyyy/MM/dd" }}</span>
                                     <span *ngIf="driver.driverType == 'contractor'">{{ driver.contractStart | date: "yyyy/MM/dd" }}</span>
