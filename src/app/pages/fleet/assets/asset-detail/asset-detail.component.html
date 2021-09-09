@@ -68,7 +68,7 @@
                                            <td class="text-capitalize">{{licenceStateName}}, {{licenceCountryName}}</td>
                                         </tr>
                                         <tr>
-                                           <td class="back-color-gray font-weight-bold"> Year, Make &amp; Model</td>
+                                           <td class="back-color-gray font-weight-bold"> <span *ngIf="ownerShip !== 'interchange'"> Year,</span> Make &amp; Model</td>
                                            <td class="text-capitalize"><span *ngIf="ownerShip !== 'interchange'">{{year ? year : '-'}}</span> <span *ngIf="manufacturer">{{ manufacturer}}</span> <span *ngIf="model"> &amp;</span> {{model}}</td>
                                         </tr>
                                         <tr>

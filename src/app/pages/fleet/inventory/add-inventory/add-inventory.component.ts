@@ -249,7 +249,11 @@ export class AddInventoryComponent implements OnInit {
     this.hasSuccess = false;
     this.submitDisabled = true;
     this.hideErrors();
-
+    if(this.category !== null && this.category.label != undefined) {
+      this.category = this.category.label;
+    } else {
+      this.category = this.category;
+    }
     const data = {
       partNumber: this.partNumber,
       cost: this.cost,
@@ -270,8 +274,8 @@ export class AddInventoryComponent implements OnInit {
       warrantyTime: this.warrantyTime,
       warrantyUnit: this.warrantyUnit
     };
-
-     // create form data instance
+      
+    // create form data instance
      const formData = new FormData();
 
      // append photos if any
@@ -384,7 +388,11 @@ export class AddInventoryComponent implements OnInit {
     this.submitDisabled = true;
     this.hasSuccess = false;
     this.hideErrors();
-
+    if(this.category !== null && this.category.label != undefined) {
+      this.category = this.category.label;
+    } else {
+      this.category = this.category;
+    }
     const data = {
       itemID: this.itemID,
       partNumber: this.partNumber,

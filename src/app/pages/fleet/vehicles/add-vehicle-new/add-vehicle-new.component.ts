@@ -252,8 +252,8 @@ export class AddVehicleNewComponent implements OnInit {
   hasSuccess: boolean = false;
   Error: string = '';
   Success: string = '';
-  manufacturerDataSource:any=[];
-  modals:any=[]
+  manufacturerDataSource: any = [];
+  modals: any = []
   slides = [];
   pDocs = [];
   lDocs = [];
@@ -328,7 +328,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.drivers = this.listService.driversList;
   }
 
-  async getInspectionForms(){
+  async getInspectionForms() {
     await this.fetchInspectionForms();
 
   }
@@ -399,7 +399,7 @@ export class AddVehicleNewComponent implements OnInit {
     });
   }
 
-  getGroups(){
+  getGroups() {
     this.fetchGroups();
   }
 
@@ -590,7 +590,7 @@ export class AddVehicleNewComponent implements OnInit {
       },
       activeTab: this.activeTab
     };
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -613,7 +613,7 @@ export class AddVehicleNewComponent implements OnInit {
     for (let j = 0; j < this.loanDocs.length; j++) {
       formData.append('loanDocs', this.loanDocs[j]);
     }
-    
+
     // append other fields
     formData.append('data', JSON.stringify(data));
     try {
@@ -624,7 +624,7 @@ export class AddVehicleNewComponent implements OnInit {
             from(err.error)
               .pipe(
                 map((val: any) => {
-                 // val.message = val.message.replace(/".*"/, 'This Field');
+                  // val.message = val.message.replace(/".*"/, 'This Field');
                   this.errors[val.context.label] = val.message;
                 })
               )
@@ -662,10 +662,10 @@ export class AddVehicleNewComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v == 'vehicleIdentification' || v == 'VIN') {
+        if (v == 'vehicleIdentification' || v == 'VIN') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
       });
   }
@@ -680,7 +680,16 @@ export class AddVehicleNewComponent implements OnInit {
       });
     this.errors = {};
   }
-
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
 
   /*
     * Selecting files before uploading
@@ -692,11 +701,11 @@ export class AddVehicleNewComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
-    } else if(obj === 'purchase') {
+    } else if (obj === 'purchase') {
       for (let i = 0; i < files.length; i++) {
         this.purchaseDocs.push(files[i])
       }
-    } else if(obj === 'loan') {
+    } else if (obj === 'loan') {
       for (let i = 0; i < files.length; i++) {
         this.loanDocs.push(files[i])
       }
@@ -915,7 +924,7 @@ export class AddVehicleNewComponent implements OnInit {
             this.lDocs.push(obj);
           })
         }
-        
+
         if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
           result.uploadedDocs.map((x) => {
             let obj = {
@@ -1138,47 +1147,47 @@ export class AddVehicleNewComponent implements OnInit {
       formData.append('purchaseDocs', this.purchaseDocs[j]);
     }
 
-     // append loan docs if any
-     for (let j = 0; j < this.loanDocs.length; j++) {
+    // append loan docs if any
+    for (let j = 0; j < this.loanDocs.length; j++) {
       formData.append('loanDocs', this.loanDocs[j]);
     }
-    
+
     //append other fields
     formData.append('data', JSON.stringify(data));
 
     try {
       return await new Promise((resolve, reject) => {
         this.apiService.putData('vehicles', formData, true).
-        subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  //val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  if (err) return reject(err);
-                  this.submitDisabled = false;
-                },
-                error: () => {
-                  this.submitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            this.submitDisabled = false;
-            this.response = res;
-            this.Success = '';
-            this.toastr.success('Vehicle Updated successfully');
-            this.cancel();
-          }
-        })
+          subscribe({
+            complete: () => { },
+            error: (err: any) => {
+              from(err.error)
+                .pipe(
+                  map((val: any) => {
+                    //val.message = val.message.replace(/".*"/, 'This Field');
+                    this.errors[val.context.label] = val.message;
+                  })
+                )
+                .subscribe({
+                  complete: () => {
+                    this.throwErrors();
+                    if (err) return reject(err);
+                    this.submitDisabled = false;
+                  },
+                  error: () => {
+                    this.submitDisabled = false;
+                  },
+                  next: () => { },
+                });
+            },
+            next: (res) => {
+              this.submitDisabled = false;
+              this.response = res;
+              this.Success = '';
+              this.toastr.success('Vehicle Updated successfully');
+              this.cancel();
+            }
+          })
       });
     } catch (error) {
       this.submitDisabled = false;
@@ -1304,7 +1313,7 @@ export class AddVehicleNewComponent implements OnInit {
 
   deleteDocument(value: any, name: string, index: number) {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-      if(value == 'doc') {
+      if (value == 'doc') {
         this.documentSlides = [];
         this.uploadedDocs = result.Attributes.uploadedDocs;
         this.existingDocs = result.Attributes.uploadedDocs;
@@ -1315,31 +1324,31 @@ export class AddVehicleNewComponent implements OnInit {
           }
           this.documentSlides.push(obj);
         })
-      } else if(value == 'loan') {
+      } else if (value == 'loan') {
         this.lDocs = [];
-      this.uploadedDocs = result.Attributes.loanDocs;
-      this.existingDocs = result.Attributes.loanDocs;
-      result.Attributes.loanDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.lDocs.push(obj);
-      })
+        this.uploadedDocs = result.Attributes.loanDocs;
+        this.existingDocs = result.Attributes.loanDocs;
+        result.Attributes.loanDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.lDocs.push(obj);
+        })
       } else {
         this.pDocs = [];
-      this.uploadedDocs = result.Attributes.purchaseDocs;
-      this.existingDocs = result.Attributes.purchaseDocs;
-      result.Attributes.purchaseDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.pDocs.push(obj);
-      })
+        this.uploadedDocs = result.Attributes.purchaseDocs;
+        this.existingDocs = result.Attributes.purchaseDocs;
+        result.Attributes.purchaseDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.pDocs.push(obj);
+        })
       }
-      
-     
+
+
     });
   }
 

@@ -32,6 +32,7 @@ export class AddAssetsComponent implements OnInit {
   pDocs = [];
   lDocs = [];
   assetsData = {
+    isTemp: false,
     inspectionFormID:'',
     assetIdentification: '',
     groupID: null,
@@ -44,7 +45,7 @@ export class AddAssetsComponent implements OnInit {
     assetDetails: {
       year: null,
       manufacturer: null,
-      model: null,
+      model:null,
       length: 0,
       lengthUnit: null,
       height: '',
@@ -160,6 +161,8 @@ export class AddAssetsComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
 
+  isEdit: boolean = false;
+
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private location: Location,
@@ -207,16 +210,17 @@ export class AddAssetsComponent implements OnInit {
     });
   }
   fetchModels() {
+
     this.models = [];
     let manufacturer: any = '';
-    
+
     if (this.assetsData.assetDetails.manufacturer !== null) {
       manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
-    
+
     }
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
-    
+
         let output = [];
         if (element[manufacturer]) {
           element[manufacturer].forEach(element => {
@@ -224,6 +228,7 @@ export class AddAssetsComponent implements OnInit {
 
           });
           this.models = output;
+
         }
       });
 
@@ -274,18 +279,49 @@ export class AddAssetsComponent implements OnInit {
   openProgram(value) {
     this.listService.separateModals(value);
   }
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
 
   changeComp(value){
-    if(value === 'interchange') {
-      this.isRequired = false;
-      this.assetsData.assetDetails.annualSafetyDate = '';
+    if(!this.assetID) {
+      if(value === 'interchange') {
+        this.isRequired = false;
+        this.assetsData.assetDetails.annualSafetyDate = '';
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      }  else {
+        this.isRequired = true;
+      }
     } else {
-      this.isRequired = true;
-      this.assetsData.VIN = '';
-      this.assetsData.assetDetails.year = null;
-      this.assetsData.assetDetails.licenceCountryCode = null;
-      this.assetsData.assetDetails.licenceStateCode = null;
+      if(value === 'interchange') {
+        this.isRequired = false;
+        this.isEdit = false;
+        this.assetsData.assetDetails.annualSafetyDate = '';
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      } else if(this.isEdit) {
+        this.isRequired = true;
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      } else {
+        this.isRequired = true;
+      }
     }
+   
   }
 
   /*
@@ -295,6 +331,7 @@ export class AddAssetsComponent implements OnInit {
     this.hideErrors();
     this.submitDisabled = true;
     const data = {
+      isTemp: false,
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
@@ -378,7 +415,7 @@ export class AddAssetsComponent implements OnInit {
     data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
     data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
     data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
-    
+
     // create form data instance
     const formData = new FormData();
 
@@ -404,7 +441,7 @@ export class AddAssetsComponent implements OnInit {
 
     // append other fields
     formData.append('data', JSON.stringify(data));
-    
+
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -498,10 +535,11 @@ export class AddAssetsComponent implements OnInit {
         }
         if (result.assetDetails.ownerShip === 'interchange') {
           this.isRequired = false;
+          this.isEdit = true;
         } else {
           this.isRequired = true;
         }
-        
+
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
         this.getStates(result.assetDetails.licenceCountryCode);
@@ -519,36 +557,35 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
         this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
 
-        
-        this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID,
-        this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate,
-        this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice,
-        this.assetsData.purchase.purchasePriceCurrency = result.purchase.purchasePriceCurrency,
-        this.assetsData.purchase.warrantyExpirationMeter = result.purchase.warrantyExpirationMeter,
-        this.assetsData.purchase.purchaseDate = result.purchase.purchaseDate,
-        this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments,
-        this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer,
-        this.assetsData.purchase.gstInc = result.purchase.gstInc
-        
-        
-        this.assetsData.loan.loanVendorID = result.loan.loanVendorID,
-        this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan,
-        this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency,
-        this.assetsData.loan.annualPercentageRate = result.loan.annualPercentageRate,
-        this.assetsData.loan.downPayment = result.loan.downPayment,
-        this.assetsData.loan.downPaymentCurrency = result.loan.downPaymentCurrency,
-        this.assetsData.loan.monthlyPaymentCurrency = result.loan.monthlyPaymentCurrency,
-        this.assetsData.loan.dateOfLoan = result.loan.dateOfLoan,
-        this.assetsData.loan.monthlyPayment = result.loan.monthlyPayment,
-        this.assetsData.loan.numberOfPayments = result.loan.numberOfPayments,
-        this.assetsData.loan.loadEndDate = result.loan.loadEndDate,
-        this.assetsData.loan.generateExpenses = result.loan.generateExpenses,
-        this.assetsData.loan.loanDueDate = result.loan.loanDueDate,
-        this.assetsData.loan.lReminder = result.loan.lReminder,
-        this.assetsData.loan.gstInc = result.loan.gstInc,
-        this.assetsData.loan.notes = result.loan.notes,
-        
-        
+
+        this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID;
+        this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate;
+        this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice;
+        this.assetsData.purchase.purchasePriceCurrency = result.purchase.purchasePriceCurrency;
+        this.assetsData.purchase.warrantyExpirationMeter = result.purchase.warrantyExpirationMeter;
+        this.assetsData.purchase.purchaseDate = result.purchase.purchaseDate;
+        this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments;
+        this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer;
+        this.assetsData.purchase.gstInc = result.purchase.gstInc;
+
+
+        this.assetsData.loan.loanVendorID = result.loan.loanVendorID;
+        this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan;
+        this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency;
+        this.assetsData.loan.annualPercentageRate = result.loan.annualPercentageRate;
+        this.assetsData.loan.downPayment = result.loan.downPayment;
+        this.assetsData.loan.downPaymentCurrency = result.loan.downPaymentCurrency;
+        this.assetsData.loan.monthlyPaymentCurrency = result.loan.monthlyPaymentCurrency;
+        this.assetsData.loan.dateOfLoan = result.loan.dateOfLoan;
+        this.assetsData.loan.monthlyPayment = result.loan.monthlyPayment;
+        this.assetsData.loan.numberOfPayments = result.loan.numberOfPayments;
+        this.assetsData.loan.loadEndDate = result.loan.loadEndDate;
+        this.assetsData.loan.generateExpenses = result.loan.generateExpenses;
+        this.assetsData.loan.loanDueDate = result.loan.loanDueDate;
+        this.assetsData.loan.lReminder = result.loan.lReminder;
+        this.assetsData.loan.gstInc = result.loan.gstInc;
+        this.assetsData.loan.notes = result.loan.notes;
+          
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
@@ -588,6 +625,7 @@ export class AddAssetsComponent implements OnInit {
 
     this.submitDisabled = true;
     const data = {
+      isTemp: false,
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
