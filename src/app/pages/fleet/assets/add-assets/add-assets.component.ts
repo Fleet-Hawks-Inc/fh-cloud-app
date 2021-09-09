@@ -32,6 +32,7 @@ export class AddAssetsComponent implements OnInit {
   pDocs = [];
   lDocs = [];
   assetsData = {
+    isTemp: false,
     inspectionFormID:'',
     assetIdentification: '',
     groupID: null,
@@ -160,6 +161,8 @@ export class AddAssetsComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
 
+  isEdit: boolean = false;
+
   constructor(private apiService: ApiService, private route: ActivatedRoute,
               private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
               private location: Location,
@@ -276,16 +279,37 @@ export class AddAssetsComponent implements OnInit {
   }
 
   changeComp(value){
-    if(value === 'interchange') {
-      this.isRequired = false;
-      this.assetsData.assetDetails.annualSafetyDate = '';
+    if(!this.assetID) {
+      if(value === 'interchange') {
+        this.isRequired = false;
+        this.assetsData.assetDetails.annualSafetyDate = '';
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      }  else {
+        this.isRequired = true;
+      }
     } else {
-      this.isRequired = true;
-      this.assetsData.VIN = '';
-      this.assetsData.assetDetails.year = null;
-      this.assetsData.assetDetails.licenceCountryCode = null;
-      this.assetsData.assetDetails.licenceStateCode = null;
+      if(value === 'interchange') {
+        this.isRequired = false;
+        this.isEdit = false;
+        this.assetsData.assetDetails.annualSafetyDate = '';
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      } else if(this.isEdit) {
+        this.isRequired = true;
+        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.year = null;
+        this.assetsData.assetDetails.licenceCountryCode = null;
+        this.assetsData.assetDetails.licenceStateCode = null;
+      } else {
+        this.isRequired = true;
+      }
     }
+   
   }
 
   /*
@@ -295,6 +319,7 @@ export class AddAssetsComponent implements OnInit {
     this.hideErrors();
     this.submitDisabled = true;
     const data = {
+      isTemp: false,
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
@@ -498,6 +523,7 @@ export class AddAssetsComponent implements OnInit {
         }
         if (result.assetDetails.ownerShip === 'interchange') {
           this.isRequired = false;
+          this.isEdit = true;
         } else {
           this.isRequired = true;
         }
@@ -547,7 +573,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.loan.lReminder = result.loan.lReminder,
         this.assetsData.loan.gstInc = result.loan.gstInc,
         this.assetsData.loan.notes = result.loan.notes,
-        
+
         
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
@@ -588,6 +614,7 @@ export class AddAssetsComponent implements OnInit {
 
     this.submitDisabled = true;
     const data = {
+      isTemp: false,
       assetID: this.assetID,
       assetIdentification: this.assetsData.assetIdentification,
       groupID: this.assetsData.groupID,
