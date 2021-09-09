@@ -85,7 +85,6 @@ export class InventoryDetailComponent implements OnInit {
   getInventory() {
     this.apiService.getData(`items/` + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
-      console.log('result inventory', result);
       this.inventoryDataUpdate = result;
 
       this.carrierID = result.carrierID;

@@ -277,7 +277,7 @@
                                     <td *ngIf="hideShow.make && !item.assetDetails.manufacturer">-</td>
                                     
                                     <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
-                                    <td *ngIf="hideShow.year" >{{ item.assetDetails.year}}</td>
+                                    <td *ngIf="hideShow.year" >{{ item.assetDetails.ownerShip !=='interchange' ? item.assetDetails.year : '-'}}</td>
 
             
                                     <td *ngIf="hideShow.model" [routerLink]="item.url" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
