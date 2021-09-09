@@ -312,7 +312,7 @@ export class DriverListComponent implements OnInit {
     }
   }
   searchFilter() {
-    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== '') {
+    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== null) {
       this.driverName = this.driverName.toLowerCase();
       if (this.driverID == '') {
         this.driverID = this.driverName;
@@ -327,7 +327,7 @@ export class DriverListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== '') {
+    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== null) {
       this.drivers = [];
       this.driverID = '';
       this.dutyStatus = '';

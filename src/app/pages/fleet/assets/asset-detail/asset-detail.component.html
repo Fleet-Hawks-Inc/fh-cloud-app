@@ -29,7 +29,7 @@
                                            <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
                                            <td width="60%" class="text-capitalize">{{assetIdentification}}</td>
                                         </tr>
-                                        <tr>
+                                        <tr *ngIf="ownerShip !== 'interchange'">
                                            <td width="40%" class="back-color-gray font-weight-bold">VIN</td>
                                            <td width="60%" class="text-capitalize">{{VIN}}</td>
                                         </tr>
@@ -57,19 +57,19 @@
                                            <td class="back-color-gray font-weight-bold">Licence Plate Number</td>
                                            <td class="text-capitalize">{{licencePlateNumber}}</td>
                                         </tr>
-                                        <tr>
+                                        <tr *ngIf="ownerShip !== 'interchange'">
                                          <td class="back-color-gray font-weight-bold">Annual Safety Date</td>
                                          <td class="text-capitalize">{{annualSafetyDate | date : 'yyyy/MM/dd'}}</td>
 
                                       </tr>
 
-                                        <tr>
+                                        <tr *ngIf="ownerShip !== 'interchange'">
                                            <td class="back-color-gray font-weight-bold">Licence Province/State & Country </td>
                                            <td class="text-capitalize">{{licenceStateName}}, {{licenceCountryName}}</td>
                                         </tr>
                                         <tr>
-                                           <td class="back-color-gray font-weight-bold">Year, Make &amp; Model</td>
-                                           <td class="text-capitalize">{{year}} <span *ngIf="manufacturer">{{ manufacturer}}</span> <span *ngIf="model"> &amp;</span> {{model}}</td>
+                                           <td class="back-color-gray font-weight-bold"> <span *ngIf="ownerShip !== 'interchange'"> Year,</span> Make &amp; Model</td>
+                                           <td class="text-capitalize"><span *ngIf="ownerShip !== 'interchange'">{{year ? year : '-'}}</span> <span *ngIf="manufacturer">{{ manufacturer}}</span> <span *ngIf="model"> &amp;</span> {{model}}</td>
                                         </tr>
                                         <tr>
                                            <td class="back-color-gray font-weight-bold">Length</td>
@@ -239,19 +239,19 @@
                                <tbody>
                                   <tr>
                                      <td width="40%" class="back-color-gray font-weight-bold">Loan Vendor</td>
-                                     <td  width="60%">{{ contactsObjects[loan.loanVendorID] }} </td>
+                                     <td  width="60%">{{ loan.loanVendorID ? contactsObjects[loan.loanVendorID] : '-' }} </td>
    
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Amount of Loan</td>
-                                     <td>{{ loan.amountOfLoan }} {{loan.amountOfLoanCurrency}}</td>
+                                     <td>{{ loan.amountOfLoan ? loan.amountOfLoan : '-' }} {{loan.amountOfLoanCurrency}}</td>
    
    
                                   </tr>
    
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Annual Percentage Rate</td>
-                                     <td>{{ (loan.annualPercentageRate != '') ? loan.annualPercentageRate+'%' : '' }}</td>
+                                     <td>{{ loan.annualPercentageRate ? loan.annualPercentageRate+'%' : '-' }}</td>
                                   </tr>
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">GST Included</td>
@@ -260,42 +260,42 @@
    
                                   <tr>
                                      <td class="back-color-gray font-weight-bold">Down Payment</td>
-                                     <td class="text-capitalize">{{ loan.downPayment }} {{loan.downPaymentCurrency}}</td>
+                                     <td class="text-capitalize">{{ loan.downPayment ? loan.downPayment : '-' }} {{loan.downPaymentCurrency}}</td>
                                   </tr>
    
                                   <tr>
                                     <td class="back-color-gray font-weight-bold">Date of Loan</td>
-                                    <td class="text-capitalize">{{ loan.dateOfLoan | date:"yyyy/MM/dd"  }}</td>
+                                    <td class="text-capitalize">{{ loan.dateOfLoan ? (loan.dateOfLoan | date:"yyyy/MM/dd") : '-' }}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Loan End Date</td>
-                                    <td class="text-capitalize">{{ loan.loadEndDate | date:"yyyy/MM/dd"  }}</td>
+                                    <td class="text-capitalize">{{ loan.loadEndDate ? (loan.loadEndDate | date:"yyyy/MM/dd") : '-' }}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Loan Due Date</td>
-                                    <td class="text-capitalize">{{ loan.loanDueDate | date:"yyyy/MM/dd"  }}</td>
+                                    <td class="text-capitalize">{{ loan.loanDueDate ? (loan.loanDueDate | date:"yyyy/MM/dd") : '-'  }}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Loan Due Date Reminder</td>
-                                    <td class="text-capitalize">{{ loan.lReminder  }}</td>
+                                    <td class="text-capitalize">{{ loan.lReminder ? loan.lReminder : '-'  }}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Number of Payments</td>
-                                    <td class="text-capitalize">{{ loan.numberOfPayments }}</td>
+                                    <td class="text-capitalize">{{ loan.numberOfPayments ? loan.numberOfPayments : '-' }}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Monthly Payment</td>
-                                    <td class="text-capitalize">{{ loan.monthlyPayment }} {{loan.monthlyPaymentCurrency}}</td>
+                                    <td class="text-capitalize">{{ loan.monthlyPayment ? loan.monthlyPayment : '-' }} {{loan.monthlyPaymentCurrency}}</td>
                                  </tr>
    
                                  <tr>
                                     <td class="back-color-gray font-weight-bold">Notes</td>
-                                    <td class="text-capitalize">{{ loan.notes }}</td>
+                                    <td class="text-capitalize">{{ loan.notes ? loan.notes : '-' }}</td>
                                  </tr>
                                </tbody>
                             </table>
@@ -380,12 +380,12 @@
                             <tbody>
                                <tr>
                                   <td width="40%" class="back-color-gray font-weight-bold">Purchase Vendor</td>
-                                  <td  width="60%">{{ contactsObjects[purchase.purchaseVendorID] }} </td>
+                                  <td  width="60%">{{ purchase.purchaseVendorID ? contactsObjects[purchase.purchaseVendorID] : '-'}} </td>
 
                                </tr>
                                <tr>
                                   <td class="back-color-gray font-weight-bold">Purchase Price</td>
-                                  <td>{{ purchase.purchasePrice }} {{purchase.purchasePriceCurrency}}</td>
+                                  <td>{{ purchase.purchasePrice ? purchase.purchasePrice : '-' }} {{purchase.purchasePriceCurrency}}</td>
 
 
                                </tr>
@@ -396,27 +396,27 @@
                                </tr>
                                <tr>
                                   <td class="back-color-gray font-weight-bold">Purchase Date</td>
-                                  <td class="text-small">{{ purchase.purchaseDate | date:"yyyy/MM/dd"  }}</td>
+                                  <td class="text-small">{{ purchase.purchaseDate ? (purchase.purchaseDate | date:"yyyy/MM/dd") : '-'  }}</td>
                                </tr>
 
                                <tr>
                                   <td class="back-color-gray font-weight-bold">Purchase Odometer in Miles</td>
-                                  <td class="text-capitalize">{{ purchase.purchaseOdometer }}</td>
+                                  <td class="text-capitalize">{{ purchase.purchaseOdometer ? purchase.purchaseOdometer : '-' }}</td>
                                </tr>
 
                                <tr>
                                  <td class="back-color-gray font-weight-bold">Warranty Expiration Date</td>
-                                 <td class="text-capitalize">{{ purchase.warrantyExpirationDate | date:"yyyy/MM/dd"  }}</td>
+                                 <td class="text-capitalize">{{ purchase.warrantyExpirationDate ? (purchase.warrantyExpirationDate | date:"yyyy/MM/dd") : '-'  }}</td>
                               </tr>
 
                               <tr>
                                  <td class="back-color-gray font-weight-bold">Warranty Expiration Meter</td>
-                                 <td class="text-capitalize">{{ purchase.warrantyExpirationMeter }}</td>
+                                 <td class="text-capitalize">{{ purchase.warrantyExpirationMeter ? purchase.warrantyExpirationMeter : '-' }}</td>
                               </tr>
 
                               <tr>
                                  <td class="back-color-gray font-weight-bold">Purchase Comments</td>
-                                 <td class="text-capitalize">{{ purchase.purchaseComments }}</td>
+                                 <td class="text-capitalize">{{ purchase.purchaseComments ? purchase.purchaseComments : '-' }}</td>
                               </tr>
                             </tbody>
                          </table>

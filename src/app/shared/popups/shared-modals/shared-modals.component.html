@@ -314,7 +314,7 @@
       </section>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      <button (click)="modal.dismiss('Cross click')" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
       <button (click)="addServiceProgram()" class="btn btn-success text-light" id="nextBtn" [disabled]="!sService.form.valid">Save</button>
     </div>
   </form>

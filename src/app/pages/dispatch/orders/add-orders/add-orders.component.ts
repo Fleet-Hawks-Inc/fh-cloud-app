@@ -1071,32 +1071,48 @@ export class AddOrdersComponent implements OnInit {
   addCommodity(arr: string, parentIndex: number, i: number) {
 
     if (arr === "shipper") {
-      let ttlLen = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.length -1;
-      let lastItem = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity[ttlLen];
-      if(lastItem.name != '' && lastItem.pu != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
-        this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
-          name: '',
-          quantity: '',
-          quantityUnit: '',
-          weight: '',
-          weightUnit: '',
-          pu : ''
-        });
-      }
+      this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        pu : ''
+      });
+      // let ttlLen = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.length -1;
+      // let lastItem = this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity[ttlLen];
+      // if(lastItem.name != '' && lastItem.pu != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
+      //   this.shippersReceivers[parentIndex].shippers.pickupPoint[i].commodity.push({
+      //     name: '',
+      //     quantity: '',
+      //     quantityUnit: '',
+      //     weight: '',
+      //     weightUnit: '',
+      //     pu : ''
+      //   });
+      // }
 
     } else {
-      let ttlLen = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.length -1;
-      let lastItem = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity[ttlLen];
-      if(lastItem.name != '' && lastItem.del != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
-        this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
-          name: '',
-          quantity: '',
-          quantityUnit: '',
-          weight: '',
-          weightUnit: '',
-          del: ''
-        });
-      }
+      this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
+        name: '',
+        quantity: '',
+        quantityUnit: '',
+        weight: '',
+        weightUnit: '',
+        del: ''
+      });
+      // let ttlLen = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.length -1;
+      // let lastItem = this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity[ttlLen];
+      // if(lastItem.name != '' && lastItem.del != '' && lastItem.quantity != '' && lastItem.quantityUnit != null && lastItem.weight != '' && lastItem.quantityUnit != null) {
+      //   this.shippersReceivers[parentIndex].receivers.dropPoint[i].commodity.push({
+      //     name: '',
+      //     quantity: '',
+      //     quantityUnit: '',
+      //     weight: '',
+      //     weightUnit: '',
+      //     del: ''
+      //   });
+      // }
 
     }
   }
@@ -1772,6 +1788,7 @@ export class AddOrdersComponent implements OnInit {
         }
         this.orderData["attachments"] = result.attachments;
         this.ifStatus = result.orderStatus;
+        this.orderData.orderStatus = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
@@ -1912,26 +1929,40 @@ export class AddOrdersComponent implements OnInit {
 
     //for location search in listing page
     let selectedLoc = '';
+    let newloc = '';
+    console.log('this.orderData.shippersReceiversInfo', this.orderData.shippersReceiversInfo)
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
         h.dropPoint.map(elem => {
-          let newloc = elem.address.dropOffLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else{
+            newloc = elem.address.dropOffLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
+          
         })
 
       })
 
       element.shippers.map((h:any) => {
         h.pickupPoint.map(elem => {
-          let newloc = elem.address.pickupLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else {
+            newloc = elem.address.pickupLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
+          
         })
 
       })
     }
     this.orderData['loc'] = selectedLoc;
-
+    
     if (!flag) {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."

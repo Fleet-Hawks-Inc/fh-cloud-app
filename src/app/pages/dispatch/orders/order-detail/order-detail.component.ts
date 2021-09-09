@@ -204,7 +204,7 @@ export class OrderDetailComponent implements OnInit {
           this.reference = result.reference;
           this.createdDate = result.createdDate;
           this.createdTime = result.timeCreated;
-          if(result.additionalContact.label != undefined) {
+          if(result.additionalContact != null && result.additionalContact.label != undefined) {
             this.additionalContactName = result.additionalContact.label;
           } else {
             this.additionalContactName = result.additionalContact;

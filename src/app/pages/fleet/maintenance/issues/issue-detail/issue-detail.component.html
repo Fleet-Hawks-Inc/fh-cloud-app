@@ -95,7 +95,7 @@
                                           <div class="col-lg-9"><a href="{{doc.path}}" target="_blank">Document {{d+1}}</a></div>
                                           <div class="col-lg-3 text-right">
                                              <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal" data-target="#viewDocModal"></i>
-                                             <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name)"></i>
+                                             <i class="fas fa-times text-danger"  (click)="delete('doc',doc.name, d)"></i>
                                           </div>
                                        </div>
                                     </div>
@@ -143,7 +143,7 @@
                                                 <div class="row">
                                                    <div class="col-lg-8">Image {{i+1}}</div>
                                                    <div class="col-lg-4 text-right">
-                                                      <i class="fas fa-times text-danger"  (click)="delete('image',photo.name)"></i>
+                                                      <i class="fas fa-times text-danger"  (click)="delete('image',photo.name, i)"></i>
                                                    </div>
                                                 </div>
                                              </div>

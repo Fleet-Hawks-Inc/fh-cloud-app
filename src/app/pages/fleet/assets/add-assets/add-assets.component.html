@@ -16,7 +16,7 @@
 
       <section class="m-2">
         <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #assetF="ngForm"
-        (ngSubmit)="assetID ? assetF.form.valid && onUpdateAsset() : assetF.form.valid && onAddAsset()" novalidate #assetF="ngForm" ngNativeValidate>
+        (ngSubmit)="assetID ? (assetF.form.valid ? onUpdateAsset() : scrollError()): (assetF.form.valid ? onAddAsset() : scrollError())" novalidate #assetF="ngForm" ngNativeValidate>
 
         <div class="row mb-3">
          <div class="col-lg-12">
@@ -36,7 +36,7 @@
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset Name/Number <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                     <input type="text" [(ngModel)]="assetsData.assetIdentification" name="assetIdentification" maxlength="20"
                       class="form-control" placeholder="eg. Box asset" #aName="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
-                      [ngClass]="{ 'error' : assetF.submitted && aName.invalid }">
+                      [ngClass]="{ 'error' : assetF.submitted && aName.invalid }" [disabled]="editDisabled">
                       <div *ngIf="aName.invalid && assetF.submitted" class="text-danger">
                         <div *ngIf="aName.errors.required">
                           Asset name/number is required.
@@ -75,21 +75,17 @@
               </div>
               <div class="col-lg-5 offset-lg-1 mb-3">
                <div class="row">
-                <div class="col-lg-10">
-                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span
-                      class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
+                <div class="col-lg-10" *ngIf="isRequired">
+                  <label class="control-label font-weight-bold font-bold text-lg-right pt-2">VIN<span class="mandfield text-2 ml-1"><sup>*</sup></span> <i class="fas fa-exclamation-circle" data-toggle="tooltip"
                       data-placement="top" title="Vehicle Identification Number."></i></label>
                   <input type="text" [(ngModel)]="assetsData.VIN" name="VIN"  [ngClass]="{ 'error' : assetF.submitted && vName.invalid }"
-                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control placeholder-lowercase" maxlength="18" #vName="ngModel" required pattern="^[a-zA-Z0-9]{17,18}$">
+                    placeholder="17-18 Alphanumeric characters , eg. 2G1WH55K5Y9322458" class="form-control placeholder-lowercase" maxlength="18" #vName="ngModel"
+                    [required]="isRequired">
                     <div *ngIf="vName.invalid && assetF.submitted" class="text-danger">
 
                         <div *ngIf="vName.errors.required">
                           VIN is required.
                         </div>
-                        <div *ngIf="vName.errors.pattern">
-                          VIN contain 17-18 alphanumeric characters eg.2G1WH55K5Y9322458
-                           </div>
-
                     </div>
                 </div>
                 <div class="col-lg-10">
@@ -168,33 +164,11 @@
                   </div>
                 </div> -->
                 <div class="row mt-2">
-                  <div class="col-lg-5">
-                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span
-                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                    <ng-select [(ngModel)]="assetsData.assetDetails.year" name="assetDetails.year"
-                      class="form-control populate" placeholder="Select year" #ySlt="ngModel" required [ngClass]="{ 'error' : assetF.submitted && ySlt.invalid }" >
 
-                      <ng-option *ngFor="let year of years;" value="{{year}}">{{year}}</ng-option>
-                      <!-- <ng-option value="2019">2019</ng-option>
-                      <ng-option value="2018">2018</ng-option>
-                      <ng-option value="2017">2017</ng-option>
-                      <ng-option value="2016">2016</ng-option>
-                      <ng-option value="2015">2015</ng-option> -->
-
-                    </ng-select>
-                    <div *ngIf="ySlt.invalid && assetF.submitted" class="text-danger">
-                    <div *ngIf="ySlt.errors.required">
-                          Year is required.
-                        </div>
-
-
-                    </div>
-
-                  </div>
                   <div class="col-lg-5">
                     <label class="control-label font-weight-bold text-lg-right pt-2">
                       Status<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                    <ng-select [(ngModel)]="assetsData.currentStatus" name="currentStatus"
+                    <ng-select [clearable]="false" [(ngModel)]="assetsData.currentStatus" name="currentStatus"
                       placeholder="Select asset status" #sSlt="ngModel" required [ngClass]="{ 'error' : assetF.submitted && sSlt.invalid }">
 
                       <ng-option value="active">Active</ng-option>
@@ -210,10 +184,27 @@
 
                     </div>
                   </div>
+                  <div class="col-lg-5" *ngIf="isRequired">
+                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Year<span
+                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <ng-select [(ngModel)]="assetsData.assetDetails.year" name="assetDetails.year"
+                      class="form-control populate" placeholder="Select year" #ySlt="ngModel" required [ngClass]="{ 'error' : assetF.submitted && ySlt.invalid }" >
+
+                      <ng-option *ngFor="let year of years;" value="{{year}}">{{year}}</ng-option>
+                    </ng-select>
+                    <div *ngIf="ySlt.invalid && assetF.submitted" class="text-danger">
+                    <div *ngIf="ySlt.errors.required">
+                          Year is required.
+                        </div>
+
+
+                    </div>
+
+                  </div>
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Make</label>
-                    <ng-select [(ngModel)]="assetsData.assetDetails.manufacturer" name="assetDetails.manufacturer"
-                      class="form-control" (change)="resetModel()" placeholder="Select asset make">
+                    <ng-select (change)="fetchModels()" [(ngModel)]="assetsData.assetDetails.manufacturer" name="assetDetails.manufacturer"
+                      class="form-control"  placeholder="Select asset make">
                       <ng-option *ngFor="let item of manufacturers" id="{{item.manufacturerID}}"
                         value="{{item}}">{{item}}
                       </ng-option>
@@ -226,12 +217,12 @@
                   </div>
                   <div class="col-lg-10 ">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Model</label>
-                    <ng-select (change)="fetchModels()" [(ngModel)]="assetsData.assetDetails.model" placeholder="Select asset model"
-                      name="assetDetails.model" class="form-control" id="assetSelect">
-                      <ng-container *ngFor="let model of models">
-                        <ng-option 
+                    <ng-select  [(ngModel)]="assetsData.assetDetails.model"
+                      name="model" class="form-control" id="assetSelect">
+
+                        <ng-option *ngFor="let model of models"
                           value="{{model}}">{{model}}</ng-option>
-                      </ng-container>
+
                     </ng-select>
                   </div>
                   <div class="col-lg-2  mar-top-37 pl-0">
@@ -418,7 +409,7 @@
                 <div class="row">
                   <div class="col-lg-5">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Ownership</label>
-                    <ng-select [(ngModel)]="assetsData.assetDetails.ownerShip" name="assetDetails.ownerShip"
+                    <ng-select (change)="changeComp($event)" [(ngModel)]="assetsData.assetDetails.ownerShip" name="assetDetails.ownerShip"
                       placeholder="Select ownership" class="form-control populate">
                       <ng-option value="owned">Owned</ng-option>
                       <ng-option value="leased">Leased</ng-option>
@@ -451,12 +442,16 @@
 
                     </div> -->
                   </div>
-                  <div class="col-lg-2  mar-top-37" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
-                    <a href="javascript:;" data-toggle="modal" data-target="#addOwnerOperatorModal"
-                      class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a>
+                  <div class="col-lg-2  mar-top-37 pl-0" *ngIf="assetsData.assetDetails.ownerShip == 'ownerOperator'">
+                    <a href="javascript:;" (click)="openModal('form');"
+                      class="btn btn-sm btn-success modal-with-form mr-2"><i class="fas fa-plus"></i></a>
+                    <a href="javascript:;" (click)="refreshOpData()"
+                      data-toggle="tooltip" title="Refresh ownerOperator data"
+                      class="btn btn-success btn-sm modal-with-form"><i
+                          class="fas fa-sync"></i></a>
                   </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row mt-2" *ngIf="isRequired">
                   <div class="col-lg-5">
                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Licence
                       Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -510,7 +505,7 @@
                       </div>
                   </div>
                 </div>
-                <div class="row mt-2">
+                <div class="row mt-2" *ngIf="isRequired">
                   <div class="col-lg-10">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Annual Safety Date (Set
                       Reminder)<span class="mandfield text-1 ml-1"><sup>*</sup></span></label>
@@ -564,10 +559,14 @@
 
                 <div class="row mt-2">
                   <div class="col-lg-10">
-                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
-                    <textarea [(ngModel)]="assetsData.assetDetails.remarks" name="assetDetails.remarks"
-                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset" #aNotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                      <div *ngIf="aNotes.invalid && (aNotes.dirty || aNotes.touched)" class="text-danger">
+                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes <span *ngIf="!isRequired"
+                      class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <textarea [ngClass]="{ 'error' : assetF.submitted && aNotes.invalid }" [(ngModel)]="assetsData.assetDetails.remarks" name="assetDetails.remarks"
+                      class="form-control h-auto" rows="3" placeholder="Enter notes about asset" #aNotes="ngModel"  [required]="!isRequired"></textarea>
+                      <div *ngIf="aNotes.invalid && assetF.submitted" class="text-danger">
+                        <div *ngIf="aNotes.errors.required">
+                          Notes is required.
+                        </div>
                         <div *ngIf="aNotes.errors.pattern">
                          Only 500 characters are allowed.
                         </div>
@@ -818,7 +817,7 @@
                             </div>
                          </div>
                       </div>
-                      
+
                    </div>
 
                    <div class="col-lg-5 offset-lg-1 mb-3 pb-1">

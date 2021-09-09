@@ -164,9 +164,16 @@ export class IssueDetailComponent implements OnInit {
     }
   }
   // delete uploaded image or document
-  delete(type: string, name: string) {
-    this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
-      this.fetchIssue();
-    });
+  delete(type: string, name: string, index: any) {
+    if (confirm('Are you sure you want to delete?') === true) {
+      if (type === 'image') {
+        this.issueImages.splice(index, 1);
+            } else {
+              this.issueDocs.splice(index, 1);
+            }
+      this.apiService.deleteData(`issues/uploadDelete/${this.issueID}/${type}/${name}`).subscribe((result: any) => {
+        this.fetchIssue();
+      });
+    }
   }
 }

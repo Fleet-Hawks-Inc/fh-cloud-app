@@ -3,6 +3,7 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { Auth } from 'aws-amplify';
 import { ApiService, ListService } from 'src/app/services';
 import * as html2pdf from 'html2pdf.js';
+import { Subscription } from 'rxjs';
 declare var $: any;
 
 @Component({
@@ -53,11 +54,13 @@ export class PaymentChequeComponent implements OnInit {
   cdnFundSmall = ['AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST'];
   totalChars = 15;
   prevClass = 'amt-words';
+  subscription: Subscription;
   
-  constructor( private listService: ListService, private apiService: ApiService,
-    private modalService: NgbModal) {
-    this.listService.paymentModelList.subscribe((res: any) => {
-      if(res.chequeDate !== '' && res.length != 0) {
+  constructor( private listService: ListService, private apiService: ApiService, private modalService: NgbModal) {}
+
+  ngOnInit() {
+    this.subscription = this.listService.paymentModelList.subscribe((res: any) => {
+      if(res.showModal && res.length != 0) {
         this.paydata = res;
         this.cheqdata.type = this.paydata.type;
         this.cheqdata.chqNo = this.paydata.chequeNo;
@@ -77,14 +80,12 @@ export class PaymentChequeComponent implements OnInit {
           keyboard : false,
           windowClass: 'chekOptions-prog__main'
         };
+        res.showModal = false;
         this.modalService.open(this.modalContent, ngbModalOptions).result.then((result) => {
         }, (reason) => {
         });
       }
     })
-  }
-
-  ngOnInit() {
     this.getCarriers();
     this.getCurrentuser();
     this.arrangeNumbers();
@@ -127,7 +128,6 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   selectedCarrier(val) {
-    console.log('val-=-=-=', val);
     this.cheqdata.companyName = val.companyName;
     this.cheqdata.currency = 'CAD';
     this.addresses = [];
@@ -186,7 +186,6 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   arrangeNumbers() {
-    console.log('this.cheqdata.amount', this.cheqdata.amount);
     let numbers = this.cheqdata.amount.toLocaleString();
     let conv = '';
     let arrLen = this.totalChars - numbers.length;
@@ -205,13 +204,10 @@ export class PaymentChequeComponent implements OnInit {
       sideArrLen++;
     }
 
-    console.log('this.cdnFund', this.cdnFund)
     let astlen = this.cdnFund.filter(function(value){
       return value === '*';
     }).length;
-    console.log('astlen-=-=-=', astlen);
     let amountLen = this.totalChars - astlen;
-    console.log('amountLen-=-=-=', amountLen);
     this.prevClass = 'amt-words4';
   }
 
@@ -290,8 +286,11 @@ export class PaymentChequeComponent implements OnInit {
 
   saveDownload() {
     this.generatePDF();
-    // $('#chequeModal').modal('hide');
     this.modalService.dismissAll();
     this.listService.triggerPaymentSave(this.cheqdata.type);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -2371,15 +2371,13 @@ table.dataTable thead th, table.dataTable thead td {
 }
 
 .address-book-icon {
-  position: absolute;
-  top: 7px;
-  right: 202px;
-  background: #ffffff;
-  padding: 10px;
-  width: 40px;
-  height: 40px;
+  position: relative;
+  border-right: 1px solid #dadada;
+  margin-right: 20px;
   text-align: center;
-  border-radius: 50%;
+  width: 40px;
+  padding: 20px 20px 0 0;
+  height: 60px;
 }
 .address-left-icon
 {
@@ -2584,7 +2582,8 @@ input:checked + .sliderbtn:before {
 .form-control[readonly] {
   background-color: #fff;
 }
-.units-list__main .modal-dialog {
+.units-list__main .modal-dialog,
+.units-detail__main .modal-dialog {
   max-width: 1200px !important;
 }
 .mat-expansion-panel-header, .mat-expansion-panel-header .control-label {
@@ -2615,7 +2614,17 @@ input:checked + .sliderbtn:before {
   display: block !important;
 }
 
+.asset-manual__main.modal .modal-dialog {
+  max-width: 500px;
+}
+.trips-assign__main.modal .modal-dialog {
+  max-width: 1200px;
+}
+.assign-confirm__main.modal .modal-dialog {
+  max-width: 500px;
+}
 /* 04.09.21 account classes */
 .detailbox{
   min-height: 125px;
+
 }
