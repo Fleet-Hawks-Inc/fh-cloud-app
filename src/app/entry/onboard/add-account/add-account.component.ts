@@ -42,7 +42,12 @@ export class AddAccountComponent implements OnInit {
   fax = '';
   bizCountry = null;
   uploadedLogo = '';
-  referral={}
+  referral={
+    name:'',
+    company:'',
+    phone:'',
+    email:''
+  }
   fleets = {
     curtainSide: 0,
     dryVans: 0,
