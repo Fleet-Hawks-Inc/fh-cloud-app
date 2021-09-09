@@ -199,15 +199,15 @@
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                              {{customersObjects[inv.customerID] | titlecase}}</td>
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}} {{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span>,
                               <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span><br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span><br>
                               </td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxesAmt | number : '1.2-2'}} {{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 {{inv.finalAmount | number : '1.2-2'}} {{inv.charges.freightFee.currency}}
@@ -322,14 +322,14 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                 *ngIf="inv.invType==='orderInvoice'">{{inv.invNo}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span>
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span><br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span><br>
                               <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span></td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span></td>
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxesAmt | number : '1.2-2'}} {{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
 
@@ -451,16 +451,16 @@
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                              {{customersObjects[inv.customerID] | titlecase}}</td>
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span><br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span><br>
                               <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span></td>
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span
-                                *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</span>
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">
@@ -511,11 +511,11 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}
 
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                              {{inv.finalAmount | number : '1.2-2'}}{{inv.invCur}}</td>
+                              {{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.amountReceived | number : '1.2-2'}} {{inv.invCur}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 {{inv.balance | number : '1.2-2'}} {{inv.invCur}}
@@ -577,15 +577,15 @@
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                              {{customersObjects[inv.customerID] | titlecase}}</td>
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.invNo}}</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.charges.freightFee.amount | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               Add:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}<br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}<br>
                               Deduct:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</td>
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                          {{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}
+                          {{inv.taxesAmt | number : '1.2-2'}}&nbsp;{{inv.charges.freightFee.currency}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
 
@@ -625,11 +625,11 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}
 
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                              {{inv.finalAmount | number : '1.2-2'}}{{inv.invCur}}</td>
+                              {{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
 
                                 {{inv.amountReceived | number : '1.2-2'}} {{inv.invCur}}
@@ -698,13 +698,13 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                 *ngIf="inv.invType==='orderInvoice'">{{inv.invNo}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span>
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span><br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span><br>
                               <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span></td>
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span
                                 *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
@@ -755,7 +755,7 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"></td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               {{inv.finalAmount | number : '1.2-2'}}{{inv.invCur}}</td>
@@ -825,17 +825,17 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                 *ngIf="inv.invType==='orderInvoice'">{{inv.invNo}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                *ngIf="inv.invType==='orderInvoice'">{{inv.charges.freightFee.amount | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span>
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                               <span *ngIf="inv.invType==='orderInvoice'">Add:
-                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span><br>
+                                {{inv.charges.accessorialDeductionInfo.total | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span><br>
                               <span *ngIf="inv.invType==='orderInvoice'">Deduct:
-                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span></td>
+                                {{inv.charges.accessorialFeeInfo.total | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span></td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
-                                *ngIf="inv.invType==='manual'">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}</span>
+                                *ngIf="inv.invType==='manual'">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}</span>
                               <span
-                                *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt | number : '1.2-2'}}{{inv.charges.freightFee.currency}}</span>
+                                *ngIf="inv.invType==='orderInvoice'">{{inv.taxesAmt | number : '1.2-2'}} {{inv.charges.freightFee.currency}}</span>
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)"><span
                                 *ngIf="inv.invType==='manual'">{{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}</span>
@@ -888,7 +888,7 @@
 
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
-                              {{inv.finalAmount | number : '1.2-2'}}{{inv.invCur}}</td>
+                              {{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">
                                 {{inv.amountReceived | number : '1.2-2'}} {{inv.invCur}}
 
