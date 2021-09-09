@@ -1929,26 +1929,40 @@ export class AddOrdersComponent implements OnInit {
 
     //for location search in listing page
     let selectedLoc = '';
+    let newloc = '';
+    console.log('this.orderData.shippersReceiversInfo', this.orderData.shippersReceiversInfo)
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
         h.dropPoint.map(elem => {
-          let newloc = elem.address.dropOffLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else{
+            newloc = elem.address.dropOffLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
+          
         })
 
       })
 
       element.shippers.map((h:any) => {
         h.pickupPoint.map(elem => {
-          let newloc = elem.address.pickupLocation.replace(/,/g, "");
-          selectedLoc += newloc.toLowerCase() + '|';
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else {
+            newloc = elem.address.pickupLocation.replace(/,/g, "");
+            selectedLoc += newloc.toLowerCase() + '|';
+          }
+          
         })
 
       })
     }
     this.orderData['loc'] = selectedLoc;
-
+    
     if (!flag) {
       this.toastr.error(
         "Please add atleast one Shipper and Receiver in shipments."
