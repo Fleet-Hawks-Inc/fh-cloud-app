@@ -209,14 +209,14 @@ export class AddAssetsComponent implements OnInit {
   fetchModels() {
     this.models = [];
     let manufacturer: any = '';
-    
+
     if (this.assetsData.assetDetails.manufacturer !== null) {
       manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
-    
+
     }
     this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
       data.forEach(element => {
-    
+
         let output = [];
         if (element[manufacturer]) {
           element[manufacturer].forEach(element => {
@@ -280,7 +280,16 @@ export class AddAssetsComponent implements OnInit {
   openProgram(value) {
     this.listService.separateModals(value);
   }
-
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
   /*
    * Add new asset
    */
@@ -390,7 +399,7 @@ export class AddAssetsComponent implements OnInit {
 
     // append other fields
     formData.append('data', JSON.stringify(data));
-    
+
     this.apiService.postData('assets', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -481,7 +490,7 @@ export class AddAssetsComponent implements OnInit {
         if (result.assetDetails.ownerShip === 'rented') {
           this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
         }
-        
+
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
         this.getStates(result.assetDetails.licenceCountryCode);
@@ -499,7 +508,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
         this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
 
-        
+
         this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID,
         this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate,
         this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice,
@@ -509,8 +518,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments,
         this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer,
         this.assetsData.purchase.gstInc = result.purchase.gstInc
-        
-        
+
+
         this.assetsData.loan.loanVendorID = result.loan.loanVendorID,
         this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan,
         this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency,
@@ -527,8 +536,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.loan.lReminder = result.loan.lReminder,
         this.assetsData.loan.gstInc = result.loan.gstInc,
         this.assetsData.loan.notes = result.loan.notes,
-        
-        
+
+
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
