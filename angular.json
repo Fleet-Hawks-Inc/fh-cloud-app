@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "cd69feba-6fc4-4dd2-af5b-0cd13a13738b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -13,7 +16,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fleethawks-dashboard/browser",
+            "outputPath": "dist/fleethawks-dashboard",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -54,8 +57,13 @@
               "node_modules/slick-carousel/slick/slick.min.js",
               "src/assets/js/jquery.validate.min.js",
               "node_modules/select2/dist/js/select2.min.js"
-            ]
-           
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -118,7 +126,7 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.dev.ts"
                 }
-              ],             
+              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -200,95 +208,8 @@
               "devServerTarget": "fleethawks-dashboard:serve:production"
             }
           }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/fleethawks-dashboard/server",
-            "main": "server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "optimization": false,
-            "sourceMap": true,
-            "extractLicenses": false
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true
-            },
-            "preprod": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.preprod.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true
-            },
-            "dev": {
-              "outputHashing": "media",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "extractLicenses": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "fleethawks-dashboard:build:development",
-              "serverTarget": "fleethawks-dashboard:server:development"
-            },
-            "production": {
-              "browserTarget": "fleethawks-dashboard:build:production",
-              "serverTarget": "fleethawks-dashboard:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "fleethawks-dashboard:build:production",
-              "serverTarget": "fleethawks-dashboard:server:production"
-            },
-            "development": {
-              "browserTarget": "fleethawks-dashboard:build:development",
-              "serverTarget": "fleethawks-dashboard:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
         }
       }
     }
-  },
-  "defaultProject": "fleethawks-dashboard",
-  "cli": {
-    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
   }
 }
