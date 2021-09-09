@@ -16,4 +16,4 @@ jobs:
         run: |
           npm install
           export NODE_OPTIONS="--max-old-space-size=16000"
-          npm run build
+          npm run build --aot
