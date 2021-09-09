@@ -26,7 +26,8 @@ declare var $: any;
 })
 export class AddTripComponent implements OnInit {
     @ViewChild('assignAssetModel', { static: true }) assignAssetModel: TemplateRef<any>;
-
+    @ViewChild('assignConfirmationModal', { static: true }) assignConfirmationModal: TemplateRef<any>;
+    
     newCoords = [];
     public searchResults: any;
     public searchResults1: any;
@@ -218,6 +219,7 @@ export class AddTripComponent implements OnInit {
 
     tripModalRef: any;
     manualAssetRef: any;
+    assignConfirmModal: any;
 
     async ngOnInit() {
 
@@ -510,26 +512,30 @@ export class AddTripComponent implements OnInit {
                 this.tempTextFieldValues.coDriverName = editRowValues.coDriverName;
                 this.tempTextFieldValues.coDriverUsername = editRowValues.coDriverUsername;
                 this.tempTextFieldValues.trailerName = editRowValues.trailerName;
-
-                $("#veh_" + editRowValues.vehicleID).addClass('td_border');
-                $("#drivr_" + editRowValues.driverID).addClass('td_border');
-                $("#codrivr_" + editRowValues.coDriverID).addClass('td_border');
-
-                // set selected asset values
-                if (editRowValues.trailer != undefined) {
-                    for (let i = 0; i < editRowValues.trailer.length; i++) {
-                        const element = editRowValues.trailer[i];
-                        this.informationAsset.push(element.id);
-
-                        let objj = {
-                            id: element.id,
-                            name: element.name
-                        }
-                        this.tempTextFieldValues.trailer.push(objj);
-                        $("#asset_" + element.id).addClass('td_border');
-                    }
-                }
                 this.openTripAssignModel();
+                setTimeout(() => {
+                    $("#veh_" + editRowValues.vehicleID).addClass('td_border');
+                    $("#drivr_" + editRowValues.driverID).addClass('td_border');
+                    $("#codrivr_" + editRowValues.coDriverID).addClass('td_border'); 
+
+                    // set selected asset values
+                    if (editRowValues.trailer != undefined) {
+                        for (let i = 0; i < editRowValues.trailer.length; i++) {
+                            const element = editRowValues.trailer[i];
+                            this.informationAsset.push(element.id);
+
+                            let objj = {
+                                id: element.id,
+                                name: element.name
+                            }
+                            this.tempTextFieldValues.trailer.push(objj);
+                            $("#asset_" + element.id).addClass('td_border');
+                        }
+                    }
+                }, 1000);
+
+                
+                
                 // $('#assetModal').modal('show');
             }
         }
@@ -889,7 +895,7 @@ export class AddTripComponent implements OnInit {
             } else {
                 $("#cell11").prop('disabled', false);
             }
-            this.openTripAssignModel();
+            this.tripModalRef.close();
             //$('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
             let index = this.tempTextFieldValues.index;
@@ -931,13 +937,12 @@ export class AddTripComponent implements OnInit {
                         element.disablecarr = true;
                     }
                 }
-
-                $("#assignConfirmationModal").modal('hide');
+                this.assignConfirmModal.close();
             }
 
             this.getStateWiseMiles();
             this.emptyAssetModalFields();
-            this.modalService.open(this.assignAssetModel);
+            this.tripModalRef.close();
             // $('#assetModal').modal('hide');
         }
     }
@@ -2134,7 +2139,13 @@ export class AddTripComponent implements OnInit {
     }
 
     showConfirmationPopup() {
-        $("#assignConfirmationModal").modal('show');
+        let ngbModalOptions: NgbModalOptions = {
+            backdrop : 'static',
+            keyboard : false,
+            windowClass: 'assign-confirm__main'
+        };
+        this.tripModalRef.close();
+        this.assignConfirmModal = this.modalService.open(this.assignConfirmationModal, ngbModalOptions);
     }
 
     locationModel(type, index = '') {
