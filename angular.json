@@ -54,13 +54,8 @@
               "node_modules/slick-carousel/slick/slick.min.js",
               "src/assets/js/jquery.validate.min.js",
               "node_modules/select2/dist/js/select2.min.js"
-            ],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": false,
-            "optimization": false,
-            "namedChunks": true
+            ]
+           
           },
           "configurations": {
             "production": {
