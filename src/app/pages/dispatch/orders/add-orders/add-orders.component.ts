@@ -1788,6 +1788,7 @@ export class AddOrdersComponent implements OnInit {
         }
         this.orderData["attachments"] = result.attachments;
         this.ifStatus = result.orderStatus;
+        this.orderData.orderStatus = result.orderStatus;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
