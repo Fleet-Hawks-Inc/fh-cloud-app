@@ -32,6 +32,12 @@ export class LoginComponent implements OnInit {
   fieldTextType1: boolean;
   cpwdfieldTextType:boolean;
 
+  referral:any={
+    name:'',
+    company:'',
+    email:'',
+    phone:''
+  };
   submitDisabled = false;
   submitCarrierDisabled = false;
   passwordValidation = {
@@ -263,6 +269,9 @@ confirmPassword:any;
       fax:this.fax,
       findingWay:this.findingWay
     }
+    if(this.findingWay=="Referral"){
+      data.referral=this.referral
+    }
     try{
     this.apiService.postData('carriers/onBoard',data).subscribe({
       complete:()=>{
@@ -288,7 +297,7 @@ confirmPassword:any;
           });
       },
       next:(res)=>{
-        this.toaster.success("Carrier is Created successfully")
+        $('#signUpMessage').modal('show');
         this.cancel();
         this.submitCarrierDisabled = false;
         this.firstName = null;

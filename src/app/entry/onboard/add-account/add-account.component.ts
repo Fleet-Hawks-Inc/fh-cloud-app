@@ -42,6 +42,7 @@ export class AddAccountComponent implements OnInit {
   fax = '';
   bizCountry = null;
   uploadedLogo = '';
+  referral={}
   fleets = {
     curtainSide: 0,
     dryVans: 0,
@@ -163,6 +164,7 @@ export class AddAccountComponent implements OnInit {
         this.email = data.email;
         this.findingWay = data.findingWay;
         this.carrierID = data.carrierID;
+        this.referral=data.referral
       }
     });
   }
@@ -487,6 +489,7 @@ if (event === 'mailing') {
         addressDetails: this.addressDetails,
         phone: this.phone,
         fax: this.fax,
+        
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -498,6 +501,9 @@ if (event === 'mailing') {
         },
         banks: this.banks
       };
+      if(this.findingWay=="Referral"){
+        data["referral"]=this.referral
+      }
       if (data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;
