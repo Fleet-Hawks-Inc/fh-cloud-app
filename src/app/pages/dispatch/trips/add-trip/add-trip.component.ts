@@ -1801,6 +1801,7 @@ export class AddTripComponent implements OnInit {
                 stlStatus: [],
                 settlmnt: false,
                 assgnIds: [],
+                splitID: uuidv4(),
             }
             this.tripData.split[i] = obz;
             element.map((v) => {
