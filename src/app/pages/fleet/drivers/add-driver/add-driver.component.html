@@ -14,8 +14,9 @@
         </div>
       </header>
 
-      <form id="driverForm" class="form-horizontal form-bordered" name="driverForm"  [mustMatch]="['password', 'confirmPassword']"
-        (ngSubmit)="driverID ? driverF.form.valid && onUpdateDriver() : driverF.form.valid && onAddDriver()" novalidate #driverF="ngForm" ngNativeValidate >
+      <form id="driverForm" class="form-horizontal form-bordered" name="dForm"  [mustMatch]="['password', 'confirmPassword']"
+        (ngSubmit)="driverID ? (driverF.form.valid ? onUpdateDriver() : scrollError()) : (driverF.form.valid ? onAddDriver() : scrollError())"
+        novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-12">
@@ -76,8 +77,9 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId"
-                                type="text" class="form-control" placeholder="Any Numbers or Name" #cName="ngModel" [ngClass]="{ 'error' : driverF.submitted && cName.invalid }"
+                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" (change)="onChangeHideErrors('employeeContractorId'); validateEmployeeID();"
+                                type="text" class="form-control" placeholder="Any Numbers or Name" #cName="ngModel"
+                                [ngClass]="{ 'error' : driverF.submitted && cName.invalid }"
                                 required pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
                             </div>
                             <div *ngIf="cName.invalid && driverF.submitted" class="text-danger">
@@ -95,7 +97,7 @@
                             </label>
                             <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus"
                               class="form-control form-control-sm" placeholder="Select driver status"
-                              (change)="onChangeHideErrors('driverStatus')" #status="ngModel" required [ngClass]="{ 'error' : driverF.submitted && status.invalid }">
+                              #status="ngModel" required [ngClass]="{ 'error' : driverF.submitted && status.invalid }">
                               <ng-option value="active">Active</ng-option>
                               <ng-option value="inActive">InActive</ng-option>
                             </ng-select>
@@ -113,7 +115,7 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.corporationType" name="corporationType"
                                   class="form-control form-control-sm" placeholder="Select corporation"
-                                  (change)="onChangeHideErrors('corporation'); changeCompany($event)" #corp="ngModel" required [ngClass]="{ 'error' : driverF.submitted && corp.invalid }">
+                                  (change)="changeCompany($event)" #corp="ngModel" required [ngClass]="{ 'error' : driverF.submitted && corp.invalid }">
                                   <ng-option value="company">Company</ng-option>
                                   <ng-option value="corporation">Corporation</ng-option>
                                   <ng-option value="owner_operator">Owner Operator</ng-option>
@@ -130,7 +132,7 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
                                   class="form-control form-control-sm" placeholder="Select Owner Operator "
-                                  (change)="onChangeHideErrors('ownerOperator')" #oSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oSlt.invalid }">
+                                   #oSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oSlt.invalid }">
                                   <ng-option *ngFor="let item of ownerOperators" value="{{item.contactID}}">
                                     {{item.companyName}}</ng-option>
                                 </ng-select>
@@ -154,7 +156,7 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.vendor" name="vendor"
                                   class="form-control form-control-sm" placeholder="Select Vendor"
-                                  (change)="onChangeHideErrors('vendor')" #vendor="ngModel" required [ngClass]="{ 'error' : driverF.submitted && vendor.invalid }">
+                                   #vendor="ngModel" required [ngClass]="{ 'error' : driverF.submitted && vendor.invalid }">
                                   <ng-option *ngFor="let item of vendors" value="{{item.contactID}}">
                                     {{item.companyName}}</ng-option>
                                 </ng-select>
@@ -170,7 +172,7 @@
                                 </label>
                                 <input [(ngModel)]="driverData.corporation" name="corporation"
                                 class="form-control form-control-sm" placeholder="Enter Corporation name"
-                                (change)="onChangeHideErrors('corporation')" #corp1="ngModel" required type="text" [ngClass]="{ 'error' : driverF.submitted && corp1.invalid }">
+                                #corp1="ngModel" required type="text" [ngClass]="{ 'error' : driverF.submitted && corp1.invalid }">
 
                                 <div *ngIf="corp1.invalid && driverF.submitted" class="text-danger">
                                   <div *ngIf="corp1.errors.required">
@@ -215,7 +217,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Birth Date <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input (click)="onChangeHideErrors('DOB');d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
+                        <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
                          [(ngModel)]="driverData.DOB" readonly
                           name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
                           #dob="ngModel" required [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" [ngClass]="{ 'error' : driverF.submitted && dob.invalid }">
@@ -231,7 +233,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">First Name <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input [(ngModel)]="driverData.firstName" (change)="onChangeHideErrors('firstName')"
+                            <input [(ngModel)]="driverData.firstName"
                               name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel"
                               required pattern="^[a-zA-Z\s]+$" maxlength="30" [ngClass]="{ 'error' : driverF.submitted && fName.invalid }">
                             <div *ngIf="fName.invalid && driverF.submitted" class="text-danger">
@@ -247,7 +249,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Last Name <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input [(ngModel)]="driverData.lastName" (change)="onChangeHideErrors('lastName')"
+                            <input [(ngModel)]="driverData.lastName"
                               name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
                               required pattern="^[a-zA-Z\s]+$" maxlength="30" [ngClass]="{ 'error' : driverF.submitted && lName.invalid }">
                             <div *ngIf="lName.invalid && driverF.submitted" class="text-danger">
@@ -269,7 +271,7 @@
                             </label>
                             <div class="input-group">
                               <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"
-                                (change)="onChangeHideErrors('password')" name="password"
+                               name="password"
                                  #pwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
                                 pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
                                   (input) ="validatePassword($event.target.value)" class="form-control"
@@ -322,7 +324,7 @@
                             </label>
                               <div class="input-group">
                                 <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
-                                (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required
+                                 #cpwd="ngModel" required
                                  [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
                                   [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
                                   />
@@ -388,7 +390,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                          (change)="onChangeHideErrors('phone')" placeholder="eg. 2234567891" #mob="ngModel"
+                         placeholder="eg. 2234567891" #mob="ngModel"
                           required pattern="[0-9]{10}$" [ngClass]="{ 'error' : driverF.submitted && mob.invalid }">
                         <div *ngIf="mob.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="mob.errors.required">
@@ -461,7 +463,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Start Date <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (click)="onChangeHideErrors('startDate');d11.toggle()" ngbDatepicker
+                            <input (click)="d11.toggle()" ngbDatepicker
                               #d11="ngbDatepicker" readonly [(ngModel)]="driverData.startDate" name="startDate" type="text"
                               class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required
                               [ngClass]="{ 'error' : driverF.submitted && date1.invalid }" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
@@ -492,7 +494,7 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Start Date <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (click)="onChangeHideErrors('contractStart');d4.toggle()" ngbDatepicker
+                            <input (click)="d4.toggle()" ngbDatepicker
                               #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
                               type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
                               #date2="ngModel" required  [ngClass]="{ 'error' : driverF.submitted && date2.invalid }" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
@@ -525,7 +527,7 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
                           placeholder="Select the citizenship country of driver"
-                          (change)="onChangeHideErrors('citizenship')" #cSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cSlt.invalid }">
+                           #cSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cSlt.invalid }">
                           <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
@@ -718,7 +720,7 @@
                       </div>
                     </div>
                   </div>
-                  <label style="display: none;" class="error mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+                  <label style="display: none;" class="mt-2" style="color: '#dc3545';" id="addErr{{i}}">Your address or zip code is not valid</label>
                 </div>
               </div>
             </div>
@@ -754,7 +756,7 @@
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
                           placeholder="Select document type"
 
-                          (change)="onChangeHideErrors('documentDetails['+i+'].documentType')" #doc1="ngModel" >
+                           #doc1="ngModel" >
                           <ng-container *ngFor="let documentType of documentTypeList">
                             <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
                               {{documentType.description}}</ng-option>
@@ -776,8 +778,7 @@
                           </label>
                           <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
                             [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                            placeholder="eg. Certificate number 201717ABC"
-                            (change)="onChangeHideErrors('documentDetails['+i+'].document')" #docNum="ngModel"
+                            placeholder="eg. Certificate number 201717ABC" #docNum="ngModel"
                             >
 
                           <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
@@ -811,7 +812,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country
                         </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingCountry');getDocStates($event,i)"
+                          (change)="getDocStates($event,i)"
                           [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
                           [ngModelOptions]="{standalone: true}" class="form-control populate"
                           placeholder="Select the issuing country">
@@ -822,7 +823,6 @@
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State </label>
                         <ng-select
-                          (change)="onChangeHideErrors('documentDetails['+i+'].issuingState');"
                           [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
                           [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province/State">
                           <ng-option class="text-capitalize" *ngFor="let state of document.docStates" value="{{state.stateCode}}">
@@ -837,7 +837,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date
                         </label>
                         <input [(ngModel)]="document.issueDate"
-                          (click)="onChangeHideErrors('documentDetails['+i+'].issueDate');d.toggle()" ngbDatepicker
+                          (click)="d.toggle()" ngbDatepicker
                           #d="ngbDatepicker" readonly type="text" class="form-control" [maxDate]="getcurrentDate"
                           [minDate]="birthDateMinLimit" placeholder="yyyy/mm/dd"
                           [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
@@ -853,7 +853,7 @@
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
                           [ngModelOptions]="{standalone: true}" readonly
-                          (click)="onChangeHideErrors('documentDetails['+i+'].expiryDate');d1.toggle()" ngbDatepicker
+                          (click)="d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
                           [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel" >
                         <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
@@ -1010,7 +1010,7 @@
                         </label>
                         <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number"
                           type="text" class="form-control" placeholder="9 digits eg. 0005-04440"
-                          (change)="onChangeHideErrors('CDL_Number'); validateCDL();" #cdl="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cdl.invalid }">
+                          (change)="onChangeHideErrors('CDL_Number'); validateCDL();" #cdl="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cdl.invalid}">
                         <div *ngIf="cdl.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="cdl.errors.required">
                             CDL# is required.
@@ -1022,7 +1022,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input (click)="onChangeHideErrors('licenceDetails.licenceExpiry');d3.toggle()" ngbDatepicker
+                        <input (click)="d3.toggle()" ngbDatepicker
                           #d3="ngbDatepicker" readonly [(ngModel)]="driverData.licenceDetails.licenceExpiry"
                           name="licenceDetails.licenceExpiry"  [ngClass]="{ 'error' : driverF.submitted && leSlt.invalid }"
                           type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required>
@@ -1036,7 +1036,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select (change)="onChangeHideErrors('licenceDetails.issuedCountry');getLicStates($event)"
+                        <ng-select (change)="getLicStates($event)"
                           [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
                           name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel"  [ngClass]="{ 'error' : driverF.submitted && conSlt.invalid }" required>
 
@@ -1056,7 +1056,8 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
                           placeholder="Select Province/State"
-                          (change)="onChangeHideErrors('licenceDetails.issuedState');getLicenseStateName();" required #ipSlt="ngModel" [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }"
+                          (change)="getLicenseStateName();" required #ipSlt="ngModel"
+                           [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }"
                           >
                           <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
@@ -1142,7 +1143,7 @@
                           Payment Type</label>
                         <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                           placeholder="Select the payment type" id="paymentTypeForm"
-                          (change)="onChangeHideErrors('paymentDetails.paymentType');changePaymentModeForm($event)"
+                          (change)="changePaymentModeForm($event)"
                           #paySlt="ngModel" >
                           <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                           <ng-option value="Percentage">Percentage</ng-option>
@@ -1158,7 +1159,7 @@
                       <div class="col-lg-10" *ngIf="driverData.driverType === 'employee'">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SIN
                          </label>
-                        <input (change)="onChangeHideErrors('SIN')"
+                        <input
                           [(ngModel)]="driverData.SIN" name="SIN"
                           type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" pattern="^[0-9]{9}$"
                            >
@@ -1300,9 +1301,7 @@
                           <div class="col-lg-3">
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                               name="paymentDetails.loadPayPercentage" type="text" class="form-control"
-                              placeholder="eg. 2%, 5%, 10%"
-
-                              (change)="onChangeHideErrors('paymentDetails.loadPayPercentage')">
+                              placeholder="eg. 2%, 5%, 10%">
                               <!-- <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
                                 <div *ngIf="lPay1.errors.required">
                                  Load pay percent is required.
@@ -1319,8 +1318,7 @@
                           </div>
                           <div class="col-lg-7">
                             <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf"
-                              name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of"
-                              (change)="onChangeHideErrors('paymentDetails.loadPayPercentageOf')" >
+                              name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of" >
 
                               <ng-option value="Freight Fees">Freight Fees</ng-option>
                               <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
@@ -1363,7 +1361,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit"
                             name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                            (change)="onChangeHideErrors('paymentDetails.loadedMilesUnit')">
+                            >
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
@@ -1396,7 +1394,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit"
                             name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                            (change)="onChangeHideErrors('paymentDetails.emptyMilesUnit')"  >
+                             >
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -1452,8 +1450,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Pay
                             Period</label>
                           <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod"
-                            placeholder="Select pay period of the driver"
-                            (change)="onChangeHideErrors('paymentDetails.payPeriod')" #ppSlt="ngModel" >
+                            placeholder="Select pay period of the driver" #ppSlt="ngModel" >
 
                             <ng-option value="Weekly">Weekly</ng-option>
                             <ng-option value="Biweekly">Biweekly</ng-option>
@@ -1491,7 +1488,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.hosStatus"
-                          (change)="complianceChange($event);onChangeHideErrors('hosDetails.hosStatus')"
+                          (change)="complianceChange($event);"
                           name="hosDetails.hosStatus" class="form-control populate"
                           placeholder="Select exemption status of the driver" #sSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && sSlt.invalid }">
 
@@ -1529,7 +1526,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
-                          (change)="onChangeHideErrors('hosDetails.type')" placeholder="Select the record keeping type"
+                          placeholder="Select the record keeping type"
                           #tSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && tSlt.invalid }">
                           <ng-option *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'" value="ELD">ELD
                           </ng-option>
@@ -1548,7 +1545,6 @@
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.homeTerminal" name="hosDetails.homeTerminal"
                           class="form-control populate"
-                          (change)="onChangeHideErrors('hosDetails.homeTerminal');"
                           placeholder="Select home terminal of the driver" #home="ngModel" required [ngClass]="{ 'error' : driverF.submitted && home.invalid }">
                           <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
                             value="{{yard.addressID}}">
@@ -1571,7 +1567,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
-                          (change)="onChangeHideErrors('hosDetails.optZone')" class="form-control populate"
+                           class="form-control populate"
                           placeholder="Select the Operating Zone" #oz1="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oz1.invalid }">
                           <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                           </ng-option>
@@ -1591,7 +1587,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.timezone" name="hosDetails.timezone"
-                          (change)="onChangeHideErrors('hosDetails.timezone')" class="form-control populate"
+                          class="form-control populate"
                           placeholder="Select the home terminal timezone" #ht="ngModel" required [ngClass]="{ 'error' : driverF.submitted && ht.invalid }">
                           <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones" [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
                           </ng-option>
@@ -1608,7 +1604,7 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.hosCycleName" name="hosDetails.hosCycleName"
-                          (change)="onChangeHideErrors('hosDetails.hosCycleName')" class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
+                          class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
                           placeholder="Select the cycle for the driver" #cycle1="ngModel" [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
                           <ng-option value="USA 60 hour / 7 day">USA 60 hour / 7 day</ng-option>
                           <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
