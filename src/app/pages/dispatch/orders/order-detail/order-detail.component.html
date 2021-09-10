@@ -7,7 +7,7 @@
                         Order Details 
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
-                        <button [disabled]="isInvoiced" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
+                        <button (click)="isModalShow == true" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
                             Invoice</button>
                         <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Order</a>
@@ -543,10 +543,10 @@
                                                             <tr *ngIf="milesArr?.length == 0">
                                                                 <td colspan="2">No data found</td>
                                                             </tr>
-                                                            <tr *ngFor="let data of milesArr">
+                                                            <tr *ngFor="let data of milesArr; let k = index;">
                                                                 <td style="width: 50%;">
-                                                                    <div *ngFor="let ship of data.shippers; let i = index;" class="border-bottom mb-2 pb-2">
-                                                                        <h5 class="m-0 text-dark"><strong>Shipper-{{i + 1}}</strong></h5>
+                                                                    <div *ngFor="let ship of data.shippers; " class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Shipper-{{k + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let point of ship.pickupPoint; let s=index">
                                                                             Pickup-{{s + 1}}:
@@ -568,8 +568,8 @@
                                                                 </td>
                                                                 <td style="width: 50%;">
                                                                     <div
-                                                                        *ngFor="let rec of data.receivers; let r = index" class="border-bottom mb-2 pb-2">
-                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{r + 1}}</strong></h5>
+                                                                        *ngFor="let rec of data.receivers;" class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{k + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let drop of rec.dropPoint; let s = index;">
                                                                              Drop-{{s + 1}}:
@@ -1239,14 +1239,15 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
+                <button class="btn btn-success" (click)="generate()">Print</button>
+                <button [disabled]="isInvoiced || generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="generateInvoiceModalLabel"
-    aria-hidden="true" *ngIf="isInvoice">
+    aria-hidden="true" *ngIf="isModalShow">
     <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">

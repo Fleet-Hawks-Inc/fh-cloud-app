@@ -13,7 +13,6 @@ import * as moment from "moment";
 import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { v4 as uuidv4 } from 'uuid';
-import { split } from 'lodash';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 
