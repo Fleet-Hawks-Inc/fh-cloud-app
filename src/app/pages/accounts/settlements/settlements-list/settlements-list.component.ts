@@ -27,6 +27,7 @@ export class SettlementsListComponent implements OnInit {
   };
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -82,8 +83,10 @@ export class SettlementsListComponent implements OnInit {
       .subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.disableSearch = false;
         }
         if (result.length > 0) {
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -115,6 +118,7 @@ export class SettlementsListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.type !== null || this.filter.settlementNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -140,6 +144,7 @@ export class SettlementsListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,
@@ -172,6 +177,7 @@ export class SettlementsListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,

@@ -21,6 +21,7 @@ export class ReceiptsListComponent implements OnInit {
     recNo: null
   };
   loaded = false;
+  disableSearch = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private toastr: ToastrService, private apiService: ApiService,) { }
 
   ngOnInit() {
@@ -47,8 +48,10 @@ export class ReceiptsListComponent implements OnInit {
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.disableSearch = false;
           }
           if (result.length > 0) {
+            this.disableSearch = false;
             for (let index = 0; index < result.length; index++) {
               const element = result[index];
               this.receipts.push(element);
@@ -96,6 +99,7 @@ export class ReceiptsListComponent implements OnInit {
   searchFilter() {
     this.lastItemSK = '';
     if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.recNo !== null) {
+      this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
 
       if (
@@ -123,6 +127,7 @@ export class ReceiptsListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,
@@ -135,6 +140,7 @@ export class ReceiptsListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,
