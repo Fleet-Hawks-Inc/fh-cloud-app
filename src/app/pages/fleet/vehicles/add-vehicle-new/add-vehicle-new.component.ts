@@ -287,13 +287,12 @@ export class AddVehicleNewComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
-    this.listService.fetchVendors();
     this.fetchManufacturers();
-    //this.listService.fetchModels();
+    this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
     this.listService.fetchServicePrograms();
     this.listService.fetchDrivers();
@@ -301,7 +300,7 @@ export class AddVehicleNewComponent implements OnInit {
     this.vehicleID = this.route.snapshot.params[`vehicleID`];
     if (this.vehicleID) {
       this.title = 'Edit Vehicle';
-      this.fetchVehicleByID();
+      await this.fetchVehicleByID();
     } else {
       this.title = 'Add Vehicle';
     }
@@ -320,12 +319,96 @@ export class AddVehicleNewComponent implements OnInit {
     $('#hardAccelrationParametersValue').html(6);
     $('#turningParametersValue').html(6);
 
-    this.vendors = this.listService.vendorList;
-    this.manufacturers = this.listService.manufacturerList;
-    this.models = this.listService.modelList;
-    this.ownerOperators = this.listService.ownerOperatorList;
-    this.serviceProgramss = this.listService.serviceProgramList;
-    this.drivers = this.listService.driversList;
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
+
+    let programList = new Array<any>();
+    this.getValidPrograms(programList);
+    this.serviceProgramss = programList;
+    
+    let operatorList = new Array<any>();
+    this.getValidOperators(operatorList);
+    this.ownerOperators = operatorList;
+
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
+  }
+
+  private getValidVendors(vendorList:any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1){
+          if(element2.contactID === this.insurance.vendorID) {
+            this.insurance.vendorID = null;
+          }
+
+          if(element2.contactID === this.purchase.purchaseVendorID) {
+            this.purchase.purchaseVendorID = null;
+          }
+
+          if(element2.contactID === this.loan.loanVendorID) {
+            this.loan.loanVendorID = null;
+          }
+        }
+      })
+    })
+  }
+
+  private getValidPrograms(programsList:any[]) {
+    let ids = [];
+    this.listService.serviceProgramList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.programID)) {
+          programsList.push(element2);
+          ids.push(element2.programID);
+        }
+
+        if(element2.isDeleted === 1 && this.servicePrograms.includes(element2.programID)) {
+          let ind = this.servicePrograms.indexOf(this.servicePrograms[element2.programID]);
+          this.servicePrograms.splice(ind, 1);
+        }
+      })
+    })
+  }
+
+  private getValidOperators(operatorsList:any[]) {
+    let ids = [];
+    this.listService.ownerOperatorList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          operatorsList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1 && this.ownerOperatorID === element2.contactID) {
+          this.ownerOperatorID = null;
+        }
+      })
+    })
+  }
+
+  private getValidDrivers(driverList:any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+
+        if(element2.isDeleted === 1 && this.driverID === element2.driverID) {
+          this.driverID = null;
+        }
+      })
+    })
   }
 
   async getInspectionForms() {
@@ -725,10 +808,9 @@ export class AddVehicleNewComponent implements OnInit {
   }
 
   // EDIT
-  fetchVehicleByID() {
-    this.apiService
-      .getData('vehicles/' + this.vehicleID)
-      .subscribe((result: any) => {
+  async fetchVehicleByID() {
+    let result:any = await this.apiService.getData('vehicles/' + this.vehicleID).toPromise();
+      // .subscribe((result: any) => {
         this.editDisabled = true;
         result = result.Items[0];
         this.vehicleIdentification = result.vehicleIdentification;
@@ -946,7 +1028,7 @@ export class AddVehicleNewComponent implements OnInit {
         $('#turningParametersValue').html(
           this.settings.turningParams
         );
-      });
+      // });
 
   }
   async onUpdateVehicle() {
