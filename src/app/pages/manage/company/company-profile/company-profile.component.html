@@ -51,6 +51,20 @@
                         <td class="back-color-gray">Fax</td>
                       <td>{{carriers.fax ? carriers.fax : '-'}}</td>
                     </tr>
+                    <tr *ngIf="carriers.findingWay=='Referral'">
+                      
+                      <td class="back-color-gray">Referral Name</td>
+                      <td >{{carriers.referral.name ? carriers.referral.name : '-'}}</td>
+                      <td class="back-color-gray">Referral Company</td>
+                      <td>{{carriers.referral.company ? carriers.referral.company : '-'}}</td>
+                    </tr>
+                    <tr *ngIf="carriers.findingWay=='Referral'">
+
+                      <td class="back-color-gray">Referral Email</td>
+                      <td>{{carriers.referral.email ? carriers.referral.email : '-'}}</td>
+                        <td class="back-color-gray">Referral Phone</td>
+                      <td>{{carriers.referral.phone ? carriers.referral.phone : '-'}}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

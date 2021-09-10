@@ -615,7 +615,7 @@ export class NewAddressBookComponent implements OnInit {
               aTax: false,
               wsib: false,
               wsibAcc: '',
-              wsibExp: '',
+              wsibExp: null,
               banks: [{
                 bName: '',
                 acc: '',

@@ -51,6 +51,12 @@ export class EditProfileComponent implements OnInit {
   phone = '';
   fax = '';
   uploadedLogo = '';
+  referral={
+    name:'',
+    company:'',
+    phone:'',
+    email:''
+  }
   fleets = {
     curtainSide: 0,
     dryVans: 0,
@@ -168,6 +174,7 @@ export class EditProfileComponent implements OnInit {
         this.userName = this.carriers.userName;
         this.carrierName = this.carriers.carrierName;
         this.password = this.carriers.password,
+        
           // carrierBusinessName = '';
           this.findingWay = this.carriers.findingWay;
         this.firstName = this.carriers.firstName;
@@ -187,6 +194,12 @@ export class EditProfileComponent implements OnInit {
           trucks: this.carriers.fleets.trucks,
         };
         this.addressDetails = this.carriers.addressDetails;
+        if(this.carriers.referral){
+          this.referral.name=this.carriers.referral.name
+          this.referral.email=this.carriers.referral.email
+          this.referral.phone=this.carriers.referral.phone
+          this.referral.company=this.carriers.referral.company  
+        }
         if (this.carriers.addressDetails !== undefined) {
           for (let a = 0; a < this.carriers.addressDetails.length; a++) {
             const countryCode = this.carriers.addressDetails[a].countryCode;
@@ -548,6 +561,9 @@ export class EditProfileComponent implements OnInit {
         uploadedLogo: this.uploadedLogo
 
       };
+      if(this.findingWay=="Referral"){
+        data["referral"]=this.referral
+      }
       if (data.bizCountry === 'CA') {
         data.MC = null;
         data.DOT = null;

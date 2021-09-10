@@ -17,3 +17,8 @@
 .h5height{
     min-height: 43px;
 }
+.assign--trips__scroll {
+    max-height: 650px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

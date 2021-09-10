@@ -30,13 +30,13 @@
               </div>
            </div>
             <div class="col-md-2 col-lg-2">
-              <button type="button" class="btn btn-sm btn-success" (click)="searchFilter()">Search</button>
-              <button type="button" class="btn btn-sm btn-success ml-3" (click)="resetFilter()">Reset</button>
+              <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch || disableSearchOrder" (click)="searchFilter()">Search</button>
+              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch || disableSearchOrder" (click)="resetFilter()">Reset</button>
             </div>
             <div class="col-md-5 col-lg-5 text-right pr-1">
-              <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+              <button [disabled]="disableSearch || disableSearchOrder" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm mr-2">
                 <i class="fas fa-sync"></i>
-              </a>
+              </button>
               <a routerLink="/accounts/invoices/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
                   class="fas fa-plus"></i> Add Invoice</a>
               <!-- <a routerLink="/accounts/invoices/add-load-invoice" class="btn btn-success btn-sm ml-2"
@@ -251,7 +251,7 @@
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.finalAmount | number : '1.2-2'}} {{inv.invCur}}
                             </td>
@@ -376,7 +376,7 @@
                             <td class="loadid cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">-</td>
-                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}}{{inv.invCur}}
+                            <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.taxAmount | number : '1.2-2'}} {{inv.invCur}}
                             </td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">{{inv.finalAmount | number : '1.2-2'}}</td>
                             <td class="cursorpoint" (click)="routeFn(inv.invID, inv.invType)">

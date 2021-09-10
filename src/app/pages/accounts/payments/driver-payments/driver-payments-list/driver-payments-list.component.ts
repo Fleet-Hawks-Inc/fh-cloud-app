@@ -27,6 +27,7 @@ export class DriverPaymentsListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
@@ -69,9 +70,11 @@ export class DriverPaymentsListComponent implements OnInit {
       this.accountService.getData(`driver-payments/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.disableSearch = false;
         }
 
         if(result.length > 0) {
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -104,6 +107,7 @@ export class DriverPaymentsListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.type !== null || this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -129,6 +133,7 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.payments = [];
     this.filter = {
@@ -148,6 +153,7 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.payments = [];
     this.filter = {

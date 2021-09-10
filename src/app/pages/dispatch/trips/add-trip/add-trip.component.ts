@@ -13,7 +13,6 @@ import * as moment from "moment";
 import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { v4 as uuidv4 } from 'uuid';
-import { split } from 'lodash';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -26,6 +25,7 @@ declare var $: any;
 })
 export class AddTripComponent implements OnInit {
     @ViewChild('assignAssetModel', { static: true }) assignAssetModel: TemplateRef<any>;
+    @ViewChild('assignConfirmationModal', { static: true }) assignConfirmationModal: TemplateRef<any>;
 
     newCoords = [];
     public searchResults: any;
@@ -218,6 +218,7 @@ export class AddTripComponent implements OnInit {
 
     tripModalRef: any;
     manualAssetRef: any;
+    assignConfirmModal: any;
 
     async ngOnInit() {
 
@@ -475,7 +476,7 @@ export class AddTripComponent implements OnInit {
         $(".codriverClass").removeClass('td_border');
     }
 
-    showAssetModal(type, index) { 
+    showAssetModal(type, index) {
         this.emptyAsigneeModal();
 
         if (type === 'add') {
@@ -510,26 +511,30 @@ export class AddTripComponent implements OnInit {
                 this.tempTextFieldValues.coDriverName = editRowValues.coDriverName;
                 this.tempTextFieldValues.coDriverUsername = editRowValues.coDriverUsername;
                 this.tempTextFieldValues.trailerName = editRowValues.trailerName;
-
-                $("#veh_" + editRowValues.vehicleID).addClass('td_border');
-                $("#drivr_" + editRowValues.driverID).addClass('td_border');
-                $("#codrivr_" + editRowValues.coDriverID).addClass('td_border');
-
-                // set selected asset values
-                if (editRowValues.trailer != undefined) {
-                    for (let i = 0; i < editRowValues.trailer.length; i++) {
-                        const element = editRowValues.trailer[i];
-                        this.informationAsset.push(element.id);
-
-                        let objj = {
-                            id: element.id,
-                            name: element.name
-                        }
-                        this.tempTextFieldValues.trailer.push(objj);
-                        $("#asset_" + element.id).addClass('td_border');
-                    }
-                }
                 this.openTripAssignModel();
+                setTimeout(() => {
+                    $("#veh_" + editRowValues.vehicleID).addClass('td_border');
+                    $("#drivr_" + editRowValues.driverID).addClass('td_border');
+                    $("#codrivr_" + editRowValues.coDriverID).addClass('td_border');
+
+                    // set selected asset values
+                    if (editRowValues.trailer != undefined) {
+                        for (let i = 0; i < editRowValues.trailer.length; i++) {
+                            const element = editRowValues.trailer[i];
+                            this.informationAsset.push(element.id);
+
+                            let objj = {
+                                id: element.id,
+                                name: element.name
+                            }
+                            this.tempTextFieldValues.trailer.push(objj);
+                            $("#asset_" + element.id).addClass('td_border');
+                        }
+                    }
+                }, 1000);
+
+
+
                 // $('#assetModal').modal('show');
             }
         }
@@ -889,7 +894,7 @@ export class AddTripComponent implements OnInit {
             } else {
                 $("#cell11").prop('disabled', false);
             }
-            this.openTripAssignModel();
+            this.tripModalRef.close();
             //$('#assetModal').modal('hide');
         } else if (this.tempTextFieldValues.type === 'edit') {
             let index = this.tempTextFieldValues.index;
@@ -931,13 +936,12 @@ export class AddTripComponent implements OnInit {
                         element.disablecarr = true;
                     }
                 }
-
-                $("#assignConfirmationModal").modal('hide');
+                this.assignConfirmModal.close();
             }
 
             this.getStateWiseMiles();
             this.emptyAssetModalFields();
-            this.modalService.open(this.assignAssetModel);
+            this.tripModalRef.close();
             // $('#assetModal').modal('hide');
         }
     }
@@ -975,9 +979,9 @@ export class AddTripComponent implements OnInit {
             this.tempTextFieldValues.vehicleID = $event.vehicleID;
             $(".vehicleClass").removeClass('td_border');
             $("#veh_" + $event.vehicleID).addClass('td_border');
-            
+
             $('.trips-vehicle__listing').animate({scrollTop: $("#veh_" + $event.vehicleID).position().top}, "slow");
-            
+
         }
     }
 
@@ -1024,7 +1028,7 @@ export class AddTripComponent implements OnInit {
                 $(".codriverClass").removeClass('td_border');
                 $("#codrivr_" + $event.driverID).addClass('td_border');
                 $('.trips-codrivers__listing').animate({scrollTop: $("#codrivr_" + $event.driverID).position().top}, "slow");
-              
+
             }
         }
     }
@@ -1054,7 +1058,7 @@ export class AddTripComponent implements OnInit {
                     let lastItem = $event[$event.length - 1];
                     $('.trips-assets__listing').animate({scrollTop: $("#asset_" + lastItem  .assetID).position().top}, "slow");
                 }
-                
+
             } else {
                 let arayy = [];
                 $("#asset_" + $event.assetID).addClass('td_border');
@@ -1075,7 +1079,7 @@ export class AddTripComponent implements OnInit {
         }
     }
 
-    async createTrip() {
+    async onAddTrip() {
         this.hideErrors();
         this.submitDisabled = true;
 
@@ -1430,7 +1434,7 @@ export class AddTripComponent implements OnInit {
                 this.trips[index]['lat'] = result.position.lat;
                 this.trips[index]['lng'] = result.position.lng;
             }
-            
+
 
             this.actualMiles = 0;
             await this.getMiles()
@@ -1442,7 +1446,7 @@ export class AddTripComponent implements OnInit {
                 this.textFieldValues.lat = result.position.lat;
                 this.textFieldValues.lng = result.position.lng;
             }
-           
+
         }
         this.searchResults = false;
         $('td').removeClass('show-search__result');
@@ -1451,7 +1455,7 @@ export class AddTripComponent implements OnInit {
 
     async getAddressDetail(id) {
         let result = await this.apiService
-        .getData(`pcMiles/detail/${id}`).toPromise();  
+        .getData(`pcMiles/detail/${id}`).toPromise();
         return result;
     }
 
@@ -1588,7 +1592,7 @@ export class AddTripComponent implements OnInit {
             })
     }
 
-    async updateTrip() {
+    async onUpdateTrip() {
         this.hideErrors();
         this.submitDisabled = true;
         this.tripData.orderId = this.OrderIDs;
@@ -2086,7 +2090,16 @@ export class AddTripComponent implements OnInit {
             this.changeMapRoute('route')
         }
     }
-
+    scrollError() {
+      let errorList;
+      setTimeout(() => {
+        errorList = document.getElementsByClassName('error').length;
+        if (errorList > 0) {
+          let topPosition: any = $('.error').parent('div').offset().top;
+          window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+        }
+      }, 1500);
+    }
     async getStateWiseMiles() {
         let allLatLng = [];
         let vehicleIDs = [];
@@ -2134,7 +2147,13 @@ export class AddTripComponent implements OnInit {
     }
 
     showConfirmationPopup() {
-        $("#assignConfirmationModal").modal('show');
+        let ngbModalOptions: NgbModalOptions = {
+            backdrop : 'static',
+            keyboard : false,
+            windowClass: 'assign-confirm__main'
+        };
+        this.tripModalRef.close();
+        this.assignConfirmModal = this.modalService.open(this.assignConfirmationModal, ngbModalOptions);
     }
 
     locationModel(type, index = '') {
@@ -2283,7 +2302,7 @@ export class AddTripComponent implements OnInit {
     }
 
     addManualAsset() {
-        
+
         this.submitDisabled = true;
         this.tripModalRef.close();
         this.apiService.postData('assets/addManualAsset', this.assetData).subscribe({
@@ -2327,7 +2346,7 @@ export class AddTripComponent implements OnInit {
             windowClass: 'trips-assign__main'
           };
         this.tripModalRef = this.modalService.open(this.assignAssetModel, ngbModalOptions);
-        
+
     }
 }
 
