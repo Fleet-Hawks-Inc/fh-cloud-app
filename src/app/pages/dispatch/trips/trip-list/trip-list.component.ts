@@ -164,6 +164,7 @@ export class TripListComponent implements OnInit {
   }
   settlement;
   cancelOrd = 'no';
+  statDisabled = false;
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService,
     private spinner: NgxSpinnerService,) { }
@@ -515,7 +516,9 @@ export class TripListComponent implements OnInit {
       settlement: this.settlement,
       cancelOrder: this.cancelOrd,
     }
+    this.statDisabled = true;
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
+      this.statDisabled = false;
       if(result) {
         if(this.activeTab == 'all') {
           this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
@@ -548,6 +551,7 @@ export class TripListComponent implements OnInit {
         $("#assignConfirmationModal").modal('hide');
         this.toastr.success('Trip status updated successfully');
       } else {
+        this.statDisabled = false;
         this.toastr.error('Internal Server error');
       }
     })

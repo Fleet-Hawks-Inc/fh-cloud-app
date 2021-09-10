@@ -156,7 +156,8 @@ export class OrderDetailComponent implements OnInit {
   invoiceData: any;
   today: any;
   cusAddressID: string;
-  isInvoiced: boolean;
+  isInvoiced: boolean = false;
+  isModalShow: boolean = false;
   generateBtnDisabled = false;
   errors = {};
   response: any = '';
@@ -430,7 +431,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
 
-  generatePDF() {
+  async generate() {
+    this.downloadpdf();
+    $('#previewInvoiceModal').modal('hide');
+  }
+
+  async downloadpdf() {
     var data = document.getElementById('print_wrap');
 
     html2pdf(data, {
@@ -441,13 +447,16 @@ export class OrderDetailComponent implements OnInit {
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
     });
-    this.saveInvoice();
-    this.fetchOrder();
-    this.invoiceGenerated();
-
   }
 
-  saveInvoice() {
+  async generatePDF() {
+    await this.downloadpdf();
+    await this.saveInvoice();
+    await this.invoiceGenerated();
+    await this.fetchOrder();
+
+  }
+  async saveInvoice() {
     this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
     this.invoiceData[`invNo`] = this.orderNumber;
@@ -490,7 +499,7 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  invoiceGenerated() {
+  async invoiceGenerated() {
     this.invGenStatus = true;
     this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }
