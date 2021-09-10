@@ -208,7 +208,7 @@
                                                                 attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                 <a class="dropdown-item"
                                                                     routerLink="/dispatch/trips/edit-trip/{{ trip.tripID }}">Edit</a>
-                                                                <a class="dropdown-item" href="javascript:;"
+                                                                <a class="dropdown-item" *ngIf="trip.tripStatus === 'confirmed'" href="javascript:;"
                                                                     (click)="deleteTrip(trip)">Delete</a>
                                                                 <a class="dropdown-item" href="javascript:;" *ngIf="trip.showStatus"
                                                                     (click)="openStatusModal(trip.tripID, i)">Update Status</a>
