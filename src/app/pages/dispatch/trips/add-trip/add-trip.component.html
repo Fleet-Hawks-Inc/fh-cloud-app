@@ -1273,7 +1273,7 @@
           </div>
       </div>
       <div class="modal-footer">
-          <button class="btn btn-default mr-2">Close</button>
+          <button class="btn btn-default mr-2" (click)="modal.dismiss()">Close</button>
           <button type="submit" [disabled]="submitDisabled" class="btn btn-success">Submit</button>
       </div>
   </form>
