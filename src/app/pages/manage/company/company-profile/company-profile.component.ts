@@ -49,6 +49,12 @@ export class CompanyProfileComponent implements OnInit {
     this.apiService.getData(`carriers/${this.companyID}`)
         .subscribe((result: any) => {
           this.carriers = result.Items[0];
+          //console.log(Object.keys(this.carriers.referral.name).length)
+          // console.log("name" in this.carriers.referral)
+          //console.log(this.carriers.haswOwnProperty('referral'))
+          if(!this.carriers.referral && this.carriers.findingWay=='Referral'){
+            this.carriers.referral={}
+          }
           if(result.Items.length > 0) {
             this.showData = true;
           }
