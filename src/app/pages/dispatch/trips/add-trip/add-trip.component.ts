@@ -2092,7 +2092,6 @@ export class AddTripComponent implements OnInit {
         }
     }
     scrollError() {
-      console.log('hello');
       let errorList;
       setTimeout(() => {
         errorList = document.getElementsByClassName('error').length;
