@@ -18,7 +18,8 @@
                 </div>
             </header>
 
-            <form class="form-horizontal form-bordered" method="get" id="form_" #tripForm="ngForm">
+            <form class="form-horizontal form-bordered" method="get" id="form_" #tripForm="ngForm"
+             (ngSubmit)="tripID ? (tripForm.form.valid ? onUpdateTrip() : scrollError()): (tripForm.form.valid ? onAddTrip() : scrollError())">
                 <section class="m-2">
                     <div class="row mb-3">
                         <div class="col-lg-12">
@@ -45,8 +46,8 @@
                                                 </label>
                                                 <input type="text" class="form-control" (click)="showMOdal()"
                                                     [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234"
-                                                    autocomplete="off" #order="ngModel" required>
-                                                <div *ngIf="order.invalid && (order.dirty || order.touched)"
+                                                    autocomplete="off" #order="ngModel" required  [ngClass]="{ 'error' : tripForm.submitted && order.invalid }">
+                                                <div *ngIf="order.invalid && tripForm.submitted"
                                                     class="text-danger">
                                                     <div>
 
@@ -125,9 +126,9 @@
                                                 <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
                                                     placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                                     #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                                    #tDate="ngModel" required [minDate]="dateMinLimit"
+                                                    #tDate="ngModel" required [minDate]="dateMinLimit" [ngClass]="{ 'error' : tripForm.submitted && tDate.invalid }"
                                                     [maxDate]="futureDatesLimit">
-                                                <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)"
+                                                <div *ngIf="tDate.invalid && tripForm.submitted"
                                                     class="text-danger">
                                                     <div>
 
@@ -418,7 +419,7 @@
                                                                 (keyup)="searchTerm.next($event);"
                                                                 [(ngModel)]="textFieldValues.locationName"
                                                                 placeholder="Start typing to get location suggestions" *ngIf="!textFieldValues.locMan">
-                                                            
+
                                                             <input type="text" id="cell4" name="locationName" [(ngModel)]="textFieldValues.locationName"
                                                                 class="form-control newRow" [(ngModel)]="textFieldValues.locationName"
                                                                 placeholder="Enter location from popup" *ngIf="textFieldValues.locMan" (click)="locationModel('add','')" readonly>
@@ -766,11 +767,9 @@
 
                     <div class="form-group row text-right mt-3">
                       <div class="col-lg-12 pr-3">
-                          <button type="button" class="mt-1 mr-2 btn btn-default" (click)="cancel()">Cancel</button>
-                          <button (click)="createTrip()" *ngIf="!tripID" class="btn btn-success mt-1"
-                              [disabled]="!tripForm.form.valid || submitDisabled">Create Trip</button>
-                          <button (click)="updateTrip()" *ngIf="tripID" class="btn btn-success mt-1"
-                              [disabled]="!tripForm.form.valid || submitDisabled">Update Trip</button>
+                          <button type="button" class="mt-1 mr-2 cus-btn-padd btn btn-default" (click)="cancel()">Cancel</button>
+                          <button type="submit" *ngIf="!tripID" [disabled]="submitDisabled" class="cus-btn-padd btn btn-success" >Save</button>
+                          <button type="submit"  *ngIf="tripID" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
                       </div>
                   </div>
                 </section>
@@ -977,9 +976,9 @@
                </div>
                 <div class="card-body text-dark table-scroll-y p-0 scrolling-div" data-select2-id="279">
                     <table class="table table-bordered table-responsive-lg table-striped mb-0" data-select2-id="278">
-                        
+
                         <tbody>
-                            
+
                             <tr>
                                 <td width="25%">
                                    <div class="assign--trips__scroll trips-vehicle__listing">
@@ -1158,7 +1157,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Address
                                                     <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                     </label>
-                                                <input type="text" class="form-control" name="address1" [(ngModel)]="locObj.addr" #aaddr="ngModel" required 
+                                                <input type="text" class="form-control" name="address1" [(ngModel)]="locObj.addr" #aaddr="ngModel" required
                                                     placeholder="eg. 71,New Highway Road, Ontario, Canada">
 
                                                 <div *ngIf="aaddr.invalid && (aaddr.dirty || aaddr.touched)" class="text-danger">
@@ -1174,7 +1173,7 @@
                                             <div class="col-lg-6">
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Country <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode" #adrCountry="ngModel" required 
+                                                <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode" #adrCountry="ngModel" required
                                                     name="countryCode" class="form-control populate" placeholder="Select Country">
                                                     <ng-option value="CA">Canada</ng-option>
                                                     <ng-option value="US">United States</ng-option>
@@ -1191,7 +1190,7 @@
                                                 <label class="control-label font-weight-bold text-lg-right pt-2">Select
                                                     Province/State<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <ng-select (change)="getCities($event, locObj.cCode)" [(ngModel)]="locObj.sCode" #adrState="ngModel" required 
+                                                <ng-select (change)="getCities($event, locObj.cCode)" [(ngModel)]="locObj.sCode" #adrState="ngModel" required
                                                     name="stateCode" class="form-control populate" placeholder="Select State">
                                                     <ng-option *ngFor="let state of states" value="{{ state.stateCode }}">
                                                         {{ state.stateName }}
