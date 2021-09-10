@@ -28,6 +28,7 @@ export class IncomeListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(private accountService: AccountService, private apiService: ApiService, private router: Router, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -46,10 +47,11 @@ export class IncomeListComponent implements OnInit {
       this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
         if(result.length == 0) {
+          this.disableSearch = false;
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if(result.length > 0) {
-         // this.searchDisabled = false;
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -115,7 +117,7 @@ export class IncomeListComponent implements OnInit {
 
   searchFilter() {
     if(this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
-     // this.searchDisabled = true;
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -141,6 +143,7 @@ export class IncomeListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       amount: '',
@@ -160,6 +163,7 @@ export class IncomeListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       amount: '',

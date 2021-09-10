@@ -24,6 +24,7 @@ export class EmployeePaymentListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor( private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
   ngOnInit() {
@@ -51,9 +52,11 @@ export class EmployeePaymentListComponent implements OnInit {
      }
       this.accountService.getData(`employee-payments/paging?paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if(result.length === 0) {
+          this.disableSearch = false;
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         if(result.length > 0) {
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -74,6 +77,7 @@ export class EmployeePaymentListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -99,6 +103,7 @@ export class EmployeePaymentListComponent implements OnInit {
   }
 
   resetFilter() {
+      this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.filter = {
           startDate: null,
@@ -117,6 +122,7 @@ export class EmployeePaymentListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
         startDate: null,

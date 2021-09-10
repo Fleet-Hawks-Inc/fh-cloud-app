@@ -49,6 +49,8 @@ export class ChartOfAccountsComponent implements OnInit {
   submitDisabled = false;
   deactivatePredefined = true;
   addPredefined = false;
+  disableSearch = false;
+  loaded = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
@@ -91,6 +93,7 @@ export class ChartOfAccountsComponent implements OnInit {
   }
   searchAccounts() {
     if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
+      this.disableSearch = true;
       this.accounts = [];
       this.lastItemSK = '';
       this.dataMessage = Constants.FETCHING_DATA;
@@ -98,6 +101,7 @@ export class ChartOfAccountsComponent implements OnInit {
     }
   }
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       actType: null,
@@ -127,10 +131,11 @@ export class ChartOfAccountsComponent implements OnInit {
       this.accountService.getData(`chartAc/paging?actName=${name}&actType=${type}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
+            this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if (result.length > 0) {
-            //  this.accounts = result;
+            this.disableSearch = false;
             result.map((v) => {
               v.first = v.actName.substring(0, v.actName.indexOf(' '));
               v.last = v.actName.substring(v.actName.indexOf(' ') + 1, v.actName.length);
@@ -141,6 +146,7 @@ export class ChartOfAccountsComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
+            this.loaded = true;
           }
         });
     }
@@ -149,7 +155,9 @@ export class ChartOfAccountsComponent implements OnInit {
     }
   }
   onScroll() {
+    if (this.loaded) {
     this.fetchAccounts();
+    }
   }
   checkPredefinedAccounts() {
     this.accountService.getData(`chartAc/get/internalID/list/all`).subscribe((res) => {
@@ -338,6 +346,7 @@ export class ChartOfAccountsComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       actType: null,

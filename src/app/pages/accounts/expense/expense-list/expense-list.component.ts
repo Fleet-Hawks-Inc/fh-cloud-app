@@ -27,6 +27,7 @@ export class ExpenseListComponent implements OnInit {
   }
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
 
   ngOnInit() {
@@ -44,8 +45,10 @@ export class ExpenseListComponent implements OnInit {
       this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.disableSearch = false;
         }
         if (result.length > 0) {
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -92,6 +95,7 @@ export class ExpenseListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate !== '' &&
         this.filter.endDate === ''
@@ -117,6 +121,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       amount: '',
@@ -137,6 +142,7 @@ export class ExpenseListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       amount: '',
