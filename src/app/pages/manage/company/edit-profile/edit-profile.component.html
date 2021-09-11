@@ -59,6 +59,54 @@
                           placeholder="johnsmith" #uName="ngModel" minlength="6"  pattern="^[^\.][a-z0-9\.]+[^\.]$">
                       </div>
                     </div>
+                    <div *ngIf="findingWay=='Referral'" class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Name<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <input id="referralName" type="text" class="form-control" [(ngModel)]="referral.name" name="referralName" [ngClass]="{ 'error' : cForm.submitted && referralName.invalid }"
+                        placeholder="eg. John" #referralName="ngModel" required>
+                      <div *ngIf="referralName.invalid && cForm.submitted" class="text-danger">
+                        <div *ngIf="referralName.errors.required">
+                          Referral Name is required.
+                        </div>
+                        
+                      </div>
+                        
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Company<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralCompany" type="text" class="form-control" [(ngModel)]="referral.company" name="referralCompany" 
+                        placeholder="eg. FleetHawks" #referralCompany="ngModel" >
+                      </div>
+
+                    </div>
+                    <div *ngIf="findingWay=='Referral'" class="row">
+                            
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Contact<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralPhone" type="text" class="form-control" [(ngModel)]="referral.phone" name="referralPhone" 
+                        placeholder="eg. 5246987805" #referralPhone="ngModel" pattern="^[0-9]{10}$" [ngClass]="{ 'error' : cForm.submitted && referralPhone.invalid }" >
+                        <div *ngIf="referralPhone.invalid && cForm.submitted" class="text-danger">
+                          <div *ngIf="referralPhone.errors.pattern">
+                            Enter valid phone number eg. 2234567891
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Email<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralEmail" type="text" class="form-control" [(ngModel)]="referral.email" name="referralEmail" 
+                        placeholder="eg. john@doe.com" #referralEmail="ngModel"pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$" [ngClass]="{ 'error' : cForm.submitted && referralEmail.invalid }" >
+                      </div>
+                      <div *ngIf="referralEmail.invalid && cForm.submitted" class="text-danger">
+                        <div *ngIf="referralEmail.errors.pattern">
+                          Enter valid email eg. johnsmith@test.com.
+                        </div>
+                      </div>
+
+                    </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">

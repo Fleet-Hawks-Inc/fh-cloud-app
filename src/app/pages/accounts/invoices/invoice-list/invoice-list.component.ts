@@ -46,6 +46,9 @@ export class InvoiceListComponent implements OnInit {
   lastItemOrderSK = '';
   loaded = false;
   loadedOrder = false;
+  disableSearch = false;
+  disableSearchOrder = false;
+
   constructor(private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
@@ -135,8 +138,8 @@ export class InvoiceListComponent implements OnInit {
     }
     if (this.lastItemSK !== 'end') {
       if (this.filter.invNo !== null && this.filter.invNo !== '') {
-         searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
-         searchParam = searchParam.toUpperCase();
+        searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+        searchParam = searchParam.toUpperCase();
       } else {
         searchParam = null;
       }
@@ -146,11 +149,13 @@ export class InvoiceListComponent implements OnInit {
           if (result.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.loaded = true;
+            this.disableSearch = false;
             this.categorizeInvoices(result);
           }
           if (result.length > 0) {
             for (let index = 0; index < result.length; index++) {
               const element = result[index];
+              this.disableSearch = false;
               element.invStatus = element.invStatus.replace('_', ' ');
               this.invoices.push(element);
             }
@@ -187,11 +192,13 @@ export class InvoiceListComponent implements OnInit {
       this.accountService.getData(`order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
+            this.disableSearchOrder = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.loadedOrder = true;
             this.categorizeOrderInvoices(result);
           }
           if (result.length > 0) {
+            this.disableSearchOrder = false;
             for (let index = 0; index < result.length; index++) {
               const element = result[index];
               element.invStatus = element.invStatus.replace('_', ' ');
@@ -212,7 +219,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   onScroll() {
-    if(this.loaded && this.loadedOrder) {
+    if (this.loaded && this.loadedOrder) {
       this.getInvoices();
     }
   }
@@ -306,6 +313,8 @@ export class InvoiceListComponent implements OnInit {
 
   voidInvoice(invID: string) {
     if (confirm('Are you sure you want to void?') === true) {
+      this.disableSearch = true;
+      this.disableSearchOrder = true;
       this.accountService.deleteData(`invoices/manual/${invID}`).subscribe((result) => {
         if (result !== undefined) {
           this.lastItemSK = '';
@@ -354,6 +363,8 @@ export class InvoiceListComponent implements OnInit {
   }
   voidOrderInvoice(invID: string, orderID: string, orderNo: any) {
     if (confirm('Are you sure you want to void?') === true) {
+      this.disableSearch = true;
+      this.disableSearchOrder = true;
       this.accountService.deleteData(`order-invoice/delete/${invID}`).subscribe(() => {
         this.invGenStatus = false;
         this.apiService.getData(`orders/invoiceStatus/${orderID}/${orderNo}/${this.invGenStatus}`).subscribe((res) => {
@@ -394,30 +405,32 @@ export class InvoiceListComponent implements OnInit {
   searchFilter() {
     this.lastItemSK = '';
     if (this.filter.endDate !== null || this.filter.startDate !== null || this.filter.invNo !== null) {
-     // this.dataMessage = Constants.FETCHING_DATA;
-     if (
-      this.filter.startDate !== "" &&
-      this.filter.endDate === ""
-    ) {
-      this.toaster.error("Please select both start and end dates.");
-      return false;
-    } else if (
-      this.filter.startDate === "" &&
-      this.filter.endDate !== ""
-    ) {
-      this.toaster.error("Please select both start and end dates.");
-      return false;
-    } else if (this.filter.startDate > this.filter.endDate) {
-      this.toaster.error("Start date should be less than end date");
-      return false;
-    } else {
-      this.invoices = [];
-      this.orderInvoices = [];
-      this.lastItemSK = '';
-      this.lastItemOrderSK = '';
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.getInvoices();
-    }
+      this.disableSearch = true;
+      this.disableSearchOrder = true;
+      // this.dataMessage = Constants.FETCHING_DATA;
+      if (
+        this.filter.startDate !== "" &&
+        this.filter.endDate === ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (
+        this.filter.startDate === "" &&
+        this.filter.endDate !== ""
+      ) {
+        this.toaster.error("Please select both start and end dates.");
+        return false;
+      } else if (this.filter.startDate > this.filter.endDate) {
+        this.toaster.error("Start date should be less than end date");
+        return false;
+      } else {
+        this.invoices = [];
+        this.orderInvoices = [];
+        this.lastItemSK = '';
+        this.lastItemOrderSK = '';
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.getInvoices();
+      }
 
     }
   }
@@ -428,6 +441,8 @@ export class InvoiceListComponent implements OnInit {
     }
   }
   resetFilter() {
+    this.disableSearch = true;
+    this.disableSearchOrder = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,
@@ -457,6 +472,8 @@ export class InvoiceListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
+    this.disableSearchOrder = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       startDate: null,

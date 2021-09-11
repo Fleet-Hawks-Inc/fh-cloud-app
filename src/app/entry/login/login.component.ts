@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../../services';
+import { ApiService, ListService } from '../../services';
 import { AuthService } from '../../services';
 import { Role, User } from '../../models/objects';
 import { Auth } from 'aws-amplify';
@@ -32,6 +32,12 @@ export class LoginComponent implements OnInit {
   fieldTextType1: boolean;
   cpwdfieldTextType:boolean;
 
+  referral:any={
+    name:'',
+    company:'',
+    email:'',
+    phone:''
+  };
   submitDisabled = false;
   submitCarrierDisabled = false;
   passwordValidation = {
@@ -56,7 +62,8 @@ confirmPassword:any;
   constructor(private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
-    private toaster: ToastrService) { }
+    private toaster: ToastrService,
+    private listService: ListService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -182,6 +189,7 @@ confirmPassword:any;
             localStorage.setItem('signOut', 'false'); //trigger flag
             localStorage.setItem('accessToken', jwt);//save token in session storage
             await this.router.navigate(['/Map-Dashboard']);
+            this.listService.triggerModal('');
             localStorage.setItem('user', JSON.stringify(user));
           }
         }
@@ -263,6 +271,9 @@ confirmPassword:any;
       fax:this.fax,
       findingWay:this.findingWay
     }
+    if(this.findingWay=="Referral"){
+      data.referral=this.referral
+    }
     try{
     this.apiService.postData('carriers/onBoard',data).subscribe({
       complete:()=>{
@@ -288,7 +299,7 @@ confirmPassword:any;
           });
       },
       next:(res)=>{
-        this.toaster.success("Carrier is Created successfully")
+        $('#signUpMessage').modal('show');
         this.cancel();
         this.submitCarrierDisabled = false;
         this.firstName = null;

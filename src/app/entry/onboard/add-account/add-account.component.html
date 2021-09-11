@@ -68,91 +68,55 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div class="row">
+                    <div *ngIf="findingWay=='Referral'" class="row">
                       <div class="col-lg-5">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Password<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <div class="input-group">
-                          <input id="pd" [(ngModel)]="password" name="password" #pwd="ngModel" required
-                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
-                            [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
-                            placeholder="Password" class="form-control" />
-                          <div class="input-group-append">
-                            <span class="input-group-text eye">
-                              <i class="fa" [ngClass]="{
-                                      'fa-eye-slash': !fieldTextType,
-                                      'fa-eye': fieldTextType
-                                    }" (click)="toggleFieldTextType()"></i>
-                            </span>
-                          </div>
-
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Name<span
+                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                      <input id="referralName" type="text" class="form-control" [(ngModel)]="referral.name" name="referralName" [ngClass]="{ 'error' : cForm.submitted && referralName.invalid }"
+                        placeholder="eg. John" #referralName="ngModel" required>
+                      <div *ngIf="referralName.invalid && cForm.submitted" class="text-danger">
+                        <div *ngIf="referralName.errors.required">
+                          Referral Name is required.
                         </div>
-                        <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
-                          <div *ngIf="pwd.errors.required">
-                            Password is required.
-                          </div>
-                          <div *ngIf="pwd.errors.pattern">
-                            <div class="row">
-                              <div class="col-lg-12">
-                                <p class="text-dark pt-2  mb-1"> <span class="pr-1"
-                                    [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                    <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
-                                    </i></span> 8 characters minimum</p>
-                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
-                                    [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                    <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
-                                    </i></span> atleast 1 number</p>
-
-                              </div>
-                              <div class="col-lg-12">
-                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
-                                    [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                    <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
-                                    </i></span> atleast 1 uppercase</p>
-
-                                <p class="text-dark pt-2 mb-1 "> <span class="pr-1"
-                                    [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                      [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
-                                    </i></span> atleast 1 lowercase</p>
-
-                              </div>
-                              <div class="col-lg-12">
-                                <p class="text-dark pt-2 mb-1 "><span class="pr-1"
-                                    [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                                      [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
-                                  atleast 1 special character(!@#$%^&*.-)</p>
-
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
+                        
+                      </div>
+                        
                       </div>
                       <div class="col-lg-5">
-                        <label class="control-label  font-weight-bold text-lg-right pt-2">Confirm Password<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <div class="input-group">
-                          <input id="cnf" [(ngModel)]="confirmPassword" name="confirmPassword" #cpwd1="ngModel" required
-                            [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
-                            class="form-control" />
-                          <div class="input-group-append">
-                            <span class="input-group-text eye">
-                              <i class="fa" [ngClass]="{
-                                      'fa-eye-slash': !cpwdfieldTextType,
-                                      'fa-eye': cpwdfieldTextType
-                                    }" (click)="togglecpwdfieldTextType()"></i>
-                            </span>
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Company<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralCompany" type="text" class="form-control" [(ngModel)]="referral.company" name="referralCompany" 
+                        placeholder="eg. FleetHawks" #referralCompany="ngModel" >
+                      </div>
+
+                    </div>
+                    <div *ngIf="findingWay=='Referral'" class="row">
+                            
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Contact<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralPhone" type="text" class="form-control" [(ngModel)]="referral.phone" name="referralPhone" 
+                        placeholder="eg. 5246987805" #referralPhone="ngModel" pattern="^[0-9]{10}$" [ngClass]="{ 'error' : cForm.submitted && referralPhone.invalid }" >
+                        <div *ngIf="referralPhone.invalid && cForm.submitted" class="text-danger">
+                          <div *ngIf="referralPhone.errors.pattern">
+                            Enter valid phone number eg. 2234567891
                           </div>
-                        </div>
-                        <div *ngIf="cpwd1.invalid && (cpwd1.dirty || cpwd1.touched)" class="text-danger">
-                          <div *ngIf="cpwd1.errors.required">
-                            Confirm password is required.
-                          </div>
-                          <div *ngIf="cpwd1.errors.mustMatch">Passwords must match</div>
                         </div>
                       </div>
-                    </div>-->
+                      <div class="col-lg-5">
+                        <label class="control-label  font-weight-bold text-lg-right pt-2">Referral Email<span
+                          class="mandfield text-2 ml-1"></span></label>
+                      <input id="referralEmail" type="text" class="form-control" [(ngModel)]="referral.email" name="referralEmail" 
+                        placeholder="eg. john@doe.com" #referralEmail="ngModel"pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$" [ngClass]="{ 'error' : cForm.submitted && referralEmail.invalid }" >
+                      </div>
+                      <div *ngIf="referralEmail.invalid && cForm.submitted" class="text-danger">
+                        <div *ngIf="referralEmail.errors.pattern">
+                          Enter valid email eg. johnsmith@test.com.
+                        </div>
+                      </div>
 
+                    </div>
+                   
 
 
                   </div>
