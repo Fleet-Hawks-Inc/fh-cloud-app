@@ -71,7 +71,7 @@
     "ngx-fs": "0.0.1",
     "ngx-infinite-scroll": "^8.0.2",
     "ngx-material-timepicker": "^4.0.2",
-    "ngx-mqtt": "^6.14.0",
+    "ngx-mqtt": "^9.0.5",
     "ngx-slick-carousel": "^0.5.1",
     "ngx-spinner": "11.0.1",
     "ngx-toastr": "^11.3.3",
