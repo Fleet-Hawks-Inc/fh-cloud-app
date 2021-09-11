@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "cd69feba-6fc4-4dd2-af5b-0cd13a13738b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -14,11 +17,11 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/fleethawks-dashboard",
-            "index": "src/index.html",
+            "index": "",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -54,7 +57,7 @@
               "node_modules/slick-carousel/slick/slick.min.js",
               "src/assets/js/jquery.validate.min.js",
               "node_modules/select2/dist/js/select2.min.js"
-            ]
+            ]          
           },
           "configurations": {
             "production": {
@@ -64,19 +67,17 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "aot": true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                 "maximumWarning": "22mb",
+                  "maximumWarning": "22mb",
                   "maximumError": "22mb"
                 },
                 {
@@ -93,17 +94,14 @@
                   "with": "src/environments/environment.preprod.ts"
                 }
               ],
+              "aot": true,
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
-              "budgets": [
-                {
+              "budgets": [                {
                   "type": "initial",
                   "maximumWarning": "22mb",
                   "maximumError": "22mb"
@@ -125,11 +123,8 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
@@ -144,7 +139,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -208,9 +204,5 @@
         }
       }
     }
-  },
-  "defaultProject": "fleethawks-dashboard",
-  "cli": {
-    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
   }
 }

@@ -5,12 +5,10 @@ import { from, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/fleet/constants';
 import { CountryStateCity } from '../../utilities/countryStateCities';
-import * as CostExplorer from 'aws-sdk/clients/costexplorer';
 declare var $: any;
 
 @Component({

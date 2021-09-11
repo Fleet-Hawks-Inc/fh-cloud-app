@@ -155,7 +155,7 @@ confirmPassword:any;
         const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
         const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
         localStorage.setItem('congnitoAT', at);
-        var decodedToken = jwt_decode(jwt);
+        var decodedToken:any = jwt_decode(jwt);
 
         if (decodedToken.userType == 'driver') {
           this.submitDisabled = false;

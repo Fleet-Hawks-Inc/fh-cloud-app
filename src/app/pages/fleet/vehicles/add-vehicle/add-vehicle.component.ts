@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -7,20 +7,22 @@ import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import constants from '../../constants';
 import { ListService } from '../../../../services';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import { NgForm } from '@angular/forms';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-add-vehicle-new',
-  templateUrl: './add-vehicle-new.component.html',
-  styleUrls: ['./add-vehicle-new.component.css'],
+  selector: 'app-add-vehicle',
+  templateUrl: './add-vehicle.component.html',
+  styleUrls: ['./add-vehicle.component.css'],
+  exportAs:"vehicleF"
 })
-export class AddVehicleNewComponent implements OnInit {
+export class AddVehicleComponent implements OnInit {
+  @ViewChild('vehicleF') vehicleF: NgForm;
   showDriverModal = false;
   createdDate = '';
   createdTime = '';
