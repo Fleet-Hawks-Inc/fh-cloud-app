@@ -1081,7 +1081,7 @@ export class NewAddressBookComponent implements OnInit {
         this.lastKey = '';
         this.emptyTabs();
         this.showMainModal();
-        
+        this.listService.fetchContactsByIDs();
         if(this.unitData.eTypes.includes('owner_operator')) {
           this.listService.fetchOwnerOperators();
         } else if(this.unitData.eTypes.includes('shipper')) {
@@ -1215,6 +1215,18 @@ export class NewAddressBookComponent implements OnInit {
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
         this.emptyTabs();
+        this.listService.fetchContactsByIDs();
+        if(this.unitData.eTypes.includes('owner_operator')) {
+          this.listService.fetchOwnerOperators();
+        } else if(this.unitData.eTypes.includes('shipper')) {
+          this.listService.fetchShippers();
+        } else if(this.unitData.eTypes.includes('receiver')) {
+          this.listService.fetchReceivers();
+        } else if(this.unitData.eTypes.includes('vendor')) {
+          this.listService.fetchVendors();
+        } else if(this.unitData.eTypes.includes('customer')) {
+          this.listService.fetchCustomers();
+        }
         this.listService.triggerModal('list');
         this.toastr.success('Entry updated successfully');
       },

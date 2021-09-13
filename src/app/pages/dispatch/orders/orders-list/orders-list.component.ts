@@ -441,4 +441,6 @@ export class OrdersListComponent implements OnInit {
       // this.fetchAllTypeOrderCount();
       this.fetchOrdersCount();
   }
+
+  
 }
