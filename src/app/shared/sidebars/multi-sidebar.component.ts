@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Directive } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Auth } from 'aws-amplify';
 declare var $: any;
 declare var jQuery: any;
 
+@Directive()
 export class CommonSideBarComponent implements OnInit {
   //constructor(private router: Router) {}
   companyID: string;

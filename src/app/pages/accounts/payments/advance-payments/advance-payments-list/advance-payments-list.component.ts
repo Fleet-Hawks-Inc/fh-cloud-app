@@ -24,6 +24,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   contacts = [];
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -52,8 +53,10 @@ export class AdvancePaymentsListComponent implements OnInit {
 
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
+          this.disableSearch = false;
         }
         if (result.length > 0) {
+          this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
           } else {
@@ -107,6 +110,7 @@ export class AdvancePaymentsListComponent implements OnInit {
 
   searchFilter() {
     if (this.filter.type !== null || this.filter.paymentNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -132,6 +136,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
         startDate: null,
@@ -151,6 +156,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
         startDate: null,

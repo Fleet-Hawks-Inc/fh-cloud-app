@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HDetailComponent } from './h-detail.component';
 
@@ -6,7 +6,7 @@ describe('HDetailComponent', () => {
   let component: HDetailComponent;
   let fixture: ComponentFixture<HDetailComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ HDetailComponent ]
     })

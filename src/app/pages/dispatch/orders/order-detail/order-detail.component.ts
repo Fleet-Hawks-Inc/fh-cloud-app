@@ -158,6 +158,7 @@ export class OrderDetailComponent implements OnInit {
   cusAddressID: string;
   isInvoiced: boolean = false;
   isModalShow: boolean = false;
+  isShow: boolean = false;
   generateBtnDisabled = false;
   errors = {};
   response: any = '';
@@ -432,11 +433,8 @@ export class OrderDetailComponent implements OnInit {
 
 
   async generate() {
-    this.downloadpdf();
-    $('#previewInvoiceModal').modal('hide');
-  }
-
-  async downloadpdf() {
+    this.isShow = true;
+    console.log('this.isShow', this.isShow)
     var data = document.getElementById('print_wrap');
 
     html2pdf(data, {
@@ -447,14 +445,43 @@ export class OrderDetailComponent implements OnInit {
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
     });
+    $('#previewInvoiceModal').modal('hide');
+  }
+
+  async downloadpdf() {
+    this.isShow = true;
+    setTimeout(() => {
+      var data = document.getElementById('print_wrap');
+
+      html2pdf(data, {
+        margin:       0,
+        filename:     'invoice.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+
+      });
+    }, 1000);
   }
 
   async generatePDF() {
-    await this.downloadpdf();
+    this.isShow = true;
+    setTimeout(() => {
+      var data = document.getElementById('print_wrap');
+      html2pdf(data, {
+        margin:       0,
+        filename:     'invoice.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  
+      }); 
+  
+    }, 1000);
     await this.saveInvoice();
     await this.invoiceGenerated();
     await this.fetchOrder();
-
+    
   }
   async saveInvoice() {
     this.generateBtnDisabled = true;

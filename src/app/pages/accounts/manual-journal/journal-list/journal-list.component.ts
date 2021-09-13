@@ -22,6 +22,7 @@ export class JournalListComponent implements OnInit {
   }
   lastItemSK = '';
   loaded = false;
+  disableSearch = false;
   constructor(private toaster: ToastrService, private accountService: AccountService) { }
 
   ngOnInit() {
@@ -43,9 +44,11 @@ export class JournalListComponent implements OnInit {
       this.accountService.getData(`journal/paging?jrNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async(result: any) => {
           if (result.length === 0) {
+            this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           if(result.length > 0) {
+            this.disableSearch = false;
             if (result[result.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
             } else {
@@ -78,6 +81,7 @@ export class JournalListComponent implements OnInit {
 
   searchFilter() {
     if(this.filter.jrNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+      this.disableSearch = true;
       if (
         this.filter.startDate != "" &&
         this.filter.endDate == ""
@@ -103,6 +107,7 @@ export class JournalListComponent implements OnInit {
   }
 
   resetFilter() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       jrNo: null,
@@ -122,6 +127,7 @@ export class JournalListComponent implements OnInit {
   }
 
   refreshData() {
+    this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
       jrNo: null,
