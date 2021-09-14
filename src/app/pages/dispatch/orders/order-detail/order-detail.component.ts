@@ -434,7 +434,6 @@ export class OrderDetailComponent implements OnInit {
 
   async generate() {
     this.isShow = true;
-    console.log('this.isShow', this.isShow)
     var data = document.getElementById('print_wrap');
 
     html2pdf(data, {
@@ -495,6 +494,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`balance`] = this.invoiceData.finalAmount;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
+    this.invoiceData[`zeroRated`] = this.zeroRated;
    
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },

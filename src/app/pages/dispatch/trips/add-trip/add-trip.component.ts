@@ -456,7 +456,7 @@ export class AddTripComponent implements OnInit {
         })
     }
 
-    mapShow() {
+    mapShow() { 
         this.hereMap.mapSetAPI();
         this.hereMap.mapInit();
     }
@@ -1233,7 +1233,6 @@ export class AddTripComponent implements OnInit {
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-        console.log('this.tripData', this.tripData);
         this.apiService.postData('trips', this.tripData).subscribe({
             complete: () => {
             },
@@ -1568,11 +1567,13 @@ export class AddTripComponent implements OnInit {
                     result.split.map((x, cind) => {
                         this.splitArr[cind] = [];
                         x.plan.map((c) => {
+                            
                             this.trips.map((t) => {
                                 if(t.planID === c) {
                                     this.dummySplitArr.push(t.planID);
                                     t.splitDone = true;
                                     t.split = true;
+                                    t.splitName = x.splitName;
                                     this.splitArr[cind].push(t);
                                 }
                             })
@@ -1806,6 +1807,7 @@ export class AddTripComponent implements OnInit {
                 settlmnt: false,
                 assgnIds: [],
                 splitID: uuidv4(),
+                splitName: i+1,
             }
             this.tripData.split[i] = obz;
             element.map((v) => {
