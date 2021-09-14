@@ -21,7 +21,7 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": true,
+            "aot": false,
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -30,14 +30,7 @@
             "extractLicenses": false,
             "buildOptimizer": false,
             "sourceMap": false,
-            "optimization": {
-              "scripts": true,
-              "styles": {
-                "minify": true,
-                "inlineCritical": false
-              },
-              "fonts": true
-            },
+            "optimization": false,
             "namedChunks": false,
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
@@ -148,6 +141,7 @@
                   "with": "src/environments/environment.dev.ts"
                 }
               ],
+              "aot": true,
               "optimization": {
                 "scripts": true,
                 "styles": {

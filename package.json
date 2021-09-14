@@ -5,6 +5,9 @@
     "postinstall": "ngcc",
     "ng": "ng",
     "start": "ng serve -o",
+    "start2":"npx ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
+    "start": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve",
+
     "build": "ng build --aot",
     "buildPreprod": "ng build --configuration=preprod --base-href . ",
     "buildDev": "ng build --configuration=dev --base-href . ",

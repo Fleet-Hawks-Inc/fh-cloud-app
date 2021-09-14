@@ -77,6 +77,9 @@ export class CountryStateCity {
         cities.push(cityObj);
       });
     }
+    if(cities.length === 0) {
+      cities.push({cityName: "Other"})
+    }
     return cities;
   };
 
