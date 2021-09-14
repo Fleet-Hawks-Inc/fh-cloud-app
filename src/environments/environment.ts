@@ -7,6 +7,7 @@ export const environment = {
   isFeatureEnabled: true,
 
 
+
   BaseUrl: 'http://3.7.150.220:3001/api/v1/',
   //BaseUrl: 'http://localhost:3000/api/v1/',
   //AccountServiceUrl: 'http://localhost:4002/api/v1/',

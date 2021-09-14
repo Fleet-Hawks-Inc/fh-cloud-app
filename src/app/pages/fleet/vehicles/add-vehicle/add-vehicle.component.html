@@ -225,7 +225,7 @@
                                        [(ngModel)]="driverID" placeholder="Select driver to assign to vehicle"
                                        (click)="driverChange('main')">
                                        <optgroup label="">
-                                          <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">
+                                          <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
                                              {{driver.firstName}}
 
                                           </ng-option>
@@ -250,7 +250,7 @@
                                        [(ngModel)]="teamDriverID" placeholder="Select co-driver to the vehicle"
                                        (click)="driverChange('team')">
                                        <optgroup label="">
-                                          <ng-option *ngFor="let driver of drivers | async" value="{{driver.driverID}}">
+                                          <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
                                              {{driver.firstName}}
 
                                           </ng-option>
@@ -306,7 +306,7 @@
                                     <ng-select class="form-control populate" name="servicePrograms" [multiple]="true"
                                        [(ngModel)]="servicePrograms" placeholder="Select service program for vehicle"
                                        multiple>
-                                       <ng-option *ngFor="let serviceProgram of serviceProgramss | async"
+                                       <ng-option *ngFor="let serviceProgram of serviceProgramss"
                                           value="{{serviceProgram.programID}}">
                                           {{serviceProgram.programName}}
                                        </ng-option>
@@ -420,7 +420,7 @@
                                        Operator</label>
                                     <ng-select class="form-control populate" name="ownerOperatorID"
                                        [(ngModel)]="ownerOperatorID" placeholder="Select owner operator">
-                                       <ng-container *ngFor="let ownerOperator of ownerOperators | async">
+                                       <ng-container *ngFor="let ownerOperator of ownerOperators">
                                           <ng-option value="{{ownerOperator.contactID}}">
                                              {{ownerOperator.companyName}}</ng-option>
                                        </ng-container>
@@ -896,7 +896,7 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Vendor</label>
                                     <ng-select placeholder="Select Vendor" name="insurance.vendorID"
                                        [(ngModel)]="insurance.vendorID">
-                                       <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
+                                       <ng-option *ngFor="let vendor of vendors" value="{{vendor.contactID}}">
                                           {{vendor.companyName}}
                                        </ng-option>
                                     </ng-select>
@@ -1323,7 +1323,7 @@
                                     </label>
                                     <ng-select placeholder="Select Vendor" name="purchase.purchaseVendorID"
                                        [(ngModel)]="purchase.purchaseVendorID" placeholder="Select purchase vendor">
-                                       <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
+                                       <ng-option *ngFor="let vendor of vendors" value="{{vendor.contactID}}">
                                           {{vendor.companyName}}</ng-option>
                                     </ng-select>
                                  </div>
@@ -1474,7 +1474,7 @@
                                     <label class="control-label font-weight-bold text-lg-right pt-2">Loan Vendor</label>
                                     <ng-select placeholder="Select Vendor" name="loan.loanVendorID"
                                        [(ngModel)]="loan.loanVendorID">
-                                       <ng-option *ngFor="let vendor of vendors | async" value="{{vendor.contactID}}">
+                                       <ng-option *ngFor="let vendor of vendors" value="{{vendor.contactID}}">
                                           {{vendor.companyName}}
                                        </ng-option>
                                     </ng-select>

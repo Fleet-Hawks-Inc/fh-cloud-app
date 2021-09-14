@@ -138,14 +138,14 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
-                                            <label class="control-label font-weight-bold pt-2">From Date</label>
+                                            <label class="control-label font-weight-bold pt-2">From Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
                                                 #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
                                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
-                                            <label class="control-label font-weight-bold pt-2">To Date</label>
+                                            <label class="control-label font-weight-bold pt-2">To Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
                                                 #toDate="ngbDatepicker" class="form-control" autocomplete="off"
@@ -324,8 +324,9 @@
                                                         </tr>
                                                         <ng-container *ngFor="let trp of trips; let t=index;">
                                                             <tr>
-                                                                <td>
-                                                                    <input type="checkbox" (change)="selectedTrip(t, 'y'); fetchExpenses(trp.tripID, t)" [(ngModel)]="trp.selected" name="chk{{t}}" [indeterminate]="trp.indeterminate">
+                                                                <td> 
+                                                                    <!-- <input type="checkbox" (change)="selectedTrip(t, 'y'); fetchExpenses(trp.tripID, t)" [(ngModel)]="trp.selected" name="chk{{t}}" [indeterminate]="trp.indeterminate"> -->
+                                                                    <input type="checkbox" *ngIf="trp.splitArr.length == 0" (change)="selectedTrip(t, 'y'); fetchExpenses(trp.tripID, t)" [(ngModel)]="trp.selected" name="chk{{t}}">
                                                                 </td>
                                                                 <td>{{ trp.tripNo }}</td>
                                                                 <td>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</td>
@@ -366,7 +367,7 @@
                                                             <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
                                                                 <tr>
                                                                     <td colspan="2">
-                                                                        <span class="mt-1"><input type="checkbox" (change)="selSubTrip(t, sp)" id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}"></span>
+                                                                        <span class="mt-1"><input type="checkbox" (change)="selSubTrip(t, sp);  fetchExpenses(trp.tripID, t)" id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}"></span>
                                                                         {{ trp.tripNo }} ({{sp+1}}) 
                                                                     </td>
                                                                     <td colspan="9">
@@ -381,23 +382,21 @@
                                                                                             </span>
                                                                                         </td>
                                                                                        <td>
-                                                                                                            <span *ngIf="spltLine.driverID"><b>Driver: </b> {{ driversObj[spltLine.driverID] }} <br></span>
-                                                                                                            <span *ngIf="spltLine.coDriverID"><b>Co-driver: </b> {{ driversObj[spltLine.coDriverID] }}</span>
-                                                                                                            <span *ngIf="spltLine.carrierID"><b>Carrier: </b> {{ carriers[spltLine.carrierID] }}</span>
-                                                                                                        </td>
+                                                                                            <span *ngIf="spltLine.driverID"><b>Driver: </b> {{ driversObj[spltLine.driverID] }} <br></span>
+                                                                                            <span *ngIf="spltLine.coDriverID"><b>Co-driver: </b> {{ driversObj[spltLine.coDriverID] }}</span>
+                                                                                            <span *ngIf="spltLine.carrierID"><b>Carrier: </b> {{ carriers[spltLine.carrierID] }}</span>
+                                                                                        </td>
                                                                                         <td>
-                                                                                                            <span *ngIf="spltLine.vehicleID"><b>Vehile: </b> {{ vehicles[spltLine.vehicleID] }} <br></span>
-                                                                                                        </td>
+                                                                                            <span *ngIf="spltLine.vehicleID"><b>Vehile: </b> {{ vehicles[spltLine.vehicleID] }} <br></span>
+                                                                                        </td>
                                                                                         <td>
-
                                                                                             <span *ngIf="spltLine.assetID.length > 0">
-                                                                                                                <b>Asset(s): </b>
-                                                                                                                <span *ngFor="let ast of spltLine.assetID; let a=index">
-                                                                                                                    {{ assets[ast] }}
-                                                                                                                    <span *ngIf="a<spltLine.assetID.length-1">,<br></span>
-                                                                                                                </span>
-                                                                                                            </span>
-
+                                                                                                <b>Asset(s): </b>
+                                                                                                <span *ngFor="let ast of spltLine.assetID; let a=index">
+                                                                                                    {{ assets[ast] }}
+                                                                                                    <span *ngIf="a<spltLine.assetID.length-1">,<br></span>
+                                                                                                </span>
+                                                                                            </span>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </tbody>
@@ -682,6 +681,49 @@
                                                 </table>
                                             </div>
                                         </div>
+
+                                        <!-- fuel expense -->
+                                        <div class="row pt-2">
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <h4 class="font-weight-bold">Fuel Expenses</h4>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Location</th>
+                                                            <th>Fuel Card No.</th>
+                                                            <th>Quantity</th>
+                                                            <th>Amount</th>
+                                                            <th>Add</th>
+                                                            <th>Deduction</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="text-center" *ngIf="fuelEnteries.length === 0">
+                                                            <td colspan="7">{{ noRecordMsg }}</td>
+                                                        </tr>
+                                                        <tr *ngFor="let data of fuelEnteries; let fe=index;">
+                                                            <td>{{ data.fuelDate | date:"yyyy/MM/dd" }}</td>
+                                                            <td>{{ data.unitNumber }}</td>
+                                                            <td>{{ data.cityName }}, {{ data.locationCountry }}</td>
+                                                            <td>{{ data.fuelCardNumber}}</td>
+                                                            <td>{{ data.quantity }} {{ data.unitOfMeasure }}</td>
+                                                            <td>{{ data.subTotal }} {{ data.billingCurrency }}</td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="data.add" name="add{{fe}}" (change)="selectedFuelEntry()" [disabled]="data.addDisabled" />
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="data.decution" name="sub{{fe}}" (change)="selectedFuelEntry()" [disabled]="data.subDisabled" />
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
                                         <!-- trip addition -->
                                         <div class="row pt-2">
                                             <div class="col-lg-10 offset-lg-1">
@@ -908,6 +950,24 @@
                                                         <input type="text" class="form-control" disabled [(ngModel)]="settlementData.deductionTotal" name="deductionTotal">
                                                     </div>
                                                 </div>
+                                                <div class="row pt-1" *ngIf="settlementData.type == 'driver' || settlementData.type == 'owner_operator'">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Fuel Addition</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.fuelAdd" name="fuelAdd">
+                                                    </div>
+                                                </div>
+
+                                                <div class="row pt-1" *ngIf="settlementData.type == 'driver' || settlementData.type == 'owner_operator'">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Fuel Deduction</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" disabled [(ngModel)]="settlementData.fuelDed" name="fuelDed">
+                                                    </div>
+                                                </div>
+
                                                 <div class="row pt-1" *ngIf="settlementData.type == 'carrier' || settlementData.type == 'owner_operator'">
                                                     <div class="col-lg-6 text-right">
                                                         <label class="control-label font-weight-bold">Taxes</label>
