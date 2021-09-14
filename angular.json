@@ -141,6 +141,7 @@
                   "with": "src/environments/environment.dev.ts"
                 }
               ],
+              "aot": true,
               "optimization": {
                 "scripts": true,
                 "styles": {

@@ -2626,5 +2626,7 @@ input:checked + .sliderbtn:before {
 /* 04.09.21 account classes */
 .detailbox{
   min-height: 125px;
-
+}
+.nav-tabs {
+  border: none;
 }
