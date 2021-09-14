@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PdfAutomationComponent } from './pdf-automation.component';
 
@@ -6,7 +6,7 @@ describe('PdfAutomationComponent', () => {
   let component: PdfAutomationComponent;
   let fixture: ComponentFixture<PdfAutomationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PdfAutomationComponent ]
     })

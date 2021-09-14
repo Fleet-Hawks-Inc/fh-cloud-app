@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { SharedModalsComponent } from './shared-modals.component';
 
@@ -6,7 +6,7 @@ describe('SharedModalsComponent', () => {
   let component: SharedModalsComponent;
   let fixture: ComponentFixture<SharedModalsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SharedModalsComponent ]
     })

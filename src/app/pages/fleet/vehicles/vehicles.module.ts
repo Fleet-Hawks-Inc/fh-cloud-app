@@ -4,17 +4,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
-import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable } from '@angular/core';
-import { AddVehicleNewComponent } from './add-vehicle-new/add-vehicle-new.component';
+import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 const routes: Routes = [
-  { path: 'add', component: AddVehicleNewComponent },
-  { path: 'edit/:vehicleID', component: AddVehicleNewComponent },
+  { path: 'add', component: AddVehicleComponent },
+  { path: 'edit/:vehicleID', component: AddVehicleComponent },
   { path: 'list', component: VehicleListComponent },
   { path: 'detail/:vehicleID', component: VehicleDetailComponent },
 ];
@@ -71,10 +71,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 @NgModule({
   declarations: [
-
-    // AddVehicleNewComponent,
-    // EditVehicleNewComponent,
-
+    AddVehicleComponent,
     VehicleListComponent,
     VehicleDetailComponent,
   ],
@@ -85,8 +82,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SlickCarouselModule,
+    NgbModule,
     NgSelectModule,
+    SlickCarouselModule
   ],
   exports: [],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
