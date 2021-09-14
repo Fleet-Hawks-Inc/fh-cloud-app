@@ -5,6 +5,7 @@
     "postinstall": "ngcc",
     "ng": "ng",
     "start": "ng serve -o",
+    "start2":"npx ng serve --host 0.0.0.0 --port 4200 --disable-host-check",
     "build": "ng build --aot",
     "buildPreprod": "ng build --configuration=preprod --base-href . ",
     "buildDev": "ng build --configuration=dev --base-href . ",
