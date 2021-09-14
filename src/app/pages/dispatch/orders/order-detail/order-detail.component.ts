@@ -156,7 +156,9 @@ export class OrderDetailComponent implements OnInit {
   invoiceData: any;
   today: any;
   cusAddressID: string;
-  isInvoiced: boolean;
+  isInvoiced: boolean = false;
+  isModalShow: boolean = false;
+  isShow: boolean = false;
   generateBtnDisabled = false;
   errors = {};
   response: any = '';
@@ -430,7 +432,9 @@ export class OrderDetailComponent implements OnInit {
   }
 
 
-  generatePDF() {
+  async generate() {
+    this.isShow = true;
+    console.log('this.isShow', this.isShow)
     var data = document.getElementById('print_wrap');
 
     html2pdf(data, {
@@ -441,13 +445,45 @@ export class OrderDetailComponent implements OnInit {
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
     });
-    this.saveInvoice();
-    this.fetchOrder();
-    this.invoiceGenerated();
-
+    $('#previewInvoiceModal').modal('hide');
   }
 
-  saveInvoice() {
+  async downloadpdf() {
+    this.isShow = true;
+    setTimeout(() => {
+      var data = document.getElementById('print_wrap');
+
+      html2pdf(data, {
+        margin:       0,
+        filename:     'invoice.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+
+      });
+    }, 1000);
+  }
+
+  async generatePDF() {
+    this.isShow = true;
+    setTimeout(() => {
+      var data = document.getElementById('print_wrap');
+      html2pdf(data, {
+        margin:       0,
+        filename:     'invoice.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  
+      }); 
+  
+    }, 1000);
+    await this.saveInvoice();
+    await this.invoiceGenerated();
+    await this.fetchOrder();
+    
+  }
+  async saveInvoice() {
     this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
     this.invoiceData[`invNo`] = this.orderNumber;
@@ -490,7 +526,7 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  invoiceGenerated() {
+  async invoiceGenerated() {
     this.invGenStatus = true;
     this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
   }

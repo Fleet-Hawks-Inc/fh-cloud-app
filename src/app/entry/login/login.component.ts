@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../../services';
+import { ApiService, ListService } from '../../services';
 import { AuthService } from '../../services';
 import { Role, User } from '../../models/objects';
 import { Auth } from 'aws-amplify';
@@ -62,7 +62,8 @@ confirmPassword:any;
   constructor(private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
-    private toaster: ToastrService) { }
+    private toaster: ToastrService,
+    private listService: ListService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -167,7 +168,7 @@ confirmPassword:any;
         const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
         const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
         localStorage.setItem('congnitoAT', at);
-        var decodedToken = jwt_decode(jwt);
+        var decodedToken:any = jwt_decode(jwt);
 
         if (decodedToken.userType == 'driver') {
           this.submitDisabled = false;
@@ -201,6 +202,7 @@ confirmPassword:any;
             localStorage.setItem('signOut', 'false'); //trigger flag
             localStorage.setItem('accessToken', jwt);//save token in session storage
             await this.router.navigate(['/Map-Dashboard']);
+            this.listService.triggerModal('');
             localStorage.setItem('user', JSON.stringify(user));
           }
         }

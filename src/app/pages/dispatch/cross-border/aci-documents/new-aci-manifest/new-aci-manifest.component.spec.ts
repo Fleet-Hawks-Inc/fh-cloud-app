@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NewAciManifestComponent } from './new-aci-manifest.component';
 
@@ -6,7 +6,7 @@ describe('NewAciManifestComponent', () => {
   let component: NewAciManifestComponent;
   let fixture: ComponentFixture<NewAciManifestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NewAciManifestComponent ]
     })

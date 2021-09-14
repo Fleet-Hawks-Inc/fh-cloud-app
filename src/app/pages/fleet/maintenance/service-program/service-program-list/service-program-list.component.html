@@ -38,7 +38,7 @@
                             <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
                                 <i class="fas fa-sync"></i>
                             </a>
-                            
+
                             <a  routerLink="/fleet/maintenance/service-program/add" class="btn btn-success btn-sm" style="color:white;"><i
                                     class="fas fa-plus"></i> Add Service Program</a>
 
@@ -88,7 +88,7 @@
 
                                                                         <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">
                                                                             {{program.programName}}</td>
-                                                                        <td>{{program.description ? program.description : '-'}}</td>
+                                                                        <td routerLink="/fleet/maintenance/service-program/detail/{{program.programID}}">{{program.description ? program.description : '-'}}</td>
                                                                         <td>
                                                                             <div class="dropdown dropright">
                                                                                 <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
