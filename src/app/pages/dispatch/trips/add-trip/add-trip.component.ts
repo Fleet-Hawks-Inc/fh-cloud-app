@@ -1744,13 +1744,6 @@ export class AddTripComponent implements OnInit {
             this.tripData.tripPlanning.push(obj);
         }
         this.splitTripArr();
-        // for (let i = 0; i < this.splitArr.length; i++) {
-        //     const element = this.splitArr[i];
-        //     this.tripData.split[i] = [];
-        //     element.map((v) => {
-        //         this.tripData.split[i].push(v.planID);
-        //     })
-        // }
         this.tripData.driverIDs = selectedDriverids;
         this.tripData.vehicleIDs = selectedVehicles;
         this.tripData.assetIDs = selectedAssets;
