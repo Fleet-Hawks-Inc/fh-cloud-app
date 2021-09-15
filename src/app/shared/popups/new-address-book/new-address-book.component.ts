@@ -70,7 +70,7 @@ export class NewAddressBookComponent implements OnInit {
     workEmail: '',
     eTypes: [],
     adrs: [{
-      aType: null,
+      aType: 'Billing Address',
       cName: '',
       sName: '',
       ctyName: null,
@@ -174,11 +174,8 @@ export class NewAddressBookComponent implements OnInit {
     this.fetchCountries();
 
     this.listService.addressList.subscribe((res: any) => {
-
-
-      console.log('res', res);
       if(res === 'list') {
-        // console.log('list');
+
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
@@ -432,7 +429,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
-        aType: null,
+        aType: 'Billing Address',
         cName: '',
         sName: '',
         ctyName: null,
