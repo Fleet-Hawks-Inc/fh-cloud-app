@@ -1,4 +1,4 @@
-import { City, Country, State } from 'country-state-city';
+
 
 /**
  * Utility function to get country, state and cities.
@@ -9,14 +9,9 @@ export class CountryStateCity {
    * @returns Countries
    */
   public static GetAllCountries = (): Array<any> => {
-    const cscRep = Country.getAllCountries();
+   
     let countries: any = [];
-    cscRep.forEach((country) => {
-      countries.push({
-        countryName: country.name,
-        countryCode: country.isoCode,
-      });
-    });
+   
     return countries;
   }
 
@@ -28,12 +23,7 @@ export class CountryStateCity {
   public static GetSpecificCountryNameByCode = (
     countryCode: string
   ): string => {
-    const cscRep = Country.getCountryByCode(countryCode);
-    if (cscRep) {
-      return cscRep.name;
-    } else {
-      return countryCode;
-    }
+   return "";
 
   };
 
@@ -46,16 +36,7 @@ export class CountryStateCity {
     countryCodes: string[]
   ): Array<any> => {
     let states: any = [];
-    countryCodes.forEach((code) => {
-      const cssRep = State.getStatesOfCountry(code);
-      if (cssRep.length > 0) {
-        let stateObj: any;
-        cssRep.forEach((state) => {
-          stateObj = { stateName: state.name, stateCode: state.isoCode };
-          states.push(stateObj);
-        });
-      }
-    });
+
     return states;
   };
 
@@ -69,17 +50,7 @@ export class CountryStateCity {
     stateCode: string
   ): Array<any> => {
     let cities: any = [];
-    const cssRep = City.getCitiesOfState(countryCode, stateCode);
-    if (cssRep.length > 0) {
-      let cityObj: any;
-      cssRep.forEach((city) => {
-        cityObj = { cityName: city.name };
-        cities.push(cityObj);
-      });
-    }
-    if(cities.length === 0) {
-      cities.push({cityName: "Other"})
-    }
+
     return cities;
   };
 
@@ -89,13 +60,9 @@ export class CountryStateCity {
    * @returns
    */
   public static GetStateName = (stateCode: string): string => {
-    const cscRep = State.getStateByCode(stateCode);
-
-    if (cscRep) {
-      return cscRep.name;
-    } else {
-      return stateCode;
-    }
+  
+      return "stateCode";
+    
   };
   /**
    *
@@ -103,15 +70,9 @@ export class CountryStateCity {
    * @returns cities
    */
   public static GetCitiesByCountryCode = (countryCode: string): Array<any> => {
-    const cscRep: any = City.getCitiesOfCountry(countryCode);
+  
     const cities: any = [];
-    if (cscRep.length > 0) {
-      let cityObj: any;
-      cscRep.forEach((city) => {
-        cityObj = { cityName: city.name, stateCode: city.stateCode };
-        cities.push(cityObj);
-      });
-    }
+  
     return cities;
   };
 
@@ -121,12 +82,6 @@ export class CountryStateCity {
   * @returns
   */
   public static GetStateNameFromCode = (stateCode: string, countryCode: string): string => {
-    const cscRep = State.getStateByCodeAndCountry(stateCode, countryCode);
-
-    if (cscRep) {
-      return cscRep.name;
-    } else {
-      return stateCode;
-    }
+   return ""
   }
 }
