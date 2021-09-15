@@ -13,3 +13,40 @@
     flex-direction: column;
     justify-content: center;
 }
+
+
+/* new login page classes 15.09.21 */
+
+.maindivleft{
+    background: #000000;
+    float: left;
+    width: 50%;
+    position: relative;
+    min-height: 100vh;
+    
+}
+
+.maindivright{
+    background: #ffffff;
+    float: right;
+    width: 50%;
+    position: relative;
+    min-height: 100vh;
+    
+}
+
+@media screen and (max-width: 1067px){
+.maindivright {
+    width: 100% !important; float: right;
+}
+.maindivleft{
+   display: none !important;
+}
+
+}
+
+
+.mtnew {
+    margin-top: 25% !important;
+    
+}
