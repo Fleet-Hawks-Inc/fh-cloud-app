@@ -685,6 +685,45 @@
                                         <!-- fuel expense -->
                                         <div class="row pt-2">
                                             <div class="col-lg-10 offset-lg-1">
+                                                <h4 class="font-weight-bold">Settled Fuel Expenses</h4>
+                                            </div>
+                                            <div class="col-lg-10 offset-lg-1">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>Date</th>
+                                                            <th>Vehicle</th>
+                                                            <th>Location</th>
+                                                            <th>Fuel Card No.</th>
+                                                            <th>Quantity</th>
+                                                            <th>Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="text-center" *ngIf="selectedFuelEnteries.length === 0">
+                                                            <td colspan="6">{{ noRecordMsg }}</td>
+                                                        </tr>
+                                                        <tr *ngFor="let data of selectedFuelEnteries; let fe=index;">
+                                                            <td>
+                                                                <a href="javascript:;" title="Delete Entry">
+                                                                    <i class="fa fa-trash" (click)="delSelectedFuel(data.fuelID, fe)"></i>
+                                                                </a>
+                                                            </td>
+                                                            <td>{{ data.fuelDate | date:"yyyy/MM/dd" }}</td>
+                                                            <td>{{ data.unitNumber }}</td>
+                                                            <td>{{ data.cityName }}, {{ data.locationCountry }}</td>
+                                                            <td>{{ data.fuelCardNumber}}</td>
+                                                            <td>{{ data.quantity }} {{ data.unitOfMeasure }}</td>
+                                                            <td>{{ data.subTotal }} {{ data.billingCurrency }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-2">
+                                            <div class="col-lg-10 offset-lg-1">
                                                 <h4 class="font-weight-bold">Fuel Expenses</h4>
                                             </div>
                                             <div class="col-lg-10 offset-lg-1">
@@ -698,12 +737,12 @@
                                                             <th>Quantity</th>
                                                             <th>Amount</th>
                                                             <th>Add</th>
-                                                            <th>Deduction</th>
+                                                            <th>Deduct</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr class="text-center" *ngIf="fuelEnteries.length === 0">
-                                                            <td colspan="7">{{ noRecordMsg }}</td>
+                                                            <td colspan="8">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of fuelEnteries; let fe=index;">
                                                             <td>{{ data.fuelDate | date:"yyyy/MM/dd" }}</td>
@@ -716,7 +755,7 @@
                                                                 <input type="checkbox" [(ngModel)]="data.add" name="add{{fe}}" (change)="selectedFuelEntry()" [disabled]="data.addDisabled" />
                                                             </td>
                                                             <td>
-                                                                <input type="checkbox" [(ngModel)]="data.decution" name="sub{{fe}}" (change)="selectedFuelEntry()" [disabled]="data.subDisabled" />
+                                                                <input type="checkbox" [(ngModel)]="data.deduction" name="sub{{fe}}" (change)="selectedFuelEntry()" [disabled]="data.subDisabled" />
                                                             </td>
                                                         </tr>
                                                     </tbody>

@@ -79,7 +79,8 @@ export class AddSettlementComponent implements OnInit {
             // drivers: [],
         },
         fuelIds:[],
-        fuelData:[]
+        fuelData:[],
+        deletedFuelIds: [],
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
@@ -138,6 +139,7 @@ export class AddSettlementComponent implements OnInit {
     delvCount = 0;
     vehicleIds = [];
     fuelEnteries = [];
+    selectedFuelEnteries = [];
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -913,6 +915,7 @@ export class AddSettlementComponent implements OnInit {
             })
         }
         this.submitDisabled = true;
+        console.log('this.settlementData', this.settlementData);
         this.accountService.postData('settlement', this.settlementData).subscribe({
             complete: () => { },
             error: (err: any) => {
@@ -939,7 +942,7 @@ export class AddSettlementComponent implements OnInit {
                 this.submitDisabled = false;
                 this.response = res;
                 this.toaster.success('Settlement added successfully.');
-                this.cancel();
+                // this.cancel();
             },
         });
     }
@@ -951,6 +954,7 @@ export class AddSettlementComponent implements OnInit {
                 if(this.settlementData.type === 'driver') {
                     this.driverId = this.settlementData.entityId;
                 }
+                this.fetchSelectedFuelExpenses();
                 this.editDisabled = true;
                 if(result[0].taxObj == undefined) {
                     result[0].taxObj = {
@@ -1482,7 +1486,7 @@ export class AddSettlementComponent implements OnInit {
         this.fuelEnteries = result;
         this.fuelEnteries.map((elem) => {
             elem.add = false;
-            elem.subtract = false;
+            elem.deduction = false;
             elem.addDisabled = false;
             elem.subDisabled = false;
         });
@@ -1511,7 +1515,7 @@ export class AddSettlementComponent implements OnInit {
                 element.subDisabled = false;
             }
 
-            if(element.subtract) {
+            if(element.deduction) {
                 this.settlementData.fuelDed += Number(element.subTotal);
                 element.addDisabled = true;
                 if(!this.settlementData.fuelIds.includes(element.fuelID)) {
@@ -1528,6 +1532,36 @@ export class AddSettlementComponent implements OnInit {
             }
         }
         this.calculateFinalTotal();
+    }
+
+    async fetchSelectedFuelExpenses() {
+        let fuelIDs = encodeURIComponent(JSON.stringify(this.settlementData.fuelIds));
+        let result = await this.apiService.getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`).toPromise();
+        console.log('fetchd', result);
+        this.selectedFuelEnteries = result;
+    }
+
+    delSelectedFuel(fuelID, index) {
+        // if(!this.settlementData.deletedFuelIds.includes(fuelID)) {
+            // this.settlementData.deletedFuelIds.push(fuelID);
+            let ind = this.settlementData.fuelIds.indexOf(fuelID);
+            this.settlementData.fuelIds.splice(ind, 1);
+            this.settlementData.fuelAdd = 0;
+            this.settlementData.fuelDed = 0;
+            this.settlementData.fuelData.map((v) => {
+                if(v.fuelID === fuelID) {
+                    let ind = this.settlementData.fuelData.indexOf(v);
+                    this.settlementData.fuelData.splice(ind, 1);
+                }
+                if(v.action === 'add') {
+                    this.settlementData.fuelAdd += Number(v.amount);
+                } else if (v.action === 'sub') {
+                    this.settlementData.fuelDed += Number(v.amount);
+                }
+            });
+            this.selectedFuelEnteries.splice(index, 1);
+        // }
+            // this.selectedFuelEntry(); check this
         console.log('this.settlementData', this.settlementData);
     }
 }
