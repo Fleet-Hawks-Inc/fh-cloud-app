@@ -130,7 +130,7 @@
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
                                                         <button *ngIf="issue.currentStatus != 'CLOSED'" routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</button>
-                                                        <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button>
+                                                        <!-- <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button> -->
                                                         <button *ngIf="issue.currentStatus != 'CLOSED'" type="button" class="dropdown-item text-1"
                                                             (click)="deleteIssue(issue.issueID, issue.issueName)">
                                                             Delete
