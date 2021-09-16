@@ -449,19 +449,19 @@ export class AddDriverComponent
     });
   }
   fetchTimezones() {
-    const UStimezones = ct.getTimezonesForCountry("US");
+    const UStimezones = ct.getTimezonesForCountry(`US`);
     UStimezones.forEach((element: any) => {
       const obj: any = {
         name: element.name,
-        country: element.country,
+        country: element.countries[0],
       };
       this.finaltimezones.push(obj);
     });
-    const CAtimezones = ct.getTimezonesForCountry("CA");
+    const CAtimezones = ct.getTimezonesForCountry(`CA`);
     CAtimezones.forEach((e: any) => {
       const obj: any = {
         name: e.name,
-        country: e.country,
+        country: e.countries[0],
       };
       this.finaltimezones.push(obj);
     });
@@ -1266,7 +1266,6 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      this.submitDisabled = true;
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1332,7 +1331,7 @@ export class AddDriverComponent
 
       // append other fields
       formData.append("data", JSON.stringify(this.driverData));
-
+      this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
           complete: () => { },
