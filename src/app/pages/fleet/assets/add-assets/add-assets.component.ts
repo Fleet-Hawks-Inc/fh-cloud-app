@@ -176,8 +176,6 @@ export class AddAssetsComponent implements OnInit {
   }
   ngOnInit() {
     this.getYears();
-    // this.listService.fetchAssetManufacturers();
-    // this.listService.fetchAssetModels();
     this.fetchManufacturers();
     this.listService.fetchVendors();
     this.listService.fetchOwnerOperators();
@@ -191,14 +189,56 @@ export class AddAssetsComponent implements OnInit {
     } else {
       this.pageTitle = 'Add Asset';
     }
-    $(document).ready(() => {
-      // this.form = $('#form_').validate();
-    });
 
-    this.vendors = this.listService.vendorList;
-   // this.manufacturers = this.listService.assetManufacturesList;
-    //this.models = this.listService.assetModelsList;
-    this.ownOperators = this.listService.ownerOperatorList;
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
+
+    let operatorList = new Array<any>();
+    this.getValidOperators(operatorList);
+    this.ownOperators = operatorList;
+  }
+
+  private getValidVendors(vendorList:any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1){
+          if(element2.contactID === this.assetsData.insuranceDetails.vendor) {
+            this.assetsData.insuranceDetails.vendor = null;
+          }
+
+          if(element2.contactID === this.assetsData.purchase.purchaseVendorID) {
+            this.assetsData.purchase.purchaseVendorID = null;
+          }
+
+          if(element2.contactID === this.assetsData.loan.loanVendorID) {
+            this.assetsData.loan.loanVendorID = null;
+          }
+        }
+      })
+    })
+  }
+
+  private getValidOperators(operatorsList:any[]) {
+    let ids = [];
+    this.listService.ownerOperatorList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          operatorsList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1 && this.assetsData.assetDetails.ownerOperator === element2.contactID) {
+          this.assetsData.assetDetails.ownerOperator = null;
+        }
+      })
+    })
   }
 
   fetchManufacturers() {
@@ -209,6 +249,7 @@ export class AddAssetsComponent implements OnInit {
 
     });
   }
+
   fetchModels() {
 
     this.models = [];

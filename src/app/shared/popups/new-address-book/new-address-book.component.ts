@@ -5,12 +5,10 @@ import { from, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/fleet/constants';
 import { CountryStateCity } from '../../utilities/countryStateCities';
-import * as CostExplorer from 'aws-sdk/clients/costexplorer';
 declare var $: any;
 
 @Component({
@@ -72,7 +70,7 @@ export class NewAddressBookComponent implements OnInit {
     workEmail: '',
     eTypes: [],
     adrs: [{
-      aType: null,
+      aType: 'Billing Address',
       cName: '',
       sName: '',
       ctyName: null,
@@ -176,11 +174,8 @@ export class NewAddressBookComponent implements OnInit {
     this.fetchCountries();
 
     this.listService.addressList.subscribe((res: any) => {
-
-
-      console.log('res', res);
       if(res === 'list') {
-        // console.log('list');
+
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
           keyboard : false,
@@ -434,7 +429,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
-        aType: null,
+        aType: 'Billing Address',
         cName: '',
         sName: '',
         ctyName: null,
@@ -1083,7 +1078,7 @@ export class NewAddressBookComponent implements OnInit {
         this.lastKey = '';
         this.emptyTabs();
         this.showMainModal();
-        
+        this.listService.fetchContactsByIDs();
         if(this.unitData.eTypes.includes('owner_operator')) {
           this.listService.fetchOwnerOperators();
         } else if(this.unitData.eTypes.includes('shipper')) {
@@ -1217,6 +1212,18 @@ export class NewAddressBookComponent implements OnInit {
         this.unitDisabled = false;
         this.dataMessage = Constants.FETCHING_DATA;
         this.emptyTabs();
+        this.listService.fetchContactsByIDs();
+        if(this.unitData.eTypes.includes('owner_operator')) {
+          this.listService.fetchOwnerOperators();
+        } else if(this.unitData.eTypes.includes('shipper')) {
+          this.listService.fetchShippers();
+        } else if(this.unitData.eTypes.includes('receiver')) {
+          this.listService.fetchReceivers();
+        } else if(this.unitData.eTypes.includes('vendor')) {
+          this.listService.fetchVendors();
+        } else if(this.unitData.eTypes.includes('customer')) {
+          this.listService.fetchCustomers();
+        }
         this.listService.triggerModal('list');
         this.toastr.success('Entry updated successfully');
       },

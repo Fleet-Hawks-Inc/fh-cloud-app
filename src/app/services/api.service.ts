@@ -138,6 +138,25 @@ export class ApiService {
     }
   }
 
+  checkIfUserActive=async()=>{
+    try {
+      const response: any = await Auth.currentSession();
+      if (response) {
+        
+        if(response.idToken.payload.isUserActive==0){
+          return false
+        }
+        else{
+          return true
+        }
+      } 
+    } catch (error) {
+      return false
+
+    }
+
+  }
+
   getDatatablePostData(url: string, data) {
     // this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})

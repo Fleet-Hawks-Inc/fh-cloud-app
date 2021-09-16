@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IftaReturnDetailsComponent } from './ifta-return-details.component';
 
@@ -6,7 +6,7 @@ describe('IftaReturnDetailsComponent', () => {
   let component: IftaReturnDetailsComponent;
   let fixture: ComponentFixture<IftaReturnDetailsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IftaReturnDetailsComponent ]
     })

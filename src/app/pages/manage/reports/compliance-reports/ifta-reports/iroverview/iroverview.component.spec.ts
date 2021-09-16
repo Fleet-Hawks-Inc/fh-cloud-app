@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IroverviewComponent } from './iroverview.component';
 
@@ -6,7 +6,7 @@ describe('IroverviewComponent', () => {
   let component: IroverviewComponent;
   let fixture: ComponentFixture<IroverviewComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IroverviewComponent ]
     })

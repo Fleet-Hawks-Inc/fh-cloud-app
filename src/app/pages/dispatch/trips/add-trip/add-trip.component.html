@@ -18,9 +18,7 @@
               </div>
           </header>
 
-          <form class="form-horizontal form-bordered" method="get" id="form_"  #tripForm="ngForm"
-          (ngSubmit)="tripID ? (tripForm.form.valid ? onUpdateTrip() : scrollError()): (tripForm.form.valid ? onAddTrip() : scrollError())"
->
+          <form class="form-horizontal form-bordered" method="get" id="form_"  #tripForm="ngForm">
               <section class="m-2">
                   <div class="row mb-3">
                       <div class="col-lg-12">
@@ -47,22 +45,12 @@
                                               </label>
                                               <input type="text" class="form-control" (click)="showMOdal()"
                                                   [(ngModel)]="orderNo" name="ordr" placeholder="eg. 776,1234"
-                                                  autocomplete="off" #order="ngModel" required [ngClass]="{ 'error' : tripForm.submitted && order.invalid }">
-                                              <div *ngIf="order.invalid && tripForm.submitted"
-                                                  class="text-danger">
-                                                  <div>
-
-                                                      <div *ngIf="order.errors.required">
-                                                          Order# is required .
-                                                      </div>
-
-
-                                                  </div>
-
+                                                  autocomplete="off" #order="ngModel" required>
+                                              <div *ngIf="order.invalid && (order.dirty || order.touched)" class="text-danger">
+                                                <div *ngIf="order.errors.required">
+                                                    Order# is required.
+                                                </div>
                                               </div>
-
-
-
                                           </div>
                                       </div>
 
@@ -127,19 +115,12 @@
                                               <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
                                                   placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
                                                   #from="ngbDatepicker" class="form-control" autocomplete="off"
-                                                  #tDate="ngModel" required [minDate]="dateMinLimit" [ngClass]="{ 'error' : tripForm.submitted && tDate.invalid }"
+                                                  #tDate="ngModel" required [minDate]="dateMinLimit"
                                                   [maxDate]="futureDatesLimit">
-                                              <div *ngIf="tDate.invalid && tripForm.submitted"
-                                                  class="text-danger">
-                                                  <div>
-
-                                                      <div *ngIf="tDate.errors.required">
-                                                          Trip date is required.
-                                                      </div>
-
-
-                                                  </div>
-
+                                              <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
+                                                <div *ngIf="tDate.errors.required">
+                                                    Trip date is required.
+                                                </div>
                                               </div>
                                           </div>
                                       </div>
@@ -664,7 +645,7 @@
                     <div class="col-12">
                       <mat-accordion>
                         <mat-expansion-panel hideToggle >
-                          <mat-expansion-panel-header>
+                          <mat-expansion-panel-header (click)="resetMap()">
                             <mat-panel-title>
                               <label
                               class="control-label text-lg-right text-5">Map View</label>
@@ -769,9 +750,9 @@
                   <div class="form-group row text-right mt-3">
                     <div class="col-lg-12 pr-3">
 
-  <button type="button" class="mt-1 mr-2 cus-btn-padd btn btn-default" (click)="cancel()">Cancel</button>
-  <button type="submit" *ngIf="!tripID" [disabled]="submitDisabled" class="cus-btn-padd btn btn-success" >Save</button>
-  <button type="submit"  *ngIf="tripID" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
+                        <button type="button" class="mt-1 mr-2 cus-btn-padd btn btn-default" (click)="cancel()">Cancel</button>
+                        <button type="submit" *ngIf="!tripID" [disabled]="submitDisabled" (click)="onAddTrip()" class="cus-btn-padd btn btn-success" >Save</button>
+                        <button type="submit"  *ngIf="tripID" [disabled]="submitDisabled" (click)="onUpdateTrip()" class="btn cus-btn-padd btn-success" >Update</button>
                     </div>
                 </div>
               </section>

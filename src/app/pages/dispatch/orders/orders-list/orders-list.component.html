@@ -208,6 +208,8 @@
                                                                     (click)="deactivateOrder(order)">Delete</a>
                                                                 <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
                                                                     (click)="changeStatus(order.orderID, order.orderNumber)">Confirm</a>
+                                                                <a class="dropdown-item"
+                                                                    [routerLink]="['/dispatch', 'orders', 'add']" [queryParams]="{ cloneID: order.orderID }">Clone</a>
                                                             </div>
                                                         </div>
                                                     </td>

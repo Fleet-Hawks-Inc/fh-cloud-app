@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services';
@@ -9,14 +9,17 @@ import { ToastrService } from 'ngx-toastr';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as _ from 'lodash';
+import { NgForm } from '@angular/forms';
 
 declare var $: any;
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
+  exportAs: 'cForm'
 })
 export class EditProfileComponent implements OnInit {
+  @ViewChild("cForm") cForm: NgForm;
   companyID = '';
   carrierID = '';
   bankID = '';
@@ -224,7 +227,7 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
-   defaultYardFn(e: any, index: number) {
+  defaultYardFn(e: any, index: number) {
     if (e === true) {
       this.addressDetails[index].defaultYard = true;
       this.yardDefault = true;
@@ -334,7 +337,7 @@ export class EditProfileComponent implements OnInit {
   }
   async getAddressDetail(id) {
     let result = await this.apiService
-    .getData(`pcMiles/detail/${id}`).toPromise();
+      .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
   }
   getStates(countryCode: any, index: any) {
@@ -416,7 +419,7 @@ export class EditProfileComponent implements OnInit {
     if (event === 'mailing') {
       this.addressDetails[index].defaultYard = false;
     }
-      }
+  }
   async userAddress(i, item) {
     this.addressDetails[i][`userLocation`] = item.address;
     const result = await this.getAddressDetail(item.place_id);
@@ -475,7 +478,7 @@ export class EditProfileComponent implements OnInit {
       }
     }
     for (const op of this.banks) {
-      for ( const addressElement of op.addressDetails) {
+      for (const addressElement of op.addressDetails) {
         delete addressElement.bankStates;
         delete addressElement.bankCities;
         if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
@@ -502,20 +505,20 @@ export class EditProfileComponent implements OnInit {
     for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
         if (this.addressDetails[i].manual) {
-         if (this.addressDetails[i].countryCode !== '' &&
-         this.addressDetails[i].stateCode !== '' &&
-         this.addressDetails[i].cityName !== '' &&
-         this.addressDetails[i].zipCode !== '' &&
-         this.addressDetails[i].address !== '') {
-           this.yardAddress = true;
-         }
+          if (this.addressDetails[i].countryCode !== '' &&
+            this.addressDetails[i].stateCode !== '' &&
+            this.addressDetails[i].cityName !== '' &&
+            this.addressDetails[i].zipCode !== '' &&
+            this.addressDetails[i].address !== '') {
+            this.yardAddress = true;
+          }
         } else if (!this.addressDetails[i].manual) {
-         if (this.addressDetails[i][`userLocation`] !== '' ) {
-           this.yardAddress = true;
-         }
+          if (this.addressDetails[i][`userLocation`] !== '') {
+            this.yardAddress = true;
+          }
         }
         break;
-    } else {
+      } else {
         this.yardAddress = false;
       }
     }
@@ -621,10 +624,10 @@ export class EditProfileComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v === 'carrierName'){
+        if (v === 'carrierName') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
       });
   }

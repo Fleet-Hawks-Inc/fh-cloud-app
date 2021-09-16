@@ -1,4 +1,4 @@
-import csc from 'country-state-city';
+import { City, Country, State } from 'country-state-city';
 
 /**
  * Utility function to get country, state and cities.
@@ -9,7 +9,7 @@ export class CountryStateCity {
    * @returns Countries
    */
   public static GetAllCountries = (): Array<any> => {
-    const cscRep = csc.getAllCountries();
+    const cscRep = Country.getAllCountries();
     let countries: any = [];
     cscRep.forEach((country) => {
       countries.push({
@@ -28,12 +28,12 @@ export class CountryStateCity {
   public static GetSpecificCountryNameByCode = (
     countryCode: string
   ): string => {
-    const cscRep = csc.getCountryByCode(countryCode);
-      if (cscRep) {
-        return cscRep.name;
-      } else {
-        return countryCode;
-      }
+    const cscRep = Country.getCountryByCode(countryCode);
+    if (cscRep) {
+      return cscRep.name;
+    } else {
+      return countryCode;
+    }
 
   };
 
@@ -47,7 +47,7 @@ export class CountryStateCity {
   ): Array<any> => {
     let states: any = [];
     countryCodes.forEach((code) => {
-      const cssRep = csc.getStatesOfCountry(code);
+      const cssRep = State.getStatesOfCountry(code);
       if (cssRep.length > 0) {
         let stateObj: any;
         cssRep.forEach((state) => {
@@ -69,13 +69,16 @@ export class CountryStateCity {
     stateCode: string
   ): Array<any> => {
     let cities: any = [];
-    const cssRep = csc.getCitiesOfState(countryCode, stateCode);
+    const cssRep = City.getCitiesOfState(countryCode, stateCode);
     if (cssRep.length > 0) {
       let cityObj: any;
       cssRep.forEach((city) => {
         cityObj = { cityName: city.name };
         cities.push(cityObj);
       });
+    }
+    if(cities.length === 0) {
+      cities.push({cityName: "Other"})
     }
     return cities;
   };
@@ -86,7 +89,7 @@ export class CountryStateCity {
    * @returns
    */
   public static GetStateName = (stateCode: string): string => {
-    const cscRep = csc.getStateByCode(stateCode);
+    const cscRep = State.getStateByCode(stateCode);
 
     if (cscRep) {
       return cscRep.name;
@@ -100,7 +103,7 @@ export class CountryStateCity {
    * @returns cities
    */
   public static GetCitiesByCountryCode = (countryCode: string): Array<any> => {
-    const cscRep: any = csc.getCitiesOfCountry(countryCode);
+    const cscRep: any = City.getCitiesOfCountry(countryCode);
     const cities: any = [];
     if (cscRep.length > 0) {
       let cityObj: any;
@@ -118,7 +121,7 @@ export class CountryStateCity {
   * @returns
   */
   public static GetStateNameFromCode = (stateCode: string, countryCode: string): string => {
-    const cscRep = csc.getStateByCodeAndCountry(stateCode, countryCode);
+    const cscRep = State.getStateByCodeAndCountry(stateCode, countryCode);
 
     if (cscRep) {
       return cscRep.name;

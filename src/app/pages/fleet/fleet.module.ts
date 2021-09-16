@@ -1,11 +1,11 @@
-import {Injectable, NgModule} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, Injectable, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FleetRoutingModule } from './fleet-routing.module';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../shared/shared.module';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import {ChartsModule} from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 // ngselect2
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgSelectConfig } from '@ng-select/ng-select';
@@ -40,7 +40,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     return {
       year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
-      day: + parseInt(parts[2]) }
+      day: + parseInt(parts[2])
+    }
   }
 
   toModel(date: NgbDateStruct): string // from internal model -> your mode
@@ -62,9 +63,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     if (value) {
       let date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10)
       };
     }
     return null;
@@ -89,7 +90,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    
+
   ],
   exports: [...COMPONENTS],
   declarations: [
@@ -97,8 +98,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
   ],
   providers: [NgSelectConfig, ɵs,
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},
-  ],
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ]
+ 
 })
-export class FleetModule {}
+export class FleetModule { }

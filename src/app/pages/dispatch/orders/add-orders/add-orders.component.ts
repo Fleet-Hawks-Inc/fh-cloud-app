@@ -84,7 +84,7 @@ export class AddOrdersComponent implements OnInit {
     reference: "",
     phone: "",
     email: "",
-    zeroRated: false,
+    zeroRated: true,
     TotalAgreedAmount: "",
     ShipperDetails: "",
     ConsigneeDetails: "",
@@ -347,6 +347,8 @@ export class AddOrdersComponent implements OnInit {
   cusAdditionalContact: any = [];
   isInvoiceGenerated: boolean;
 
+  cloneID: any;
+  
   constructor(
     private apiService: ApiService,
     private ngbCalendar: NgbCalendar,
@@ -362,6 +364,7 @@ export class AddOrdersComponent implements OnInit {
     private location: Location,
   ) {
     const current = new Date();
+    
     // config.minDate = {
     //   year: current.getFullYear(),
     //   month: current.getMonth() + 1,
@@ -491,6 +494,13 @@ export class AddOrdersComponent implements OnInit {
       this.shippersObjects = res;
     });
 
+    this.route.queryParams
+    .subscribe(params => {
+      this.cloneID = params.cloneID;
+      if(this.cloneID != undefined && this.cloneID != '') {
+        this.cloneOrder(this.cloneID);
+      }
+    });
     
   }
 
@@ -1216,28 +1226,36 @@ export class AddOrdersComponent implements OnInit {
 
     //for location search in listing page
     let selectedLoc = '';
+    let newloc = '';
 
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
         h.dropPoint.map(elem => {
-          if(elem.address.dropOffLocation) {
-            let newloc = elem.address.dropOffLocation.replace(/,/g, "");
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else{
+            newloc = elem.address.dropOffLocation.replace(/,/g, "");
             selectedLoc += newloc.toLowerCase() + '|';
           }
         })
-
       })
 
       element.shippers.map((h:any) => {
         h.pickupPoint.map(elem => {
-          if(elem.address.pickupLocation) {
-            let newloc = elem.address.pickupLocation.replace(/,/g, "");
+          if(elem.address.manual) {
+            newloc = `${elem.address.address} ${elem.address.cityName} ${elem.address.stateName} ${elem.address.countryName} ${elem.address.zipCode}`;
+            selectedLoc += newloc.replace(/,/g, "").toLowerCase() + '|';
+          } else {
+            newloc = elem.address.pickupLocation.replace(/,/g, "");
             selectedLoc += newloc.toLowerCase() + '|';
           }
+          
         })
 
       })
+    
     }
 
     this.orderData['loc'] = selectedLoc;
@@ -1930,7 +1948,6 @@ export class AddOrdersComponent implements OnInit {
     //for location search in listing page
     let selectedLoc = '';
     let newloc = '';
-    console.log('this.orderData.shippersReceiversInfo', this.orderData.shippersReceiversInfo)
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {
@@ -2363,5 +2380,156 @@ export class AddOrdersComponent implements OnInit {
     } else {
       this.listService.fetchCustomers()
     }
+  }
+
+  cloneOrder(id: any) {
+    this.apiService
+      .getData("orders/" +id)
+      .subscribe(async (result: any) => {
+        result = result.Items[0];
+        this.orderData.cusAddressID = result.cusAddressID;
+        await this.fetchStateTaxes();
+
+        let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
+
+        this.orderData.taxesInfo = [
+          {
+            name: 'GST',
+            amount: (state) ? state.GST : '',
+          },
+          {
+            name: 'HST',
+            amount: (state) ? state.HST: '',
+          },
+          {
+            name: 'PST',
+            amount: (state) ? state.PST : '',
+          },
+        ];
+        this.orderData["customerID"] = result.customerID;
+        this.selectedCustomer(result.customerID);
+
+        if(result.attachments !== undefined && result.attachments.length > 0){
+          this.orderAttachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        }
+        this.orderData["attachments"] = result.attachments;
+        this.ifStatus = result.orderStatus;
+        this.orderData.orderStatus = 'created';
+        this.orderData["zeroRated"] = result.zeroRated;
+        this.orderData["additionalContact"] = result.additionalContact;
+        this.orderData["createdDate"] = result.createdDate;
+        this.orderData["createdTime"] = result.createdTime;
+        this.isInvoiceGenerated = result.invoiceGenerate;
+        this.orderData["invoiceEmail"] = result.invoiceEmail;
+        this.orderData["csa"] = result.csa;
+        this.orderData["ctpat"] = result.ctpat;
+        this.orderData["customerPO"] = result.customerPO;
+        this.orderData["email"] = result.email;
+        this.orderData["orderMode"] = result.orderMode;
+        this.orderData["orderNumber"] = result.orderNumber;
+        this.getOrderNumber = result.orderNumber;
+        this.orderData["phone"] = result.phone;
+        this.orderData["reference"] = result.reference;
+        this.orderData["remarks"] = result.remarks;
+        this.orderData.advance = result.advance;
+        this.orderData.milesInfo["totalMiles"] = result.milesInfo.totalMiles;
+        this.orderData.milesInfo["calculateBy"] = result.milesInfo.calculateBy;
+        this.orderData.stateTaxID = result.stateTaxID;
+        this.orderData["tripType"] = result.tripType;
+        this.orderData.additionalDetails.sealNo =
+        result.additionalDetails.sealNo;
+        this.orderData.additionalDetails.sealType =
+        result.additionalDetails.sealType;
+        this.orderData.additionalDetails["trailerType"] =
+          result.additionalDetails.trailerType;
+
+        // this.orderData.additionalDetails["loadType"] =
+        //   result.additionalDetails.loadType;
+
+        this.orderData.additionalDetails["refeerTemp"] =
+          result.additionalDetails.refeerTemp;
+
+        this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
+
+        let length = result.shippersReceiversInfo.length;
+        let emptyArr = [];
+        let newArray: any = this.shippersReceivers.slice();
+
+        for (let i = 0; i < length; i++) {
+          emptyArr.push(newArray[0]);
+        }
+
+        this.shippersReceivers = emptyArr;
+
+        this.finalShippersReceivers = result.shippersReceiversInfo;
+        this.shipperReceiverMerge();
+
+        // let newLoadTypes = [];
+        // if (
+        //   result.additionalDetails.loadType &&
+        //   result.additionalDetails.loadType.length > 0
+        // ) {
+        //   for (let i = 0; i < result.additionalDetails.loadType.length; i++) {
+        //     newLoadTypes.push(result.additionalDetails.loadType[i]);
+        //   }
+        //   this.loadTypeData = newLoadTypes;
+        // }
+
+        this.orderData.charges.freightFee.amount =
+          result.charges.freightFee.amount;
+        this.orderData.charges.freightFee.currency =
+          result.charges.freightFee.currency;
+        this.orderData.charges.freightFee.type = result.charges.freightFee.type;
+        this.orderData.charges.fuelSurcharge.amount =
+          result.charges.fuelSurcharge.amount;
+        this.orderData.charges.fuelSurcharge.currency =
+          result.charges.fuelSurcharge.currency;
+        this.orderData.charges.fuelSurcharge.type =
+          result.charges.fuelSurcharge.type;
+
+        let newAccessDeductions = [];
+        for (
+          let i = 0;
+          i <
+          result.charges.accessorialDeductionInfo.accessorialDeduction.length;
+          i++
+        ) {
+          newAccessDeductions.push({
+            type:
+              result.charges.accessorialDeductionInfo.accessorialDeduction[i]
+                .type,
+            currency:
+              result.charges.accessorialDeductionInfo.accessorialDeduction[i]
+                .currency,
+            amount:
+              result.charges.accessorialDeductionInfo.accessorialDeduction[i]
+                .amount,
+          });
+        }
+        this.accessorialDeductionInfo.accessDeductions = newAccessDeductions;
+
+        let newAccessFees = [];
+        for (
+          let i = 0;
+          i < result.charges.accessorialFeeInfo.accessorialFee.length;
+          i++
+        ) {
+          newAccessFees.push({
+            type: result.charges.accessorialFeeInfo.accessorialFee[i].type,
+            amount: result.charges.accessorialFeeInfo.accessorialFee[i].amount,
+            currency:
+              result.charges.accessorialFeeInfo.accessorialFee[i].currency,
+          });
+        }
+        this.accessFeesInfo.accessFees = newAccessFees;
+
+        this.orderData.advance = result.amount;
+        this.orderData.discount.unit = result.discount.unit;
+        this.orderData["totalAmount"] = result.totalAmount;
+        this.orderData.advance = result.advance;
+        this.existingUploadedDocs = result.uploadedDocs;
+
+        this.calculateAmount();
+      });
   }
 }

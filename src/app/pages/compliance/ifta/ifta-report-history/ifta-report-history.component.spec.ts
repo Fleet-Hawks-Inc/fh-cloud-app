@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IftaReportHistoryComponent } from './ifta-report-history.component';
 
@@ -6,7 +6,7 @@ describe('IftaReportHistoryComponent', () => {
   let component: IftaReportHistoryComponent;
   let fixture: ComponentFixture<IftaReportHistoryComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ IftaReportHistoryComponent ]
     })

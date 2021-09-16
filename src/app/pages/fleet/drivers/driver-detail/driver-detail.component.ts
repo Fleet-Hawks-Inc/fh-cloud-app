@@ -20,7 +20,7 @@ declare var $: any;
   styleUrls: ['./driver-detail.component.css']
 })
 export class DriverDetailComponent implements OnInit {
-  @ViewChild('driverF', null) driverF: NgForm;
+  @ViewChild('driverF') driverF: NgForm;
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   platform: any;
