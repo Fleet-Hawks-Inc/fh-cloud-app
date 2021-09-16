@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute,Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 @Component({
   selector: 'app-user-details',
   templateUrl: './user-details.component.html',
@@ -66,12 +67,13 @@ export class UserDetailsComponent implements OnInit {
       confirmPassword: ''
     }
   };
-      public userProfileSrc: any = 'assets/img/driver/driver.png';
-  constructor(private route: ActivatedRoute, private apiService: ApiService,private router: Router, private toastr: ToastrService,) { }
+  public userProfileSrc: any = 'assets/img/driver/driver.png';
+  constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, private toastr: ToastrService,
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
-      this.fetchUserByID();
+    this.fetchUserByID();
   }
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
@@ -125,13 +127,13 @@ export class UserDetailsComponent implements OnInit {
     });
   }
   fetchAddress(address: any) {
-    for(let a=0; a < address.length; a++){
-      address.map((e: any) => {
+    for (let a = 0; a < address.length; a++) {
+      address.map(async (e: any) => {
         if (e.manual) {
-           e.countryName =  CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-           e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+          e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
+          e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
         }
       });
     }
-   }
+  }
 }

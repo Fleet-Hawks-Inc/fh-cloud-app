@@ -7,9 +7,9 @@ import { map } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
 import { ListService } from 'src/app/services/list.service';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import * as moment from 'moment';
 import { Location } from '@angular/common';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 
 @Component({
@@ -18,7 +18,7 @@ declare var $: any;
   styleUrls: ['./add-expense.component.css']
 })
 export class AddExpenseComponent implements OnInit {
-pageTitle = 'Add Other Expense';
+  pageTitle = 'Add Other Expense';
   expenseData = {
     categoryID: null,
     expAccountID: null,
@@ -64,20 +64,20 @@ pageTitle = 'Add Other Expense';
   expenseCategories = [];
   recInterval = [
     {
-      value:'weekly',
-      name:'Weekly'
+      value: 'weekly',
+      name: 'Weekly'
     },
     {
-      value:'biWeekly',
-      name:'Biweekly'
+      value: 'biWeekly',
+      name: 'Biweekly'
     },
     {
-      value:'monthly',
-      name:'Monthly'
+      value: 'monthly',
+      name: 'Monthly'
     },
     {
-      value:'yearly',
-      name:'Yearly'
+      value: 'yearly',
+      name: 'Yearly'
     },
   ];
   expenseAccounts;
@@ -115,27 +115,31 @@ pageTitle = 'Add Other Expense';
   catDisabled = false;
   trips: any = [];
   constructor(private listService: ListService,
-              private location: Location, private apiService: ApiService, private accountService: AccountService, private router: Router, private toaster: ToastrService, private domSanitizer: DomSanitizer, private route: ActivatedRoute) { }
+    private location: Location, private apiService: ApiService, private accountService: AccountService, private router: Router,
+    private toaster: ToastrService,
+    private domSanitizer: DomSanitizer,
+    private route: ActivatedRoute,
+    private countryStateCity: CountryStateCityService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     if (this.expenseID != undefined) {
       this.fetchExpenseByID();
       this.pageTitle = 'Edit Other Expense';
     }
     this.fetchTrips();
-    this.fetchCountries();
+    await this.fetchCountries();
     this.fetchExpenseCategories();
     this.fetchStateTaxes();
-  //  this.fetchInvoices();
+    //  this.fetchInvoices();
     this.listService.fetchChartAccounts();
-  //  this.listService.fetchCustomers();
+    //  this.listService.fetchCustomers();
     this.listService.fetchAssets();
     this.listService.fetchVehicles();
     this.listService.fetchVendors();
     this.expenseAccounts = this.listService.accountsList;
     this.paidThroughAccounts = this.listService.accountsList;
-  //  this.customers = this.listService.customersList;
+    //  this.customers = this.listService.customersList;
     this.vehicles = this.listService.vehicleList;
     this.assets = this.listService.assetsList;
     this.vendors = this.listService.vendorList;
@@ -150,21 +154,21 @@ pageTitle = 'Add Other Expense';
   refreshPaidAccount() {
     this.listService.fetchChartAccounts();
   }
-  fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries();
+  async fetchCountries() {
+    this.countries = await this.countryStateCity.GetAllCountries();
   }
 
-  getStates(countryCode) {
-    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    this.expenseData.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+  async getStates(countryCode) {
+    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.expenseData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
   }
 
-  getCities(countryCode='', stateCode) {
-    this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-    this.expenseData.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+  async getCities(countryCode = '', stateCode) {
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.expenseData.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
 
     if (stateCode !== undefined && stateCode != null) {
-      let selected:any = this.stateTaxes.filter(o => o.stateCode === stateCode);
+      let selected: any = this.stateTaxes.filter(o => o.stateCode === stateCode);
       this.expenseData.taxes.gstPercent = selected[0].GST;
       this.expenseData.taxes.pstPercent = selected[0].PST;
       this.expenseData.taxes.hstpercent = selected[0].HST;
@@ -177,7 +181,7 @@ pageTitle = 'Add Other Expense';
   }
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
-     this.trips = result.Items;
+      this.trips = result.Items;
     });
   }
   fetchStateTaxes() {
@@ -255,7 +259,7 @@ pageTitle = 'Add Other Expense';
 
   fetchExpenseByID() {
     this.accountService.getData(`expense/detail/${this.expenseID}`)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         if (result[0] != undefined) {
           this.expenseData = result[0];
 
@@ -263,8 +267,8 @@ pageTitle = 'Add Other Expense';
           this.expenseData.taxAmount = result[0].taxAmount;
           this.existingDocs = result[0].documents;
           this.carrierID = result[0].carrierID;
-          this.states = CountryStateCity.GetStatesByCountryCode([result[0].countryCode]);
-          this.cities = CountryStateCity.GetCitiesByStateCodes(result[0].countryCode, result[0].stateCode);
+          this.states = await this.countryStateCity.GetStatesByCountryCode([result[0].countryCode]);
+          this.cities = await this.countryStateCity.GetCitiesByStateCodes(result[0].countryCode, result[0].stateCode);
 
           if (result[0].documents != undefined && result[0].documents.length > 0) {
             result[0].documents.map((x) => {
@@ -404,18 +408,18 @@ pageTitle = 'Add Other Expense';
   calculateFinalTotal() {
     this.expenseData.taxAmount = 0;
     this.expenseData.finalTotal = +this.expenseData.amount;
-    if(this.expenseData.taxes.gstPercent != null && this.expenseData.taxes.includeGST) {
-      this.expenseData.taxes.gstAmount = (this.expenseData.amount*this.expenseData.taxes.gstPercent)/100;
+    if (this.expenseData.taxes.gstPercent != null && this.expenseData.taxes.includeGST) {
+      this.expenseData.taxes.gstAmount = (this.expenseData.amount * this.expenseData.taxes.gstPercent) / 100;
       this.expenseData.taxAmount += this.expenseData.taxes.gstAmount;
       this.expenseData.finalTotal += +this.expenseData.taxes.gstAmount;
     }
-    if(this.expenseData.taxes.hstpercent != null && this.expenseData.taxes.includeHST) {
-      this.expenseData.taxes.hstAmount = (this.expenseData.amount*this.expenseData.taxes.hstpercent)/100;
+    if (this.expenseData.taxes.hstpercent != null && this.expenseData.taxes.includeHST) {
+      this.expenseData.taxes.hstAmount = (this.expenseData.amount * this.expenseData.taxes.hstpercent) / 100;
       this.expenseData.finalTotal += +this.expenseData.taxes.hstAmount;
       this.expenseData.taxAmount += this.expenseData.taxes.hstAmount;
     }
-    if(this.expenseData.taxes.pstPercent != null && this.expenseData.taxes.includePST) {
-      this.expenseData.taxes.pstAmount = (this.expenseData.amount*this.expenseData.taxes.pstPercent)/100;
+    if (this.expenseData.taxes.pstPercent != null && this.expenseData.taxes.includePST) {
+      this.expenseData.taxes.pstAmount = (this.expenseData.amount * this.expenseData.taxes.pstPercent) / 100;
       this.expenseData.finalTotal += +this.expenseData.taxes.pstAmount;
       this.expenseData.taxAmount += this.expenseData.taxes.pstAmount;
     }
@@ -424,7 +428,7 @@ pageTitle = 'Add Other Expense';
   }
 
   changeDepAcc(val) {
-    if(val === this.expenseData.paidAccountID) {
+    if (val === this.expenseData.paidAccountID) {
       this.expenseData.paidAccountID = null;
     }
   }

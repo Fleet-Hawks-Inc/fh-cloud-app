@@ -12,8 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
-import { CountryStateCity } from '../../../../../shared/utilities/countryStateCities';
+
 import * as _ from 'lodash';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 @Component({
   selector: 'app-new-aci-manifest',
@@ -78,7 +79,7 @@ export class NewAciManifestComponent implements OnInit {
   estimatedArrivalDateTime: string;
   addTruckSealBtn = true;
   fetchedCoDrivers = [];
-  modifiedBy  = '';
+  modifiedBy = '';
   createdBy = '';
   truck = {
     truckID: '',
@@ -228,7 +229,8 @@ export class NewAciManifestComponent implements OnInit {
     private apiService: ApiService,
     private location: Location,
     config: NgbTimepickerConfig,
-    private dateAdapter: NgbDateAdapter<string>
+    private dateAdapter: NgbDateAdapter<string>,
+    private countryStateCity: CountryStateCityService
   ) {
     config.seconds = true;
     config.spinners = true;
@@ -242,7 +244,7 @@ export class NewAciManifestComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
     if (this.manifestID) {
       this.title = 'Edit ACI e-Manifest';
@@ -265,7 +267,7 @@ export class NewAciManifestComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    this.fetchCountries();
+    await this.fetchCountries();
     this.fetchCarrier();
     this.fetchAssetType();
     this.httpClient.get('assets/canadianPorts.json').subscribe((data) => {
@@ -310,8 +312,8 @@ export class NewAciManifestComponent implements OnInit {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries(); //fetch countries from library
+  async fetchCountries() {
+    this.countries = await this.countryStateCity.GetAllCountries(); //fetch countries from library
   }
   /**
    * function fetches the US and Mexico states
@@ -320,42 +322,42 @@ export class NewAciManifestComponent implements OnInit {
   /**
    * fetch cities of US and Mexico
    */
-  getLoadingStates(countryCode: any, sIndex: any) {
+  async getLoadingStates(countryCode: any, sIndex: any) {
     this.shipments[sIndex].cityOfLoading.stateProvince = '';
     this.shipments[sIndex].cityOfLoading.cityName = '';
-    this.shipments[sIndex].cityOfLoading.loadingStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.shipments[sIndex].cityOfLoading.loadingStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getLoadingCities(stateCode: any, sIndex: any) {
+  async getLoadingCities(stateCode: any, sIndex: any) {
     this.shipments[sIndex].cityOfLoading.cityName = '';
     const countryCode = this.shipments[sIndex].cityOfLoading.country;
-    this.shipments[sIndex].cityOfLoading.loadingCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.shipments[sIndex].cityOfLoading.loadingCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  getAcceptanceStates(countryCode: any, sIndex: any) {
+  async getAcceptanceStates(countryCode: any, sIndex: any) {
     this.shipments[sIndex].cityOfAcceptance.stateProvince = '';
     this.shipments[sIndex].cityOfAcceptance.cityName = '';
-    this.shipments[sIndex].cityOfAcceptance.acceptanceStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.shipments[sIndex].cityOfAcceptance.acceptanceStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getAcceptanceCities(stateCode: any, sIndex: any) {
+  async getAcceptanceCities(stateCode: any, sIndex: any) {
     this.shipments[sIndex].cityOfAcceptance.cityName = '';
     const countryCode = this.shipments[sIndex].cityOfAcceptance.country;
-    this.shipments[sIndex].cityOfAcceptance.acceptanceCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.shipments[sIndex].cityOfAcceptance.acceptanceCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  fetchLoadingStateCities(shipments: any) {
-  for(let s = 0; s < shipments.length; s++) {
-    const countryCode = this.shipments[s].cityOfLoading.country;
-    const stateCode = this.shipments[s].cityOfLoading.stateProvince;
-    this.shipments[s].cityOfLoading.loadingStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    this.shipments[s].cityOfLoading.loadingCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchLoadingStateCities(shipments: any) {
+    for (let s = 0; s < shipments.length; s++) {
+      const countryCode = this.shipments[s].cityOfLoading.country;
+      const stateCode = this.shipments[s].cityOfLoading.stateProvince;
+      this.shipments[s].cityOfLoading.loadingStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      this.shipments[s].cityOfLoading.loadingCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    }
   }
-  }
-  fetchAcceptanceStateCities(shipments: any) {
-    for(let s = 0; s < shipments.length; s++) {
+  async fetchAcceptanceStateCities(shipments: any) {
+    for (let s = 0; s < shipments.length; s++) {
       const countryCode = this.shipments[s].cityOfAcceptance.country;
       const stateCode = this.shipments[s].cityOfAcceptance.stateProvince;
-      this.shipments[s].cityOfAcceptance.acceptanceStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-      this.shipments[s].cityOfAcceptance.acceptanceCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      this.shipments[s].cityOfAcceptance.acceptanceStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+      this.shipments[s].cityOfAcceptance.acceptanceCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     }
-    }
+  }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
       this.carriers = result.Items;
@@ -386,7 +388,7 @@ export class NewAciManifestComponent implements OnInit {
       this.assets = result.Items;
     });
   }
-  shipmentLoadedFn(s){
+  shipmentLoadedFn(s) {
     this.shipments[s].loadedOn.number = '';
   }
   containerLoadedFn(i) {
@@ -408,9 +410,9 @@ export class NewAciManifestComponent implements OnInit {
   }
   fetchAssetType() {
     this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data) => {
-   this.borderAssetType = data;
- });
-}
+      this.borderAssetType = data;
+    });
+  }
   fetchDrivers() {
     this.apiService.getData('drivers').subscribe((result: any) => {
       this.drivers = result.Items;
@@ -507,26 +509,26 @@ export class NewAciManifestComponent implements OnInit {
   }
   // delivery destinations
 
-  getDeliveryDestinationState(countryCode: any, sIndex: any, pIndex: any) {
+  async getDeliveryDestinationState(countryCode: any, sIndex: any, pIndex: any) {
     this.shipments[sIndex].deliveryDestinations[pIndex].address.stateCode = '';
-    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getDeliveryDestinationCity(stateCode: any, sIndex: any, pIndex: any) {
+  async getDeliveryDestinationCity(stateCode: any, sIndex: any, pIndex: any) {
     const countryCode = this.shipments[sIndex].deliveryDestinations[pIndex].address.countryCode;
     this.shipments[sIndex].deliveryDestinations[pIndex].address.cityName = '';
-    this.shipments[sIndex].deliveryDestinations[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.shipments[sIndex].deliveryDestinations[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shipments[sIndex].deliveryDestinations[pIndex].address.deliveryDestinationCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  fetchDeliveryDestinationAddress(shipments: any) {
-   for(let s = 0; s < shipments.length; s++) {
-    for(let p = 0; p < shipments[s].deliveryDestinations.length; p++) {
-      const countryCode: any = this.shipments[s].deliveryDestinations[p].address.countryCode;
-      const stateCode: any = this.shipments[s].deliveryDestinations[p].address.stateCode;
-      this.shipments[s].deliveryDestinations[p].address.deliveryDestinationStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-      this.shipments[s].deliveryDestinations[p].address.deliveryDestinationCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchDeliveryDestinationAddress(shipments: any) {
+    for (let s = 0; s < shipments.length; s++) {
+      for (let p = 0; p < shipments[s].deliveryDestinations.length; p++) {
+        const countryCode: any = this.shipments[s].deliveryDestinations[p].address.countryCode;
+        const stateCode: any = this.shipments[s].deliveryDestinations[p].address.stateCode;
+        this.shipments[s].deliveryDestinations[p].address.deliveryDestinationStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+        this.shipments[s].deliveryDestinations[p].address.deliveryDestinationCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      }
     }
-   }
   }
   addDeliveryDestination(p) {
     if (this.shipments[p].deliveryDestinations.length <= 96) {
@@ -661,40 +663,40 @@ export class NewAciManifestComponent implements OnInit {
     }
   }
   // PASSENGER FUNCTIONS
-      getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
-      this.passengers[Pindex].travelDocuments[Dindex].stateProvince = '';
-      this.passengers[Pindex].travelDocuments[Dindex].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    }
-    fetchPassengerDocStates(passengers: any) {
-      for (let p = 0; p < passengers.length; p++) {
-        for (let d = 0; d < passengers[p].travelDocuments.length; d++) {
-          const countryCode = this.passengers[p].travelDocuments[d].country;
-          this.passengers[p].travelDocuments[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-        }
+  async getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
+    this.passengers[Pindex].travelDocuments[Dindex].stateProvince = '';
+    this.passengers[Pindex].travelDocuments[Dindex].docStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  async fetchPassengerDocStates(passengers: any) {
+    for (let p = 0; p < passengers.length; p++) {
+      for (let d = 0; d < passengers[p].travelDocuments.length; d++) {
+        const countryCode = this.passengers[p].travelDocuments[d].country;
+        this.passengers[p].travelDocuments[d].docStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
       }
     }
+  }
   // notify parties
-    getNotifyPartyState(countryCode: any, sIndex: any, pIndex: any) {
-      this.shipments[sIndex].notifyParties[pIndex].address.stateCode = '';
-      this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    }
-    getNotifyPartyCity(stateCode: any, sIndex: any, pIndex: any) {
-      const countryCode = this.shipments[sIndex].notifyParties[pIndex].address.countryCode;
-      this.shipments[sIndex].notifyParties[pIndex].address.cityName = '';
-      this.shipments[sIndex].notifyParties[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-      this.shipments[sIndex].notifyParties[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-      this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-    }
-    fetchNotifyPartyAddress(shipments: any) {
-     for(let s = 0; s < shipments.length; s++) {
-      for(let p = 0; p < shipments[s].notifyParties.length; p++) {
+  async getNotifyPartyState(countryCode: any, sIndex: any, pIndex: any) {
+    this.shipments[sIndex].notifyParties[pIndex].address.stateCode = '';
+    this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+  }
+  async getNotifyPartyCity(stateCode: any, sIndex: any, pIndex: any) {
+    const countryCode = this.shipments[sIndex].notifyParties[pIndex].address.countryCode;
+    this.shipments[sIndex].notifyParties[pIndex].address.cityName = '';
+    this.shipments[sIndex].notifyParties[pIndex].address.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shipments[sIndex].notifyParties[pIndex].address.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shipments[sIndex].notifyParties[pIndex].address.notifyPartyCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
+  async fetchNotifyPartyAddress(shipments: any) {
+    for (let s = 0; s < shipments.length; s++) {
+      for (let p = 0; p < shipments[s].notifyParties.length; p++) {
         const countryCode: any = this.shipments[s].notifyParties[p].address.countryCode;
         const stateCode: any = this.shipments[s].notifyParties[p].address.stateCode;
-        this.shipments[s].notifyParties[p].address.notifyPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-        this.shipments[s].notifyParties[p].address.notifyPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+        this.shipments[s].notifyParties[p].address.notifyPartyStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+        this.shipments[s].notifyParties[p].address.notifyPartyCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
       }
-     }
     }
+  }
   addNotifyParty(p) {
     if (this.shipments[p].notifyParties.length <= 97) {
       this.shipments[p].notifyParties.push(
@@ -859,7 +861,7 @@ export class NewAciManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-             // this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
@@ -875,10 +877,10 @@ export class NewAciManifestComponent implements OnInit {
   }
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
-      if(v === 'tripNumber') {
+      if (v === 'tripNumber') {
         $('[name="' + v + '"]')
-        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-        .addClass('error');
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
       }
     });
   }
@@ -896,12 +898,12 @@ export class NewAciManifestComponent implements OnInit {
   fetchACIEntry() {
     this.apiService
       .getData('eManifests/ACI/' + this.manifestID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
         this.timeCreated = result.timeCreated;
         this.manifestID = this.manifestID;
         this.manifestType = result.manifestType,
-        this.sendId = result.sendId;
+          this.sendId = result.sendId;
         this.CCC = result.CCC;
         this.tripNumber = result.tripNumber.substring(4, (result.tripNumber.length));
         this.portOfEntry = result.portOfEntry;
@@ -922,11 +924,11 @@ export class NewAciManifestComponent implements OnInit {
         this.borderResponses = result.borderResponses;
         this.createdDate = result.createdDate;
         this.createdTime = result.createdTime;
-        this.fetchNotifyPartyAddress(this.shipments);
-        this.fetchDeliveryDestinationAddress(this.shipments);
-        this.fetchLoadingStateCities(this.shipments);
-        this.fetchAcceptanceStateCities(this.shipments);
-        this.fetchPassengerDocStates(this.passengers);
+        await this.fetchNotifyPartyAddress(this.shipments);
+        await this.fetchDeliveryDestinationAddress(this.shipments);
+        await this.fetchLoadingStateCities(this.shipments);
+        await this.fetchAcceptanceStateCities(this.shipments);
+        await this.fetchPassengerDocStates(this.passengers);
         this.fetchAssetType();
       });
   }
@@ -953,7 +955,7 @@ export class NewAciManifestComponent implements OnInit {
       timeCreated: this.timeCreated,
       createdBy: this.createdBy,
       modifiedBy: this.modifiedBy,
-      borderResponses : this.borderResponses,
+      borderResponses: this.borderResponses,
       createdDate: this.createdDate,
       createdTime: this.createdTime,
     };
@@ -998,7 +1000,7 @@ export class NewAciManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-               // this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },

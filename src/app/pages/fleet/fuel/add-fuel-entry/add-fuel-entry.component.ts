@@ -8,8 +8,9 @@ import { ToastrService } from 'ngx-toastr';
 import { Location } from '@angular/common';
 import * as _ from 'lodash';
 import { ListService } from '../../../../services';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
-import { HttpClient} from '@angular/common/http'
+
+import { HttpClient } from '@angular/common/http'
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 
 
 declare var $: any;
@@ -53,8 +54,8 @@ export class AddFuelEntryComponent implements OnInit {
     paidBy: null,
     taxes: [
       {
-      taxType: null,
-      taxAmount: 0
+        taxType: null,
+        taxAmount: 0
       }
     ],
     paymentMode: '',
@@ -64,7 +65,7 @@ export class AddFuelEntryComponent implements OnInit {
     odometer: '',
     description: '',
     uploadedPhotos: [],
-    lineItems:  [],
+    lineItems: [],
   };
   fetchedUnitID;
   fetchedUnitType;
@@ -88,7 +89,7 @@ export class AddFuelEntryComponent implements OnInit {
   trips = [];
   fuelEntryImages = [];
   fuelDiscounts = [];
-  fuelTypes = ["Diesel","Gasoline","Propane"];
+  fuelTypes = ["Diesel", "Gasoline", "Propane"];
   fuelTaxes = [];
   image;
   vehicleData: any;
@@ -112,10 +113,11 @@ export class AddFuelEntryComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
 
   constructor(private apiService: ApiService,
-              private route: ActivatedRoute,
-              private location: Location, private toaster: ToastrService,
-              private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService,
-              private httpClient: HttpClient) {
+    private route: ActivatedRoute,
+    private location: Location, private toaster: ToastrService,
+    private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>, private listService: ListService,
+    private httpClient: HttpClient,
+    private countryStateCity: CountryStateCityService) {
 
     this.selectedFileNames = new Map<any, any>();
     const date = new Date();
@@ -187,16 +189,16 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
-  private getValidVendors(vendorList:any[]) {
+  private getValidVendors(vendorList: any[]) {
     let ids = [];
     this.listService.vendorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           vendorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && this.fuelData.vendorID === element2.contactID){
+        if (element2.isDeleted === 1 && this.fuelData.vendorID === element2.contactID) {
           this.fuelData.vendorID = null;
         }
       })
@@ -213,8 +215,8 @@ export class AddFuelEntryComponent implements OnInit {
   // }
   addFuelTaxRow() {
     this.fuelData.taxes.push({
-        taxType: null,
-        taxAmount: 0
+      taxType: null,
+      taxAmount: 0
     });
   }
   deleteTaxRow(t) {
@@ -226,12 +228,12 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   async fetchFuelTaxes() {
-    await this.httpClient.get('assets/jsonFiles/fuel/fuelTaxes.json').subscribe((result: any) => { 
+    await this.httpClient.get('assets/jsonFiles/fuel/fuelTaxes.json').subscribe((result: any) => {
       this.fuelTaxes = result.Items;
     });
   }
   async fetchFuelDiscounts() {
-    await this.httpClient.get('assets/jsonFiles/fuel/fuelDiscounts.json').subscribe((result: any) => { 
+    await this.httpClient.get('assets/jsonFiles/fuel/fuelDiscounts.json').subscribe((result: any) => {
       this.fuelDiscounts = result.Items;
     });
   }
@@ -258,15 +260,15 @@ export class AddFuelEntryComponent implements OnInit {
       this.trips = result;
     });
   }
-  getStates(cntryCode) {
+  async getStates(cntryCode) {
     this.fuelData.stateCode = '';
     this.fuelData.cityName = '';
-    this.states = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+    this.states = await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  getCities(stateCode: any, countryCode: any) {
+  async getCities(stateCode: any, countryCode: any) {
     this.fuelData.cityName = '';
-    this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode,stateCode);
- }
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  }
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
       this.vendors = result.Items;
@@ -279,9 +281,9 @@ export class AddFuelEntryComponent implements OnInit {
       .remove('label');
   }
 
-  fillCountry(countryCode, stateCode) {
-    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    this.cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fillCountry(countryCode, stateCode) {
+    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   onChangeUnitType(value: any) {
     if (this.fuelID) {
@@ -312,11 +314,11 @@ export class AddFuelEntryComponent implements OnInit {
     this.hideErrors();
     this.submitDisabled = true;
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    
-    if(this.fuelData.paymentMode != 'Fuel_Card'){
+
+    if (this.fuelData.paymentMode != 'Fuel_Card') {
       this.fuelData.fuelCardNumber = null;
     }
-    
+
     // create form data instance
     const formData = new FormData();
     // append photos if any
@@ -342,7 +344,7 @@ export class AddFuelEntryComponent implements OnInit {
             },
             error: () => {
               this.submitDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -394,55 +396,55 @@ export class AddFuelEntryComponent implements OnInit {
   async fetchFuelEntry() {
     let result = await this.apiService
       .getData('fuelEntries/' + this.fuelID).toPromise();
-      // .subscribe((result: any) => {
-        result = result.Items[0];
-        this.fillCountry(result.countryCode, result.stateCode);
-        this.fuelData[`fuelID`] = this.fuelID;
-        this.fuelData.billingCurrency = result.billingCurrency,
-        this.fuelData.unitType = result.unitType;
-        this.fuelData.unitID = result.unitID;
-        this.fuelData.fuelUnit = result.fuelUnit;
-        this.fuelData.fuelQty = result.fuelQty;
-        this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
-        this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-        this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-        this.fuelData.discType = result.discType;
-        this.fuelData.discAmount = result.discAmount;
-        this.fuelData.subTotal = result.subTotal;
-        this.fuelData.pricePerUnit = result.pricePerUnit;
-        this.fuelData.taxes = result.taxes;
-        this.fuelData.totalUnits = result.totalUnits;
-        this.fuelData.amountPaid = result.amountPaid;
-        this.fuelData.fuelDate = result.fuelDate;
-        this.fuelData.fuelTime = result.fuelTime;
-        this.fuelData.fuelType = result.fuelType;
+    // .subscribe((result: any) => {
+    result = result.Items[0];
+    await this.fillCountry(result.countryCode, result.stateCode);
+    this.fuelData[`fuelID`] = this.fuelID;
+    this.fuelData.billingCurrency = result.billingCurrency,
+      this.fuelData.unitType = result.unitType;
+    this.fuelData.unitID = result.unitID;
+    this.fuelData.fuelUnit = result.fuelUnit;
+    this.fuelData.fuelQty = result.fuelQty;
+    this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
+    this.fuelData.DEFFuelQty = +result.DEFFuelQty;
+    this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
+    this.fuelData.discType = result.discType;
+    this.fuelData.discAmount = result.discAmount;
+    this.fuelData.subTotal = result.subTotal;
+    this.fuelData.pricePerUnit = result.pricePerUnit;
+    this.fuelData.taxes = result.taxes;
+    this.fuelData.totalUnits = result.totalUnits;
+    this.fuelData.amountPaid = result.amountPaid;
+    this.fuelData.fuelDate = result.fuelDate;
+    this.fuelData.fuelTime = result.fuelTime;
+    this.fuelData.fuelType = result.fuelType;
 
-        this.fuelData.paidBy = result.paidBy;
-        this.fuelData.paymentMode = result.paymentMode;
-        this.fuelData.fuelCardNumber = result.fuelCardNumber;
-        this.fuelData.reference = result.reference;
-        this.fuelData.reimburseToDriver = result.reimburseToDriver;
-        this.fuelData.deductFromPay = result.deductFromPay;
+    this.fuelData.paidBy = result.paidBy;
+    this.fuelData.paymentMode = result.paymentMode;
+    this.fuelData.fuelCardNumber = result.fuelCardNumber;
+    this.fuelData.reference = result.reference;
+    this.fuelData.reimburseToDriver = result.reimburseToDriver;
+    this.fuelData.deductFromPay = result.deductFromPay;
 
-        this.fuelData.vendorID = result.vendorID;
-        this.fuelData.countryCode = result.countryCode;
-        this.fuelData.stateCode = result.stateCode;
-        this.fuelData.cityName = result.cityName;
-        this.fuelData.tripID = result.tripID;
-        this.fuelData.odometer = result.odometer;
-        this.fuelData.description = result.description;
-        this.fuelData.uploadedPhotos = result.uploadedPhotos;
-        this.fuelData[`timeCreated`] = result.timeCreated;
-        this.existingPhotos = result.uploadedPhotos;
-        this.fetchedUnitID = result.unitID;
-        this.fetchedUnitType = result.unitType;
-        this.fuelData.lineItems = result.lineItems;
-        this.fuelData[`createdDate`] = result.createdDate;
-        this.fuelData[`createdTime`] = result.createdTime;
-        if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
-          this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
-        }
-      // });
+    this.fuelData.vendorID = result.vendorID;
+    this.fuelData.countryCode = result.countryCode;
+    this.fuelData.stateCode = result.stateCode;
+    this.fuelData.cityName = result.cityName;
+    this.fuelData.tripID = result.tripID;
+    this.fuelData.odometer = result.odometer;
+    this.fuelData.description = result.description;
+    this.fuelData.uploadedPhotos = result.uploadedPhotos;
+    this.fuelData[`timeCreated`] = result.timeCreated;
+    this.existingPhotos = result.uploadedPhotos;
+    this.fetchedUnitID = result.unitID;
+    this.fetchedUnitType = result.unitType;
+    this.fuelData.lineItems = result.lineItems;
+    this.fuelData[`createdDate`] = result.createdDate;
+    this.fuelData[`createdTime`] = result.createdTime;
+    if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+      this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+    }
+    // });
   }
   deleteImage(i: number) {
     this.fuelData.uploadedPhotos.splice(i, 1);
@@ -454,7 +456,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
     this.fuelData.uploadedPhotos = this.existingPhotos;
     this.fuelData.lineItems = this.fuelData.lineItems;
-    if(this.fuelData.paymentMode != 'Fuel_Card'){
+    if (this.fuelData.paymentMode != 'Fuel_Card') {
       this.fuelData.fuelCardNumber = null;
     }
     // create form data instance
@@ -482,7 +484,7 @@ export class AddFuelEntryComponent implements OnInit {
             },
             error: () => {
               this.submitDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -498,13 +500,13 @@ export class AddFuelEntryComponent implements OnInit {
   // delete uploaded images and documents
   delete(name: string) {
     this.apiService.deleteData(`fuelEntries/uploadDelete/${this.fuelID}/${name}`).subscribe((result: any) => {
-      this.toaster.success("Successfully deleted")  
+      this.toaster.success("Successfully deleted")
     });
   }
 
   openModal(unit: string) {
     this.listService.triggerModal(unit);
-        
+
     localStorage.setItem('isOpen', 'true');
     this.listService.changeButton(false);
   }

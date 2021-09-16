@@ -9,9 +9,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { ListService } from '../../../../services';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import * as _ from 'lodash';
 import { NgForm } from '@angular/forms';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ declare var $: any;
   selector: 'app-add-vehicle',
   templateUrl: './add-vehicle.component.html',
   styleUrls: ['./add-vehicle.component.css'],
-  exportAs:"vehicleF"
+  exportAs: "vehicleF"
 })
 export class AddVehicleComponent implements OnInit {
   @ViewChild('vehicleF') vehicleF: NgForm;
@@ -280,8 +281,12 @@ export class AddVehicleComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private location: Location, private toastr: ToastrService, private router: Router, private httpClient: HttpClient, private listService: ListService,
-    private domSanitizer: DomSanitizer) {
+  constructor(private apiService: ApiService, private route: ActivatedRoute,
+    private location: Location, private toastr: ToastrService,
+    private router: Router, private httpClient: HttpClient,
+    private listService: ListService,
+    private domSanitizer: DomSanitizer,
+    private countryStateCity: CountryStateCityService) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
@@ -328,7 +333,7 @@ export class AddVehicleComponent implements OnInit {
     let programList = new Array<any>();
     this.getValidPrograms(programList);
     this.serviceProgramss = programList;
-    
+
     let operatorList = new Array<any>();
     this.getValidOperators(operatorList);
     this.ownerOperators = operatorList;
@@ -338,25 +343,25 @@ export class AddVehicleComponent implements OnInit {
     this.drivers = driverList;
   }
 
-  private getValidVendors(vendorList:any[]) {
+  private getValidVendors(vendorList: any[]) {
     let ids = [];
     this.listService.vendorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           vendorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1){
-          if(element2.contactID === this.insurance.vendorID) {
+        if (element2.isDeleted === 1) {
+          if (element2.contactID === this.insurance.vendorID) {
             this.insurance.vendorID = null;
           }
 
-          if(element2.contactID === this.purchase.purchaseVendorID) {
+          if (element2.contactID === this.purchase.purchaseVendorID) {
             this.purchase.purchaseVendorID = null;
           }
 
-          if(element2.contactID === this.loan.loanVendorID) {
+          if (element2.contactID === this.loan.loanVendorID) {
             this.loan.loanVendorID = null;
           }
         }
@@ -364,16 +369,16 @@ export class AddVehicleComponent implements OnInit {
     })
   }
 
-  private getValidPrograms(programsList:any[]) {
+  private getValidPrograms(programsList: any[]) {
     let ids = [];
     this.listService.serviceProgramList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.programID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.programID)) {
           programsList.push(element2);
           ids.push(element2.programID);
         }
 
-        if(element2.isDeleted === 1 && this.servicePrograms.includes(element2.programID)) {
+        if (element2.isDeleted === 1 && this.servicePrograms.includes(element2.programID)) {
           let ind = this.servicePrograms.indexOf(this.servicePrograms[element2.programID]);
           this.servicePrograms.splice(ind, 1);
         }
@@ -381,32 +386,32 @@ export class AddVehicleComponent implements OnInit {
     })
   }
 
-  private getValidOperators(operatorsList:any[]) {
+  private getValidOperators(operatorsList: any[]) {
     let ids = [];
     this.listService.ownerOperatorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           operatorsList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && this.ownerOperatorID === element2.contactID) {
+        if (element2.isDeleted === 1 && this.ownerOperatorID === element2.contactID) {
           this.ownerOperatorID = null;
         }
       })
     })
   }
 
-  private getValidDrivers(driverList:any[]) {
+  private getValidDrivers(driverList: any[]) {
     let ids = [];
     this.listService.driversList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
           driverList.push(element2);
           ids.push(element2.driverID);
         }
 
-        if(element2.isDeleted === 1 && this.driverID === element2.driverID) {
+        if (element2.isDeleted === 1 && this.driverID === element2.driverID) {
           this.driverID = null;
         }
       })
@@ -456,10 +461,10 @@ export class AddVehicleComponent implements OnInit {
 
   }
 
-  getStates(event: any) {
+  async getStates(event: any) {
     const countryCode: any = event;
     this.stateCode = '';
-    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
 
 
@@ -811,226 +816,226 @@ export class AddVehicleComponent implements OnInit {
 
   // EDIT
   async fetchVehicleByID() {
-    let result:any = await this.apiService.getData('vehicles/' + this.vehicleID).toPromise();
-      // .subscribe((result: any) => {
-        this.editDisabled = true;
-        result = result.Items[0];
-        this.vehicleIdentification = result.vehicleIdentification;
-        this.vehicleType = result.vehicleType;
-        this.VIN = result.VIN;
-        this.DOT = result.DOT;
-        this.year = result.year;
-        this.manufacturerID = result.manufacturerID;
-        this.modelID = result.modelID;
-        this.plateNumber = result.plateNumber;
-        this.countryCode = result.countryID;
-        this.getStates(result.countryID);
-        this.stateCode = result.stateID;
-        this.countryName = result.countryName;
-        this.stateName = result.stateName;
-        this.driverID = result.driverID;
-        this.teamDriverID = result.teamDriverID;
-        this.servicePrograms = result.servicePrograms;
-        this.annualSafetyDate = _.isEmpty(result.annualSafetyDate) ? null : result.annualSafetyDate,
-          this.annualSafetyReminder = result.annualSafetyReminder,
-          this.currentStatus = result.currentStatus;
-        this.ownership = result.ownership;
-        this.ownerOperatorID = result.ownerOperatorID;
-        this.groupID = result.groupID;
-        this.aceID = result.aceID;
-        this.aciID = result.aciID;
-        this.iftaReporting = result.iftaReporting,
-          this.vehicleColor = result.vehicleColor;
-        this.bodyType = result.bodyType;
-        this.bodySubType = result.bodySubType;
-        this.msrp = result.msrp;
-        this.inspectionFormID = result.inspectionFormID;
-        this.createdDate = result.createdDate;
-        this.createdTime = result.createdTime;
-        this.lifeCycle = {
-          inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate) ? null : result.lifeCycle.inServiceDate,
-          inServiceOdometer: result.lifeCycle.inServiceOdometer,
-          startDate: _.isEmpty(result.lifeCycle.startDate) ? null : result.lifeCycle.startDate,
-          estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
-          estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
-          estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
-          estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
-          outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate) ? null : result.lifeCycle.outOfServiceDate,
-          outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer
-        };
-        this.specifications = {
-          height: result.specifications.height,
-          heightUnit: result.specifications.heightUnit,
-          width: result.specifications.width,
-          widthUnit: result.specifications.widthUnit,
-          length: result.specifications.length,
-          lengthUnit: result.specifications.lengthUnit,
-          interiorVolume: result.specifications.interiorVolume,
-          passangerVolume: result.specifications.passangerVolume,
-          groundClearnce: result.specifications.groundClearnce,
-          groundClearnceUnit: result.specifications.groundClearnceUnit,
-          bedLength: result.specifications.bedLength,
-          bedLengthUnit: result.specifications.bedLengthUnit,
-          cargoVolume: result.specifications.cargoVolume,
-          tareWeight: result.specifications.tareWeight,
-          grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
-          towingCapacity: result.specifications.towingCapacity,
-          maxPayload: result.specifications.maxPayload,
-          EPACity: result.specifications.EPACity,
-          EPACombined: result.specifications.EPACombined,
-          EPAHighway: result.specifications.EPAHighway
-        };
-        this.insurance = {
-          dateOfIssue: _.isEmpty(result.insurance.dateOfIssue) ? null : result.insurance.dateOfIssue,
-          premiumAmount: result.insurance.premiumAmount,
-          premiumCurrency: result.insurance.premiumCurrency,
-          vendorID: result.insurance.vendorID,
-          dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry) ? null : result.insurance.dateOfExpiry,
-          reminder: result.insurance.reminder,
-          remiderEvery: result.insurance.remiderEvery,
-          policyNumber: result.insurance.policyNumber,
-          amount: result.insurance.amount,
-          amountCurrency: result.insurance.amountCurrency
-        };
-        this.fluid = {
-          fuelType: result.fluid.fuelType,
-          fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
-          fuelTankOneType: result.fluid.fuelTankOneType,
-          fuelQuality: result.fluid.fuelQuality,
-          fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
-          fuelTankTwoType: result.fluid.fuelTankTwoType,
-          oilCapacity: result.fluid.oilCapacity,
-          oilCapacityType: result.fluid.oilCapacityType,
-          def: result.fluid.def,
-          defType: result.fluid.defType
-        };
-        this.wheelsAndTyres = {
-          numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driveType: result.wheelsAndTyres.driveType,
-          brakeSystem: result.wheelsAndTyres.brakeSystem,
-          wheelbase: result.wheelsAndTyres.wheelbase,
-          rearAxle: result.wheelsAndTyres.rearAxle,
-          frontTyreType: result.wheelsAndTyres.frontTyreType,
-          rearTyreType: result.wheelsAndTyres.rearTyreType,
-          frontTrackWidth: result.wheelsAndTyres.frontTrackWidth,
-          rearTrackWidth: result.wheelsAndTyres.rearTrackWidth,
-          frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
-          rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
-          frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
-          rearTyrePSI: result.wheelsAndTyres.rearTyrePSI
-        };
-        this.engine = {
-          engineSummary: result.engine.engineSummary,
-          engineBrand: result.engine.engineBrand,
-          aspiration: result.engine.aspiration,
-          blockType: result.engine.blockType,
-          bore: result.engine.bore,
-          camType: result.engine.camType,
-          stroke: result.engine.stroke,
-          valves: result.engine.valves,
-          compression: result.engine.compression,
-          cylinders: result.engine.cylinders,
-          displacement: result.engine.displacement,
-          fuelIndication: result.engine.fuelIndication,
-          fuelQuality: result.engine.fuelQuality,
-          maxHP: result.engine.maxHP,
-          maxTorque: result.engine.maxTorque,
-          readlineRPM: result.engine.readlineRPM,
-          transmissionSummary: result.engine.transmissionSummary,
-          transmissionType: result.engine.transmissionType,
-          transmissonBrand: result.engine.transmissonBrand,
-          transmissionGears: result.engine.transmissionGears
-        };
-        this.purchase = {
-          purchaseVendorID: result.purchase.purchaseVendorID,
-          warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate) ? null : result.purchase.warrantyExpirationDate,
-          warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
-          purchasePrice: result.purchase.purchasePrice,
-          purchasePriceCurrency: result.purchase.purchasePriceCurrency,
-          warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
-          purchaseDate: _.isEmpty(result.purchase.purchaseDate) ? null : result.purchase.purchaseDate,
-          purchaseComments: result.purchase.purchaseComments,
-          purchaseOdometer: result.purchase.purchaseOdometer,
-          gstInc: result.purchase.gstInc
-        };
-        this.loan = {
-          loanVendorID: result.loan.loanVendorID,
-          amountOfLoan: result.loan.amountOfLoan,
-          amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
-          aspiration: result.loan.aspiration,
-          annualPercentageRate: result.loan.annualPercentageRate,
-          gstInc: result.loan.gstInc,
-          downPayment: result.loan.downPayment,
-          downPaymentCurrency: result.loan.downPaymentCurrency,
-          dateOfLoan: _.isEmpty(result.loan.dateOfLoan) ? null : result.loan.dateOfLoan,
-          monthlyPayment: result.loan.monthlyPayment,
-          monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
-          firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate) ? null : result.loan.firstPaymentDate,
-          numberOfPayments: result.loan.numberOfPayments,
-          loadEndDate: _.isEmpty(result.loan.loadEndDate) ? null : result.loan.loadEndDate,
-          accountNumber: result.loan.accountNumber,
-          generateExpenses: result.loan.generateExpenses,
-          notes: result.loan.notes,
-          loanDueDate: result.loan.loanDueDate,
-          lReminder: result.loan.lReminder,
-        };
-        this.settings = {
-          primaryMeter: result.settings.primaryMeter,
-          fuelUnit: result.settings.fuelUnit,
-          hardBreakingParams: result.settings.hardBreakingParams,
-          hardAccelrationParams: result.settings.hardAccelrationParams,
-          turningParams: result.settings.turningParams,
-          measurmentUnit: result.settings.measurmentUnit
-        };
-        this.existingPhotos = result.uploadedPhotos;
-        this.existingDocs = result.uploadedDocs;
-        this.existPDocs = result.purchaseDocs;
-        this.existLDocs = result.loanDocs;
-        if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
-          this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
-        }
+    let result: any = await this.apiService.getData('vehicles/' + this.vehicleID).toPromise();
+    // .subscribe((result: any) => {
+    this.editDisabled = true;
+    result = result.Items[0];
+    this.vehicleIdentification = result.vehicleIdentification;
+    this.vehicleType = result.vehicleType;
+    this.VIN = result.VIN;
+    this.DOT = result.DOT;
+    this.year = result.year;
+    this.manufacturerID = result.manufacturerID;
+    this.modelID = result.modelID;
+    this.plateNumber = result.plateNumber;
+    this.countryCode = result.countryID;
+    this.getStates(result.countryID);
+    this.stateCode = result.stateID;
+    this.countryName = result.countryName;
+    this.stateName = result.stateName;
+    this.driverID = result.driverID;
+    this.teamDriverID = result.teamDriverID;
+    this.servicePrograms = result.servicePrograms;
+    this.annualSafetyDate = _.isEmpty(result.annualSafetyDate) ? null : result.annualSafetyDate,
+      this.annualSafetyReminder = result.annualSafetyReminder,
+      this.currentStatus = result.currentStatus;
+    this.ownership = result.ownership;
+    this.ownerOperatorID = result.ownerOperatorID;
+    this.groupID = result.groupID;
+    this.aceID = result.aceID;
+    this.aciID = result.aciID;
+    this.iftaReporting = result.iftaReporting,
+      this.vehicleColor = result.vehicleColor;
+    this.bodyType = result.bodyType;
+    this.bodySubType = result.bodySubType;
+    this.msrp = result.msrp;
+    this.inspectionFormID = result.inspectionFormID;
+    this.createdDate = result.createdDate;
+    this.createdTime = result.createdTime;
+    this.lifeCycle = {
+      inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate) ? null : result.lifeCycle.inServiceDate,
+      inServiceOdometer: result.lifeCycle.inServiceOdometer,
+      startDate: _.isEmpty(result.lifeCycle.startDate) ? null : result.lifeCycle.startDate,
+      estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
+      estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
+      estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
+      estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
+      outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate) ? null : result.lifeCycle.outOfServiceDate,
+      outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer
+    };
+    this.specifications = {
+      height: result.specifications.height,
+      heightUnit: result.specifications.heightUnit,
+      width: result.specifications.width,
+      widthUnit: result.specifications.widthUnit,
+      length: result.specifications.length,
+      lengthUnit: result.specifications.lengthUnit,
+      interiorVolume: result.specifications.interiorVolume,
+      passangerVolume: result.specifications.passangerVolume,
+      groundClearnce: result.specifications.groundClearnce,
+      groundClearnceUnit: result.specifications.groundClearnceUnit,
+      bedLength: result.specifications.bedLength,
+      bedLengthUnit: result.specifications.bedLengthUnit,
+      cargoVolume: result.specifications.cargoVolume,
+      tareWeight: result.specifications.tareWeight,
+      grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
+      towingCapacity: result.specifications.towingCapacity,
+      maxPayload: result.specifications.maxPayload,
+      EPACity: result.specifications.EPACity,
+      EPACombined: result.specifications.EPACombined,
+      EPAHighway: result.specifications.EPAHighway
+    };
+    this.insurance = {
+      dateOfIssue: _.isEmpty(result.insurance.dateOfIssue) ? null : result.insurance.dateOfIssue,
+      premiumAmount: result.insurance.premiumAmount,
+      premiumCurrency: result.insurance.premiumCurrency,
+      vendorID: result.insurance.vendorID,
+      dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry) ? null : result.insurance.dateOfExpiry,
+      reminder: result.insurance.reminder,
+      remiderEvery: result.insurance.remiderEvery,
+      policyNumber: result.insurance.policyNumber,
+      amount: result.insurance.amount,
+      amountCurrency: result.insurance.amountCurrency
+    };
+    this.fluid = {
+      fuelType: result.fluid.fuelType,
+      fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
+      fuelTankOneType: result.fluid.fuelTankOneType,
+      fuelQuality: result.fluid.fuelQuality,
+      fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
+      fuelTankTwoType: result.fluid.fuelTankTwoType,
+      oilCapacity: result.fluid.oilCapacity,
+      oilCapacityType: result.fluid.oilCapacityType,
+      def: result.fluid.def,
+      defType: result.fluid.defType
+    };
+    this.wheelsAndTyres = {
+      numberOfTyres: result.wheelsAndTyres.numberOfTyres,
+      driveType: result.wheelsAndTyres.driveType,
+      brakeSystem: result.wheelsAndTyres.brakeSystem,
+      wheelbase: result.wheelsAndTyres.wheelbase,
+      rearAxle: result.wheelsAndTyres.rearAxle,
+      frontTyreType: result.wheelsAndTyres.frontTyreType,
+      rearTyreType: result.wheelsAndTyres.rearTyreType,
+      frontTrackWidth: result.wheelsAndTyres.frontTrackWidth,
+      rearTrackWidth: result.wheelsAndTyres.rearTrackWidth,
+      frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
+      rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
+      frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
+      rearTyrePSI: result.wheelsAndTyres.rearTyrePSI
+    };
+    this.engine = {
+      engineSummary: result.engine.engineSummary,
+      engineBrand: result.engine.engineBrand,
+      aspiration: result.engine.aspiration,
+      blockType: result.engine.blockType,
+      bore: result.engine.bore,
+      camType: result.engine.camType,
+      stroke: result.engine.stroke,
+      valves: result.engine.valves,
+      compression: result.engine.compression,
+      cylinders: result.engine.cylinders,
+      displacement: result.engine.displacement,
+      fuelIndication: result.engine.fuelIndication,
+      fuelQuality: result.engine.fuelQuality,
+      maxHP: result.engine.maxHP,
+      maxTorque: result.engine.maxTorque,
+      readlineRPM: result.engine.readlineRPM,
+      transmissionSummary: result.engine.transmissionSummary,
+      transmissionType: result.engine.transmissionType,
+      transmissonBrand: result.engine.transmissonBrand,
+      transmissionGears: result.engine.transmissionGears
+    };
+    this.purchase = {
+      purchaseVendorID: result.purchase.purchaseVendorID,
+      warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate) ? null : result.purchase.warrantyExpirationDate,
+      warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
+      purchasePrice: result.purchase.purchasePrice,
+      purchasePriceCurrency: result.purchase.purchasePriceCurrency,
+      warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
+      purchaseDate: _.isEmpty(result.purchase.purchaseDate) ? null : result.purchase.purchaseDate,
+      purchaseComments: result.purchase.purchaseComments,
+      purchaseOdometer: result.purchase.purchaseOdometer,
+      gstInc: result.purchase.gstInc
+    };
+    this.loan = {
+      loanVendorID: result.loan.loanVendorID,
+      amountOfLoan: result.loan.amountOfLoan,
+      amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
+      aspiration: result.loan.aspiration,
+      annualPercentageRate: result.loan.annualPercentageRate,
+      gstInc: result.loan.gstInc,
+      downPayment: result.loan.downPayment,
+      downPaymentCurrency: result.loan.downPaymentCurrency,
+      dateOfLoan: _.isEmpty(result.loan.dateOfLoan) ? null : result.loan.dateOfLoan,
+      monthlyPayment: result.loan.monthlyPayment,
+      monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
+      firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate) ? null : result.loan.firstPaymentDate,
+      numberOfPayments: result.loan.numberOfPayments,
+      loadEndDate: _.isEmpty(result.loan.loadEndDate) ? null : result.loan.loadEndDate,
+      accountNumber: result.loan.accountNumber,
+      generateExpenses: result.loan.generateExpenses,
+      notes: result.loan.notes,
+      loanDueDate: result.loan.loanDueDate,
+      lReminder: result.loan.lReminder,
+    };
+    this.settings = {
+      primaryMeter: result.settings.primaryMeter,
+      fuelUnit: result.settings.fuelUnit,
+      hardBreakingParams: result.settings.hardBreakingParams,
+      hardAccelrationParams: result.settings.hardAccelrationParams,
+      turningParams: result.settings.turningParams,
+      measurmentUnit: result.settings.measurmentUnit
+    };
+    this.existingPhotos = result.uploadedPhotos;
+    this.existingDocs = result.uploadedDocs;
+    this.existPDocs = result.purchaseDocs;
+    this.existLDocs = result.loanDocs;
+    if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
+      this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    }
 
-        if (result.purchaseDocs != undefined && result.purchaseDocs.length > 0) {
-          result.purchaseDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.pDocs.push(obj);
-          })
+    if (result.purchaseDocs != undefined && result.purchaseDocs.length > 0) {
+      result.purchaseDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
         }
-        if (result.loanDocs != undefined && result.loanDocs.length > 0) {
-          result.loanDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.lDocs.push(obj);
-          })
+        this.pDocs.push(obj);
+      })
+    }
+    if (result.loanDocs != undefined && result.loanDocs.length > 0) {
+      result.loanDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
         }
+        this.lDocs.push(obj);
+      })
+    }
 
-        if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
-          result.uploadedDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.documentSlides.push(obj);
-          })
-          // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
+      result.uploadedDocs.map((x) => {
+        let obj = {
+          name: x,
+          path: `${this.Asseturl}/${result.carrierID}/${x}`
         }
-        this.timeCreated = result.timeCreated;
+        this.documentSlides.push(obj);
+      })
+      // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    }
+    this.timeCreated = result.timeCreated;
 
-        $('#hardBreakingParametersValue').html(
-          this.settings.hardBreakingParams
-        );
-        $('#hardAccelrationParametersValue').html(
-          this.settings.hardAccelrationParams
-        );
-        $('#turningParametersValue').html(
-          this.settings.turningParams
-        );
-      // });
+    $('#hardBreakingParametersValue').html(
+      this.settings.hardBreakingParams
+    );
+    $('#hardAccelrationParametersValue').html(
+      this.settings.hardAccelrationParams
+    );
+    $('#turningParametersValue').html(
+      this.settings.turningParams
+    );
+    // });
 
   }
   async onUpdateVehicle() {

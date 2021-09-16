@@ -14,7 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { ApiService, HereMapService, ListService } from '../../../../services';
 import { ModalService } from '../../../../services/modal.service';
@@ -310,7 +311,8 @@ export class AddDriverComponent
     private modalServiceOwn: ModalService,
     private dateAdapter: NgbDateAdapter<string>,
     private router: Router,
-    private listService: ListService
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -565,59 +567,60 @@ export class AddDriverComponent
     this.listService.fetchOwnerOperators();
   }
 
-  fetchCountries() {
-    this.docCountries = CountryStateCity.GetAllCountries();
+  async fetchCountries() {
+    this.docCountries = await this.countryStateCity.GetAllCountries();
   }
-  getStates(countryCode: any, index: any) {
+  async getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = "";
     this.driverData.address[index].cityName = "";
     this.driverData.address[index].states =
-      CountryStateCity.GetStatesByCountryCode([countryCode]);
+      await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getCities(stateCode: any, index: any, countryCode: any) {
+  async getCities(stateCode: any, index: any, countryCode: any) {
     this.driverData.address[index].cityName = "";
     this.driverData.address[index].cities =
-      CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.driverData.address[index].countryName =
-      CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+      await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
     this.driverData.address[index].stateName =
-      CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+      await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
   }
-  getDocStates(cntryCode: any, index: any) {
+  async getDocStates(cntryCode: any, index: any) {
     this.driverData.documentDetails[index].issuingState = "";
     this.driverData.documentDetails[index].docStates =
-      CountryStateCity.GetStatesByCountryCode([cntryCode]);
+      await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  getLicStates(cntryCode: any) {
+  async getLicStates(cntryCode: any) {
     this.driverData.licenceDetails.issuedState = null;
     this.driverData.licenceDetails.licCntryName =
-      CountryStateCity.GetSpecificCountryNameByCode(cntryCode);
-    this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+      await this.countryStateCity.GetSpecificCountryNameByCode(cntryCode);
+  
+    this.licStates = await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
 
-  getLicenseStateName() {
+  async getLicenseStateName() {
     if (
       this.driverData.licenceDetails.issuedState &&
       this.driverData.licenceDetails.issuedCountry
     ) {
       this.driverData.licenceDetails.licStateName =
-        CountryStateCity.GetStateNameFromCode(
+        await this.countryStateCity.GetStateNameFromCode(
           this.driverData.licenceDetails.issuedState,
           this.driverData.licenceDetails.issuedCountry
         );
     }
   }
 
-  fetchLicStates(issuedCountry: any) {
-    this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
+  async fetchLicStates(issuedCountry: any) {
+    this.licStates = await this.countryStateCity.GetStatesByCountryCode([issuedCountry]);
   }
-  fetchStates(countryCode: any, index: any) {
-    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async fetchStates(countryCode: any, index: any) {
+    let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     this.driverData.address[index].states = states;
   }
-  fetchCities(countryCode: any, stateCode: any, index: any) {
+  async fetchCities(countryCode: any, stateCode: any, index: any) {
     this.driverData.address[index].cities =
-      CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   editAddress(address: any) {
     for (let a = 0; a < address.length; a++) {
@@ -627,11 +630,11 @@ export class AddDriverComponent
       this.fetchCities(countryCode, stateCode, a);
     }
   }
-  fetchDocStates(docs) {
+  async fetchDocStates(docs) {
     for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
       this.driverData.documentDetails[d].docStates =
-        CountryStateCity.GetStatesByCountryCode([countryCode]);
+        await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     }
   }
   fetchDocuments() {
@@ -1549,12 +1552,12 @@ export class AddDriverComponent
         }
 
         for (let a = 0; a < this.carrierYards.length; a++) {
-          this.carrierYards.map((e: any) => {
+          this.carrierYards.map(async (e: any) => {
             if (e.manual) {
-              e.countryName = CountryStateCity.GetSpecificCountryNameByCode(
+              e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(
                 e.countryCode
               );
-              e.stateName = CountryStateCity.GetStateNameFromCode(
+              e.stateName = await this.countryStateCity.GetStateNameFromCode(
                 e.stateCode,
                 e.countryCode
               );

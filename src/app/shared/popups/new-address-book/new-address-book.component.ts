@@ -1,5 +1,5 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService, HereMapService, ListService } from 'src/app/services';
 import { from, Subject, Subscription, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
@@ -8,7 +8,8 @@ import { environment } from 'src/environments/environment';
 
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/fleet/constants';
-import { CountryStateCity } from '../../utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 declare var $: any;
 
 @Component({
@@ -21,7 +22,7 @@ export class NewAddressBookComponent implements OnInit {
   @ViewChild('newUnitModal', { static: true }) newUnitModal: TemplateRef<any>;
   @ViewChild('unitDetailModal', { static: true }) unitDetailModal: TemplateRef<any>;
   @ViewChild('showPhotoModal', { static: true }) showPhotoModal: TemplateRef<any>;
-  
+
 
   Asseturl = this.apiService.AssetUrl;
   public defaultProfilePath: any = 'assets/img/driver/driver.png';
@@ -34,12 +35,12 @@ export class NewAddressBookComponent implements OnInit {
   closeResult = '';
   public searchTerm = new Subject<string>();
   public searchResults: any;
-  
+
   units: any = [];
   filterVal = {
-    cName : '',
+    cName: '',
   }
-  
+
   updateButton: boolean = false;
 
   suggestions = [];
@@ -59,7 +60,7 @@ export class NewAddressBookComponent implements OnInit {
   unitDisabled = false;
 
   dataMessage: string = Constants.FETCHING_DATA;
-  
+
   newArr = [];
   isBroker: boolean = false;
   bType: boolean = false;
@@ -138,12 +139,12 @@ export class NewAddressBookComponent implements OnInit {
       value: 'owner_operator',
       label: 'owner operator',
       disabled: false
-    },{
+    }, {
       value: 'vendor',
       label: 'vendor',
       disabled: false
     },
-    
+
   ]
 
   errors = {};
@@ -164,21 +165,23 @@ export class NewAddressBookComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   modalSubscription: Subscription;
-  
-  constructor( private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService, private listService: ListService) {
-    
-   }
+
+  constructor(private HereMap: HereMapService, private toastr: ToastrService, private modalService: NgbModal, private apiService: ApiService,
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService) {
+
+  }
 
   ngOnInit() {
     this.searchLocation();
     this.fetchCountries();
 
     this.listService.addressList.subscribe((res: any) => {
-      if(res === 'list') {
+      if (res === 'list') {
 
         let ngbModalOptions: NgbModalOptions = {
-          backdrop : 'static',
-          keyboard : false,
+          backdrop: 'static',
+          keyboard: false,
           windowClass: 'units-list__main'
         };
         this.modalService.dismissAll();
@@ -206,7 +209,7 @@ export class NewAddressBookComponent implements OnInit {
         });
         this.lastKey = '';
         this.fetchUnits();
-      } else if(res === 'form') {
+      } else if (res === 'form') {
         this.bType = false;
         this.unitTypes = [
           {
@@ -243,17 +246,17 @@ export class NewAddressBookComponent implements OnInit {
             value: 'owner_operator',
             label: 'owner operator',
             disabled: false
-          },{
+          }, {
             value: 'vendor',
             label: 'vendor',
             disabled: false
           },
-          
+
         ]
         this.updateButton = false;
         let ngbModalOptions: NgbModalOptions = {
-          backdrop : 'static',
-          keyboard : false,
+          backdrop: 'static',
+          keyboard: false,
           windowClass: 'units-form__main'
         };
         this.modalService.dismissAll();
@@ -273,14 +276,14 @@ export class NewAddressBookComponent implements OnInit {
   /*
    * Get all countries from api
    */
-  fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries();
+  async fetchCountries() {
+    this.countries = await this.countryStateCity.GetAllCountries();
   }
-  
-  getStates(countryCode, type, index='', data: any) {
-    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    if(type === 'unit') {
+
+  async getStates(countryCode, type, index = '', data: any) {
+    let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    let countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    if (type === 'unit') {
       this.unitData.adrs[index].cName = countryName;
       this.unitData.adrs[index].states = states;
     } else {
@@ -289,36 +292,36 @@ export class NewAddressBookComponent implements OnInit {
     }
   }
 
-  getCities(stateCode, type='', index='', data) {
+  async getCities(stateCode, type = '', index = '', data) {
     let countryCode = '';
-    if(type == 'unit') {
+    if (type == 'unit') {
       countryCode = this.unitData.adrs[index].cCode;
-    }  else {
+    } else {
       countryCode = data.adrs[index].cCode;
     }
-    
-    let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-    
-    if(type === 'unit') {
+
+    let stateResult = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    let cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+
+    if (type === 'unit') {
       this.unitData.adrs[index].sName = stateResult;
       this.unitData.adrs[index].cities = cities;
-    }  else {
+    } else {
       data.adrs[index].sName = stateResult;
       data.adrs[index].cities = cities;
     }
   }
 
   getSuggestions = _.debounce(function (value) {
-    if(value != '') {
+    if (value != '') {
       value = value.toLowerCase()
       this.apiService
         .getData(`contacts/suggestion/${value}`)
         .subscribe((result) => {
           this.suggestions = result.Items;
-        });    
+        });
     }
-    
+
   }, 800);
 
   setSearchValues(searchValue) {
@@ -327,96 +330,96 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async searchFilter() {
-    if(this.filterVal.cName != '') {
+    if (this.filterVal.cName != '') {
       this.isSearched = true;
-        $('#addressbook-content .tab-pane').removeClass('active show');
-        $('#all').addClass('active show');
-        $('#addressbook-tabs .nav-link').removeClass('active');
-        $('#addressbook-tabs #all-tab').addClass('active');
-        this.setActiveDiv('all');
-        this.filterVal.cName = this.filterVal.cName.toLowerCase().trim();
-        this.suggestions = [];
-        this.units = [];
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastKey = '';
-        this.fetchUnits();
-        
-      } else {
-        return false
-      }
+      $('#addressbook-content .tab-pane').removeClass('active show');
+      $('#all').addClass('active show');
+      $('#addressbook-tabs .nav-link').removeClass('active');
+      $('#addressbook-tabs #all-tab').addClass('active');
+      this.setActiveDiv('all');
+      this.filterVal.cName = this.filterVal.cName.toLowerCase().trim();
+      this.suggestions = [];
+      this.units = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.lastKey = '';
+      this.fetchUnits();
 
-    
+    } else {
+      return false
+    }
+
+
   }
 
-  setActiveDiv (item){
-    if(item === 'all') {
+  setActiveDiv(item) {
+    if (item === 'all') {
       this.units = this.allData;
-    } else if(item === 'broker') {
+    } else if (item === 'broker') {
       this.brokers = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('broker')) {
+        if (element.eTypes.includes('broker')) {
           this.brokers.push(element)
         }
       });
-      if(this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'carrier') {
+      if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'carrier') {
       this.carriers = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('carrier')) {
+        if (element.eTypes.includes('carrier')) {
           this.carriers.push(element)
         }
       });
-      if(this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'shipper') {
+      if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'shipper') {
       this.shippers = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('shipper')) {
+        if (element.eTypes.includes('shipper')) {
           this.shippers.push(element)
         }
       });
-      if(this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'receiver') {
+      if (this.carriers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'receiver') {
       this.receivers = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('receiver')) {
+        if (element.eTypes.includes('receiver')) {
           this.receivers.push(element)
         }
       });
-      if(this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'customer') {
+      if (this.receivers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'customer') {
       this.customers = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('customer')) {
+        if (element.eTypes.includes('customer')) {
           this.customers.push(element)
         }
       });
-      if(this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'fc') {
+      if (this.customers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'fc') {
       this.fcCompanies = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('fc')) {
+        if (element.eTypes.includes('fc')) {
           this.fcCompanies.push(element)
         }
       });
-      if(this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'vendor') {
+      if (this.fcCompanies.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'vendor') {
       this.vendors = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('vendor')) {
+        if (element.eTypes.includes('vendor')) {
           this.vendors.push(element)
         }
       });
-      if(this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
-    } else if(item === 'op') {
+      if (this.vendors.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+    } else if (item === 'op') {
       this.owners = [];
       this.units.forEach(element => {
-        if(element.eTypes.includes('owner_operator')) {
+        if (element.eTypes.includes('owner_operator')) {
           this.owners.push(element)
         }
       });
-      if(this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
+      if (this.owners.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
-    
+
   }
 
   openModal(unit: string) {
@@ -486,8 +489,8 @@ export class NewAddressBookComponent implements OnInit {
     });
   }
 
-  addAdditionalContact(data){
-    if(data.addlCnt.length < 3) {
+  addAdditionalContact(data) {
+    if (data.addlCnt.length < 3) {
       this.additionalDisabled = false;
       let newObj = {
         flName: '',
@@ -499,7 +502,7 @@ export class NewAddressBookComponent implements OnInit {
         fax: '',
       };
       data.addlCnt.push(newObj);
-      if(data.addlCnt.length == 3) {
+      if (data.addlCnt.length == 3) {
         this.additionalDisabled = true;
       }
     } else {
@@ -509,26 +512,26 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   async userAddress(unit: string, data: any, i: number, item: any) {
-      data.adrs[i].userLoc = item.address;
-      let result = await this.getAddressDetail(item.place_id)
-      if(unit === 'unit') {
-     
-        if(result != undefined) {
-          data.adrs[i].geoCords.lat = result.position.lat;
-          data.adrs[i].geoCords.lng = result.position.lng;
-          data.adrs[i].cName = result.address.CountryFullName;
-          data.adrs[i].sName = result.address.StateName;
-          data.adrs[i].ctyName = result.address.City;
-    
-          data.adrs[i].cCode = result.address.Country;
-          data.adrs[i].sCode = result.address.State;
-          data.adrs[i].zip = result.address.Zip;
-          data.adrs[i].street = result.address.StreetAddress;
-          data.adrs[i].isSuggest = true;
-        }
-     
+    data.adrs[i].userLoc = item.address;
+    let result = await this.getAddressDetail(item.place_id)
+    if (unit === 'unit') {
+
+      if (result != undefined) {
+        data.adrs[i].geoCords.lat = result.position.lat;
+        data.adrs[i].geoCords.lng = result.position.lng;
+        data.adrs[i].cName = result.address.CountryFullName;
+        data.adrs[i].sName = result.address.StateName;
+        data.adrs[i].ctyName = result.address.City;
+
+        data.adrs[i].cCode = result.address.Country;
+        data.adrs[i].sCode = result.address.State;
+        data.adrs[i].zip = result.address.Zip;
+        data.adrs[i].street = result.address.StreetAddress;
+        data.adrs[i].isSuggest = true;
+      }
+
     } else {
-      if(result != undefined) {
+      if (result != undefined) {
         data.adrs[i].geoCords.lat = result.position.lat;
         data.adrs[i].geoCords.lng = result.position.lng;
         data.adrs[i].cName = result.address.CountryFullName;
@@ -540,35 +543,35 @@ export class NewAddressBookComponent implements OnInit {
         data.adrs[i].add = result.address.StreetAddress;
         data.adrs[i].isSuggest = true;
       }
-      
+
     }
-    
-    
+
+
     $('div').removeClass('show-search__result');
   }
 
   async getAddressDetail(id) {
     let result = await this.apiService
-    .getData(`pcMiles/detail/${id}`).toPromise();  
+      .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
   }
 
   delAdditionalContact(index: number) {
     this.unitData.addlCnt.splice(index, 1);
-      if(this.unitData.addlCnt.length < 3) {
-        this.additionalDisabled = false;
-      } else {
-        this.additionalDisabled = true;
-      }
+    if (this.unitData.addlCnt.length < 3) {
+      this.additionalDisabled = false;
+    } else {
+      this.additionalDisabled = true;
+    }
   }
 
   unitChange(types: any) {
-    
+
     this.unitData.eTypes.forEach(element => {
-      if(element === 'broker') {
-        if(!this.newArr.includes('broker')){
+      if (element === 'broker') {
+        if (!this.newArr.includes('broker')) {
           let data = {
-            brokerData : {
+            brokerData: {
               type: 'company',
               dot: '',
               fn: '',
@@ -580,11 +583,11 @@ export class NewAddressBookComponent implements OnInit {
           }
           this.newArr.push('broker');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'carrier') {
-        if(!this.newArr.includes('carrier')){
+        if (!this.newArr.includes('carrier')) {
           let data = {
-            carrierData : {
+            carrierData: {
               csa: false,
               ctpat: false,
               pip: false,
@@ -639,40 +642,40 @@ export class NewAddressBookComponent implements OnInit {
                   street: '',
                   states: [],
                   cities: []
-                  
+
                 }]
               }]
             }
           }
           this.newArr.push('carrier');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'shipper') {
-        if(!this.newArr.includes('shipper')){
+        if (!this.newArr.includes('shipper')) {
           let data = {
-            shipperData : {
+            shipperData: {
               dot: '',
               mc: ''
             }
           }
           this.newArr.push('shipper');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'receiver') {
-        if(!this.newArr.includes('receiver')){
+        if (!this.newArr.includes('receiver')) {
           let data = {
-            receiverData : {
+            receiverData: {
               dot: '',
               mc: ''
             }
           }
           this.newArr.push('receiver');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'customer') {
-        if(!this.newArr.includes('customer')){
+        if (!this.newArr.includes('customer')) {
           let data = {
-            customerData : {
+            customerData: {
               ein: '',
               acc: '',
               dot: '',
@@ -686,11 +689,11 @@ export class NewAddressBookComponent implements OnInit {
           }
           this.newArr.push('customer');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'fc') {
-        if(!this.newArr.includes('fc')){
+        if (!this.newArr.includes('fc')) {
           let data = {
-            fcData : {
+            fcData: {
               acc: '',
               fcRate: '',
               fcUnit: null
@@ -698,11 +701,11 @@ export class NewAddressBookComponent implements OnInit {
           }
           this.newArr.push('fc');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'owner_operator') {
-        if(!this.newArr.includes('op')){
+        if (!this.newArr.includes('op')) {
           let data = {
-            opData : {
+            opData: {
               csa: false,
               fast: '',
               fastExp: null,
@@ -722,97 +725,97 @@ export class NewAddressBookComponent implements OnInit {
           }
           this.newArr.push('op');
           this.unitData.data.push(data)
-        } 
+        }
       } else if (element === 'vendor') {
-        if(!this.newArr.includes('vendor')){
+        if (!this.newArr.includes('vendor')) {
           let data = {
-            vendorData : {
+            vendorData: {
               acc: ''
             }
           }
           this.newArr.push('vendor');
           this.unitData.data.push(data)
-        } 
+        }
       }
     });
 
     let difference = this.newArr.filter(x => !this.unitData.eTypes.includes(x));
-    
+
     difference.forEach(elem => {
-      if(elem === 'broker') {
+      if (elem === 'broker') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.brokerData) {
+          if (element.brokerData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('broker');
         this.newArr.splice(index, 1);
-      } else if(elem === 'carrier') {
+      } else if (elem === 'carrier') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.carrierData) {
+          if (element.carrierData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('carrier');
         this.newArr.splice(index, 1);
-      } else if(elem === 'shipper') {
+      } else if (elem === 'shipper') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.shipperData) {
+          if (element.shipperData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('shipper');
         this.newArr.splice(index, 1);
-      } else if(elem === 'receiver') {
+      } else if (elem === 'receiver') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.receiverData) {
+          if (element.receiverData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('receiver');
         this.newArr.splice(index, 1);
-      } else if(elem === 'customer') {
+      } else if (elem === 'customer') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.customerData) {
+          if (element.customerData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('customer');
         this.newArr.splice(index, 1);
-      } else if(elem === 'fc') {
+      } else if (elem === 'fc') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.fcData) {
+          if (element.fcData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('fc');
         this.newArr.splice(index, 1);
-      } else if(elem === 'vendor') {
+      } else if (elem === 'vendor') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.vendorData) {
+          if (element.vendorData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('vendor');
         this.newArr.splice(index, 1);
-      } else if(elem === 'owner_operator') {
+      } else if (elem === 'owner_operator') {
         for (let index = 0; index < this.unitData.data.length; index++) {
           const element = this.unitData.data[index];
-          if(element.opData) {
+          if (element.opData) {
             this.unitData.data.splice(index, 1);
           }
         }
         let index = this.newArr.indexOf('owner_operator');
         this.newArr.splice(index, 1);
       }
-      
+
     })
 
   }
@@ -820,8 +823,8 @@ export class NewAddressBookComponent implements OnInit {
 
   brokerType(value: any) {
     this.unitData.data.forEach(elem => {
-      if(elem.brokerData) {
-        if(value == 'company') {
+      if (elem.brokerData) {
+        if (value == 'company') {
           elem.brokerData.fn = '';
           elem.brokerData.ln = '';
           this.bType = false;
@@ -833,45 +836,45 @@ export class NewAddressBookComponent implements OnInit {
         elem.brokerData.type = value;
       }
     });
-    
+
   }
 
   manAddress(data: any = '', type, event, i) {
-      if (event.target.checked) {
-        $(event.target).closest('.address-item').addClass('open');
-      } else {
-        $(event.target).closest('.address-item').removeClass('open');
+    if (event.target.checked) {
+      $(event.target).closest('.address-item').addClass('open');
+    } else {
+      $(event.target).closest('.address-item').removeClass('open');
+    }
+    if (type === 'unit') {
+      this.unitData.adrs[i].userLoc = '';
+      this.unitData.adrs[i].cCode = null;
+      this.unitData.adrs[i].cName = '';
+      this.unitData.adrs[i].sCode = null;
+      this.unitData.adrs[i].sName = '';
+      this.unitData.adrs[i].ctyName = null;
+      this.unitData.adrs[i].zip = '';
+      this.unitData.adrs[i].add1 = '';
+      this.unitData.adrs[i].add2 = '';
+      if (this.unitData.adrs[i].geoCords != undefined) {
+        this.unitData.adrs[i].geoCords.lat = '';
+        this.unitData.adrs[i].geoCords.lng = '';
       }
-      if(type === 'unit') {
-        this.unitData.adrs[i].userLoc = '';
-        this.unitData.adrs[i].cCode = null;
-        this.unitData.adrs[i].cName = '';
-        this.unitData.adrs[i].sCode = null;
-        this.unitData.adrs[i].sName = '';
-        this.unitData.adrs[i].ctyName = null;
-        this.unitData.adrs[i].zip = '';
-        this.unitData.adrs[i].add1 = '';
-        this.unitData.adrs[i].add2 = '';
-        if(this.unitData.adrs[i].geoCords != undefined){
-          this.unitData.adrs[i].geoCords.lat = '';
-          this.unitData.adrs[i].geoCords.lng = '';
-        }
-      } else {
-        data.adrs[i].userLoc = '';
-        data.adrs[i].cCode = null;
-        data.adrs[i].cName = '';
-        data.adrs[i].sCode = null;
-        data.adrs[i].sName = '';
-        data.adrs[i].ctyName = null;
-        data.adrs[i].zip = '';
-        data.adrs[i].add1 = '';
-        data.adrs[i].add2 = '';
-        if(data.adrs[i].geoCords != undefined){
-          data.adrs[i].geoCords.lat = '';
-          data.adrs[i].geoCords.lng = '';
-        }
+    } else {
+      data.adrs[i].userLoc = '';
+      data.adrs[i].cCode = null;
+      data.adrs[i].cName = '';
+      data.adrs[i].sCode = null;
+      data.adrs[i].sName = '';
+      data.adrs[i].ctyName = null;
+      data.adrs[i].zip = '';
+      data.adrs[i].add1 = '';
+      data.adrs[i].add2 = '';
+      if (data.adrs[i].geoCords != undefined) {
+        data.adrs[i].geoCords.lat = '';
+        data.adrs[i].geoCords.lng = '';
       }
-      
+    }
+
   }
 
   addAddress(data) {
@@ -898,19 +901,19 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   removeAddress(index) {
-    
+
     this.unitData.adrs.splice(index, 1);
   }
-  
+
   carrierWSIB(value) {
     if (value !== true) {
       this.unitData.data.forEach(elem => {
-        if(elem.carrierData){
+        if (elem.carrierData) {
           delete elem.carrierData.wsibAcc;
           delete elem.carrierData.wsibExp;
         }
       })
-      
+
     }
   }
 
@@ -947,35 +950,35 @@ export class NewAddressBookComponent implements OnInit {
     this.unitData.adrs[index].geoCords.lng = '';
     this.unitData.adrs[index].houseNo = '';
     this.unitData.adrs[index].street = '';
-    
+
   }
 
   updateCurrency(value) {
-      this.unitData.data.forEach(elem => {
-        if(elem.opData){
-          elem.opData.lmCur = value;
-          elem.opData.pRCurr = value;
-          elem.opData.emCur = value;
-          elem.opData.drCur = value;
+    this.unitData.data.forEach(elem => {
+      if (elem.opData) {
+        elem.opData.lmCur = value;
+        elem.opData.pRCurr = value;
+        elem.opData.emCur = value;
+        elem.opData.drCur = value;
 
-        } else if(elem.carrierData) {
-          
-          elem.carrierData.lmCur = value;
-          elem.carrierData.pRCurr = value;
-          elem.carrierData.emCur = value;
-          elem.carrierData.drCur = value;
-        }
-      })
+      } else if (elem.carrierData) {
+
+        elem.carrierData.lmCur = value;
+        elem.carrierData.pRCurr = value;
+        elem.carrierData.emCur = value;
+        elem.carrierData.drCur = value;
+      }
+    })
   }
 
-  async checkCarrierBank(newUnitData: any){
+  async checkCarrierBank(newUnitData: any) {
     newUnitData.data.forEach(element => {
-      if(element.carrierData) {
+      if (element.carrierData) {
         element.carrierData.banks.forEach(elem => {
           elem.adrs.forEach(async (res: any) => {
             delete res.states;
             delete res.cities;
-            if(res.manual === true){
+            if (res.manual === true) {
               let data = {
                 address1: res.add1,
                 address2: res.add2,
@@ -984,9 +987,9 @@ export class NewAddressBookComponent implements OnInit {
                 countryName: res.cName,
                 zipCode: res.zip
               }
-      
+
               let result = await this.newGeoCode(data);
-              if(result != undefined || result != null){
+              if (result != undefined || result != null) {
                 res.geoCords = result;
               }
             }
@@ -996,7 +999,7 @@ export class NewAddressBookComponent implements OnInit {
     });
   }
 
-  async addEntry () {
+  async addEntry() {
     this.hideErrors();
     this.unitDisabled = true;
 
@@ -1004,8 +1007,8 @@ export class NewAddressBookComponent implements OnInit {
       const element = this.unitData.adrs[i];
       delete element.states;
       delete element.cities;
-      if(element.manual === true){
-       let data = {
+      if (element.manual === true) {
+        let data = {
           address1: element.add1,
           address2: element.add2,
           cityName: element.ctyName,
@@ -1013,21 +1016,21 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-        $('#addErr'+i).css('display','none');
+        $('#addErr' + i).css('display', 'none');
         let result = await this.newGeoCode(data);
 
-        if(result == null) {
-          $('#addErr'+i).css('display','block');
+        if (result == null) {
+          $('#addErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return false;
         }
-        if(result != undefined || result != null){
+        if (result != undefined || result != null) {
           element.geoCords = result;
         }
       } else {
-        $('#addErr'+i).css('display','none');
-        if(element.isSuggest != true && element.userLoc != '') {
-          $('#addErr'+i).css('display','block');
+        $('#addErr' + i).css('display', 'none');
+        if (element.isSuggest != true && element.userLoc != '') {
+          $('#addErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return;
         }
@@ -1036,96 +1039,96 @@ export class NewAddressBookComponent implements OnInit {
     await this.checkCarrierBank(this.unitData);
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
-      element.flName = element.fName + ' '+ element.lName;
+      element.flName = element.fName + ' ' + element.lName;
     }
-   
+
     // create form data instance
     const formData = new FormData();
 
     formData.append('data', JSON.stringify(this.unitData));
-     
+
     this.apiService.postData('contacts', formData, true).
-    subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        this.unitDisabled = false;
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = true;
-              this.Error = 'Please see the errors';
-              
-            },
-            error: () => {
-              this.unitDisabled = false;
-             },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        // this.response = res;
-        
-        this.hasSuccess = true;
-        this.unitDisabled = false;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastKey = '';
-        this.emptyTabs();
-        this.showMainModal();
-        this.listService.fetchContactsByIDs();
-        if(this.unitData.eTypes.includes('owner_operator')) {
-          this.listService.fetchOwnerOperators();
-        } else if(this.unitData.eTypes.includes('shipper')) {
-          this.listService.fetchShippers();
-        } else if(this.unitData.eTypes.includes('receiver')) {
-          this.listService.fetchReceivers();
-        } else if(this.unitData.eTypes.includes('vendor')) {
-          this.listService.fetchVendors();
-        } else if(this.unitData.eTypes.includes('customer')) {
-          this.listService.fetchCustomers();
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          this.unitDisabled = false;
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.Error = 'Please see the errors';
+
+              },
+              error: () => {
+                this.unitDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          // this.response = res;
+
+          this.hasSuccess = true;
+          this.unitDisabled = false;
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.lastKey = '';
+          this.emptyTabs();
+          this.showMainModal();
+          this.listService.fetchContactsByIDs();
+          if (this.unitData.eTypes.includes('owner_operator')) {
+            this.listService.fetchOwnerOperators();
+          } else if (this.unitData.eTypes.includes('shipper')) {
+            this.listService.fetchShippers();
+          } else if (this.unitData.eTypes.includes('receiver')) {
+            this.listService.fetchReceivers();
+          } else if (this.unitData.eTypes.includes('vendor')) {
+            this.listService.fetchVendors();
+          } else if (this.unitData.eTypes.includes('customer')) {
+            this.listService.fetchCustomers();
+          }
+          this.toastr.success('Entry added successfully');
         }
-        this.toastr.success('Entry added successfully');
-      }
-    });
+      });
   }
 
   showMainModal() {
-    if(localStorage.getItem('isOpen') != 'true') {
-      this.listService.triggerModal('list');    
+    if (localStorage.getItem('isOpen') != 'true') {
+      this.listService.triggerModal('list');
     } else {
       this.listService.triggerModal('');
-      localStorage.setItem('isOpen', 'false'); 
+      localStorage.setItem('isOpen', 'false');
     }
-    
+
   }
 
   deactivate(id) {
-    
+
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/CONT/${id}`)
-      .subscribe(async(result: any) => {
-        this.lastKey = '';
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.units = [];
-        this.customers = [];
-        this.brokers = [];
-        this.vendors = [];
-        this.receivers = [];
-        this.shippers = [];
-        this.owners = [];
-        this.fcCompanies = [];
-        this.carriers = [];
-        this.fetchUnits();
-        
-        this.toastr.success('Entry deleted successfully');
-      });
+        .deleteData(`contacts/delete/CONT/${id}`)
+        .subscribe(async (result: any) => {
+          this.lastKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.units = [];
+          this.customers = [];
+          this.brokers = [];
+          this.vendors = [];
+          this.receivers = [];
+          this.shippers = [];
+          this.owners = [];
+          this.fcCompanies = [];
+          this.carriers = [];
+          this.fetchUnits();
+
+          this.toastr.success('Entry deleted successfully');
+        });
     }
   }
 
@@ -1139,45 +1142,45 @@ export class NewAddressBookComponent implements OnInit {
       const element = this.unitData.adrs[i];
       delete element.states;
       delete element.cities;
-      
-      if(element.manual === true){
+
+      if (element.manual === true) {
         let data = {
-           address1: element.add1,
-           address2: element.add2,
-           cityName: element.ctyName,
-           stateName: element.sName,
-           countryName: element.cName,
-           zipCode: element.zip
-         }
-         $('#addErr'+i).css('display','none');
-         let result = await this.newGeoCode(data);
- 
-         if(result == null) {
-           $('#addErr'+i).css('display','block');
-           return false;
-         }
-         if(result != undefined || result != null){
-           element.geoCords = result;
-         }
-       } else {
-         $('#addErr'+i).css('display','none');
-         if(element.isSuggest != true && element.userLoc != '') {
-           $('#addErr'+i).css('display','block');
-           return;
-         }
-       }
+          address1: element.add1,
+          address2: element.add2,
+          cityName: element.ctyName,
+          stateName: element.sName,
+          countryName: element.cName,
+          zipCode: element.zip
+        }
+        $('#addErr' + i).css('display', 'none');
+        let result = await this.newGeoCode(data);
+
+        if (result == null) {
+          $('#addErr' + i).css('display', 'block');
+          return false;
+        }
+        if (result != undefined || result != null) {
+          element.geoCords = result;
+        }
+      } else {
+        $('#addErr' + i).css('display', 'none');
+        if (element.isSuggest != true && element.userLoc != '') {
+          $('#addErr' + i).css('display', 'block');
+          return;
+        }
+      }
     }
-    
+
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
-      element.flName = element.fName + ' '+ element.lName;
+      element.flName = element.fName + ' ' + element.lName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1203,7 +1206,7 @@ export class NewAddressBookComponent implements OnInit {
             },
             error: () => {
               this.unitDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1213,15 +1216,15 @@ export class NewAddressBookComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.emptyTabs();
         this.listService.fetchContactsByIDs();
-        if(this.unitData.eTypes.includes('owner_operator')) {
+        if (this.unitData.eTypes.includes('owner_operator')) {
           this.listService.fetchOwnerOperators();
-        } else if(this.unitData.eTypes.includes('shipper')) {
+        } else if (this.unitData.eTypes.includes('shipper')) {
           this.listService.fetchShippers();
-        } else if(this.unitData.eTypes.includes('receiver')) {
+        } else if (this.unitData.eTypes.includes('receiver')) {
           this.listService.fetchReceivers();
-        } else if(this.unitData.eTypes.includes('vendor')) {
+        } else if (this.unitData.eTypes.includes('vendor')) {
           this.listService.fetchVendors();
-        } else if(this.unitData.eTypes.includes('customer')) {
+        } else if (this.unitData.eTypes.includes('customer')) {
           this.listService.fetchCustomers();
         }
         this.listService.triggerModal('list');
@@ -1230,7 +1233,7 @@ export class NewAddressBookComponent implements OnInit {
     });
   }
 
-  
+
   hideErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
@@ -1245,94 +1248,94 @@ export class NewAddressBookComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v == 'CognitoPassword') {
+        if (v == 'CognitoPassword') {
           this.errorClass = true;
           this.errorClassMsg = this.errors[v];
         } else {
-          if(v == 'cName' || v == 'email') {
+          if (v == 'cName' || v == 'email') {
             $('[name="' + v + '"]')
-            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-            .addClass('error');
+              .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+              .addClass('error');
           }
         }
       });
 
   }
 
-  fetchUnits(){
+  fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
-    
-    if(this.lastKey != 'end') {
-      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=`+this.filterVal.cName).subscribe(res => {
-    
-        if(res.length == 0) {
+
+    if (this.lastKey != 'end') {
+      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+
+        if (res.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         res.forEach(element => {
           this.units.push(element);
-          if(element.eTypes.includes('customer')) {
+          if (element.eTypes.includes('customer')) {
             this.customers.push(element)
-          } else if(element.eTypes.includes('broker')) {
+          } else if (element.eTypes.includes('broker')) {
             this.brokers.push(element)
-          } else if(element.eTypes.includes('carrier')) {
+          } else if (element.eTypes.includes('carrier')) {
             this.carriers.push(element)
-          } else if(element.eTypes.includes('shipper')) {
+          } else if (element.eTypes.includes('shipper')) {
             this.shippers.push(element)
-          } else if(element.eTypes.includes('receiver')) {
+          } else if (element.eTypes.includes('receiver')) {
             this.receivers.push(element)
-          } else if(element.eTypes.includes('fc')) {
+          } else if (element.eTypes.includes('fc')) {
             this.fcCompanies.push(element)
-          } else if(element.eTypes.includes('vendor')) {
+          } else if (element.eTypes.includes('vendor')) {
             this.vendors.push(element)
-          } else if(element.eTypes.includes('owner_operator')) {
+          } else if (element.eTypes.includes('owner_operator')) {
             this.owners.push(element)
           }
 
         });
-        if(this.units.length > 0) {
-          if(this.units[this.units.length - 1].contactSK != undefined) {
-          this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g,'--')
-        } else {
-          this.lastKey = 'end';
-        }
+        if (this.units.length > 0) {
+          if (this.units[this.units.length - 1].contactSK != undefined) {
+            this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g, '--')
+          } else {
+            this.lastKey = 'end';
+          }
           this.allData = this.units;
         }
         this.isSearched = false;
       })
     }
-    
-   
-    
+
+
+
   }
 
   async newGeoCode(data: any) {
-   
+
     let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
-    
-    if(result.items != undefined && result.items.length > 0) {
+
+    if (result.items != undefined && result.items.length > 0) {
       return result.items[0].position;
     }
   }
 
   async resetFilter() {
-    
-      if(this.filterVal.cName != '') {
-        $('#addressbook-content .tab-pane').removeClass('active show');
-        $('#all').addClass('active show');
-        $('#addressbook-tabs .nav-link').removeClass('active');
-        $('#addressbook-tabs #all-tab').addClass('active');
-        this.setActiveDiv('all');
-        this.customers = [];
-        this.filterVal.cName = '';
-        this.suggestions = [];
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastKey = '';
-        this.units = [];
-        this.fetchUnits();
-      } else {
-        return false
-      }
-    
+
+    if (this.filterVal.cName != '') {
+      $('#addressbook-content .tab-pane').removeClass('active show');
+      $('#all').addClass('active show');
+      $('#addressbook-tabs .nav-link').removeClass('active');
+      $('#addressbook-tabs #all-tab').addClass('active');
+      this.setActiveDiv('all');
+      this.customers = [];
+      this.filterVal.cName = '';
+      this.suggestions = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.lastKey = '';
+      this.units = [];
+      this.fetchUnits();
+    } else {
+      return false
+    }
+
   }
 
   editUser(item: any) {
@@ -1340,16 +1343,16 @@ export class NewAddressBookComponent implements OnInit {
     this.updateButton = true;
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
-      
+
       this.unitData.eTypes = res.eTypes;
 
       this.unitTypes.filter((item: any) => {
-      if(this.unitData.eTypes.includes(item.value)) {
+        if (this.unitData.eTypes.includes(item.value)) {
           let index = this.unitTypes.indexOf(item)
-          this.unitTypes[index].disabled = true; 
+          this.unitTypes[index].disabled = true;
         }
       })
-      
+
       this.newArr = res.eTypes;
       this.unitData.cName = res.cName;
       this.unitData.dba = res.dba;
@@ -1358,17 +1361,17 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData.adrs = res.adrs;
       for (let index = 0; index < this.unitData.adrs.length; index++) {
         const element = this.unitData.adrs[index];
-        if(element.manual) {
+        if (element.manual) {
           element.isSuggest = false;
         } else {
-          element.isSuggest = true;  
+          element.isSuggest = true;
         }
       }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
 
       //to show profile image
-      if(res.profileImg != '' && res.profileImg != undefined) {
+      if (res.profileImg != '' && res.profileImg != undefined) {
         this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;
         this.imageText = 'Update Picture';
       } else {
@@ -1378,14 +1381,14 @@ export class NewAddressBookComponent implements OnInit {
       this.unitData['contactID'] = res.contactID;
       this.unitData['createdDate'] = res.createdDate;
       this.unitData['createdTime'] = res.createdTime;
-      
+
     })
   }
 
   showPhoto() {
     let ngbModalOptions: NgbModalOptions = {
-      backdrop : 'static',
-      keyboard : false,
+      backdrop: 'static',
+      keyboard: false,
       windowClass: 'photo__main'
     };
     this.modalService.open(this.showPhotoModal, ngbModalOptions)
@@ -1393,15 +1396,15 @@ export class NewAddressBookComponent implements OnInit {
 
   openDetail(targetModal, item) {
     this.editUser(item)
-    
+
     this.modalService.dismissAll();
     let ngbModalOptions: NgbModalOptions = {
-      backdrop : 'static',
-      keyboard : false,
+      backdrop: 'static',
+      keyboard: false,
       windowClass: 'units-detail__main'
     };
     this.modalService.open(targetModal, ngbModalOptions);
-    
+
   }
 
   onModalScrollDown() {
@@ -1463,5 +1466,5 @@ export class NewAddressBookComponent implements OnInit {
       data: []
     }
   }
-  
+
 }

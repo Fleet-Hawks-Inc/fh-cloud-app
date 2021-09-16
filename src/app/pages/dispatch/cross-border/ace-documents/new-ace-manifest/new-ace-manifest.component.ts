@@ -12,8 +12,9 @@ import { Auth } from 'aws-amplify';
 import { ListService } from '../../../../../services';
 import { HereMapService } from '../../../../../services';
 import { updateFunctionDeclaration } from 'typescript';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
-import { CountryStateCity } from '../../../../../shared/utilities/countryStateCities';
+
 @Component({
   selector: 'app-new-ace-manifest',
   templateUrl: './new-ace-manifest.component.html',
@@ -230,7 +231,8 @@ export class NewAceManifestComponent implements OnInit {
     private HereMap: HereMapService,
     private listService: ListService,
     config: NgbTimepickerConfig,
-    private dateAdapter: NgbDateAdapter<string>
+    private dateAdapter: NgbDateAdapter<string>,
+    private countryStateCity: CountryStateCityService
   ) {
     config.seconds = true;
     config.spinners = true;
@@ -242,13 +244,13 @@ export class NewAceManifestComponent implements OnInit {
       day: date.getDate(),
     };
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
     if (this.manifestID) {
       this.title = 'Edit ACE e-Manifest';
       this.modalTitle = 'Edit';
       this.fetchACEEntry();
-      this.getCAProvinces();
+      await this.getCAProvinces();
       this.route.queryParams.subscribe((params) => {
         if (params.amendManifest !== undefined) {
           this.amendManifest = params.amendManifest; // to get query parameter amend
@@ -261,7 +263,7 @@ export class NewAceManifestComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    this.fetchCountries();
+    await this.fetchCountries();
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.fetchBrokers();
@@ -339,55 +341,55 @@ export class NewAceManifestComponent implements OnInit {
     // this.borderAssetTypes = this.testBorderAsset.find(con => con.name === fetchedAsset.Items[0].assetDetails.assetType).borderTypes;
 
   }
-  getCAProvinces() {
-    this.states = CountryStateCity.GetStatesByCountryCode(['CA']);
+  async getCAProvinces() {
+    this.states = await this.countryStateCity.GetStatesByCountryCode(['CA']);
   }
-  fetchUSStates() {
-    this.USStates = CountryStateCity.GetStatesByCountryCode(['US']);
+  async fetchUSStates() {
+    this.USStates = await this.countryStateCity.GetStatesByCountryCode(['US']);
   }
-  getUSCities(event: any) {
+  async getUSCities(event: any) {
     const stateCode = event;
     const countryCode = 'US';
     this.usAddress.address.cityName = '';
-    this.usAddress.address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.usAddress.address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.USCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.usAddress.address.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.usAddress.address.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.USCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
 
   // PASSENGER FUNCTIONS
-  getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
+  async getPassengerDocStates(countryCode: any, Pindex: any, Dindex: any) {
     this.passengers[Pindex].travelDocuments[Dindex].stateProvince = '';
-    this.passengers[Pindex].travelDocuments[Dindex].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.passengers[Pindex].travelDocuments[Dindex].docStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  fetchPassengerDocStates(passengers: any) {
+  async fetchPassengerDocStates(passengers: any) {
     for (let p = 0; p < passengers.length; p++) {
       for (let d = 0; d < passengers[p].travelDocuments.length; d++) {
         const countryCode = this.passengers[p].travelDocuments[d].country;
-        this.passengers[p].travelDocuments[d].docStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+        this.passengers[p].travelDocuments[d].docStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
       }
     }
   }
   // THIRD PARTY FUNCTION
-  getThirdPartyState(countryCode: any, sIndex: any, pIndex: any) {
+  async getThirdPartyState(countryCode: any, sIndex: any, pIndex: any) {
     this.shipments[sIndex].thirdParties[pIndex].address.stateCode = '';
-    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getThirdPartyCity(stateCode: any, sIndex: any, pIndex: any) {
+  async getThirdPartyCity(stateCode: any, sIndex: any, pIndex: any) {
     const countryCode = this.shipments[sIndex].thirdParties[pIndex].address.countryCode;
     this.shipments[sIndex].thirdParties[pIndex].address.cityName = '';
-    this.shipments[sIndex].thirdParties[pIndex].address.stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.shipments[sIndex].thirdParties[pIndex].address.countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.shipments[sIndex].thirdParties[pIndex].address.stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.shipments[sIndex].thirdParties[pIndex].address.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.shipments[sIndex].thirdParties[pIndex].address.thirdPartyCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  fetchThirdPartyAddress(shipments: any) {
-   for(let s = 0; s < shipments.length; s++) {
-    for(let p = 0; p < shipments[s].thirdParties.length; p++) {
-      const countryCode: any = this.shipments[s].thirdParties[p].address.countryCode;
-      const stateCode: any = this.shipments[s].thirdParties[p].address.stateCode;
-      this.shipments[s].thirdParties[p].address.thirdPartyStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
-      this.shipments[s].thirdParties[p].address.thirdPartyCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchThirdPartyAddress(shipments: any) {
+    for (let s = 0; s < shipments.length; s++) {
+      for (let p = 0; p < shipments[s].thirdParties.length; p++) {
+        const countryCode: any = this.shipments[s].thirdParties[p].address.countryCode;
+        const stateCode: any = this.shipments[s].thirdParties[p].address.stateCode;
+        this.shipments[s].thirdParties[p].address.thirdPartyStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+        this.shipments[s].thirdParties[p].address.thirdPartyCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      }
     }
-   }
   }
   onChangeHideErrors(fieldname = '') {
     $('[name="' + fieldname + '"]')
@@ -406,8 +408,8 @@ export class NewAceManifestComponent implements OnInit {
       this.vehicles = result.Items;
     });
   }
-  fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries(); //fetch countries from library
+  async fetchCountries() {
+    this.countries = await this.countryStateCity.GetAllCountries(); //fetch countries from library
   }
   fetchCarrier() {
     this.apiService.getData('carriers/getCarrier').subscribe((result: any) => {
@@ -870,10 +872,10 @@ export class NewAceManifestComponent implements OnInit {
   }
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
-      if(v === 'tripNumber') {
+      if (v === 'tripNumber') {
         $('[name="' + v + '"]')
-        .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-        .addClass('error');
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
       }
     });
   }
@@ -894,7 +896,7 @@ export class NewAceManifestComponent implements OnInit {
   };
   fetchACEEntry() {
     this.apiService
-      .getData('eManifests/ACE/' + this.manifestID).subscribe((result: any) => {
+      .getData('eManifests/ACE/' + this.manifestID).subscribe(async (result: any) => {
         result = result.Items[0];
         this.manifestID = this.manifestID;
         this.manifestType = this.manifestType;
@@ -910,9 +912,9 @@ export class NewAceManifestComponent implements OnInit {
         this.coDrivers = result.coDrivers;
         this.trailers = result.trailers;
         this.passengers = result.passengers;
-        this.fetchPassengerDocStates(this.passengers);
+        await this.fetchPassengerDocStates(this.passengers);
         this.shipments = result.shipments;
-        this.fetchThirdPartyAddress(this.shipments);
+        await this.fetchThirdPartyAddress(this.shipments);
         this.currentStatus = result.currentStatus;
         this.usAddress = result.usAddress;
         this.borderResponses = result.borderResponses;
@@ -1080,7 +1082,7 @@ export class NewAceManifestComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-               // this.throwErrors();
+                // this.throwErrors();
               },
               error: () => { },
               next: () => { },
@@ -1108,7 +1110,7 @@ export class NewAceManifestComponent implements OnInit {
           )
           .subscribe({
             complete: () => {
-             // this.throwErrors();
+              // this.throwErrors();
             },
             error: () => { },
             next: () => { },
