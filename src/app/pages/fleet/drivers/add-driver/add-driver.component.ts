@@ -1624,11 +1624,11 @@ export class AddDriverComponent
       this.apiService.getData(`drivers/validate/username?value=${this.driverData.userName}&type=${this.pageType}`)
         .subscribe((result: any) => {
           if (!result) {
-            this.errors['userName'] = 'Username already exists';
+            this.errors[`userName`] = 'Username already exists';
             this.submitDisabled = true;
           } else {
             this.onChangeHideErrors('userName');
-            delete this.errors['userName'];
+            delete this.errors[`userName`];
           }
           this.throwErrors();
         });
@@ -1643,11 +1643,11 @@ export class AddDriverComponent
       this.apiService.getData(`drivers/validate/employee-id?value=${this.driverData.employeeContractorId}&type=${this.pageType}`)
         .subscribe((result: any) => {
           if (!result) {
-            this.errors['employeeContractorId'] = 'Employee ID already exists';
+            this.errors[`employeeContractorId`] = 'Employee ID already exists';
             this.submitDisabled = true;
           } else {
             this.onChangeHideErrors('employeeContractorId');
-            delete this.errors['employeeContractorId'];
+            delete this.errors[`employeeContractorId`];
           }
           this.throwErrors();
         });
@@ -1656,21 +1656,20 @@ export class AddDriverComponent
 
   validateCDL() {
     this.hideVal();
-   // if (this.driverData.CDL_Number !== '') {
+    if (this.driverData.CDL_Number !== '') {
       this.driverData.CDL_Number = this.driverData.CDL_Number.trim();
       this.apiService.getData(`drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`)
         .subscribe((result: any) => {
           if (!result) {
-            this.errors['CDL_Number'] = 'CDL already exists';
+            this.errors[`CDL_Number`] = 'CDL already exists';
             this.submitDisabled = true;
           } else {
-            console.log('hello errors');
             this.onChangeHideErrors('CDL_Number');
-            delete this.errors['CDL_Number'];
+            delete this.errors[`CDL_Number`];
           }
           this.throwErrors();
         });
-   // }
+    }
 
   }
 
@@ -1681,11 +1680,11 @@ export class AddDriverComponent
       this.apiService.getData(`drivers/validate/email?value=${this.driverData.email}&type=${this.pageType}&drv=${this.driverData.userName}`)
         .subscribe((result: any) => {
           if (!result) {
-            this.errors['email'] = 'Email already exists';
+            this.errors[`email`] = 'Email already exists';
             this.submitDisabled = true;
           } else {
             this.onChangeHideErrors('email');
-            delete this.errors['email'];
+            delete this.errors[`email`];
           }
           this.throwErrors();
         });
