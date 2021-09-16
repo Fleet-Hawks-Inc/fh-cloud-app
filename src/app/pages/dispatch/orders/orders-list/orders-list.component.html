@@ -149,12 +149,12 @@
                                                     <td colspan="10">{{ dataMessage }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of orders[ordersDraw];let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}" class="font-weight-bold">
+                                                    <td [routerLink]="order.url" class="font-weight-bold">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td [routerLink]="order.url" class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -171,7 +171,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -187,12 +187,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td  [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -249,12 +249,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of confirmOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize" [routerLink]="order.url">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -271,7 +271,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -287,12 +287,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -334,12 +334,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of dispatchOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize" [routerLink]="order.url">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -356,7 +356,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -372,12 +372,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -419,12 +419,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of deliveredOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td  [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize" [routerLink]="order.url">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -441,7 +441,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -457,12 +457,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -504,12 +504,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of cancelledOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td [routerLink]="order.url" class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -526,7 +526,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -542,12 +542,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -589,12 +589,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of invoicedOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td  [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td class="text-capitalize" [routerLink]="order.url">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -611,7 +611,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -627,12 +627,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -674,12 +674,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of partiallyOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td  [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td [routerLink]="order.url" class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -696,7 +696,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -712,12 +712,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"
@@ -760,12 +760,12 @@
                                                     <td colspan="10">{{ noOrdersMsg }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of tonuOrders;let i = index;">
-                                                    <td routerLink="/dispatch/orders/detail/{{order.orderID}}">
+                                                    <td  [routerLink]="order.url">
                                                         {{ order.orderNumber }}</td>
-                                                    <td>{{order.orderMode}}</td>
-                                                    <td>{{order.createdDate | date:'yyyy/MM/dd'}}</td>
-                                                    <td class="text-capitalize">{{customersObjects[order.customerID]}}</td>
-                                                    <td>
+                                                    <td [routerLink]="order.url">{{order.orderMode}}</td>
+                                                    <td [routerLink]="order.url">{{order.createdDate | date:'yyyy/MM/dd'}}</td>
+                                                    <td [routerLink]="order.url" class="text-capitalize">{{customersObjects[order.customerID]}}</td>
+                                                    <td [routerLink]="order.url">
                                                         Date: {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].address.manual">
@@ -782,7 +782,7 @@
                                                             +{{order.shippersReceiversInfo[0].shippers[0].pickupPoint.length - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
+                                                    <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
                                                         Location: -
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
@@ -798,12 +798,12 @@
                                                             +{{order.shippersReceiversInfo[0].receivers[0].dropPoint - 1}}
                                                         </span>
                                                     </td>
-                                                    <td>{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
+                                                    <td [routerLink]="order.url">{{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name ? 'Name: '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].name : '-'}}<br>
                                                          {{order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity ? 'Qty:'+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantity +' '+ order.shippersReceiversInfo[0].shippers[0].pickupPoint[0].commodity[0].quantityUnit : ''}}
                                                     </td>
-                                                    <td> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
+                                                    <td [routerLink]="order.url"> {{order.charges.freightFee.currency}} {{order.totalAmount}}<br>
                                                     </td>
-                                                    <td><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
+                                                    <td [routerLink]="order.url"><span class="badge badge-dark p-1 text-capitalize">{{order.orderStatus}}</span></td>
                                                     <td>
                                                         <div class="dropdown dropright">
                                                             <button class="bg-transparent border-0" type="button"

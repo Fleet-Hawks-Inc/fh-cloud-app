@@ -217,9 +217,9 @@ export class TripListComponent implements OnInit {
             result.Items[i].planCarrierId = element2.carrierID;
           }
           if(element.carrierIDs) {
-            result.Items[i].carrierIdCount = element.carrierIDs.length;  
+            result.Items[i].carrierIdCount = element.carrierIDs.length;
           }
-          
+
         }
 
         if (element2.driverID !== '' && element2.driverID !== undefined) {
@@ -263,7 +263,7 @@ export class TripListComponent implements OnInit {
       } else {
         element.canEdit = false;
       }
-      
+
       if (element.tripStatus == 'confirmed') {
         element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);
@@ -573,6 +573,9 @@ export class TripListComponent implements OnInit {
         } else {
           this.records = true;
         }
+        result.Items.map((v) => {
+          v.url = `/dispatch/trips/trip-details/${v.tripID}`;
+        });
         this.fetchedRecordsCount += result.Count;
         this.getStartandEndVal('all');
 
