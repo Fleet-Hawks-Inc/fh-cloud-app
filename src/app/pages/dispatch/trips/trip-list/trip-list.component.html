@@ -2,7 +2,7 @@
 <section class="body">
 
     <div class="inner-wrapper">
-        <section role="main" class="content-body pl-0 pr-0 pt-0"> 
+        <section role="main" class="content-body pl-0 pr-0 pt-0">
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:9px;">
@@ -78,7 +78,7 @@
                                     <a class="dropdown-item text-1" href="">Export</a>
                                 </div>
                             </div>
-                            
+
                             <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
                                 <i class="fas fa-sync"></i>
                             </a>
@@ -130,7 +130,7 @@
                                             <a class="nav-link navtabs" id="cancelled-tab" href="javascript:;" (click)="setActiveDiv('cancelled')" [ngClass]="{'active': activeTab == 'cancelled'}">
                                                 Cancelled : {{ cancelledTrips.length }}</a>
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                                 <div class="tab-content" id="myTabContent" style="box-shadow:none;border:none;">
@@ -157,45 +157,45 @@
                                                     <td colspan="12">{{ dataMessage }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of trips[tripDraw]; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                         <span *ngIf="trip.split && trip.split.length > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.split.length-1 }} </span>
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'yyyy/MM/dd' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'yyyy/MM/dd' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -252,44 +252,44 @@
                                                     <td colspan="12">{{dataMessageConfirm}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of confirmedTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -337,44 +337,44 @@
                                                     <td colspan="12">{{dataMessageDispatch}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of dispatchedTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -422,44 +422,44 @@
                                                     <td colspan="12">{{dataMessageStart}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of startedTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -507,44 +507,44 @@
                                                     <td colspan="12">{{dataMessageEnroute}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of enrouteTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -592,44 +592,44 @@
                                                     <td colspan="12">{{dataMessageDeliver}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of deliveredTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -645,7 +645,7 @@
                                                                 <a class="dropdown-item" href="javascript:;"
                                                                     (click)="deleteTrip(trip)">Delete</a>
                                                                 <a class="dropdown-item" href="javascript:;" *ngIf="trip.showStatus"
-                                                                    (click)="openStatusModal(trip.tripID, i)">Update Status</a> 
+                                                                    (click)="openStatusModal(trip.tripID, i)">Update Status</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -676,44 +676,44 @@
                                                     <td colspan="12">{{dataMessageCancel}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of tonuTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">
@@ -760,44 +760,44 @@
                                                     <td colspan="12">{{dataMessageCancel}}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let trip of cancelledTrips; let i= index">
-                                                    <td routerLink="/dispatch/trips/trip-details/{{ trip.tripID}}">
+                                                    <td  [routerLink]="trip.url">
                                                         {{ trip.tripNo }}
                                                     </td>
-                                                    <td>{{ trip.orderType }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.orderType }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         <span *ngFor="let ordr of trip.orderId; let j=index; let $last = last">
                                                             <span *ngIf="ordersObject[ordr] != '' && ordersObject[ordr] != null "> {{ ordersObject[ordr] }} <span *ngIf="!$last" class="list-format">, </span> </span>
                                                         </span>
                                                     </td>
-                                                    <td>{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">{{ trip.dateCreated | date: 'dd-MM-yyyy' }}</td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.pickupLocation }}
                                                         <span *ngIf="trip.pickupLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.pickupLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ trip.dropLocation }}
                                                         <span *ngIf="trip.dropLocationCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.dropLocationCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ vehiclesObject[trip.vehicleId] }}
                                                         <span *ngIf="trip.vehicleCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.vehicleCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ assetsObject[trip.assetId] }}
                                                         <span *ngIf="trip.assetCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.assetCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ driversIDSObject[trip.driverId] }}
                                                         <span *ngIf="trip.driverCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.driverCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         {{ carriersObject[trip.planCarrierId] }}
                                                         <span *ngIf="trip.carrierIdCount > 1" class="badge badge-dark ng-star-inserted"> +{{ trip.carrierIdCount-1 }} </span>
                                                     </td>
-                                                    <td>
+                                                    <td [routerLink]="trip.url">
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="!trip.stlLink">{{ trip.tripStatus }}</span>
                                                         <span class="badge badge-dark p-1 text-capitalize" *ngIf="trip.stlLink">Settled</span>
-                                                        
+
                                                     </td>
                                                     <td>
                                                         <div class="dropdown dropright">

@@ -183,10 +183,13 @@ export class OrdersListComponent implements OnInit {
         } else {
           this.records = true;
         }
+        result.Items.map((v) => {
+          v.url = `/dispatch/orders/detail/${v.orderID}`;
+        });
         this.fetchedRecordsCount += result.Count;
         this.getStartandEndVal('all');
         // this.orders.push(result['Items']);
-        this.allignOrders(result['Items']);
+        this.allignOrders(result[`Items`]);
         if (this.orderFiltr.searchValue !== '' || this.orderFiltr.start !== '' ) {
           this.ordersStartPoint = 1;
           this.ordersEndPoint = this.totalRecords;
