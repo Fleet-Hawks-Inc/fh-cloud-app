@@ -1,7 +1,7 @@
 <section class="body">
 
     <div class="inner-wrapper">
-        
+
         <section role="main" class="content-body">
             <header class="page-header">
                 <div class="row" style="padding-top:10px;">
@@ -11,18 +11,18 @@
                                 value="{{ driver.driverID }}">{{ driver.firstName }} {{ driver.lastName }}</ng-option>
                         </ng-select>
                     </div>
-                    
+
                     <div class="col-md-2  col-lg-2">
                         <div class="input-group input-group-sm mb-3">
                             <!-- <input type="date" class="form-control" placeholder="Search By Date" (change)="searchFilter($event)" [(ngModel)]="filterValue.date"> -->
-                            <input 
-                                [(ngModel)]="filter.date" name="date" 
-                                type="text" 
+                            <input
+                                [(ngModel)]="filter.date" name="date"
+                                type="text"
                                 placeholder="yyyy/mm/dd"
-                                [maxDate]="birthDateMaxLimit" 
+                                [maxDate]="birthDateMaxLimit"
                                 [minDate]="birthDateMinLimit"
                                 (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                class="form-control" autocomplete="off"> 
+                                class="form-control" autocomplete="off">
                         </div>
                     </div>
 
@@ -34,7 +34,7 @@
                             class="btn btn-success btn-sm" style="color:white;"> Reset
                         </a>
                     </div>
-                    
+
                     <div class="col-6 text-right pr-1">
                         <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
                             <i class="fas fa-sync"></i>
@@ -60,7 +60,7 @@
                                     <div class="mb-3 pb-1">
                                         <ul class="nav nav-tabs top-tabs incident-tabs" id="incident-tabs" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link active navtabs" id="allSafetyIncidents-tab" href="javascript:;" 
+                                                <a class="nav-link active navtabs" id="allSafetyIncidents-tab" href="javascript:;"
                                                 (click)="fetchTabData('all')">All</a>
                                             </li>
                                             <li class="nav-item">
@@ -91,7 +91,7 @@
                                                             <th>Event Time</th>
                                                             <th>Event Source</th>
                                                             <th>Location</th>
-                                                            
+
                                                             <th>Severity</th>
                                                             <th>Assigned</th>
                                                             <th>Status</th>
@@ -100,23 +100,23 @@
                                                     <tbody *ngIf="events.length > 0">
                                                         <tr class="cursorpoint" *ngFor="let data of events; let i= index">
                                                             <td class="cursorpoint" class="text-capitalize"
-                                                                routerLink="/safety/incidents/incident-details/{{data.incidentID}}">
+                                                            [routerLink]="data.url">
                                                                 {{ driversObject[data.driverID] }}</td>
-                                                                <td class="text-capitalize">{{ vehiclesObject[data.vehicleID] }}</td>
-                                                            <td class="text-capitalize">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
-                                                            <td class="text-capitalize">{{convertTimeFormat(data.eventTime)}}</td>
-                                                            <td class="text-capitalize">{{data.eventSource}}</td>
-                                                            <td class="text-capitalize"><span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
+                                                                <td class="text-capitalize"  [routerLink]="data.url">{{ vehiclesObject[data.vehicleID] }}</td>
+                                                            <td class="text-capitalize" [routerLink]="data.url">{{ data.eventDate  | date: 'yyyy/MM/dd' }} </td>
+                                                            <td class="text-capitalize" [routerLink]="data.url">{{convertTimeFormat(data.eventTime)}}</td>
+                                                            <td class="text-capitalize" [routerLink]="data.url">{{data.eventSource}}</td>
+                                                            <td class="text-capitalize" [routerLink]="data.url"><span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
                                                                 <span *ngIf="data.location.label === undefined">NA</span></td>
-                                                            
-                                                            <td class="text-capitalize">{{ data.severity }}</td>
-                                                            <td class="text-capitalize">{{ data.assigned }}</td>
+
+                                                            <td class="text-capitalize" [routerLink]="data.url">{{ data.severity }}</td>
+                                                            <td class="text-capitalize" [routerLink]="data.url">{{ data.assigned }}</td>
                                                             <td style="width: 180px;" >
                                                                 <ng-select [clearable]="false" class="form-control text-capitalize" (ngModelChange)="changeStatus(data.incidentID, $event, i);" [(ngModel)]="data.status">
                                                                     <ng-option *ngFor="let status of status_values;" value="{{status}}">{{status}}</ng-option>
                                                                 </ng-select>
                                                             </td>
-                                                            
+
                                                         </tr>
 
                                                     </tbody>

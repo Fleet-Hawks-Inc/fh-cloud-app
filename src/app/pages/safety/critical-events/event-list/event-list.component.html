@@ -25,7 +25,7 @@
                 type="text"
                 placeholder="yyyy/mm/dd"
                 (click)="from.toggle()"
-                [maxDate]="birthDateMaxLimit" 
+                [maxDate]="birthDateMaxLimit"
                 [minDate]="birthDateMinLimit"
                 ngbDatepicker
                 #from="ngbDatepicker"
@@ -115,20 +115,18 @@
                         >
                           <td
                             class="text-capitalize"
-                            routerLink="/safety/critical-events/event-details/{{
-                              data.eventID
-                            }}"
+                            [routerLink]="data.url"
                           >
                             {{ vehiclesObject[data.vehicleID] }}
                           </td>
-                          <td class="text-capitalize">
+                          <td class="text-capitalize" [routerLink]="data.url">
                             {{ data.eventDate | date: 'yyyy/MM/dd' }}
                           </td>
-                          <td class="text-capitalize">
+                          <td class="text-capitalize" [routerLink]="data.url">
                             {{ data.eventTime }}
                           </td>
 
-                          <td class="text-capitalize">
+                          <td class="text-capitalize" [routerLink]="data.url">
                             <span *ngIf="data.eventType == 'motionDetection'"
                               >Motion Detection</span
                             >
@@ -145,11 +143,11 @@
                               >Impact/Tilt</span
                             >
                           </td>
-                          <td class="text-capitalize">
+                          <td class="text-capitalize" [routerLink]="data.url">
                             {{ data.eventSource }}
                           </td>
-                          <td class="text-capitalize">{{ data.createdBy }}</td>
-                          <td class="text-capitalize">
+                          <td class="text-capitalize" [routerLink]="data.url">{{ data.createdBy }}</td>
+                          <td class="text-capitalize" [routerLink]="data.url">
                             <span *ngIf="data.location.label != undefined">{{ data.location.label }}</span>
                             <span *ngIf="data.location.label === undefined">NA</span>
                           </td>
