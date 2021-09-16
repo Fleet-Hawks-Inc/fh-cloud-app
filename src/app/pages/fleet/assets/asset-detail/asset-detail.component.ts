@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services';
-import {ApiService} from '../../../../services';
-import { DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { ApiService } from '../../../../services';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
-import {environment} from '../../../../../environments/environment';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { environment } from '../../../../../environments/environment';
+
 import * as _ from 'lodash';
 import Constants from 'src/app/pages/manage/constants';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 
 @Component({
@@ -32,7 +33,7 @@ export class AssetDetailComponent implements OnInit {
   public deviceData;
   carrierID;
   noRecordMsg: string = Constants.NO_RECORDS_FOUND;
-  
+
   assetIdentification: string;
   VIN: string;
   assetType: string;
@@ -46,7 +47,7 @@ export class AssetDetailComponent implements OnInit {
   length: string;
   lengthUnit: string;
   height: string;
-  heightUnit:string;
+  heightUnit: string;
   axle: string;
   GAWR: string;
   GAWR_Unit: string;
@@ -66,7 +67,7 @@ export class AssetDetailComponent implements OnInit {
   reminderBefore: string;
   reminderBeforeUnit: string;
   vendor: string;
-  public assetDataDetail: any  = [];
+  public assetDataDetail: any = [];
   devices: any;
   allDevices = [];
 
@@ -121,9 +122,9 @@ export class AssetDetailComponent implements OnInit {
   ownerOperatorName = '';
   inspectionFormName = '';
   inspectionForms = {
-    inspectionFormName : '',
+    inspectionFormName: '',
     parameters: [],
-    isDefaultInspectionType:'',
+    isDefaultInspectionType: '',
     inspectionType: ''
   };
   // Charts
@@ -132,32 +133,33 @@ export class AssetDetailComponent implements OnInit {
     responsive: true,
     scales: {
       yAxes: [{
-         // ticks: {beginAtZero:true},
-         display: true,
-         scaleLabel: {
-            display: true,
-            labelString: 'Temperature (F)'
-         },
-         ticks: {
-            min: 0,
-            // max: 80,
-            stepSize: 5,
-            suggestedMin: 0,
-            // suggestedMax: 80,
-            // Include a degree sign in the ticks
-            callback: (value, index, values) => {
-               return value + '°F';
-            }
-         }
+        // ticks: {beginAtZero:true},
+        display: true,
+        scaleLabel: {
+          display: true,
+          labelString: 'Temperature (F)'
+        },
+        ticks: {
+          min: 0,
+          // max: 80,
+          stepSize: 5,
+          suggestedMin: 0,
+          // suggestedMax: 80,
+          // Include a degree sign in the ticks
+          callback: (value, index, values) => {
+            return value + '°F';
+          }
+        }
       }]
-   }
+    }
   };
   public chartLabels = ['31 July 12:00', '31 July 18:00', '1 Aug 00:00', '1 Aug 06:00',
-              '1 Aug 12:00', '1 Aug 18:00', '2 Aug 00:00', '2 Aug 06:00', '2 Aug 12:00', '2 Aug 18:00'];
+    '1 Aug 12:00', '1 Aug 18:00', '2 Aug 00:00', '2 Aug 06:00', '2 Aug 12:00', '2 Aug 18:00'];
   public chartType = 'line';
   public chartLegend = true;
   public chartData = [
-    { data: [12, 15, 17, 13, 15, 12, 18, 12, 18, 13, 10, 14, 12],
+    {
+      data: [12, 15, 17, 13, 15, 12, 18, 12, 18, 13, 10, 14, 12],
       label: 'Set',
       fill: false,
       backgroundColor: '#9c9ea1',
@@ -180,8 +182,9 @@ export class AssetDetailComponent implements OnInit {
   modelsObjects: any = {};
 
   constructor(public hereMap: HereMapService, private toastr: ToastrService,
-              private domSanitizer: DomSanitizer, private apiService: ApiService,
-              private route: ActivatedRoute, private spinner: NgxSpinnerService) { }
+    private domSanitizer: DomSanitizer, private apiService: ApiService,
+    private route: ActivatedRoute, private spinner: NgxSpinnerService,
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.hereMap.mapSetAPI();
@@ -218,15 +221,15 @@ export class AssetDetailComponent implements OnInit {
     this.spinner.show(); // loader init
     this.apiService
       .getData(`assets/${this.assetID}`)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         if (res) {
           let result = res.Items[0];
           this.assetDataDetail = res.Items[0];
           // if (!result.hasOwnProperty('devices')) {
           //   result['devices'] = [];
           // }
-          result.assetType = result.assetType.replace("_"," ");
-          if(result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
+          result.assetType = result.assetType.replace("_", " ");
+          if (result.inspectionFormID !== '' && result.inspectionFormID !== undefined) {
             this.apiService.getData('inspectionForms/' + result.inspectionFormID).subscribe((result: any) => {
               let res = result.Items[0];
               this.inspectionForms = res;
@@ -237,17 +240,17 @@ export class AssetDetailComponent implements OnInit {
           // this.fetchDevicesByID();
           this.assetIdentification = result.assetIdentification;
           this.VIN = result.VIN;
-          this.assetType =  result.assetType;
-          this.groupID =  result.groupID;
-          this.startDate =  result.startDate;
-          this.currentStatus =  result.currentStatus;
-          this.annualSafetyDate =  result.assetDetails.annualSafetyDate;
-          this.licencePlateNumber =  result.assetDetails.licencePlateNumber;
-          this.licenceCountryName = CountryStateCity.GetSpecificCountryNameByCode(result.assetDetails.licenceCountryCode);
-          this.licenceStateName =  CountryStateCity.GetStateNameFromCode(result.assetDetails.licenceStateCode,result.assetDetails.licenceCountryCode);
-          this.year =  result.assetDetails.year;
-          this.manufacturer =  result.assetDetails.manufacturer;
-          this.model =  result.assetDetails.model;
+          this.assetType = result.assetType;
+          this.groupID = result.groupID;
+          this.startDate = result.startDate;
+          this.currentStatus = result.currentStatus;
+          this.annualSafetyDate = result.assetDetails.annualSafetyDate;
+          this.licencePlateNumber = result.assetDetails.licencePlateNumber;
+          this.licenceCountryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.assetDetails.licenceCountryCode);
+          this.licenceStateName = await this.countryStateCity.GetStateNameFromCode(result.assetDetails.licenceStateCode, result.assetDetails.licenceCountryCode);
+          this.year = result.assetDetails.year;
+          this.manufacturer = result.assetDetails.manufacturer;
+          this.model = result.assetDetails.model;
           this.length = result.assetDetails.length;
           this.height = result.assetDetails.height;
           this.lengthUnit = result.assetDetails.lengthUnit;
@@ -304,12 +307,12 @@ export class AssetDetailComponent implements OnInit {
           this.ACEID = result.crossBorderDetails.ACE_ID;
           this.ACIID = result.crossBorderDetails.ACI_ID;
 
-          if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
+          if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
             this.assetsImages = result.uploadedPhotos.map(x => ({
               path: `${this.Asseturl}/${result.carrierID}/${x}`,
               name: x,
             }));
-          } 
+          }
           if (
             result.purchaseDocs != undefined &&
             result.purchaseDocs.length > 0
@@ -323,8 +326,8 @@ export class AssetDetailComponent implements OnInit {
               this.pDocs.push(obj);
             });
           }
-  
-          
+
+
           if (
             result.loanDocs != undefined &&
             result.loanDocs.length > 0
@@ -339,12 +342,12 @@ export class AssetDetailComponent implements OnInit {
             });
           }
 
-          if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-            this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+          if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
+            this.assetsDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
           }
           this.spinner.hide(); // loader hide
         }
-      }, (err) => {});
+      }, (err) => { });
   }
 
   fetchDeviceInfo = () => {
@@ -354,7 +357,7 @@ export class AssetDetailComponent implements OnInit {
         if (result) {
           this.deviceData = result[`Items`];
         }
-      }, (err) => {});
+      }, (err) => { });
   }
   fetchGroups() {
     this.apiService.getData('groups/get/list')
@@ -367,7 +370,7 @@ export class AssetDetailComponent implements OnInit {
   fetchDevicesByID() {
     this.allDevices = [];
     if (this.assetData.devices) {
-      this.assetData.devices.forEach( async element => {
+      this.assetData.devices.forEach(async element => {
         let result = await this.apiService.getData('devices/' + element).toPromise();
         this.allDevices.push(result.Items[0]);
       });
@@ -447,87 +450,87 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
-// delete uploaded images and documents
-// delete(type: string, name: string, index: any) {
+  // delete uploaded images and documents
+  // delete(type: string, name: string, index: any) {
 
-//   delete this.assetDataDetail.carrierID;
-//   delete this.assetDataDetail.timeModified;
-//   delete this.assetDataDetail.isDelActiveSK;
-//   delete this.assetDataDetail.assetSK;
-//   delete this.assetDataDetail.carrierID;
-//   delete this.assetDataDetail.timeModified;
-//   if (type === 'doc') {
-//     this.assetsDocs.splice(index, 1);
-//     this.assetDataDetail.uploadedDocs.splice(index, 1);
-//     this.deleteUploadedFile(type, name);
-//     try {
-//       const formData = new FormData();
-//       formData.append('data', JSON.stringify(this.assetDataDetail));
-//       this.apiService.putData('assets', formData, true).subscribe({
-//         complete: () => { this.fetchAsset(); }
-//       });
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   } else {
-//     this.assetsImages.splice(index, 1);
-//     this.assetDataDetail.uploadedPhotos.splice(index, 1);
-//     this.deleteUploadedFile(type, name);
-//     try {
-//       const formData = new FormData();
-//       formData.append('data', JSON.stringify(this.assetDataDetail));
-//       this.apiService.putData('assets', formData, true).subscribe({
-//         complete: () => { this.fetchAsset(); }
-//       });
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   }
-// }
-deleteDocument(type: string, name: string) { // delete from aws
-  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-    if(type == 'doc') {
-      this.assetsDocs = [];
-      this.uploadedDocs = result.Attributes.uploadedDocs;
-      this.existingDocs = result.Attributes.uploadedDocs;
-      result.Attributes.uploadedDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.assetsDocs.push(obj);
-      })
-    } else if(type == 'loan') {
-      this.lDocs = [];
-      console.log('loan')
-    this.uploadedDocs = result.Attributes.loanDocs;
-    this.existingDocs = result.Attributes.loanDocs;
-    result.Attributes.loanDocs.map((x) => {
-      let obj = {
-        name: x,
-        path: `${this.Asseturl}/${result.carrierID}/${x}`
+  //   delete this.assetDataDetail.carrierID;
+  //   delete this.assetDataDetail.timeModified;
+  //   delete this.assetDataDetail.isDelActiveSK;
+  //   delete this.assetDataDetail.assetSK;
+  //   delete this.assetDataDetail.carrierID;
+  //   delete this.assetDataDetail.timeModified;
+  //   if (type === 'doc') {
+  //     this.assetsDocs.splice(index, 1);
+  //     this.assetDataDetail.uploadedDocs.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('data', JSON.stringify(this.assetDataDetail));
+  //       this.apiService.putData('assets', formData, true).subscribe({
+  //         complete: () => { this.fetchAsset(); }
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else {
+  //     this.assetsImages.splice(index, 1);
+  //     this.assetDataDetail.uploadedPhotos.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('data', JSON.stringify(this.assetDataDetail));
+  //       this.apiService.putData('assets', formData, true).subscribe({
+  //         complete: () => { this.fetchAsset(); }
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
+  deleteDocument(type: string, name: string) { // delete from aws
+    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+      if (type == 'doc') {
+        this.assetsDocs = [];
+        this.uploadedDocs = result.Attributes.uploadedDocs;
+        this.existingDocs = result.Attributes.uploadedDocs;
+        result.Attributes.uploadedDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.assetsDocs.push(obj);
+        })
+      } else if (type == 'loan') {
+        this.lDocs = [];
+        console.log('loan')
+        this.uploadedDocs = result.Attributes.loanDocs;
+        this.existingDocs = result.Attributes.loanDocs;
+        result.Attributes.loanDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.lDocs.push(obj);
+        })
+      } else {
+        this.pDocs = [];
+        this.uploadedDocs = result.Attributes.purchaseDocs;
+        this.existingDocs = result.Attributes.purchaseDocs;
+        result.Attributes.purchaseDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.pDocs.push(obj);
+        })
       }
-      this.lDocs.push(obj);
-    })
-    } else {
-      this.pDocs = [];
-    this.uploadedDocs = result.Attributes.purchaseDocs;
-    this.existingDocs = result.Attributes.purchaseDocs;
-    result.Attributes.purchaseDocs.map((x) => {
-      let obj = {
-        name: x,
-        path: `${this.Asseturl}/${result.carrierID}/${x}`
-      }
-      this.pDocs.push(obj);
-    })
-    }
-   });
-}
+    });
+  }
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
     this.pdfSrc = this.domSanitizer.bypassSecurityTrustUrl('');
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);

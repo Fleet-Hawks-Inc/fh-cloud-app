@@ -3,11 +3,12 @@ import { ApiService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 declare var $: any;
 import { ToastrService } from 'ngx-toastr';
-import {environment} from '../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../constants';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -50,7 +51,7 @@ export class VehicleDetailComponent implements OnInit {
   countryID = '';
   driverID = '';
   teamDriverID = '';
-  serviceProgramID:any = [];
+  serviceProgramID: any = [];
   primaryMeter = '';
   repeatByTime = '';
   repeatByTimeUnit = '';
@@ -206,9 +207,9 @@ export class VehicleDetailComponent implements OnInit {
   serviceReminders = [];
   renewalReminders = [];
   inspectionForms = {
-    inspectionFormName : '',
+    inspectionFormName: '',
     parameters: [],
-    isDefaultInspectionType:'0',
+    isDefaultInspectionType: '0',
     inspectionType: ''
   };
   fuelEntries = [];
@@ -241,8 +242,9 @@ export class VehicleDetailComponent implements OnInit {
     private router: Router,
     private httpClient: HttpClient,
     private toastr: ToastrService,
-    private domSanitizer: DomSanitizer
-  ) {}
+    private domSanitizer: DomSanitizer,
+    private countryStateCity: CountryStateCityService
+  ) { }
 
   ngOnInit() {
     this.vehicleID = this.route.snapshot.params['vehicleID'];
@@ -257,9 +259,9 @@ export class VehicleDetailComponent implements OnInit {
     this.fetchUsersList();
     this.fetchContactsByIDs();
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObects =  data.reduce( (a: any, b: any) => {
+      this.vehicleTypeObects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
 
@@ -322,7 +324,7 @@ export class VehicleDetailComponent implements OnInit {
         this.reminders = result.Items;
         for (let i = 0; i < this.reminders.length; i++) {
           const element = this.reminders[i];
-          if(element.type == 'service') {
+          if (element.type == 'service') {
             this.serviceReminders.push(element);
           } else {
             this.renewalReminders.push(element);
@@ -336,7 +338,7 @@ export class VehicleDetailComponent implements OnInit {
       .getData(`issues/vehicle/${this.vehicleID}`)
       .subscribe((result) => {
         result.Items.map(elem => {
-          if(elem.currentStatus == 'OPEN') {
+          if (elem.currentStatus == 'OPEN') {
             this.issues.push(elem);
           }
         })
@@ -346,14 +348,14 @@ export class VehicleDetailComponent implements OnInit {
   getVehicle() {
     this.apiService
       .getData("vehicles/" + this.vehicleID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         result = result.Items[0];
 
         this.ownerOperatorName = result.ownerOperatorID;
-        if(result.inspectionFormID != '' && result.inspectionFormID != undefined) {
+        if (result.inspectionFormID != '' && result.inspectionFormID != undefined) {
           this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
-            if(result1.Items.length > 0) {
-              if(result1.Items[0].isDefaultInspectionType === undefined) {
+            if (result1.Items.length > 0) {
+              if (result1.Items[0].isDefaultInspectionType === undefined) {
                 result1.Items[0].isDefaultInspectionType = '0';
               }
               this.inspectionForms = result1.Items[0];
@@ -368,8 +370,8 @@ export class VehicleDetailComponent implements OnInit {
         this.manufacturerID = result.manufacturerID;
         this.modelID = result.modelID;
         this.plateNumber = result.plateNumber;
-        this.countryName = CountryStateCity.GetSpecificCountryNameByCode(result.countryID);
-        this.stateName = CountryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
+        this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.countryID);
+        this.stateName = await this.countryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
         this.driverID = result.driverID;
         this.teamDriverID = result.teamDriverID;
         this.serviceProgramID = result.servicePrograms;
@@ -388,7 +390,7 @@ export class VehicleDetailComponent implements OnInit {
         this.bodySubType = result.bodySubType;
         this.msrp = result.msrp;
         this.inspectionFormID = result.inspectionFormID;
-        this.iftaReporting= result.iftaReporting;
+        this.iftaReporting = result.iftaReporting;
         this.lifeCycle = {
           inServiceDate: result.lifeCycle.inServiceDate,
           inServiceOdometer: result.lifeCycle.inServiceOdometer,
@@ -415,7 +417,7 @@ export class VehicleDetailComponent implements OnInit {
           bedLengthUnit: result.specifications.bedLengthUnit,
           cargoVolume: result.specifications.cargoVolume,
           curbWeight: result.specifications.curbWeight,
-          grossVehicleWeightRating:result.specifications.grossVehicleWeightRating,
+          grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
           towingCapacity: result.specifications.towingCapacity,
           maxPayload: result.specifications.maxPayload,
           EPACity: result.specifications.EPACity,
@@ -423,15 +425,15 @@ export class VehicleDetailComponent implements OnInit {
           EPAHighway: result.specifications.EPAHighway,
           tareWeight: result.specifications.tareWeight,
         };
-        if(result.insurance.remiderEvery === 'weekly') {
-          result.insurance.remiderEvery= 'Week(s)';
-        } else if(result.insurance.remiderEvery === 'monthly') {
-          result.insurance.remiderEvery= 'Month(s)';
-        } else if(result.insurance.remiderEvery === 'yearly') {
-          result.insurance.remiderEvery= 'Year(s)';
+        if (result.insurance.remiderEvery === 'weekly') {
+          result.insurance.remiderEvery = 'Week(s)';
+        } else if (result.insurance.remiderEvery === 'monthly') {
+          result.insurance.remiderEvery = 'Month(s)';
+        } else if (result.insurance.remiderEvery === 'yearly') {
+          result.insurance.remiderEvery = 'Year(s)';
         }
         this.insurance = {
-          dateOfIssue: result.insurance.dateOfIssue, 
+          dateOfIssue: result.insurance.dateOfIssue,
           premiumAmount: result.insurance.premiumAmount,
           premiumCurrency: result.insurance.premiumCurrency,
           vendorID: result.insurance.vendorID,
@@ -569,7 +571,7 @@ export class VehicleDetailComponent implements OnInit {
           });
         }
 
-        
+
         if (
           result.loanDocs != undefined &&
           result.loanDocs.length > 0
@@ -616,7 +618,7 @@ export class VehicleDetailComponent implements OnInit {
 
   deleteDocument(value: string, name: string, index: string) {
     this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-      if(value == 'doc') {
+      if (value == 'doc') {
         this.docs = [];
         this.uploadedDocs = result.Attributes.uploadedDocs;
         this.existingDocs = result.Attributes.uploadedDocs;
@@ -627,36 +629,36 @@ export class VehicleDetailComponent implements OnInit {
           }
           this.docs.push(obj);
         })
-      } else if(value == 'loan') {
+      } else if (value == 'loan') {
         this.lDocs = [];
         console.log('loan')
-      this.uploadedDocs = result.Attributes.loanDocs;
-      this.existingDocs = result.Attributes.loanDocs;
-      result.Attributes.loanDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.lDocs.push(obj);
-      })
+        this.uploadedDocs = result.Attributes.loanDocs;
+        this.existingDocs = result.Attributes.loanDocs;
+        result.Attributes.loanDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.lDocs.push(obj);
+        })
       } else {
         this.pDocs = [];
-      this.uploadedDocs = result.Attributes.purchaseDocs;
-      this.existingDocs = result.Attributes.purchaseDocs;
-      result.Attributes.purchaseDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.pDocs.push(obj);
-      })
+        this.uploadedDocs = result.Attributes.purchaseDocs;
+        this.existingDocs = result.Attributes.purchaseDocs;
+        result.Attributes.purchaseDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.pDocs.push(obj);
+        })
       }
-      
+
     });
   }
 
   fetchProgramDetails() {
-    if(this.serviceProgramID.length > 0) {
+    if (this.serviceProgramID.length > 0) {
       let serviceProgramID = JSON.stringify(this.serviceProgramID);
       this.apiService.getData('servicePrograms/fetch/selectedPrograms?programIds=' + serviceProgramID).subscribe((result: any) => {
         this.servicePrograms = result;

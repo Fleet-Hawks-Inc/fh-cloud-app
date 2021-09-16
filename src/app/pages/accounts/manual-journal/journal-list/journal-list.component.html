@@ -71,11 +71,11 @@
                                  <td colspan="6">{{ dataMessage }}</td>
                               </tr>
                               <tr *ngFor="let data of journals; let i=index;">
-                                 <td class="font-weight-bold" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.jrNo }}</td>
-                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.referenceNo }} </td>
-                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.debitTotalAmount | number : '1.2-2' }} {{ data.currency }} </td>
-                                 <td routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.createdBy }}</td>
+                                 <td class="cursorpoint" class="font-weight-bold" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.jrNo }}</td>
+                                 <td class="cursorpoint" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
+                                 <td class="cursorpoint" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.referenceNo }} </td>
+                                 <td class="cursorpoint" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.debitTotalAmount | number : '1.2-2' }} {{ data.currency }} </td>
+                                 <td class="cursorpoint" routerLink="/accounts/manual-journal/detail/{{data.journalID}}">{{ data.createdBy }}</td>
                                  <td>
                                     <div class="dropdown dropright">
                                        <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown"

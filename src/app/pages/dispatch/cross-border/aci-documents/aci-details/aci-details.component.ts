@@ -4,7 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import { HttpClient } from '@angular/common/http';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 @Component({
   selector: 'app-aci-details',
   templateUrl: './aci-details.component.html',
@@ -47,7 +48,7 @@ export class AciDetailsComponent implements OnInit {
     },
     sealNumbers: []
   };
-  mainDriver : any  = {};
+  mainDriver: any = {};
   drivers = [];
   shipmentType: string;
   tripNumber: string;
@@ -112,7 +113,7 @@ export class AciDetailsComponent implements OnInit {
     lastName: '',
     dateOfBirth: '',
     citizenshipCountry: '',
-    fastCardNumber:'',
+    fastCardNumber: '',
     travelDocuments: [],
   };
   borderResponses = [];
@@ -134,9 +135,11 @@ export class AciDetailsComponent implements OnInit {
   canadianPortsObjects: any = {};
   subLocationObjects: any = {};
   releaseOfficeObjects: any = {};
-  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService, private router: Router, private httpClient: HttpClient) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private toastr: ToastrService,
+    private router: Router, private httpClient: HttpClient,
+    private countryStateCity: CountryStateCityService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
     this.fetchACIEntry();
     this.fetchAssetsCodeName();
@@ -144,7 +147,7 @@ export class AciDetailsComponent implements OnInit {
     this.fetchVehicleType();
     this.fetchCargoExemptionType();
     this.fetchPackagingUnits();
-    this. fetchShipmentType();
+    this.fetchShipmentType();
     this.fetchCanadianPorts();
     this.fetchSublocationList();
     this.fetchReleaseOfficeList();
@@ -152,46 +155,46 @@ export class AciDetailsComponent implements OnInit {
 
   fetchAssetsCodeName() {
     this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
-      this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
+      this.assetTypeCode = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.vehicleTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
   fetchSublocationList() {
     this.httpClient.get('assets/ACIsubLocations.json').subscribe((data: any) => {
-      this.subLocationObjects =  data.reduce( (a: any, b: any) => {
+      this.subLocationObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
 
   fetchCargoExemptionType() {
     this.httpClient.get('assets/ACIcargoExemption.json').subscribe((data: any) => {
-      this.cargoExemptionTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.cargoExemptionTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
   fetchReleaseOfficeList() {
     this.httpClient.get('assets/ACIReleaseOffice.json').subscribe((data: any) => {
-      this.releaseOfficeObjects =  data.reduce( (a: any, b: any) => {
+      this.releaseOfficeObjects = data.reduce((a: any, b: any) => {
         return a[b[`number`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
 
   fetchShipmentType() {
     this.httpClient.get('assets/jsonFiles/ACIShipmentType.json').subscribe((data: any) => {
-      this.shipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.shipmentTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   fetchDocuments() {
@@ -205,7 +208,7 @@ export class AciDetailsComponent implements OnInit {
   }
 
   fetchPackagingUnits() {
-    this.httpClient.get('assets/jsonFiles/ACIpackagingUnit.json').subscribe((data: any) =>{
+    this.httpClient.get('assets/jsonFiles/ACIpackagingUnit.json').subscribe((data: any) => {
 
       this.packagingUnitsObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
@@ -222,7 +225,7 @@ export class AciDetailsComponent implements OnInit {
   fetchACIEntry() {
     this.apiService
       .getData('eManifests/ACIdetails/' + this.manifestID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         this.manifestID = this.manifestID;
         this.data = result.data;
         this.sendId = result.sendId;
@@ -247,19 +250,19 @@ export class AciDetailsComponent implements OnInit {
             amountCurrency: result.truck.insurancePolicy.amountCurrency
           },
           licensePlate: {
-              number: result.truck.licensePlate.number,
-              stateProvince: CountryStateCity.GetStateNameFromCode(result.truck.licensePlate.stateProvince, result.truck.licensePlate.country),
-              country: CountryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlate.country)
-            },
+            number: result.truck.licensePlate.number,
+            stateProvince: await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlate.stateProvince, result.truck.licensePlate.country),
+            country: await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlate.country)
+          },
           sealNumbers: result.truck.sealNumbers,
           cargoExemptions: result.truck.cargoExemptions
-          };
+        };
         this.mainDriver = result.mainDriver;
         this.drivers = result.drivers;
         this.passengers = result.passengers;
         this.trailers = result.trailers;
         this.containers = result.containers,
-        this.shipments = result.shipments;
+          this.shipments = result.shipments;
         this.fetchLoadingStateCities(result.shipments);
         this.currentStatus = result.currentStatus;
         this.timeCreated = moment(result.timeCreated).format(`MMMM D YYYY, h:mm:ss a`);
@@ -272,10 +275,10 @@ export class AciDetailsComponent implements OnInit {
       });
   }
   fetchLoadingStateCities(shipments: any) {
-    for(let s = 0; s < shipments.length; s++) {
-      shipments.map((e: any) => {
-      e.cityOfAcceptance.stateProvince = CountryStateCity.GetStateNameFromCode(e.cityOfAcceptance.stateProvince, e.cityOfAcceptance.country);
-      e.cityOfLoading.stateProvince = CountryStateCity.GetStateNameFromCode(e.cityOfLoading.stateProvince, e.cityOfLoading.country);
+    for (let s = 0; s < shipments.length; s++) {
+      shipments.map(async (e: any) => {
+        e.cityOfAcceptance.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.cityOfAcceptance.stateProvince, e.cityOfAcceptance.country);
+        e.cityOfLoading.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.cityOfLoading.stateProvince, e.cityOfLoading.country);
       });
     }
   }
@@ -290,7 +293,7 @@ export class AciDetailsComponent implements OnInit {
     this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
-      });
+    });
   }
   sendCBSAFn() {
     this.apiService
@@ -341,7 +344,7 @@ export class AciDetailsComponent implements OnInit {
       commodities: fetchedShipmentData[0].commodities
     };
   }
-  showDriverDetails(driverID: any) {
+  async showDriverDetails(driverID: any) {
     const fetchedDriverData: any = this.drivers.filter((item: any) => item.driverID === driverID);
     this.driverData = {
       driverID: fetchedDriverData[0].driverID,
@@ -350,18 +353,18 @@ export class AciDetailsComponent implements OnInit {
       gender: fetchedDriverData[0].gender,
       lastName: fetchedDriverData[0].lastName,
       dateOfBirth: fetchedDriverData[0].dateOfBirth,
-      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(fetchedDriverData[0].citizenshipCountry),
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(fetchedDriverData[0].citizenshipCountry),
       fastCardNumber: fetchedDriverData[0].fastCardNumber,
       travelDocuments: fetchedDriverData[0].travelDocuments
     };
-    for(let d=0; d < fetchedDriverData[0].travelDocuments.length; d++) {
-      fetchedDriverData[0].travelDocuments.map((e: any) => {
-        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < fetchedDriverData[0].travelDocuments.length; d++) {
+      fetchedDriverData[0].travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
   }
-  showMainDriverDetails() {
+  async showMainDriverDetails() {
     this.driverData = {
       driverID: this.mainDriver.driverID,
       driverNumber: this.mainDriver.driverNumber,
@@ -369,18 +372,18 @@ export class AciDetailsComponent implements OnInit {
       gender: this.mainDriver.gender,
       lastName: this.mainDriver.lastName,
       dateOfBirth: this.mainDriver.dateOfBirth,
-      citizenshipCountry:  CountryStateCity.GetSpecificCountryNameByCode(this.mainDriver.citizenshipCountry),
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(this.mainDriver.citizenshipCountry),
       fastCardNumber: this.mainDriver.fastCardNumber,
       travelDocuments: this.mainDriver.travelDocuments
     };
-    for(let d=0; d < this.mainDriver.travelDocuments.length; d++) {
-      this.mainDriver.travelDocuments.map((e: any) => {
-         e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-         e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < this.mainDriver.travelDocuments.length; d++) {
+      this.mainDriver.travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
   }
-  showPassengerDetails(passengerID: any) {
+  async showPassengerDetails(passengerID: any) {
     const fetchedPassengerData: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
     this.passengerData = {
       passengerID: fetchedPassengerData[0].passengerID,
@@ -388,14 +391,14 @@ export class AciDetailsComponent implements OnInit {
       gender: fetchedPassengerData[0].gender,
       lastName: fetchedPassengerData[0].lastName,
       dateOfBirth: fetchedPassengerData[0].dateOfBirth,
-      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(fetchedPassengerData[0].citizenshipCountry),
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(fetchedPassengerData[0].citizenshipCountry),
       fastCardNumber: fetchedPassengerData[0].fastCardNumber,
       travelDocuments: fetchedPassengerData[0].travelDocuments
     };
-    for(let d=0; d < fetchedPassengerData[0].travelDocuments.length; d++) {
-      fetchedPassengerData[0].travelDocuments.map((e: any) => {
-        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < fetchedPassengerData[0].travelDocuments.length; d++) {
+      fetchedPassengerData[0].travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
   }

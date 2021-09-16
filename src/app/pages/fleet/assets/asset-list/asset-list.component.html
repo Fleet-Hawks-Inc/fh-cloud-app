@@ -3,7 +3,7 @@
    .extra {
       display: none;
    }
-</style> 
+</style>
 <section class="body">
 
   <div class="inner-wrapper">
@@ -271,15 +271,15 @@
                                     <td *ngIf="hideShow.assetName" [routerLink]="item.url">
                                        <span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span></td>
 
-                                    <td *ngIf="hideShow.vin" routerLink="/fleet/assets/detail/{{item.assetID}}">{{item.assetDetails.ownerShip !=='interchange' ? item.VIN : '-'}}</td>
-                                    <td *ngIf="hideShow.type">{{item.assetType | titlecase}}</td>
-                                    <td *ngIf="hideShow.make && item.assetDetails.manufacturer">{{item.assetDetails.manufacturer}}</td>
-                                    <td *ngIf="hideShow.make && !item.assetDetails.manufacturer">-</td>
-                                    
-                                    <td *ngIf="hideShow.plateNo">{{item.assetDetails.licencePlateNumber}}</td>
-                                    <td *ngIf="hideShow.year" >{{ item.assetDetails.ownerShip !=='interchange' ? item.assetDetails.year : '-'}}</td>
+                                    <td *ngIf="hideShow.vin"  [routerLink]="item.url">{{item.assetDetails.ownerShip !=='interchange' ? item.VIN : '-'}}</td>
+                                    <td *ngIf="hideShow.type" [routerLink]="item.url">{{item.assetType | titlecase}}</td>
+                                    <td *ngIf="hideShow.make && item.assetDetails.manufacturer" [routerLink]="item.url">{{item.assetDetails.manufacturer}}</td>
+                                    <td *ngIf="hideShow.make && !item.assetDetails.manufacturer" [routerLink]="item.url">-</td>
 
-            
+                                    <td *ngIf="hideShow.plateNo" [routerLink]="item.url">{{item.assetDetails.licencePlateNumber}}</td>
+                                    <td *ngIf="hideShow.year"  [routerLink]="item.url">{{ item.assetDetails.ownerShip !=='interchange' ? item.assetDetails.year : '-'}}</td>
+
+
                                     <td *ngIf="hideShow.model" [routerLink]="item.url" >{{item.assetDetails.model ? modelsObjects[item.assetDetails.model] : '-'}}</td>
                                     <td *ngIf="hideShow.ownership" [routerLink]="item.url" >{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
                                     <td *ngIf="hideShow.companyName" [routerLink]="item.url" >
@@ -309,7 +309,7 @@
                                  </tr>
                               </tbody>
                            </table>
-            
+
                         </div>
                         <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
                            <div class="col-6">
@@ -321,17 +321,17 @@
                            </div>
                        </div>
                      </div>
-                     
+
                   </div>
-                 
-              
+
+
                </div>
             </div>
          </div>
       </section>
 
-      
-      
+
+
    </section>
 </div>
 </section>

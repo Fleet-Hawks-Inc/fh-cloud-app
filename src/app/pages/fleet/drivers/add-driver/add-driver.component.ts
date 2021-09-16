@@ -14,7 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 import { from, Subject, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
 import { CanComponentDeactivate } from 'src/app/guards/unsaved-changes.guard';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 import { UnsavedChangesComponent } from 'src/app/unsaved-changes/unsaved-changes.component';
 import { ApiService, HereMapService, ListService } from '../../../../services';
 import { ModalService } from '../../../../services/modal.service';
@@ -26,8 +27,7 @@ declare var $: any;
   styleUrls: ["./add-driver.component.css"],
 })
 export class AddDriverComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate
-{
+  implements OnInit, OnDestroy, CanComponentDeactivate {
   @ViewChild("driverF") driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
@@ -49,7 +49,7 @@ export class AddDriverComponent
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   errors = {};
-  form;
+  // form;
   concatArrayKeys = "";
   manualAddress = false;
   nextTab: any;
@@ -76,7 +76,7 @@ export class AddDriverComponent
     driverType: "employee",
     entityType: Constants.DRIVER,
     gender: "M",
-    DOB: "",
+    DOB: null,
     abstractDocs: [],
     corporationType: null,
     vendor: null,
@@ -84,15 +84,15 @@ export class AddDriverComponent
     ownerOperator: null,
     driverStatus: null,
     userName: "",
-    firstName: "",
-    lastName: "",
-    startDate: "",
+    firstName: null,
+    lastName: null,
+    startDate: null,
     terminationDate: null,
-    contractStart: "",
+    contractStart: null,
     contractEnd: null,
-    password: "",
-    confirmPassword: "",
-    citizenship: "",
+    password: null,
+    confirmPassword: null,
+    citizenship: null,
     assignedVehicle: null,
     groupID: null,
     driverImage: "",
@@ -203,10 +203,10 @@ export class AddDriverComponent
    * Form Props
    */
   userType = "driver"; // default
-  userName = "";
+  userName = null;
   password = "";
-  firstName = "";
-  lastName = "";
+  firstName = null;
+  lastName = null;
   address = "";
   phone = "";
   email = "";
@@ -311,7 +311,8 @@ export class AddDriverComponent
     private modalServiceOwn: ModalService,
     private dateAdapter: NgbDateAdapter<string>,
     private router: Router,
-    private listService: ListService
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -348,7 +349,16 @@ export class AddDriverComponent
       day: 31,
     };
   }
-
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 150, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
   /**
    * Unsaved Changes
    */
@@ -365,7 +375,7 @@ export class AddDriverComponent
     return true;
   }
 
-  onChangeHideErrors(fieldname = "") {
+  onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
       .removeClass("error")
       .next()
@@ -441,19 +451,19 @@ export class AddDriverComponent
     });
   }
   fetchTimezones() {
-    const UStimezones = ct.getTimezonesForCountry("US");
+    const UStimezones = ct.getTimezonesForCountry(`US`);
     UStimezones.forEach((element: any) => {
       const obj: any = {
         name: element.name,
-        country: element.country,
+        country: element.countries[0],
       };
       this.finaltimezones.push(obj);
     });
-    const CAtimezones = ct.getTimezonesForCountry("CA");
+    const CAtimezones = ct.getTimezonesForCountry(`CA`);
     CAtimezones.forEach((e: any) => {
       const obj: any = {
         name: e.name,
-        country: e.country,
+        country: e.countries[0],
       };
       this.finaltimezones.push(obj);
     });
@@ -557,59 +567,60 @@ export class AddDriverComponent
     this.listService.fetchOwnerOperators();
   }
 
-  fetchCountries() {
-    this.docCountries = CountryStateCity.GetAllCountries();
+  async fetchCountries() {
+    this.docCountries = await this.countryStateCity.GetAllCountries();
   }
-  getStates(countryCode: any, index: any) {
+  async getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = "";
     this.driverData.address[index].cityName = "";
     this.driverData.address[index].states =
-      CountryStateCity.GetStatesByCountryCode([countryCode]);
+      await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getCities(stateCode: any, index: any, countryCode: any) {
+  async getCities(stateCode: any, index: any, countryCode: any) {
     this.driverData.address[index].cityName = "";
     this.driverData.address[index].cities =
-      CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
     this.driverData.address[index].countryName =
-      CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+      await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
     this.driverData.address[index].stateName =
-      CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
+      await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
   }
-  getDocStates(cntryCode: any, index: any) {
+  async getDocStates(cntryCode: any, index: any) {
     this.driverData.documentDetails[index].issuingState = "";
     this.driverData.documentDetails[index].docStates =
-      CountryStateCity.GetStatesByCountryCode([cntryCode]);
+      await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  getLicStates(cntryCode: any) {
+  async getLicStates(cntryCode: any) {
     this.driverData.licenceDetails.issuedState = null;
     this.driverData.licenceDetails.licCntryName =
-      CountryStateCity.GetSpecificCountryNameByCode(cntryCode);
-    this.licStates = CountryStateCity.GetStatesByCountryCode([cntryCode]);
+      await this.countryStateCity.GetSpecificCountryNameByCode(cntryCode);
+  
+    this.licStates = await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
 
-  getLicenseStateName() {
+  async getLicenseStateName() {
     if (
       this.driverData.licenceDetails.issuedState &&
       this.driverData.licenceDetails.issuedCountry
     ) {
       this.driverData.licenceDetails.licStateName =
-        CountryStateCity.GetStateNameFromCode(
+        await this.countryStateCity.GetStateNameFromCode(
           this.driverData.licenceDetails.issuedState,
           this.driverData.licenceDetails.issuedCountry
         );
     }
   }
 
-  fetchLicStates(issuedCountry: any) {
-    this.licStates = CountryStateCity.GetStatesByCountryCode([issuedCountry]);
+  async fetchLicStates(issuedCountry: any) {
+    this.licStates = await this.countryStateCity.GetStatesByCountryCode([issuedCountry]);
   }
-  fetchStates(countryCode: any, index: any) {
-    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async fetchStates(countryCode: any, index: any) {
+    let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     this.driverData.address[index].states = states;
   }
-  fetchCities(countryCode: any, stateCode: any, index: any) {
+  async fetchCities(countryCode: any, stateCode: any, index: any) {
     this.driverData.address[index].cities =
-      CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+      await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   editAddress(address: any) {
     for (let a = 0; a < address.length; a++) {
@@ -619,11 +630,11 @@ export class AddDriverComponent
       this.fetchCities(countryCode, stateCode, a);
     }
   }
-  fetchDocStates(docs) {
+  async fetchDocStates(docs) {
     for (let d = 0; d < docs.length; d++) {
       let countryCode = this.driverData.documentDetails[d].issuingCountry;
       this.driverData.documentDetails[d].docStates =
-        CountryStateCity.GetStatesByCountryCode([countryCode]);
+        await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     }
   }
   fetchDocuments() {
@@ -716,7 +727,7 @@ export class AddDriverComponent
     this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -733,7 +744,7 @@ export class AddDriverComponent
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -788,12 +799,12 @@ export class AddDriverComponent
     let ids = [];
     this.listService.vendorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           vendorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && element2.contactID === this.driverData.vendor) {
+        if (element2.isDeleted === 1 && element2.contactID === this.driverData.vendor) {
           this.driverData.vendor = null;
         }
       })
@@ -804,12 +815,12 @@ export class AddDriverComponent
     let ids = [];
     this.listService.ownerOperatorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           operatorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && element2.contactID === this.driverData.ownerOperator) {
+        if (element2.isDeleted === 1 && element2.contactID === this.driverData.ownerOperator) {
           this.driverData.ownerOperator = null;
         }
       })
@@ -818,16 +829,16 @@ export class AddDriverComponent
 
   async onAddDriver() {
     if (this.abstractDocs.length > 0) {
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.hideErrors();
-    this.driverData.createdDate = this.driverData.createdDate;
-    this.driverData.createdTime = this.driverData.createdTime;
-    this.driverData[`deletedUploads`] = this.deletedUploads;
-    for(let d = 0; d < this.driverData.documentDetails.length; d++){
-      const element = this.driverData.documentDetails[d];
-      delete element.docStates;
-    }
+      this.hasError = false;
+      this.hasSuccess = false;
+      this.hideErrors();
+      this.driverData.createdDate = this.driverData.createdDate;
+      this.driverData.createdTime = this.driverData.createdTime;
+      this.driverData[`deletedUploads`] = this.deletedUploads;
+      for (let d = 0; d < this.driverData.documentDetails.length; d++) {
+        const element = this.driverData.documentDetails[d];
+        delete element.docStates;
+      }
 
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
@@ -891,7 +902,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -910,7 +921,7 @@ export class AddDriverComponent
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => {},
+                next: () => { },
               });
           },
           next: (res) => {
@@ -973,7 +984,6 @@ export class AddDriverComponent
   }
 
   throwErrors() {
-    console.log('this.errors', this.errors);
     from(Object.keys(this.errors)).subscribe((v) => {
       if (
         v === "userName" ||
@@ -985,12 +995,12 @@ export class AddDriverComponent
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -1036,7 +1046,6 @@ export class AddDriverComponent
    * fetch driver data
    */
   async fetchDriverByID() {
-    console.log("in fetch");
     this.isEdit = true;
     let result = await this.apiService
       .getData(`drivers/${this.driverID}`)
@@ -1260,7 +1269,6 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      this.submitDisabled = true;
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1326,10 +1334,10 @@ export class AddDriverComponent
 
       // append other fields
       formData.append("data", JSON.stringify(this.driverData));
-
+      this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1544,12 +1552,12 @@ export class AddDriverComponent
         }
 
         for (let a = 0; a < this.carrierYards.length; a++) {
-          this.carrierYards.map((e: any) => {
+          this.carrierYards.map(async (e: any) => {
             if (e.manual) {
-              e.countryName = CountryStateCity.GetSpecificCountryNameByCode(
+              e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(
                 e.countryCode
               );
-              e.stateName = CountryStateCity.GetStateNameFromCode(
+              e.stateName = await this.countryStateCity.GetStateNameFromCode(
                 e.stateCode,
                 e.countryCode
               );
@@ -1611,68 +1619,78 @@ export class AddDriverComponent
 
   validateUserName() {
     this.hideVal();
-    this.driverData.userName = this.driverData.userName.trim();
-    this.apiService.getData(`drivers/validate/username?value=${this.driverData.userName}&type=${this.pageType}`)
-      .subscribe((result: any) => {
-        if(!result) {
-          this.errors['userName'] = 'Username already exists'; 
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('userName');
-          delete this.errors['userName'];
-        }
-        this.throwErrors();
-      });
+    if (this.driverData.userName !== '') {
+      this.driverData.userName = this.driverData.userName.trim();
+      this.apiService.getData(`drivers/validate/username?value=${this.driverData.userName}&type=${this.pageType}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`userName`] = 'Username already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('userName');
+            delete this.errors[`userName`];
+          }
+          this.throwErrors();
+        });
+    }
+
   }
 
   validateEmployeeID() {
     this.hideVal();
-    this.driverData.employeeContractorId = this.driverData.employeeContractorId.trim();
-    this.apiService.getData(`drivers/validate/employee-id?value=${this.driverData.employeeContractorId}&type=${this.pageType}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['employeeContractorId'] = 'Employee ID already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('employeeContractorId');
-          delete this.errors['employeeContractorId'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.employeeContractorId !== '') {
+      this.driverData.employeeContractorId = this.driverData.employeeContractorId.trim();
+      this.apiService.getData(`drivers/validate/employee-id?value=${this.driverData.employeeContractorId}&type=${this.pageType}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`employeeContractorId`] = 'Employee ID already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('employeeContractorId');
+            delete this.errors[`employeeContractorId`];
+          }
+          this.throwErrors();
+        });
+    }
   }
 
   validateCDL() {
     this.hideVal();
-    this.driverData.CDL_Number = this.driverData.CDL_Number.trim();
-    this.apiService.getData(`drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['CDL_Number'] = 'CDL already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('CDL_Number');
-          delete this.errors['CDL_Number'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.CDL_Number !== '') {
+      this.driverData.CDL_Number = this.driverData.CDL_Number.trim();
+      this.apiService.getData(`drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`CDL_Number`] = 'CDL already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('CDL_Number');
+            delete this.errors[`CDL_Number`];
+          }
+          this.throwErrors();
+        });
+    }
+
   }
 
   validateEmail() {
     this.hideVal();
-    this.driverData.email = this.driverData.email.trim();
-    this.apiService.getData(`drivers/validate/email?value=${this.driverData.email}&type=${this.pageType}&drv=${this.driverData.userName}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['email'] = 'Email already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('email');
-          delete this.errors['email'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.email !== '') {
+      this.driverData.email = this.driverData.email.trim();
+      this.apiService.getData(`drivers/validate/email?value=${this.driverData.email}&type=${this.pageType}&drv=${this.driverData.userName}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`email`] = 'Email already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('email');
+            delete this.errors[`email`];
+          }
+          this.throwErrors();
+        });
+    }
   }
-  
+
   hideVal() {
     this.onChangeHideErrors('employeeContractorId');
     this.onChangeHideErrors('userName');

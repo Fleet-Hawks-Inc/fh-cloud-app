@@ -1,19 +1,21 @@
-import {  Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { Router, ActivatedRoute } from '@angular/router';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter} from '@ng-bootstrap/ng-bootstrap';
+import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 declare var $: any;
 import { Location } from '@angular/common';
-import { DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ListService } from '../../../../services/list.service';
 import * as moment from 'moment';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
+
 @Component({
   selector: 'app-add-assets',
   templateUrl: './add-assets.component.html',
@@ -33,11 +35,11 @@ export class AddAssetsComponent implements OnInit {
   lDocs = [];
   assetsData = {
     isTemp: false,
-    inspectionFormID:'',
+    inspectionFormID: '',
     assetIdentification: '',
     groupID: null,
     VIN: '',
-    startDate:  moment().format('YYYY-MM-DD'),
+    startDate: moment().format('YYYY-MM-DD'),
     assetType: null,
     currentStatus: 'active',
     createdDate: '',
@@ -45,7 +47,7 @@ export class AddAssetsComponent implements OnInit {
     assetDetails: {
       year: null,
       manufacturer: null,
-      model:null,
+      model: null,
       length: 0,
       lengthUnit: null,
       height: '',
@@ -118,7 +120,7 @@ export class AddAssetsComponent implements OnInit {
   allAssets = [];
   groupData = {
     groupName: '',
-    groupType : 'assets',
+    groupType: 'assets',
     description: '',
     groupMembers: []
   };
@@ -164,11 +166,12 @@ export class AddAssetsComponent implements OnInit {
   isEdit: boolean = false;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute,
-              private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
-              private location: Location,
-              private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
-              private httpClient:HttpClient) {
-      this.selectedFileNames = new Map<any, any>();
+    private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
+    private location: Location,
+    private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+    private httpClient: HttpClient,
+    private countryStateCity: CountryStateCityService) {
+    this.selectedFileNames = new Map<any, any>();
   }
 
   get today() {
@@ -199,25 +202,25 @@ export class AddAssetsComponent implements OnInit {
     this.ownOperators = operatorList;
   }
 
-  private getValidVendors(vendorList:any[]) {
+  private getValidVendors(vendorList: any[]) {
     let ids = [];
     this.listService.vendorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           vendorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1){
-          if(element2.contactID === this.assetsData.insuranceDetails.vendor) {
+        if (element2.isDeleted === 1) {
+          if (element2.contactID === this.assetsData.insuranceDetails.vendor) {
             this.assetsData.insuranceDetails.vendor = null;
           }
 
-          if(element2.contactID === this.assetsData.purchase.purchaseVendorID) {
+          if (element2.contactID === this.assetsData.purchase.purchaseVendorID) {
             this.assetsData.purchase.purchaseVendorID = null;
           }
 
-          if(element2.contactID === this.assetsData.loan.loanVendorID) {
+          if (element2.contactID === this.assetsData.loan.loanVendorID) {
             this.assetsData.loan.loanVendorID = null;
           }
         }
@@ -225,16 +228,16 @@ export class AddAssetsComponent implements OnInit {
     })
   }
 
-  private getValidOperators(operatorsList:any[]) {
+  private getValidOperators(operatorsList: any[]) {
     let ids = [];
     this.listService.ownerOperatorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           operatorsList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && this.assetsData.assetDetails.ownerOperator === element2.contactID) {
+        if (element2.isDeleted === 1 && this.assetsData.assetDetails.ownerOperator === element2.contactID) {
           this.assetsData.assetDetails.ownerOperator = null;
         }
       })
@@ -278,23 +281,23 @@ export class AddAssetsComponent implements OnInit {
   }
   getYears() {
     var max = new Date().getFullYear(),
-    min = max - 30,
-    max = max;
+      min = max - 30,
+      max = max;
 
-    for(var i=max; i>=min; i--){
-     this.years.push(i);
+    for (var i = max; i >= min; i--) {
+      this.years.push(i);
     }
   }
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  resetModel(){
+  resetModel() {
     this.assetsData.assetDetails.model = '';
     $('#assetSelect').val('');
   }
 
-  async getInspectionForms(){
+  async getInspectionForms() {
     await this.fetchInspectionForms();
   }
   fetchInspectionForms() {
@@ -331,20 +334,20 @@ export class AddAssetsComponent implements OnInit {
     }, 1500);
   }
 
-  changeComp(value){
-    if(!this.assetID) {
-      if(value === 'interchange') {
+  changeComp(value) {
+    if (!this.assetID) {
+      if (value === 'interchange') {
         this.isRequired = false;
         this.assetsData.assetDetails.annualSafetyDate = '';
         this.assetsData.VIN = '';
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
         this.assetsData.assetDetails.licenceStateCode = null;
-      }  else {
+      } else {
         this.isRequired = true;
       }
     } else {
-      if(value === 'interchange') {
+      if (value === 'interchange') {
         this.isRequired = false;
         this.isEdit = false;
         this.assetsData.assetDetails.annualSafetyDate = '';
@@ -352,7 +355,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
         this.assetsData.assetDetails.licenceStateCode = null;
-      } else if(this.isEdit) {
+      } else if (this.isEdit) {
         this.isRequired = true;
         this.assetsData.VIN = '';
         this.assetsData.assetDetails.year = null;
@@ -362,7 +365,7 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     }
-   
+
   }
 
   /*
@@ -443,7 +446,7 @@ export class AddAssetsComponent implements OnInit {
         loanDueDate: this.assetsData.loan.loanDueDate,
         lReminder: this.assetsData.loan.lReminder,
       },
-      crossBorderDetails:{
+      crossBorderDetails: {
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
         ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
       },
@@ -461,22 +464,22 @@ export class AddAssetsComponent implements OnInit {
     const formData = new FormData();
 
     // append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
     // append docs if any
-    for(let j = 0; j < this.uploadedDocs.length; j++){
+    for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
 
     // append purchase docs if any
-    for(let k = 0; k < this.purchaseDocs.length; k++){
+    for (let k = 0; k < this.purchaseDocs.length; k++) {
       formData.append('purchaseDocs', this.purchaseDocs[k]);
     }
 
     // append loan docs if any
-    for(let l = 0; l < this.loanDocs.length; l++){
+    for (let l = 0; l < this.loanDocs.length; l++) {
       formData.append('loanDocs', this.loanDocs[l]);
     }
 
@@ -491,7 +494,7 @@ export class AddAssetsComponent implements OnInit {
           .pipe(
             map((val: any) => {
               // val.message = val.message.replace(/".*"/, 'This Field');
-               this.errors[val.context.label] = val.message;
+              this.errors[val.context.label] = val.message;
             })
           )
           .subscribe({
@@ -501,7 +504,7 @@ export class AddAssetsComponent implements OnInit {
             },
             error: () => {
               this.submitDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -517,10 +520,10 @@ export class AddAssetsComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v === 'assetIdentification' || v === 'VIN') {
+        if (v === 'assetIdentification' || v === 'VIN') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
       });
   }
@@ -543,7 +546,7 @@ export class AddAssetsComponent implements OnInit {
     this.spinner.show(); // loader init
     this.apiService
       .getData('assets/' + this.assetID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
         this.editDisabled = true;
         result = result.Items[0];
         this.assetsData[`assetID`] = this.assetID;
@@ -561,8 +564,8 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.length = result.assetDetails.length;
         this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
         this.assetsData.assetDetails.height = result.assetDetails.height,
-        this.assetsData.assetDetails.heightUnit = result.assetDetails.heightUnit,
-        this.assetsData.assetDetails.axle = result.assetDetails.axle;
+          this.assetsData.assetDetails.heightUnit = result.assetDetails.heightUnit,
+          this.assetsData.assetDetails.axle = result.assetDetails.axle;
         this.assetsData.assetDetails.GVWR = result.assetDetails.GVWR;
         this.assetsData.assetDetails.GVWR_Unit = result.assetDetails.GVWR_Unit;
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
@@ -583,7 +586,7 @@ export class AddAssetsComponent implements OnInit {
 
         this.assetsData.currentStatus = result.currentStatus;
         this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
-        this.getStates(result.assetDetails.licenceCountryCode);
+        await this.getStates(result.assetDetails.licenceCountryCode);
         this.assetsData.assetDetails.licenceStateCode = result.assetDetails.licenceStateCode;
         this.assetsData.assetDetails.licencePlateNumber = result.assetDetails.licencePlateNumber;
         this.assetsData.assetDetails.annualSafetyDate = result.assetDetails.annualSafetyDate;
@@ -599,7 +602,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
 
 
-        this.assetsData.purchase.purchaseVendorID =  result.purchase.purchaseVendorID;
+        this.assetsData.purchase.purchaseVendorID = result.purchase.purchaseVendorID;
         this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate;
         this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice;
         this.assetsData.purchase.purchasePriceCurrency = result.purchase.purchasePriceCurrency;
@@ -626,7 +629,7 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.loan.lReminder = result.loan.lReminder;
         this.assetsData.loan.gstInc = result.loan.gstInc;
         this.assetsData.loan.notes = result.loan.notes;
-          
+
         this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
         this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
@@ -634,23 +637,23 @@ export class AddAssetsComponent implements OnInit {
         this.existPDocs = result.purchaseDocs;
         this.existLDocs = result.loanDocs;
 
-        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+        if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.assetsImages = result.uploadedPhotos.map((x: any) => ({
             path: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-          this.assetsDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+          this.assetsDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
 
-        if(result.loanDocs !== undefined && result.loanDocs.length > 0) {
-          this.lDocs = result.loanDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        if (result.loanDocs !== undefined && result.loanDocs.length > 0) {
+          this.lDocs = result.loanDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
 
-        if(result.purchaseDocs !== undefined && result.purchaseDocs.length > 0) {
-          this.pDocs = result.purchaseDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+        if (result.purchaseDocs !== undefined && result.purchaseDocs.length > 0) {
+          this.pDocs = result.purchaseDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
 
         this.spinner.hide(); // loader hide
@@ -768,12 +771,12 @@ export class AddAssetsComponent implements OnInit {
       formData.append('uploadedDocs', this.uploadedDocs[j]);
     }
     // append purchase docs if any
-    for(let k = 0; k < this.purchaseDocs.length; k++){
+    for (let k = 0; k < this.purchaseDocs.length; k++) {
       formData.append('purchaseDocs', this.purchaseDocs[k]);
     }
 
     // append loan docs if any
-    for(let l = 0; l < this.loanDocs.length; l++){
+    for (let l = 0; l < this.loanDocs.length; l++) {
       formData.append('loanDocs', this.loanDocs[l]);
     }
     //append other fields
@@ -820,18 +823,18 @@ export class AddAssetsComponent implements OnInit {
       for (let i = 0; i < files.length; i++) {
         this.uploadedDocs.push(files[i])
       }
-    } else if(obj === 'purchase') {
+    } else if (obj === 'purchase') {
       for (let i = 0; i < files.length; i++) {
         this.purchaseDocs.push(files[i])
       }
-    } else if(obj === 'loan') {
+    } else if (obj === 'loan') {
       for (let i = 0; i < files.length; i++) {
         this.loanDocs.push(files[i])
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-          this.uploadedPhotos.push(files[i])
+        this.uploadedPhotos.push(files[i])
       }
     }
 
@@ -854,7 +857,7 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  getGroups(){
+  getGroups() {
     this.fetchGroups();
   }
 
@@ -903,83 +906,83 @@ export class AddAssetsComponent implements OnInit {
     });
   }
 
-  getStates(countryCode) {
+  async getStates(countryCode) {
     this.assetsData.assetDetails.licenceStateCode = null;
-    this.states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
 
-// delete uploaded images and documents
-// delete(type: string, name: string, index: any) {
-//   if (type === 'doc') {
-//     this.assetsDocs.splice(index, 1);
-//     this.existingDocs.splice(index, 1);
-//     this.deleteUploadedFile(type, name);
-//   } else {
-//     this.assetsImages.splice(index, 1);
-//     this.existingPhotos.splice(index, 1);
-//     this.deleteUploadedFile(type, name);
-//   }
-// }
-// deleteUploadedFile(type: string, name: string) { // delete from aws
-//   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
-// }
+  // delete uploaded images and documents
+  // delete(type: string, name: string, index: any) {
+  //   if (type === 'doc') {
+  //     this.assetsDocs.splice(index, 1);
+  //     this.existingDocs.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //   } else {
+  //     this.assetsImages.splice(index, 1);
+  //     this.existingPhotos.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //   }
+  // }
+  // deleteUploadedFile(type: string, name: string) { // delete from aws
+  //   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
+  // }
 
-deleteDocument(type: string, name: string) { // delete from aws
-  this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-    if (type == 'doc') {
-      this.assetsDocs = [];
-      this.uploadedDocs = result.Attributes.uploadedDocs;
-      this.existingDocs = result.Attributes.uploadedDocs;
-      result.Attributes.uploadedDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.assetsDocs.push(obj);
-      })
-    } else if (type == 'loan') {
-      this.lDocs = [];
-      this.uploadedDocs = result.Attributes.loanDocs;
-      this.existingDocs = result.Attributes.loanDocs;
-      result.Attributes.loanDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.lDocs.push(obj);
-      })
-    } else {
-      this.pDocs = [];
-      this.uploadedDocs = result.Attributes.purchaseDocs;
-      this.existingDocs = result.Attributes.purchaseDocs;
-      result.Attributes.purchaseDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
-        this.pDocs.push(obj);
-      })
-    }
-   });
-}
+  deleteDocument(type: string, name: string) { // delete from aws
+    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
+      if (type == 'doc') {
+        this.assetsDocs = [];
+        this.uploadedDocs = result.Attributes.uploadedDocs;
+        this.existingDocs = result.Attributes.uploadedDocs;
+        result.Attributes.uploadedDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.assetsDocs.push(obj);
+        })
+      } else if (type == 'loan') {
+        this.lDocs = [];
+        this.uploadedDocs = result.Attributes.loanDocs;
+        this.existingDocs = result.Attributes.loanDocs;
+        result.Attributes.loanDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.lDocs.push(obj);
+        })
+      } else {
+        this.pDocs = [];
+        this.uploadedDocs = result.Attributes.purchaseDocs;
+        this.existingDocs = result.Attributes.purchaseDocs;
+        result.Attributes.purchaseDocs.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${result.carrierID}/${x}`
+          }
+          this.pDocs.push(obj);
+        })
+      }
+    });
+  }
 
-clearAssetGroup() {
-  this.groupData = {
-    groupName: '',
-    groupType : 'assets',
-    description: '',
-    groupMembers: []
-  };
-}
+  clearAssetGroup() {
+    this.groupData = {
+      groupName: '',
+      groupType: 'assets',
+      description: '',
+      groupMembers: []
+    };
+  }
 }

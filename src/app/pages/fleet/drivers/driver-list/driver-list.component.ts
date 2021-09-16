@@ -8,8 +8,9 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import * as _ from 'lodash';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 
 @Component({
@@ -89,7 +90,8 @@ export class DriverListComponent implements OnInit {
     private hereMap: HereMapService,
     private httpClient: HttpClient,
     private spinner: NgxSpinnerService,
-    private toastr: ToastrService) { }
+    private toastr: ToastrService,
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit(): void {
     this.fetchAllDocumentsTypes();
@@ -194,7 +196,7 @@ export class DriverListComponent implements OnInit {
         this.vehiclesObject = result;
       });
   }
-  
+
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {
@@ -256,7 +258,7 @@ export class DriverListComponent implements OnInit {
         }
         result.Items.map((v) => {
           v.url = `/fleet/drivers/detail/${v.driverID}`;
-        })
+        });
         this.suggestedDrivers = [];
         this.getStartandEndVal();
         this.drivers = result[`Items`];
@@ -294,15 +296,15 @@ export class DriverListComponent implements OnInit {
   }
   fetchAddress(drivers: any) {
     for (let d = 0; d < drivers.length; d++) {
-      drivers.map((e: any) => {
-        e.citizenship = CountryStateCity.GetSpecificCountryNameByCode(e.citizenship);
+      drivers.map(async (e: any) => {
+        e.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(e.citizenship);
       });
       // for(let i=0;i<drivers[d].address.length; i++){
       if (drivers[d].address != undefined) {
-        drivers[d].address.map((a: any) => {
+        drivers[d].address.map(async (a: any) => {
           if (a.manual) {
-            a.countryName = CountryStateCity.GetSpecificCountryNameByCode(a.countryCode);
-            a.stateName = CountryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
+            a.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(a.countryCode);
+            a.stateName = await this.countryStateCity.GetStateNameFromCode(a.stateCode, a.countryCode);
           }
         });
       }

@@ -79,8 +79,7 @@ export class AddSettlementComponent implements OnInit {
             // drivers: [],
         },
         fuelIds:[],
-        fuelData:[],
-        deletedFuelIds: [],
+        fuelData:[]
     }
     dateMinLimit = { year: 1950, month: 1, day: 1 };
     date = new Date();
@@ -123,7 +122,7 @@ export class AddSettlementComponent implements OnInit {
     contactDetail;
     operatorDrivers = '';
     operatorDriversList = [];
-    searchDisabled = false;
+    searchDisabled = true;
     finalPayment = 0;
     expenses = [];
     categories =  [];
@@ -140,6 +139,10 @@ export class AddSettlementComponent implements OnInit {
     vehicleIds = [];
     fuelEnteries = [];
     selectedFuelEnteries = [];
+    deletedFuelEnteries = [];
+    prevSelectEntries = [];
+    prevSelectedIds = [];
+    
     constructor(private listService: ListService, private route: ActivatedRoute,private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
     ngOnInit() {
@@ -278,13 +281,14 @@ export class AddSettlementComponent implements OnInit {
                         element.split.map((main) => {
                             let arrr = {
                                 selected: false,
+                                splitID: main.splitID,
+                                splitName: main.splitName,
                                 trips: []
                             };
                             if(main.plan) {
                                 main.plan.map((c) => {
                                     if(this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
                                         if(main.stlStatus.includes(entStat)) {
-    
                                             if(this.settlementData.type === 'driver') {
                                                 element.tripPlanning.map((trp) => {
                                                     if(c === trp.planID) {
@@ -339,7 +343,6 @@ export class AddSettlementComponent implements OnInit {
                 let stlObj = result.Items.reduce((a: any, b: any) => {
                     return a[b['tripID']] = (b['isDeleted'] == 1) ? b['tripNo'] + '  - Deleted' : b['tripNo'], a;
                 }, {});
-
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
@@ -521,7 +524,8 @@ export class AddSettlementComponent implements OnInit {
             v.empty = 0;
             v.hours = 0;
             v.payment = 0;
-        })
+        });
+        this.vehicleIds = [];
     }
 
     selectedTrip(tripID, sub = '') {
@@ -530,9 +534,7 @@ export class AddSettlementComponent implements OnInit {
             this.subTrpStat(tripID);
         }
         this.paymentCalculation(this.trips);
-        console.log('this.settledTrips.length', this.settledTrips.length);
         if(this.settledTrips.length > 0) {
-            console.log('here in stl count');
             this.paymentCalculation(this.settledTrips);
         }
     }
@@ -547,15 +549,9 @@ export class AddSettlementComponent implements OnInit {
             const element = trips[i];
             subTripCount = 0;
             let tripSubs = 0;
-            // if(element.vehicleID) {
-            //     if (!this.vehicleIds.includes(element.vehicleID)){
-            //         this.vehicleIds.push(element.vehicleID);
-            //     }
-            // }
             if(trips[i].splitArr) {
                 tripSubs = trips[i].splitArr.length;
             }
-            console.log('element', element);
             if(element.splitArr) {
                 element.splitArr.map((v) => {
                     if(v.selected) {
@@ -563,12 +559,12 @@ export class AddSettlementComponent implements OnInit {
                     }
                 })
             }
-            console.log('subTripCount', subTripCount);
             if (element.selected && subTripCount == 0) {
                 if (!this.settlementData.tripIds.includes(element.tripID)) {
                     this.settlementData.tripIds.push(element.tripID);
                     let obj = {
                         id: element.tripID,
+                        splitIDs: [],
                         plan: [],
                     }
                     this.settlementData.trpData.push(obj);
@@ -582,6 +578,7 @@ export class AddSettlementComponent implements OnInit {
                         this.settlementData.tripIds.push(element.tripID);
                         let obj = {
                             id: element.tripID,
+                            splitIDs: [],
                             plan: [],
                         }
                         this.settlementData.trpData.push(obj);
@@ -590,8 +587,6 @@ export class AddSettlementComponent implements OnInit {
                     this.subTripPlanCalculation(element, element.tripID);
                 }
             }
-
-            console.log('this.vehicleIds', this.vehicleIds);
         }
 
         await this.fetchFuelExpenses();
@@ -602,12 +597,9 @@ export class AddSettlementComponent implements OnInit {
             for (let t = 0; t < element.tripPlanning.length; t++) {
                 const plan = element.tripPlanning[t];
                 this.driverCarrMilesCal(plan);
-
-                if(plan.vehicleID) {
-                    if (!this.vehicleIds.includes(plan.vehicleID)){
-                        this.vehicleIds.push(plan.vehicleID);
-                    }
-                }
+    
+                //  to fetch fuel enteries acc. to vehicle and asset
+                this.assignFuelVehicleIDs(plan);
             }
             this.driverCarrPaymentCal();
             this.calculateFinalTotal();
@@ -617,11 +609,8 @@ export class AddSettlementComponent implements OnInit {
                     if (plan.type === 'Delivery') {
                         this.ownDelCouunt += 1;
                     }
-                    if(plan.vehicleID) {
-                        if (!this.vehicleIds.includes(plan.vehicleID)){
-                            this.vehicleIds.push(plan.vehicleID);
-                        }
-                    }
+                    //  to fetch fuel enteries acc. to vehicle and asset
+                    this.assignFuelVehicleIDs(plan);
                 }
             })
             for (let index = 0; index < this.settlementData.miles.drivers.length; index++) {
@@ -701,7 +690,6 @@ export class AddSettlementComponent implements OnInit {
     }
 
     driverCarrMilesCal(plan) {
-        console.log('plannn',plan);
         this.settlementData.miles.tripsTotal += Number(plan.miles);
 
         if (plan.coDriverID) {
@@ -755,7 +743,6 @@ export class AddSettlementComponent implements OnInit {
     }
 
     driverCarrPaymentCal() {
-        console.log('this.settlementData.paymentInfo', this.settlementData.paymentInfo);
         if (this.settlementData.type === 'driver') {
             // driver_hours will be from ELD
             this.settlementData.miles.driverHours = 0;
@@ -793,16 +780,22 @@ export class AddSettlementComponent implements OnInit {
         for (let index = 0; index < tripData.splitArr.length; index++) {
             const sub = tripData.splitArr[index];
             if(sub.selected) {
+                // store the selected sub trip ID
+                this.settlementData.trpData.map((k) => {
+                    if(k.id === tripID) {
+                        if(!k.splitIDs.includes(sub.splitID)) {
+                            k.splitIDs.push(sub.splitID);    
+                        }
+                    }
+                })
                 if (this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
                     for (let j = 0; j < sub.trips.length; j++) {
                         const plan = sub.trips[j];
                         if(!planIds.includes(plan.planID)) {
                             planIds.push(plan.planID);
-                            if(plan.vehicleID) {
-                                if (!this.vehicleIds.includes(plan.vehicleID)){
-                                    this.vehicleIds.push(plan.vehicleID);
-                                }
-                            }
+                            //  to fetch fuel enteries acc. to vehicle and asset
+                            this.assignFuelVehicleIDs(plan);
+                            
                             this.settlementData.trpData.map((k) => {
                                 if(k.id === tripID) {
                                     k.plan.push(plan.planID)
@@ -822,11 +815,9 @@ export class AddSettlementComponent implements OnInit {
                                         k.plan.push(plan.planID)
                                     }
                                 })
-                                if(plan.vehicleID) {
-                                    if (!this.vehicleIds.includes(plan.vehicleID)){
-                                        this.vehicleIds.push(plan.vehicleID);
-                                    }
-                                }
+                                //  to fetch fuel enteries acc. to vehicle and asset
+                                this.assignFuelVehicleIDs(plan);
+                                
                             }
                             if (plan.type === 'Delivery') {
                                 this.ownDelCouunt += 1;
@@ -915,7 +906,6 @@ export class AddSettlementComponent implements OnInit {
             })
         }
         this.submitDisabled = true;
-        console.log('this.settlementData', this.settlementData);
         this.accountService.postData('settlement', this.settlementData).subscribe({
             complete: () => { },
             error: (err: any) => {
@@ -942,7 +932,7 @@ export class AddSettlementComponent implements OnInit {
                 this.submitDisabled = false;
                 this.response = res;
                 this.toaster.success('Settlement added successfully.');
-                // this.cancel();
+                this.cancel();
             },
         });
     }
@@ -990,9 +980,6 @@ export class AddSettlementComponent implements OnInit {
 
                 if(this.settlementData.type === 'driver' || this.settlementData.type === 'carrier') {
                     this.fetchTrips();
-                    // if(this.settlementData.type === 'driver') {
-                    //     this.fetchDriverDetail(this.settlementData.entityId);
-                    // }
                 } else if (this.settlementData.type === 'owner_operator') {
                     this.fetchOwnerOperatorDrivers(this.settlementData.entityId);
                 }
@@ -1002,9 +989,7 @@ export class AddSettlementComponent implements OnInit {
     fetchSettledTrips(tripIds) {
         this.apiService.getData(`trips/driver/settled?entities=${tripIds}`)
             .subscribe((result: any) => {
-
                 this.settledTrips = result;
-                console.log('this.settledTrips', this.settledTrips);
                 for (let i = 0; i < this.settledTrips.length; i++) {
                     const element = this.settledTrips[i];
                     element.pickupLocation = '';
@@ -1044,6 +1029,12 @@ export class AddSettlementComponent implements OnInit {
                                 }
                             }
                         }
+                        
+                        if(this.settlementData.type  === 'driver' || this.settlementData.type === 'owner_operator') {
+                            //  to fetch fuel enteries acc. to vehicle and asset
+                            this.assignFuelVehicleIDs(plan);
+                        }
+                        
 
                         if (plan.carrierID !== '') {
                             if (!element.carrID.includes(plan.carrierID)) {
@@ -1055,30 +1046,47 @@ export class AddSettlementComponent implements OnInit {
                     if(this.settlementData.trpData) {
                         for (let k = 0; k < this.settlementData.trpData.length; k++) {
                             const element2 = this.settlementData.trpData[k];
-                            let arrr = {
-                                selected: true,
-                                trips: []
-                            };
-
-                            element.tripPlanning.map((l) => {
-                                if(element2.plan.includes(l.planID)) {
-                                    l.planLoc =  this.setTripLoc(l);
-                                    arrr.trips.push(l);
+                            if(element2.id === element.tripID) {
+                                for (let sp = 0; sp < element2.splitIDs.length; sp++) {
+                                    const splitID = element2.splitIDs[sp];
+                                    let arrr = {
+                                        selected: true,
+                                        trips: {}
+                                    };
+                                    element.split.map((mainSp) => {
+                                        if(mainSp.splitID === splitID) {
+                                            let obj = {
+                                                splitID: mainSp.splitID,
+                                                stlName: mainSp.splitName,
+                                                plan: mainSp.plan
+                                            }
+                                            arrr.trips = obj;
+                                        }
+                                    })
+                                    element.splitArr.push(arrr);
                                 }
-                            })
-
-                            if(arrr.trips.length > 0) {
-                                element.splitArr.push(arrr);
                             }
                         }
                     }
+                    
+                    element.splitArr.map((spltArr) => {
+                        spltArr.trips.sub = [];
+                        spltArr.trips.plan.map((planID) => {
+                            element.tripPlanning.map((plan) => {
+                                if(plan.planID === planID) {
+                                    plan.planLoc = this.setTripLoc(plan);
+                                    spltArr.trips.sub.push(plan);
+                                }
+                            })
+                        })
+                    })
                 }
-                // console.log('this.settledTrips', this.settledTrips);
 
                 let stlObj = result.reduce((a: any, b: any) => {
                     return a[b['tripID']] = (b['isDeleted'] == 1) ? b['tripNo'] + '  - Deleted' : b['tripNo'], a;
                 }, {});
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
+                this.fetchFuelExpenses();
             })
     }
 
@@ -1122,7 +1130,6 @@ export class AddSettlementComponent implements OnInit {
     }
 
     remStldTrip(tripID, index) {
-        console.log('this.settlementData', this.settlementData);
         if (confirm('Are you sure you want to remove the selected trip?') === true) {
             //  Function to remove specific trip
             let delTripIndex = this.settlementData.tripIds.indexOf(tripID);
@@ -1155,7 +1162,6 @@ export class AddSettlementComponent implements OnInit {
             this.calculateDedTotal();
             this.selectedTrip(tripID);
             this.paymentCalculation(this.settledTrips);
-            console.log('this.settlementData', this.settlementData);
             this.accountService.putData(`settlement/un-settle/trip/${this.settlementID}?entity=${tripID}`, this.settlementData).subscribe({
                 complete: () => { },
                 error: (err: any) => {
@@ -1201,7 +1207,7 @@ export class AddSettlementComponent implements OnInit {
             })
         }
         this.settlementData.pendingPayment = this.settlementData.finalTotal;
-
+        this.settlementData['deletedFuelEnteries'] = this.deletedFuelEnteries;
         this.accountService.putData(`settlement/update/${this.settlementID}`, this.settlementData).subscribe({
             complete: () => { },
             error: (err: any) => {
@@ -1481,15 +1487,19 @@ export class AddSettlementComponent implements OnInit {
     }
 
     async fetchFuelExpenses() {
-        let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
-        let result = await this.apiService.getData(`fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`).toPromise();
-        this.fuelEnteries = result;
-        this.fuelEnteries.map((elem) => {
-            elem.add = false;
-            elem.deduction = false;
-            elem.addDisabled = false;
-            elem.subDisabled = false;
-        });
+        if(this.vehicleIds.length > 0 && (this.settlementData.type === 'driver' || this.settlementData.type === 'owner_operator')) {
+            let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
+            let result = await this.apiService.getData(`fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`).toPromise();
+            this.fuelEnteries = result;
+            this.fuelEnteries.map((elem) => {
+                elem.add = false;
+                elem.deduction = false;
+                elem.addDisabled = false;
+                elem.subDisabled = false;
+            });
+        } else {
+            this.fuelEnteries = [];
+        }
     }
 
     selectedFuelEntry() {
@@ -1497,6 +1507,7 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.fuelDed = 0;
         this.settlementData.fuelIds = [];
         this.settlementData.fuelData = [];
+        
         for(let i=0; i<this.fuelEnteries.length; i++) {
             const element = this.fuelEnteries[i];
             if(element.add) {
@@ -1531,37 +1542,90 @@ export class AddSettlementComponent implements OnInit {
                 element.addDisabled = false;
             }
         }
+        if(this.settlementID) {
+            this.preFuelEntriesTotal();
+        }
         this.calculateFinalTotal();
     }
 
     async fetchSelectedFuelExpenses() {
-        let fuelIDs = encodeURIComponent(JSON.stringify(this.settlementData.fuelIds));
-        let result = await this.apiService.getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`).toPromise();
-        console.log('fetchd', result);
-        this.selectedFuelEnteries = result;
+        if(this.settlementData.fuelIds.length > 0) {
+            let fuelIDs = encodeURIComponent(JSON.stringify(this.settlementData.fuelIds));
+            let result = await this.apiService.getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`).toPromise();
+            result.map((k) => {
+                this.settlementData.fuelData.map((v) => {
+                    if(v.fuelID === k.fuelID) {
+                        k.action = (v.action === 'add') ? 'Added' : 'Deducted';
+                    }
+                });
+            })
+            this.selectedFuelEnteries = result;   
+        }
     }
 
     delSelectedFuel(fuelID, index) {
-        // if(!this.settlementData.deletedFuelIds.includes(fuelID)) {
-            // this.settlementData.deletedFuelIds.push(fuelID);
+        this.prevSelectEntries = [];
+        if(!this.deletedFuelEnteries.includes(fuelID)) {
+            this.deletedFuelEnteries.push(fuelID);
             let ind = this.settlementData.fuelIds.indexOf(fuelID);
             this.settlementData.fuelIds.splice(ind, 1);
             this.settlementData.fuelAdd = 0;
             this.settlementData.fuelDed = 0;
+            
             this.settlementData.fuelData.map((v) => {
                 if(v.fuelID === fuelID) {
                     let ind = this.settlementData.fuelData.indexOf(v);
                     this.settlementData.fuelData.splice(ind, 1);
                 }
-                if(v.action === 'add') {
-                    this.settlementData.fuelAdd += Number(v.amount);
-                } else if (v.action === 'sub') {
-                    this.settlementData.fuelDed += Number(v.amount);
+            });
+            this.prevSelectEntries = this.settlementData.fuelData;
+            this.prevSelectedIds = this.settlementData.fuelIds;
+            this.settlementData.fuelData = [];
+            this.preFuelEntriesTotal();
+            this.fuelEnteries.push(this.selectedFuelEnteries[index]);
+            this.selectedFuelEnteries.splice(index, 1);
+        }
+        this.calculateFinalTotal();
+    }
+    
+    preFuelEntriesTotal () {
+        this.prevSelectEntries.map((v) => {
+            if(v.action === 'add') {
+                this.settlementData.fuelAdd += Number(v.amount);
+            } else if (v.action === 'sub') {
+                this.settlementData.fuelDed += Number(v.amount);
+            }
+        });
+        this.prevSelectEntries.map((v) => {
+            this.settlementData.fuelData.push(v);
+        });
+        this.prevSelectedIds.map((v) => {
+            if(!this.settlementData.fuelIds.includes(v)){
+                this.settlementData.fuelIds.push(v);    
+            }
+        });
+    }
+    
+    assignFuelVehicleIDs (plan) {
+        if(plan.vehicleID) {
+            if (!this.vehicleIds.includes(plan.vehicleID)){
+                this.vehicleIds.push(plan.vehicleID);
+            }
+        }
+        if(plan.assetID.length > 0) {
+            plan.assetID.map((ast) => {
+                if (!this.vehicleIds.includes(ast)){
+                    this.vehicleIds.push(ast);
                 }
             });
-            this.selectedFuelEnteries.splice(index, 1);
-        // }
-            // this.selectedFuelEntry(); check this
-        console.log('this.settlementData', this.settlementData);
+        }
+    }
+    
+    checkSearchDisable () {
+        if(this.settlementData.type !== null && this.settlementData.entityId !== null && this.settlementData.fromDate !== null && this.settlementData.toDate !== null) {
+            this.searchDisabled = false;    
+        } else {
+            this.searchDisabled = true;
+        }
     }
 }

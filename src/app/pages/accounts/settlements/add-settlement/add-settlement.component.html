@@ -27,7 +27,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
                                                         For <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.type" name="SettlementType"
-                                                        placeholder="Select Settlement For" [disabled]="editDisabled" (change)="resetFormValues()" #stlmntFor="ngModel" required>
+                                                        placeholder="Select Settlement For" [disabled]="editDisabled" (change)="resetFormValues(); checkSearchDisable();" #stlmntFor="ngModel" required>
                                                         <ng-option value="driver">Driver</ng-option>
                                                         <ng-option value="carrier">Carrier</ng-option>
                                                         <ng-option value="owner_operator">Owner Operator</ng-option>
@@ -43,19 +43,6 @@
                                         </div>
                                         <div class="col-lg-5">
                                             <div class="row">
-                                                <!-- <div class="col-lg-5">
-                                                    <label
-                                                        class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input type="text" class="form-control" name="setNo"
-                                                        [(ngModel)]="settlementData.setNo"
-                                                        placeholder="Enter Settlement#" #stlmntNo="ngModel" required>
-
-                                                    <div *ngIf="stlmntNo.invalid && (stlmntNo.dirty || stlmntNo.touched)" class="text-danger">
-                                                        <div *ngIf="stlmntNo.errors.required">
-                                                            Settlement# is required.
-                                                        </div>
-                                                    </div>
-                                                </div> -->
                                                 <div class="col-lg-10">
                                                     <label
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Settlement
@@ -83,7 +70,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Driver<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event); resetAlldata();" #driverID="ngModel" required [disabled]="editDisabled">
+                                                        placeholder="Select Driver" (change)="fetchDriverDetail($event); resetAlldata(); checkSearchDisable();" #driverID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of drivers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -103,7 +90,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Carrier<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Carrier" (change)="fetchCarrierDetails($event); resetAlldata();" #carrierID="ngModel" required [disabled]="editDisabled">
+                                                        placeholder="Select Carrier" (change)="fetchCarrierDetails($event); resetAlldata(); checkSearchDisable();" #carrierID="ngModel" required [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of carriers | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -123,7 +110,7 @@
                                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
                                                         Owner Operator<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                                     <ng-select [(ngModel)]="settlementData.entityId" name="type"
-                                                        placeholder="Select Owner Operator" #ownerID="ngModel" required (change)="fetchCarrierDetails($event); resetAlldata();" [disabled]="editDisabled">
+                                                        placeholder="Select Owner Operator" #ownerID="ngModel" required (change)="fetchCarrierDetails($event); resetAlldata(); checkSearchDisable();" [disabled]="editDisabled">
                                                         <ng-option value="{{ data.key }}"
                                                             *ngFor="let data of ownerOperators | keyvalue">{{ data.value }}
                                                         </ng-option>
@@ -141,15 +128,15 @@
                                             <label class="control-label font-weight-bold pt-2">From Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
-                                                #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                #fromDate="ngbDatepicker" class="form-control" autocomplete="off" (dateSelect)="checkSearchDisable();"
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly>
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
                                             <label class="control-label font-weight-bold pt-2">To Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
-                                                #toDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                                #toDate="ngbDatepicker" class="form-control" autocomplete="off" (dateSelect)="checkSearchDisable();"
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly>
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
                                             <button class="btn btn-success mar-top-37" (click)="searchFnc()" [disabled]="searchDisabled">Search</button>
@@ -238,10 +225,10 @@
                                                             <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
                                                                 <tr>
                                                                     <td>
-                                                                        
+                                                                        {{ trp.tripNo }} ({{ splt.trips.stlName }})
                                                                     </td>
                                                                     <td colspan="10">
-                                                                        <div *ngFor="let spltLine of splt.trips">
+                                                                        <div *ngFor="let spltLine of splt.trips.sub">
                                                                             <table class="table">
                                                                                 <tbody>
                                                                                     <tr>
@@ -367,8 +354,8 @@
                                                             <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
                                                                 <tr>
                                                                     <td colspan="2">
-                                                                        <span class="mt-1"><input type="checkbox" (change)="selSubTrip(t, sp);  fetchExpenses(trp.tripID, t)" id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}"></span>
-                                                                        {{ trp.tripNo }} ({{sp+1}}) 
+                                                                        <span class="mt-1"><input type="checkbox" (change)="selSubTrip(t, sp);  fetchExpenses(trp.tripID, t); " id="splCheck{{sp}}" [(ngModel)]="splt.selected" name="subchk{{sp}}"></span>
+                                                                        {{ trp.tripNo }} ({{ (splt.splitName) ? splt.splitName : sp+1}}) 
                                                                     </td>
                                                                     <td colspan="9">
                                                                         <div *ngFor="let spltLine of splt.trips">
@@ -682,7 +669,7 @@
                                             </div>
                                         </div>
 
-                                        <!-- fuel expense -->
+                                        <!-- settled fuel expense -->
                                         <div class="row pt-2">
                                             <div class="col-lg-10 offset-lg-1">
                                                 <h4 class="font-weight-bold">Settled Fuel Expenses</h4>
@@ -698,11 +685,12 @@
                                                             <th>Fuel Card No.</th>
                                                             <th>Quantity</th>
                                                             <th>Amount</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr class="text-center" *ngIf="selectedFuelEnteries.length === 0">
-                                                            <td colspan="6">{{ noRecordMsg }}</td>
+                                                            <td colspan="8">{{ noRecordMsg }}</td>
                                                         </tr>
                                                         <tr *ngFor="let data of selectedFuelEnteries; let fe=index;">
                                                             <td>
@@ -716,6 +704,7 @@
                                                             <td>{{ data.fuelCardNumber}}</td>
                                                             <td>{{ data.quantity }} {{ data.unitOfMeasure }}</td>
                                                             <td>{{ data.subTotal }} {{ data.billingCurrency }}</td>
+                                                            <td>{{ data.action }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

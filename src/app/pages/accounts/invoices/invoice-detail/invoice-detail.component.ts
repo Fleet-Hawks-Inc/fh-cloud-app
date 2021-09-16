@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AccountService, ApiService } from '../../../../services';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import * as html2pdf from 'html2pdf.js';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 @Component({
   selector: 'app-invoice-detail',
   templateUrl: './invoice-detail.component.html',
@@ -65,7 +66,7 @@ export class InvoiceDetailComponent implements OnInit {
     carrierName: '',
     phone: '',
     email: ''
-};
+  };
   carrierAddress = {
     address: '',
     userLocation: '',
@@ -76,7 +77,8 @@ export class InvoiceDetailComponent implements OnInit {
     zipCode: '',
 
   };
-  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
+  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
@@ -91,24 +93,24 @@ export class InvoiceDetailComponent implements OnInit {
   }
   fetchCarrier() {
     this.apiService.getData(`carriers/${this.invoice[`pk`]}`)
-        .subscribe((result: any) => {
-          this.carrier = result.Items[0];
-          this.fetchAddress(this.carrier[`addressDetails`]);
-        });
+      .subscribe((result: any) => {
+        this.carrier = result.Items[0];
+        this.fetchAddress(this.carrier[`addressDetails`]);
+      });
   }
 
-  fetchAddress(address: any) {
-   for (const adr of address) {
-     if (adr.addressType === 'yard' && adr.defaultYard === true) {
+  async fetchAddress(address: any) {
+    for (const adr of address) {
+      if (adr.addressType === 'yard' && adr.defaultYard === true) {
         if (adr.manual) {
-           adr.countryName =  CountryStateCity.GetSpecificCountryNameByCode(adr.countryCode);
-           adr.stateName = CountryStateCity.GetStateNameFromCode(adr.stateCode, adr.countryCode);
+          adr.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(adr.countryCode);
+          adr.stateName = await this.countryStateCity.GetStateNameFromCode(adr.stateCode, adr.countryCode);
         }
         this.carrierAddress = adr;
         this.showDetails = true;
         break;
-     }
-   }
+      }
+    }
   }
   fetchInvoice() {
     this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
@@ -157,7 +159,7 @@ export class InvoiceDetailComponent implements OnInit {
   fetchCustomerByID() {
     this.apiService.getData(`contacts/detail/${this.invoice.customerID}`).subscribe((result: any) => {
 
-      if(result.Items.length > 0) {
+      if (result.Items.length > 0) {
         result = result.Items[0];
         this.customerName = `${result.companyName}`;
         let newCusAddress = result.address.filter((elem: any) => {
@@ -188,11 +190,11 @@ export class InvoiceDetailComponent implements OnInit {
     const data = document.getElementById('print_wrap');
 
     html2pdf(data, {
-      margin:       0,
-      filename:     `invoice-${this.invoice.invNo}.pdf`,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      margin: 0,
+      filename: `invoice-${this.invoice.invNo}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
     });
 
