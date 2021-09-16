@@ -5,8 +5,8 @@ import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HttpClient } from '@angular/common/http';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
-import { unescapeLeadingUnderscores } from 'typescript';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 @Component({
   selector: 'app-ace-details',
   templateUrl: './ace-details.component.html',
@@ -41,9 +41,9 @@ export class AceDetailsComponent implements OnInit {
     ],
     sealNumbers: [],
     IIT: ''
-    };
+  };
 
-  mainDriver : any  = {};
+  mainDriver: any = {};
   drivers = [];
   createdDate: '';
   createdTime: '';
@@ -60,7 +60,7 @@ export class AceDetailsComponent implements OnInit {
     type: '',
     shipperName: '',
     consigneeName: '',
-    broker: {filerCode: '', portLocation: ''},
+    broker: { filerCode: '', portLocation: '' },
     provinceOfLoading: '',
     goodsAstrayDateOfExit: '',
     commodities: [
@@ -95,14 +95,14 @@ export class AceDetailsComponent implements OnInit {
     thirdParties: [],
     inBondDetails: {
 
-        type: '',
-        paperInBondNumber: '',
-        usDestination: '',
-        foreignDestination: '',
-        onwardCarrierScac: '',
-        irsNumber: '',
-        estimatedDepartureDate: '',
-        fda: false,
+      type: '',
+      paperInBondNumber: '',
+      usDestination: '',
+      foreignDestination: '',
+      onwardCarrierScac: '',
+      irsNumber: '',
+      estimatedDepartureDate: '',
+      fda: false,
 
     }
   };
@@ -135,19 +135,20 @@ export class AceDetailsComponent implements OnInit {
   };
   documentTypeList: any = [];
   documentsTypesObects: any = {};
-  packagingUnitsObects: any  = {};
+  packagingUnitsObects: any = {};
   packagingList: any = {};
-  thirdPartyTypesList: any  = {};
-  thirdPartyTypesObects: any  = {};
+  thirdPartyTypesList: any = {};
+  thirdPartyTypesObects: any = {};
   vehicleTypeObjects: any = {};
   shipmentTypeObjects: any = {};
   inBondTypeObects: any = {};
   foreignDestinationListObjects: any = {};
   USportsListObjects: any = {};
-  brokerCodeObject: any  = {};
+  brokerCodeObject: any = {};
   sendBorderConnectOption = false;
-  constructor(private apiService: ApiService, private route: ActivatedRoute,private spinner: NgxSpinnerService,
-              private httpClient: HttpClient, private toastr: ToastrService, private router: Router) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private spinner: NgxSpinnerService,
+    private httpClient: HttpClient, private toastr: ToastrService, private router: Router,
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.manifestID = this.route.snapshot.params[`manifestID`];
@@ -163,32 +164,32 @@ export class AceDetailsComponent implements OnInit {
     this.fetchUSportsList();
     this.fetchBrokerList();
   }
-  fetchforeignDestinationList(){
+  fetchforeignDestinationList() {
     this.httpClient.get('assets/jsonFiles/ACEforeignPorts.json').subscribe((data: any) => {
-      this.foreignDestinationListObjects =  data.reduce( (a: any, b: any) => {
+      this.foreignDestinationListObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`portOfEntry`], a;
-    }, {});
+      }, {});
     });
   }
 
-  fetchUSportsList(){
+  fetchUSportsList() {
     this.httpClient.get('assets/USports.json').subscribe((data: any) => {
-      this.USportsListObjects =  data.reduce( (a: any, b: any) => {
+      this.USportsListObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`portOfEntry`], a;
-    }, {});
+      }, {});
     });
   }
 
 
   fetchAssetsCodeName() {
-      this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
-      this.assetTypeCode  =  data.reduce( (a: any, b: any) => {
+    this.httpClient.get('assets/jsonFiles/trailers.json').subscribe((data: any) => {
+      this.assetTypeCode = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   fetchDocuments() {
-    this.httpClient.get('assets/travelDocumentType.json').subscribe(data =>{
+    this.httpClient.get('assets/travelDocumentType.json').subscribe(data => {
       this.documentTypeList = data;
 
       this.documentsTypesObects = this.documentTypeList.reduce((a: any, b: any) => {
@@ -197,7 +198,7 @@ export class AceDetailsComponent implements OnInit {
     });
   }
   fetchThirdPartyTypes() {
-    this.httpClient.get('assets/jsonFiles/ACEthirdPartyTypes.json').subscribe(data =>{
+    this.httpClient.get('assets/jsonFiles/ACEthirdPartyTypes.json').subscribe(data => {
       this.thirdPartyTypesList = data;
 
       this.thirdPartyTypesObects = this.thirdPartyTypesList.reduce((a: any, b: any) => {
@@ -206,7 +207,7 @@ export class AceDetailsComponent implements OnInit {
     });
   }
   fetchPackagingUnits() {
-    this.httpClient.get('assets/packagingUnit.json').subscribe(data =>{
+    this.httpClient.get('assets/packagingUnit.json').subscribe(data => {
       this.packagingList = data;
       this.packagingUnitsObects = this.packagingList.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
@@ -222,31 +223,31 @@ export class AceDetailsComponent implements OnInit {
   }
   fetchVehicleType() {
     this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.vehicleTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`name`], a;
-    }, {});
+      }, {});
     });
   }
 
   fetchInBondType() {
     this.httpClient.get('assets/jsonFiles/ACEinbond-types.json').subscribe((data: any) => {
-      this.inBondTypeObects =  data.reduce( (a: any, b: any) => {
+      this.inBondTypeObects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`longDescription`], a;
-    }, {});
+      }, {});
     });
   }
   fetchShipmentType() {
     this.httpClient.get('assets/ACEShipmentType.json').subscribe((data: any) => {
-      this.shipmentTypeObjects =  data.reduce( (a: any, b: any) => {
+      this.shipmentTypeObjects = data.reduce((a: any, b: any) => {
         return a[b[`code`]] = b[`description`], a;
-    }, {});
+      }, {});
     });
   }
   fetchACEEntry() {
     this.spinner.show(); // loader init
     this.apiService
       .getData('eManifests/ACEdetails/' + this.manifestID)
-      .subscribe((result: any) => {
+      .subscribe(async (result: any) => {
 
         this.estimatedArrivalDateTime = result.estimatedArrivalDateTime;
         this.usPortOfArrival = result.usPortOfArrival;
@@ -267,13 +268,13 @@ export class AceDetailsComponent implements OnInit {
           licensePlates: [
             {
               number: result.truck.licensePlates[0].number,
-              stateProvince: CountryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
-              country: CountryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
+              stateProvince: await this.countryStateCity.GetStateNameFromCode(result.truck.licensePlates[0].stateProvince, result.truck.licensePlates[0].country),
+              country: await this.countryStateCity.GetSpecificCountryNameByCode(result.truck.licensePlates[0].country)
             }
           ],
           sealNumbers: result.truck.sealNumbers,
           IIT: result.truck.IIT
-          };
+        };
         this.trailers = result.trailers;
         this.getTrailerLicState(result.trailers);
         this.mainDriver = result.mainDriver;
@@ -300,17 +301,17 @@ export class AceDetailsComponent implements OnInit {
     this.apiService.postData('eManifests/setStatus', record).subscribe((result: any) => {
       this.toastr.success('Status Updated Successfully!');
       this.currentStatus = val;
-      });
+    });
   }
   getTrailerLicState(trailers: any) {
-    if(trailers !== undefined || trailers !== '') {
-      for(let t=0; t < trailers.length; t++) {
-        trailers.map((e: any) => {
-          let countryCode =  e.licensePlates[0].country;
-          e.licensePlates[0].stateProvince = CountryStateCity.GetStateNameFromCode(e.licensePlates[0].stateProvince, countryCode);
-          e.licensePlates[0].country = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
+    if (trailers !== undefined || trailers !== '') {
+      for (let t = 0; t < trailers.length; t++) {
+        trailers.map(async (e: any) => {
+          let countryCode = e.licensePlates[0].country;
+          e.licensePlates[0].stateProvince = await this.countryStateCity.GetStateNameFromCode(e.licensePlates[0].stateProvince, countryCode);
+          e.licensePlates[0].country = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
         });
-     }
+      }
     }
 
   }
@@ -328,12 +329,12 @@ export class AceDetailsComponent implements OnInit {
         // }
       });
   }
-  showShipmentDetails(shipmentID) {
+  async showShipmentDetails(shipmentID) {
     const shipmentDataFetched = this.shipments.filter((item: any) => item.shipmentID === shipmentID);
     this.shipmentData = {
       shipmentControlNumber: shipmentDataFetched[0].shipmentControlNumber,
       type: shipmentDataFetched[0].type,
-      provinceOfLoading: CountryStateCity.GetStateNameFromCode(shipmentDataFetched[0].provinceOfLoading, 'CA'),
+      provinceOfLoading: await this.countryStateCity.GetStateNameFromCode(shipmentDataFetched[0].provinceOfLoading, 'CA'),
       goodsAstrayDateOfExit: shipmentDataFetched[0].goodsAstrayDateOfExit,
       shipperName: shipmentDataFetched[0].shipper.name,
       consigneeName: shipmentDataFetched[0].consignee.name,
@@ -345,11 +346,11 @@ export class AceDetailsComponent implements OnInit {
     for (let c = 0; c < this.shipmentData.commodities.length; c++) {
       if (shipmentDataFetched[0].commodities[c].hazmatDetails === undefined) {
         this.shipmentData.commodities[c][`hazmatDetails`] = {
-        unCode: '',
-        emergencyContactName: '',
-        contactPhone: '',
-        contactEmail: ''
-      };
+          unCode: '',
+          emergencyContactName: '',
+          contactPhone: '',
+          contactEmail: ''
+        };
       }
     }
     if (shipmentDataFetched[0][`inBondDetails`] === undefined) {
@@ -365,7 +366,7 @@ export class AceDetailsComponent implements OnInit {
       };
     }
   }
-  showMainDriverDetails() {
+  async showMainDriverDetails() {
     const countryCode = 'US';
     const stateCode = this.mainDriver.usAddress.state;
     this.driverData = {
@@ -375,25 +376,25 @@ export class AceDetailsComponent implements OnInit {
       gender: this.mainDriver.gender,
       lastName: this.mainDriver.lastName,
       dateOfBirth: this.mainDriver.dateOfBirth,
-      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(this.mainDriver.citizenshipCountry),
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(this.mainDriver.citizenshipCountry),
       fastCardNumber: this.mainDriver.fastCardNumber,
       travelDocuments: this.mainDriver.travelDocuments,
       usAddress: {
         addressLine: this.mainDriver.usAddress.addressLine,
-        state: CountryStateCity.GetStateNameFromCode(stateCode, countryCode),
+        state: await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode),
         city: this.mainDriver.usAddress.city,
         zipCode: this.mainDriver.usAddress.zipCode
       }
     };
-    for(let d=0; d < this.mainDriver.travelDocuments.length; d++) {
-      this.mainDriver.travelDocuments.map((e: any) => {
-         e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-         e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < this.mainDriver.travelDocuments.length; d++) {
+      this.mainDriver.travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
 
   }
-  showDriverDetails(driverID) {
+  async showDriverDetails(driverID) {
     const driverDataFetched: any = this.drivers.filter((item: any) => item.driverID === driverID);
     this.driverData = {
       driverID: driverDataFetched[0].driverID,
@@ -402,52 +403,52 @@ export class AceDetailsComponent implements OnInit {
       gender: driverDataFetched[0].gender,
       lastName: driverDataFetched[0].lastName,
       dateOfBirth: driverDataFetched[0].dateOfBirth,
-      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(driverDataFetched[0].citizenshipCountry),
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(driverDataFetched[0].citizenshipCountry),
       fastCardNumber: driverDataFetched[0].fastCardNumber,
       travelDocuments: driverDataFetched[0].travelDocuments,
       usAddress: {
         addressLine: this.mainDriver.usAddress.addressLine,
-        state: CountryStateCity.GetStateNameFromCode(driverDataFetched[0].usAddress.state, 'US'),
+        state: await this.countryStateCity.GetStateNameFromCode(driverDataFetched[0].usAddress.state, 'US'),
         city: this.mainDriver.usAddress.city,
         zipCode: this.mainDriver.usAddress.zipCode
       }
     };
-    for(let d=0; d < driverDataFetched[0].travelDocuments.length; d++) {
-      driverDataFetched[0].travelDocuments.map((e: any) => {
-        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < driverDataFetched[0].travelDocuments.length; d++) {
+      driverDataFetched[0].travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
 
   }
-  showPassengerDetails(passengerID) {
+  async showPassengerDetails(passengerID) {
     const passengerDataFetched: any = this.passengers.filter((item: any) => item.passengerID === passengerID);
     this.passengerData = {
       passengerID: passengerDataFetched[0].passengerID,
       firstName: passengerDataFetched[0].firstName,
       gender: passengerDataFetched[0].gender,
       lastName: passengerDataFetched[0].lastName,
-      dateOfBirth:  passengerDataFetched[0].dateOfBirth,
-      citizenshipCountry: CountryStateCity.GetSpecificCountryNameByCode(passengerDataFetched[0].citizenshipCountry),
+      dateOfBirth: passengerDataFetched[0].dateOfBirth,
+      citizenshipCountry: await this.countryStateCity.GetSpecificCountryNameByCode(passengerDataFetched[0].citizenshipCountry),
       fastCardNumber: passengerDataFetched[0].fastCardNumber,
       travelDocuments: passengerDataFetched[0].travelDocuments
     };
-    for(let d=0; d < passengerDataFetched[0].travelDocuments.length; d++) {
-      passengerDataFetched[0].travelDocuments.map((e: any) => {
-        e.stateProvince = CountryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
-        e.country = CountryStateCity.GetSpecificCountryNameByCode(e.country);
+    for (let d = 0; d < passengerDataFetched[0].travelDocuments.length; d++) {
+      passengerDataFetched[0].travelDocuments.map(async (e: any) => {
+        e.stateProvince = await this.countryStateCity.GetStateNameFromCode(e.stateProvince, e.country);
+        e.country = await this.countryStateCity.GetSpecificCountryNameByCode(e.country);
       });
     }
   }
   // getPassengerDocData(travelDocuments: any){
 
   // }
-  cancelManifest(manifestID){
+  cancelManifest(manifestID) {
     this.apiService.getData(`eManifests/ACEmanifest/cancelManifest/` + manifestID).subscribe();
   }
 
- amendManifest() {
-   const amend = true;
- this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
- }
+  amendManifest() {
+    const amend = true;
+    this.router.navigateByUrl('/dispatch/cross-border/ACE-edit-eManifest/' + this.manifestID + `?amendManifest=` + amend);
+  }
 }

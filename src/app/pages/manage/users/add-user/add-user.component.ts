@@ -1,17 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ApiService } from '../../../../services';
 import { from, Subject, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-import { map, debounceTime, distinctUntilChanged, switchMap, catchError, takeUntil } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { HereMapService } from '../../../../services';
 import { Auth } from 'aws-amplify';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import { ActivatedRoute } from '@angular/router';
-import { HighlightSpanKind } from 'typescript';
-import { typeWithParameters } from '@angular/compiler/src/render3/util';
 import { passwordStrength } from 'check-password-strength'
-import {HttpClient} from '@angular/common/http'
+import { HttpClient } from '@angular/common/http'
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 @Component({
   selector: 'app-add-user',
@@ -100,7 +99,7 @@ export class AddUserComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
- 
+
   Error = '';
   Success = '';
   totalRecords = 20;
@@ -116,7 +115,7 @@ export class AddUserComponent implements OnInit {
   userStartPoint = 1;
   userEndPoint = this.pageLength;
   isEdit = false;
-   passwordValidation = {
+  passwordValidation = {
     upperCase: false,
     lowerCase: false,
     number: false,
@@ -125,11 +124,20 @@ export class AddUserComponent implements OnInit {
   }
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  userRoles:any=[]
+  userRoles: any = []
 
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  
+  constructor(
+    private apiService: ApiService,
+    private toastr: ToastrService,
+    private HereMap: HereMapService,
+    private location: Location,
+    private route: ActivatedRoute,
+    private httpClient: HttpClient,
+    private countryStateCity: CountryStateCityService
+  ) { }
+
 
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
@@ -144,19 +152,11 @@ export class AddUserComponent implements OnInit {
     this.getCurrentuser();
     this.searchLocation();
   }
-  constructor(
-    private apiService: ApiService,
-    private toastr: ToastrService,
-    private HereMap: HereMapService,
-    private location: Location,
-    private route: ActivatedRoute,
-    private httpClient:HttpClient
-  ) { }
 
-  fetchUserRoles(){
+  fetchUserRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
-      this.userRoles=data
-        }
+      this.userRoles = data
+    }
     );
 
   }
@@ -232,22 +232,22 @@ export class AddUserComponent implements OnInit {
       result.address.street = '';
     }
   }
-  getStates(countryCode: any, index: any) {
+  async getStates(countryCode: any, index: any) {
     this.userData.address[index].stateCode = '';
     this.userData.address[index].cityName = '';
-    this.userData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.userData.address[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getCities(stateCode: any, index: any, countryCode: any) {
+  async getCities(stateCode: any, index: any, countryCode: any) {
     this.userData.address[index].cityName = '';
-    this.userData.address[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.userData.address[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.userData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.userData.address[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.userData.address[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.userData.address[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  fetchStates(countryCode: any, index: any) {
-    this.userData.address[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async fetchStates(countryCode: any, index: any) {
+    this.userData.address[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  fetchCities(countryCode: any, stateCode: any, index: any) {
-    this.userData.address[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.userData.address[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
     this.userData.address[i][`userLocation`] = '';
@@ -290,7 +290,7 @@ export class AddUserComponent implements OnInit {
   }
 
   async addUser() {
-    
+
     this.hasError = false;
     this.hasSuccess = false;
     this.userDisabled = true;
@@ -310,7 +310,7 @@ export class AddUserComponent implements OnInit {
       }
     }
     console.log('userdata', this.userData);
-    this.userData.userLoginData.userName=this.userData.userLoginData.userName.toLowerCase();
+    this.userData.userLoginData.userName = this.userData.userLoginData.userName.toLowerCase();
     // create form data instance
     const formData = new FormData();
 
@@ -337,11 +337,11 @@ export class AddUserComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
                 this.userDisabled = false;
-         
+
               },
               error: () => {
                 this.userDisabled = false;
-              
+
               },
               next: () => { },
             });
@@ -376,7 +376,7 @@ export class AddUserComponent implements OnInit {
   }
 
   fetchUserByID() {
-    this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
+    this.apiService.getData('contacts/detail/' + this.contactID).subscribe(async (result: any) => {
       result = result.Items[0];
       this.userData = {
         companyName: result.companyName,
@@ -418,13 +418,13 @@ export class AddUserComponent implements OnInit {
         for (let a = 0; a < this.userData.address.length; a++) {
           const countryCode = this.userData.address[a].countryCode;
           const stateCode = this.userData.address[a].stateCode;
-          this.fetchStates(countryCode, a);
-          this.fetchCities(countryCode, stateCode, a);
+          await this.fetchStates(countryCode, a);
+          await this.fetchCities(countryCode, stateCode, a);
         }
       }
-      if(this.userData.loginEnabled === true) {
+      if (this.userData.loginEnabled === true) {
         this.enableUserLogin = true;
-      } else{
+      } else {
         this.enableUserLogin = false;
       }
       this.userData[`timeCreated`] = result.timeCreated;
@@ -507,31 +507,31 @@ export class AddUserComponent implements OnInit {
     let passwordVerify = passwordStrength(password)
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
-    } else{
+    } else {
       this.passwordValidation.lowerCase = false;
     }
 
     if (passwordVerify.contains.includes('uppercase')) {
       this.passwordValidation.upperCase = true;
-    } else{
+    } else {
       this.passwordValidation.upperCase = false;
     }
     if (passwordVerify.contains.includes('symbol')) {
       this.passwordValidation.specialCharacters = true;
-    } else{
+    } else {
       this.passwordValidation.specialCharacters = false;
     }
     if (passwordVerify.contains.includes('number')) {
       this.passwordValidation.number = true;
-    } else{
+    } else {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
       this.passwordValidation.length = true
-    } else{
+    } else {
       this.passwordValidation.length = false;
     }
-    if(password.includes('.')|| password.includes('-')){
+    if (password.includes('.') || password.includes('-')) {
       this.passwordValidation.specialCharacters = true;
     }
   }

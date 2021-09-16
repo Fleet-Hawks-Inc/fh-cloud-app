@@ -6,13 +6,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import Constants from '../../constants';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { passwordStrength } from 'check-password-strength';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 @Component({
   selector: 'app-driver-detail',
@@ -140,7 +140,7 @@ export class DriverDetailComponent implements OnInit {
     length: false
   };
   submitDisabled = false;
-  driverPwdData = {password : '' , confirmPassword: ''};
+  driverPwdData = { password: '', confirmPassword: '' };
   errors = {};
   response: any = '';
   hasError = false;
@@ -155,13 +155,13 @@ export class DriverDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
     private toastr: ToastrService,
+    private countryStateCity: CountryStateCityService
   ) {
-    // this.getCarrierID();
+
   }
 
   ngOnInit() {
-    // this.hereMap.mapSetAPI();
-    // this.hereMap.mapInit();
+
     this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
     this.fetchDriver();
 
@@ -194,115 +194,115 @@ export class DriverDetailComponent implements OnInit {
       .next()
       .remove('label');
   }
-    // Show password
-    toggleFieldTextType() {
-      this.fieldTextType = !this.fieldTextType;
+  // Show password
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  togglecpwdfieldTextType() {
+    this.cpwdfieldTextType = !this.cpwdfieldTextType;
+  }
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else {
+      this.passwordValidation.lowerCase = false;
     }
-    togglecpwdfieldTextType() {
-      this.cpwdfieldTextType = !this.cpwdfieldTextType;
-    }
-    validatePassword(password) {
-      let passwordVerify = passwordStrength(password)
-      if (passwordVerify.contains.includes('lowercase')) {
-        this.passwordValidation.lowerCase = true;
-      } else{
-        this.passwordValidation.lowerCase = false;
-      }
 
-      if (passwordVerify.contains.includes('uppercase')) {
-        this.passwordValidation.upperCase = true;
-      } else{
-        this.passwordValidation.upperCase = false;
-      }
-      if (passwordVerify.contains.includes('symbol')) {
-        this.passwordValidation.specialCharacters = true;
-      } else{
-        this.passwordValidation.specialCharacters = false;
-      }
-      if (passwordVerify.contains.includes('number')) {
-        this.passwordValidation.number = true;
-      } else{
-        this.passwordValidation.number = false;
-      }
-      if (passwordVerify.length >= 8) {
-        this.passwordValidation.length = true
-      } else{
-        this.passwordValidation.length = false;
-      }
-      if(password.includes('.')|| password.includes('-')){
-        this.passwordValidation.specialCharacters = true;
-      }
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else {
+      this.passwordValidation.upperCase = false;
     }
-    onChangePassword() {
-        this.submitDisabled = true;
-        this.hideErrors();
-        const data = {
-          userName: this.userName,
-          password: this.driverPwdData.password
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else {
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else {
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true
+    } else {
+      this.passwordValidation.length = false;
+    }
+    if (password.includes('.') || password.includes('-')) {
+      this.passwordValidation.specialCharacters = true;
+    }
+  }
+  onChangePassword() {
+    this.submitDisabled = true;
+    this.hideErrors();
+    const data = {
+      userName: this.userName,
+      password: this.driverPwdData.password
+    };
+    this.apiService.postData('drivers/password', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.submitDisabled = false;
+
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.submitDisabled = false;
+        this.toastr.success('Password updated successfully');
+        $('#driverPasswordModal').modal('hide');
+        this.driverPwdData = {
+          password: '',
+          confirmPassword: '',
         };
-        this.apiService.postData('drivers/password', data).subscribe({
-          complete: () => { },
-          error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-                  this.errors[val.context.label] = val.message;
-                })
-              )
-              .subscribe({
-                complete: () => {
-                  this.throwErrors();
-                  this.submitDisabled = false;
+      },
+    });
+  }
+  pwdModalClose() {
+    $('#driverPasswordModal').modal('hide');
+    this.driverPwdData = {
+      password: '',
+      confirmPassword: '',
+    };
+  }
+  throwErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    // this.vehicleForm.showErrors(this.errors);
+  }
 
-                },
-                error: () => {
-                  this.submitDisabled = false;
-                },
-                next: () => { },
-              });
-          },
-          next: (res) => {
-            this.response = res;
-            this.hasSuccess = true;
-            this.submitDisabled = false;
-            this.toastr.success('Password updated successfully');
-            $('#driverPasswordModal').modal('hide');
-            this.driverPwdData = {
-            password: '',
-            confirmPassword: '',
-          };
-          },
-        });
-    }
-    pwdModalClose(){
-      $('#driverPasswordModal').modal('hide');
-      this.driverPwdData = {
-        password: '',
-        confirmPassword: '',
-      };
-    }
-    throwErrors() {
-      from(Object.keys(this.errors))
-        .subscribe((v) => {
-          $('[name="' + v + '"]')
-            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-            .addClass('error');
-        });
-      // this.vehicleForm.showErrors(this.errors);
-    }
-
-    hideErrors() {
-      from(Object.keys(this.errors))
-        .subscribe((v) => {
-          $('[name="' + v + '"]')
-            .removeClass('error')
-            .next()
-            .remove('label')
-        });
-      this.errors = {};
-    }
-  fetchHomeTerminal(homeTerminal) {
+  hideErrors() {
+    from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
+  }
+  async fetchHomeTerminal(homeTerminal) {
     if (homeTerminal !== undefined) {
       if (homeTerminal.manual) {
         let combineAddress: any;
@@ -313,10 +313,10 @@ export class DriverDetailComponent implements OnInit {
           combineAddress += `,` + `${homeTerminal.cityName}`;
         }
         if (homeTerminal.stateCode !== '') {
-          combineAddress += `,` + CountryStateCity.GetStateNameFromCode(homeTerminal.stateCode, homeTerminal.countryCode);
+          combineAddress += `,` + await this.countryStateCity.GetStateNameFromCode(homeTerminal.stateCode, homeTerminal.countryCode);
         }
         if (homeTerminal.countryCode !== '') {
-          combineAddress += `,` + CountryStateCity.GetSpecificCountryNameByCode(homeTerminal.countryCode);
+          combineAddress += `,` + await this.countryStateCity.GetSpecificCountryNameByCode(homeTerminal.countryCode);
         }
         if (homeTerminal.zipCode !== '') {
           combineAddress += ` - ${homeTerminal.zipCode}`;
@@ -336,7 +336,7 @@ export class DriverDetailComponent implements OnInit {
           this.driverData = await result[`Items`][0];
           this.userName = this.driverData.userName;
           this.driverDataUpdate = await result[`Items`][0];
-          this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
+          await this.fetchHomeTerminal(this.driverData.hosDetails.homeTerminal);
           if (this.driverData.address !== undefined || this.driverData.address !== '') {
             this.fetchCompleteAdd(this.driverData.address);
           }
@@ -372,7 +372,7 @@ export class DriverDetailComponent implements OnInit {
           this.aciID = this.driverData.crossBorderDetails.ACI_ID;
           this.fastID = this.driverData.crossBorderDetails.fast_ID;
           this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
-          this.citizenship = CountryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
+          this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
           this.csa = this.driverData.crossBorderDetails.csa;
           this.group = this.driverData.groupID;
           this.assignedVehicle = this.driverData.assignedVehicle;
@@ -387,8 +387,8 @@ export class DriverDetailComponent implements OnInit {
               documentType: this.driverData.documentDetails[i].documentType,
               document: this.driverData.documentDetails[i].document,
               issuingAuthority: this.driverData.documentDetails[i].issuingAuthority,
-              issuingCountry: CountryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry),
-              issuingState: CountryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
+              issuingCountry: await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.documentDetails[i].issuingCountry),
+              issuingState: await this.countryStateCity.GetStateNameFromCode(this.driverData.documentDetails[i].issuingState, this.driverData.documentDetails[i].issuingCountry),
               issueDate: this.driverData.documentDetails[i].issueDate,
               expiryDate: this.driverData.documentDetails[i].expiryDate,
               uploadedDocs: docmnt
@@ -398,8 +398,8 @@ export class DriverDetailComponent implements OnInit {
             }
           }
           this.documents = newDocuments;
-          this.liceIssueSate = CountryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
-            this.liceIssueCountry = CountryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
+          this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
+            this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
           this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
           this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
           this.licNotification = this.driverData.licenceDetails.licenceNotification;
@@ -455,10 +455,10 @@ export class DriverDetailComponent implements OnInit {
   fetchCompleteAdd(address: any) {
     if (address != '') {
       for (let a = 0; a < address.length; a++) {
-        address.map((e: any) => {
+        address.map(async (e: any) => {
           if (e.manual) {
-            e.countryName = CountryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-            e.stateName = CountryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
+            e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
+            e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
           }
         });
       }

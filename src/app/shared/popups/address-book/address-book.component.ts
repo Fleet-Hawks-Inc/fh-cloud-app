@@ -6,11 +6,13 @@ import { HereMapService, ListService } from '../../../services';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
-import {Auth} from 'aws-amplify';
-import  Constants  from '../../../pages/fleet/constants';
+import { Auth } from 'aws-amplify';
+import Constants from '../../../pages/fleet/constants';
 import { environment } from 'src/environments/environment';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import * as _ from 'lodash';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+
 
 declare var $: any;
 @Component({
@@ -20,7 +22,7 @@ declare var $: any;
 })
 export class AddressBookComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-  @ViewChild('content', {static: false}) modalContent: TemplateRef<any>;
+  @ViewChild('content', { static: false }) modalContent: TemplateRef<any>;
   Asseturl = this.apiService.AssetUrl;
   customers = [];
   brokers = [];
@@ -314,7 +316,7 @@ export class AddressBookComponent implements OnInit {
     mc: '',
     dot: '',
     workPhone: '',
-    workEmail:'',
+    workEmail: '',
     entityType: 'consignor',
     address: [{
       addressType: null,
@@ -429,8 +431,8 @@ export class AddressBookComponent implements OnInit {
     }
   };
 
-   // Staff Object
-   staffData = {
+  // Staff Object
+  staffData = {
     companyName: '',
     dbaName: '',
     // firstName: '',
@@ -477,7 +479,7 @@ export class AddressBookComponent implements OnInit {
       department: '',
       designation: ''
     },
-    userData : {
+    userData: {
       username: '',
       userType: '',
       password: '',
@@ -528,7 +530,7 @@ export class AddressBookComponent implements OnInit {
   activeDiv = 'brokerTable';
   modalTitle = 'Add ';
   filterVal = {
-    customerName : '',
+    customerName: '',
     customerID: '',
     brokerID: '',
     brokerName: '',
@@ -651,8 +653,8 @@ export class AddressBookComponent implements OnInit {
   suggestedFactoringCompanies = [];
   suggestedOperatorCompanies = [];
   suggestedVendorCompanies = [];
-  currentUser:any = '';
-  isCarrierID:any = '';
+  currentUser: any = '';
+  isCarrierID: any = '';
 
   dataMessageBroker: string = Constants.FETCHING_DATA;
   dataMessageCarrier: string = Constants.FETCHING_DATA;
@@ -680,18 +682,18 @@ export class AddressBookComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(
-            private apiService: ApiService,
-            private toastr: ToastrService,
-            private modalService: NgbModal,
-            private HereMap: HereMapService,
-            private spinner: NgxSpinnerService,
-            private listService: ListService,
-          )
-  { }
+    private apiService: ApiService,
+    private toastr: ToastrService,
+    private modalService: NgbModal,
+    private HereMap: HereMapService,
+    private spinner: NgxSpinnerService,
+    private listService: ListService,
+    private countryStateCity: CountryStateCityService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.getCurrentuser();
-    this.fetchCountries();
+    await this.fetchCountries();
     this.fetchBrokersCount();
     this.searchLocation();
 
@@ -699,7 +701,7 @@ export class AddressBookComponent implements OnInit {
       this.modalTitle = 'Add';
       this.updateButton = res;
     });
-    
+
     $(document).ready(() => {
       //this.form = $('#customerForm, #brokerForm, #vendorForm, #carrierForm, #consigneeForm').validate();
     });
@@ -711,14 +713,14 @@ export class AddressBookComponent implements OnInit {
 
   removeUserLocation(data) {
     data.forEach(element => {
-        delete element.userLocation;
+      delete element.userLocation;
     });
   }
 
   openDetail(targetModal, data, type) {
-    
+
     this.userDetailData = {};
-    if(data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
+    if (data.profileImg != '' && data.profileImg != undefined && data.profileImg != null) {
       this.detailImgPath = `${this.Asseturl}/${data.carrierID}/${data.profileImg}`;
     } else {
       this.detailImgPath = this.defaultProfilePath;
@@ -726,7 +728,7 @@ export class AddressBookComponent implements OnInit {
     $('.modal').modal('hide');
     // this.userDetailTitle = data.firstName;
     this.userDetailTitle = data.companyName;
-    this.modalService.open(targetModal, { windowClass: 'modal-dialog-lgdetail'});
+    this.modalService.open(targetModal, { windowClass: 'modal-dialog-lgdetail' });
     this.userDetailData = data;
     this.detailTab = type;
   }
@@ -734,7 +736,7 @@ export class AddressBookComponent implements OnInit {
   async userAddress(data: any, i: number, item: any) {
     // let result = await this.HereMap.geoCode(item.address.label);
     // result = result.items[0];
-    
+
     data.address[i].userLocation = item.address.label;
     data.address[i].geoCords.lat = item.position.lat;
     data.address[i].geoCords.lng = item.position.lng;
@@ -758,7 +760,7 @@ export class AddressBookComponent implements OnInit {
 
   async reverseGeoCode(cords: any) {
     this.apiService.getData(`pcMiles/reverse/${cords}`).subscribe((result: any) => {
-      if(result.length > 0) {
+      if (result.length > 0) {
         return result;
       }
     });
@@ -788,10 +790,10 @@ export class AddressBookComponent implements OnInit {
   }
 
   async newGeoCode(data: any) {
-   
+
     let result = await this.apiService.getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`).toPromise();
-    
-    if(result.items != undefined && result.items.length > 0) {
+
+    if (result.items != undefined && result.items.length > 0) {
       return result.items[0].position;
     }
   }
@@ -842,8 +844,8 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
-       let data = {
+      if (element.manual === true) {
+        let data = {
           address1: element.address1,
           address2: element.address2,
           cityName: element.cityName,
@@ -851,26 +853,26 @@ export class AddressBookComponent implements OnInit {
           countryName: element.countryName,
           zipCode: element.zipCode
         }
-       
+
 
         let result = await this.newGeoCode(data);
-        
-        if(result != undefined){
+
+        if (result != undefined) {
           element.geoCords = result;
         }
       }
     }
-    
+
     for (let j = 0; j < this.customerData.additionalContact.length; j++) {
       const element = this.customerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
     this.lastEvaluatedKeyCustomer = '';
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -898,7 +900,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.customerDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -954,35 +956,35 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.customerData.additionalContact.length; j++) {
       const element = this.customerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1008,7 +1010,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.customerDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1048,35 +1050,35 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
       const element = this.brokerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1103,7 +1105,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.brokerDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1146,34 +1148,34 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
       const element = this.ownerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1182,44 +1184,44 @@ export class AddressBookComponent implements OnInit {
     this.lastEvaluatedKeyOperator = '';
 
     this.apiService.postData('contacts', formData, true).
-    subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.hasError = true;
-              this.operatorDisabled = false;
-              this.Error = 'Please see the errors';
-            },
-            error: () => {
-              this.operatorDisabled = false;
-             },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.operatorDisabled = false;
-        this.dataMessageOwner = Constants.FETCHING_DATA;
-        $('#addOwnerOperatorModal').modal('hide');
-        this.listService.fetchCustomers();
-        this.fetchOwnerOperatorsCount();
-        this.showMainModal();
-        this.listService.fetchOwnerOperators();
-        this.ownerOperatorss = [];
-        this.activeDiv = 'operatorTable';
-        this.toastr.success('Owner Operator Added Successfully');
-      }
-    });
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.label] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.hasError = true;
+                this.operatorDisabled = false;
+                this.Error = 'Please see the errors';
+              },
+              error: () => {
+                this.operatorDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.response = res;
+          this.hasSuccess = true;
+          this.operatorDisabled = false;
+          this.dataMessageOwner = Constants.FETCHING_DATA;
+          $('#addOwnerOperatorModal').modal('hide');
+          this.listService.fetchCustomers();
+          this.fetchOwnerOperatorsCount();
+          this.showMainModal();
+          this.listService.fetchOwnerOperators();
+          this.ownerOperatorss = [];
+          this.activeDiv = 'operatorTable';
+          this.toastr.success('Owner Operator Added Successfully');
+        }
+      });
   }
 
   async updateOwnerOperator() {
@@ -1245,35 +1247,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.ownerData.additionalContact.length; j++) {
       const element = this.ownerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1299,7 +1301,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.operatorDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1342,35 +1344,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.brokerData.additionalContact.length; j++) {
       const element = this.brokerData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1396,7 +1398,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.brokerDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1441,30 +1443,30 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1533,30 +1535,30 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1582,7 +1584,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.vendorDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1627,35 +1629,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
       const element = this.carrierData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1683,7 +1685,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.carrierDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -1725,35 +1727,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.carrierData.additionalContact.length; j++) {
       const element = this.carrierData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1779,7 +1781,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.carrierDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -1825,35 +1827,35 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
       const element = this.shipperData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1881,7 +1883,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.consignorDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -1924,35 +1926,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.shipperData.additionalContact.length; j++) {
       const element = this.shipperData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -1978,7 +1980,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.consignorDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -2024,35 +2026,35 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
       const element = this.consigneeData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -2080,7 +2082,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.consigneeDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -2090,7 +2092,7 @@ export class AddressBookComponent implements OnInit {
           this.hasSuccess = true;
           this.dataMessageConsignee = Constants.FETCHING_DATA;
           $('#addConsigneeModal').modal('hide');
-          
+
           this.listService.fetchReceivers();
           this.listService.fetchCustomers();
           this.fetchConsigneeCount();
@@ -2098,7 +2100,7 @@ export class AddressBookComponent implements OnInit {
           this.showMainModal();
           this.receivers = [];
           this.activeDiv = 'consigneeTable';
-         
+
           this.toastr.success('Receiver Added Successfully');
         }
       });
@@ -2125,35 +2127,35 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     for (let j = 0; j < this.consigneeData.additionalContact.length; j++) {
       const element = this.consigneeData.additionalContact[j];
-      element.fullName = element.firstName + ' '+ element.lastName;
+      element.fullName = element.firstName + ' ' + element.lastName;
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -2179,7 +2181,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.consigneeDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -2225,30 +2227,30 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -2276,7 +2278,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.companyDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -2316,29 +2318,29 @@ export class AddressBookComponent implements OnInit {
       //     element.geoCords.lng = result.position.lng;
       //   }
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -2364,7 +2366,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.companyDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -2411,30 +2413,30 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
@@ -2442,7 +2444,7 @@ export class AddressBookComponent implements OnInit {
     formData.append('data', JSON.stringify(this.staffData));
     this.lastEvaluatedKeyStaff = '';
 
-    this.apiService.postData('contacts?newUser='+this.newStaffUser, formData, true).
+    this.apiService.postData('contacts?newUser=' + this.newStaffUser, formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -2463,7 +2465,7 @@ export class AddressBookComponent implements OnInit {
               },
               error: () => {
                 this.employeeDisabled = false;
-               },
+              },
               next: () => { },
             });
         },
@@ -2472,7 +2474,7 @@ export class AddressBookComponent implements OnInit {
           this.response = res;
           this.employeeDisabled = false;
           this.hasSuccess = true;
-          if(this.staffData.loginEnabled){
+          if (this.staffData.loginEnabled) {
             this.saveUserData();
           }
           this.dataMessageEmployee = Constants.FETCHING_DATA;
@@ -2509,37 +2511,37 @@ export class AddressBookComponent implements OnInit {
       //   }
 
       // }
-      if(element.manual === true){
+      if (element.manual === true) {
         let data = {
-           address1: element.address1,
-           address2: element.address2,
-           cityName: element.cityName,
-           stateName: element.stateName,
-           countryName: element.countryName,
-           zipCode: element.zipCode
-         }
-        
- 
-         let result = await this.newGeoCode(data);
-         
-         if(result != undefined){
-           element.geoCords = result;
-         }
-       }
+          address1: element.address1,
+          address2: element.address2,
+          cityName: element.cityName,
+          stateName: element.stateName,
+          countryName: element.countryName,
+          zipCode: element.zipCode
+        }
+
+
+        let result = await this.newGeoCode(data);
+
+        if (result != undefined) {
+          element.geoCords = result;
+        }
+      }
     }
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
-    for(let i = 0; i < this.uploadedPhotos.length; i++){
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
       formData.append('uploadedPhotos', this.uploadedPhotos[i]);
     }
 
     //append other fields
     formData.append('data', JSON.stringify(this.staffData));
 
-    this.apiService.putData('contacts?newUser='+this.newStaffUser, formData, true).subscribe({
+    this.apiService.putData('contacts?newUser=' + this.newStaffUser, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -2558,7 +2560,7 @@ export class AddressBookComponent implements OnInit {
             },
             error: () => {
               this.employeeDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -2569,7 +2571,7 @@ export class AddressBookComponent implements OnInit {
         //delete address
         for (let i = 0; i < this.deleteStaffAddr.length; i++) {
           const element = this.deleteStaffAddr[i];
-          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => {});
+          this.apiService.deleteData(`addresses/deleteAddress/${element}`).subscribe(async (result: any) => { });
         }
 
         $('#addStaffModal').modal('hide');
@@ -2590,14 +2592,14 @@ export class AddressBookComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v == 'CognitoPassword') {
+        if (v == 'CognitoPassword') {
           this.errorClass = true;
           this.errorClassMsg = this.errors[v];
         } else {
-          if(v == 'companyName' || v == 'email') {
+          if (v == 'companyName' || v == 'email') {
             $('[name="' + v + '"]')
-            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-            .addClass('error');
+              .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+              .addClass('error');
           }
         }
       });
@@ -2619,94 +2621,94 @@ export class AddressBookComponent implements OnInit {
   /*
    * Get all countries from api
    */
-  fetchCountries() {
-    this.countries = CountryStateCity.GetAllCountries();
+  async fetchCountries() {
+    this.countries = await this.countryStateCity.GetAllCountries();
   }
 
-  getStates(countryCode, type='', index='') {
-    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async getStates(countryCode, type = '', index = '') {
+    let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
 
-    let countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    if(type == 'vendor') {
+    let countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    if (type == 'vendor') {
       this.vendorData.address[index].countryName = countryName;
       this.vendorData.address[index].states = states;
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.address[index].countryName = countryName;
       this.customerData.address[index].states = states;
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerData.address[index].countryName = countryName;
       this.brokerData.address[index].states = states;
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.address[index].countryName = countryName;
       this.carrierData.address[index].states = states;
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerData.address[index].countryName = countryName;
       this.ownerData.address[index].states = states;
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperData.address[index].countryName = countryName;
       this.shipperData.address[index].states = states;
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.address[index].countryName = countryName;
       this.consigneeData.address[index].states = states;
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.fcCompanyData.address[index].countryName = countryName;
       this.fcCompanyData.address[index].states = states;
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffData.address[index].countryName = countryName;
       this.staffData.address[index].states = states;
     }
   }
 
-  getCities(stateCode, type='', index='') {
+  async getCities(stateCode, type = '', index = '') {
     let countryCode = '';
-    if(type == 'vendor') {
+    if (type == 'vendor') {
       countryCode = this.vendorData.address[index].countryCode;
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       countryCode = this.customerData.address[index].countryCode;
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       countryCode = this.brokerData.address[index].countryCode;
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       countryCode = this.carrierData.address[index].countryCode;
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       countryCode = this.ownerData.address[index].countryCode;
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       countryCode = this.shipperData.address[index].countryCode;
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       countryCode = this.consigneeData.address[index].countryCode;
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       countryCode = this.fcCompanyData.address[index].countryCode;
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       countryCode = this.staffData.address[index].countryCode;
     }
 
-    let stateResult = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    let stateResult = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    let cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
 
-    if(type == 'vendor') {
+    if (type == 'vendor') {
       this.vendorData.address[index].stateName = stateResult;
       this.vendorData.address[index].cities = cities;
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.address[index].stateName = stateResult;
       this.customerData.address[index].cities = cities;
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerData.address[index].stateName = stateResult;
       this.brokerData.address[index].cities = cities;
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.address[index].stateName = stateResult;
       this.carrierData.address[index].cities = cities;
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerData.address[index].stateName = stateResult;
       this.ownerData.address[index].cities = cities;
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperData.address[index].stateName = stateResult;
       this.shipperData.address[index].cities = cities;
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.address[index].stateName = stateResult;
       this.consigneeData.address[index].cities = cities;
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.fcCompanyData.address[index].stateName = stateResult;
       this.fcCompanyData.address[index].cities = cities;
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffData.address[index].stateName = stateResult;
       this.staffData.address[index].cities = cities;
     }
@@ -2720,7 +2722,7 @@ export class AddressBookComponent implements OnInit {
       reader.readAsDataURL(file);
 
       this.uploadedPhotos.push(file)
-      if(this.uploadedPhotos.length > 0) {
+      if (this.uploadedPhotos.length > 0) {
         this.imageText = 'Change Photo';
       }
     }
@@ -2731,9 +2733,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCustomersCount() {
-    this.apiService.getData('contacts/get/count/customer?searchValue='+this.filterVal.customerID.toLowerCase()+'&companyName='+this.filterVal.customerCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/customer?searchValue=' + this.filterVal.customerID.toLowerCase() + '&companyName=' + this.filterVal.customerCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsCustomer = result.Count;
 
@@ -2743,9 +2745,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchOwnerOperatorsCount() {
-    this.apiService.getData('contacts/get/count/ownerOperator?searchValue='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/ownerOperator?searchValue=' + this.filterVal.operatorID.toLowerCase() + '&companyName=' + this.filterVal.operatorCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsOperator = result.Count;
 
@@ -2755,9 +2757,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchBrokersCount() {
-    this.apiService.getData('contacts/get/count/broker?searchValue='+this.filterVal.brokerID.toLowerCase()+'&companyName='+this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/broker?searchValue=' + this.filterVal.brokerID.toLowerCase() + '&companyName=' + this.filterVal.brokerCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsBroker = result.Count;
 
@@ -2767,9 +2769,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchVendorsCount() {
-    this.apiService.getData('contacts/get/count/vendor?searchValue='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/vendor?searchValue=' + this.filterVal.vendorID.toLowerCase() + '&companyName=' + this.filterVal.vendorCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsVendor = result.Count;
 
@@ -2779,9 +2781,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchCarriersCount() {
-    this.apiService.getData('contacts/get/count/carrier?searchValue='+this.filterVal.carrierID.toLowerCase()+'&companyName='+this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/carrier?searchValue=' + this.filterVal.carrierID.toLowerCase() + '&companyName=' + this.filterVal.carrierCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsCarrier = result.Count;
 
@@ -2791,9 +2793,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchShippersCount() {
-    this.apiService.getData('contacts/get/count/consignor?searchValue='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/consignor?searchValue=' + this.filterVal.shipperID.toLowerCase() + '&companyName=' + this.filterVal.shipperCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsShipper = result.Count;
         this.initDataTableShipper();
@@ -2802,9 +2804,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchConsigneeCount() {
-    this.apiService.getData('contacts/get/count/consignee?searchValue='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/consignee?searchValue=' + this.filterVal.consigneeID.toLowerCase() + '&companyName=' + this.filterVal.receiverCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsConsignee = result.Count;
         this.initDataTableConsignee();
@@ -2813,9 +2815,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchStaffsCount() {
-    this.apiService.getData('contacts/get/count/employee?searchValue='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/employee?searchValue=' + this.filterVal.staffID.toLowerCase() + '&companyName=' + this.filterVal.staffCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsStaff = result.Count;
       },
@@ -2823,9 +2825,9 @@ export class AddressBookComponent implements OnInit {
   }
 
   fetchFcCompaniesCount() {
-    this.apiService.getData('contacts/get/count/factoringCompany?searchValue='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('contacts/get/count/factoringCompany?searchValue=' + this.filterVal.companyID.toLowerCase() + '&companyName=' + this.filterVal.factoringCompanyName.toLowerCase()).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecordsCompany = result.Count;
         this.initDataTableCompany();
@@ -2875,151 +2877,151 @@ export class AddressBookComponent implements OnInit {
   async deactivateCustomer(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       await this.apiService
-      .deleteData(`contacts/delete/customer/${userID}`)
-      .subscribe(async(result: any) => {
-        this.customerDraw = 0;
-        this.lastEvaluatedKeyCustomer = '';
-        this.dataMessageCustomer = Constants.FETCHING_DATA;
-        this.customers = [];
-        this.fetchCustomersCount();
-        // this.initDataTable();
-        this.toastr.success('Customer deleted successfully');
-      });
+        .deleteData(`contacts/delete/customer/${userID}`)
+        .subscribe(async (result: any) => {
+          this.customerDraw = 0;
+          this.lastEvaluatedKeyCustomer = '';
+          this.dataMessageCustomer = Constants.FETCHING_DATA;
+          this.customers = [];
+          this.fetchCustomersCount();
+          // this.initDataTable();
+          this.toastr.success('Customer deleted successfully');
+        });
     }
   }
 
   deactivateBroker(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService.deleteData(`contacts/delete/broker/${userID}`)
-      .subscribe((result: any) => {
-        this.brokerDraw = 0;
-        this.lastEvaluatedKeyBroker = '';
-        this.dataMessageBroker = Constants.FETCHING_DATA;
-        this.brokers = [];
-        this.fetchBrokersCount();
-        // this.initDataTableBroker();
-        this.toastr.success('Broker deleted successfully');
-      });
+        .subscribe((result: any) => {
+          this.brokerDraw = 0;
+          this.lastEvaluatedKeyBroker = '';
+          this.dataMessageBroker = Constants.FETCHING_DATA;
+          this.brokers = [];
+          this.fetchBrokersCount();
+          // this.initDataTableBroker();
+          this.toastr.success('Broker deleted successfully');
+        });
     }
   }
 
   deactivateVendor(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/vendor/${userID}`)
-      .subscribe((result: any) => {
-        this.vendorDraw = 0;
-        this.lastEvaluatedKeyVendor = '';
-        this.dataMessageVendor = Constants.FETCHING_DATA;
-        this.vendors = [];
-        this.fetchVendorsCount();
-        // this.initDataTableVendor();
-        this.toastr.success('Vendor deleted successfully');
-      });
+        .deleteData(`contacts/delete/vendor/${userID}`)
+        .subscribe((result: any) => {
+          this.vendorDraw = 0;
+          this.lastEvaluatedKeyVendor = '';
+          this.dataMessageVendor = Constants.FETCHING_DATA;
+          this.vendors = [];
+          this.fetchVendorsCount();
+          // this.initDataTableVendor();
+          this.toastr.success('Vendor deleted successfully');
+        });
     }
   }
 
   deactivateShipper(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/consignor/${userID}`)
-      .subscribe((result: any) => {
-        this.shipperDraw = 0;
-        this.lastEvaluatedKeyShipper = '';
-        this.dataMessageConsignor = Constants.FETCHING_DATA;
-        this.shippers = [];
-        this.fetchShippersCount();
-        // this.initDataTableShipper();
-        this.toastr.success('Shipper deleted successfully');
-      });
+        .deleteData(`contacts/delete/consignor/${userID}`)
+        .subscribe((result: any) => {
+          this.shipperDraw = 0;
+          this.lastEvaluatedKeyShipper = '';
+          this.dataMessageConsignor = Constants.FETCHING_DATA;
+          this.shippers = [];
+          this.fetchShippersCount();
+          // this.initDataTableShipper();
+          this.toastr.success('Shipper deleted successfully');
+        });
     }
   }
   deactivateReceiver(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/consignee/${userID}`)
-      .subscribe((result: any) => {
-        this.consigneeDraw = 0;
-        this.lastEvaluatedKeyConsignee = '';
-        this.dataMessageConsignee = Constants.FETCHING_DATA;
-        this.receivers = [];
-        this.fetchConsigneeCount();
-        // this.initDataTableConsignee();
-        this.toastr.success('Receiver deleted successfully');
-      });
+        .deleteData(`contacts/delete/consignee/${userID}`)
+        .subscribe((result: any) => {
+          this.consigneeDraw = 0;
+          this.lastEvaluatedKeyConsignee = '';
+          this.dataMessageConsignee = Constants.FETCHING_DATA;
+          this.receivers = [];
+          this.fetchConsigneeCount();
+          // this.initDataTableConsignee();
+          this.toastr.success('Receiver deleted successfully');
+        });
     }
   }
 
   deactivateStaff(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/employee/${userID}`)
-      .subscribe((result: any) => {
-        this.staffDraw = 0;
-        this.lastEvaluatedKeyStaff = '';
-        this.dataMessageEmployee = Constants.FETCHING_DATA;
-        this.staffs = [];
-        this.fetchStaffsCount();
-        this.initDataTableStaff();
-        this.toastr.success('Employee deleted successfully');
-      });
+        .deleteData(`contacts/delete/employee/${userID}`)
+        .subscribe((result: any) => {
+          this.staffDraw = 0;
+          this.lastEvaluatedKeyStaff = '';
+          this.dataMessageEmployee = Constants.FETCHING_DATA;
+          this.staffs = [];
+          this.fetchStaffsCount();
+          this.initDataTableStaff();
+          this.toastr.success('Employee deleted successfully');
+        });
     }
   }
 
   deactivateCompany(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/factoringCompany/${userID}`)
-      .subscribe((result: any) => {
-        this.companyDraw = 0;
-        this.lastEvaluatedKeyCompany = '';
-        this.dataMessageFactoring = Constants.FETCHING_DATA;
-        this.fcCompanies = [];
-        this.fetchFcCompaniesCount();
-        // this.initDataTableCompany();
-        this.toastr.success('Company deleted successfully');
-      });
+        .deleteData(`contacts/delete/factoringCompany/${userID}`)
+        .subscribe((result: any) => {
+          this.companyDraw = 0;
+          this.lastEvaluatedKeyCompany = '';
+          this.dataMessageFactoring = Constants.FETCHING_DATA;
+          this.fcCompanies = [];
+          this.fetchFcCompaniesCount();
+          // this.initDataTableCompany();
+          this.toastr.success('Company deleted successfully');
+        });
     }
   }
 
   deactivateOperator(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/ownerOperator/${userID}`)
-      .subscribe((result: any) => {
-        this.ownerOperatorDraw = 0;
-        this.lastEvaluatedKeyOperator = '';
-        this.dataMessageOwner = Constants.FETCHING_DATA;
-        this.ownerOperatorss = [];
-        this.fetchOwnerOperatorsCount();
-        // this.initDataTableOperator();
-        this.toastr.success('Operator deleted successfully');
-      });
+        .deleteData(`contacts/delete/ownerOperator/${userID}`)
+        .subscribe((result: any) => {
+          this.ownerOperatorDraw = 0;
+          this.lastEvaluatedKeyOperator = '';
+          this.dataMessageOwner = Constants.FETCHING_DATA;
+          this.ownerOperatorss = [];
+          this.fetchOwnerOperatorsCount();
+          // this.initDataTableOperator();
+          this.toastr.success('Operator deleted successfully');
+        });
     }
   }
 
   deactivateCarrier(item, userID) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.apiService
-      .deleteData(`contacts/delete/carrier/${userID}`)
-      .subscribe((result: any) => {
-        this.carrierDraw = 0;
-        this.lastEvaluatedKeyCarrier = '';
-        this.dataMessageCarrier = Constants.FETCHING_DATA;
-        this.carriers = [];
-        this.fetchCarriersCount();
-        // this.initDataTableCarrier();
-        this.toastr.success('Carrier deleted successfully');
-      });
+        .deleteData(`contacts/delete/carrier/${userID}`)
+        .subscribe((result: any) => {
+          this.carrierDraw = 0;
+          this.lastEvaluatedKeyCarrier = '';
+          this.dataMessageCarrier = Constants.FETCHING_DATA;
+          this.carriers = [];
+          this.fetchCarriersCount();
+          // this.initDataTableCarrier();
+          this.toastr.success('Carrier deleted successfully');
+        });
     }
   }
 
   editUser(type: string, item: any) {
     //if timeCreated is an object then replace it with number
-    if(typeof item.timeCreated === 'object' && item.timeCreated !== null) {
+    if (typeof item.timeCreated === 'object' && item.timeCreated !== null) {
       item.timeCreated = new Date().getTime();
     }
-    if(typeof item.timeModified === 'object' && item.timeModified !== null) {
+    if (typeof item.timeModified === 'object' && item.timeModified !== null) {
       item.timeModified = new Date().getTime();
     }
     this.modalTitle = 'Edit ';
@@ -3030,7 +3032,7 @@ export class AddressBookComponent implements OnInit {
     this.clearModalData();
 
     //to show profile image
-    if(item.profileImg != '' && item.profileImg != undefined) {
+    if (item.profileImg != '' && item.profileImg != undefined) {
       this.profilePath = `${this.Asseturl}/${item.carrierID}/${item.profileImg}`;
       this.imageText = 'Update Picture';
     } else {
@@ -3038,31 +3040,31 @@ export class AddressBookComponent implements OnInit {
       this.imageText = 'Add Picture';
     }
 
-    if(type === 'customer') {
+    if (type === 'customer') {
       $('#addCustomerModal').modal('show');
 
-    } else if(type === 'broker') {
+    } else if (type === 'broker') {
       $('#addBrokerModal').modal('show');
 
-    } else if(type === 'vendor') {
+    } else if (type === 'vendor') {
       $('#addVendorModal').modal('show');
 
-    } else if(type === 'consignor') {
+    } else if (type === 'consignor') {
       $('#addShipperModal').modal('show');
 
-    } else if(type === 'consignee') {
+    } else if (type === 'consignee') {
       $('#addConsigneeModal').modal('show');
 
-    } else if(type === 'staff') {
+    } else if (type === 'staff') {
       $('#addStaffModal').modal('show');
 
-    } else if(type === 'factoringCompany') {
+    } else if (type === 'factoringCompany') {
       $('#addFCModal').modal('show');
 
-    } else if(type === 'ownerOperator') {
+    } else if (type === 'ownerOperator') {
       $('#addOwnerOperatorModal').modal('show');
 
-    } else if(type === 'carrier') {
+    } else if (type === 'carrier') {
       $('#addCarrierModal').modal('show');
     }
     this.getEditRecord(item.contactID, type);
@@ -3078,7 +3080,7 @@ export class AddressBookComponent implements OnInit {
     this.custCurrentTab = value;
   }
 
-  resetModal(type){
+  resetModal(type) {
     this.modalTitle = 'Add ';
     this.additionalDisabled = false;
     this.hasError = false;
@@ -3086,7 +3088,7 @@ export class AddressBookComponent implements OnInit {
     this.loginDiv = false;
     this.fieldvisibility = 'false';
     this.newStaffUser = 'false';
-    if(type == 'driver') {
+    if (type == 'driver') {
       this.showDriverModal = true;
     } else {
       this.updateButton = false;
@@ -3098,75 +3100,75 @@ export class AddressBookComponent implements OnInit {
     this.searchResults = [];
   }
 
-  setActiveDiv(type){
-    if(type == 'broker') {
+  setActiveDiv(type) {
+    if (type == 'broker') {
       this.brokerDraw = 0;
       this.lastEvaluatedKeyBroker = '';
       this.dataMessageBroker = Constants.FETCHING_DATA;
       this.brokers = [];
       this.fetchBrokersCount();
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierDraw = 0;
       this.lastEvaluatedKeyCarrier = '';
       this.dataMessageCarrier = Constants.FETCHING_DATA;
       this.carriers = [];
       this.fetchCarriersCount();
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeDraw = 0;
       this.lastEvaluatedKeyConsignee = '';
       this.dataMessageConsignee = Constants.FETCHING_DATA;
       this.receivers = [];
       this.fetchConsigneeCount();
 
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerDraw = 0;
       this.lastEvaluatedKeyCustomer = '';
       this.dataMessageCustomer = Constants.FETCHING_DATA;
       this.customers = [];
       this.fetchCustomersCount();
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.companyDraw = 0;
       this.lastEvaluatedKeyCompany = '';
       this.dataMessageFactoring = Constants.FETCHING_DATA;
       this.fcCompanies = [];
       this.fetchFcCompaniesCount();
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerOperatorDraw = 0;
       this.lastEvaluatedKeyOperator = '';
       this.dataMessageOwner = Constants.FETCHING_DATA;
       this.ownerOperatorss = [];
       this.fetchOwnerOperatorsCount();
 
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorDraw = 0;
       this.lastEvaluatedKeyVendor = '';
       this.dataMessageVendor = Constants.FETCHING_DATA;
       this.vendors = [];
       this.fetchVendorsCount();
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperDraw = 0;
       this.lastEvaluatedKeyShipper = '';
       this.dataMessageConsignor = Constants.FETCHING_DATA;
       this.shippers = [];
       this.fetchShippersCount();
     }
-    this.activeDiv = type+'Table';
+    this.activeDiv = type + 'Table';
   }
 
   showMainModal() {
-    if(localStorage.getItem('isOpen') != 'true') {
+    if (localStorage.getItem('isOpen') != 'true') {
       this.custCurrentTab = 1;
-      $('#allContactsModal').modal('show');    
+      $('#allContactsModal').modal('show');
     } else {
       $('#allContactsModal').modal('hide');
-      localStorage.setItem('isOpen', 'false'); 
+      localStorage.setItem('isOpen', 'false');
     }
-    
+
   }
 
   clearModalData() {
@@ -3445,7 +3447,7 @@ export class AddressBookComponent implements OnInit {
       mc: '',
       dot: '',
       workPhone: '',
-      workEmail:'',
+      workEmail: '',
       entityType: 'consignor',
       address: [{
         addressType: null,
@@ -3608,7 +3610,7 @@ export class AddressBookComponent implements OnInit {
         department: '',
         designation: ''
       },
-      userData : {
+      userData: {
         username: '',
         userType: '',
         password: '',
@@ -3624,9 +3626,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/customer?searchValue='+this.filterVal.customerID+'&companyName='+this.filterVal.customerCompanyName+'&lastKey='+this.lastEvaluatedKeyCustomer)
+    this.apiService.getData('contacts/fetch/records/customer?searchValue=' + this.filterVal.customerID + '&companyName=' + this.filterVal.customerCompanyName + '&lastKey=' + this.lastEvaluatedKeyCustomer)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageCustomer = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedCustomers = [];
@@ -3635,16 +3637,16 @@ export class AddressBookComponent implements OnInit {
 
         this.customers = result['Items'];
 
-        if(this.filterVal.customerID != '') {
+        if (this.filterVal.customerID != '') {
           this.custtStartPoint = 1;
           this.custtEndPoint = this.totalRecordsCustomer;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.customerNext = false;
           // for prev button
-          if(!this.customerPrevEvauatedKeys.includes(lastEvalKey)){
+          if (!this.customerPrevEvauatedKeys.includes(lastEvalKey)) {
             this.customerPrevEvauatedKeys.push(lastEvalKey);
           }
           this.lastEvaluatedKeyCustomer = lastEvalKey;
@@ -3657,9 +3659,9 @@ export class AddressBookComponent implements OnInit {
         }
 
         // disable prev btn
-        if(this.customerDraw > 0){
+        if (this.customerDraw > 0) {
           this.customerPrev = false;
-        } else{
+        } else {
           this.customerPrev = true;
         }
         this.spinner.hide();
@@ -3670,9 +3672,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableBroker() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/broker?searchValue='+this.filterVal.brokerID+'&companyName='+this.filterVal.brokerCompanyName+'&lastKey='+this.lastEvaluatedKeyBroker)
+    this.apiService.getData('contacts/fetch/records/broker?searchValue=' + this.filterVal.brokerID + '&companyName=' + this.filterVal.brokerCompanyName + '&lastKey=' + this.lastEvaluatedKeyBroker)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageBroker = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedBrokers = [];
@@ -3681,13 +3683,13 @@ export class AddressBookComponent implements OnInit {
 
         this.brokers = result['Items'];
 
-        if(this.filterVal.brokerID != '') {
+        if (this.filterVal.brokerID != '') {
           this.brokerStartPoint = 1;
           this.brokerEndPoint = this.totalRecordsBroker;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.brokerNext = false;
           // for prev button
           if (!this.brokerPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3715,9 +3717,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableVendor() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/vendor?searchValue='+this.filterVal.vendorID.toLowerCase()+'&companyName='+this.filterVal.vendorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyVendor)
+    this.apiService.getData('contacts/fetch/records/vendor?searchValue=' + this.filterVal.vendorID.toLowerCase() + '&companyName=' + this.filterVal.vendorCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyVendor)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageVendor = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedVendors = [];
@@ -3726,13 +3728,13 @@ export class AddressBookComponent implements OnInit {
 
         this.vendors = result['Items'];
 
-        if(this.filterVal.vendorID != '') {
+        if (this.filterVal.vendorID != '') {
           this.vendorStartPoint = 1;
           this.vendorEndPoint = this.totalRecordsVendor;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.vendorNext = false;
           // for prev button
           if (!this.vendorPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3760,9 +3762,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCarrier() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/carrier?searchValue='+this.filterVal.carrierID+'&companyName='+this.filterVal.carrierCompanyName+'&lastKey='+this.lastEvaluatedKeyCarrier)
+    this.apiService.getData('contacts/fetch/records/carrier?searchValue=' + this.filterVal.carrierID + '&companyName=' + this.filterVal.carrierCompanyName + '&lastKey=' + this.lastEvaluatedKeyCarrier)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageCarrier = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedCarriers = [];
@@ -3771,13 +3773,13 @@ export class AddressBookComponent implements OnInit {
 
         this.carriers = result['Items'];
 
-        if(this.filterVal.carrierID != '') {
+        if (this.filterVal.carrierID != '') {
           this.carrierStartPoint = 1;
           this.carrierEndPoint = this.totalRecordsCarrier;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.carrierNext = false;
           // for prev button
           if (!this.carrierPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3805,9 +3807,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableOperator() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/ownerOperator?searchValue='+this.filterVal.operatorID.toLowerCase()+'&companyName='+this.filterVal.operatorCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyOperator)
+    this.apiService.getData('contacts/fetch/records/ownerOperator?searchValue=' + this.filterVal.operatorID.toLowerCase() + '&companyName=' + this.filterVal.operatorCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyOperator)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageOwner = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedOperators = [];
@@ -3816,13 +3818,13 @@ export class AddressBookComponent implements OnInit {
 
         this.ownerOperatorss = result['Items'];
 
-        if(this.filterVal.operatorID != '') {
+        if (this.filterVal.operatorID != '') {
           this.ownerOperatorStartPoint = 1;
           this.ownerOperatorEndPoint = this.totalRecordsOperator;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.ownerOperatorNext = false;
           // for prev button
           if (!this.ownerOperatorPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3850,9 +3852,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableShipper() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/consignor?searchValue='+this.filterVal.shipperID.toLowerCase()+'&companyName='+this.filterVal.shipperCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyShipper)
+    this.apiService.getData('contacts/fetch/records/consignor?searchValue=' + this.filterVal.shipperID.toLowerCase() + '&companyName=' + this.filterVal.shipperCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyShipper)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageConsignor = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedShipper = [];
@@ -3861,13 +3863,13 @@ export class AddressBookComponent implements OnInit {
 
         this.shippers = result['Items'];
 
-        if(this.filterVal.shipperID != '') {
+        if (this.filterVal.shipperID != '') {
           this.shipperStartPoint = 1;
           this.shipperEndPoint = this.totalRecordsShipper;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.shipperNext = false;
           // for prev button
           if (!this.shipperPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3895,9 +3897,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableConsignee() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/consignee?searchValue='+this.filterVal.consigneeID.toLowerCase()+'&companyName='+this.filterVal.receiverCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyConsignee)
+    this.apiService.getData('contacts/fetch/records/consignee?searchValue=' + this.filterVal.consigneeID.toLowerCase() + '&companyName=' + this.filterVal.receiverCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyConsignee)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageConsignee = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedConsignees = [];
@@ -3906,13 +3908,13 @@ export class AddressBookComponent implements OnInit {
 
         this.receivers = result['Items'];
 
-        if(this.filterVal.consigneeID != '') {
+        if (this.filterVal.consigneeID != '') {
           this.consigneeStartPoint = 1;
           this.consigneeEndPoint = this.totalRecordsConsignee;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.consigneeNext = false;
           // for prev button
           if (!this.consigneePrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3940,9 +3942,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableStaff() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/employee?searchValue='+this.filterVal.staffID.toLowerCase()+'&companyName='+this.filterVal.staffCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyStaff)
+    this.apiService.getData('contacts/fetch/records/employee?searchValue=' + this.filterVal.staffID.toLowerCase() + '&companyName=' + this.filterVal.staffCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyStaff)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageEmployee = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedStaffs = [];
@@ -3951,13 +3953,13 @@ export class AddressBookComponent implements OnInit {
 
         this.staffs = result['Items'];
 
-        if(this.filterVal.staffID != '') {
+        if (this.filterVal.staffID != '') {
           this.staffStartPoint = 1;
           this.staffEndPoint = this.totalRecordsStaff;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.staffNext = false;
           // for prev button
           if (!this.staffPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -3985,9 +3987,9 @@ export class AddressBookComponent implements OnInit {
 
   initDataTableCompany() {
     this.spinner.show();
-    this.apiService.getData('contacts/fetch/records/factoringCompany?searchValue='+this.filterVal.companyID.toLowerCase()+'&companyName='+this.filterVal.factoringCompanyName.toLowerCase()+'&lastKey='+this.lastEvaluatedKeyCompany)
+    this.apiService.getData('contacts/fetch/records/factoringCompany?searchValue=' + this.filterVal.companyID.toLowerCase() + '&companyName=' + this.filterVal.factoringCompanyName.toLowerCase() + '&lastKey=' + this.lastEvaluatedKeyCompany)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessageFactoring = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedCompany = [];
@@ -3996,13 +3998,13 @@ export class AddressBookComponent implements OnInit {
 
         this.fcCompanies = result['Items'];
 
-        if(this.filterVal.companyID != '') {
+        if (this.filterVal.companyID != '') {
           this.companyStartPoint = 1;
           this.companyEndPoint = this.totalRecordsCompany;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
           this.companyNext = false;
           // for prev button
           if (!this.companyPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -4293,93 +4295,93 @@ export class AddressBookComponent implements OnInit {
   }, 800);
 
   setSearchValues(val, searchValue, type) {
-    if(type == 'customer') {
+    if (type == 'customer') {
       // this.filterVal.customerID = searchID;
       this.filterVal.customerID = val;
       this.filterVal.customerName = searchValue;
       this.suggestedCustomers = [];
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       // this.filterVal.brokerID = searchID;
       this.filterVal.brokerName = searchValue;
       this.filterVal.brokerID = val;
       this.suggestedBrokers = [];
 
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       // this.filterVal.vendorID = searchID;
       this.filterVal.vendorID = val;
       this.filterVal.vendorName = searchValue;
       this.suggestedVendors = [];
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       // this.filterVal.carrierID = searchID;
       this.filterVal.carrierID = val;
       this.filterVal.carrierName = searchValue;
       this.suggestedCarriers = [];
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       // this.filterVal.operatorID = searchID;
       this.filterVal.operatorID = val;
       this.filterVal.operatorName = searchValue;
       this.suggestedOperators = [];
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       // this.filterVal.shipperID = searchID;
       this.filterVal.shipperID = val;
       this.filterVal.shipperName = searchValue;
       this.suggestedShipper = [];
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       // this.filterVal.consigneeID = searchID;
       this.filterVal.consigneeID = val;
       this.filterVal.consigneeName = searchValue;
       this.suggestedConsignees = [];
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       // this.filterVal.staffID = searchID;
       this.filterVal.staffID = val;
       this.filterVal.staffName = searchValue;
       this.suggestedStaffs = [];
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       // this.filterVal.companyID = searchID;
       this.filterVal.companyID = val;
       this.filterVal.fcompanyName = searchValue;
       this.suggestedCompany = [];
 
-    } else if(type == 'shipperCompany') {
+    } else if (type == 'shipperCompany') {
       this.filterVal.shipperCompanyName = searchValue;
       this.suggestedShipperCompanies = [];
 
-    } else if(type == 'brokerCompany') {
+    } else if (type == 'brokerCompany') {
       this.filterVal.brokerCompanyName = searchValue;
       this.suggestedBrokerCompanies = [];
 
-    } else if(type == 'carrierCompany') {
+    } else if (type == 'carrierCompany') {
       this.filterVal.carrierCompanyName = searchValue;
       this.suggestedCarrierCompanies = [];
 
-    } else if(type == 'consigneeCompany') {
+    } else if (type == 'consigneeCompany') {
       this.filterVal.receiverCompanyName = searchValue;
       this.suggestedConsigneeCompanies = [];
 
-    } else if(type == 'customerCompany') {
+    } else if (type == 'customerCompany') {
       this.filterVal.customerCompanyName = searchValue;
       this.suggestedCustomerCompanies = [];
 
-    } else if(type == 'staffCompany') {
+    } else if (type == 'staffCompany') {
       this.filterVal.staffCompanyName = searchValue;
       this.suggestedStaffCompanies = [];
 
-    } else if(type == 'factoringCompany') {
+    } else if (type == 'factoringCompany') {
       this.filterVal.factoringCompanyName = searchValue;
       this.suggestedFactoringCompanies = [];
 
-    } else if(type == 'operatorCompany') {
+    } else if (type == 'operatorCompany') {
       this.filterVal.operatorCompanyName = searchValue;
       this.suggestedOperatorCompanies = [];
 
-    } else if(type == 'vendorCompany') {
+    } else if (type == 'vendorCompany') {
       this.filterVal.vendorCompanyName = searchValue;
       this.suggestedVendorCompanies = [];
 
@@ -4387,18 +4389,18 @@ export class AddressBookComponent implements OnInit {
   }
 
   async searchFilter(type) {
-    if(type == 'customer') {
-      if(this.filterVal.customerName == '') {
+    if (type == 'customer') {
+      if (this.filterVal.customerName == '') {
         this.filterVal.customerID = '';
       }
-      if(this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
+      if (this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
         this.filterVal.customerCompanyName = this.filterVal.customerCompanyName.toLowerCase();
         this.filterVal.customerName = this.filterVal.customerName.toLowerCase();
         this.filterVal.customerName = this.filterVal.customerName.trim();
         // this.filterVal.customerName = this.filterVal.customerName.replace(' ', '-');
         this.suggestedCustomers = [];
         this.suggestedCustomerCompanies = [];
-        if(this.filterVal.customerID == '') {
+        if (this.filterVal.customerID == '') {
           this.filterVal.customerID = this.filterVal.customerName;
         }
         this.customers = [];
@@ -4410,14 +4412,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'broker') {
-      if(this.filterVal.brokerName == '') {
+    } else if (type == 'broker') {
+      if (this.filterVal.brokerName == '') {
         this.filterVal.brokerID = '';
       }
-      if(this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
+      if (this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
         this.filterVal.brokerCompanyName = this.filterVal.brokerCompanyName.toLowerCase();
         this.filterVal.brokerName = this.filterVal.brokerName.toLowerCase();
-        if(this.filterVal.brokerID == '') {
+        if (this.filterVal.brokerID == '') {
           this.filterVal.brokerID = this.filterVal.brokerName;
         }
         this.suggestedBrokers = [];
@@ -4431,14 +4433,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'vendor') {
-      if(this.filterVal.vendorName == '') {
+    } else if (type == 'vendor') {
+      if (this.filterVal.vendorName == '') {
         this.filterVal.vendorID = '';
       }
-      if(this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
+      if (this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
         this.filterVal.vendorCompanyName = this.filterVal.vendorCompanyName.toLowerCase();
         this.filterVal.vendorName = this.filterVal.vendorName.toLowerCase();
-        if(this.filterVal.vendorID == '') {
+        if (this.filterVal.vendorID == '') {
           this.filterVal.vendorID = this.filterVal.vendorName;
         }
         this.suggestedVendors = [];
@@ -4452,14 +4454,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'carrier') {
-      if(this.filterVal.carrierName == '') {
+    } else if (type == 'carrier') {
+      if (this.filterVal.carrierName == '') {
         this.filterVal.carrierID = '';
       }
-      if(this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
+      if (this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
         this.filterVal.carrierCompanyName = this.filterVal.carrierCompanyName.toLowerCase();
         this.filterVal.carrierName = this.filterVal.carrierName.toLowerCase();
-        if(this.filterVal.carrierID == '') {
+        if (this.filterVal.carrierID == '') {
           this.filterVal.carrierID = this.filterVal.carrierName;
         }
         this.suggestedCarriers = [];
@@ -4473,14 +4475,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'operator') {
-      if(this.filterVal.operatorName == '') {
+    } else if (type == 'operator') {
+      if (this.filterVal.operatorName == '') {
         this.filterVal.operatorID = '';
       }
-      if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
+      if (this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
         this.filterVal.operatorCompanyName = this.filterVal.operatorCompanyName.toLowerCase();
         this.filterVal.operatorName = this.filterVal.operatorName.toLowerCase();
-        if(this.filterVal.operatorID == '') {
+        if (this.filterVal.operatorID == '') {
           this.filterVal.operatorID = this.filterVal.operatorName;
         }
         this.suggestedOperators = [];
@@ -4494,14 +4496,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'shipper') {
-      if(this.filterVal.shipperName == '') {
+    } else if (type == 'shipper') {
+      if (this.filterVal.shipperName == '') {
         this.filterVal.shipperID = '';
       }
-      if(this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
+      if (this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
         this.filterVal.shipperCompanyName = this.filterVal.shipperCompanyName.toLowerCase();
         this.filterVal.shipperName = this.filterVal.shipperName.toLowerCase();
-        if(this.filterVal.shipperID == '') {
+        if (this.filterVal.shipperID == '') {
           this.filterVal.shipperID = this.filterVal.shipperName;
         }
         this.suggestedShipper = [];
@@ -4515,14 +4517,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'consignee') {
-      if(this.filterVal.consigneeName == '') {
+    } else if (type == 'consignee') {
+      if (this.filterVal.consigneeName == '') {
         this.filterVal.consigneeID = '';
       }
-      if(this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
+      if (this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
         this.filterVal.receiverCompanyName = this.filterVal.receiverCompanyName.toLowerCase();
         this.filterVal.consigneeName = this.filterVal.consigneeName.toLowerCase();
-        if(this.filterVal.consigneeID == '') {
+        if (this.filterVal.consigneeID == '') {
           this.filterVal.consigneeID = this.filterVal.consigneeName;
         }
         this.suggestedConsignees = [];
@@ -4536,14 +4538,14 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'staff') {
-      if(this.filterVal.staffName == '') {
+    } else if (type == 'staff') {
+      if (this.filterVal.staffName == '') {
         this.filterVal.staffID = '';
       }
-      if(this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
+      if (this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
         this.filterVal.staffCompanyName = this.filterVal.staffCompanyName.toLowerCase();
         this.filterVal.staffName = this.filterVal.staffName.toLowerCase();
-        if(this.filterVal.staffID == '') {
+        if (this.filterVal.staffID == '') {
           this.filterVal.staffID = this.filterVal.staffName;
         }
         this.suggestedStaffs = [];
@@ -4557,15 +4559,15 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'company') {
-      if(this.filterVal.fcompanyName == '') {
+    } else if (type == 'company') {
+      if (this.filterVal.fcompanyName == '') {
         this.filterVal.companyID = '';
       }
-      if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
+      if (this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
         this.filterVal.factoringCompanyName = this.filterVal.factoringCompanyName.toLowerCase();
         this.filterVal.fcompanyName = this.filterVal.fcompanyName.toLowerCase();
 
-        if(this.filterVal.companyID == '') {
+        if (this.filterVal.companyID == '') {
           this.filterVal.companyID = this.filterVal.fcompanyName;
         }
         this.suggestedCompany = [];
@@ -4583,8 +4585,8 @@ export class AddressBookComponent implements OnInit {
   }
 
   async resetFilter(type) {
-    if(type == 'customer') {
-      if(this.filterVal.customerID != '' || this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
+    if (type == 'customer') {
+      if (this.filterVal.customerID != '' || this.filterVal.customerName != '' || this.filterVal.customerCompanyName != '') {
         this.customers = [];
         this.lastEvaluatedKeyCustomer = '';
         this.activeDiv = 'customerTable';
@@ -4602,8 +4604,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'broker') {
-      if(this.filterVal.brokerID != '' || this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
+    } else if (type == 'broker') {
+      if (this.filterVal.brokerID != '' || this.filterVal.brokerName != '' || this.filterVal.brokerCompanyName != '') {
         this.brokers = [];
         this.lastEvaluatedKeyBroker = '';
         this.activeDiv = 'brokerTable';
@@ -4621,8 +4623,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'vendor') {
-      if(this.filterVal.vendorID != '' || this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
+    } else if (type == 'vendor') {
+      if (this.filterVal.vendorID != '' || this.filterVal.vendorName != '' || this.filterVal.vendorCompanyName != '') {
         this.vendors = [];
         this.lastEvaluatedKeyVendor = '';
         this.activeDiv = 'vendorTable';
@@ -4640,8 +4642,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'carrier') {
-      if(this.filterVal.carrierID != '' || this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
+    } else if (type == 'carrier') {
+      if (this.filterVal.carrierID != '' || this.filterVal.carrierName != '' || this.filterVal.carrierCompanyName != '') {
         this.carriers = [];
         this.lastEvaluatedKeyCarrier = '';
         this.activeDiv = 'carrierTable';
@@ -4659,8 +4661,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'operator') {
-      if(this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
+    } else if (type == 'operator') {
+      if (this.filterVal.operatorID != '' || this.filterVal.operatorName != '' || this.filterVal.operatorCompanyName != '') {
         this.ownerOperatorss = [];
         this.lastEvaluatedKeyOperator = '';
         this.activeDiv = 'operatorTable';
@@ -4678,8 +4680,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'shipper') {
-      if(this.filterVal.shipperID != '' || this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
+    } else if (type == 'shipper') {
+      if (this.filterVal.shipperID != '' || this.filterVal.shipperName != '' || this.filterVal.shipperCompanyName != '') {
         this.shippers = [];
         this.lastEvaluatedKeyShipper = '';
         this.activeDiv = 'shipperTable';
@@ -4697,8 +4699,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'consignee') {
-      if(this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
+    } else if (type == 'consignee') {
+      if (this.filterVal.consigneeID != '' || this.filterVal.consigneeName != '' || this.filterVal.receiverCompanyName != '') {
         this.receivers = [];
         this.lastEvaluatedKeyConsignee = '';
         this.activeDiv = 'consigneeTable';
@@ -4716,8 +4718,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'staff') {
-      if(this.filterVal.staffID != '' || this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
+    } else if (type == 'staff') {
+      if (this.filterVal.staffID != '' || this.filterVal.staffName != '' || this.filterVal.staffCompanyName != '') {
         this.receivers = [];
         this.lastEvaluatedKeyStaff = '';
         this.activeDiv = 'staffTable';
@@ -4735,8 +4737,8 @@ export class AddressBookComponent implements OnInit {
         return false
       }
 
-    } else if(type == 'company') {
-      if(this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
+    } else if (type == 'company') {
+      if (this.filterVal.companyID != '' || this.filterVal.fcompanyName != '' || this.filterVal.factoringCompanyName != '') {
         this.fcCompanies = [];
         this.suggestedFactoringCompanies = [];
         this.lastEvaluatedKeyCompany = '';
@@ -4757,56 +4759,56 @@ export class AddressBookComponent implements OnInit {
     }
   }
 
-  removeAddress(index, addressID = null, type='') {
-    if(type == 'vendor') {
+  removeAddress(index, addressID = null, type = '') {
+    if (type == 'vendor') {
       if (addressID != null) {
         this.deleteVendorAddr.push(addressID);
       }
       this.vendorData.address.splice(index, 1);
 
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       if (addressID != null) {
         this.deleteCustomerAddr.push(addressID);
       }
       this.customerData.address.splice(index, 1);
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       if (addressID != null) {
         this.deleteBrokerAddr.push(addressID);
       }
       this.brokerData.address.splice(index, 1);
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       if (addressID != null) {
         this.deleteCarrierAddr.push(addressID);
       }
       this.carrierData.address.splice(index, 1);
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       if (addressID != null) {
         this.deleteOperatorAddr.push(addressID);
       }
       this.ownerData.address.splice(index, 1);
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       if (addressID != null) {
         this.deleteShipperAddr.push(addressID);
       }
       this.shipperData.address.splice(index, 1);
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       if (addressID != null) {
         this.deleteConsigneeAddr.push(addressID);
       }
       this.consigneeData.address.splice(index, 1);
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       if (addressID != null) {
         this.deleteStaffAddr.push(addressID);
       }
       this.staffData.address.splice(index, 1);
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       if (addressID != null) {
         this.deleteCompanyAddr.push(addressID);
       }
@@ -4814,8 +4816,8 @@ export class AddressBookComponent implements OnInit {
     }
   }
 
-  clearAddress(index, type='') {
-    if(type == 'vendor') {
+  clearAddress(index, type = '') {
+    if (type == 'vendor') {
       this.vendorData.address[index].address1 = '';
       this.vendorData.address[index].address2 = '';
       this.vendorData.address[index].cityName = null;
@@ -4830,7 +4832,7 @@ export class AddressBookComponent implements OnInit {
       this.vendorData.address[index].houseNumber = '';
       this.vendorData.address[index].street = '';
 
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.address[index].addressType = null;
       this.customerData.address[index].address1 = '';
       this.customerData.address[index].address2 = '';
@@ -4846,7 +4848,7 @@ export class AddressBookComponent implements OnInit {
       this.customerData.address[index].houseNumber = '';
       this.customerData.address[index].street = '';
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerData.address[index].address1 = '';
       this.brokerData.address[index].address2 = '';
       this.brokerData.address[index].cityName = null;
@@ -4861,7 +4863,7 @@ export class AddressBookComponent implements OnInit {
       this.brokerData.address[index].houseNumber = '';
       this.brokerData.address[index].street = '';
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.address[index].address1 = '';
       this.carrierData.address[index].address2 = '';
       this.carrierData.address[index].cityName = null;
@@ -4876,7 +4878,7 @@ export class AddressBookComponent implements OnInit {
       this.carrierData.address[index].houseNumber = '';
       this.carrierData.address[index].street = '';
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerData.address[index].address1 = '';
       this.ownerData.address[index].address2 = '';
       this.ownerData.address[index].cityName = null;
@@ -4891,7 +4893,7 @@ export class AddressBookComponent implements OnInit {
       this.ownerData.address[index].houseNumber = '';
       this.ownerData.address[index].street = '';
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperData.address[index].address1 = '';
       this.shipperData.address[index].address2 = '';
       this.shipperData.address[index].cityName = null;
@@ -4906,7 +4908,7 @@ export class AddressBookComponent implements OnInit {
       this.shipperData.address[index].houseNumber = '';
       this.shipperData.address[index].street = '';
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.address[index].address1 = '';
       this.consigneeData.address[index].address2 = '';
       this.consigneeData.address[index].cityName = null;
@@ -4921,7 +4923,7 @@ export class AddressBookComponent implements OnInit {
       this.consigneeData.address[index].houseNumber = '';
       this.consigneeData.address[index].street = '';
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffData.address[index].address1 = '';
       this.staffData.address[index].address2 = '';
       this.staffData.address[index].cityName = null;
@@ -4936,7 +4938,7 @@ export class AddressBookComponent implements OnInit {
       this.staffData.address[index].houseNumber = '';
       this.staffData.address[index].street = '';
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.fcCompanyData.address[index].address1 = '';
       this.fcCompanyData.address[index].address2 = '';
       this.fcCompanyData.address[index].cityName = null;
@@ -4961,104 +4963,104 @@ export class AddressBookComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.hideErrors();
-      const data = {
-        firstName: this.staffData['firstName'],
-        lastName: this.staffData['lastName'],
-        employeeID: this.staffData['employeeID'],
-        dateOfBirth: this.staffData['dateOfBirth'],
-        phone: this.staffData['workPhone'],
-        email: this.staffData['workEmail'],
-        currentStatus: 'ACTIVE',
-        departmentName: this.staffData.userAccount['department'],
-        userType: this.staffData.userData.userType,
-        userName: this.staffData.userData.username,
-        password: this.staffData.userData.password,
-      };
+    const data = {
+      firstName: this.staffData['firstName'],
+      lastName: this.staffData['lastName'],
+      employeeID: this.staffData['employeeID'],
+      dateOfBirth: this.staffData['dateOfBirth'],
+      phone: this.staffData['workPhone'],
+      email: this.staffData['workEmail'],
+      currentStatus: 'ACTIVE',
+      departmentName: this.staffData.userAccount['department'],
+      userType: this.staffData.userData.userType,
+      userName: this.staffData.userData.username,
+      password: this.staffData.userData.password,
+    };
 
-      // create form data instance
-      const formData = new FormData();
+    // create form data instance
+    const formData = new FormData();
 
-      //append other fields
-      formData.append('data', JSON.stringify(data));
+    //append other fields
+    formData.append('data', JSON.stringify(data));
 
-      this.apiService.postData('users', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          from(err.error)
-            .pipe(
-              map((val: any) => {
-                val.message = val.message.replace(/".*"/, 'This Field');
-                this.errors[val.context.key] = val.message;
-              })
-            )
-            .subscribe({
-              complete: () => {
-                this.throwErrors();
-                this.hasError = true;
-                this.toastr.error('Please see the errors');
-              },
-              error: () => { },
-              next: () => { },
-            });
-        },
-        next: (res) => {
-          this.response = res;
-          this.errorClass = false;
-        }
-      });
+    this.apiService.postData('users', formData, true).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.hasError = true;
+              this.toastr.error('Please see the errors');
+            },
+            error: () => { },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.errorClass = false;
+      }
+    });
   }
 
   // next button func
   nextResults(type) {
-    if(type == 'customer') {
+    if (type == 'customer') {
       this.customerNext = true;
       this.customerPrev = true;
       this.customerDraw += 1;
       this.initDataTable();
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerNext = true;
       this.brokerPrev = true;
       this.brokerDraw += 1;
       this.initDataTableBroker();
 
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorNext = true;
       this.vendorPrev = true;
       this.vendorDraw += 1;
       this.initDataTableVendor();
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierNext = true;
       this.carrierPrev = true;
       this.carrierDraw += 1;
       this.initDataTableCarrier();
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerOperatorNext = true;
       this.ownerOperatorPrev = true;
       this.ownerOperatorDraw += 1;
       this.initDataTableOperator();
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperNext = true;
       this.shipperPrev = true;
       this.shipperDraw += 1;
       this.initDataTableShipper();
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeNext = true;
       this.consigneePrev = true;
       this.consigneeDraw += 1;
       this.initDataTableConsignee();
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffNext = true;
       this.staffPrev = true;
       this.staffDraw += 1;
       this.initDataTableStaff();
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.companyNext = true;
       this.companyPrev = true;
       this.companyDraw += 1;
@@ -5068,63 +5070,63 @@ export class AddressBookComponent implements OnInit {
 
   // prev button func
   prevResults(type) {
-    if(type == 'customer') {
+    if (type == 'customer') {
       this.customerNext = true;
       this.customerPrev = true;
       this.customerDraw -= 1;
       this.lastEvaluatedKeyCustomer = this.customerPrevEvauatedKeys[this.customerDraw];
       this.initDataTable();
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerNext = true;
       this.brokerPrev = true;
       this.brokerDraw -= 1;
       this.lastEvaluatedKeyBroker = this.brokerPrevEvauatedKeys[this.brokerDraw];
       this.initDataTableBroker();
 
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorNext = true;
       this.vendorPrev = true;
       this.vendorDraw -= 1;
       this.lastEvaluatedKeyVendor = this.vendorPrevEvauatedKeys[this.vendorDraw];
       this.initDataTableVendor();
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierNext = true;
       this.carrierPrev = true;
       this.carrierDraw -= 1;
       this.lastEvaluatedKeyCarrier = this.carrierPrevEvauatedKeys[this.carrierDraw];
       this.initDataTableCarrier();
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerOperatorNext = true;
       this.ownerOperatorPrev = true;
       this.ownerOperatorDraw -= 1;
       this.lastEvaluatedKeyOperator = this.ownerOperatorPrevEvauatedKeys[this.ownerOperatorDraw];
       this.initDataTableOperator();
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperNext = true;
       this.shipperPrev = true;
       this.shipperDraw -= 1;
       this.lastEvaluatedKeyShipper = this.shipperPrevEvauatedKeys[this.shipperDraw];
       this.initDataTableShipper();
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeNext = true;
       this.consigneePrev = true;
       this.consigneeDraw -= 1;
       this.lastEvaluatedKeyConsignee = this.consigneePrevEvauatedKeys[this.consigneeDraw];
       this.initDataTableConsignee();
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffNext = true;
       this.staffPrev = true;
       this.staffDraw -= 1;
       this.lastEvaluatedKeyStaff = this.staffPrevEvauatedKeys[this.staffDraw];
       this.initDataTableStaff();
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.companyNext = true;
       this.companyPrev = true;
       this.companyDraw -= 1;
@@ -5134,46 +5136,46 @@ export class AddressBookComponent implements OnInit {
   }
 
   getStartandEndVal(type) {
-    if(type == 'customer') {
-      this.custtStartPoint = this.customerDraw*this.pageLength+1;
-      this.custtEndPoint = this.custtStartPoint+this.pageLength-1;
+    if (type == 'customer') {
+      this.custtStartPoint = this.customerDraw * this.pageLength + 1;
+      this.custtEndPoint = this.custtStartPoint + this.pageLength - 1;
 
-    } else if(type == 'broker') {
-      this.brokerStartPoint = this.brokerDraw*this.pageLength+1;
-      this.brokerEndPoint = this.brokerStartPoint+this.pageLength-1;
+    } else if (type == 'broker') {
+      this.brokerStartPoint = this.brokerDraw * this.pageLength + 1;
+      this.brokerEndPoint = this.brokerStartPoint + this.pageLength - 1;
 
-    } else if(type == 'vendor') {
-      this.vendorStartPoint = this.vendorDraw*this.pageLength+1;
-      this.vendorEndPoint = this.vendorStartPoint+this.pageLength-1;
+    } else if (type == 'vendor') {
+      this.vendorStartPoint = this.vendorDraw * this.pageLength + 1;
+      this.vendorEndPoint = this.vendorStartPoint + this.pageLength - 1;
 
-    } else if(type == 'carrier') {
-      this.carrierStartPoint = this.carrierDraw*this.pageLength+1;
-      this.carrierEndPoint = this.carrierStartPoint+this.pageLength-1;
+    } else if (type == 'carrier') {
+      this.carrierStartPoint = this.carrierDraw * this.pageLength + 1;
+      this.carrierEndPoint = this.carrierStartPoint + this.pageLength - 1;
 
-    } else if(type == 'operator') {
-      this.ownerOperatorStartPoint = this.ownerOperatorDraw*this.pageLength+1;
-      this.ownerOperatorEndPoint = this.ownerOperatorStartPoint+this.pageLength-1;
+    } else if (type == 'operator') {
+      this.ownerOperatorStartPoint = this.ownerOperatorDraw * this.pageLength + 1;
+      this.ownerOperatorEndPoint = this.ownerOperatorStartPoint + this.pageLength - 1;
 
-    } else if(type == 'shipper') {
-      this.shipperStartPoint = this.shipperDraw*this.pageLength+1;
-      this.shipperEndPoint = this.shipperStartPoint+this.pageLength-1;
+    } else if (type == 'shipper') {
+      this.shipperStartPoint = this.shipperDraw * this.pageLength + 1;
+      this.shipperEndPoint = this.shipperStartPoint + this.pageLength - 1;
 
-    } else if(type == 'consignee') {
-      this.consigneeStartPoint = this.consigneeDraw*this.pageLength+1;
-      this.consigneeEndPoint = this.consigneeStartPoint+this.pageLength-1;
+    } else if (type == 'consignee') {
+      this.consigneeStartPoint = this.consigneeDraw * this.pageLength + 1;
+      this.consigneeEndPoint = this.consigneeStartPoint + this.pageLength - 1;
 
-    } else if(type == 'staff') {
-      this.staffStartPoint = this.staffDraw*this.pageLength+1;
-      this.staffEndPoint = this.staffStartPoint+this.pageLength-1;
+    } else if (type == 'staff') {
+      this.staffStartPoint = this.staffDraw * this.pageLength + 1;
+      this.staffEndPoint = this.staffStartPoint + this.pageLength - 1;
 
-    } else if(type == 'company') {
-      this.companyStartPoint = this.companyDraw*this.pageLength+1;
-      this.companyEndPoint = this.companyStartPoint+this.pageLength-1;
+    } else if (type == 'company') {
+      this.companyStartPoint = this.companyDraw * this.pageLength + 1;
+      this.companyEndPoint = this.companyStartPoint + this.pageLength - 1;
     }
   }
 
   manAddress(event, i, type) {
-    if(type == 'customer') {
+    if (type == 'customer') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5188,11 +5190,11 @@ export class AddressBookComponent implements OnInit {
       this.customerData.address[i].zipCode = '';
       this.customerData.address[i].address1 = '';
       this.customerData.address[i].address2 = '';
-      if(this.customerData.address[i].geoCords != undefined){
+      if (this.customerData.address[i].geoCords != undefined) {
         this.customerData.address[i].geoCords.lat = '';
         this.customerData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5207,11 +5209,11 @@ export class AddressBookComponent implements OnInit {
       this.brokerData.address[i].zipCode = '';
       this.brokerData.address[i].address1 = '';
       this.brokerData.address[i].address2 = '';
-      if(this.brokerData.address[i].geoCords != undefined){
+      if (this.brokerData.address[i].geoCords != undefined) {
         this.brokerData.address[i].geoCords.lat = '';
         this.brokerData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5226,11 +5228,11 @@ export class AddressBookComponent implements OnInit {
       this.vendorData.address[i].zipCode = '';
       this.vendorData.address[i].address1 = '';
       this.vendorData.address[i].address2 = '';
-      if(this.vendorData.address[i].geoCords != undefined){
+      if (this.vendorData.address[i].geoCords != undefined) {
         this.vendorData.address[i].geoCords.lat = '';
         this.vendorData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5245,11 +5247,11 @@ export class AddressBookComponent implements OnInit {
       this.carrierData.address[i].zipCode = '';
       this.carrierData.address[i].address1 = '';
       this.carrierData.address[i].address2 = '';
-      if(this.carrierData.address[i].geoCords != undefined){
+      if (this.carrierData.address[i].geoCords != undefined) {
         this.carrierData.address[i].geoCords.lat = '';
         this.carrierData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'owner') {
+    } else if (type == 'owner') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5264,11 +5266,11 @@ export class AddressBookComponent implements OnInit {
       this.ownerData.address[i].zipCode = '';
       this.ownerData.address[i].address1 = '';
       this.ownerData.address[i].address2 = '';
-      if(this.ownerData.address[i].geoCords != undefined){
+      if (this.ownerData.address[i].geoCords != undefined) {
         this.ownerData.address[i].geoCords.lat = '';
         this.ownerData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5283,11 +5285,11 @@ export class AddressBookComponent implements OnInit {
       this.shipperData.address[i].zipCode = '';
       this.shipperData.address[i].address1 = '';
       this.shipperData.address[i].address2 = '';
-      if(this.shipperData.address[i].geoCords != undefined){
+      if (this.shipperData.address[i].geoCords != undefined) {
         this.shipperData.address[i].geoCords.lat = '';
         this.shipperData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5302,11 +5304,11 @@ export class AddressBookComponent implements OnInit {
       this.consigneeData.address[i].zipCode = '';
       this.consigneeData.address[i].address1 = '';
       this.consigneeData.address[i].address2 = '';
-      if(this.consigneeData.address[i].geoCords != undefined){
+      if (this.consigneeData.address[i].geoCords != undefined) {
         this.consigneeData.address[i].geoCords.lat = '';
         this.consigneeData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5321,11 +5323,11 @@ export class AddressBookComponent implements OnInit {
       this.staffData.address[i].zipCode = '';
       this.staffData.address[i].address1 = '';
       this.staffData.address[i].address2 = '';
-      if(this.staffData.address[i].geoCords != undefined){
+      if (this.staffData.address[i].geoCords != undefined) {
         this.staffData.address[i].geoCords.lat = '';
         this.staffData.address[i].geoCords.lng = '';
       }
-    } else if(type == 'fcCompany') {
+    } else if (type == 'fcCompany') {
       if (event.target.checked) {
         $(event.target).closest('.address-item').addClass('open');
       } else {
@@ -5340,51 +5342,51 @@ export class AddressBookComponent implements OnInit {
       this.fcCompanyData.address[i].zipCode = '';
       this.fcCompanyData.address[i].address1 = '';
       this.fcCompanyData.address[i].address2 = '';
-      if(this.fcCompanyData.address[i].geoCords != undefined){
+      if (this.fcCompanyData.address[i].geoCords != undefined) {
         this.fcCompanyData.address[i].geoCords.lat = '';
         this.fcCompanyData.address[i].geoCords.lng = '';
       }
     }
   }
 
-  getEditStates(countryCode, type, index) {
-    let states = CountryStateCity.GetStatesByCountryCode([countryCode]);
-    if(type == 'broker') {
+  async getEditStates(countryCode, type, index) {
+    let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    if (type == 'broker') {
       this.brokerData.address[index].states = states;
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.address[index].states = states;
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorData.address[index].states = states;
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.address[index].states = states;
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerData.address[index].states = states;
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperData.address[index].states = states;
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.address[index].states = states;
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.fcCompanyData.address[index].states = states;
     }
   }
 
-  getEditCities(countryCode, stateCode, type, index) {
-    let cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
-    if(type == 'broker') {
+  async getEditCities(countryCode, stateCode, type, index) {
+    let cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    if (type == 'broker') {
       this.brokerData.address[index].cities = cities;
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.address[index].cities = cities;
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorData.address[index].cities = cities;
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.address[index].cities = cities;
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerData.address[index].cities = cities;
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperData.address[index].cities = cities;
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.address[index].cities = cities;
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.fcCompanyData.address[index].cities = cities;
     }
   }
@@ -5394,47 +5396,47 @@ export class AddressBookComponent implements OnInit {
   }
 
   resetCountResult(type) {
-    if(type == 'customer') {
+    if (type == 'customer') {
       this.custtStartPoint = 1;
       this.custtEndPoint = this.pageLength;
       this.customerDraw = 0;
 
-    } else if(type == 'broker') {
+    } else if (type == 'broker') {
       this.brokerStartPoint = 1;
       this.brokerEndPoint = this.pageLength;
       this.brokerDraw = 0;
 
-    } else if(type == 'vendor') {
+    } else if (type == 'vendor') {
       this.vendorStartPoint = 1;
       this.vendorEndPoint = this.pageLength;
       this.vendorDraw = 0;
 
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierStartPoint = 1;
       this.carrierEndPoint = this.pageLength;
       this.carrierDraw = 0;
 
-    } else if(type == 'operator') {
+    } else if (type == 'operator') {
       this.ownerOperatorStartPoint = 1;
       this.ownerOperatorEndPoint = this.pageLength;
       this.ownerOperatorDraw = 0;
 
-    } else if(type == 'shipper') {
+    } else if (type == 'shipper') {
       this.shipperStartPoint = 1;
       this.shipperEndPoint = this.pageLength;
       this.shipperDraw = 0;
 
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeStartPoint = 1;
       this.consigneeEndPoint = this.pageLength;
       this.consigneeDraw = 0;
 
-    } else if(type == 'staff') {
+    } else if (type == 'staff') {
       this.staffStartPoint = 1;
       this.staffEndPoint = this.pageLength;
       this.staffDraw = 0;
 
-    } else if(type == 'company') {
+    } else if (type == 'company') {
       this.companyStartPoint = 1;
       this.companyEndPoint = this.pageLength;
       this.companyDraw = 0;
@@ -5443,120 +5445,120 @@ export class AddressBookComponent implements OnInit {
 
   getCurrentuser = async () => {
     this.isCarrierID = localStorage.getItem('carrierID');
-    if(this.isCarrierID == undefined || this.isCarrierID == null) {
+    if (this.isCarrierID == undefined || this.isCarrierID == null) {
       let usr = (await Auth.currentSession()).getIdToken().payload;
       this.isCarrierID = usr.carrierID;
     }
   }
 
-  checkCompanyName = _.debounce(function(value, type, searchType='') {
+  checkCompanyName = _.debounce(function (value, type, searchType = '') {
 
     this.apiService
-        .getData(`customers/suggestion/${value}?type=${searchType}`)
-        .subscribe((result) => {
-          if(searchType == 'company') {
-            this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
+      .getData(`customers/suggestion/${value}?type=${searchType}`)
+      .subscribe((result) => {
+        if (searchType == 'company') {
+          this.suggestedCustomerCompanies = result.Items.map(item => item.companyName).filter((value, index, self) => self.indexOf(value) === index)
 
-          } else {
-            this.suggestedCustomers = result.Items;
-            this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
-              if(v.lastName != undefined && v.lastName != '') {
-                v.name = v.firstName + ' ' + v.lastName;
-                v.searchVall = v.firstName + '-' + v.lastName;
-              } else {
-                v.name = v.firstName;
-                v.searchVall = v.firstName;
-              }
-              return v;
-            })
-          }
-        });
+        } else {
+          this.suggestedCustomers = result.Items;
+          this.suggestedCustomers = this.suggestedCustomers.map(function (v) {
+            if (v.lastName != undefined && v.lastName != '') {
+              v.name = v.firstName + ' ' + v.lastName;
+              v.searchVall = v.firstName + '-' + v.lastName;
+            } else {
+              v.name = v.firstName;
+              v.searchVall = v.firstName;
+            }
+            return v;
+          })
+        }
+      });
   }, 400);
 
   getEditRecord(id, type) {
-    this.apiService.getData('contacts/detail/' + id).subscribe((result: any) => {
-      if(result.Items.length > 0) {
+    this.apiService.getData('contacts/detail/' + id).subscribe(async (result: any) => {
+      if (result.Items.length > 0) {
         delete result.Items[0].contactSK;
         delete result.Items[0].carrierID;
         delete result.Items[0].timeModified;
 
-        if(type == 'broker') {
+        if (type == 'broker') {
           this.brokerData = result.Items[0];
           for (let k = 0; k < this.brokerData['address'].length; k++) {
             const element = this.brokerData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'broker', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'broker', k);
+              await this.getEditStates(element.countryCode, 'broker', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'broker', k);
             }
           }
 
-        } else if(type == 'carrier') {
+        } else if (type == 'carrier') {
           this.carrierData = result.Items[0];
           for (let k = 0; k < this.carrierData['address'].length; k++) {
             const element = this.carrierData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'carrier', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'carrier', k);
+              await this.getEditStates(element.countryCode, 'carrier', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'carrier', k);
             }
           }
 
-        } else if(type == 'consignee') {
+        } else if (type == 'consignee') {
           this.consigneeData = result.Items[0];
           for (let k = 0; k < this.consigneeData['address'].length; k++) {
             const element = this.consigneeData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'consignee', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'consignee', k);
+              await this.getEditStates(element.countryCode, 'consignee', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'consignee', k);
             }
           }
 
-        } else if(type == 'consignor') {
+        } else if (type == 'consignor') {
           this.shipperData = result.Items[0];
           for (let k = 0; k < this.shipperData['address'].length; k++) {
             const element = this.shipperData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'consignor', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'consignor', k);
+              await this.getEditStates(element.countryCode, 'consignor', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'consignor', k);
             }
           }
 
-        } else if(type == 'customer') {
+        } else if (type == 'customer') {
           this.customerData = result.Items[0];
           for (let k = 0; k < this.customerData['address'].length; k++) {
             const element = this.customerData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'customer', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'customer', k);
+              await this.getEditStates(element.countryCode, 'customer', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'customer', k);
             }
           }
 
-        } else if(type == 'factoringCompany') {
+        } else if (type == 'factoringCompany') {
           this.fcCompanyData = result.Items[0];
           for (let k = 0; k < this.fcCompanyData['address'].length; k++) {
             const element = this.fcCompanyData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'factoringCompany', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'factoringCompany', k);
+              await this.getEditStates(element.countryCode, 'factoringCompany', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'factoringCompany', k);
             }
           }
 
-        } else if(type == 'ownerOperator') {
+        } else if (type == 'ownerOperator') {
           this.ownerData = result.Items[0];
           for (let k = 0; k < this.ownerData['address'].length; k++) {
             const element = this.ownerData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'ownerOperator', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'ownerOperator', k);
+              await this.getEditStates(element.countryCode, 'ownerOperator', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'ownerOperator', k);
             }
           }
 
-        } else if(type == 'vendor') {
+        } else if (type == 'vendor') {
           this.vendorData = result.Items[0];
           for (let k = 0; k < this.vendorData['address'].length; k++) {
             const element = this.vendorData['address'][k];
             if (element.manual) {
-              this.getEditStates(element.countryCode, 'vendor', k);
-              this.getEditCities(element.countryCode, element.stateCode, 'vendor', k);
+              await this.getEditStates(element.countryCode, 'vendor', k);
+              await this.getEditCities(element.countryCode, element.stateCode, 'vendor', k);
             }
           }
         }
@@ -5580,8 +5582,8 @@ export class AddressBookComponent implements OnInit {
     });
   }
 
-  addAdditionalContact(data){
-    if(data.additionalContact.length < 3) {
+  addAdditionalContact(data) {
+    if (data.additionalContact.length < 3) {
       this.additionalDisabled = false;
       let newObj = {
         fullName: '',
@@ -5593,7 +5595,7 @@ export class AddressBookComponent implements OnInit {
         fax: '',
       };
       data.additionalContact.push(newObj);
-      if(data.additionalContact.length == 3) {
+      if (data.additionalContact.length == 3) {
         this.additionalDisabled = true;
       }
     } else {
@@ -5603,44 +5605,44 @@ export class AddressBookComponent implements OnInit {
   }
 
   delAdditionalContact(type, index) {
-    if(type == 'broker') {
+    if (type == 'broker') {
       this.brokerData.additionalContact.splice(index, 1);
-      if(this.brokerData.additionalContact.length < 3) {
+      if (this.brokerData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
       }
-    } else if(type == 'carrier') {
+    } else if (type == 'carrier') {
       this.carrierData.additionalContact.splice(index, 1);
-      if(this.carrierData.additionalContact.length < 3) {
+      if (this.carrierData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
       }
-    } else if(type == 'consignee') {
+    } else if (type == 'consignee') {
       this.consigneeData.additionalContact.splice(index, 1);
-      if(this.consigneeData.additionalContact.length < 3) {
+      if (this.consigneeData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
       }
-    } else if(type == 'consignor') {
+    } else if (type == 'consignor') {
       this.shipperData.additionalContact.splice(index, 1);
-      if(this.shipperData.additionalContact.length < 3) {
+      if (this.shipperData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
       }
-    } else if(type == 'customer') {
+    } else if (type == 'customer') {
       this.customerData.additionalContact.splice(index, 1);
-      if(this.customerData.additionalContact.length < 3) {
+      if (this.customerData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
       }
-    } else if(type == 'ownerOperator') {
+    } else if (type == 'ownerOperator') {
       this.ownerData.additionalContact.splice(index, 1);
-      if(this.ownerData.additionalContact.length < 3) {
+      if (this.ownerData.additionalContact.length < 3) {
         this.additionalDisabled = false;
       } else {
         this.additionalDisabled = true;
@@ -5649,13 +5651,13 @@ export class AddressBookComponent implements OnInit {
   }
 
   updateCurrency(currency, type) {
-    if(type == 'carrier') {
+    if (type == 'carrier') {
       this.carrierData.paymentDetails.payrollRateCurrency = currency;
       this.carrierData.paymentDetails.loadedMilesCurrency = currency;
       this.carrierData.paymentDetails.deliveryRateCurrency = currency;
       this.carrierData.paymentDetails.emptyMilesCurrency = currency;
 
-    } else if(type == 'ownerOperator') {
+    } else if (type == 'ownerOperator') {
       this.ownerData.paymentDetails.payrollRateCurrency = currency;
       this.ownerData.paymentDetails.loadedMilesCurrency = currency;
       this.ownerData.paymentDetails.emptyMilesCurrency = currency;
