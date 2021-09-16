@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiService } from '../../services';
+import { ApiService, ListService } from '../../services';
 import { AuthService } from '../../services';
 import { Role, User } from '../../models/objects';
 import { Auth } from 'aws-amplify';
@@ -62,7 +62,8 @@ confirmPassword:any;
   constructor(private apiService: ApiService,
     private router: Router,
     private authService: AuthService,
-    private toaster: ToastrService) { }
+    private toaster: ToastrService,
+    private listService: ListService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -133,7 +134,20 @@ confirmPassword:any;
         this.userName = this.userName.trim();
         let loginResponse=await Auth.signIn(this.userName, this.password);
         if(loginResponse){
+        
+        let allow=await this.apiService.checkIfUserActive();
+        
+        if(!allow){
+          this.submitDisabled=false
+          this.hasError=true;
+          this.Error=this.userName+" is not Approved. Please contact support@fleethawks.com | +1 (855)208 7575"
+          Auth.signOut();
+         
+         return
+        }
+        else{
         let carrierID=await this.apiService.getCarrierID();
+
         this.apiService.getData(`carriers/${carrierID}`).subscribe((res)=>{
           if('isProfileComplete' in res.Items[0]){
             if(res.Items[0].isProfileComplete){
@@ -154,7 +168,7 @@ confirmPassword:any;
         const jwt = (await Auth.currentSession()).getIdToken().getJwtToken();
         const at = (await Auth.currentSession()).getAccessToken().getJwtToken()
         localStorage.setItem('congnitoAT', at);
-        var decodedToken = jwt_decode(jwt);
+        var decodedToken:any = jwt_decode(jwt);
 
         if (decodedToken.userType == 'driver') {
           this.submitDisabled = false;
@@ -188,9 +202,11 @@ confirmPassword:any;
             localStorage.setItem('signOut', 'false'); //trigger flag
             localStorage.setItem('accessToken', jwt);//save token in session storage
             await this.router.navigate(['/Map-Dashboard']);
+            this.listService.triggerModal('');
             localStorage.setItem('user', JSON.stringify(user));
           }
         }
+      }
       } catch (err) {
         this.submitDisabled = false;
         this.hasError = true;

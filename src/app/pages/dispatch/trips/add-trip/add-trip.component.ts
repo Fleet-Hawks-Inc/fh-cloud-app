@@ -13,7 +13,6 @@ import * as moment from "moment";
 import { Location } from '@angular/common';
 import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
 import { v4 as uuidv4 } from 'uuid';
-import { split } from 'lodash';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -457,7 +456,7 @@ export class AddTripComponent implements OnInit {
         })
     }
 
-    mapShow() {
+    mapShow() { 
         this.hereMap.mapSetAPI();
         this.hereMap.mapInit();
     }
@@ -1234,7 +1233,6 @@ export class AddTripComponent implements OnInit {
         this.errors = {};
         this.hasError = false;
         this.hasSuccess = false;
-        console.log('this.tripData', this.tripData);
         this.apiService.postData('trips', this.tripData).subscribe({
             complete: () => {
             },
@@ -1569,11 +1567,13 @@ export class AddTripComponent implements OnInit {
                     result.split.map((x, cind) => {
                         this.splitArr[cind] = [];
                         x.plan.map((c) => {
+                            
                             this.trips.map((t) => {
                                 if(t.planID === c) {
                                     this.dummySplitArr.push(t.planID);
                                     t.splitDone = true;
                                     t.split = true;
+                                    t.splitName = x.splitName;
                                     this.splitArr[cind].push(t);
                                 }
                             })
@@ -1744,13 +1744,6 @@ export class AddTripComponent implements OnInit {
             this.tripData.tripPlanning.push(obj);
         }
         this.splitTripArr();
-        // for (let i = 0; i < this.splitArr.length; i++) {
-        //     const element = this.splitArr[i];
-        //     this.tripData.split[i] = [];
-        //     element.map((v) => {
-        //         this.tripData.split[i].push(v.planID);
-        //     })
-        // }
         this.tripData.driverIDs = selectedDriverids;
         this.tripData.vehicleIDs = selectedVehicles;
         this.tripData.assetIDs = selectedAssets;
@@ -1807,6 +1800,7 @@ export class AddTripComponent implements OnInit {
                 settlmnt: false,
                 assgnIds: [],
                 splitID: uuidv4(),
+                splitName: i+1,
             }
             this.tripData.split[i] = obz;
             element.map((v) => {

@@ -34,10 +34,10 @@ export class AuthService implements CanActivate {
   // simulate jwt token is valid
   public isTokenExpired(): boolean {
     let token = localStorage.getItem('accessToken');
-    let decodedToken = jwt_decode(token);
+    let decodedToken: any = jwt_decode(token);
     let tokenExpiry = decodedToken.exp;
     let currentTimestamp = new Date().getTime();
-    if(tokenExpiry < currentTimestamp) {
+    if (tokenExpiry < currentTimestamp) {
       return true;
     } else {
       return false;

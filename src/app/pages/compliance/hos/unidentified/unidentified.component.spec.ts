@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UnidentifiedComponent } from './unidentified.component';
 
@@ -6,7 +6,7 @@ describe('UnidentifiedComponent', () => {
   let component: UnidentifiedComponent;
   let fixture: ComponentFixture<UnidentifiedComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UnidentifiedComponent ]
     })

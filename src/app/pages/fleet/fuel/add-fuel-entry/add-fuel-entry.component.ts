@@ -129,8 +129,8 @@ export class AddFuelEntryComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
-  ngOnInit() {
-    this.fetchVehicles();
+  async ngOnInit() {
+    this.listService.fetchVehicles();
     this.fetchTrips();
     this.fetchAssets();
     this.fetchDrivers();
@@ -142,7 +142,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelID = this.route.snapshot.params[`fuelID`];
     if (this.fuelID) {
       this.title = 'Edit Fuel Entry';
-      this.fetchFuelEntry();
+      await this.fetchFuelEntry();
     } else {
       this.title = 'Add Fuel Entry';
     }
@@ -150,16 +150,67 @@ export class AddFuelEntryComponent implements OnInit {
       // this.fuelForm = $('#fuelForm').validate();
     });
 
-    this.vendors = this.listService.vendorList;
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
+
+    let vehicleList = new Array<any>();
+    this.getValidVehicles(vehicleList);
+    this.vehicles = vehicleList;
+
+    // trips
+    // assets
+    // drivers
   }
+
+  private getValidVehicles(vehicleList: any[]) {
+    let ids = [];
+    this.listService.vehicleList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 1 &&
+          element2.vehicleID === this.fuelData.unitID
+        ) {
+          this.fuelData.unitID = null;
+          this.fetchedUnitID = null;
+        }
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.vehicleID)
+        ) {
+          vehicleList.push(element2);
+          ids.push(element2.vehicleID);
+        }
+      });
+    });
+  }
+
+  private getValidVendors(vendorList:any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1 && this.fuelData.vendorID === element2.contactID){
+          this.fuelData.vendorID = null;
+        }
+      })
+    })
+  }
+
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
-    });
-  }
+  // fetchVehicles() {
+  //   this.apiService.getData('vehicles').subscribe((result: any) => {
+  //     this.vehicles = result.Items;
+  //   });
+  // }
   addFuelTaxRow() {
     this.fuelData.taxes.push({
         taxType: null,
@@ -203,8 +254,8 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
   fetchTrips() {
-    this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
+    this.apiService.getData('trips/get/all').subscribe((result: any) => {
+      this.trips = result;
     });
   }
   getStates(cntryCode) {
@@ -235,7 +286,7 @@ export class AddFuelEntryComponent implements OnInit {
   onChangeUnitType(value: any) {
     if (this.fuelID) {
       if (value !== this.fetchedUnitType) {
-        this.fuelData.unitID = '';
+        this.fuelData.unitID = null;
         this.fuelData.unitType = value;
       } else {
         this.fuelData.unitID = this.fetchedUnitID;
@@ -243,7 +294,7 @@ export class AddFuelEntryComponent implements OnInit {
       }
     } else {
       this.fuelData.unitType = value;
-      this.fuelData.unitID = '';
+      this.fuelData.unitID = null;
     }
 
   }
@@ -340,10 +391,10 @@ export class AddFuelEntryComponent implements OnInit {
   /*
   * Fetch Fuel Entry details before updating
  */
-  fetchFuelEntry() {
-    this.apiService
-      .getData('fuelEntries/' + this.fuelID)
-      .subscribe((result: any) => {
+  async fetchFuelEntry() {
+    let result = await this.apiService
+      .getData('fuelEntries/' + this.fuelID).toPromise();
+      // .subscribe((result: any) => {
         result = result.Items[0];
         this.fillCountry(result.countryCode, result.stateCode);
         this.fuelData[`fuelID`] = this.fuelID;
@@ -391,7 +442,7 @@ export class AddFuelEntryComponent implements OnInit {
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
-      });
+      // });
   }
   deleteImage(i: number) {
     this.fuelData.uploadedPhotos.splice(i, 1);

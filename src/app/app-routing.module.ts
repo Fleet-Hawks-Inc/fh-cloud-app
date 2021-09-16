@@ -80,17 +80,15 @@ const routes: Routes = [
   }
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes,
-    {
-      preloadingStrategy: PreLoadStrategy,
-      useHash: true
-    }
-  ), CommonModule, ChartsModule],
+  imports: [RouterModule.forRoot(routes, {
+    preloadingStrategy: PreLoadStrategy,
+    useHash: true,
+    relativeLinkResolution: 'legacy',
+    initialNavigation: 'enabled'
+}), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
-  entryComponents: [
-    UnsavedChangesComponent,
-  ]
+
 })
 
 export class AppRoutingModule { }

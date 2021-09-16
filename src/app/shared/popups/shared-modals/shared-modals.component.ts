@@ -198,7 +198,7 @@ fetchApis() {
       });
       this.fetchVehicles();
       this.fetchTasks();
-    } else if(res === 'add-issue') {
+    } else if(res === 'logIssue') {
       let ngbModalOptions: NgbModalOptions = {
         backdrop : 'static',
         keyboard : false,

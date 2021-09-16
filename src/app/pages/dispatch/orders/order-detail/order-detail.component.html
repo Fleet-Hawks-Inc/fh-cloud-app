@@ -7,7 +7,7 @@
                         Order Details 
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
-                        <button [disabled]="isInvoiced" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
+                        <button (click)="isModalShow = true" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
                             Invoice</button>
                         <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Order</a>
@@ -543,10 +543,10 @@
                                                             <tr *ngIf="milesArr?.length == 0">
                                                                 <td colspan="2">No data found</td>
                                                             </tr>
-                                                            <tr *ngFor="let data of milesArr">
+                                                            <tr *ngFor="let data of milesArr; let k = index;">
                                                                 <td style="width: 50%;">
-                                                                    <div *ngFor="let ship of data.shippers; let i = index;" class="border-bottom mb-2 pb-2">
-                                                                        <h5 class="m-0 text-dark"><strong>Shipper-{{i + 1}}</strong></h5>
+                                                                    <div *ngFor="let ship of data.shippers; " class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Shipper-{{k + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let point of ship.pickupPoint; let s=index">
                                                                             Pickup-{{s + 1}}:
@@ -568,8 +568,8 @@
                                                                 </td>
                                                                 <td style="width: 50%;">
                                                                     <div
-                                                                        *ngFor="let rec of data.receivers; let r = index" class="border-bottom mb-2 pb-2">
-                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{r + 1}}</strong></h5>
+                                                                        *ngFor="let rec of data.receivers;" class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{k + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let drop of rec.dropPoint; let s = index;">
                                                                              Drop-{{s + 1}}:
@@ -860,7 +860,7 @@
 </div>
 
 <div class="modal fade" id="previewInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel"
-    aria-hidden="true" *ngIf="isInvoice">
+    aria-hidden="true" *ngIf="isModalShow">
     <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">
@@ -950,7 +950,7 @@
                                                 <tr>
                                                     <td valign="top" colspan="2">
                                                         <div *ngFor="let item of invoiceData.data">
-                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;">
+                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;align-items: flex-start;">
                                                                 <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
                                                                     <b style="font-size: 12px;">SHIPPER:</b> <br>
                                                                     <span class="text-capitalize">{{ship.companyName}}</span> <br>
@@ -1002,59 +1002,61 @@
                                                                         </table>
                                                                     </div>
                                                                 </div>
-
-                                                                <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;width: 49.5%;float: left;border: 1px dashed #8d8d8d;">
-                                                            <b style="font-size: 12px;">RECEIVER:</b> <br>
-                                                            <span class="text-capitalize">{{receive.companyName}}</span> <br>
-                                                            {{receive.receiverAddress}}
-
-                                                            <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
-
-                                                                <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.address }}
-                                                                    {{ drop.address.city }}
-                                                                    {{ drop.address.state }}
-                                                                    {{ drop.address.country }}
-                                                                    {{ drop.address.zipCode }}
-                                                                </span>
-                                                                <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.dropOffLocation }}
-                                                                </span>
-                                                                <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
-
-                                                                <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td colspan="6" style="padding: 5px 0;">
-                                                                                <table class="table-striped table-bordered" width="100%">
-                                                                                    <thead>
-                                                                                        <tr style="font-size: 12px;">
-                                                                                            <td colspan="2">COMMODITY</td>
-                                                                                            <td style="width: 80px">DEL#</td>
-                                                                                            <td style="width: 70px">QTY </td>
-                                                                                            <td style="width: 70px">WEIGHT</td>
-
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="item" *ngFor="let commodity of drop.commodity;">
-                                                                                            <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.del ? commodity.del : 'NA'}}</td>
-                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
-                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
-
-                                                                                        </tr>
-
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
+                                                                <div  class="receivement__wrap" style="width: 49.5%;float: left;">
+                                                                    <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;border: 1px dashed #8d8d8d;">
+                                                                    <b style="font-size: 12px;">RECEIVER:</b> <br>
+                                                                    <span class="text-capitalize">{{receive.companyName}}</span> <br>
+                                                                    {{receive.receiverAddress}}
+        
+                                                                    <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
+                                                                        <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+        
+                                                                        <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ drop.address.address }}
+                                                                            {{ drop.address.city }}
+                                                                            {{ drop.address.state }}
+                                                                            {{ drop.address.country }}
+                                                                            {{ drop.address.zipCode }}
+                                                                        </span>
+                                                                        <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                            {{ drop.address.dropOffLocation }}
+                                                                        </span>
+                                                                        <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
+        
+                                                                        <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td colspan="6" style="padding: 5px 0;">
+                                                                                        <table class="table-striped table-bordered" width="100%">
+                                                                                            <thead>
+                                                                                                <tr style="font-size: 12px;">
+                                                                                                    <td colspan="2">COMMODITY</td>
+                                                                                                    <td style="width: 80px">DEL#</td>
+                                                                                                    <td style="width: 70px">QTY </td>
+                                                                                                    <td style="width: 70px">WEIGHT</td>
+        
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <tr class="item" *ngFor="let commodity of drop.commodity;">
+                                                                                                    <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
+                                                                                                    <td>{{commodity.del ? commodity.del : 'NA'}}</td>
+                                                                                                    <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                                    <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+        
+                                                                                                </tr>
+        
+        
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                </div>
+                                                                
                                                             </div>
 
                                                         </div>
@@ -1069,7 +1071,9 @@
                                             </tbody>
 
                                         </table>
-
+                                        <div *ngFor="let file of invoiceData.uploadedDocs; let f = index;">
+                                            <iframe [src]="file" frameborder="0" width="100%" height="400px"></iframe>
+                                        </div>
                                         <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
                                             <tbody>
                                                 <tr>
@@ -1239,14 +1243,15 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
+                <button class="btn btn-success" (click)="generate()">Print</button>
+                <button *ngIf="!isInvoiced" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="generateInvoiceModalLabel"
-    aria-hidden="true" *ngIf="isInvoice">
+    aria-hidden="true" *ngIf="isShow">
     <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">

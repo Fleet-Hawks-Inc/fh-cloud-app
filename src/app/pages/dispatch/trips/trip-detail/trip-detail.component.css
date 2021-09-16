@@ -1,0 +1,8 @@
+.thumbnail{
+    width:70px;
+    height:70px;
+}
+.flex{
+    display:flex;
+    flex-wrap:wrap;
+}

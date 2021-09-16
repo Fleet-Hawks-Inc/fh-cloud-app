@@ -14,9 +14,9 @@
         </div>
       </header>
 
-      <form id="driverForm" class="form-horizontal form-bordered" name="dForm"  [mustMatch]="['password', 'confirmPassword']"
-        (ngSubmit)="driverID ? (driverF.form.valid ? onUpdateDriver() : scrollError()) : (driverF.form.valid ? onAddDriver() : scrollError())"
-        novalidate #driverF="ngForm" ngNativeValidate >
+      <form id="driverF" class="form-horizontal form-bordered" name="driverF"  [mustMatch]="['password', 'confirmPassword']"
+      (ngSubmit)="driverID ? (driverF.form.valid ? onUpdateDriver() : scrollError()) : (driverF.form.valid ? onAddDriver() : scrollError())"
+      novalidate #driverF="ngForm" ngNativeValidate >
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-12">
