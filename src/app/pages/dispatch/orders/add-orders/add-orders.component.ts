@@ -84,7 +84,7 @@ export class AddOrdersComponent implements OnInit {
     reference: "",
     phone: "",
     email: "",
-    zeroRated: false,
+    zeroRated: true,
     TotalAgreedAmount: "",
     ShipperDetails: "",
     ConsigneeDetails: "",
@@ -1948,7 +1948,6 @@ export class AddOrdersComponent implements OnInit {
     //for location search in listing page
     let selectedLoc = '';
     let newloc = '';
-    console.log('this.orderData.shippersReceiversInfo', this.orderData.shippersReceiversInfo)
     for (let g = 0; g < this.orderData.shippersReceiversInfo.length; g++) {
       const element = this.orderData.shippersReceiversInfo[g];
       element.receivers.map((h:any) => {

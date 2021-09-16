@@ -156,11 +156,11 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-md-3 mb-3" *ngFor="let docs of uploadedDocSrc">
+                                                <div class="flex">
+                                                    <div class="col-md-3 " *ngFor="let docs of uploadedDocSrc">
                                                         <a class="image-popup-no-margins" href="{{docs.docPath}}" target="_blank">
-                                                            <img class="img-fluid" src="{{docs.imgPath}}"
-                                                                width="75">
+                                                            <img class="thumbnail" src="{{docs.imgPath}}"
+                                                                >
                                                         </a>
                                                     </div>
                                                 </div>

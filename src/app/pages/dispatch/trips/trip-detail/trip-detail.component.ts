@@ -95,12 +95,47 @@ export class TripDetailComponent implements OnInit {
     this.fetchTripLog();
     this.fetchExpenses();
     this.fetchExpenseCategories();
+    this.fetchTripDocuments();
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
+
+  fetchTripDocuments() {
+    this.apiService.getData(`documents/trip/${this.tripID}`).subscribe((res: any) => {
+      let documents = res.Items
+      if (documents.length > 0) {
+        documents.forEach(el => {
+          if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
+            if (el.uploadedDocs.length > 0) {
+              res.Items[0].uploadedDocs.forEach(element => {
+                let name = element.split('.');
+                let ext = name[name.length - 1];
+                let obj = {}
+                if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                  obj = {
+                    imgPath: `${this.Asseturl}/${el.carrierID}/${element}`,
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                  }
+                } else {
+                  obj = {
+                    imgPath: 'assets/img/icon-pdf.png',
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                  }
+                }
+                this.uploadedDocSrc.push(obj);
+
+              });
+
+            }
+          }
+        });
+      }
+    })
+  }
+
   fetchTripLog() {
     this.apiService.getData(`auditLogs/details/${this.tripID}`).subscribe((res: any) => {
-      this.tripLog = res.Items; 
+      this.tripLog = res.Items;
       if (this.tripLog.length > 0) {
         this.tripLog.map((k) => {
           if (k.eventParams.userName !== undefined) {
@@ -157,7 +192,7 @@ export class TripDetailComponent implements OnInit {
       subscribe((result: any) => {
         result = result.Items[0];
 
-        if(result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
+        if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
         } else {
           this.showEdit = true;
@@ -247,16 +282,16 @@ export class TripDetailComponent implements OnInit {
           this.trips.push(obj);
         }
 
-        if(result.split) {
+        if (result.split) {
           result.split.map((x, cind) => {
-              this.splitArr[cind] = [];
-              x.plan.map((c) => {
-                  this.trips.map((t) => {
-                      if(t.planID === c) {
-                        this.splitArr[cind].push(t);
-                      }
-                  })
+            this.splitArr[cind] = [];
+            x.plan.map((c) => {
+              this.trips.map((t) => {
+                if (t.planID === c) {
+                  this.splitArr[cind].push(t);
+                }
               })
+            })
           })
         }
 

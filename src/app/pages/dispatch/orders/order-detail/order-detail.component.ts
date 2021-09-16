@@ -519,16 +519,18 @@ export class OrderDetailComponent implements OnInit {
           });
       },
       next: (res) => {
-        $('#previewInvoiceModal').modal('hide');
         this.generateBtnDisabled = false;
         this.toastr.success('Invoice Added Successfully.');
+        $('#previewInvoiceModal').modal('hide');
       },
     });
   }
 
   async invoiceGenerated() {
     this.invGenStatus = true;
-    this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).subscribe((res) => {});
+    let result = await this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).toPromise();
+    this.isInvoice = result.Attributes.invoiceGenerate;
+     
   }
 
   previewModal() {
