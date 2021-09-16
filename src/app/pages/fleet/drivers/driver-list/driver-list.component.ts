@@ -194,7 +194,7 @@ export class DriverListComponent implements OnInit {
         this.vehiclesObject = result;
       });
   }
-  
+
   checkboxCount = () => {
     this.driverCheckCount = 0;
     this.drivers.forEach(item => {
@@ -256,7 +256,7 @@ export class DriverListComponent implements OnInit {
         }
         result.Items.map((v) => {
           v.url = `/fleet/drivers/detail/${v.driverID}`;
-        })
+        });
         this.suggestedDrivers = [];
         this.getStartandEndVal();
         this.drivers = result[`Items`];
