@@ -11,7 +11,7 @@ export const environment = {
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
 
-  AssetURL: 'https://fh-cloud-service-uploads-ue1.s3.us-east-1.amazonaws.com',
+  AssetURL: 'https://fh-cloud-service-uploads-cacentral1.s3.ca-central-1.amazonaws.com',
   AccountServiceUrl: 'https://accounts.cloud.fleethawks.com/api/v1/',
   SafetyServiceUrl: 'https://safety.cloud.fleethawks.com/api/v1/',
 
@@ -30,12 +30,7 @@ export const environment = {
     USER_POOL_ID: 'ca-central-1_F0KoWWGIh',
     REGION: 'ca-central-1',
     APP_CLIENT_ID: '1khgs3lefjv2qld1dgts0dno68'
-  },
-  awsBucket: {
-    bucketName: 'fh-cloud-service-uploads-ue1',
-
-    region: 'ca-central-1'
-  },
+  }, 
   HOSTNAME: 'myhome.anterbox.com',
   PORT : 9001,
   MQTTPATH : '/',
