@@ -119,14 +119,14 @@
                             <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                               {{ data.txnDate | date:'yyyy/MM/dd' }}
                             </td>
-                            <td class="cursorpoint" routerLink="/accounts/expense/detail">{{ categories[data.categoryID] }}</td>
-                            <td class="cursorpoint" routerLink="/accounts/expense/detail">
+                            <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{ categories[data.categoryID] }}</td>
+                            <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                               {{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
-                            <td class="cursorpoint" routerLink="/accounts/expense/detail">
+                            <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                               <span *ngIf="data.recurring" class="text-lowercase">
                                 {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
                             </td>
-                            <td class="cursorpoint" routerLink="/accounts/expense/detail">{{ data.finalTotal | number : '1.2-2' }}
+                            <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{ data.finalTotal | number : '1.2-2' }}
                               {{ data.currency }}</td>
                             <td>
                               <div class="btn-group flex-wrap">
