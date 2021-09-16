@@ -26,8 +26,7 @@ declare var $: any;
   styleUrls: ["./add-driver.component.css"],
 })
 export class AddDriverComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate
-{
+  implements OnInit, OnDestroy, CanComponentDeactivate {
   @ViewChild("driverF") driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
@@ -49,7 +48,7 @@ export class AddDriverComponent
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
   errors = {};
-  form;
+  // form;
   concatArrayKeys = "";
   manualAddress = false;
   nextTab: any;
@@ -76,7 +75,7 @@ export class AddDriverComponent
     driverType: "employee",
     entityType: Constants.DRIVER,
     gender: "M",
-    DOB: "",
+    DOB: null,
     abstractDocs: [],
     corporationType: null,
     vendor: null,
@@ -84,15 +83,15 @@ export class AddDriverComponent
     ownerOperator: null,
     driverStatus: null,
     userName: "",
-    firstName: "",
-    lastName: "",
-    startDate: "",
+    firstName: null,
+    lastName: null,
+    startDate: null,
     terminationDate: null,
-    contractStart: "",
+    contractStart: null,
     contractEnd: null,
-    password: "",
-    confirmPassword: "",
-    citizenship: "",
+    password: null,
+    confirmPassword: null,
+    citizenship: null,
     assignedVehicle: null,
     groupID: null,
     driverImage: "",
@@ -203,10 +202,10 @@ export class AddDriverComponent
    * Form Props
    */
   userType = "driver"; // default
-  userName = "";
+  userName = null;
   password = "";
-  firstName = "";
-  lastName = "";
+  firstName = null;
+  lastName = null;
   address = "";
   phone = "";
   email = "";
@@ -348,7 +347,16 @@ export class AddDriverComponent
       day: 31,
     };
   }
-
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 150, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
   /**
    * Unsaved Changes
    */
@@ -365,7 +373,7 @@ export class AddDriverComponent
     return true;
   }
 
-  onChangeHideErrors(fieldname = "") {
+  onChangeHideErrors(fieldname: any) {
     $('[name="' + fieldname + '"]')
       .removeClass("error")
       .next()
@@ -441,19 +449,19 @@ export class AddDriverComponent
     });
   }
   fetchTimezones() {
-    const UStimezones = ct.getTimezonesForCountry("US");
+    const UStimezones = ct.getTimezonesForCountry(`US`);
     UStimezones.forEach((element: any) => {
       const obj: any = {
         name: element.name,
-        country: element.country,
+        country: element.countries[0],
       };
       this.finaltimezones.push(obj);
     });
-    const CAtimezones = ct.getTimezonesForCountry("CA");
+    const CAtimezones = ct.getTimezonesForCountry(`CA`);
     CAtimezones.forEach((e: any) => {
       const obj: any = {
         name: e.name,
-        country: e.country,
+        country: e.countries[0],
       };
       this.finaltimezones.push(obj);
     });
@@ -716,7 +724,7 @@ export class AddDriverComponent
     this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -733,7 +741,7 @@ export class AddDriverComponent
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -788,12 +796,12 @@ export class AddDriverComponent
     let ids = [];
     this.listService.vendorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           vendorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && element2.contactID === this.driverData.vendor) {
+        if (element2.isDeleted === 1 && element2.contactID === this.driverData.vendor) {
           this.driverData.vendor = null;
         }
       })
@@ -804,12 +812,12 @@ export class AddDriverComponent
     let ids = [];
     this.listService.ownerOperatorList.forEach((element) => {
       element.forEach((element2) => {
-        if(element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
           operatorList.push(element2);
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && element2.contactID === this.driverData.ownerOperator) {
+        if (element2.isDeleted === 1 && element2.contactID === this.driverData.ownerOperator) {
           this.driverData.ownerOperator = null;
         }
       })
@@ -818,16 +826,16 @@ export class AddDriverComponent
 
   async onAddDriver() {
     if (this.abstractDocs.length > 0) {
-    this.hasError = false;
-    this.hasSuccess = false;
-    this.hideErrors();
-    this.driverData.createdDate = this.driverData.createdDate;
-    this.driverData.createdTime = this.driverData.createdTime;
-    this.driverData[`deletedUploads`] = this.deletedUploads;
-    for(let d = 0; d < this.driverData.documentDetails.length; d++){
-      const element = this.driverData.documentDetails[d];
-      delete element.docStates;
-    }
+      this.hasError = false;
+      this.hasSuccess = false;
+      this.hideErrors();
+      this.driverData.createdDate = this.driverData.createdDate;
+      this.driverData.createdTime = this.driverData.createdTime;
+      this.driverData[`deletedUploads`] = this.deletedUploads;
+      for (let d = 0; d < this.driverData.documentDetails.length; d++) {
+        const element = this.driverData.documentDetails[d];
+        delete element.docStates;
+      }
 
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
@@ -891,7 +899,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -910,7 +918,7 @@ export class AddDriverComponent
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => {},
+                next: () => { },
               });
           },
           next: (res) => {
@@ -973,7 +981,6 @@ export class AddDriverComponent
   }
 
   throwErrors() {
-    console.log('this.errors', this.errors);
     from(Object.keys(this.errors)).subscribe((v) => {
       if (
         v === "userName" ||
@@ -985,12 +992,12 @@ export class AddDriverComponent
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -1036,7 +1043,6 @@ export class AddDriverComponent
    * fetch driver data
    */
   async fetchDriverByID() {
-    console.log("in fetch");
     this.isEdit = true;
     let result = await this.apiService
       .getData(`drivers/${this.driverID}`)
@@ -1260,7 +1266,6 @@ export class AddDriverComponent
       this.hasError = false;
       this.hasSuccess = false;
       this.hideErrors();
-      this.submitDisabled = true;
       this.driverData[`driverID`] = this.driverID;
       this.driverData.createdDate = this.driverData.createdDate;
       this.driverData.createdTime = this.driverData.createdTime;
@@ -1326,10 +1331,10 @@ export class AddDriverComponent
 
       // append other fields
       formData.append("data", JSON.stringify(this.driverData));
-
+      this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1611,68 +1616,78 @@ export class AddDriverComponent
 
   validateUserName() {
     this.hideVal();
-    this.driverData.userName = this.driverData.userName.trim();
-    this.apiService.getData(`drivers/validate/username?value=${this.driverData.userName}&type=${this.pageType}`)
-      .subscribe((result: any) => {
-        if(!result) {
-          this.errors['userName'] = 'Username already exists'; 
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('userName');
-          delete this.errors['userName'];
-        }
-        this.throwErrors();
-      });
+    if (this.driverData.userName !== '') {
+      this.driverData.userName = this.driverData.userName.trim();
+      this.apiService.getData(`drivers/validate/username?value=${this.driverData.userName}&type=${this.pageType}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`userName`] = 'Username already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('userName');
+            delete this.errors[`userName`];
+          }
+          this.throwErrors();
+        });
+    }
+
   }
 
   validateEmployeeID() {
     this.hideVal();
-    this.driverData.employeeContractorId = this.driverData.employeeContractorId.trim();
-    this.apiService.getData(`drivers/validate/employee-id?value=${this.driverData.employeeContractorId}&type=${this.pageType}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['employeeContractorId'] = 'Employee ID already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('employeeContractorId');
-          delete this.errors['employeeContractorId'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.employeeContractorId !== '') {
+      this.driverData.employeeContractorId = this.driverData.employeeContractorId.trim();
+      this.apiService.getData(`drivers/validate/employee-id?value=${this.driverData.employeeContractorId}&type=${this.pageType}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`employeeContractorId`] = 'Employee ID already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('employeeContractorId');
+            delete this.errors[`employeeContractorId`];
+          }
+          this.throwErrors();
+        });
+    }
   }
 
   validateCDL() {
     this.hideVal();
-    this.driverData.CDL_Number = this.driverData.CDL_Number.trim();
-    this.apiService.getData(`drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['CDL_Number'] = 'CDL already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('CDL_Number');
-          delete this.errors['CDL_Number'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.CDL_Number !== '') {
+      this.driverData.CDL_Number = this.driverData.CDL_Number.trim();
+      this.apiService.getData(`drivers/validate/cdl?value=${this.driverData.CDL_Number}&type=${this.pageType}&drv=${this.driverID}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`CDL_Number`] = 'CDL already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('CDL_Number');
+            delete this.errors[`CDL_Number`];
+          }
+          this.throwErrors();
+        });
+    }
+
   }
 
   validateEmail() {
     this.hideVal();
-    this.driverData.email = this.driverData.email.trim();
-    this.apiService.getData(`drivers/validate/email?value=${this.driverData.email}&type=${this.pageType}&drv=${this.driverData.userName}`)
-      .subscribe((result: any) => { 
-        if(!result) {
-          this.errors['email'] = 'Email already exists';
-          this.submitDisabled = true;
-        } else {
-          this.onChangeHideErrors('email');
-          delete this.errors['email'];
-        }
-        this.throwErrors();
-      })
+    if (this.driverData.email !== '') {
+      this.driverData.email = this.driverData.email.trim();
+      this.apiService.getData(`drivers/validate/email?value=${this.driverData.email}&type=${this.pageType}&drv=${this.driverData.userName}`)
+        .subscribe((result: any) => {
+          if (!result) {
+            this.errors[`email`] = 'Email already exists';
+            this.submitDisabled = true;
+          } else {
+            this.onChangeHideErrors('email');
+            delete this.errors[`email`];
+          }
+          this.throwErrors();
+        });
+    }
   }
-  
+
   hideVal() {
     this.onChangeHideErrors('employeeContractorId');
     this.onChangeHideErrors('userName');

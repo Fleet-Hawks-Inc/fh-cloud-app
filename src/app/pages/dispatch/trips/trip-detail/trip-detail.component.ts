@@ -107,7 +107,7 @@ export class TripDetailComponent implements OnInit {
         documents.forEach(el => {
           if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
             if (el.uploadedDocs.length > 0) {
-              res.Items[0].uploadedDocs.forEach(element => {
+              el.uploadedDocs.forEach(element => {
                 let name = element.split('.');
                 let ext = name[name.length - 1];
                 let obj = {}
