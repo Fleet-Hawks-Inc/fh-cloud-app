@@ -43,6 +43,7 @@ export class ExpenseListComponent implements OnInit {
     }
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+
         if(result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
           this.disableSearch = false;
@@ -139,6 +140,7 @@ export class ExpenseListComponent implements OnInit {
     if (this.loaded) {
     this.fetchExpenses();
     }
+    this.loaded = false;
   }
 
   refreshData() {

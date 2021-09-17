@@ -922,7 +922,9 @@
                  </div>
                  </div>
               </div>
-
+              <div class="col-lg-12 mt-3 text-center" *ngIf="((lastItemSK !== 'end' && invoices.length !== 0) || (lastItemOrderSK !== 'end' && orderInvoices.length !== 0))">
+                <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
+                                     </div>
             </div>
            </div>
           </div>

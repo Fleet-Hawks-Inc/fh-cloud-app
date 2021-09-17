@@ -46,11 +46,11 @@ export class IncomeListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.accountService.getData(`income/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.categoryID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
-        if(result.length == 0) {
+        if(result.length === 0) {
           this.disableSearch = false;
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if(result.length > 0) {
+        if (result.length > 0) {
           this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
@@ -84,7 +84,7 @@ export class IncomeListComponent implements OnInit {
     this.apiService.getData(`contacts/get/list`)
       .subscribe((result: any) => {
         this.customers = result;
-      })
+      });
   }
 
   deleteIncome(incomeID) {
@@ -106,7 +106,7 @@ export class IncomeListComponent implements OnInit {
     this.accountService.getData(`income/categories/list`)
       .subscribe((result: any) => {
         this.categories = result;
-      })
+      });
   }
 
   fetchInvoices() {
@@ -116,22 +116,22 @@ export class IncomeListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.amount !== '' || this.filter.categoryID !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       this.disableSearch = true;
       if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
-        this.toaster.error("Start date should be less then end date");
+        this.toaster.error('Start date should be less then end date');
         return false;
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
@@ -150,7 +150,7 @@ export class IncomeListComponent implements OnInit {
       startDate: null,
       endDate: null,
       categoryID: null,
-    }
+    };
     this.lastItemSK = '';
     this.incomeAccounts = [];
     this.fetchAccounts();
@@ -160,6 +160,7 @@ export class IncomeListComponent implements OnInit {
     if (this.loaded) {
     this.fetchAccounts();
     }
+    this.loaded = false;
   }
 
   refreshData() {
@@ -170,7 +171,7 @@ export class IncomeListComponent implements OnInit {
       startDate: null,
       endDate: null,
       categoryID: null,
-    }
+    };
     this.lastItemSK = '';
     this.incomeAccounts = [];
     this.fetchAccounts();

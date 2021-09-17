@@ -158,6 +158,7 @@ export class ChartOfAccountsComponent implements OnInit {
     if (this.loaded) {
     this.fetchAccounts();
     }
+    this.loaded = false;
   }
   checkPredefinedAccounts() {
     this.accountService.getData(`chartAc/get/internalID/list/all`).subscribe((res) => {

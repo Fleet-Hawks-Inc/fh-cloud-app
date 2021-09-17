@@ -70,6 +70,7 @@ export class ReceiptsListComponent implements OnInit {
     if (this.loaded) {
       this.fetchReceipts();
     }
+    this.loaded = false;
   }
   deleteReceipt(recID: string) {
     this.accountService.deleteData(`receipts/delete/${recID}`).subscribe((res) => {
