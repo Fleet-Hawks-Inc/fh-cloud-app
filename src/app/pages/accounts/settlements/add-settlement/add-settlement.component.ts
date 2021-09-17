@@ -1218,7 +1218,7 @@ export class AddSettlementComponent implements OnInit {
         }
     }
     
-    remStldTrip(tripID:string, splitID:string, index:number, splitIndex:number) {
+    remStldTrip(tripID:string, splitID:string, index:number, splitIndex:any) {
         let selectedTrip = this.dummySettledTrips[index];
         
         if(splitID !== '' && splitID !== undefined) {
