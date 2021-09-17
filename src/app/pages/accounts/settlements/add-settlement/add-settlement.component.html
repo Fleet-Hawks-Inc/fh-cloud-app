@@ -129,16 +129,16 @@
                                             <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
                                                 #fromDate="ngbDatepicker" class="form-control" autocomplete="off" (dateSelect)="checkSearchDisable();"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly>
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
                                         </div>
                                         <div class="col-lg-2" *ngIf="settlementData.type">
                                             <label class="control-label font-weight-bold pt-2">To Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                             <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
                                                 placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
                                                 #toDate="ngbDatepicker" class="form-control" autocomplete="off" (dateSelect)="checkSearchDisable();"
-                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly>
+                                                [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
                                         </div>
-                                        <div class="col-lg-2" *ngIf="settlementData.type">
+                                        <div class="col-lg-2" *ngIf="settlementData.type && !editDisabled">
                                             <button class="btn btn-success mar-top-37" (click)="searchFnc()" [disabled]="searchDisabled">Search</button>
                                         </div>
                                     </div>
@@ -174,17 +174,20 @@
                                                         <ng-container *ngFor="let trp of settledTrips; let t=index;">
                                                             <tr>
                                                                 <td *ngIf="!settlementData.paymentLinked">
-                                                                    <span *ngIf="settledTrips.length > 1">
-                                                                        <a href="javascript:;" (click)="remStldTrip(trp.tripID, t)">
+                                                                    <!--<span *ngIf="settledTrips.length > 1 && trp.subTripCount === 0">-->
+                                                                    <!--    <a href="javascript:;" (click)="remStldTrip(trp.tripID, '', t)">-->
+                                                                    <!--        <i class="fa fa-trash"></i>-->
+                                                                    <!--    </a>-->
+                                                                    <!--</span>-->
+                                                                    <span *ngIf="trp.subTripCount === 0">
+                                                                        <a href="javascript:;" (click)="remStldTrip(trp.tripID, '', t, '')">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
                                                                     </span>
 
-                                                                    <span *ngIf="settledTrips.length === 1">
-                                                                        <!-- <a href="javascript:;">  -->
-                                                                            <i class="fa fa-trash" style="color: #CCC"></i>
-                                                                        <!-- </a> -->
-                                                                    </span>
+                                                                    <!--<span *ngIf="settledTrips.length === 1">-->
+                                                                    <!--    <i class="fa fa-trash" style="color: #CCC"></i>-->
+                                                                    <!--</span>-->
 
                                                                 </td>
                                                                 <td>{{ trp.tripNo }}</td>
@@ -222,8 +225,15 @@
                                                                 </td>
                                                                 <td><span class="badge badge-dark p-1">DELIVERED</span></td>
                                                             </tr>
-                                                            <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
+                                                            <ng-container *ngFor="let splt of trp.newSplitArr; let sp=index">
                                                                 <tr>
+                                                                    <td>
+                                                                        <span *ngIf="trp.subTripCount > 0">
+                                                                            <a href="javascript:;" (click)="remStldTrip(trp.tripID, splt.trips.splitID, t, sp)">
+                                                                                <i class="fa fa-trash"></i>
+                                                                            </a>
+                                                                        </span>
+                                                                    </td>
                                                                     <td>
                                                                         {{ trp.tripNo }} ({{ splt.trips.stlName }})
                                                                     </td>
@@ -393,7 +403,6 @@
                                                                 </tr>
                                                             </ng-container>
                                                         </ng-container>
-                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -670,7 +679,7 @@
                                         </div>
 
                                         <!-- settled fuel expense -->
-                                        <div class="row pt-2">
+                                        <div class="row pt-2" *ngIf="settlementID">
                                             <div class="col-lg-10 offset-lg-1">
                                                 <h4 class="font-weight-bold">Settled Fuel Expenses</h4>
                                             </div>
