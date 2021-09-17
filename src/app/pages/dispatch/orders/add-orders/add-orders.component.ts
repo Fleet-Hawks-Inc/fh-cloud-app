@@ -2405,7 +2405,7 @@ export class AddOrdersComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  fetchData(i: number, value: string) {
+  fetchData(i: any, value: string) {
     if (value === 'shipper') {
       if(this.shippersReceivers[i].shippers.shipperID != '' || this.shippersReceivers[i].shippers.shipperID != null) {
         let id = this.shippersReceivers[i].shippers.shipperID;
