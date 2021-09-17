@@ -2376,7 +2376,8 @@ export class AddOrdersComponent implements OnInit {
   }
 
   shipperReceiverAddress(value, id) {
-    this.apiService.getData(`contacts/detail/${id}`).subscribe(res => {
+    if(id != null) {
+      this.apiService.getData(`contacts/detail/${id}`).subscribe(res => {
       if (value === 'shipper') {
         if (res.Items[0].adrs.length === 1 && (res.Items[0].adrs[0].aType === '' || res.Items[0].adrs[0].aType === null)) {
           this.shipAddresses = [];
@@ -2393,6 +2394,8 @@ export class AddOrdersComponent implements OnInit {
       }
 
     })
+    }
+    
   }
 
   openModal(unit: string) {
@@ -2404,20 +2407,21 @@ export class AddOrdersComponent implements OnInit {
 
   fetchData(i: number, value: string) {
     if (value === 'shipper') {
-      if(this.shippersReceivers[i].shippers.shipperID != '') {
+      if(this.shippersReceivers[i].shippers.shipperID != '' || this.shippersReceivers[i].shippers.shipperID != null) {
         let id = this.shippersReceivers[i].shippers.shipperID;
         this.shipperReceiverAddress('shipper', id)
       } 
       this.listService.fetchShippers();  
     } else if (value === 'receiver') {
-      if(this.shippersReceivers[i].receivers.receiverID != '') {
+      if(this.shippersReceivers[i].receivers.receiverID != '' || this.shippersReceivers[i].receivers.receiverID != null) {
         let id = this.shippersReceivers[i].receivers.receiverID;
         this.shipperReceiverAddress('', id)
       }
       this.listService.fetchReceivers();
       
-    } else {
-      if(this.orderData.customerID != '') {
+    } else if(value === 'customer') {
+      console.log('this.orderData.customerID', this.orderData.customerID)
+      if(this.orderData.customerID != null) {
         let id = this.orderData.customerID;
         this.selectedCustomer(id)
       }
