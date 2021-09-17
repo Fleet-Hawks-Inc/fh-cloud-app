@@ -197,7 +197,6 @@
                                     <div class="row pl-3 pr-3">
                                        <div class="col-lg-12 pr-0" >
 
-
                                           <div style="max-height: 200px;overflow-y: auto; overflow-x: hidden;"
                                              *ngFor="let item of customerSelected">
                                              <div class="row">
@@ -238,8 +237,8 @@
                                                    <label class="control-label"><span class=" font-weight-bold">Type:</span>
                                                       {{address.aType | titlecase}}</label>
                                                 </div>
-
-                                                <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
+                                                
+                                                <input *ngIf="item.adrs?.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
 
 
                                              </div>
@@ -445,7 +444,7 @@
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
-                                                           <a data-toggle="modal" (click)="fetchData('shipper')" href="javascript:;"
+                                                           <a data-toggle="modal" (click)="fetchData(i, 'shipper')" href="javascript:;"
                                                            class="modal-with-form btn btn-sm btn-success ml-2">
                                                                <em class="fas fa-sync"></em>
                                                             </a>
@@ -883,7 +882,7 @@
                                                                   class="modal-with-form btn btn-sm btn-success">
                                                                   <em class="fas fa-plus"></em>
                                                                </a>
-                                                               <a data-toggle="modal" (click)="fetchData('receiver');" href="javascript:;"
+                                                               <a data-toggle="modal" (click)="fetchData(i, 'receiver');" href="javascript:;"
                                                                   class="modal-with-form btn btn-sm btn-success ml-2">
                                                                      <em class="fas fa-sync"></em>
                                                                   </a>

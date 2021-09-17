@@ -950,7 +950,7 @@
                                                 <tr>
                                                     <td valign="top" colspan="2">
                                                         <div *ngFor="let item of invoiceData.data">
-                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;align-items: flex-start;">
+                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;">
                                                                 <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
                                                                     <b style="font-size: 12px;">SHIPPER:</b> <br>
                                                                     <span class="text-capitalize">{{ship.companyName}}</span> <br>
@@ -1071,9 +1071,7 @@
                                             </tbody>
 
                                         </table>
-                                        <div *ngFor="let file of invoiceData.uploadedDocs; let f = index;">
-                                            <iframe [src]="file" frameborder="0" width="100%" height="400px"></iframe>
-                                        </div>
+                                        
                                         <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
                                             <tbody>
                                                 <tr>

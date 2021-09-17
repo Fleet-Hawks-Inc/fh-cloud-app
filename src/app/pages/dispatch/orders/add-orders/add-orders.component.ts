@@ -292,7 +292,7 @@ export class AddOrdersComponent implements OnInit {
   accessFeesInfo = {
     accessFees: [
       {
-        type: "",
+        type: null,
         amount: 0,
         currency: "",
       },
@@ -304,7 +304,7 @@ export class AddOrdersComponent implements OnInit {
   accessorialDeductionInfo = {
     accessDeductions: [
       {
-        type: "",
+        type: null,
         amount: 0,
         currency: "",
       },
@@ -1048,6 +1048,9 @@ export class AddOrdersComponent implements OnInit {
 
           if (this.customerSelected[0].adrs.length > 0) {
             this.orderData.cusAddressID = this.customerSelected[0].adrs[0].addressID;
+            let newCountCode = this.customerSelected[0].adrs[0].cCode;
+            this.changeCusCurrency(newCountCode)
+            
           }
 
           let addressLength = this.customerSelected[0].adrs.length;
@@ -1069,7 +1072,29 @@ export class AddOrdersComponent implements OnInit {
 
       });
   }
-
+  
+  changeCusCurrency(value) {
+    if(value === 'CA') {
+      this.orderData.charges.freightFee.currency = 'CAD';
+      this.orderData.charges.fuelSurcharge.currency = 'CAD';
+      this.accessFeesInfo.accessFees.forEach(elem => {
+        elem.currency = 'CAD';
+      }) 
+      this.accessorialDeductionInfo.accessDeductions.forEach(elem => {
+        elem.currency = 'CAD';
+      }) 
+    } else {
+      this.orderData.charges.freightFee.currency = 'USD'; 
+      this.orderData.charges.fuelSurcharge.currency = 'USD';
+      this.accessFeesInfo.accessFees.forEach(elem => {
+        elem.currency = 'USD';
+      }) 
+      this.accessorialDeductionInfo.accessDeductions.forEach(elem => {
+        elem.currency = 'USD';
+      }) 
+    }
+  }
+  
   setAdditionalContact(event) {
     for (let i = 0; i < this.cusAdditionalContact.length; i++) {
       const element = this.cusAdditionalContact[i];
@@ -2162,17 +2187,18 @@ export class AddOrdersComponent implements OnInit {
   }
 
   addAccessFee(value: string) {
+    let curType = this.orderData.charges.freightFee.currency;
     if (value === "accessFee") {
       this.accessFeesInfo.accessFees.push({
         type: "",
         amount: 0,
-        currency: "",
+        currency: curType,
       });
     } else {
       this.accessorialDeductionInfo.accessDeductions.push({
         type: "",
         amount: 0,
-        currency: "",
+        currency: curType,
       });
     }
   }
@@ -2335,11 +2361,13 @@ export class AddOrdersComponent implements OnInit {
   getAddressID(value: boolean, i: number, id: string) {
     if (value === true) {
       this.orderData.cusAddressID = id;
-      for (let index = 0; index < this.customerSelected[0].address.length; index++) {
-        const element = this.customerSelected[0].address[index];
+      for (let index = 0; index < this.customerSelected[0].adrs.length; index++) {
+        const element = this.customerSelected[0].adrs[index];
         element.isChecked = false;
       }
-      this.customerSelected[0].address[i].isChecked = true;
+      this.customerSelected[0].adrs[i].isChecked = true;
+      let newCountCode =  this.customerSelected[0].adrs[i].cCode;
+      this.changeCusCurrency(newCountCode);
     }
   }
 
@@ -2374,12 +2402,25 @@ export class AddOrdersComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  fetchData(value: string) {
+  fetchData(i: number, value: string) {
     if (value === 'shipper') {
-      this.listService.fetchShippers();
+      if(this.shippersReceivers[i].shippers.shipperID != '') {
+        let id = this.shippersReceivers[i].shippers.shipperID;
+        this.shipperReceiverAddress('shipper', id)
+      } 
+      this.listService.fetchShippers();  
     } else if (value === 'receiver') {
+      if(this.shippersReceivers[i].receivers.receiverID != '') {
+        let id = this.shippersReceivers[i].receivers.receiverID;
+        this.shipperReceiverAddress('', id)
+      }
       this.listService.fetchReceivers();
+      
     } else {
+      if(this.orderData.customerID != '') {
+        let id = this.orderData.customerID;
+        this.selectedCustomer(id)
+      }
       this.listService.fetchCustomers()
     }
   }
