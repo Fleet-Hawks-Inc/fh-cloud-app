@@ -82,8 +82,8 @@
                                           </tr>
                                           <tr *ngFor="let data of incomeAccounts">
                                               <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.txnDate | date:'yyyy/MM/dd' }}</td>
-                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
-                                              <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.paymentMode }}</td>
+                                              <td class="cursorpoint text-capitalize" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ (data.categoryID) ? categories[data.categoryID] : '-' }}</td>
+                                              <td class="cursorpoint text-capitalize" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.paymentMode }}</td>
                                               <td class="cursorpoint" routerLink="/accounts/income/detail/{{ data.incomeID }}">{{ data.recAmount | number : '1.2-2' }} {{ data.recCurr }}</td>
                                               <td>
                                                   <div class="btn-group flex-wrap">
@@ -101,20 +101,18 @@
                                   </div>
 
                                 </div>
+  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && incomeAccounts.length !== 0">
+    <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
+                         </div>
 
                              </div>
                           </div>
                         </div>
                       </div>
                       </section>
-
                    </div>
                 </div>
-
              </section>
-
-
-
         </section>
     </div>
 </section>
