@@ -39,7 +39,7 @@
     "@fullcalendar/interaction": "^4.4.2",
     "@fullcalendar/list": "^4.4.2",
     "@fullcalendar/timegrid": "^4.4.2",
-    "@geoman-io/leaflet-geoman-free": "^2.8.0",
+    "@geoman-io/leaflet-geoman-free": "^2.11.2",
     "@ng-bootstrap/ng-bootstrap": "9.1.0",
     "@ng-select/ng-select": "6.1.0",
     "@nguniversal/express-engine": "^12.1.0",
