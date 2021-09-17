@@ -147,14 +147,14 @@
 						<div class="form-group col-lg-12">
 							<label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
 							<div class="row">
-								<div class="col-lg-3 pr-0">
+								<div class="col-lg-3">
 									<!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
 									<input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog">
 									<div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
 										<div *ngIf="actBal.errors.required"> Account balance is required. </div>
 									</div>
 								</div>
-								<div class="col-lg-3 pl-0">
+								<div class="col-lg-3">
 									<!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
 									<ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog">
 										<ng-option value="CAD">CAD</ng-option>
