@@ -795,10 +795,8 @@ export class AddSettlementComponent implements OnInit {
 
     subTripPlanCalculation(splitArr, tripID) { 
         let planIds = [];
-        console.log('in calc splitArr', splitArr);
         for (let index = 0; index < splitArr.length; index++) {
             const sub = splitArr[index];
-            console.log('subccc', sub.trips);
             if(sub.selected) {
                 // store the selected sub trip ID
                 this.settlementData.trpData.map((k) => {
