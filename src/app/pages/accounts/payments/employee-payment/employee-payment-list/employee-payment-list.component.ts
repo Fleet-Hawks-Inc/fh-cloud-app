@@ -119,6 +119,7 @@ export class EmployeePaymentListComponent implements OnInit {
     if (this.loaded) {
     this.fetchPayments();
     }
+    this.loaded = false;
   }
 
   refreshData() {

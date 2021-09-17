@@ -140,7 +140,7 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
       }
     });
 
-    this.fetchAdvancePayments();
+  //  this.fetchAdvancePayments();
   }
   refreshAccount() {
     this.listService.fetchChartAccounts();
@@ -305,7 +305,7 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Receipt added successfully.');
-        this.router.navigateByUrl('/accounts/receipts/list');
+       // this.router.navigateByUrl('/accounts/receipts/list');
       },
     });
   }

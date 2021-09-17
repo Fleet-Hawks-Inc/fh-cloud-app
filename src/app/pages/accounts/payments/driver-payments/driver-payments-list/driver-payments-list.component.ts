@@ -150,6 +150,7 @@ export class DriverPaymentsListComponent implements OnInit {
     if (this.loaded) {
     this.fetchDriverPayments();
     }
+    this.loaded = false;
   }
 
   refreshData() {
