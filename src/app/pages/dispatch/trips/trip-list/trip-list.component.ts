@@ -520,8 +520,11 @@ export class TripListComponent implements OnInit {
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
       this.statDisabled = false;
       if(result) {
+        if(this.tripStatus  === 'cancelled' || this.tripStatus  === 'delivered' || this.tripStatus  === 'tonu') {
+          this.trips[this.tripDraw][this.recIndex].canEdit = true;  
+        }
         if(this.activeTab == 'all') {
-          this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
+          this.trips[this.tripDraw][this.recIndex].tripStatus
           if(this.tripStatus === 'tonu') {
             this.trips[this.tripDraw][this.recIndex].tripStatus = this.trips[this.tripDraw][this.recIndex].tripStatus.toUpperCase();
           }
@@ -539,6 +542,7 @@ export class TripListComponent implements OnInit {
           } else if(this.activeTab  == 'cancelled') {
             this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'delivered') {
+            this.deliveredTrips[this.recIndex].canEdit = true;
             this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'tonu') {
             this.tonuTrips[this.recIndex].tripStatus = this.tripStatus;
