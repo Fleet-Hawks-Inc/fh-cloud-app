@@ -78,7 +78,7 @@
     "ngx-toastr": "^11.3.3",
     "path": "0.12.7",
     "pdfmake": "^0.2.0",
-    "randomstring": "1.1.5",
+    "randomstring": "1.2.1",
     "rxjs": "6.6.7",
     "select2": "^4.0.13",
     "slick-carousel": "^1.8.1",
