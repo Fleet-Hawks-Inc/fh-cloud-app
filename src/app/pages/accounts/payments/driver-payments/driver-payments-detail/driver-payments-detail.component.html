@@ -62,10 +62,12 @@
                                                         <td width="40%" class="back-color-gray font-weight-bold">
                                                             Settlement(s)</td>
                                                         <td width="60%">
-                                                            <!-- <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
-                                                                {{ settlements[settl] }}
-                                                                <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
-                                                            </span> -->
+                                                            <span *ngIf="paymentData.settlementIds.length > 0">
+                                                                <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
+                                                                    {{ settlements[settl] }}
+                                                                    <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
+                                                                </span>
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                     <tr>
