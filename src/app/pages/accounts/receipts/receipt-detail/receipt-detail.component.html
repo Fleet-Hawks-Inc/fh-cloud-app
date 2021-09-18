@@ -48,12 +48,12 @@
                 </div>
               </div>
             </div>
-             
+
            </div>
           </div>
          </div>
         </div>
-        
+
         <div class="row mb-3">
          <div class="col-lg-12">
           <div class="bg-white p-3 text-dark">
@@ -65,7 +65,8 @@
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                        <td width="60%">{{receiptData.paymentMode | titlecase}}</td>
+                        <td width="60%"><span *ngIf="receiptData.paymentMode === 'eft'">{{receiptData.paymentMode | uppercase}}</span>
+                          <span  *ngIf="receiptData.paymentMode !== 'eft'">{{receiptData.paymentMode | titlecase}}</span></td>
                       </tr>
                     </tbody>
                   </table>
@@ -78,7 +79,8 @@
                   <table class="table table-bordered table-responsive-lg">
                     <tbody>
                       <tr>
-                        <td class="back-color-gray font-weight-bold">{{receiptData.paymentMode | titlecase}}#, Date</td>
+                        <td class="back-color-gray font-weight-bold"><span *ngIf="receiptData.paymentMode === 'eft'">{{receiptData.paymentMode | uppercase}}</span>
+                          <span  *ngIf="receiptData.paymentMode !== 'eft'">{{receiptData.paymentMode | titlecase}}</span>#, Date</td>
                         <td>{{receiptData.paymentModeNo}}, {{receiptData.paymentModeDate | date : 'yyyy/MM/dd'}}</td>
                       </tr>
                     </tbody>
@@ -144,10 +146,10 @@
           </div>
          </div>
         </div>
-        
+
      </section>
 
-     
+
     </section>
   </div>
 </section>
