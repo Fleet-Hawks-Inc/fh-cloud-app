@@ -106,24 +106,24 @@
                           <tr *ngIf="invoices.length === 0 && orderInvoices.length === 0" class="text-center">
                             <td colspan="15">{{dataMessage}}</td>
                           </tr>
-                          <tr *ngFor="let inv of orderInvoices; let i= index;">
-                            <td>{{inv.invNo}}</td>
-                            <td>{{inv.txnDate}}</td>
-                            <td>{{customersObjects[inv.customerID] | titlecase}}</td>
-                            <td>{{inv.finalAmount}} {{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.amountReceived}} {{inv.charges.freightFee.currency}}</td>
-                            <td>{{inv.balance}} {{inv.charges.freightFee.currency}}</td>
-                            <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
+                          <tr *ngFor="let invOrder of orderInvoices; let i= index;">
+                            <td>{{invOrder.invNo}}</td>
+                            <td>{{invOrder.txnDate}}</td>
+                            <td>{{customersObjects[invOrder.customerID] | titlecase}}</td>
+                            <td>{{invOrder.finalAmount}} {{invOrder.charges.freightFee.currency}}</td>
+                            <td>{{invOrder.amountReceived}} {{invOrder.charges.freightFee.currency}}</td>
+                            <td>{{invOrder.balance}} {{invOrder.charges.freightFee.currency}}</td>
+                            <td><span class="badge badge-dark p-1">{{invOrder.invStatus | uppercase}}</span></td>
                             <td class="text-center">
-                              <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
-                                name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
+                              <input type="checkbox" [(ngModel)]="invOrder.fullPayment"
+                                name="invOrder.fullPayment" (change)="getAmountOrder(i)">
                             </td>
                             <td>
-                              <input type="number"  [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}"  (change)="findReceivedAmtFn()"
+                              <input type="number"  [(ngModel)]="invOrder.amountPaid" name="invOrder.amountPaid{{i}}" max="{{invOrder.balance}}"  (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
-                          <tr *ngFor="let inv of invoices; let i= index;">
+                          <tr *ngFor="let inv of invoices; let j= index;">
                             <td>{{inv.invNo}}</td>
                             <td>{{inv.txnDate}}</td>
                             <td>{{customersObjects[inv.customerID] | titlecase}}</td>
@@ -132,11 +132,11 @@
                             <td>{{inv.balance}} {{inv.invCur}}</td>
                             <td><span class="badge badge-dark p-1">{{inv.invStatus | uppercase}}</span></td>
                             <td class="text-center">
-                              <input type="checkbox" id="fullPayment{{i}}" [(ngModel)]="inv.fullPayment"
-                                name="fullPayment{{i}}" (change)="getAmount(i,inv.invType)">
+                              <input type="checkbox" [(ngModel)]="inv.fullPayment"
+                                name="inv.fullPayment" (change)="getAmountManual(j)">
                             </td>
                             <td>
-                              <input type="number" [(ngModel)]="inv.amountPaid" name="amountPaid{{i}}" max="{{inv.balance}}" min="0" (change)="findReceivedAmtFn()"
+                              <input type="number" [(ngModel)]="inv.amountPaid" name="inv.amountPaid{{j}}" max="{{inv.balance}}" min="0" (change)="findReceivedAmtFn()"
                                 class="form-control input-sm p-0">
                             </td>
                           </tr>
