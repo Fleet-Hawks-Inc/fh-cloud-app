@@ -1,24 +1,22 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <div class="row pr-5 " style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{ pageTitle }}</div>
-          <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/receipts/list"
-              class="btn btn-default"><i class="fas fa-list"></i> All Receipts</a> </div>
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">{{ pageTitle }}</h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/accounts/receipts/list"
+              class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Receipts</a> </div>
         </div>
       </header>
-      <section class="card mt-0 mb-4">
-        <div class="card-body">
-          <div class="row">
-            <div class="col pr-0">
-              <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="POST"  #recForm="ngForm" id="receiptForm">
-                  <div class="row">
-                    <div class="col-lg-12">
-
-                        <div class=" row">
-                          <!-- <div class="col-lg-5 offset-lg-1">
+      <section class="m-2">
+        <form class="form-horizontal form-bordered" method="POST"  #recForm="ngForm" id="receiptForm">
+        <div class="row mb-3">
+         <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
+           <div class="form-group row adddriverpl pt-3">
+              <!-- <div class="col-lg-5 offset-lg-1">
                             <div class="row">
                               <div class="col-lg-5">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -31,9 +29,9 @@
                               </div>
                             </div>
                           </div> -->
-                          <div class="col-lg-5 offset-lg-1">
+                          <div class="col-lg-11">
                             <div class="row">
-                              <div class="col-lg-5">
+                              <div class="col-lg-3">
                                 <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Receipt
                                   Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                   <input [(ngModel)]="receiptData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
@@ -44,51 +42,48 @@
                                     </div>
                                   </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                       <div class="row">
-                         <div class="col-lg-10 offset-lg-1">
-                          <div class="row mt-4" >
-                            <div class="col-md-5 col-lg-5">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
-                                placeholder="Select Customer" class="form-control" #receiptCustomer="ngModel" required>
-                                <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
-                                  {{customer.companyName | titlecase}}
-                                </ng-option>
-                              </ng-select>
-                              <div *ngIf="receiptCustomer.invalid && (receiptCustomer.dirty || receiptCustomer.touched)" class="text-danger">
-                                <div *ngIf="receiptCustomer.errors.required">
-                                  Customer is required.
+                              <div class="col-md-7 col-lg-7">
+                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                <ng-select [(ngModel)]="receiptData.customerID" name="customerID"
+                                  placeholder="Select Customer" class="form-control" #receiptCustomer="ngModel" required>
+                                  <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
+                                    {{customer.companyName | titlecase}}
+                                  </ng-option>
+                                </ng-select>
+                                <div *ngIf="receiptCustomer.invalid && (receiptCustomer.dirty || receiptCustomer.touched)" class="text-danger">
+                                  <div *ngIf="receiptCustomer.errors.required">
+                                    Customer is required.
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                            <!-- <div class="col-lg-3 col-md-3">
-                              <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
-                                                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
-                                <input type="text" class="form-control" name="start">
-                                                       <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
-                                <input type="text" class="form-control" name="end"> </div>
-                            </div> -->
-                            <div class="col-md-2  col-lg-2 mar-top-37">
-                              <button type="button" class="btn btn-sm btn-success" (click)="getInvoices()">Search
-                                Invoice(s)</button>
+                              <!-- <div class="col-lg-3 col-md-3">
+                                <div class="input-daterange input-group" data-plugin-datepicker> <span class="input-group-prepend">
+                                                       <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span> </span>
+                                  <input type="text" class="form-control" name="start">
+                                                         <span class="input-group-text border-left-0 border-right-0 rounded-0"> to </span>
+                                  <input type="text" class="form-control" name="end"> </div>
+                              </div> -->
+                              <div class="col-md-2 col-lg-2 mar-top-37 text-right">
+                                <button type="button" class="btn btn-sm btn-success" (click)="getInvoices()">Search
+                                  Invoice(s)</button>
+                              </div>
                             </div>
                           </div>
-                         </div>
-                       </div>
-
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <h4>Invoice Details</h4>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-lg-10 offset-lg-1">
-                      <table class="table table-bordered table-responsive-sm table-striped mb-0 simple-table">
+              
+           </div>
+          </div>
+         </div>
+        </div>
+        
+        <div class="row mb-3">
+         <div class="col-lg-12">
+          <div class="bg-white p-3 text-dark">
+           <div class="form-group row adddriverpl pt-3">
+              <div class="col-lg-10">
+               <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Invoice Details</label>
+              </div>
+              <div class="col-lg-11">
+                <table class="table table-bordered table-responsive-sm table-striped mb-0 simple-table">
                         <thead>
                           <tr class="bgcol2">
                             <th class="text-2">Invoice#</th>
@@ -142,15 +137,18 @@
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                  <div class="row" *ngIf="totalErr">
-                    <div class="col-lg-10 offset-lg-1 text-right">
-                          <label class="control-label error">Paid Amount can not be greater than Balance Amount.</label>
+              </div>
+             
+           </div>
+
+
+           <div class="form-group row" *ngIf="totalErr">
+            <div class="col-lg-11 text-right">
+                  <label class="control-label error">Paid Amount can not be greater than Balance Amount.</label>
 
                     </div>
-                  </div>
-                  <!-- <div class="row pt-3">
+     
+             <!-- <div class="row pt-3">
                     <div class="col-lg-12">
                         <h4>Advance Payments</h4>
                     </div>
@@ -196,158 +194,169 @@
                         </table>
                     </div>
                 </div> -->
-                  <div class="row pt-2">
-                    <div class="col-lg-12">
-                      <h4>Record Payment</h4>
-                    </div>
-                  </div>
-                  <div class="row pt-2">
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Total Amount</label>
-                          <div class="row">
-                            <div class="col-lg-6 pr-0">
-                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.totalAmount"
-                              name="totalAmount" [disabled]="true">
-                            </div>
-                            <div class="col-lg-6 pl-0">
-                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-5"> </div>
-                      </div>
-                      <!-- <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Advance Received</label>
-                          <div class="row">
-                            <div class="col-lg-6 pr-0">
-                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.advAmt"
-                              name="advAmt">
-                            </div>
-                            <div class="col-lg-6 pl-0">
-                              <ng-select class="form-control populate" [(ngModel)]="receiptData.advAmtCur"
-                              name="advAmtCur">
+          </div>
 
-                                  <ng-option value="CAD">CAD</ng-option>
-                                  <ng-option value="USD">USD</ng-option>
-                              </ng-select>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-5"> </div>
-                      </div> -->
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <div class="row">
-                            <div class="col-lg-6 pr-0">
-                              <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
-                                name="recAmount" #receiptAmt="ngModel" [disabled]="true">
-                                <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
-                                  <div *ngIf="receiptAmt.errors.required">
-                                    Received amount is required.
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 pl-0">
-                              <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
+          </div>
+         </div>
+        </div>
 
-                            </div>
-                          </div>
-                        </div>
+        <div class="row mb-3">
+          <div class="col-lg-12">
+           <div class="bg-white p-3 text-dark">
+            <div class="form-group row adddriverpl pt-3">
+               <div class="col-lg-10">
+                <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Record Payment</label>
+               </div>
+               <div class="col-lg-6">
+                <div class="row">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold">Total Amount</label>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.totalAmount"
+                        name="totalAmount" [disabled]="true">
                       </div>
-                      <div class="row" *ngIf="totalErr">
-                        <div class="col-lg-7">
-                          <label class="control-label error">Received Amount can not be greater than Total Amount.</label>
-                        </div>
-                      </div>
-
-                    </div>
-                    <div class="col-lg-5 offset-lg-1">
-                      <div class="row pt-2">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
-                            <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
-                              {{ item.actName | titlecase}}</ng-option>
-                          </ng-select>
-                          <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
-                            <div *ngIf="receiptAct.errors.required">
-                              Account is required.
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2" style="margin-top: 32px;">
-                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
-                          </button>
-                          <a href="javascript:;" (click)="refreshAccount()"
-                            data-toggle="tooltip" title="Refresh account data"
-                            class="btn btn-success btn-sm modal-with-form"><i
-                                class="fas fa-sync"></i></a>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
-                            placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required >
-                            <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
-                            </ng-option>
-                          </ng-select>
-                          <div *ngIf="receiptPay.invalid && (receiptPay.dirty || receiptPay.touched)" class="text-danger">
-                            <div *ngIf="receiptPay.errors.required">
-                              Payment mode is required.
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} <span *ngIf="paymentLabel === 'Cash'">Reference</span>
-                            <span *ngIf="paymentLabel !== 'Cash'">Number</span>
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
-                            class="form-control">
-                            <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
-                              <div *ngIf="receiptPayNo.errors.required">
-                                {{ paymentLabel }} reference is required.
-                              </div>
-                              <div *ngIf="receiptPayNo.errors.pattern">
-                                {{ paymentLabel }} reference must contain alphanumeric characters.
-                               </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="receiptData.paymentModeDate" name="paymentModeDate" type="text" #receiptPayDate="ngModel" required
-                            placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker"
-                            class="form-control" autocomplete="off" [minDate]="dateMinLimit"
-                            [maxDate]="futureDatesLimit">
-                            <div *ngIf="receiptPayDate.invalid && (receiptPayDate.dirty || receiptPayDate.touched)" class="text-danger">
-                              <div *ngIf="receiptPayDate.errors.required">
-                                Payment date is required.
-                              </div>
-                            </div>
-                        </div>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group row mt-4">
-                    <div class="col-lg-11 text-right">
-                      <a type="button" class="btn btn-default" routerLink="/accounts/receipts/list">Cancel</a>
-                      <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled || totalErr" (click)="addReceipt()">Save</button>
+                  <div class="col-lg-5"> </div>
+                </div>
+                <!-- <div class="row">
+                  <div class="col-lg-5">
+                    <label class="control-label font-weight-bold">Advance Received</label>
+                    <div class="row">
+                      <div class="col-lg-6 pr-0">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.advAmt"
+                        name="advAmt">
+                      </div>
+                      <div class="col-lg-6 pl-0">
+                        <ng-select class="form-control populate" [(ngModel)]="receiptData.advAmtCur"
+                        name="advAmtCur">
+
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                        </ng-select>
+                      </div>
                     </div>
                   </div>
-                </form>
+                  <div class="col-lg-5"> </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-lg-10">
+                    <label class="control-label font-weight-bold">Received Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <input type="number" min="0" class="form-control" [(ngModel)]="receiptData.recAmount"
+                          name="recAmount" #receiptAmt="ngModel" [disabled]="true">
+                          <div *ngIf="receiptAmt.invalid && (receiptAmt.dirty || receiptAmt.touched)" class="text-danger">
+                            <div *ngIf="receiptAmt.errors.required">
+                              Received amount is required.
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <input type="text" class="form-control" [ngModel]="receiptData.recAmountCur" name="recAmountCur" disabled>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row" *ngIf="totalErr">
+                  <div class="col-lg-7">
+                    <label class="control-label error">Received Amount can not be greater than Total Amount.</label>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-lg-6">
+                <div class="row pt-2">
+                  <div class="col-lg-8">
+                    <label class="control-label font-weight-bold">Select Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <ng-select [(ngModel)]="receiptData.accountID" name="accountID" placeholder="Select account" #receiptAct="ngModel" required>
+                      <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} -
+                        {{ item.actName | titlecase}}</ng-option>
+                    </ng-select>
+                    <div *ngIf="receiptAct.invalid && (receiptAct.dirty || receiptAct.touched)" class="text-danger">
+                      <div *ngIf="receiptAct.errors.required">
+                        Account is required.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-2 text-right" style="margin-top: 32px;">
+                    <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                      class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                    </button>
+                    <a href="javascript:;" (click)="refreshAccount()"
+                      data-toggle="tooltip" title="Refresh account data"
+                      class="btn btn-success btn-sm modal-with-form"><i
+                          class="fas fa-sync"></i></a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <label class="control-label font-weight-bold  labelalign">Payment Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <ng-select [(ngModel)]="receiptData.paymentMode" name="paymentMode"
+                      placeholder="Select Payment Mode" (change)="showPaymentFields($event)" #receiptPay="ngModel" required >
+                      <ng-option value="{{ data.value }}" *ngFor="let data of paymentMode">{{ data.name }}
+                      </ng-option>
+                    </ng-select>
+                    <div *ngIf="receiptPay.invalid && (receiptPay.dirty || receiptPay.touched)" class="text-danger">
+                      <div *ngIf="receiptPay.errors.required">
+                        Payment mode is required.
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div class="row pt-2" *ngIf="receiptData.paymentMode !== null">
+                  <div class="col-lg-5">
+                    <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} <span *ngIf="paymentLabel === 'Cash'">Reference</span>
+                      <span *ngIf="paymentLabel !== 'Cash'">Number</span>
+                      <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <input type="text" [(ngModel)]="receiptData.paymentModeNo" name="paymentModeNo" #receiptPayNo="ngModel" required pattern="^[a-zA-Z0-9\s]+$"
+                      class="form-control">
+                      <div *ngIf="receiptPayNo.invalid && (receiptPayNo.dirty || receiptPayNo.touched)" class="text-danger">
+                        <div *ngIf="receiptPayNo.errors.required">
+                          {{ paymentLabel }} reference is required.
+                        </div>
+                        <div *ngIf="receiptPayNo.errors.pattern">
+                          {{ paymentLabel }} reference must contain alphanumeric characters.
+                         </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-5">
+                    <label class="control-label font-weight-bold  labelalign">{{ paymentLabel }} Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                    <input [(ngModel)]="receiptData.paymentModeDate" name="paymentModeDate" type="text" #receiptPayDate="ngModel" required
+                      placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker"
+                      class="form-control" autocomplete="off" [minDate]="dateMinLimit"
+                      [maxDate]="futureDatesLimit">
+                      <div *ngIf="receiptPayDate.invalid && (receiptPayDate.dirty || receiptPayDate.touched)" class="text-danger">
+                        <div *ngIf="receiptPayDate.errors.required">
+                          Payment date is required.
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+
+            <div class="form-group row mt-4">
+              <div class="col-lg-11 text-right">
+                <a type="button" class="btn btn-default mr-3" routerLink="/accounts/receipts/list">Cancel</a>
+                <button type="button" class="btn btn-success" *ngIf="!recID" [disabled]="!recForm.form.valid || submitDisabled || totalErr" (click)="addReceipt()">Save</button>
               </div>
             </div>
+
+           </div>
           </div>
-        </div>
-      </section>
+         </div>
+        </form>
+     </section>
+
+   
     </section>
   </div>
 </section>
