@@ -16,7 +16,7 @@
       </header>
 
       <section class="m-2" id="w1">
-        <form id="userForm" class="form-horizontal form-bordered" name="userForm"
+        <form id="userForm" class="form-horizontal form-bordered" name="userForm"  (ngSubmit)="contactID ? (uForm1.form.valid ? onUpdateUser() : scrollError()) : (uForm1.form.valid ? onAddUser() : scrollError())"
           [mustMatch]="['password', 'confirmPassword']" #uForm1="ngForm" novalidate="novalidate">
 
 
@@ -34,9 +34,9 @@
                         <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Company Name <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" [(ngModel)]="userData.companyName" name="companyName"
-                          placeholder="eg. Caroll group" #UcompanyName="ngModel" required
+                          placeholder="eg. Caroll group" #UcompanyName="ngModel" required   [ngClass]="{ 'error' : uForm1.submitted && UcompanyName.invalid }"
                           pattern="^[a-zA-Z0-9\s\.]{4,120}$">
-                        <div *ngIf="UcompanyName.invalid && (UcompanyName.dirty || UcompanyName.touched)"
+                        <div *ngIf="UcompanyName.invalid && uForm1.submitted"
                           class="text-danger">
                           <div *ngIf="UcompanyName.errors.required">
                             Company name is required.
@@ -57,9 +57,9 @@
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-dark text-lg-right pt-2">First Name <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="text" class="form-control" placeholder="eg. John" [(ngModel)]="userData.firstName"
+                        <input type="text" class="form-control" placeholder="eg. John" [(ngModel)]="userData.firstName" [ngClass]="{ 'error' : uForm1.submitted && ufName.invalid }"
                           name="firstName" #ufName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
-                        <div *ngIf="ufName.invalid && (ufName.dirty || ufName.touched)" class="text-danger">
+                        <div *ngIf="ufName.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="ufName.errors.required">
                             First name is required.
                           </div>
@@ -73,8 +73,8 @@
                         <label class="control-label font-weight-bold text-dark text--lg-right pt-2">Last Name <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" placeholder="eg. Smith" [(ngModel)]="userData.lastName"
-                          name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$">
-                        <div *ngIf="ulName.invalid && (ulName.dirty || ulName.touched)" class="text-danger">
+                          name="lastName" #ulName="ngModel" required pattern="^[a-zA-Z\s]{1,30}$" [ngClass]="{ 'error' : uForm1.submitted && ulName.invalid }">
+                        <div *ngIf="ulName.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="ulName.errors.required">
                             Last name is required.
                           </div>
@@ -95,8 +95,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" placeholder="Any Numbers or Name"
                           [(ngModel)]="userData.employeeID" name="employeeID" #ueName="ngModel" required
-                          pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
-                        <div *ngIf="ueName.invalid && (ueName.dirty || ueName.touched)" class="text-danger">
+                          pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30" [ngClass]="{ 'error' : uForm1.submitted && ueName.invalid }">
+                        <div *ngIf="ueName.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="ueName.errors.required">
                             Employee ID is required.
                           </div>
@@ -111,7 +111,7 @@
                         </label>
                         <input type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
                           (click)="staffdob.toggle()" ngbDatepicker #staffdob="ngbDatepicker"
-                          [(ngModel)]="userData.dateOfBirth" name="dateOfBirth" [minDate]="dateMinLimit"
+                          [(ngModel)]="userData.dateOfBirth" name="dateOfBirth" [minDate]="dateMinLimit" readonly
                           [maxDate]="futureDatesLimit">
                       </div>
 
@@ -119,8 +119,8 @@
                         <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Phone <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control" placeholder="eg. 2234567891"
-                          [(ngModel)]="userData.phone" name="phone" #umob="ngModel" required pattern="[0-9]{10}$">
-                        <div *ngIf="umob.invalid && (umob.dirty || umob.touched)" class="text-danger">
+                          [(ngModel)]="userData.phone" name="phone" #umob="ngModel" required pattern="[0-9]{10}$" [ngClass]="{ 'error' : uForm1.submitted && umob.invalid }">
+                        <div *ngIf="umob.invalid && uForm1.submitted" class="text-danger" >
                           <div *ngIf="umob.errors.required">
                             Phone is required.
                           </div>
@@ -133,9 +133,9 @@
                         <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Email <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input type="text" class="form-control text-lowercase" placeholder="eg. johnsmith@gmail.com"
-                          [disabled]="enableUserLogin" [(ngModel)]="userData.email" name="email" #uem="ngModel" required
+                          [disabled]="enableUserLogin" [(ngModel)]="userData.email" name="email" #uem="ngModel" required [ngClass]="{ 'error' : uForm1.submitted && uem.invalid }"
                           pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-                        <div *ngIf="uem.invalid && (uem.dirty || uem.touched)" class="text-danger">
+                        <div *ngIf="uem.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="uem.errors.required">
                             Email is required.
                           </div>
@@ -318,13 +318,13 @@
                             </label>
                             <input [(ngModel)]="userData.userAccount.contractStartDate" name="contractStartDate"
                               type="text" placeholder="yyyy/mm/dd" (click)="contStart.toggle()" ngbDatepicker
-                              #contStart="ngbDatepicker" class="form-control" autocomplete="off"
+                              #contStart="ngbDatepicker" class="form-control" autocomplete="off" readonly
                               [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                           </div>
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Contract End Date
                             </label>
-                            <input [(ngModel)]="userData.userAccount.contractEndDate" name="contractEndDate" type="text"
+                            <input [(ngModel)]="userData.userAccount.contractEndDate" name="contractEndDate" type="text" readonly
                               placeholder="yyyy/mm/dd" (click)="contEnd.toggle()" ngbDatepicker #contEnd="ngbDatepicker"
                               class="form-control" autocomplete="off" [minDate]="dateMinLimit"
                               [maxDate]="futureDatesLimit">
@@ -387,9 +387,9 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="userData.userLoginData.userName" name="userName" type="text"
                           placeholder="eg. John.Smith" class="form-control text-lowercase" [disabled]="enableUserLogin"
-                          #uuName="ngModel" [required]="userData.loginEnabled"
+                          #uuName="ngModel" [required]="userData.loginEnabled" [ngClass]="{ 'error' : uForm1.submitted && uuName.invalid }"
                           pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$" maxlength="30">
-                        <div *ngIf="uuName.invalid && (uuName.dirty || uuName.touched)" class="text-danger">
+                        <div *ngIf="uuName.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="uuName.errors.required">
                             Username is required.
                           </div>
@@ -405,11 +405,11 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [multiple]="true" class="form-control populate"
                           [(ngModel)]="userData.userLoginData.userRoles" name="roles" placeholder="Select User Type"
-                          #roles="ngModel" [required]="userData.loginEnabled">
+                          #roles="ngModel" [required]="userData.loginEnabled" [ngClass]="{ 'error' : uForm1.submitted && roles.invalid }">
                           <ng-option *ngFor="let userRole of userRoles" [value]="userRole.role">{{userRole.name}}
                           </ng-option>
                         </ng-select>
-                        <div *ngIf="roles.invalid && (roles.dirty || roles.touched)" class="text-danger">
+                        <div *ngIf="roles.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="roles.errors.required">
                             User Role is required.
                           </div>
@@ -427,7 +427,7 @@
                         <div class="input-group">
                           <input id="pd" [disabled]="enableUserLogin" [(ngModel)]="userData.userLoginData.password"
                             placeholder="eg. $John@01" (change)="onChangeHideErrors('password')" name="password"
-                            #pwd="ngModel" [required]="userData.loginEnabled"
+                            #pwd="ngModel" [required]="userData.loginEnabled"  [ngClass]="{ 'error' : uForm1.submitted && pwd.invalid }"
                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\-\.]).{8,20}$"
                             [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
                             class="form-control" />
@@ -440,7 +440,7 @@
                             </span>
                           </div>
                         </div>
-                        <div *ngIf="pwd.invalid && (pwd.dirty || pwd.touched)" class="text-danger">
+                        <div *ngIf="pwd.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="pwd.errors.required">
                             Password is required.
                           </div>
@@ -488,7 +488,7 @@
                           <input id="cnf" [(ngModel)]="userData.userLoginData.confirmPassword"
                             [disabled]="enableUserLogin" name="confirmPassword"
                             (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel"
-                            [required]="userData.loginEnabled" [type]="cpwdfieldTextType ? 'text' : 'password'"
+                            [required]="userData.loginEnabled" [type]="cpwdfieldTextType ? 'text' : 'password'" [ngClass]="{ 'error' : uForm1.submitted && cpwd.invalid }"
                             placeholder="Confirm password" class="form-control" />
                           <div class="input-group-append">
                             <span class="input-group-text eye">
@@ -499,7 +499,7 @@
                             </span>
                           </div>
                         </div>
-                        <div *ngIf="cpwd.invalid && (cpwd.dirty || cpwd.touched)" class="text-danger">
+                        <div *ngIf="cpwd.invalid && uForm1.submitted" class="text-danger">
                           <div *ngIf="cpwd.errors.required">
                             Confirm password is required.
                           </div>
@@ -527,12 +527,12 @@
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-dark text-lg-right pt-2">Payroll Type
                               <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType"
+                            <ng-select [(ngModel)]="userData.paymentDetails.payrollType" name="payrollType" [ngClass]="{ 'error' : uForm1.submitted && upayrolltype.invalid }"
                               class="form-control" placeholder="Select Payroll Type" #upayrolltype="ngModel" required>
                               <ng-option value="Hours">Hours</ng-option>
                               <ng-option value="Flat">Flat</ng-option>
                             </ng-select>
-                            <div *ngIf="upayrolltype.invalid && (upayrolltype.dirty || upayrolltype.touched)"
+                            <div *ngIf="upayrolltype.invalid && uForm1.submitted"
                               class="text-danger">
                               <div *ngIf="upayrolltype.errors.required">
                                 Payroll type is required.
@@ -577,10 +577,10 @@
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-dark text-lg-right pt-2">SIN <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control"
+                            <input [(ngModel)]="userData.paymentDetails.SIN" name="SIN" type="text" class="form-control" [ngClass]="{ 'error' : uForm1.submitted && usin.invalid }"
                               placeholder=" 9 digits , eg.123456789" #usin="ngModel" required pattern="^[0-9]{9}$"
                               maxlength="9">
-                            <div *ngIf="usin.invalid && (usin.dirty || usin.touched)" class="text-danger">
+                            <div *ngIf="usin.invalid && uForm1.submitted" class="text-danger">
                               <div *ngIf="usin.errors.required">
                                 SIN is required.
                               </div>
@@ -601,19 +601,9 @@
                       </div>
                       <div class="col-lg-11 text-right mb-3">
 
-                        <button class="btn btn-default mr-1" data-dismiss="modal" type="button"
-                          (click)="cancel()">Cancel</button>
-
-                        <button type="button" class="btn btn-success mr-1" (click)="addUser()"
-                          *ngIf="!contactID && !uForm1.form.valid" [disabled]="!uForm1.form.valid">Save</button>
-
-                        <button type="button" class="btn btn-success mr-1" (click)="addUser()"
-                          *ngIf="!contactID && uForm1.form.valid" [disabled]="userDisabled">Save</button>
-
-                        <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()"
-                          *ngIf="contactID  && !uForm1.form.valid" [disabled]="!uForm1.form.valid">Update</button>
-                        <button class="btn btn-success btnNext ng-star-inserted mr-1" (click)="updateUser()"
-                          *ngIf="contactID && uForm1.form.valid" [disabled]="userDisabled">Update</button>
+                        <button class="btn btn-default mr-1 cus-btn-padd" type="button" (click)="cancel()">Cancel</button>
+                          <button type="submit" *ngIf="!contactID" [disabled]="submitDisabled" class="cus-btn-padd btn btn-success" >Save</button>
+                          <button type="submit"  *ngIf="contactID" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
 
                       </div>
 

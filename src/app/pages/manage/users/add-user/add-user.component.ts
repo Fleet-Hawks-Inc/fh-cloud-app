@@ -82,6 +82,7 @@ export class AddUserComponent implements OnInit {
       confirmPassword: ''
     }
   };
+  submitDisabled = false;
   public profilePath: any = '';
   public detailImgPath: any = 'assets/img/driver/driver.png';
   public defaultProfilePath: any = '';
@@ -92,7 +93,6 @@ export class AddUserComponent implements OnInit {
   fieldvisibility = 'false';
   uploadedPhotos: any = [];
   errors = {};
-  userDisabled = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -155,7 +155,7 @@ export class AddUserComponent implements OnInit {
 
   fetchUserRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
-      this.userRoles = data
+      this.userRoles = data;
     }
     );
 
@@ -289,11 +289,11 @@ export class AddUserComponent implements OnInit {
     this.uploadedPhotos.push(files[0]);
   }
 
-  async addUser() {
+  async onAddUser() {
 
     this.hasError = false;
     this.hasSuccess = false;
-    this.userDisabled = true;
+    this.submitDisabled = true;
     this.hideErrors();
     // this.spinner.show();
     for (let i = 0; i < this.userData.address.length; i++) {
@@ -336,11 +336,11 @@ export class AddUserComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.userDisabled = false;
+                this.submitDisabled = false;
 
               },
               error: () => {
-                this.userDisabled = false;
+                this.submitDisabled = false;
 
               },
               next: () => { },
@@ -349,7 +349,7 @@ export class AddUserComponent implements OnInit {
         next: (res) => {
           // this.spinner.hide();
           this.response = res;
-          this.userDisabled = false;
+          this.submitDisabled = false;
           this.hasSuccess = true;
           this.location.back();
           this.toastr.success('User Added Successfully');
@@ -437,10 +437,20 @@ export class AddUserComponent implements OnInit {
       }
     });
   }
-  async updateUser() {
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 150, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
+  async onUpdateUser() {
     this.hasError = false;
     this.hasSuccess = false;
-    this.userDisabled = true;
+    this.submitDisabled = true;
     this.hideErrors();
     // this.spinner.show();
     this.userData[`contactID`] = this.contactID;
@@ -485,10 +495,10 @@ export class AddUserComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.userDisabled = false;
+                this.submitDisabled = false;
               },
               error: () => {
-                this.userDisabled = false;
+                this.submitDisabled = false;
               },
               next: () => { },
             });
@@ -496,7 +506,7 @@ export class AddUserComponent implements OnInit {
         next: (res) => {
           // this.spinner.hide();
           this.response = res;
-          this.userDisabled = false;
+          this.submitDisabled = false;
           this.hasSuccess = true;
           this.location.back();
           this.toastr.success('User is updated successfully');
@@ -504,7 +514,7 @@ export class AddUserComponent implements OnInit {
       });
   }
   validatePassword(password) {
-    let passwordVerify = passwordStrength(password)
+    let passwordVerify = passwordStrength(password);
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
     } else {
@@ -527,7 +537,7 @@ export class AddUserComponent implements OnInit {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
-      this.passwordValidation.length = true
+      this.passwordValidation.length = true;
     } else {
       this.passwordValidation.length = false;
     }
