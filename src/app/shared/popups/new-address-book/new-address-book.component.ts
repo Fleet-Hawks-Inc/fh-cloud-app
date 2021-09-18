@@ -1175,7 +1175,6 @@ export class NewAddressBookComponent implements OnInit {
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' ' + element.lName;
     }
-
     // create form data instance
     const formData = new FormData();
 
