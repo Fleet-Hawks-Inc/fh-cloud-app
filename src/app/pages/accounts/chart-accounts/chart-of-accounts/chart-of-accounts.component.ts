@@ -141,6 +141,7 @@ export class ChartOfAccountsComponent implements OnInit {
               v.last = v.actName.substring(v.actName.indexOf(' ') + 1, v.actName.length);
               this.accounts.push(v);
             });
+            console.log('this.accounts', this.accounts);
             if (this.accounts[this.accounts.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
             } else {
