@@ -2337,7 +2337,8 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* choose file line height class end*/
 .adddriverpl {
-  padding-left: 73px;
+  /* padding-left: 73px; */
+  padding-left: 120px;
 }
 
 /* add orderpadding class start 11.05.21 */

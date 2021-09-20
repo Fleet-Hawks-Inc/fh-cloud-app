@@ -10,18 +10,16 @@
 
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
-                        <h4 class="text-4 mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
+                        <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{ pageTitle }}</h4>
                     </div>
                     
-                    <div class="col-md-10 col-lg-10 text-right">
+                    <div class="col-md-10 col-lg-10 text-right pr-1">
                         <a routerLink="/dispatch/routes/list" class="btn btn-default btn-sm mr-2"><i class="fas fa-list"></i> All Routes</a>
-
-                        
                     </div>
                 </div>
 
             </header>
-            <div class="routing-overview__wrapper m-3">
+            <div class="routing-overview__wrapper m-2">
                 <div class="row">
                     <div class="col-3 pr-2 mb-3">
                         <div class="bg-white p-3 d-flex justify-content-between align-items-center text-dark">
@@ -168,8 +166,8 @@
 
                         </div>
                     </div>
-                    <div class="col-12 mb-3" *ngFor="let data of stopInformation; let i=index;">
-                        <div class="bg-white p-3 d-flex text-dark" *ngIf="i>0 && i <stopInformation.length-1">
+                    <div class="col-12" *ngFor="let data of stopInformation; let i=index;">
+                        <div class="bg-white p-3 d-flex text-dark mb-3" *ngIf="i>0 && i <stopInformation.length-1">
                            <div class="grey-bg pull-left p-4" style="color: #979797;">
                               <i class="fas fa-map-marker-alt text-dark fa-fw" style="font-size:20px;"></i>
                            </div>
@@ -187,15 +185,14 @@
                             <mat-expansion-panel hideToggle >
                               <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                  <label
-                                  class="control-label text-lg-right text-5 m-0">Map View</label>
+                                  <label class="font-weight-bold text-3 m-0">Map View</label>
                                 </mat-panel-title>
                               </mat-expansion-panel-header>
-                              <div class="row mb-3">
-                                <div class="col-lg-12">
+                              <div class="row">
+                                <div class="col-lg-12 pl-2 pr-2">
                                     <div class="bg-white p-0 text-dark">
                                         <div class="form-group row pt-2">
-                                            <div class="col-lg-12 mb-2">
+                                            <div class="col-lg-12">
                                                 <div class="mapclass vehiclemain" id="map_view">
                                                     <div id="map" class=""></div>
                                                 </div>
