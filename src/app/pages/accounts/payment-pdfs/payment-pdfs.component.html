@@ -1,0 +1,361 @@
+<div class="modal fade" id="chequeModal2" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document" style="max-width: 750px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Driver Payment</h4>
+                <button type="button" class="close">&times;</button>
+            </div>
+            <form>
+                <div class="modal-body">
+                    <section class="cheque-wrapper" id="driver_pay_pdf">
+                        <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <h1 class="font-weight-bold text-dark f-40">Driver Payment Advance</h1>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td width="50%">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" height="3" bgcolor="#dddddd"></td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" valign="top">
+                                        <h2 class="text-dark mb-0 font-weight-bold text-6 text-capitalize">{{ pdfDetails.name }}
+                                        </h2>
+                                        <p class="text-dark">{{ pdfDetails.address }}<br>
+                                            <strong>Phone:</strong> {{ pdfDetails.phone }}<br>
+                                            <strong>Email:</strong> {{ pdfDetails.email }} </p>
+                                    </td>
+                                    <td valign="top">
+                                        <table width="80%" border="0" align="right" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="right">
+                                                        <h2 class="text-dark mb-0 font-weight-bold text-6">User ID
+                                                        </h2>
+                                                        <p class="text-dark">{{ pdfDetails.userID }} </p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="right">
+                                                        <p class="text-dark"> <strong>Status:</strong> {{ payStatus }} </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" height="3" bgcolor="#dddddd"></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" valign="top">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="30%">
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-dark mb-0 text-4"><strong>Payment#:</strong> {{ pdfDetails.paymentNo }}
+                                                                        </p>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-dark mb-0 text-4"><strong>Pay Period:</strong> {{ pdfDetails.payPeriod }}
+                                                                        </p>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td width="20%">
+                                                        <table border="0" align="right" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-dark mb-0 text-4"><strong>Year to Date:</strong> {{ pdfDetails.payYear }}
+                                                                        </p>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr bgcolor="#f3f3f3">
+                                                    <td width="60%" class="pl-3 pt-2">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Description</p>
+                                                    </td>
+                                                    <td width="20%" class="pr-3 pt-2 text-right">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Rate $</p>
+                                                    </td>
+                                                    <td width="20%" class="pr-3 pt-2 text-right">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Amount $</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">Regular Earnings</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.finalAmount | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.regEarning | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">Critical Workers Benefit</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.workerBenefit | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.workerBenefit | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">Vacation Pay Paid</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.vacationPay | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.vacationPay | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                </tr>
+                                                <tr *ngFor="let add of addCharges">
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2 text-capitalize">{{ add.chargeName }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ add.amount | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">-</p>
+                                                    </td>
+                                                </tr>
+
+                                                <tr *ngFor="let ded of dedCharges">
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2 text-capitalize">{{ ded.chargeName }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">- {{ ded.amount | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">-</p>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td class="pl-3 pt-2">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">EI Premiums</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.taxdata.ei | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.ei | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">CPP Contributions</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.taxdata.cpp | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.cpp | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">Income Tax</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.paymentData.incomeTax | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">{{ this.annualResult.incomeTax | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">Road Expenses - CDN</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">0.00</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 text-dark mb-2">0.00</p>
+                                                    </td>
+                                                </tr> -->
+                                                <tr>
+                                                    <td class="pl-3 pt-2">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark font-weight-bold mb-2">Net Pay {{ paymentData.payMode }} #{{ paymentData.payModeNo }} {{ paymentData.payModeDate | date:"dd-MM-yyyy" }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">{{ this.paymentData.finalAmount | number : '1.2-2'  }}</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">-</p>
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark font-weight-bold mb-2">Road Expenses Chq - CDN</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
+                                                    </td>
+                                                </tr> -->
+                                                <tr>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark font-weight-bold mb-2">EI Insurable Earnings</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
+                                                    </td>
+                                                    <td class="pr-3 pt-2 text-right">
+                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="html2pdf__page-break"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr *ngFor="let data of paymentTrips">
+                                    <td colspan="2">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 25px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <table border="0" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-dark mb-0 text-4"><strong>Trip#:</strong> {{ data.tripNo }}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td width="50%">
+                                                        <table border="0" align="right" cellpadding="0" cellspacing="0">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        <p class="text-dark mb-0 text-4"><strong>Trip Date:</strong> {{ data.date | date:"dd-MM-yyyy" }}</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table width="100%" border="1" bordercolor="#adadad" cellspacing="0" cellpadding="0">
+                                            <tbody>
+                                                <tr bgcolor="#f3f3f3">
+                                                    <td width="20%" class="pl-3 pt-2">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Location Type</p>
+                                                    </td>
+                                                    <td width="60%" class="pl-3 pt-2">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Location</p>
+                                                    </td>
+                                                    <td width="20%" class="pl-3 pt-2">
+                                                        <p class="text-4 font-weight-bold text-dark mb-2">Total Miles </p>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let plan of data.plans">
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">{{ plan.type }}</p>
+                                                    </td>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">{{ plan.location }}</p>
+                                                    </td>
+                                                    <td class="pl-3 pt-2">
+                                                        <p class="text-3 text-dark mb-2">{{ plan.miles }}</p>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="pl-3 pt-2">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                    <td class="pr-3 pt-2 text-right">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <div class="html2pdf__page-break"></div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
