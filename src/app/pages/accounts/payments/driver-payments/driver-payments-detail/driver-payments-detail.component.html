@@ -4,9 +4,11 @@
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                      {{ paymentData.paymentTo | titlecase }} Payment# - 1279430
+                      {{ paymentData.paymentTo | titlecase }} Payment# - {{ paymentData.paymentNo }}
                     </div>
                     <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <button type="button" (click)="downloadPaymentPdf();" class="btn btn-success btn-sm mr-3"><i
+                            class="fas fa-download"></i> Payment PDF</button>
                         <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i> Payment List</a>
                     </div>
@@ -159,3 +161,4 @@
         </section>
     </div>
 </section>
+<app-payment-pdfs></app-payment-pdfs>

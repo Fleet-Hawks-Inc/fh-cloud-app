@@ -70,7 +70,7 @@ export class AddDriverPaymentComponent implements OnInit {
   Success = '';
   submitDisabled = true;
   paymentID;
-  searchDisabled = false;
+  searchDisabled = true;
   taxErr = '';
   advErr = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
@@ -204,6 +204,7 @@ export class AddDriverPaymentComponent implements OnInit {
           v.paidAmount = 0;
           v.newtype = v.type.replace("_", " ");
           v.paidStatus = false;
+          v.pendingPayment = Number(v.pendingPayment.toFixed(2));
           v.prevPaidAmount = Number(v.finalTotal) - Number(v.pendingPayment);
           v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
           v.status = v.status.replace("_", " ");
@@ -636,5 +637,13 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.taxdata.emplEI = 0;
     this.paymentData.taxes = this.paymentData.taxdata.federalTax + this.paymentData.taxdata.provincialTax;
     this.calculateFinalTotal();
+  }
+
+  checkSearchDisable () {
+    if(this.paymentData.paymentTo !== null && this.paymentData.entityId !== null && this.paymentData.fromDate !== null && this.paymentData.toDate !== null) {
+      this.searchDisabled = false;    
+    } else {
+      this.searchDisabled = true;
+    }
   }
 }

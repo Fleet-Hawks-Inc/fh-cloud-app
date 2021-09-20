@@ -90,6 +90,9 @@ export class ListService {
   contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   contactsList = this.contactsObjectDataSource.asObservable();
 
+  paymentPdfObjDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentPdfList = this.paymentPdfObjDataSource.asObservable();
+
 
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
@@ -286,5 +289,9 @@ fetchReceivers() {
 
   separateModals(value) {
     this.otherModelDataSource.next(value);
+  }
+
+  triggerDownloadPaymentPdf(value) {
+    this.paymentPdfObjDataSource.next(value);
   }
 }
