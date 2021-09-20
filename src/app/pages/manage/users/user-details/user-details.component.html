@@ -24,7 +24,7 @@
                     Details</label>
                 </div>
                 <div class="col-lg-2 mb-2 text-right">
-                  <button type="button" data-toggle="modal" data-target="#userProfileModal"
+                  <button type="button" data-toggle="modal" data-target="#userProfileModal" *ngIf="profilePath !== ''"
                     class="btn btn-sm btn-success"><i class="fas fa-eye text-light"></i>View Photo</button>
                 </div>
                 <div class="col-lg-5 mb-1">
@@ -54,11 +54,11 @@
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Phone:</th>
-                        <td>{{userData.phone ? userData.phone : '-'}}</td>
+                        <td>{{userData.workPhone ? userData.workPhone : '-'}}</td>
                       </tr>
                       <tr>
                         <th width="40%" class="back-color-gray">Email:</th>
-                        <td>{{userData.email ? userData.email : '-'}}</td>
+                        <td>{{userData.workEmail ? userData.workEmail : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -75,27 +75,26 @@
                   <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Address</label>
                 </div>
               </div>
-              <div class="row adddriverpl" *ngFor="let address of userData.address">
+              <div class="row adddriverpl" *ngFor="let address of userData.adrs">
                 <div class="col-lg-5 mb-1">
                   <table class="table table-bordered table-responsive-lg mb-0">
                     <tbody>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Address Type</td>
-                        <td width="60%" class="text-capitalize">{{address.addressType ? address.addressType : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.aType ? address.aType : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 1</td>
-                        <td class="text-capitalize"><span *ngIf="address.manual">{{address.address1 ? address.address1: '-'}}</span>
-                          <span *ngIf="!address.manual">{{address.userLocation ? address.userLocation: '-'}}</span>
+                        <td class="text-capitalize"><span>{{address.add1 ? address.add1: '-'}}</span>
                         </td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Address 2</td>
-                        <td class="text-capitalize">{{address.address2 ? address.address2 : '-'}}</td>
+                        <td class="text-capitalize">{{address.add2 ? address.add2 : '-'}}</td>
                       </tr>
                       <tr>
                         <td width="40%" class="back-color-gray font-weight-bold">Country</td>
-                        <td width="60%" class="text-capitalize">{{address.countryName ? address.countryName : '-'}}</td>
+                        <td width="60%" class="text-capitalize">{{address.cName ? address.cName : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -105,15 +104,15 @@
                     <tbody>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Province/State</td>
-                        <td class="text-capitalize">{{address.stateName ? address.stateName : '-'}}</td>
+                        <td class="text-capitalize">{{address.sName ? address.sName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">City</td>
-                        <td class="text-capitalize">{{address.cityName ? address.cityName : '-'}}</td>
+                        <td class="text-capitalize">{{address.ctyName ? address.ctyName : '-'}}</td>
                       </tr>
                       <tr>
                         <td class="back-color-gray font-weight-bold">Zip Code</td>
-                        <td>{{address.zipCode ? address.zipCode : '-'}}</td>
+                        <td>{{address.zip ? address.zip : '-'}}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -160,8 +159,8 @@
                         <td class="text-capitalize">{{userData.userAccount.designation ? userData.userAccount.designation : '-'}}</td>
                       </tr>
                       <tr>
-                        <td class="back-color-gray font-weight-bold">User Type</td>
-                        <td class="text-capitalize">{{userData.userLoginData.userType ? userData.userLoginData.userType : '-'}}</td>
+                        <td class="back-color-gray font-weight-bold">User Roles</td>
+                        <td class="text-capitalize"><span *ngFor="let role of newRoles; let i=index;">{{role}}<span *ngIf="i !== newRoles.length-1">,</span></span></td>
                       </tr>
                     </tbody>
                   </table>

@@ -1,7 +1,7 @@
 <section class="body">
-   
+
    <div class="inner-wrapper">
-      
+
       <section role="main" class="content-body pl-1 pr-0 pt-0">
          <header class="page-header pr8 pl11">
             <div class="row" style="padding-top:10px;">
@@ -33,9 +33,9 @@
                               <ng-select [(ngModel)]="entityID"
                                  name="entityID" placeholder="Select contact" #cnt="ngModel" required>
 
-                                 <ng-option *ngFor="let user of users" value="{{user.contactID}}">
-                                    {{user.firstName}} {{user.lastName}}</ng-option>
-
+                                 <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
+                                  {{driver.firstName}}
+                               </ng-option>
                               </ng-select>
                               <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                  <div *ngIf="cnt.errors.required">

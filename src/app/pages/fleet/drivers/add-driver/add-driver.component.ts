@@ -594,7 +594,7 @@ export class AddDriverComponent
     this.driverData.licenceDetails.issuedState = null;
     this.driverData.licenceDetails.licCntryName =
       await this.countryStateCity.GetSpecificCountryNameByCode(cntryCode);
-  
+
     this.licStates = await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
 

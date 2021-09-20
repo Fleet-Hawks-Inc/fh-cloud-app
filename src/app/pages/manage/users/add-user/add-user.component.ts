@@ -37,7 +37,6 @@ export class AddUserComponent implements OnInit {
     dateOfBirth: null,
     workPhone: '',
     workEmail: '',
-    eTypes: ['employee'],
     profileImg: '',
     loginEnabled: false,
     paymentDetails: {
@@ -77,10 +76,10 @@ export class AddUserComponent implements OnInit {
       department: '',
       designation: ''
     },
-    currentStatus: 'active',
+    currentStatus: 'Active',
     userLoginData: {
       userName: '',
-      userRoles: '',
+      userRoles: [],
       password: '',
       confirmPassword: ''
     }
@@ -89,7 +88,7 @@ export class AddUserComponent implements OnInit {
   public profilePath: any = '';
   public detailImgPath: any = 'assets/img/driver/driver.png';
   public defaultProfilePath: any = '';
-  imageText = 'Add Picture';
+  imageText = 'Add';
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
   loginDiv = false;
@@ -128,7 +127,7 @@ export class AddUserComponent implements OnInit {
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   userRoles: any = [];
-
+  deletedUploads = [];
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   constructor(
@@ -146,7 +145,7 @@ export class AddUserComponent implements OnInit {
     this.contactID = this.route.snapshot.params[`contactID`];
     if (this.contactID) {
       this.title = 'Edit User';
-     // this.fetchUserByID();
+      this.fetchUserByID();
       this.isEdit = true;
     } else {
       this.title = 'Add User';
@@ -218,32 +217,28 @@ export class AddUserComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
+  async userAddress(i, item) {
+    this.userData.adrs[i].userLoc = item.address;
+    let result = await this.getAddressDetail(item.place_id);
+    if (result !== undefined) {
+      this.userData.adrs[i].geoCords.lat = result.position.lat;
+      this.userData.adrs[i].geoCords.lng = result.position.lng;
+      this.userData.adrs[i].cName = result.address.CountryFullName;
+      this.userData.adrs[i].sName = result.address.StateName;
+      this.userData.adrs[i].ctyName = result.address.City;
+      this.userData.adrs[i].cCode = result.address.Country;
+      this.userData.adrs[i].sCode = result.address.State;
+      this.userData.adrs[i].zip = result.address.Zip;
+      this.userData.adrs[i].add1 = result.address.StreetAddress ? result.address.StreetAddress : '';
+      this.userData.adrs[i].isSuggest = true;
+      $('div').removeClass('show-search__result');
+    }
+  }
   async getAddressDetail(id) {
     let result = await this.apiService
       .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
-  }
-  async userAddress(i, item) {
-    let result = await this.getAddressDetail(item.place_id);
-    result = result.items[0];
-    this.userData.adrs[i].geoCords.lat = result.position.lat;
-    this.userData.adrs[i].geoCords.lng = result.position.lng;
-    this.userData.adrs[i].cName = result.address.CountryFullName;
-    this.userData.adrs[i].sName = result.address.StateName;
-    this.userData.adrs[i].ctyName = result.address.City;
-
-    this.userData.adrs[i].cCode = result.address.Country;
-    this.userData.adrs[i].sCode = result.address.State;
-    this.userData.adrs[i].zip = result.address.Zip;
-    this.userData.adrs[i].street = result.address.StreetAddress;
-    this.userData.adrs[i].isSuggest = true;
-    $('div').removeClass('show-search__result');
-    if (result.adrs.houseNo === undefined) {
-      result.adrs.houseNo = '';
-    }
-    if (result.adrs.street === undefined) {
-      result.adrs.street = '';
-    }
   }
   async getStates(countryCode: any, index: any) {
     this.userData.adrs[index].sCode = '';
@@ -263,13 +258,13 @@ export class AddUserComponent implements OnInit {
     this.userData.adrs[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
-    this.userData.adrs[i][`userLocation`] = '';
+    this.userData.adrs[i][`userLoc`] = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
-      this.userData.adrs[i][`userLocation`] = '';
+      this.userData.adrs[i][`userLoc`] = '';
       this.userData.adrs[i].cCode = '';
       this.userData.adrs[i].sCode = '';
       this.userData.adrs[i].cName = '';
@@ -280,7 +275,7 @@ export class AddUserComponent implements OnInit {
       this.userData.adrs[i].add2 = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
-      this.userData.adrs[i][`userLocation`] = '';
+      this.userData.adrs[i][`userLoc`] = '';
       this.userData.adrs[i].cCode = '';
       this.userData.adrs[i].sCode = '';
       this.userData.adrs[i].cName = '';
@@ -289,6 +284,7 @@ export class AddUserComponent implements OnInit {
       this.userData.adrs[i].zip = '';
       this.userData.adrs[i].add1 = '';
       this.userData.adrs[i].add2 = '';
+      $('#addErr' + i).css('display', 'none');
     }
   }
   cancel() {
@@ -307,10 +303,45 @@ export class AddUserComponent implements OnInit {
       .next()
       .remove('label');
   }
-  selectPhoto(event) {
-    let files = [...event.target.files];
-    this.uploadedPhotos = [];
-    this.uploadedPhotos.push(files[0]);
+  selectPhoto(event, name: any, type: string) {
+    if (type === 'Add') {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.profilePath = e.target.result;
+        };
+        reader.readAsDataURL(files[i]);
+        this.imageText = 'Change';
+      }
+    } else {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.profilePath = e.target.result;
+        };
+        reader.readAsDataURL(files[i]);
+      }
+      this.deletedUploads.push(name);
+    }
+  }
+  deleteImage(type: string, name: string) {
+if (type === 'uploaded') {
+  this.profilePath = '';
+  this.uploadedPhotos = [];
+  this.imageText = 'Add';
+} else if (type === 'profile') {
+  this.userData.profileImg = '';
+  this.profilePath = '';
+  this.uploadedPhotos = [];
+  this.imageText = 'Add';
+  this.deletedUploads.push(name);
+}
   }
   async newGeoCode(data: any) {
     let result = await this.apiService
@@ -361,20 +392,7 @@ export class AddUserComponent implements OnInit {
         }
       }
     }
-    // for (let i = 0; i < this.userData.adrs.length; i++) {
-    //   const element = this.userData.adrs[i];
-    //   delete element.states;
-    //   delete element.cities;
-    //   if (element.cName !== '' && element.sName !== '' && element.ctyName !== '') {
-    //     const fullAddress = `${element.add1} ${element.add2} ${element.cName}
-    //     ${element.sName} ${element.ctyName}`;
-    //     let result = await this.HereMap.geoCode(fullAddress);
-    //     result = result.items[0];
-    //     element.geoCords.lat = result.position.lat;
-    //     element.geoCords.lng = result.position.lng;
-    //   }
-    // }
-    console.log('userdata', this.userData);
+    console.log('this.userData', this.userData);
     this.userData.userLoginData.userName = this.userData.userLoginData.userName.toLowerCase();
     // create form data instance
     const formData = new FormData();
@@ -441,68 +459,62 @@ export class AddUserComponent implements OnInit {
     this.errors = {};
   }
 
-  // fetchUserByID() {
-  //   this.apiService.getData('contacts/detail/' + this.contactID).subscribe(async (result: any) => {
-  //     result = result.Items[0];
-  //     this.userData = {
-  //       cName: result.cName,
-  //       dba: result.dba,
-  //       firstName: result.firstName,
-  //       lastName: result.lastName,
-  //       employeeID: result.employeeID,
-  //       dateOfBirth: result.dateOfBirth,
-  //       workPhone: result.workPhone,
-  //       workEmail: result.workEmail,
-  //       entityType: 'employee',
-  //       loginEnabled: result.loginEnabled,
-  //       profileImg: result.profileImg,
-  //       currentStatus: result.currentStatus,
-  //       paymentDetails: {
-  //         payrollType: result.paymentDetails.payrollType,
-  //         payrollRate: result.paymentDetails.payrollRate,
-  //         payrollRateUnit: result.paymentDetails.payrollRateUnit,
-  //         payPeriod: result.paymentDetails.payPeriod,
-  //         SIN: result.paymentDetails.SIN,
-  //         WCB: result.paymentDetails.WCB,
-  //         healthCare: result.paymentDetails.healthCare,
-  //       },
-  //       address: result.address,
-  //       userAccount: {
-  //         contractStartDate: result.userAccount.contractStartDate,
-  //         contractEndDate: result.userAccount.contractEndDate,
-  //         department: result.userAccount.department,
-  //         designation: result.userAccount.designation,
-  //       },
-  //       userLoginData: {
-  //         userName: result.userLoginData.userName,
-  //         userRoles: result.userLoginData.roles,
-  //         password: '',
-  //         confirmPassword: ''
-  //       }
-  //     };
-  //     if (this.userData.address !== undefined) {
-  //       for (let a = 0; a < this.userData.address.length; a++) {
-  //         const countryCode = this.userData.address[a].countryCode;
-  //         const stateCode = this.userData.address[a].stateCode;
-  //         await this.fetchStates(countryCode, a);
-  //         await this.fetchCities(countryCode, stateCode, a);
-  //       }
-  //     }
-  //     if (this.userData.loginEnabled === true) {
-  //       this.enableUserLogin = true;
-  //     } else {
-  //       this.enableUserLogin = false;
-  //     }
-  //     this.userData[`timeCreated`] = result.timeCreated;
-  //     this.userData[`createdDate`] = result.createdDate;
-  //     this.userData[`createdTime`] = result.createdTime;
-  //     // to show profile image
-  //     if (result.profileImg !== '' && result.profileImg !== undefined) {
-  //       this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
-  //       this.imageText = 'Update Picture';
-  //     }
-  //   });
-  // }
+  fetchUserByID() {
+    this.apiService.getData('contacts/detail/' + this.contactID).subscribe(async (result: any) => {
+      result = result.Items[0];
+      this.userData = {
+        cName: result.cName,
+        dba: result.dba,
+        firstName: result.firstName,
+        lastName: result.lastName,
+        employeeID: result.employeeID,
+        dateOfBirth: result.dateOfBirth,
+        workPhone: result.workPhone,
+        workEmail: result.workEmail,
+        loginEnabled: result.loginEnabled,
+        profileImg: result.profileImg,
+        currentStatus: result.currentStatus,
+        paymentDetails: {
+          payrollType: result.paymentDetails.payrollType,
+          payrollRate: result.paymentDetails.payrollRate,
+          payrollRateUnit: result.paymentDetails.payrollRateUnit,
+          payPeriod: result.paymentDetails.payPeriod,
+          SIN: result.paymentDetails.SIN,
+          WCB: result.paymentDetails.WCB,
+          healthCare: result.paymentDetails.healthCare,
+        },
+        adrs: result.adrs,
+        userAccount: {
+          contractStartDate: result.userAccount.contractStartDate,
+          contractEndDate: result.userAccount.contractEndDate,
+          department: result.userAccount.department,
+          designation: result.userAccount.designation,
+        },
+        userLoginData: {
+          userName: result.userLoginData.userName,
+          userRoles: result.userLoginData.userRoles,
+          password: '',
+          confirmPassword: ''
+        }
+      };
+      if (this.userData.loginEnabled === true) {
+        this.enableUserLogin = true;
+      } else {
+        this.enableUserLogin = false;
+      }
+      this.userData[`timeCreated`] = result.timeCreated;
+      this.userData[`createdDate`] = result.createdDate;
+      this.userData[`createdTime`] = result.createdTime;
+      // to show profile image
+      if (result.profileImg !== '' && result.profileImg !== undefined) {
+        this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
+        this.imageText = 'Change';
+      } else {
+        this.profilePath = '';
+        this.imageText = 'Add';
+      }
+    });
+  }
   scrollError() {
     let errorList;
     setTimeout(() => {
@@ -513,72 +525,95 @@ export class AddUserComponent implements OnInit {
       }
     }, 1500);
   }
-  // async onUpdateUser() {
-  //   this.hasError = false;
-  //   this.hasSuccess = false;
-  //   this.submitDisabled = true;
-  //   this.hideErrors();
-  //   // this.spinner.show();
-  //   this.userData[`contactID`] = this.contactID;
-  //   if (this.userData.loginEnabled === false) {
-  //     this.userData.userLoginData.userName = '';
-  //   }
-  //   for (let i = 0; i < this.userData.address.length; i++) {
-  //     const element = this.userData.address[i];
-  //     delete element.states;
-  //     delete element.cities;
-  //     if (element.countryName !== '' && element.stateName !== '' && element.cityName !== '') {
-  //       const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-  //       ${element.stateName} ${element.countryName}`;
-  //       let result = await this.HereMap.geoCode(fullAddress);
-  //       result = result.items[0];
-  //       element.geoCords.lat = result.position.lat;
-  //       element.geoCords.lng = result.position.lng;
-  //     }
-  //   }
-  //   // create form data instance
-  //   const formData = new FormData();
+  async onUpdateUser() {
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.hideErrors();
+    // this.spinner.show();
+    this.userData[`contactID`] = this.contactID;
+    this.userData[`deletedUploads`] = this.deletedUploads;
+    if (this.userData.loginEnabled === false) {
+      this.userData.userLoginData.userName = '';
+    }
+    for (let i = 0; i < this.userData.adrs.length; i++) {
+      const element = this.userData.adrs[i];
+      delete element.states;
+      delete element.cities;
 
-  //   // append photos if any
-  //   for (let i = 0; i < this.uploadedPhotos.length; i++) {
-  //     formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-  //   }
-  //   // append other fields
-  //   formData.append('data', JSON.stringify(this.userData));
-  //   // this.lastEvaluatedKeyStaff = '';
+      if (element.manual === true) {
+        let data = {
+          address1: element.add1,
+          address2: element.add2,
+          cityName: element.ctyName,
+          stateName: element.sName,
+          countryName: element.cName,
+          zipCode: element.zip,
+        };
 
-  //   this.apiService.putData('contacts', formData, true).
-  //     subscribe({
-  //       complete: () => { },
-  //       error: (err: any) => {
-  //         from(err.error)
-  //           .pipe(
-  //             map((val: any) => {
-  //               //  val.message = val.message.replace(/".*"/, 'This Field');
-  //               this.errors[val.context.key] = val.message;
-  //             })
-  //           )
-  //           .subscribe({
-  //             complete: () => {
-  //               this.throwErrors();
-  //               this.submitDisabled = false;
-  //             },
-  //             error: () => {
-  //               this.submitDisabled = false;
-  //             },
-  //             next: () => { },
-  //           });
-  //       },
-  //       next: (res) => {
-  //         // this.spinner.hide();
-  //         this.response = res;
-  //         this.submitDisabled = false;
-  //         this.hasSuccess = true;
-  //         this.location.back();
-  //         this.toastr.success('User is updated successfully');
-  //       }
-  //     });
-  // }
+        $('#addErr' + i).css('display', 'none');
+        let result = await this.newGeoCode(data);
+        if (result == null) {
+          $('#addErr' + i).css('display', 'block');
+          return false;
+        }
+        if (result !== undefined || result != null) {
+          element.geoCords = result;
+        }
+      } else {
+        $('#addErr' + i).css('display', 'none');
+        if (element.isSuggest !== undefined && element.isSuggest !== true && element.userLoc !== '') {
+          $('#addErr' + i).css('display', 'block');
+          return;
+        }
+      }
+    }
+    // create form data instance
+    const formData = new FormData();
+
+    // append photos if any
+    for (let i = 0; i < this.uploadedPhotos.length; i++) {
+      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+    }
+    // append other fields
+    formData.append('data', JSON.stringify(this.userData));
+    // this.lastEvaluatedKeyStaff = '';
+    this.submitDisabled = true;
+    try {
+      this.apiService.putData('contacts/user/update', formData, true).
+      subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                //  val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.throwErrors();
+                this.submitDisabled = false;
+              },
+              error: () => {
+                this.submitDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          // this.spinner.hide();
+          this.response = res;
+          this.submitDisabled = false;
+          this.hasSuccess = true;
+          this.location.back();
+          this.toastr.success('User is updated successfully');
+        }
+      });
+    } catch (error) {
+      this.submitDisabled = false;
+    }
+  }
   validatePassword(password) {
     let passwordVerify = passwordStrength(password);
     if (passwordVerify.contains.includes('lowercase')) {
