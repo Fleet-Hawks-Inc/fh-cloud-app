@@ -76,9 +76,10 @@
                                  <tr *ngFor="let rec of receipts">
                                    <td class="cursorpoint font-weight-bold" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recNo}}</td>
                                     <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.txnDate | date : 'yyyy/MM/dd'}}</td>
-                                    <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices">{{inv.invNo}} &nbsp;</span></td>
+                                    <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngFor="let inv of rec.paidInvoices; let i = index">{{inv.invNo}}<span *ngIf="i !== rec.paidInvoices.length-1">, </span></span></td>
                                     <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{customersObjects[rec.customerID] | titlecase}}</td>
-                                    <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.paymentMode | titlecase}}</td>
+                                    <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}"><span *ngIf="rec.paymentMode === 'eft'">{{rec.paymentMode | uppercase}}</span>
+                                      <span  *ngIf="rec.paymentMode !== 'eft'">{{rec.paymentMode | titlecase}}</span></td>
                                     <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{accountsObject[rec.accountID] | titlecase}}</td>
                                     <!-- <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">-</td> -->
                                     <td class="cursorpoint" routerLink="/accounts/receipts/detail/{{rec.recID}}">{{rec.recAmount | number : '1.2-2'}}&nbsp;{{rec.recAmountCur}}</td>

@@ -1189,7 +1189,8 @@ a:active {
 	}
 
 	html.fixed.sidebar-left-collapsed .content-body {
-		margin-left: 60px;
+		/* margin-left: 60px; */
+		margin-left: 73px;
 	}
 
 	/* Layout Fixed - Sidebar Left Collapsed & Sidebar Right Opened */

@@ -33,10 +33,10 @@
                          name="driverType"
                          placeholder="Driver type"
                          class="form-control form-control-sm populate">
- 
+
                          <ng-option value="contractor">Contractor</ng-option>
                          <ng-option value="employee">Employee</ng-option>
- 
+
                      </ng-select>
                   </div>
 
@@ -207,7 +207,7 @@
                                     <span *ngIf="driver.documentDetails.length === 3" class="badge badge-dark p-1 text-uppercase">+2</span>
                                  </td>
                                  <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.groupID">{{ driver.groupID ? groupssObject[driver.groupID] : '-'}}</td>
-                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.citizenship">{{ driver.citizenship }}</td>
+                                 <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.citizenship">{{ driver.citizenCntryName.name }}</td>
                                  <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.address">
                                     <div *ngIf="driver.address != undefined">
                                        <div *ngIf="driver.address[0].manual">

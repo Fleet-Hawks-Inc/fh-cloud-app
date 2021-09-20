@@ -109,19 +109,19 @@ export class AddReceiptComponent implements OnInit {
     this.newTotal = 0;
     this.advancePayments = [];
     this.accountService.getData(`order-invoice/customer/${this.receiptData.customerID}`).subscribe((res: any) => {
-     if (res !== undefined) {
-      this.orderInvoices = res;
-      this.orderInvoices.map((v: any) => {
-        v.invStatus = v.invStatus.replace('_', ' ');
-      });
-      if(this.orderInvoices.length > 0) {
-this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currency;
+      if (res !== undefined) {
+        this.orderInvoices = res;
+        this.orderInvoices.map((v: any) => {
+          v.invStatus = v.invStatus.replace('_', ' ');
+        });
+        if (this.orderInvoices.length > 0) {
+          this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currency;
+        }
+        for (const op of this.orderInvoices) {
+          this.newTotal += op.balance;
+          this.receiptData.totalAmount = this.newTotal;
+        }
       }
-      for (const op of this.orderInvoices) {
-        this.newTotal += op.balance;
-        this.receiptData.totalAmount = this.newTotal;
-      }
-     }
     });
     this.accountService.getData(`invoices/customer/${this.receiptData.customerID}`).subscribe((result) => {
       if (result !== undefined) {
@@ -130,8 +130,8 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
           v.invStatus = v.invStatus.replace('_', ' ');
         });
         if (this.invoices.length > 0) {
-            this.receiptData.recAmountCur = this.invoices[0].invCur;
-            this.receiptData.advAmtCur = this.invoices[0].invCur;
+          this.receiptData.recAmountCur = this.invoices[0].invCur;
+          this.receiptData.advAmtCur = this.invoices[0].invCur;
         }
         for (const op of this.invoices) {
           this.newTotal += op.balance;
@@ -140,7 +140,7 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
       }
     });
 
-  //  this.fetchAdvancePayments();
+    //  this.fetchAdvancePayments();
   }
   refreshAccount() {
     this.listService.fetchChartAccounts();
@@ -157,7 +157,7 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
       this.advancePayments = result;
       this.advancePayments.map((v) => {
         v.selected = false;
-        if(v.payMode) {
+        if (v.payMode) {
           v.payMode = v.payMode.replace('_', ' ');
         }
         v.fullPayment = false;
@@ -193,31 +193,24 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
       this.paymentLabel = 'Cheque';
     }
   }
-  getAmount(j: any, type: string) {
-    if (type === 'orderInvoice') {
-      for (let i = 0; i < this.orderInvoices.length; i++) {
-        if (i === j) {
-          if (this.orderInvoices[i].fullPayment === true) {
-            this.orderInvoices[i].amountPaid = this.orderInvoices[i].balance;
-          } else if (this.orderInvoices[i].fullPayment === true && this.orderInvoices[i].invStatus === 'partially_paid') {
-            this.orderInvoices[i].amountPaid = this.orderInvoices[i].balance;
-          } else {
-            this.orderInvoices[i].amountPaid = 0;
-          }
-        }
-      }
+  getAmountOrder(j: any) {
+    if (this.orderInvoices[j].fullPayment === true) {
+      this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
+    } else if (this.orderInvoices[j].fullPayment === true && this.orderInvoices[j].invStatus === 'partially_paid') {
+      this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
     } else {
-      for (let i = 0; i < this.invoices.length; i++) {
-        if (i === j) {
-          if (this.invoices[i].fullPayment === true) {
-            this.invoices[i].amountPaid = this.invoices[i].balance;
-          } else if (this.invoices[i].fullPayment === true && this.invoices[i].invStatus === 'partially_paid') {
-            this.invoices[i].amountPaid = this.invoices[i].balance;
-          } else {
-            this.invoices[i].amountPaid = 0;
-          }
-        }
-      }
+      this.orderInvoices[j].amountPaid = 0;
+    }
+
+    this.findReceivedAmtFn();
+  }
+  getAmountManual(k: any) {
+    if (this.invoices[k].fullPayment === true) {
+      this.invoices[k].amountPaid = this.invoices[k].balance;
+    } else if (this.invoices[k].fullPayment === true && this.invoices[k].invStatus === 'partially_paid') {
+      this.invoices[k].amountPaid = this.invoices[k].balance;
+    } else {
+      this.invoices[k].amountPaid = 0;
     }
     this.findReceivedAmtFn();
   }
@@ -257,20 +250,20 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
   }
 
   matchPayment() {
- for (const element of this.invoices) {
-    if (element.amountPaid === element.balance) {
-   element.fullPayment = true;
-    } else {
-      element.fullPayment = false;
+    for (const element of this.invoices) {
+      if (element.amountPaid === element.balance) {
+        element.fullPayment = true;
+      } else {
+        element.fullPayment = false;
+      }
     }
- }
- for (const element of this.orderInvoices) {
-  if (element.amountPaid === element.balance) {
- element.fullPayment = true;
-  } else {
-    element.fullPayment = false;
-  }
-}
+    for (const element of this.orderInvoices) {
+      if (element.amountPaid === element.balance) {
+        element.fullPayment = true;
+      } else {
+        element.fullPayment = false;
+      }
+    }
   }
 
   async addReceipt() {
@@ -305,72 +298,72 @@ this.receiptData.recAmountCur = this.orderInvoices[0].charges.freightFee.currenc
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Receipt added successfully.');
-       // this.router.navigateByUrl('/accounts/receipts/list');
+        this.router.navigateByUrl('/accounts/receipts/list');
       },
     });
   }
- findReceivedAmtFn() {
-  this.matchPayment();
-  this.totalReceivedAmt = 0;
-  for (const element of this.invoices) {
-   this.totalReceivedAmt += element.amountPaid;
+  findReceivedAmtFn() {
+    this.matchPayment();
+    this.totalReceivedAmt = 0;
+    for (const element of this.invoices) {
+      this.totalReceivedAmt += element.amountPaid;
+    }
+    for (const element of this.orderInvoices) {
+      this.totalReceivedAmt += element.amountPaid;
+    }
+    this.receiptData.recAmount = this.totalReceivedAmt;
+    if (this.receiptData.recAmount > this.receiptData.totalAmount) {
+      this.totalErr = true;
+    } else {
+      this.totalErr = false;
+    }
   }
-  for (const element of this.orderInvoices) {
-    this.totalReceivedAmt += element.amountPaid;
-   }
-  this.receiptData.recAmount = this.totalReceivedAmt;
-  if (this.receiptData.recAmount > this.receiptData.totalAmount) {
-     this.totalErr = true;
-  } else {
-    this.totalErr = false;
-  }
-}
-// selectedAdvancepayments() {
-//   this.receiptData.advancePayIds = [];
-//   this.receiptData.advData = [];
-//   for (const element of this.advancePayments) {
-//     if(element.selected) {
-//       if(!this.receiptData.advancePayIds.includes(element.paymentID)) {
-//         let obj = {
-//           paymentID: element.paymentID,
-//           status: element.status,
-//           paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
-//           totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
-//           pendingAmount: element.pendingPayment
-//         }
-//         this.receiptData.advancePayIds.push(element.paymentID);
-//         this.receiptData.advData.push(obj);
-//       }
-//     }
-//   }
-//   this.advancePaymentCalculation();
-// }
-// advancePaymentCalculation() {
-//   this.receiptData.advAmt = 0;
-//   for (const element of this.advancePayments) {
-//     if(element.selected) {
-//       this.receiptData.advAmt += Number(element.paidAmount);
-//       this.receiptData.advData.map((v) => {
-//         if(element.paymentID === v.paymentID) {
-//           v.paidAmount = Number(element.paidAmount);
-//           v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
+  // selectedAdvancepayments() {
+  //   this.receiptData.advancePayIds = [];
+  //   this.receiptData.advData = [];
+  //   for (const element of this.advancePayments) {
+  //     if(element.selected) {
+  //       if(!this.receiptData.advancePayIds.includes(element.paymentID)) {
+  //         let obj = {
+  //           paymentID: element.paymentID,
+  //           status: element.status,
+  //           paidAmount: (element.status === 'not_deducted') ? element.paidAmount : Number(element.amount) - Number(element.pendingPayment),
+  //           totalAmount: (element.status === 'not_deducted') ? element.amount : element.pendingPayment,
+  //           pendingAmount: element.pendingPayment
+  //         }
+  //         this.receiptData.advancePayIds.push(element.paymentID);
+  //         this.receiptData.advData.push(obj);
+  //       }
+  //     }
+  //   }
+  //   this.advancePaymentCalculation();
+  // }
+  // advancePaymentCalculation() {
+  //   this.receiptData.advAmt = 0;
+  //   for (const element of this.advancePayments) {
+  //     if(element.selected) {
+  //       this.receiptData.advAmt += Number(element.paidAmount);
+  //       this.receiptData.advData.map((v) => {
+  //         if(element.paymentID === v.paymentID) {
+  //           v.paidAmount = Number(element.paidAmount);
+  //           v.pendingAmount = Number(element.pendingPayment) - Number(element.paidAmount);
 
-//           if(Number(element.paidAmount) === Number(element.pendingPayment)) {
-//             v.status = 'deducted';
-//           } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
-//             v.status = 'partially_deducted';
-//           } else {
-//             v.status = 'not_deducted';
-//           }
+  //           if(Number(element.paidAmount) === Number(element.pendingPayment)) {
+  //             v.status = 'deducted';
+  //           } else if (Number(element.paidAmount) < Number(element.pendingPayment)) {
+  //             v.status = 'partially_deducted';
+  //           } else {
+  //             v.status = 'not_deducted';
+  //           }
 
-//           v.paidAmount = v.paidAmount.toFixed(2);
-//         }
-//       })
-//     }
-//   }
-//   this.receiptData.advAmt = (this.receiptData.advAmt) ? Number(this.receiptData.advAmt) : 0;
-//   this.receiptData.totalAmount = (this.receiptData.totalAmount) ? Number(this.receiptData.totalAmount) : 0;
-// }
+  //           v.paidAmount = v.paidAmount.toFixed(2);
+  //         }
+  //       })
+  //     }
+  //   }
+  //   this.receiptData.advAmt = (this.receiptData.advAmt) ? Number(this.receiptData.advAmt) : 0;
+  //   this.receiptData.totalAmount = (this.receiptData.totalAmount) ? Number(this.receiptData.totalAmount) : 0;
+  // }
 
 
   // assignFullPayment(type, index, data) {
