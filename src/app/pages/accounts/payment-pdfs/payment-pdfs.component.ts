@@ -86,7 +86,6 @@ export class PaymentPdfsComponent implements OnInit {
   
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(async (res: any) => {
-      console.log('res', res);
       if(res.showModal && res.length != 0) {
         res.showModal = false;
         this.paymentData = res.data;
@@ -100,7 +99,6 @@ export class PaymentPdfsComponent implements OnInit {
             this.payStatus = 'Partially paid';
           }
         });
-        console.log('this.paymentData', this.paymentData);
         this.pdfDetails.paymentNo = this.paymentData.paymentNo;
         if(this.paymentData.paymentTo === 'driver') {
           this.fetchDriverDetails();
@@ -121,7 +119,6 @@ export class PaymentPdfsComponent implements OnInit {
   }
   
   async generatePaymentPDF() {
-    console.log('in generate fn')
     var data = document.getElementById('driver_pay_pdf');
     html2pdf(data, {
       margin:       0,
@@ -141,7 +138,6 @@ export class PaymentPdfsComponent implements OnInit {
     let ids = encodeURIComponent(JSON.stringify(this.paymentData.settlementIds));
     let result:any = await this.accountService.getData(`settlement/get/selected?entities=${ids}`).toPromise();
     this.settlements = result;
-    console.log('this.settlements', this.settlements);
 
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
@@ -161,8 +157,6 @@ export class PaymentPdfsComponent implements OnInit {
         }
       });
     }
-    console.log('this.addCharges', this.addCharges);
-    console.log('dedCharges', this.dedCharges);
     await this.fetchTrips();
   }
 
@@ -179,14 +173,12 @@ export class PaymentPdfsComponent implements OnInit {
       this.annualResult.workerBenefit = 0;
     }
     this.annualResult.incomeTax = Number(this.annualResult.federalTax) + Number(this.annualResult.provincialTax);
-    console.log('this.annualResult', this.annualResult);
   }
 
   async fetchTrips() {
     let tripIDs = encodeURIComponent(JSON.stringify(this.setlTripIds));
     let result:any = await this.apiService.getData(`trips/driver/settled?entities=${tripIDs}`).toPromise();
     this.trips = result;
-    console.log('this.trips-----', this.trips);
 
     this.settlements.forEach(element => {
       element.trpData.map((v) => {
@@ -227,7 +219,6 @@ export class PaymentPdfsComponent implements OnInit {
           }
         })
       })
-      console.log('this.paymentTrips', this.paymentTrips);
     });
   }
 
