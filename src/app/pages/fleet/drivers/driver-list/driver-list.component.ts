@@ -253,7 +253,7 @@ export class DriverListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`)
       .subscribe((result: any) => {
-        if (result.Items.length == 0) {
+        if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         result.Items.map((v) => {
@@ -262,8 +262,8 @@ export class DriverListComponent implements OnInit {
         this.suggestedDrivers = [];
         this.getStartandEndVal();
         this.drivers = result[`Items`];
-        this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
-        if (this.driverID != '') {
+       // this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
+        if (this.driverID !== '') {
           this.driverStartPoint = 1;
           this.driverEndPoint = this.totalRecords;
         }
@@ -300,7 +300,7 @@ export class DriverListComponent implements OnInit {
         e.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(e.citizenship);
       });
       // for(let i=0;i<drivers[d].address.length; i++){
-      if (drivers[d].address != undefined) {
+      if (drivers[d].address !== undefined) {
         drivers[d].address.map(async (a: any) => {
           if (a.manual) {
             a.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(a.countryCode);

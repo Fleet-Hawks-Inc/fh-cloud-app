@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import jspdf from 'jspdf';
+import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
 import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
-import { isObject } from 'util';
 import * as html2pdf from 'html2pdf.js';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -435,15 +434,16 @@ export class OrderDetailComponent implements OnInit {
   async generate() {
     this.isShow = true;
     var data = document.getElementById('print_wrap');
-
+    
     html2pdf(data, {
       margin:       0,
       filename:     'invoice.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      html2canvas:  { scale: 2},
       jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
 
     });
+    
     $('#previewInvoiceModal').modal('hide');
   }
 
