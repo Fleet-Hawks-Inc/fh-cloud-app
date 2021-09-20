@@ -1,14 +1,12 @@
 <ng-template #allUnitModal let-modal>
-  <div class="cus-modal-content">
+  <div class="cus-modal-content modal-margin-top">
     <div class="modal-header pr-0">
       <div class="row w-100 align-items-center">
-        <div class="col-2">
+        <div class="col-3">
           <h5 class="modal-title">Address Book</h5>
         </div>
 
-
-
-        <div class="col-10 text-right pr-0">
+        <div class="col-9 text-right pr-0">
           <div class="row w-100 m-0">
             <div class="col-4 ml-auto">
               <div class="input-group input-group-md mb-0">
@@ -48,7 +46,7 @@
             </div>
 
 
-            <div class="col-2 p-0">
+            <div class="col-3 p-0">
               <button
                 type="submit"
                 [disabled]="isSearched"
@@ -1005,7 +1003,7 @@
 <!-- Add entry Modal -->
 
 <ng-template #newUnitModal let-modal>
-  <div class="cus-modal-content">
+  <div class="cus-modal-content modal-margin-top modal-dialog-lg">
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title" *ngIf="!updateButton">Add Entry</h4>
       <h4 class="modal-title" id="modal-basic-title" *ngIf="updateButton">Update Entry</h4>
@@ -1026,7 +1024,7 @@
         novalidate #contactForm="ngForm" ngNativeValidate
         (ngSubmit)="updateButton ? contactForm.form.valid && updateEntry() : contactForm.form.valid && addEntry()"
       >
-      <div class="modal-body text-dark" style="max-height: 650px; overflow-y: auto;">
+      <div class="modal-body text-dark p-5" style="max-height: 650px; overflow-y: auto;">
         
           <div class="">
             <!-- Basic Details start -->
@@ -3154,11 +3152,9 @@
               *ngFor="
                 let additionData of unitData.addlCnt;
                 let ad = index
-              "
-            >
+              ">
               <div class="col-12">
-                <label
-                  class="control-label font-weight-bold text-lg-right text-5 m-0"
+                <label class="control-label font-weight-bold text-lg-right text-5 m-0"
                   >Additional Contact Details</label
                 >
               </div>
@@ -3269,9 +3265,7 @@
             <!-- Additional Contact Details end -->
     
           </div>
-          <div class="border-top mt-3 pt-3 text-right">
-            
-          </div>
+          
       </div>
       <div class="modal-footer">
         <button
