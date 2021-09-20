@@ -1,503 +1,512 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
+            <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{pageTitle}}</div>
-                    <div class="col-md-8  col-lg-8 text-right"> <a routerLink="/accounts/expense/list"
-                            class="btn btn-default btn-sm mx-2" style="color:black;"><i class="fas fa-list"></i> Other
-                            Expenses
-                            List</a> </div>
+                    <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/accounts/expense/list"
+                            class="btn btn-default btn-sm" style="color:black;"><i class="fas fa-list"></i> Other
+                            Expenses List</a> </div>
                 </div>
             </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <div class="card-body text-dark">
-                        <form class="form-horizontal form-bordered" method="get" #expForm="ngForm">
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Basic
-                                        Details</label>
+
+            <section class="m-2">
+                <form class="form-horizontal form-bordered" method="get" #expForm="ngForm">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row adddriverpl pt-3">
+                            <div class="col-lg-10">
+                                <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Basic Details</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense
+                                            Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.categoryID" name="categoryID"
+                                            placeholder="Select Expense Type" #expCat="ngModel" required>
+                                            <ng-option value="{{ data.categoryID }}"
+                                                *ngFor="let data of expenseCategories">{{ data.catName }}
+                                            </ng-option>
+                                        </ng-select>
+
+                                        <div *ngIf="expCat.invalid && (expCat.dirty || expCat.touched)" class="text-danger">
+                                            <div *ngIf="expCat.errors.required">
+                                                Expense type is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-right mar-top-37">
+                                        <button type="button" data-target="#addExpenseTypeModal" data-toggle="modal"
+                                            class="btn btn-success btn-sm mr-1" style="color:white;"><i
+                                                class="fas fa-plus"></i></button>
+                                                <a href="javascript:;" (click)="refreshCategory()"
+                                                data-toggle="tooltip" title="Refresh category data"
+                                                class="btn btn-success btn-sm modal-with-form"><i
+                                                    class="fas fa-sync"></i></a>
+                                    </div>
                                 </div>
-                                <div class="col-lg-5 offset-lg-1">
-                                    <div class="row">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense
-                                                Type<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.categoryID" name="categoryID"
-                                                placeholder="Select Expense Type" #expCat="ngModel" required>
-                                                <ng-option value="{{ data.categoryID }}"
-                                                    *ngFor="let data of expenseCategories">{{ data.catName }}
-                                                </ng-option>
-                                            </ng-select>
+                                <div class="row mt-3">
+                                    <div class="col-lg-8">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense
+                                            Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.expAccountID" name="expAccountID"
+                                            placeholder="Select Expense Account" #expAccount="ngModel" required (change)="changeDepAcc($event)">
+                                            <ng-option value="{{ data.actID }}"
+                                                *ngFor="let data of expenseAccounts | async"> {{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
+                                        </ng-select>
 
-                                            <div *ngIf="expCat.invalid && (expCat.dirty || expCat.touched)" class="text-danger">
-                                                <div *ngIf="expCat.errors.required">
-                                                    Expense type is required.
-                                                </div>
+                                        <div *ngIf="expAccount.invalid && (expAccount.dirty || expAccount.touched)" class="text-danger">
+                                            <div *ngIf="expAccount.errors.required">
+                                                Expense account is required.
                                             </div>
                                         </div>
-                                        <div class="col-lg-2  mar-top-37">
-                                            <button type="button" data-target="#addExpenseTypeModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
-                                                    class="fas fa-plus"></i></button>
-                                                    <a href="javascript:;" (click)="refreshCategory()"
-                                                    data-toggle="tooltip" title="Refresh category data"
-                                                    class="btn btn-success btn-sm modal-with-form"><i
-                                                        class="fas fa-sync"></i></a>
-                                        </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Expense
-                                                Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.expAccountID" name="expAccountID"
-                                                placeholder="Select Expense Account" #expAccount="ngModel" required (change)="changeDepAcc($event)">
-                                                <ng-option value="{{ data.actID }}"
-                                                    *ngFor="let data of expenseAccounts | async"> {{ data.actNo }} - {{ data.actName | titlecase}}</ng-option>
-                                            </ng-select>
+                                    <div class="col-lg-2 text-right mar-top-37">
+                                        <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                            class="btn btn-success btn-sm mr-1" style="color:white;"><i
+                                                class="fas fa-plus"></i></button>
+                                                <a href="javascript:;" (click)="refreshExpenseAccount()"
+                                                data-toggle="tooltip" title="Refresh account data"
+                                                class="btn btn-success btn-sm modal-with-form"><i
+                                                    class="fas fa-sync"></i></a>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-8">
+                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Paid
+                                            Through<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.paidAccountID" name="paidAccountID"
+                                            placeholder="Select Paid Through Account" #paidTh="ngModel"
+                                            required>
+                                            <optgroup *ngFor="let data of paidThroughAccounts | async" >
+                                                <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID"> {{ data.actNo }} - {{ data.actName | titlecase}}
+                                                   </ng-option>
+                                                </optgroup>
+                                        </ng-select>
 
-                                            <div *ngIf="expAccount.invalid && (expAccount.dirty || expAccount.touched)" class="text-danger">
-                                                <div *ngIf="expAccount.errors.required">
-                                                    Expense account is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2  mar-top-37">
-                                            <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
-                                                    class="fas fa-plus"></i></button>
-                                                    <a href="javascript:;" (click)="refreshExpenseAccount()"
-                                                    data-toggle="tooltip" title="Refresh account data"
-                                                    class="btn btn-success btn-sm modal-with-form"><i
-                                                        class="fas fa-sync"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Paid
-                                                Through<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.paidAccountID" name="paidAccountID"
-                                                placeholder="Select Paid Through Account" #paidTh="ngModel"
-                                                required>
-                                                <optgroup *ngFor="let data of paidThroughAccounts | async" >
-                                                    <ng-option value="{{ data.actID }}" *ngIf="data.actID !== expenseData.expAccountID"> {{ data.actNo }} - {{ data.actName | titlecase}}
-                                                       </ng-option>
-                                                    </optgroup>
-                                            </ng-select>
-
-                                            <div *ngIf="paidTh.invalid && (paidTh.dirty || paidTh.touched)" class="text-danger">
-                                                <div *ngIf="paidTh.errors.required">
-                                                    Paid through account is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2  mar-top-37">
-                                            <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                                                class="btn btn-success btn-sm mr-1" style="color:white;"><i
-                                                    class="fas fa-plus"></i></button>
-                                                    <a href="javascript:;" (click)="refreshPaidAccount()"
-                                                    data-toggle="tooltip" title="Refresh account data"
-                                                    class="btn btn-success btn-sm modal-with-form"><i
-                                                        class="fas fa-sync"></i></a>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <div class="row">
-                                                <div class="col-lg-6 pr-2">
-                                                    <input type="number" class="form-control" min="0"name="amount"
-                                                        [(ngModel)]="expenseData.amount" placeholder="e.g 100" (change)="calculateFinalTotal()" #amount="ngModel" required>
-
-                                                    <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
-                                                        <div *ngIf="amount.errors.required">
-                                                            Amount is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 pl-0">
-                                                    <ng-select [(ngModel)]="expenseData.currency" name="currency"
-                                                        placeholder="Select Currency" #currn="ngModel" required>
-                                                        <ng-option value="CAD">CAD</ng-option>
-                                                        <ng-option value="USD">USD</ng-option>
-                                                    </ng-select>
-
-                                                    <div *ngIf="currn.invalid && (currn.dirty || currn.touched)" class="text-danger">
-                                                        <div *ngIf="currn.errors.required">
-                                                            Currency is required.
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <div *ngIf="paidTh.invalid && (paidTh.dirty || paidTh.touched)" class="text-danger">
+                                            <div *ngIf="paidTh.errors.required">
+                                                Paid through account is required.
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
-                                        <div class="col-lg-5">
-                                            <div class="checkbox-custom">
-                                                <input type="checkbox" id="recurringChk" name="recurringstatus"
-                                                    [(ngModel)]="expenseData.recurring.status">
-                                                <label class="control-label font-weight-bold">Recurring?</label>
-                                            </div>
-                                        </div>
+                                    <div class="col-lg-2 text-right mar-top-37">
+                                        <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                            class="btn btn-success btn-sm mr-1" style="color:white;"><i
+                                                class="fas fa-plus"></i></button>
+                                                <a href="javascript:;" (click)="refreshPaidAccount()"
+                                                data-toggle="tooltip" title="Refresh account data"
+                                                class="btn btn-success btn-sm modal-with-form"><i
+                                                    class="fas fa-sync"></i></a>
                                     </div>
-                                    <div id="notRecurringDiv" *ngIf="!expenseData.recurring.status">
-                                        <div class="row mt-3">
-                                            <div class="col-lg-5">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="expenseData.txnDate" name="txnDate"
-                                                    type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
-                                                    ngbDatepicker #custexp="ngbDatepicker" class="form-control"
-                                                    autocomplete="off" [minDate]="dateMinLimit"
-                                                    [maxDate]="futureDatesLimit">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="recurringDiv" *ngIf="expenseData.recurring.status">
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                                         <div class="row">
-                                            <div class="col-lg-5">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Start
-                                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="expenseData.txnDate" name="txnDate"
-                                                    type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
-                                                    ngbDatepicker #startDate="ngbDatepicker" class="form-control"
-                                                    autocomplete="off" [minDate]="dateMinLimit"
-                                                    [maxDate]="futureDatesLimit">
+                                            <div class="col-lg-6 pr-2">
+                                                <input type="number" class="form-control" min="0"name="amount"
+                                                    [(ngModel)]="expenseData.amount" placeholder="e.g 100" (change)="calculateFinalTotal()" #amount="ngModel" required>
+
+                                                <div *ngIf="amount.invalid && (amount.dirty || amount.touched)" class="text-danger">
+                                                    <div *ngIf="amount.errors.required">
+                                                        Amount is required.
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-lg-5">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">End
-                                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <input [(ngModel)]="expenseData.recurring.endDate" name="endDate"
-                                                    type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
-                                                    ngbDatepicker #endDate="ngbDatepicker" class="form-control"
-                                                    autocomplete="off" [minDate]="dateMinLimit"
-                                                    [maxDate]="futureDatesLimit" #modeDate="ngModel" required>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-3">
-                                            <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Frequency</label>
-                                                <ng-select [(ngModel)]="expenseData.recurring.interval" name="interval"
-                                                    placeholder="Select Frequency">
-                                                    <ng-option value="{{ data.value }}"
-                                                        *ngFor="let data of recInterval">{{ data.name }} </ng-option>
+                                            <div class="col-lg-6 pl-0">
+                                                <ng-select [(ngModel)]="expenseData.currency" name="currency"
+                                                    placeholder="Select Currency" #currn="ngModel" required>
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
                                                 </ng-select>
+
+                                                <div *ngIf="currn.invalid && (currn.dirty || currn.touched)" class="text-danger">
+                                                    <div *ngIf="currn.errors.required">
+                                                        Currency is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                      <div class="col-lg-10">
-                                          <label
-                                              class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip</label>
-                                          <ng-select [(ngModel)]="expenseData.tripID" name="tripID"
-                                              placeholder="Select Trip">
-                                              <ng-option value="{{ trip.tripID }}"
-                                                  *ngFor="let trip of trips">Trip# - {{ trip.tripNo }} </ng-option>
-                                          </ng-select>
-                                      </div>
-                                  </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                Unit</label>
-                                            <ng-select [(ngModel)]="expenseData.unitType" name="unitType"
-                                                placeholder="Select Unit Type" (change)="resetUnitVal()">
-                                                <ng-option value="vehicle">Vehicle</ng-option>
-                                                <ng-option value="asset">Asset</ng-option>
-                                            </ng-select>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2 mt-3"></label>
-                                            <ng-select [(ngModel)]="expenseData.unitID" name="unitID"
-                                                placeholder="Select {{ expenseData.unitType }}"
-                                                *ngIf="expenseData.unitType === 'vehicle'">
-                                                <ng-option value="{{ data.vehicleID }}"
-                                                    *ngFor="let data of vehicles | async">{{ data.vehicleIdentification
-                                                    }} </ng-option>
-                                            </ng-select>
-
-                                            <ng-select [(ngModel)]="expenseData.unitID" name="unitID"
-                                                placeholder="Select {{ expenseData.unitType }}"
-                                                *ngIf="expenseData.unitType === 'asset'">
-                                                <ng-option value="{{ data.assetID }}"
-                                                    *ngFor="let data of assets | async">{{ data.assetIdentification }}
-                                                </ng-option>
-                                            </ng-select>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-5">
+                                        <div class="checkbox-custom">
+                                            <input type="checkbox" id="recurringChk" name="recurringstatus"
+                                                [(ngModel)]="expenseData.recurring.status">
+                                            <label class="control-label font-weight-bold">Recurring?</label>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-5 offset-lg-1">
+                                <div id="notRecurringDiv" *ngIf="!expenseData.recurring.status">
+                                    <div class="row mt-3">
+                                        <div class="col-lg-5">
+                                            <label
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <input [(ngModel)]="expenseData.txnDate" name="txnDate"
+                                                type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                                ngbDatepicker #custexp="ngbDatepicker" class="form-control"
+                                                autocomplete="off" [minDate]="dateMinLimit"
+                                                [maxDate]="futureDatesLimit">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="recurringDiv" *ngIf="expenseData.recurring.status">
                                     <div class="row">
+                                        <div class="col-lg-5">
+                                            <label
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Start
+                                                Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <input [(ngModel)]="expenseData.txnDate" name="txnDate"
+                                                type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
+                                                ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                                autocomplete="off" [minDate]="dateMinLimit"
+                                                [maxDate]="futureDatesLimit">
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <label
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">End
+                                                Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                            <input [(ngModel)]="expenseData.recurring.endDate" name="endDate"
+                                                type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
+                                                ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                                autocomplete="off" [minDate]="dateMinLimit"
+                                                [maxDate]="futureDatesLimit" #modeDate="ngModel" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
                                         <div class="col-lg-10">
                                             <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.vendorID" name="vendorID"
-                                                placeholder="Select Vendor" #vendorID="ngModel" required>
-                                                <ng-option value="{{ data.contactID }}"
-                                                    *ngFor="let data of vendors | async">{{ data.companyName }}
-                                                </ng-option>
-                                            </ng-select>
-
-                                            <div *ngIf="vendorID.invalid && (vendorID.dirty || vendorID.touched)" class="text-danger">
-                                                <div *ngIf="vendorID.errors.required">
-                                                    Vendor is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2  mar-top-37 pr-0">
-                                          <a href="javascript:;" (click)="openModal('form');"
-                                  class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
-                                  <a href="javascript:;" (click)="refreshVendorData()"
-                                  data-toggle="tooltip" title="Refresh vendor data"
-                                  class="btn btn-success btn-sm modal-with-form"><i
-                                      class="fas fa-sync"></i></a>
-                                                   </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.countryCode" name="countryCode"
-                                                placeholder="Select Country" (change)="getStates($event)" #country="ngModel" required>
-                                                <!-- <ng-option value="{{ data.countryCode }}"
-                                                    *ngFor="let data of countries">{{ data.countryName }} </ng-option> -->
-                                                    <ng-option value="CA">Canada</ng-option>
-                                                    <ng-option value="US">United States</ng-option>
-                                                    <ng-option value="MX">Mexico</ng-option>
-                                            </ng-select>
-
-                                            <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
-                                                <div *ngIf="country.errors.required">
-                                                    Country is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Province/State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                            <ng-select [(ngModel)]="expenseData.stateCode" name="stateCode"
-                                                placeholder="Select Province/State"
-                                                (change)="getCities(expenseData.countryCode, $event)" #state="ngModel" required>
-                                                <ng-option value="{{ data.stateCode }}" *ngFor="let data of states">{{
-                                                    data.stateName }} </ng-option>
-                                            </ng-select>
-
-                                            <div *ngIf="state.invalid && (state.dirty || state.touched)" class="text-danger">
-                                                <div *ngIf="state.errors.required">
-                                                    State is required.
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-5">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">City</label>
-                                            <ng-select [(ngModel)]="expenseData.cityName" name="cityName"
-                                                placeholder="Select City">
-                                                <ng-option value="{{ data.cityName }}" *ngFor="let data of cities">{{
-                                                    data.cityName }} </ng-option>
+                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Frequency</label>
+                                            <ng-select [(ngModel)]="expenseData.recurring.interval" name="interval"
+                                                placeholder="Select Frequency">
+                                                <ng-option value="{{ data.value }}"
+                                                    *ngFor="let data of recInterval">{{ data.name }} </ng-option>
                                             </ng-select>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-5">
-                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                                                <input type="checkbox" name="gstStatus"
-                                                    [(ngModel)]="expenseData.taxes.includeGST" (change)="calculateFinalTotal()"> GST</label>
-                                            <div class="row">
-                                                <div class="col-lg-6 pr-0">
-                                                    <div class="input-group">
-                                                        <input [(ngModel)]="expenseData.taxes.gstPercent"
-                                                            name="gstPercent" type="text" placeholder="GST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.gstPercent">
-                                                        <span class="input-group-append pr-2">
-                                                            <span class="input-group-text"
-                                                                style="font-size: 0.7rem !important;">
-                                                                %
-                                                            </span>
+                                </div>
+                                <div class="row mt-3">
+                                  <div class="col-lg-10">
+                                      <label
+                                          class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Trip</label>
+                                      <ng-select [(ngModel)]="expenseData.tripID" name="tripID"
+                                          placeholder="Select Trip">
+                                          <ng-option value="{{ trip.tripID }}"
+                                              *ngFor="let trip of trips">Trip# - {{ trip.tripNo }} </ng-option>
+                                      </ng-select>
+                                  </div>
+                              </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                            Unit</label>
+                                        <ng-select [(ngModel)]="expenseData.unitType" name="unitType"
+                                            placeholder="Select Unit Type" (change)="resetUnitVal()">
+                                            <ng-option value="vehicle">Vehicle</ng-option>
+                                            <ng-option value="asset">Asset</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2 mt-3"></label>
+                                        <ng-select [(ngModel)]="expenseData.unitID" name="unitID"
+                                            placeholder="Select {{ expenseData.unitType }}"
+                                            *ngIf="expenseData.unitType === 'vehicle'">
+                                            <ng-option value="{{ data.vehicleID }}"
+                                                *ngFor="let data of vehicles | async">{{ data.vehicleIdentification
+                                                }} </ng-option>
+                                        </ng-select>
+
+                                        <ng-select [(ngModel)]="expenseData.unitID" name="unitID"
+                                            placeholder="Select {{ expenseData.unitType }}"
+                                            *ngIf="expenseData.unitType === 'asset'">
+                                            <ng-option value="{{ data.assetID }}"
+                                                *ngFor="let data of assets | async">{{ data.assetIdentification }}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.vendorID" name="vendorID"
+                                            placeholder="Select Vendor" #vendorID="ngModel" required>
+                                            <ng-option value="{{ data.contactID }}"
+                                                *ngFor="let data of vendors | async">{{ data.companyName }}
+                                            </ng-option>
+                                        </ng-select>
+
+                                        <div *ngIf="vendorID.invalid && (vendorID.dirty || vendorID.touched)" class="text-danger">
+                                            <div *ngIf="vendorID.errors.required">
+                                                Vendor is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2 text-right mar-top-37">
+                                      <a href="javascript:;" (click)="openModal('form');"
+                              class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
+                              <a href="javascript:;" (click)="refreshVendorData()"
+                              data-toggle="tooltip" title="Refresh vendor data"
+                              class="btn btn-success btn-sm modal-with-form"><i
+                                  class="fas fa-sync"></i></a>
+                                               </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Country<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.countryCode" name="countryCode"
+                                            placeholder="Select Country" (change)="getStates($event)" #country="ngModel" required>
+                                            <!-- <ng-option value="{{ data.countryCode }}"
+                                                *ngFor="let data of countries">{{ data.countryName }} </ng-option> -->
+                                                <ng-option value="CA">Canada</ng-option>
+                                                <ng-option value="US">United States</ng-option>
+                                                <ng-option value="MX">Mexico</ng-option>
+                                        </ng-select>
+
+                                        <div *ngIf="country.invalid && (country.dirty || country.touched)" class="text-danger">
+                                            <div *ngIf="country.errors.required">
+                                                Country is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Province/State<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="expenseData.stateCode" name="stateCode"
+                                            placeholder="Select Province/State"
+                                            (change)="getCities(expenseData.countryCode, $event)" #state="ngModel" required>
+                                            <ng-option value="{{ data.stateCode }}" *ngFor="let data of states">{{
+                                                data.stateName }} </ng-option>
+                                        </ng-select>
+
+                                        <div *ngIf="state.invalid && (state.dirty || state.touched)" class="text-danger">
+                                            <div *ngIf="state.errors.required">
+                                                State is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">City</label>
+                                        <ng-select [(ngModel)]="expenseData.cityName" name="cityName"
+                                            placeholder="Select City">
+                                            <ng-option value="{{ data.cityName }}" *ngFor="let data of cities">{{
+                                                data.cityName }} </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                            <input type="checkbox" name="gstStatus"
+                                                [(ngModel)]="expenseData.taxes.includeGST" (change)="calculateFinalTotal()"> GST</label>
+                                        <div class="row">
+                                            <div class="col-lg-6 pr-0">
+                                                <div class="input-group">
+                                                    <input [(ngModel)]="expenseData.taxes.gstPercent"
+                                                        name="gstPercent" type="text" placeholder="GST Percent"
+                                                        class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.gstPercent">
+                                                    <span class="input-group-append pr-2">
+                                                        <span class="input-group-text"
+                                                            style="font-size: 0.7rem !important;">
+                                                            %
                                                         </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 pl-0">
-                                                    <input [(ngModel)]="expenseData.taxes.gstAmount" name="gstAmount"
-                                                        type="text" placeholder="GST Amount" class="form-control" disabled>
+                                                    </span>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                                                <input type="checkbox" name="pstStatus"
-                                                    [(ngModel)]="expenseData.taxes.includePST"(change)="calculateFinalTotal()"> PST</label>
-                                            <div class="row">
-                                                <div class="col-lg-6 pr-0">
-                                                    <div class="input-group">
-                                                        <input [(ngModel)]="expenseData.taxes.pstPercent"
-                                                            name="pstPercent" type="text" placeholder="PST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.includePST">
-                                                        <span class="input-group-append pr-2">
-                                                            <span class="input-group-text"
-                                                                style="font-size: 0.7rem !important;">
-                                                                %
-                                                            </span> </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 pl-0">
-                                                    <input [(ngModel)]="expenseData.taxes.pstAmount" name="pstAmount"
-                                                        type="text" placeholder="PST Amount" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                                                <input type="checkbox" name="hstStatus"
-                                                    [(ngModel)]="expenseData.taxes.includeHST" (change)="calculateFinalTotal()"> HST</label>
-                                            <div class="row">
-                                                <div class="col-lg-6 pr-0">
-                                                    <div class="input-group">
-                                                        <input [(ngModel)]="expenseData.taxes.hstpercent"
-                                                            name="hstpercent" type="text" placeholder="HST Percent"
-                                                            class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.hstpercent">
-                                                        <span class="input-group-append pr-2">
-                                                            <span class="input-group-text"
-                                                                style="font-size: 0.7rem !important;">
-                                                                %
-                                                            </span> </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-6 pl-0">
-                                                    <input [(ngModel)]="expenseData.taxes.hstAmount" name="hstAmount"
-                                                        type="text" placeholder="HST Amount" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
-                                            <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                                                 Final Total</label>
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    <input [(ngModel)]="expenseData.finalTotal" name="finalTotal"
-                                                        type="text" placeholder="Final Total" class="form-control" disabled>
-                                                </div>
+                                            <div class="col-lg-6 pl-0">
+                                                <input [(ngModel)]="expenseData.taxes.gstAmount" name="gstAmount"
+                                                    type="text" placeholder="GST Amount" class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="row mt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                Customer</label>
-                                            <ng-select [(ngModel)]="expenseData.customerID" name="customerID"
-                                                placeholder="Select Customer">
-                                                <ng-option value="{{ data.contactID }}"
-                                                    *ngFor="let data of customers | async">{{ data.companyName }}
-                                                </ng-option>
-                                            </ng-select>
+                                    <div class="col-lg-5">
+                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                            <input type="checkbox" name="pstStatus"
+                                                [(ngModel)]="expenseData.taxes.includePST"(change)="calculateFinalTotal()"> PST</label>
+                                        <div class="row">
+                                            <div class="col-lg-6 pr-0">
+                                                <div class="input-group">
+                                                    <input [(ngModel)]="expenseData.taxes.pstPercent"
+                                                        name="pstPercent" type="text" placeholder="PST Percent"
+                                                        class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.includePST">
+                                                    <span class="input-group-append pr-2">
+                                                        <span class="input-group-text"
+                                                            style="font-size: 0.7rem !important;">
+                                                            %
+                                                        </span> </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 pl-0">
+                                                <input [(ngModel)]="expenseData.taxes.pstAmount" name="pstAmount"
+                                                    type="text" placeholder="PST Amount" class="form-control" disabled>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-2 mar-top-37"> <a href="javascript:;" data-dismiss="modal"
-                                                data-toggle="modal" data-target="#addCustomerModal"
-                                                class="btn modal-with-form btn-success btn-sm"><i
-                                                    class="fas fa-plus"></i></a> </div>
-                                    </div> -->
-                                    <!-- <div class="row mt-3">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                Invoice</label>
-                                            <ng-select [(ngModel)]="expenseData.invoiceID" name="invoiceID"
-                                                placeholder="Select Invoice">
-                                                <ng-option value="{{ data.invID }}" *ngFor="let data of invoices">{{
-                                                    data.invNo }}</ng-option>
-                                            </ng-select>
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                            <input type="checkbox" name="hstStatus"
+                                                [(ngModel)]="expenseData.taxes.includeHST" (change)="calculateFinalTotal()"> HST</label>
+                                        <div class="row">
+                                            <div class="col-lg-6 pr-0">
+                                                <div class="input-group">
+                                                    <input [(ngModel)]="expenseData.taxes.hstpercent"
+                                                        name="hstpercent" type="text" placeholder="HST Percent"
+                                                        class="form-control" (input)="calculateFinalTotal()" [disabled]="!expenseData.taxes.hstpercent">
+                                                    <span class="input-group-append pr-2">
+                                                        <span class="input-group-text"
+                                                            style="font-size: 0.7rem !important;">
+                                                            %
+                                                        </span> </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 pl-0">
+                                                <input [(ngModel)]="expenseData.taxes.hstAmount" name="hstAmount"
+                                                    type="text" placeholder="HST Amount" class="form-control" disabled>
+                                            </div>
                                         </div>
-                                    </div> -->
+                                    </div>
+                                    <div class="col-lg-5">
+                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
+                                             Final Total</label>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <input [(ngModel)]="expenseData.finalTotal" name="finalTotal"
+                                                    type="text" placeholder="Final Total" class="form-control" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <!-- <div class="row mt-3">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                            Customer</label>
+                                        <ng-select [(ngModel)]="expenseData.customerID" name="customerID"
+                                            placeholder="Select Customer">
+                                            <ng-option value="{{ data.contactID }}"
+                                                *ngFor="let data of customers | async">{{ data.companyName }}
+                                            </ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-lg-2 mar-top-37"> <a href="javascript:;" data-dismiss="modal"
+                                            data-toggle="modal" data-target="#addCustomerModal"
+                                            class="btn modal-with-form btn-success btn-sm"><i
+                                                class="fas fa-plus"></i></a> </div>
+                                </div> -->
+                                <!-- <div class="row mt-3">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
+                                            Invoice</label>
+                                        <ng-select [(ngModel)]="expenseData.invoiceID" name="invoiceID"
+                                            placeholder="Select Invoice">
+                                            <ng-option value="{{ data.invID }}" *ngFor="let data of invoices">{{
+                                                data.invNo }}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div> -->
                             </div>
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <label
-                                        class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional
-                                        Details</label>
-                                </div>
-                                <div class="col-lg-5 offset-lg-1">
-                                    <div class="row" id="attachPhotoLine"></div>
-                                    <div class="row mt-2">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
-                                                Document</label>
-                                            <input type="file" multiple class="form-control p-0" id="inputDefault"
-                                                (change)="selectDocuments($event)">
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-2" *ngIf="documentSlides.length > 0">
-                                        <div class="col-lg-10">
-                                            <div class="vehicle-common-box p-3">
-                                                <div class="row mt-2">
-                                                    <div class="col-lg-6">
-                                                        <label class="control-label font-weight-bold text-3">Uploaded
-                                                            Document(s)</label>
-                                                    </div>
-                                                </div>
-                                                <hr class="solid mt-3">
-                                                <div class="row" *ngFor="let item of documentSlides;let d= index">
-                                                    <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
-                                                            data-target="#viewDocModal"
-                                                            (click)="setPDFSrc(item.path)">Document
-                                                            {{d+1}}</a> </div>
-                                                    <div class="col-lg-3 text-right">
-                                                        <i class="far fa-file text-dak mr-1"
-                                                            (click)="setPDFSrc(item.path)" data-toggle="modal"
-                                                            data-target="#viewDocModal"></i>
-                                                        <a href="javascript:;" (click)="deleteDocument(item.name, d)"
-                                                            class="modal-with-form"><i
-                                                                class="fas fa-times text-danger"></i></a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-5 offset-lg-1">
-                                    <div class="row ">
-                                        <div class="col-lg-10">
-                                            <label
-                                                class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
-                                            <textarea class="form-control h-auto" placeholder="Enter notes of the expense transaction"rows="3" name="notes"
-                                                [(ngModel)]="expenseData.notes" #Nexpense="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                                                <div *ngIf="Nexpense.invalid && (Nexpense.dirty || Nexpense.touched)" class="text-danger">
-                                                    <div *ngIf="Nexpense.errors.pattern">
-                                                     Only 500 characters are allowed.
-                                                    </div>
-
-                                                 </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-11 text-right">
-                                    <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                                    <button type="submit" (click)="addRecord()" *ngIf="!expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Save</button>
-                                    <button type="submit" (click)="updateRecord()" *ngIf="expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Update</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row adddriverpl pt-3">
+                            <div class="col-lg-10">
+                                <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4  pt-2">Additional Details</label>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row" id="attachPhotoLine"></div>
+                                <div class="row mt-2">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Attach
+                                            Document</label>
+                                        <input type="file" multiple class="form-control p-0" id="inputDefault"
+                                            (change)="selectDocuments($event)">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2" *ngIf="documentSlides.length > 0">
+                                    <div class="col-lg-10">
+                                        <div class="vehicle-common-box p-3">
+                                            <div class="row mt-2">
+                                                <div class="col-lg-6">
+                                                    <label class="control-label font-weight-bold text-3">Uploaded
+                                                        Document(s)</label>
+                                                </div>
+                                            </div>
+                                            <hr class="solid mt-3">
+                                            <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                                <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                        data-target="#viewDocModal"
+                                                        (click)="setPDFSrc(item.path)">Document
+                                                        {{d+1}}</a> </div>
+                                                <div class="col-lg-3 text-right">
+                                                    <i class="far fa-file text-dak mr-1"
+                                                        (click)="setPDFSrc(item.path)" data-toggle="modal"
+                                                        data-target="#viewDocModal"></i>
+                                                    <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                                        class="modal-with-form"><i
+                                                            class="fas fa-times text-danger"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row ">
+                                    <div class="col-lg-10">
+                                        <label
+                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Notes</label>
+                                        <textarea class="form-control h-auto" placeholder="Enter notes of the expense transaction"rows="3" name="notes"
+                                            [(ngModel)]="expenseData.notes" #Nexpense="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                            <div *ngIf="Nexpense.invalid && (Nexpense.dirty || Nexpense.touched)" class="text-danger">
+                                                <div *ngIf="Nexpense.errors.pattern">
+                                                 Only 500 characters are allowed.
+                                                </div>
+
+                                             </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                         </div>
+
+                         <div class="form-group row">
+                            <div class="col-lg-11 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
+                                <button type="submit" (click)="addRecord()" *ngIf="!expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Save</button>
+                                <button type="submit" (click)="updateRecord()" *ngIf="expenseID" class="btn btn-success" [disabled]="!expForm.form.valid || submitDisabled">Update</button>
+                            </div>
+                        </div>
+
+                      </div>
+                   </div>
+                </div>
+            </form>
+             </section>
+
+
         </section>
     </div>
 </section>
