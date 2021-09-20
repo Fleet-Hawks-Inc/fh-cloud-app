@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -10,6 +10,8 @@ import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from 'html2pdf.js';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { PdfViewerComponent } from 'ng2-pdf-viewer';
 declare var $: any;
 
 @Component({
@@ -19,6 +21,10 @@ declare var $: any;
 })
 export class OrderDetailComponent implements OnInit {
   environment = environment.isFeatureEnabled;
+  @ViewChild('generateInvoiceModal', { static: true }) generateInvoiceModal: TemplateRef<any>;
+  @ViewChild('previewInvoiceModal', { static: true }) previewInvoiceModal: TemplateRef<any>;
+  @ViewChild(PdfViewerComponent, {static: false})
+  private pdfComponent: PdfViewerComponent;
   docs = [];
   attachments = [];
   localPhotos = [];
@@ -65,8 +71,9 @@ export class OrderDetailComponent implements OnInit {
 
   orderDocs = [];
   pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
-
+  pageVariable = 1;
   /**
    * Form props
    */
@@ -153,6 +160,7 @@ export class OrderDetailComponent implements OnInit {
   isInvoice = false;
   taxableAmount: any;
   invoiceData: any;
+  newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
   isInvoiced: boolean = false;
@@ -167,7 +175,10 @@ export class OrderDetailComponent implements OnInit {
   Success = '';
   invGenStatus = false;
   orderStatus = '';
-  constructor(private apiService: ApiService,private accountService: AccountService, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+  previewRef: any;
+  generateRef: any;
+
+  constructor(private apiService: ApiService,private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
 
@@ -430,58 +441,51 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
+  showInv() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: 'preview--invoice'
+    };
+    this.previewRef = this.modalService.open(this.previewInvoiceModal, ngbModalOptions);
+  }
 
   async generate() {
     this.isShow = true;
+    this.previewRef.close();
     var data = document.getElementById('print_wrap');
-    
     html2pdf(data, {
-      margin:       0,
+      margin:       0.15,
       filename:     'invoice.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2},
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      jsPDF:        { unit: 'in',  format: 'a4', orientation: 'portrait' },
 
     });
+    
     
     $('#previewInvoiceModal').modal('hide');
   }
 
-  async downloadpdf() {
-    this.isShow = true;
-    setTimeout(() => {
-      var data = document.getElementById('print_wrap');
-
-      html2pdf(data, {
-        margin:       0,
-        filename:     'invoice.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-
-      });
-    }, 1000);
-  }
 
   async generatePDF() {
     this.isShow = true;
-    setTimeout(() => {
-      var data = document.getElementById('print_wrap');
+    var data = document.getElementById('print_wrap');
       html2pdf(data, {
-        margin:       0,
+        margin:       0.15,
         filename:     'invoice.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
   
       }); 
-  
-    }, 1000);
     await this.saveInvoice();
     await this.invoiceGenerated();
     await this.fetchOrder();
     
   }
+  pageRendered(event) {
+    console.log('pageRendered', event);
+    this.pdfComponent.pdfViewer.currentScaleValue = 'page-fit';
+  }
+
   async saveInvoice() {
     this.generateBtnDisabled = true;
     this.invoiceData[`transactionLog`] = [];
@@ -589,7 +593,7 @@ export class OrderDetailComponent implements OnInit {
         let name = element.name.split('.');
         let ext = name[name.length - 1];
 
-        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
+        if (ext != 'doc' && ext != 'docx' && ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
           $('#bolUpload').val('');
           this.toastr.error('Only image and pdf files are allowed');
           return false;
@@ -675,6 +679,7 @@ export class OrderDetailComponent implements OnInit {
         
         this.invoiceData = result[0];
         this.isInvoice = true;
+        
       });
   }
 
