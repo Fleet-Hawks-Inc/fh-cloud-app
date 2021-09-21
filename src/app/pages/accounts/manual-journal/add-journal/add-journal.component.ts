@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListService } from "../../../../services";
+import { ListService } from '../../../../services';
 import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -69,7 +69,8 @@ export class AddJournalComponent implements OnInit {
   uploadedDocs = [];
 
   constructor(private listService: ListService,private route: ActivatedRoute,
-    private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
+    private location: Location, private router: Router, private toaster: ToastrService,
+     private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params['journalID'];
