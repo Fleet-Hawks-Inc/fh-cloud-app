@@ -36,6 +36,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   accounts = [];
   accountsObjects = {};
   accountsIntObjects = {};
+  showModal = false;
 
   constructor(
     private listService: ListService,
@@ -94,5 +95,14 @@ export class DriverPaymentsDetailComponent implements OnInit {
     this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
       this.accountsIntObjects = result;
     });
+  }
+
+  downloadPaymentPdf() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      data: this.paymentData,
+    }
+    this.listService.triggerDownloadPaymentPdf(obj);
   }
 }

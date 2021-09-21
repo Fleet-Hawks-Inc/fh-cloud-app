@@ -150,6 +150,7 @@ export class DispatchOverviewComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
+
         result.Items.map((k) => {
           k.eventParams.message = k.eventParams.message.replace('consignor', 'shipper');
           k.eventParams.message = k.eventParams.message.replace('consignee', 'receiver');
@@ -165,8 +166,8 @@ export class DispatchOverviewComponent implements OnInit {
           if (k.eventParams.name !== undefined) {
             if (k.eventParams.name.includes('_')) {
               const newString = k.eventParams.name.split('_');
-              k.firstName = newString[0];
-              k.lastName = newString[1];
+              k.eventParams.firstName = newString[0];
+              k.eventParams.lastName = newString[1];
             }
           }
         });
@@ -245,6 +246,9 @@ export class DispatchOverviewComponent implements OnInit {
     } else if (type === 'inventory') {
       $('#acttimelinemodal').modal('hide');
       this.router.navigateByUrl(`/fleet/inventory/detail/${eventID}`);
+    } else if (type === 'employee') {
+      $('#acttimelinemodal').modal('hide');
+      this.router.navigateByUrl(`/manage/users/detail/${eventID}`);
     }
   }
   fetchAllTrips() {

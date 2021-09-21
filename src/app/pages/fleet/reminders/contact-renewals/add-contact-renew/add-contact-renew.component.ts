@@ -8,6 +8,7 @@ import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { Location } from '@angular/common';
 import constants from '../../../constants';
 import * as moment from 'moment';
+import { ListService } from '../../../../../services';
 declare var $: any;
 @Component({
   selector: 'app-add-contact-renew',
@@ -43,7 +44,7 @@ export class AddContactRenewComponent implements OnInit {
   timeType = 'day';
   vehicles = [];
   contacts = [];
-  drivers = [];
+  drivers: any;
   users = [];
   test = [];
   groups = [];
@@ -57,6 +58,7 @@ export class AddContactRenewComponent implements OnInit {
   serviceTasks = [];
   form;
   errors = {};
+  driverID = null;
   Error: string;
   Success: string;
   response: any = '';
@@ -69,8 +71,10 @@ export class AddContactRenewComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(private apiService: ApiService,
-    private route: ActivatedRoute, private router: Router, private toastr: ToastrService,
-    private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
+              private route: ActivatedRoute,
+              private router: Router, private toastr: ToastrService,
+              private listService: ListService,
+              private ngbCalendar: NgbCalendar, private location: Location, private dateAdapter: NgbDateAdapter<string>) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -79,9 +83,6 @@ export class AddContactRenewComponent implements OnInit {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
     this.fetchServiceTaks();
-    $(document).ready(() => {
-      // this.contactRenewalForm = $('#contactRenewalForm').validate();
-    });
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
       this.fetchReminderByID();
@@ -97,15 +98,15 @@ export class AddContactRenewComponent implements OnInit {
     });
   }
   fetchUsers() {
-    this.apiService.getData('contacts/get/type/employee').subscribe((result: any) => {
-      this.users = result;
+    this.apiService.getData('users/fetch/records').subscribe((result: any) => {
+      this.users = result.Items;
     });
   }
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  
+
   addRenewal() {
     this.hideErrors();
     this.submitDisabled = true;
@@ -152,7 +153,7 @@ export class AddContactRenewComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success('Contact Renewal Reminder Added Successfully!');
-        this.cancel(); 
+        this.cancel();
         this.reminderData = {
           entityID: '',
           type: constants.REMINDER_CONTACT,

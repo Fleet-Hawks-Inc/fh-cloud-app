@@ -228,7 +228,7 @@ export class OrderDetailComponent implements OnInit {
           } else {
             this.additionalContactName = result.additionalContact;
           }
-          
+
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
           this.isInvoiced = result.invoiceGenerate;
@@ -315,7 +315,7 @@ export class OrderDetailComponent implements OnInit {
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
             this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x, ext: x.split('.')[1]}));
           }
-          console.log('docs', this.docs)
+          
 
           // if (
           //   result.uploadedDocs != undefined &&
@@ -467,10 +467,8 @@ export class OrderDetailComponent implements OnInit {
   }
 
   sendInvEmail(){
-    console.log('emailData', this.emailData);
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach(elem => { let result = re.test(String(elem.label).toLowerCase()); if(!result) this.toastr.error('Please enter valid email(s)'); return })
-    console.log('aa gya')
   }
 
   async generate() {
@@ -489,8 +487,7 @@ export class OrderDetailComponent implements OnInit {
     $('#previewInvoiceModal').modal('hide');
   }
 
-
-  async generatePDF() {
+async generatePDF() {
     this.isShow = true;
     var data = document.getElementById('print_wrap');
       html2pdf(data, {
@@ -505,8 +502,8 @@ export class OrderDetailComponent implements OnInit {
     await this.fetchOrder();
     
   }
+  
   pageRendered(event) {
-    console.log('pageRendered', event);
     this.pdfComponent.pdfViewer.currentScaleValue = 'page-fit';
   }
 
@@ -523,7 +520,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
-   
+
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -558,7 +555,7 @@ export class OrderDetailComponent implements OnInit {
     this.invGenStatus = true;
     let result = await this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).toPromise();
     this.isInvoice = result.Attributes.invoiceGenerate;
-     
+
   }
 
   previewModal() {
@@ -700,7 +697,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
-        
+
         this.invoiceData = result[0];
         this.isInvoice = true;
         

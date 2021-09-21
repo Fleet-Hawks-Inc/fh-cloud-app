@@ -243,6 +243,7 @@ export class AddTripComponent implements OnInit {
         this.getCurrentuser();
         await this.fetchCountries();
 
+
         if (this.tripID != undefined) {
             await this.fetchTripDetail();
         }
@@ -251,7 +252,11 @@ export class AddTripComponent implements OnInit {
             // this.form = $('#form_').validate();
         });
     }
-
+        
+    async fetchDriverStatus(driverID:any){
+        let result = await this.apiService.getData(`drivers/status/${this.tripID}/${driverID}`).toPromise();
+        return result.status.toUpperCase();
+      }
     fetchCarriers() {
         this.apiService.getData('contacts/get/type/carrier')
             .subscribe((result: any) => {
@@ -1464,7 +1469,7 @@ export class AddTripComponent implements OnInit {
     fetchTripDetail() {
         this.spinner.show();
         this.apiService.getData('trips/' + this.tripID).
-            subscribe((result: any) => {
+            subscribe(async (result: any) => {
                 this.tripNoDisabled = true;
                 this.isEdit = true;
                 result = result.Items[0];
@@ -1524,6 +1529,8 @@ export class AddTripComponent implements OnInit {
                         actualDropTime: element.actualDropTime,
                         driverName: this.driversObjects[element.driverID],
                         driverUsername: element.driverUsername,
+                        driverStatus:element.driverID? await this.fetchDriverStatus(element.driverID):'',
+                        coDriverStatus:element.coDriverID? await this.fetchDriverStatus(element.coDriverID):'',
                         // location: element.location,
                         driverID: element.driverID,
                         coDriverID: element.coDriverID,
