@@ -23,6 +23,8 @@ export class OrderDetailComponent implements OnInit {
   environment = environment.isFeatureEnabled;
   @ViewChild('generateInvoiceModal', { static: true }) generateInvoiceModal: TemplateRef<any>;
   @ViewChild('previewInvoiceModal', { static: true }) previewInvoiceModal: TemplateRef<any>;
+  @ViewChild('emailInvoiceModal', { static: true }) emailInvoiceModal: TemplateRef<any>;
+  
   @ViewChild(PdfViewerComponent, {static: false})
   private pdfComponent: PdfViewerComponent;
   docs = [];
@@ -177,6 +179,11 @@ export class OrderDetailComponent implements OnInit {
   orderStatus = '';
   previewRef: any;
   generateRef: any;
+  emailRef: any;
+
+  emailData = {
+    emails: []
+  }
 
   constructor(private apiService: ApiService,private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
@@ -306,8 +313,9 @@ export class OrderDetailComponent implements OnInit {
             this.attachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
           }
           if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-            this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
+            this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x, ext: x.split('.')[1]}));
           }
+          console.log('docs', this.docs)
 
           // if (
           //   result.uploadedDocs != undefined &&
@@ -441,12 +449,28 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
+  emailInv(){
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: 'email--invoice'
+    };
+    this.emailRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
+    this.emailData.emails.push({label: this.customerEmail})
+  }
+
   showInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: 'preview--invoice'
     };
     this.previewRef = this.modalService.open(this.previewInvoiceModal, ngbModalOptions);
+  }
+
+  sendInvEmail(){
+    console.log('emailData', this.emailData);
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    this.emailData.emails.forEach(elem => { let result = re.test(String(elem.label).toLowerCase()); if(!result) this.toastr.error('Please enter valid email(s)'); return })
+    console.log('aa gya')
   }
 
   async generate() {

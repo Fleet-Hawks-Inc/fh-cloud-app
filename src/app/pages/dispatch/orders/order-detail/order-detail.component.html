@@ -8,6 +8,7 @@
                         Order Details 
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
+                        
                         <button (click)="showInv();isModalShow = true" class="btn btn-success btn-sm mr-2">
                             Invoice</button>
                         <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
@@ -1150,14 +1151,28 @@
                                         <tbody>
                                             <tr *ngFor="let newDoc of docs;">
                                                 <td>
-                                                    <div class="html2pdf__page-break"></div>
-                                                    <pdf-viewer
-                                                        [src]="newDoc.path"
-                                                        [fit-to-page]="false"
-                                                        [show-all]="true"
-                                                        [render-text]="true"
-                                                        [original-size]="false" [autoresize]="true" style="max-width: 700px; display: block;">
-                                                    </pdf-viewer>
+                                                    <table>
+                                                        <tbody>
+                                                            <tr *ngIf="newDoc.ext === 'pdf'">
+                                                                <td>
+                                                                    <div class="html2pdf__page-break"></div>
+                                                                    <pdf-viewer
+                                                                        [src]="newDoc.path"
+                                                                        [fit-to-page]="false"
+                                                                        [show-all]="true"
+                                                                        [render-text]="true"
+                                                                        [original-size]="false" [autoresize]="true" style="max-width: 700px; display: block;">
+                                                                    </pdf-viewer>
+                                                                </td>
+                                                            </tr>
+                                                            <!-- <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
+                                                                <td>
+                                                                    <div class="html2pdf__page-break"></div>
+                                                                    <iframe src="newDoc.path" class="img-fluid rounded" height="200px" width="100%"></iframe>
+                                                                </td>
+                                                            </tr> -->
+                                                        </tbody>
+                                                    </table>
                                                     
                                                 </td>
                                             </tr>
@@ -1215,6 +1230,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <button (click)="emailInv()" class="btn btn-success">Email Invoice</button>
             <button class="btn btn-success" (click)="generate()">Print</button>
             <button *ngIf="!isInvoiced" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
         </div>
@@ -1578,6 +1594,43 @@
     </div>
 </ng-template>
 
+<ng-template #emailInvoiceModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+        
+            <div class="email--invoice__main">
+                <div class="input-group mb-4">
+                    <ng-select multiple="true" notFoundText="Please type to add email" 
+                    [addTag]="true" placeholder="eg. johnsmith@gmail.com"
+                     
+                    [(ngModel)]="emailData.emails" name="emails" 
+                    type="text"  class="form-control h-auto"></ng-select>
+                    <!-- <div *ngIf="em.invalid && EmailInvF.submitted" class="text-danger w-100">
+                        <div *ngIf="em.errors.required">
+                        Email is required.
+                        </div>
+                        <div *ngIf="em.errors.pattern">
+                        Enter valid email eg. johnsmith@gmail.com
+                        </div>
+                    </div> -->
+                </div>
+                <div class="input-group">
+                    <textarea class="form-control h-auto" placeholder="eg. 0006,123" cols="5"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">Cancel</button>
+            <button (click)="sendInvEmail()" class="btn btn-success">Send</button>
+        </div>
+    </form>
+</ng-template>
 
 <!-- VIEW DOCUMENT MODAL -->
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
