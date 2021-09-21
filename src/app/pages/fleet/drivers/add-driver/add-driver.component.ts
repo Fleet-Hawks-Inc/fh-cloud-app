@@ -101,7 +101,7 @@ export class AddDriverComponent
     address: [
       {
         addressID: "",
-        addressType: "",
+        addressType: null,
         countryName: "",
         countryCode: "",
         stateCode: "",
@@ -123,7 +123,7 @@ export class AddDriverComponent
     ],
     documentDetails: [
       {
-        documentType: "",
+        documentType: null,
         document: "",
         issuingAuthority: "",
         issuingCountry: null,
@@ -504,6 +504,7 @@ export class AddDriverComponent
       this.driverData.address[i].address2 = "";
       this.driverData.address[i].geoCords.lat = "";
       this.driverData.address[i].geoCords.lng = "";
+      $('#addErr' + i).css('display', 'none');
     }
   }
 
@@ -626,8 +627,12 @@ export class AddDriverComponent
     for (let a = 0; a < address.length; a++) {
       const countryCode = address[a].countryCode;
       const stateCode = address[a].stateCode;
-      this.fetchStates(countryCode, a);
+      if (countryCode !== '' && countryCode !== null) {
+        this.fetchStates(countryCode, a);
+      }
+      if (stateCode !== '' && stateCode !== null) {
       this.fetchCities(countryCode, stateCode, a);
+     }
     }
   }
   async fetchDocStates(docs) {
@@ -1064,7 +1069,9 @@ export class AddDriverComponent
         const countryCode = this.driverData.address[a].countryCode;
         const stateCode = this.driverData.address[a].stateCode;
         this.fetchStates(countryCode, a);
-        this.fetchCities(countryCode, stateCode, a);
+        if (countryCode !== '' && countryCode !== null && stateCode !== '' && stateCode !== null) {
+          this.fetchCities(countryCode, stateCode, a);
+        }
       }
     }
     if (result.corporationType === "owner_operator") {

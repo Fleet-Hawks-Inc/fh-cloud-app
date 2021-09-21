@@ -23,6 +23,7 @@ import { EmployeePaymentDetailComponent } from "./employee-payment/employee-paym
 import { AddAccountModule } from "../add-account/add-account.module";
 import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PaymentPdfsComponent } from '../payment-pdfs/payment-pdfs.component';
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -113,7 +114,8 @@ const routes: Routes = [
     EmployeePaymentDetailComponent,
     AddEmployeePaymentComponent,
     EmployeePaymentListComponent,
-    PaymentChequeComponent
+    PaymentChequeComponent,
+    PaymentPdfsComponent
   ],
   imports: [
     CommonModule, 

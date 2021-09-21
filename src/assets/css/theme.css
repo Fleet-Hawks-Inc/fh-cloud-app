@@ -1189,7 +1189,8 @@ a:active {
 	}
 
 	html.fixed.sidebar-left-collapsed .content-body {
-		margin-left: 60px;
+		/* margin-left: 60px; */
+		margin-left: 73px;
 	}
 
 	/* Layout Fixed - Sidebar Left Collapsed & Sidebar Right Opened */
@@ -12231,15 +12232,15 @@ html .scroll-to-top {
 	-webkit-transition: all 0.3s;
 	transition: all 0.3s;
 	background: #282d36;
-	border-radius: 7px 7px;
-	bottom: 50px;
+	border-radius: 0px;
+	bottom: 88px;
 	color: #FFF;
 	display: block;
-	height: 9px;
+	height: 36px;
 	opacity: 0;
-	padding: 5px 10px 25px;
+	padding: 8px 16px 25px;
 	position: fixed;
-	right: 60px;
+	right: 27px;
 	text-align: center;
 	text-decoration: none;
 	min-width: 39px;
@@ -12247,7 +12248,7 @@ html .scroll-to-top {
 }
 
 html .scroll-to-top:hover {
-	opacity: 1;
+	opacity: 1; background: #000000; color: #FFF;
 }
 
 html .scroll-to-top.visible {
