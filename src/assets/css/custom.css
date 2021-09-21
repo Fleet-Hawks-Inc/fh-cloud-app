@@ -2631,3 +2631,10 @@ input:checked + .sliderbtn:before {
 .nav-tabs {
   border: none;
 }
+
+.preview--invoice.modal .modal-dialog{
+  max-width: 900px;
+}
+.email--invoice.modal .modal-dialog{
+  max-width: 600px;
+}

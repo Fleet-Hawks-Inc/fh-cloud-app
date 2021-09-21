@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
+
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -12,6 +15,8 @@ declare var $: any;
 })
 export class OrdersListComponent implements OnInit {
   environment = environment.isFeatureEnabled;
+  @ViewChild('confirmEmailModal', { static: true }) confirmEmailModal: TemplateRef<any>;
+  
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
@@ -46,6 +51,11 @@ export class OrdersListComponent implements OnInit {
   ordersPrevEvauatedKeys = [''];
   ordersStartPoint = 1;
   ordersEndPoint = this.pageLength;
+
+  newOrderID: string;
+  newOrderNumber: string;
+  newCustomerID: string;
+  confirmRef: any;
 
   categoryFilter = [
     {
@@ -98,8 +108,13 @@ export class OrdersListComponent implements OnInit {
     status: false
   }
 
+  emailData = {
+    emails: [],
+    confirmEmail: true
+  }
+
   constructor(private apiService: ApiService,
-    private toastr: ToastrService,
+    private toastr: ToastrService,  private modalService: NgbModal,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
@@ -401,24 +416,68 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  async changeStatus(id: any, orderNo: any) {
-    if (confirm('Are you sure you want to confirm the order?') === true) {
-      const result = await this.apiService.getData(`orders/update/orderStatus/${id}/${orderNo}/confirmed`).toPromise();
-      if (result) {
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.orders = [];
-        this.confirmOrders = [];
-        this.dispatchOrders = [];
-        this.deliveredOrders = [];
-        this.cancelledOrders = [];
-        this.invoicedOrders = [];
-        this.partiallyOrders = [];
-        this.tonuOrders = [];
-        this.lastEvaluatedKey = '';
-        this.fetchAllTypeOrderCount();
-      }
+  async changeStatus() {
+    if(this.emailData.emails.length === 0) {
+      this.toastr.error('Please enter at least one email');
+      return
+    }
+    let newData = {
+      emails: [],
+      confirm: true,
+      customerID: this.newCustomerID
+    }
+    this.emailData.emails.forEach(elem => {
+      newData.emails.push(elem.label);
+    })
+    newData.confirm = this.emailData.confirmEmail;
+    const result = await this.apiService.getData(`orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber}/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`).toPromise();
+    if (result) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.orders = [];
+      this.confirmOrders = [];
+      this.dispatchOrders = [];
+      this.deliveredOrders = [];
+      this.cancelledOrders = [];
+      this.invoicedOrders = [];
+      this.partiallyOrders = [];
+      this.tonuOrders = [];
+      this.lastEvaluatedKey = '';
+      this.fetchAllTypeOrderCount();
+      this.confirmRef.close();
     }
   }
+
+  async confirmEmail(order) {
+    this.emailData.emails = [];
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: 'email--invoice'
+    };
+    this.confirmRef = this.modalService.open(this.confirmEmailModal, ngbModalOptions)
+    this.newOrderID = order.orderID;
+    this.newOrderNumber = order.orderNumber;
+    this.newCustomerID = order.customerID;
+    let email = await this.fetchCustomersByID(order.customerID);
+    // console.log('email', email)
+    // this.emailData.emails.push({label: email})
+    // console.log('this.emailData', this.emailData)
+    
+  }
+
+     /*
+   * Get all customers's IDs of names from api
+   */
+ async fetchCustomersByID(id) {
+  let result = await this.apiService.getData(`contacts/detail/${id}`).toPromise()
+  if(result.Items.length > 0) {
+    return result.Items[0].workEmail;
+  }
+}
+
+  conEmailChange(value) {
+    this.emailData.confirmEmail = value;
+  }
+
 
   refreshData() {
       this.orderFiltr = {
