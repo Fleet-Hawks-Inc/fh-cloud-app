@@ -145,7 +145,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngIf="!records" class="text-center">
+                                                <tr *ngIf="orders.length === 0" class="text-center">
                                                     <td colspan="10">{{ dataMessage }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of orders[ordersDraw];let i = index;">
@@ -207,7 +207,7 @@
                                                                 <a class="dropdown-item" href="javascript:;"
                                                                     (click)="deactivateOrder(order)">Delete</a>
                                                                 <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                                                    (click)="changeStatus(order.orderID, order.orderNumber)">Confirm</a>
+                                                                    (click)="confirmEmail(order)">Confirm</a>
                                                                 <a class="dropdown-item"
                                                                     [routerLink]="['/dispatch', 'orders', 'add']" [queryParams]="{ cloneID: order.orderID }">Clone</a>
                                                             </div>
@@ -854,3 +854,54 @@
         </section>
     </div>
 </section>
+
+
+<ng-template #confirmEmailModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Confirm Order <strong>#{{newOrderNumber}}</strong></h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+        
+            <div class="email--invoice__main">
+                <div class=" mb-4">
+                    <label class="control-label font-weight-bold  mt-2 text-3 text-dark"
+                                                               for="inputDefault">Enter Email <small>You can also add multiple email(s)</small></label>
+                    <ng-select multiple="true" notFoundText="Please type to add email" 
+                    [addTag]="true" placeholder="eg. johnsmith@gmail.com"
+                     
+                    [(ngModel)]="emailData.emails" name="emails" 
+                    type="text"  class="form-control h-auto"></ng-select>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <label class="control-label font-weight-bold text-3 text-dark"
+                            for="inputDefault">Confirmation Email</label>
+                    </div>
+                    <div class="col-8">
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+                                [class.active]="emailData.confirmEmail === true"
+                                (click)="conEmailChange(true)">
+                                <input type="radio" [(ngModel)]="emailData.confirmEmail" name="orderMode" checked
+                                    hidden value="FTL"> Yes </label>
+                            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+                                [class.active]="emailData.confirmEmail === false"
+                                (click)="conEmailChange(false)">
+                                <input type="radio" [(ngModel)]="emailData.confirmEmail" name="orderMode" hidden
+                                    value="LTL"> No </label>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">Cancel</button>
+            <button (click)="changeStatus()" class="btn btn-success">Send</button>
+        </div>
+    </form>
+</ng-template>
