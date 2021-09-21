@@ -117,7 +117,7 @@
                                   class="form-control form-control-sm" placeholder="Select corporation"
                                   (change)="changeCompany($event)" #corp="ngModel" required [ngClass]="{ 'error' : driverF.submitted && corp.invalid }">
                                   <ng-option value="company">Company</ng-option>
-                                  <ng-option value="corporation">Corporation</ng-option>
+                                  <!-- <ng-option value="corporation">Corporation</ng-option> -->
                                   <ng-option value="owner_operator">Owner Operator</ng-option>
                                 </ng-select>
                                 <div *ngIf="corp.invalid && driverF.submitted" class="text-danger">
@@ -701,7 +701,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-6 pt-3">
+                      <div class="col-lg-5 pt-3">
                         <div class="row">
                           <div class="col-lg-12">
                             <label class="control-label font-weight-bold text-lg-right">Address

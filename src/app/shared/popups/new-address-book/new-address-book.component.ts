@@ -161,6 +161,7 @@ export class NewAddressBookComponent implements OnInit {
   cities = [];
   selectedItems = [];
   lastKey: any = '';
+  updatedKey: any = '';
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -1265,7 +1266,7 @@ export class NewAddressBookComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
 
     if (this.lastKey != 'end') {
-      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&companyName=` + this.filterVal.cName).subscribe(res => {
+      this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
 
         if (res.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -1293,7 +1294,8 @@ export class NewAddressBookComponent implements OnInit {
         });
         if (this.units.length > 0) {
           if (this.units[this.units.length - 1].contactSK != undefined) {
-            this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g, '--')
+            this.lastKey = this.units[this.units.length - 1].contactSK.replace(/#/g, '--');
+            this.updatedKey = this.units[this.units.length - 1].updatedSK.replace(/#/g, '--');
           } else {
             this.lastKey = 'end';
           }
