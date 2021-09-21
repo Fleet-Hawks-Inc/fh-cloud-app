@@ -309,6 +309,16 @@
                                     <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
                                       <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
                                     </span>
+                                    <span *ngIf="data.eventParams.type === 'employee' && data.eventType !== 'deleted'">
+                                      <a routerLink="/manage/users/detail/{{data.eventParams.eventID}}" href="javascript:;">
+                                        <b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b></a>
+
+                                    </span>
+                                    <span *ngIf="data.eventParams.type === 'employee' && data.eventType === 'deleted'">
+
+                                        <b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}} </b>
+
+                                    </span>
                                     <span *ngIf="data.eventParams.type === 'reminder'">
                                       <b class="text-success"> {{ data.eventParams.eventType | titlecase}} </b>
                                     </span>
@@ -469,6 +479,12 @@
                        <span *ngIf="data.eventParams.type === 'contact' && data.eventType !== 'add'">
                          <b class="text-success"> {{ data.eventParams.name | titlecase}} </b>
                        </span>
+                       <span *ngIf="data.eventParams.type === 'employee' && data.eventType !== 'deleted'">
+                        <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'employee')"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b>
+                      </span>
+                      <span *ngIf="data.eventParams.type === 'employee' && data.eventType === 'deleted'">
+                        <b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}} </b>
+                      </span>
                        <span *ngIf="data.eventParams.type === 'reminder'">
                          <b class="text-success"> {{ data.eventParams.eventType | titlecase}} </b>
                        </span>

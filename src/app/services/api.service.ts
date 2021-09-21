@@ -168,5 +168,7 @@ export class ApiService {
 
   }
 
-
+getCarrierUserName(){
+  return localStorage.getItem('currentLoggedUserName')
+}
 }

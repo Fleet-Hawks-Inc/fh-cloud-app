@@ -238,8 +238,16 @@
                                                             <br>
                                                         </span>
                                                     </td>
-                                                    <td>{{ driversObject[trip.driverID] }}</td>
-                                                    <td>{{ driversObject[trip.coDriverID] }}</td>
+                                                    <td>{{ driversObject[trip.driverID] }} 
+                                                        <span *ngIf="trip.driverStatus && trip.driverStatus=='REJECTED'" class="badge badge-danger">{{trip.driverStatus}}</span>
+                                                        <span *ngIf="trip.driverStatus && trip.driverStatus=='ACCEPTED'" class="badge badge-success">{{trip.driverStatus}}</span>
+                                                        <span *ngIf="trip.driverStatus && trip.driverStatus=='ASSIGNED'" class="badge bg-blue">{{trip.driverStatus}}</span>
+                                                     </td>
+                                                    <td>{{ driversObject[trip.coDriverID] }}
+                                                        <span *ngIf="trip.coDriverStatus && trip.coDriverStatus=='REJECTED'" class="badge badge-danger">{{trip.coDriverStatus}}</span>
+                                                        <span *ngIf="trip.coDriverStatus && trip.coDriverStatus=='ACCEPTED'" class="badge badge-success">{{trip.coDriverStatus}}</span>
+                                                        <span *ngIf="trip.coDriverStatus && trip.coDriverStatus=='ASSIGNED'" class="badge bg-blue">{{trip.coDriverStatus}}</span>
+                                                    </td>
                                                     <td>{{ carriersObject[trip.carrierID] }}</td>
                                                 </tr>
                                             </tbody>
