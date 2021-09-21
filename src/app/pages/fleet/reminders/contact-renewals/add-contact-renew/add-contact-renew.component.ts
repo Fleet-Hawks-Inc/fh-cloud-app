@@ -83,10 +83,6 @@ export class AddContactRenewComponent implements OnInit {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
     this.fetchServiceTaks();
-    this.listService.fetchDrivers();
-    let driverList = new Array<any>();
-    this.getValidDrivers(driverList);
-    this.drivers = driverList;
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
       this.fetchReminderByID();
@@ -103,29 +99,14 @@ export class AddContactRenewComponent implements OnInit {
   }
   fetchUsers() {
     this.apiService.getData('users/fetch/records').subscribe((result: any) => {
-      console.log('result', result);
-      this.users = result;
+      this.users = result.Items;
     });
   }
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-  private getValidDrivers(driverList: any[]) {
-    let ids = [];
-    this.listService.driversList.forEach((element) => {
-      element.forEach((element2) => {
-        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
-          driverList.push(element2);
-          ids.push(element2.driverID);
-        }
 
-        if (element2.isDeleted === 1 && this.driverID === element2.driverID) {
-          this.driverID = null;
-        }
-      });
-    });
-  }
   addRenewal() {
     this.hideErrors();
     this.submitDisabled = true;

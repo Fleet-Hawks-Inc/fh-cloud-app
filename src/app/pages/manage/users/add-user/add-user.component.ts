@@ -41,8 +41,8 @@ export class AddUserComponent implements OnInit {
     loginEnabled: false,
     paymentDetails: {
       payrollType: '',
-      payrollRate: '',
-      payrollRateUnit: '',
+      payrollRate: null,
+      payrollRateUnit: null,
       payPeriod: '',
       SIN: '',
       WCB: '',
@@ -124,6 +124,8 @@ export class AddUserComponent implements OnInit {
     specialCharacters: false,
     length: false
   };
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   userRoles: any = [];
@@ -138,7 +140,15 @@ export class AddUserComponent implements OnInit {
     private route: ActivatedRoute,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService
-  ) { }
+  ) {
+    const date = new Date();
+    this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+    this.birthDateMaxLimit = {
+      year: date.getFullYear() - 18,
+      month: 12,
+      day: 31,
+    };
+  }
 
 
   ngOnInit() {
@@ -392,7 +402,6 @@ if (type === 'uploaded') {
         }
       }
     }
-    console.log('this.userData', this.userData);
     this.userData.userLoginData.userName = this.userData.userLoginData.userName.toLowerCase();
     // create form data instance
     const formData = new FormData();
@@ -534,6 +543,7 @@ if (type === 'uploaded') {
     this.userData[`deletedUploads`] = this.deletedUploads;
     if (this.userData.loginEnabled === false) {
       this.userData.userLoginData.userName = '';
+      this.userData.userLoginData.userRoles = [];
     }
     for (let i = 0; i < this.userData.adrs.length; i++) {
       const element = this.userData.adrs[i];

@@ -31,7 +31,7 @@
         <div class="col-lg-12 pr-0">
           <section class="card">
             <div class="card-body">
-              <div class="table-responsive">
+              <div class="">
                 <table class="row-border hover table table-bordered table-striped mb-0">
                   <thead>
                     <tr>
@@ -50,25 +50,25 @@
                     <tr *ngIf="users.length == 0" class="text-center">
                       <td colspan="8">{{ dataMessage }}</td>
                     </tr>
-                    <tr *ngFor="let user of users">
+                    <tr *ngFor="let user of users" class="cursorpoint">
                       <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.employeeID}}</td>
                       <td class="text-capitalize" routerLink="/manage/users/detail/{{user.contactID}}">{{user.firstName}}&nbsp;
                         {{user.lastName}}</td>
                       <td routerLink="/manage/users/detail/{{user.contactID}}">
                         {{user.userLoginData.userName ? user.userLoginData.userName : '-'}} </td>
-                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.userAccount.department}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.userAccount.department ? user.userAccount.department : '-'}}</td>
                       <td class="text-capitalize" routerLink="/manage/users/detail/{{user.contactID}}">
                         {{user.userLoginData.userRoles ? user.userLoginData.userRoles : '-'}}</td>
-                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.workPhone}}</td>
-                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.workEmail}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.workPhone ? user.workPhone : '-'}}</td>
+                      <td routerLink="/manage/users/detail/{{user.contactID}}">{{user.workEmail ? user.workEmail : '-'}}</td>
                       <!-- <td  routerLink="/manage/users/detail/{{user.userName}}">{{user.currentStatus}}</td> -->
                       <td>
                         <div class="btn-group flex-wrap">
                           <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i
                               class="fas fa-ellipsis-v"></i></button>
                           <div class="dropdown-menu" role="menu">
-                            <a href="javascript:;" data-toggle="modal" data-target="#assignrole"
-                              (click)="fetchRole(user)" class="dropdown-item"> Assign Roles</a>
+                            <!-- <a href="javascript:;" data-toggle="modal" data-target="#assignrole"
+                              (click)="fetchRole(user)" class="dropdown-item"> Assign Roles</a> -->
                             <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{user.contactID}}">Edit</a>
                             <button class="dropdown-item text-1 modal-with-form"
                               (click)="deleteUser(user.contactID, user.firstName, user.lastName)">Delete</button>
