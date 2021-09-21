@@ -6,15 +6,17 @@
                     <div class="col-md-12 col-lg-12">
                        <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Overview</h4>
                     </div>
-                    
                  </div>
-                
             </div>
 
-            <div class="card">
-                <div class="safety-overview__main ">
-                    <div class="">
-                        <div class="row pt-3 bg-white">
+
+            <section class="m-2">
+                
+                
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white pt-3 pb-3 text-dark">
+                         <div class="form-group row">
                             <div class="col-lg-5 col-md-12">
                                 <div class="d-flex flex-wrap">
                                     <div class="col-lg-6 col-md-12 pr-1 mb-2">
@@ -129,215 +131,225 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                            
+                         </div>
+                      </div>
+                   </div>
+                </div>
 
-                    <div class="row p-2">
-                        <div class="col-lg-7 col-md-12  pr-0">
-                            <div class="bg-white p-2">
-                                <p class="mb-2 text-4 font-weight-bold text-dark">Trends</p>
-                                <ul class="nav nav-tabs top-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" id="harsh-rate-tab" data-toggle="tab"
-                                            href="#harsh-rate" role="tab" aria-controls="harsh-rate"
-                                            aria-selected="false">Harsh Event Rate</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link " id="harsh-count-tab" data-toggle="tab" href="#harsh-count"
-                                            role="tab" aria-controls="harsh-count" aria-selected="true">Harsh Event
-                                            Count</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link " id="speeding-tab" data-toggle="tab" href="#speeding-harsh"
-                                            role="tab" aria-controls="speeding" aria-selected="true">Speeding</a>
-                                    </li>
-
-                                </ul>
-                                <div class="safety-events-filter" style="top: 40px;right: 0;">
-                                    <div class="input-daterange input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar-alt"></i>
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control" data-plugin-datepicker="" name="start">
-                                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                                            to
-                                        </span>
-                                        <input type="text" class="form-control" data-plugin-datepicker="" name="end">
-                                    </div>
-                                    <div class="btn-group flex-wrap">
-                                        <button type="button" class="mx-1 btn-default btn btn-sm dropdown-toggle"
-                                            data-toggle="dropdown" aria-expanded="false"><i
-                                                class="fa fa-filter"></i></button>
-                                        <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(4px, 31px, 0px);">
-                                            <a class="dropdown-item text-1" href="javascript:;">Last 1 Week</a>
-                                            <a class="dropdown-item text-1" href="javascript:;">Last 4 Week</a>
-                                            <a class="dropdown-item text-1" href="javascript:;">Last 8 Week</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-content p-0 mt-3 routing-trends__charts">
-                                    <div class="tab-pane active" id="harsh-rate" role="tabpanel"
-                                        aria-labelledby="harsh-rate-tab">
-                                        <div class="chartjs-size-monitor">
-                                            <div class="chartjs-size-monitor-expand">
-                                                <div class=""></div>
-                                            </div>
-                                            <div class="chartjs-size-monitor-shrink">
-                                                <div class=""></div>
-                                            </div>
-                                        </div>
-                                        <canvas baseChart [datasets]="chartData" [labels]="chartLabels"
-                                            [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType">
-                                        </canvas>
-                                    </div>
-                                    <div class="tab-pane " id="harsh-count" role="tabpanel"
-                                        aria-labelledby="harsh-count-tab">
-                                        <canvas baseChart [datasets]="countChartData" [labels]="countChartLabels"
-                                            [options]="countChartOptions" [legend]="countChartLegend"
-                                            [chartType]="countChartType">
-                                        </canvas>
-                                    </div>
-                                    <div class="tab-pane" id="speeding-harsh" role="tabpanel"
-                                        aria-labelledby="speeding-tab">
-                                        <canvas baseChart [datasets]="speedingChartData" [labels]="speedingChartLabels"
-                                            [options]="speedingChartOptions" [legend]="speedingChartLegend"
-                                            [chartType]="speedingChartType">
-                                        </canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 pr-0">
-                            <section class="card">
-                                <div class="card-body position-relative">
-                                    <p class="mb-2 text-4 font-weight-bold text-dark">Events by Driver <small
-                                            style="color: #6c757d;">(Last 4 weeks)</small></p>
-                                    <div class="safety-events-filter">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                       <div class="bg-white p-3 text-dark">
+                          <div class="form-group row">
+                            <div class="col-lg-7 col-md-12  pr-0">
+                                <div class="bg-white p-2">
+                                    <p class="mb-2 text-4 font-weight-bold text-dark">Trends</p>
+                                    <ul class="nav nav-tabs top-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="harsh-rate-tab" data-toggle="tab"
+                                                href="#harsh-rate" role="tab" aria-controls="harsh-rate"
+                                                aria-selected="false">Harsh Event Rate</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="harsh-count-tab" data-toggle="tab" href="#harsh-count"
+                                                role="tab" aria-controls="harsh-count" aria-selected="true">Harsh Event
+                                                Count</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link " id="speeding-tab" data-toggle="tab" href="#speeding-harsh"
+                                                role="tab" aria-controls="speeding" aria-selected="true">Speeding</a>
+                                        </li>
+    
+                                    </ul>
+                                    <div class="safety-events-filter" style="top: 40px;right: 0;">
                                         <div class="input-daterange input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">
                                                     <i class="fas fa-calendar-alt"></i>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control" data-plugin-datepicker=""
-                                                name="start">
+                                            <input type="text" class="form-control" data-plugin-datepicker="" name="start">
                                             <span class="input-group-text border-left-0 border-right-0 rounded-0">
                                                 to
                                             </span>
-                                            <input type="text" class="form-control" data-plugin-datepicker=""
-                                                name="end">
+                                            <input type="text" class="form-control" data-plugin-datepicker="" name="end">
                                         </div>
                                         <div class="btn-group flex-wrap">
                                             <button type="button" class="mx-1 btn-default btn btn-sm dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="false"><i
                                                     class="fa fa-filter"></i></button>
                                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(4px, 31px, 0px);">
                                                 <a class="dropdown-item text-1" href="javascript:;">Last 1 Week</a>
                                                 <a class="dropdown-item text-1" href="javascript:;">Last 4 Week</a>
                                                 <a class="dropdown-item text-1" href="javascript:;">Last 8 Week</a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="table-responsive mt-3">
-                                        <table class="table table-bordered mb-0 safety-table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="back-color-gray">Event Name</th>
-                                                    <th class="back-color-gray">No. of Events</th>
-                                                    <th class="back-color-gray">Driver Count</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th class="back-color-gray">Harsh Acceleration</th>
-                                                    <td>{{ totalEvents.harshAccelerationEventCount }}</td>
-                                                    <td>{{ totalEvents.harshAccelerationDriverCount }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="back-color-gray">Harsh Brake </th>
-                                                    <td>{{ totalEvents.harshBrakeEventCount }}</td>
-                                                    <td>{{ totalEvents.harshBrakeDriverCount }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="back-color-gray">Harsh Turn</th>
-                                                    <td>{{ totalEvents.harshTurnEventCount }}</td>
-                                                    <td>{{ totalEvents.harshTurnDriverCount }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="back-color-gray">Crash</th>
-                                                    <td>{{ totalEvents.crashEventCount }}</td>
-                                                    <td>{{ totalEvents.crashDriverCount }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="back-color-gray">Rolling Stop</th>
-                                                    <td>{{ totalEvents.RollingStopEventCount }}</td>
-                                                    <td>{{ totalEvents.RollingStopDriverCount }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="tab-content p-0 mt-3 routing-trends__charts">
+                                        <div class="tab-pane active" id="harsh-rate" role="tabpanel"
+                                            aria-labelledby="harsh-rate-tab">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas baseChart [datasets]="chartData" [labels]="chartLabels"
+                                                [options]="chartOptions" [legend]="chartLegend" [chartType]="chartType">
+                                            </canvas>
+                                        </div>
+                                        <div class="tab-pane " id="harsh-count" role="tabpanel"
+                                            aria-labelledby="harsh-count-tab">
+                                            <canvas baseChart [datasets]="countChartData" [labels]="countChartLabels"
+                                                [options]="countChartOptions" [legend]="countChartLegend"
+                                                [chartType]="countChartType">
+                                            </canvas>
+                                        </div>
+                                        <div class="tab-pane" id="speeding-harsh" role="tabpanel"
+                                            aria-labelledby="speeding-tab">
+                                            <canvas baseChart [datasets]="speedingChartData" [labels]="speedingChartLabels"
+                                                [options]="speedingChartOptions" [legend]="speedingChartLegend"
+                                                [chartType]="speedingChartType">
+                                            </canvas>
+                                        </div>
                                     </div>
                                 </div>
-                            </section>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-
-            <div class="row p-0">
-                <div class="col-lg-12 pr-0">
-                    <section class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <p class="mb-2 text-4 font-weight-bold text-dark">Scoreboard</p>
-                                <table class="table table-bordered table-striped mb-0 safety-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Rank</th>
-                                            <th>Driver Name</th>
-                                            <th>Compliance</th>
-                                            <th>Safety Score</th>
-                                            <th>Fuel Idling</th>
-                                            <th>Harsh Brake</th>
-                                            <th>Harsh Acceleration</th>
-                                            <th>Harsh Turn</th>
-                                            <th>Rolling Stop</th>
-                                            <th>Crashes</th>
-                                            <th>Over Speeding</th>
-                                            <th>Distance</th>
-                                            <th>Time</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="cursorpoint" *ngFor="let data of eventData; let i=index;"
-                                            routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
-                                            <td>{{ i+1 }}</td>
-                                            <td>{{ data.driverName }}</td>
-                                            <td>{{ data.compliance }}</td>
-                                            <td>{{ data.safetyScore }}</td> <!-- in percent -->
-                                            <td>{{ data.fuelIdling }}</td>
-                                            <td>{{ data.harshBrake }}</td>
-                                            <td>{{ data.harshAcceleration }}</td>
-                                            <td>{{ data.harshTurn }}</td>
-                                            <td>{{ data.rollingStop }}</td>
-                                            <td>{{ data.crashes }}</td>
-                                            <td>{{ data.overSpeeding }}</td>
-                                            <td>{{ data.distance }} mi</td>
-                                            <td>{{ data.time }}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
-                        </div>
-                    </section>
-                </div>
-            </div>
+                            <div class="col-lg-5 pr-0">
+                                <section class="card">
+                                    <div class="card-body position-relative">
+                                        <p class="mb-2 text-4 font-weight-bold text-dark">Events by Driver <small
+                                                style="color: #6c757d;">(Last 4 weeks)</small></p>
+                                        <div class="safety-events-filter">
+                                            <div class="input-daterange input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                                <input type="text" class="form-control" data-plugin-datepicker=""
+                                                    name="start">
+                                                <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                                                    to
+                                                </span>
+                                                <input type="text" class="form-control" data-plugin-datepicker=""
+                                                    name="end">
+                                            </div>
+                                            <div class="btn-group flex-wrap">
+                                                <button type="button" class="mx-1 btn-default btn btn-sm dropdown-toggle"
+                                                    data-toggle="dropdown" aria-expanded="false"><i
+                                                        class="fa fa-filter"></i></button>
+                                                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 1 Week</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 4 Week</a>
+                                                    <a class="dropdown-item text-1" href="javascript:;">Last 8 Week</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive mt-3">
+                                            <table class="table table-bordered mb-0 safety-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="back-color-gray">Event Name</th>
+                                                        <th class="back-color-gray">No. of Events</th>
+                                                        <th class="back-color-gray">Driver Count</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="back-color-gray">Harsh Acceleration</th>
+                                                        <td>{{ totalEvents.harshAccelerationEventCount }}</td>
+                                                        <td>{{ totalEvents.harshAccelerationDriverCount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="back-color-gray">Harsh Brake </th>
+                                                        <td>{{ totalEvents.harshBrakeEventCount }}</td>
+                                                        <td>{{ totalEvents.harshBrakeDriverCount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="back-color-gray">Harsh Turn</th>
+                                                        <td>{{ totalEvents.harshTurnEventCount }}</td>
+                                                        <td>{{ totalEvents.harshTurnDriverCount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="back-color-gray">Crash</th>
+                                                        <td>{{ totalEvents.crashEventCount }}</td>
+                                                        <td>{{ totalEvents.crashDriverCount }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="back-color-gray">Rolling Stop</th>
+                                                        <td>{{ totalEvents.RollingStopEventCount }}</td>
+                                                        <td>{{ totalEvents.RollingStopDriverCount }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                             
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+
+                 <div class="row mb-3">
+                    <div class="col-lg-12">
+                       <div class="bg-white p-3 text-dark">
+                          <div class="form-group row">
+                           <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <p class="mb-2 text-4 font-weight-bold text-dark">Scoreboard</p>
+                                    <table class="table table-bordered table-striped mb-0 safety-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Rank</th>
+                                                <th>Driver Name</th>
+                                                <th>Compliance</th>
+                                                <th>Safety Score</th>
+                                                <th>Fuel Idling</th>
+                                                <th>Harsh Brake</th>
+                                                <th>Harsh Acceleration</th>
+                                                <th>Harsh Turn</th>
+                                                <th>Rolling Stop</th>
+                                                <th>Crashes</th>
+                                                <th>Over Speeding</th>
+                                                <th>Distance</th>
+                                                <th>Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="cursorpoint" *ngFor="let data of eventData; let i=index;"
+                                                routerLink="/safety/drivers-scorecard/details/{{data.driverID}}/{{i+1}}">
+                                                <td>{{ i+1 }}</td>
+                                                <td>{{ data.driverName }}</td>
+                                                <td>{{ data.compliance }}</td>
+                                                <td>{{ data.safetyScore }}</td> <!-- in percent -->
+                                                <td>{{ data.fuelIdling }}</td>
+                                                <td>{{ data.harshBrake }}</td>
+                                                <td>{{ data.harshAcceleration }}</td>
+                                                <td>{{ data.harshTurn }}</td>
+                                                <td>{{ data.rollingStop }}</td>
+                                                <td>{{ data.crashes }}</td>
+                                                <td>{{ data.overSpeeding }}</td>
+                                                <td>{{ data.distance }} mi</td>
+                                                <td>{{ data.time }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                           </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+      </section>
+
+       
         </section>
     </div>
 </section>
