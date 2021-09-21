@@ -6,8 +6,8 @@
                 <div class="row" style="padding-top:10px;">
 
                     <div class="col-md-2 col-lg-2">
-                        <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" placeholder="Search by contact">
-                            <ng-option *ngFor="let data of allUsers" [value]="data.userName">{{data.firstName}} {{data.lastName}}</ng-option>
+                        <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" class="text-capitalize" placeholder="Search by contact">
+                            <ng-option *ngFor="let data of users" [value]="data.userID">{{data.firstName}} {{data.lastName}}</ng-option>
                         </ng-select>
                     </div>
 
@@ -94,12 +94,12 @@
                                                 <td colspan="6">{{ dataMessage }}</td>
                                             </tr>
                                             <tr *ngFor="let item of remindersData;" style="cursor: pointer;">
-                                                <td>{{usersList[item.entityID]}}</td>
+                                                <td class="text-capitalize">{{usersList[item.entityID]}}</td>
                                                 <td> <span class="text-warning font-weight-bold font-size-12 text-uppercase"
                                                         *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                                     <span class="text-danger font-weight-bold font-size-12 text-uppercase"
                                                         *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-                                                    <span class="font-weight-bold"
+                                                    <span class="font-weight-bold text-capitalize"
                                                         title="Task">{{tasksList[item.tasks.taskID]}}</span>
                                                 </td>
                                                 <td><span class="font-size-12">{{item.tasks.time}} {{item.tasks.timeUnit}}(s)

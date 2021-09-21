@@ -20,9 +20,8 @@ export class UserDetailsComponent implements OnInit {
     lastName: '',
     employeeID: '',
     dateOfBirth: '',
-    phone: '',
-    email: '',
-    entityType: 'employee',
+    workPhone: '',
+    workEmail: '',
     profileImg: '',
     loginEnabled: false,
     paymentDetails: {
@@ -34,22 +33,25 @@ export class UserDetailsComponent implements OnInit {
       WCB: '',
       healthCare: ''
     },
-    address: [{
-      addressType: '',
-      countryCode: '',
-      countryName: '',
-      stateCode: '',
-      stateName: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
+    adrs: [{
+      aType: null,
+      cCode: null,
+      cName: '',
+      sCode: null,
+      sName: null,
+      ctyName: null,
+      zip: '',
+      add1: '',
+      add2: '',
       geoCords: {
         lat: '',
         lng: ''
       },
-      userLocation: '',
+      isSuggest: false,
+      userLoc: '',
       manual: false,
+      houseNo: '',
+      street: '',
       states: [],
       cities: []
     }],
@@ -62,14 +64,14 @@ export class UserDetailsComponent implements OnInit {
     currentStatus: 'active',
     userLoginData: {
       userName: '',
-      userType: '',
       password: '',
       confirmPassword: ''
     }
   };
+  newRoles = [];
   public userProfileSrc: any = 'assets/img/driver/driver.png';
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, private toastr: ToastrService,
-    private countryStateCity: CountryStateCityService) { }
+              private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
@@ -78,6 +80,11 @@ export class UserDetailsComponent implements OnInit {
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
       result = result.Items[0];
+      result.userLoginData.userRoles.map((v: any) => {
+        const role = v.split('_');
+        const newRole = role[1];
+        this.newRoles.push(newRole);
+      });
       this.userData = {
         companyName: result.companyName,
         dbaName: result.dbaName,
@@ -85,9 +92,8 @@ export class UserDetailsComponent implements OnInit {
         lastName: result.lastName,
         employeeID: result.employeeID,
         dateOfBirth: result.dateOfBirth,
-        phone: result.phone,
-        email: result.email,
-        entityType: 'employee',
+        workPhone: result.workPhone,
+        workEmail: result.workEmail,
         loginEnabled: result.loginEnabled,
         profileImg: result.profileImg,
         currentStatus: result.currentStatus,
@@ -100,7 +106,7 @@ export class UserDetailsComponent implements OnInit {
           WCB: result.paymentDetails.WCB,
           healthCare: result.paymentDetails.healthCare,
         },
-        address: result.address,
+        adrs: result.adrs,
         userAccount: {
           contractStartDate: result.userAccount.contractStartDate,
           contractEndDate: result.userAccount.contractEndDate,
@@ -109,31 +115,19 @@ export class UserDetailsComponent implements OnInit {
         },
         userLoginData: {
           userName: result.userLoginData.userName,
-          userType: result.userLoginData.userType,
           password: '',
           confirmPassword: ''
         }
       };
-      if (this.userData.address !== undefined) {
-        this.fetchAddress(this.userData.address);
-      }
       this.userData[`timeCreated`] = result.timeCreated;
       this.userData[`createdDate`] = result.createdDate;
       this.userData[`createdTime`] = result.createdTime;
       // to show profile image
       if (result.profileImg !== '' && result.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
+      } else {
+        this.profilePath = '';
       }
     });
-  }
-  fetchAddress(address: any) {
-    for (let a = 0; a < address.length; a++) {
-      address.map(async (e: any) => {
-        if (e.manual) {
-          e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-          e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
-        }
-      });
-    }
   }
 }

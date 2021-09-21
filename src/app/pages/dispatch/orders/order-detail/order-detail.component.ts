@@ -210,7 +210,7 @@ export class OrderDetailComponent implements OnInit {
           } else {
             this.additionalContactName = result.additionalContact;
           }
-          
+
           this.additionalPhone  = result.phone;
           this.additionalEmail = result.email;
           this.isInvoiced = result.invoiceGenerate;
@@ -434,7 +434,6 @@ export class OrderDetailComponent implements OnInit {
   async generate() {
     this.isShow = true;
     var data = document.getElementById('print_wrap');
-    
     html2pdf(data, {
       margin:       0,
       filename:     'invoice.pdf',
@@ -473,14 +472,14 @@ export class OrderDetailComponent implements OnInit {
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-  
-      }); 
-  
+
+      });
+
     }, 1000);
     await this.saveInvoice();
     await this.invoiceGenerated();
     await this.fetchOrder();
-    
+
   }
   async saveInvoice() {
     this.generateBtnDisabled = true;
@@ -495,7 +494,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
-   
+
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -530,7 +529,7 @@ export class OrderDetailComponent implements OnInit {
     this.invGenStatus = true;
     let result = await this.apiService.getData(`orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`).toPromise();
     this.isInvoice = result.Attributes.invoiceGenerate;
-     
+
   }
 
   previewModal() {
@@ -672,7 +671,7 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
-        
+
         this.invoiceData = result[0];
         this.isInvoice = true;
       });
