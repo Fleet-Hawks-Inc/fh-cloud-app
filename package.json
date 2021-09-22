@@ -63,7 +63,7 @@
     "jstree": "3.3.10",
     "jszip": "3.7.0",
     "jwt-decode": "3.1.2",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "moment": "2.29.1",
     "ng-multiselect-dropdown": "0.3.4",
     "ng-pick-datetime": "7.0.0",
