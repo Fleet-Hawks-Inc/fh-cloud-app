@@ -172,7 +172,7 @@
                                                         </span>
                                                     </td>
                                                     <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
-                                                        Location: -
+                                                        Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.cityName}},
@@ -207,7 +207,7 @@
                                                                 <a class="dropdown-item" href="javascript:;"
                                                                     (click)="deactivateOrder(order)">Delete</a>
                                                                 <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                                                    (click)="confirmEmail(order)">Confirm</a>
+                                                                    (click)="changeStatus(order.orderID, order.orderNumber)">Confirm</a>
                                                                 <a class="dropdown-item"
                                                                     [routerLink]="['/dispatch', 'orders', 'add']" [queryParams]="{ cloneID: order.orderID }">Clone</a>
                                                             </div>
@@ -855,7 +855,7 @@
     </div>
 </section>
 
-
+<!-- 
 <ng-template #confirmEmailModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Confirm Order <strong>#{{newOrderNumber}}</strong></h4>
@@ -905,4 +905,4 @@
             <button [disabled]="isConfirm" (click)="changeStatus()" class="btn btn-success">Confirm</button>
         </div>
     </form>
-</ng-template>
+</ng-template> -->
