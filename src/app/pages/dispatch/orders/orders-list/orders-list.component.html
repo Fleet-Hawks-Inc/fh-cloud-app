@@ -866,17 +866,8 @@
       <form>
         <div class="modal-body">
         
-            <div class="email--invoice__main">
-                <div class=" mb-4">
-                    <label class="control-label font-weight-bold  mt-2 text-3 text-dark"
-                                                               for="inputDefault">Enter Email <small>You can also add multiple email(s)</small></label>
-                    <ng-select multiple="true" notFoundText="Please type to add email" 
-                    [addTag]="true" placeholder="eg. johnsmith@gmail.com"
-                     
-                    [(ngModel)]="emailData.emails" name="emails" 
-                    type="text"  class="form-control h-auto"></ng-select>
-                </div>
-                <div class="row align-items-center">
+            <div class="email--invoice__main mt-3">
+                <div class="row align-items-center mb-2">
                     <div class="col-4">
                         <label class="control-label font-weight-bold text-3 text-dark"
                             for="inputDefault">Confirmation Email</label>
@@ -897,11 +888,21 @@
                     </div>
                     
                 </div>
+                <div class="" *ngIf="emailData.confirmEmail != false">
+                    <label class="control-label font-weight-bold  mt-2 text-3 text-dark"
+                                                               for="inputDefault">Enter Email <small>You can also add multiple email(s)</small></label>
+                    <ng-select multiple="true" notFoundText="Please type to add email" 
+                    [addTag]="true" placeholder="eg. johnsmith@gmail.com"
+                     [clearable]="false"
+                    [(ngModel)]="emailData.emails" name="emails" 
+                    type="text"  class="form-control h-auto"></ng-select>
+                </div>
+                
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">Cancel</button>
-            <button (click)="changeStatus()" class="btn btn-success">Send</button>
+            <button [disabled]="isConfirm" (click)="changeStatus()" class="btn btn-success">Confirm</button>
         </div>
     </form>
 </ng-template>
