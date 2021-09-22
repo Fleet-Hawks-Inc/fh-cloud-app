@@ -33,7 +33,7 @@ export class EmployeePaymentListComponent implements OnInit {
   }
 
   fetchEmployees() {
-    this.apiService.getData(`contacts/get/list/employee`).subscribe((result: any) => {
+    this.apiService.getData(`contacts/get/emp/list`).subscribe((result: any) => {
       this.employees = result;
     })
   }

@@ -34,6 +34,9 @@ export class AddDriverPaymentComponent implements OnInit {
     payMode: null,
     payModeNo: "",
     payModeDate: null,
+    settledAmount: 0,
+    vacPayPer: 0,
+    vacPayAmount: 0,
     totalAmount: <any>0,
     taxdata: {
       payPeriod: null,
@@ -192,7 +195,7 @@ export class AddDriverPaymentComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.searchDisabled = true;
-      this.accountService.getData(`settlement/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}`).subscribe((result: any) => {
+      this.accountService.getData(`settlement/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&type=${this.paymentData.paymentTo}`).subscribe((result: any) => {
         if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -253,13 +256,15 @@ export class AddDriverPaymentComponent implements OnInit {
     this.paymentData.totalAmount = 0;
     this.paymentData.finalAmount = 0;
     this.paymentData.advance = 0;
+    this.paymentData.settledAmount = 0;
     let selectCount = 0;
     for (const element of this.settlements) {
       if (element.selected) {
         if (element.paidAmount > 0) {
           selectCount += 1;
         }
-        this.paymentData.totalAmount += Number(element.paidAmount);
+        this.paymentData.settledAmount += Number(element.paidAmount);
+        // this.paymentData.totalAmount += Number(element.paidAmount);
         this.paymentData.settlData.map((v) => {
           if (element.sttlID === v.settlementId) {
             v.paidAmount = Number(element.paidAmount);
@@ -313,8 +318,12 @@ export class AddDriverPaymentComponent implements OnInit {
   calculateFinalTotal() {
     this.paymentData.advance = (this.paymentData.advance) ? Number(this.paymentData.advance) : 0;
     this.paymentData.taxes = (this.paymentData.taxes) ? Number(this.paymentData.taxes) : 0;
+
+    this.paymentData.settledAmount = (this.paymentData.settledAmount) ? Number(this.paymentData.settledAmount) : 0;
+    this.paymentData.totalAmount = Number(this.paymentData.settledAmount) + Number(this.paymentData.vacPayAmount); 
     this.paymentData.totalAmount = (this.paymentData.totalAmount) ? Number(this.paymentData.totalAmount) : 0;
-    this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
+    // this.paymentData.totalAmount = this.paymentData.totalAmount.toFixed(2);
+
     this.paymentData.finalAmount = this.paymentData.totalAmount - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
     this.paymentData.finalAmount = Number(this.paymentData.finalAmount).toFixed(2);
 
@@ -644,6 +653,16 @@ export class AddDriverPaymentComponent implements OnInit {
       this.searchDisabled = false;    
     } else {
       this.searchDisabled = true;
+    }
+  }
+
+  calculateVacationPay() {
+    this.paymentData.vacPayAmount = (this.paymentData.vacPayPer/100) * this.paymentData.settledAmount;
+    if (this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
+      this.resetPayrollCalculations();
+      this.calculatePayroll();
+    } else {
+      this.calculateFinalTotal();
     }
   }
 }

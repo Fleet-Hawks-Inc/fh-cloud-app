@@ -685,7 +685,7 @@
                                 </div>
 
                                 <!-- settled fuel expense -->
-                                <div class="row pt-2" *ngIf="settlementID">
+                                <div class="row pt-2" *ngIf="settlementID && settlementData.type == 'driver' || settlementData.type == 'owner_operator'">
                                     <div class="col-lg-10">
                                         <h4 class="font-weight-bold">Settled Fuel Expenses</h4>
                                     </div>
@@ -726,7 +726,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row pt-2">
+                                <div class="row pt-2" *ngIf="settlementData.type == 'driver' || settlementData.type == 'owner_operator'">
                                     <div class="col-lg-10">
                                         <h4 class="font-weight-bold">Fuel Expenses</h4>
                                     </div>
