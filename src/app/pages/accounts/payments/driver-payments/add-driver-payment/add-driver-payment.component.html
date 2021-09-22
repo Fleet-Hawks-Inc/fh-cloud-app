@@ -425,6 +425,31 @@
                                                             Amount</label>
                                                     </div>
                                                     <div class="col-lg-6">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.settledAmount" name="settledAmount" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Vacation Pay(%)</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.vacPayPer" name="vacPayPer" (input)="calculateVacationPay();">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1" *ngIf="paymentData.paymentTo === 'driver'">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Vacation Pay Amount</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" class="form-control" [(ngModel)]="paymentData.vacPayAmount" name="vacPayAmount" disabled>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mt-1">
+                                                    <div class="col-lg-6 text-right">
+                                                        <label class="control-label font-weight-bold">Total Amount</label>
+                                                    </div>
+                                                    <div class="col-lg-6">
                                                         <input type="text" class="form-control" [(ngModel)]="paymentData.totalAmount" name="totalAmount" disabled>
                                                     </div>
                                                     <div class="col-lg-6 offset-lg-6 pt-2" *ngIf="paymentData.paymentTo === 'driver'">
