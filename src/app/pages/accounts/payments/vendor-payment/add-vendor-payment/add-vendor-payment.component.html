@@ -21,7 +21,7 @@
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-6">
-                    <div class="row" id="settlementListDiv">
+                    <div class="row">
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Vendor
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -39,29 +39,19 @@
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6">
-                    <div class="row" >
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                          Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                        </label>
-                        <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
-                          (click)="txDnate.toggle()" ngbDatepicker #txDnate="ngbDatepicker" class="form-control"
-                          autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #txnDate="ngModel"
-                          required>
-                        <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)" class="text-danger">
-                          <div *ngIf="txnDate.errors.required">
-                            Payment date is required.
-                          </div>
-                        </div>
-                      </div>
+                      <div class="col-lg-2 mar-top-37">
+                        <a href="javascript:;" (click)="openModal('form');"
+                class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
+                <a href="javascript:;" (click)="refreshVendorData()"
+                data-toggle="tooltip" title="Refresh vendor data"
+                class="btn btn-success btn-sm modal-with-form"><i
+                    class="fas fa-sync"></i></a>
+                                 </div>
                     </div>
                     <div class="row mt-2" >
                       <div class="col-lg-10">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Attach
-                          Document</label>
+                          Document(s)</label>
                       <input type="file" class="p-0 form-control" multiple (change)="selectDocuments($event)" />
 
                       </div>
@@ -88,6 +78,36 @@
                                    </div>
                               </div>
                           </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="row" >
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                          Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
+                          (click)="txDnate.toggle()" ngbDatepicker #txDnate="ngbDatepicker" class="form-control"
+                          autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #txnDate="ngModel"
+                          required>
+                        <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)" class="text-danger">
+                          <div *ngIf="txnDate.errors.required">
+                            Payment date is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-2" >
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Remarks</label>
+                        <textarea class="form-control" placeholder="Enter remarks of the vendor payment" rows="7"
+                        [(ngModel)]="paymentData.remarks" name="remarks" #Iremarks="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                        <div *ngIf="Iremarks.invalid && (Iremarks.dirty || Iremarks.touched)" class="text-danger">
+                          <div *ngIf="Iremarks.errors.pattern">
+                           Only 500 characters are allowed.
+                          </div>
+                       </div>
                       </div>
                     </div>
                   </div>
@@ -135,7 +155,7 @@
                                 <td>
                                   <!-- <div class="row">
                                     <div class="col-lg-6"> -->
-                                      <input type="number" class="form-control" [(ngModel)]="invoiceData.amount"
+                                      <input type="number" class="form-control" min="0" [(ngModel)]="invoiceData.amount"
                                         name="amount" placeholder="Enter amount">
                                     <!-- </div>
                                     <div class="col-lg-6">
@@ -178,7 +198,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">Payment
                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="paymentData.payMode" name="payMode" placeholder="Select Payment Mode"
+                          <ng-select [(ngModel)]="paymentData.paymentMode" name="paymentMode" placeholder="Select Payment Mode"
                             (change)="changePaymentMode($event)" #payMode="ngModel" required>
                             <ng-option value="cash">Cash</ng-option>
                             <ng-option value="cheque">Cheque</ng-option>
@@ -218,34 +238,34 @@
                               class="fas fa-sync"></i></a>
                         </div>
                       </div>
-                      <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
+                      <div class="row pt-1" *ngIf="paymentData.paymentMode && paymentData.paymentMode !== 'cheque'">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
+                          <label class="control-label font-weight-bold labelalign">{{ paymentModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo"
-                            placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel"
-                            [required]="paymentData.payMode && paymentData.payMode !== 'cheque'"
+                          <input type="text" class="form-control" [(ngModel)]="paymentData.paymentModeNo" name="paymentModeNo"
+                            placeholder="{{ paymentModeLabel }} Reference" #payNoo="ngModel"
+                            [required]="paymentData.paymentMode && paymentData.paymentMode !== 'cheque'"
                             pattern="^[a-zA-Z0-9\s]+$">
                           <div *ngIf="payNoo.invalid && (payNoo.dirty || payNoo.touched)" class="text-danger">
                             <div *ngIf="payNoo.errors.required">
-                              {{ payModeLabel }} Reference is required.
+                              {{ paymentModeLabel }} Reference is required.
                             </div>
                             <div *ngIf="payNoo.errors.pattern">
-                              {{ payModeLabel }} Reference must contain alphanumeric characters.
+                              {{ paymentModeLabel }} Reference must contain alphanumeric characters.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                          <input [(ngModel)]="paymentData.paymentModeDate" name="paymentModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
                             [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
 
                           <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
                             <div *ngIf="payDate.errors.required">
-                              {{ payModeLabel }} Date is required.
+                              {{ paymentModeLabel }} Date is required.
                             </div>
                           </div>
                         </div>
@@ -256,22 +276,22 @@
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="hello"
-                            [(ngModel)]="paymentData.payModeNo" name="payModeNo"
+                            [(ngModel)]="paymentData.paymentModeNo" name="paymentModeNo"
                             placeholder="{{ payModeLabel }} Reference"
-                            readonly="paymentData.payMode && paymentData.payMode === 'cheque'">
+                            readonly="paymentData.paymentMode && paymentData.paymentMode === 'cheque'">
 
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
-                            placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                          <input [(ngModel)]="paymentData.paymentModeDate" name="paymentModeDate" type="text"
+                            placeholder="yyyy/mm/dd" (click)="paymentModeDate.toggle()" ngbDatepicker readonly
                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required>
 
-                          <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
-                            <div *ngIf="payDate.errors.required">
-                              {{ payModeLabel }} Date is required.
+                          <div *ngIf="payModeDate.invalid && (payModeDate.dirty || payModeDate.touched)" class="text-danger">
+                            <div *ngIf="payModeDate.errors.required">
+                              {{ paymentModeLabel }} Date is required.
                             </div>
                           </div>
                         </div>
@@ -295,13 +315,13 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                      <button type="button" class="btn btn-success modal-with-form mr-2"
-                        *ngIf="paymentData.payMode == 'cheque'" (click)="showCheque()">Cheque preview</button>
-                      <button class="btn btn-success" (click)="OnAddPayment()" *ngIf="!paymentID">Save</button>
+                      <!-- <button type="button" class="btn btn-success modal-with-form mr-2"
+                        *ngIf="paymentData.payMode == 'cheque'" (click)="showCheque()">Cheque preview</button> -->
+                      <button class="btn btn-success" (click)="OnAddPayment()" [disabled]="!venPaymentForm.form.valid || submitDisabled" *ngIf="!paymentID">Save</button>
                     </div>
                   </div>
 
-                </div> <!-- ID closed-->
+                </div>
 
               </div>
             </div>

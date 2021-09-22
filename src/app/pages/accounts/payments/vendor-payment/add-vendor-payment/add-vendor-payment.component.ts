@@ -23,17 +23,18 @@ export class AddVendorPaymentComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     paymentNo: '',
     accountID: null,
-    payMode: null,
-    payModeNo: '',
-    payModeDate: null,
+    paymentMode: null,
+    paymentModeNo: '',
+    paymentModeDate: null,
     paymentTotal: 0,
     attachments: [],
     transactionLog: [],
     invoices: [],
+    remarks: null
   };
   documentSlides = [];
   uploadedDocs = [];
-  payModeLabel = '';
+  paymentModeLabel = '';
   errors = {};
   response: any = '';
   hasError = false;
@@ -75,6 +76,18 @@ pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
         this.calculateInvoiceTotal();
     }
 }
+openModal(unit: string) {
+  this.listService.triggerModal(unit);
+
+  localStorage.setItem('isOpen', 'true');
+  this.listService.changeButton(false);
+}
+refreshVendorData() {
+  this.listService.fetchVendors();
+}
+refreshAccount() {
+  this.listService.fetchChartAccounts();
+}
 delInvoice(index: any) {
       this.paymentData.invoices.splice(index, 1);
       this.calculateInvoiceTotal();
@@ -89,25 +102,25 @@ calculateInvoiceTotal() {
     let label = '';
     if (type === 'cash') {
       label = 'Cash';
-      this.paymentData.payModeNo = '';
+      this.paymentData.paymentModeNo = '';
     } else if (type === 'cheque') {
       label = 'Cheque';
-      this.paymentData.payModeNo = Date.now().toString();
+      this.paymentData.paymentModeNo = Date.now().toString();
     } else if (type === 'eft') {
       label = 'EFT';
-      this.paymentData.payModeNo = '';
+      this.paymentData.paymentModeNo = '';
     } else if (type === 'credit_card') {
       label = 'Credit Card';
-      this.paymentData.payModeNo = '';
+      this.paymentData.paymentModeNo = '';
     } else if (type === 'debit_card') {
       label = 'Debit Card';
-      this.paymentData.payModeNo = '';
+      this.paymentData.paymentModeNo = '';
     } else if (type === 'demand_draft') {
       label = 'Demand Draft';
-      this.paymentData.payModeNo = '';
+      this.paymentData.paymentModeNo = '';
     }
-    this.payModeLabel = label;
-    this.paymentData.payModeDate = null;
+    this.paymentModeLabel = label;
+    this.paymentData.paymentModeDate = null;
 
   }
   cancel() {
@@ -143,7 +156,7 @@ calculateInvoiceTotal() {
 
      // append other fields
     formData.append('data', JSON.stringify(this.paymentData));
-    this.accountService.postData('vendor-payment', formData, true).subscribe({
+    this.accountService.postData('vendor-payments', formData, true).subscribe({
         complete: () => { },
         error: (err: any) => {
             from(err.error)
@@ -168,7 +181,7 @@ calculateInvoiceTotal() {
         next: (res) => {
             this.submitDisabled = false;
             this.response = res;
-            this.toaster.success('Settlement added successfully.');
+            this.toaster.success('Vendor payment added successfully.');
             this.cancel();
         },
     });

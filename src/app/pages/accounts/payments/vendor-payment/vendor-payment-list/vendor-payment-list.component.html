@@ -72,24 +72,29 @@
                                       <th class="text-2">Payment#</th>
                                       <th class="text-2">Date</th>
                                       <th class="text-2">Payment Mode</th>
-                                      <th class="text-2">Employee </th>
+                                      <th class="text-2">Vendor </th>
                                       <th class="text-2">Amount</th>
-                                      <th class="text-2">Action</th>
                                   </tr>
                               </thead>
                               <tbody>
-                                  <tr  class="text-center">
-                                      <td colspan="6">
-                                        hello
+                                  <tr  *ngIf="payments.length === 0" class="text-center">
+                                      <td colspan="5">
+                                        {{ dataMessage }}
                                       </td>
                                   </tr>
-
+                                  <tr *ngFor="let data of payments; let i=index">
+                                    <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
+                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.paymentMode | titlecase}}</td>
+                                    <td class="cursorpoint text-capitalize" [routerLink]="data.url">{{ (data.entityId != null) ? vendors[data.entityId] : '-' }}</td>
+                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.paymentTotal | number : '1.2-2' }} CAD</td>
+                                </tr>
                               </tbody>
                           </table>
                           </div>
-                          <!-- <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
+                          <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
                             <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
-                                                 </div> -->
+                                                 </div>
                        </div>
                       </div>
                     </div>

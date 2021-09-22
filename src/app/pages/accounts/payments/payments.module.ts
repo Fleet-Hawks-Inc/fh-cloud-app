@@ -107,7 +107,6 @@ const routes: Routes = [
   { path: 'vendor-payments/list', component: VendorPaymentListComponent },
   { path: 'vendor-payments/add' , component: AddVendorPaymentComponent},
   { path: 'vendor-payments/detail/:paymentID', component: VendorPaymentDetailComponent},
-  { path: 'vendor-payments/edit/:paymentID', component: AddVendorPaymentComponent}
 ];
 
 @NgModule({
