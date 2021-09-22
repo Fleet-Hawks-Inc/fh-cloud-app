@@ -1165,12 +1165,12 @@
                                                                     </pdf-viewer>
                                                                 </td>
                                                             </tr>
-                                                            <!-- <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
+                                                            <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
                                                                 <td>
                                                                     <div class="html2pdf__page-break"></div>
-                                                                    <iframe src="newDoc.path" class="img-fluid rounded" height="200px" width="100%"></iframe>
+                                                                    <img crossorigin="*" [src]="newDoc.path" class="img-fluid rounded" height="200px" width="100%">
                                                                 </td>
-                                                            </tr> -->
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                     
