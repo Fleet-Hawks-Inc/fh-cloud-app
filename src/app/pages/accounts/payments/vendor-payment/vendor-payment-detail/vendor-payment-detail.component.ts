@@ -55,7 +55,6 @@ export class VendorPaymentDetailComponent implements OnInit {
   fetchPaymentDetail() {
     this.accountService.getData(`vendor-payments/detail/${this.paymentID}`).subscribe((result: any) => {
       this.paymentData = result[0];
-      console.log(' this.paymentData',  this.paymentData);
       if (result[0].attachments !== undefined && result[0].attachments.length > 0) {
         result[0].attachments.map((x) => {
           const obj = {

@@ -198,7 +198,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">Payment
                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="paymentData.paymentMode" name="paymentMode" placeholder="Select Payment Mode"
+                          <ng-select [(ngModel)]="paymentData.payMode" name="payMode" placeholder="Select Payment Mode"
                             (change)="changePaymentMode($event)" #payMode="ngModel" required>
                             <ng-option value="cash">Cash</ng-option>
                             <ng-option value="cheque">Cheque</ng-option>
@@ -238,34 +238,34 @@
                               class="fas fa-sync"></i></a>
                         </div>
                       </div>
-                      <div class="row pt-1" *ngIf="paymentData.paymentMode && paymentData.paymentMode !== 'cheque'">
+                      <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign">{{ paymentModeLabel }} Reference<span
+                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" [(ngModel)]="paymentData.paymentModeNo" name="paymentModeNo"
-                            placeholder="{{ paymentModeLabel }} Reference" #payNoo="ngModel"
-                            [required]="paymentData.paymentMode && paymentData.paymentMode !== 'cheque'"
+                          <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo"
+                            placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel"
+                            [required]="paymentData.payMode && paymentData.payMode !== 'cheque'"
                             pattern="^[a-zA-Z0-9\s]+$">
                           <div *ngIf="payNoo.invalid && (payNoo.dirty || payNoo.touched)" class="text-danger">
                             <div *ngIf="payNoo.errors.required">
-                              {{ paymentModeLabel }} Reference is required.
+                              {{ payModeLabel }} Reference is required.
                             </div>
                             <div *ngIf="payNoo.errors.pattern">
-                              {{ paymentModeLabel }} Reference must contain alphanumeric characters.
+                              {{ payModeLabel }} Reference must contain alphanumeric characters.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="paymentData.paymentModeDate" name="paymentModeDate" type="text"
+                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
                             [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
 
                           <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
                             <div *ngIf="payDate.errors.required">
-                              {{ paymentModeLabel }} Date is required.
+                              {{ payModeLabel }} Date is required.
                             </div>
                           </div>
                         </div>
@@ -276,22 +276,22 @@
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" placeholder="hello"
-                            [(ngModel)]="paymentData.paymentModeNo" name="paymentModeNo"
+                            [(ngModel)]="paymentData.payModeNo" name="payModeNo"
                             placeholder="{{ payModeLabel }} Reference"
-                            readonly="paymentData.paymentMode && paymentData.paymentMode === 'cheque'">
+                            readonly="paymentData.payMode && paymentData.payMode === 'cheque'">
 
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="paymentData.paymentModeDate" name="paymentModeDate" type="text"
-                            placeholder="yyyy/mm/dd" (click)="paymentModeDate.toggle()" ngbDatepicker readonly
+                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                            placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker readonly
                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
                             [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required>
 
                           <div *ngIf="payModeDate.invalid && (payModeDate.dirty || payModeDate.touched)" class="text-danger">
                             <div *ngIf="payModeDate.errors.required">
-                              {{ paymentModeLabel }} Date is required.
+                              {{ payModeLabel }} Date is required.
                             </div>
                           </div>
                         </div>

@@ -23,9 +23,9 @@ export class AddVendorPaymentComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     paymentNo: '',
     accountID: null,
-    paymentMode: null,
-    paymentModeNo: '',
-    paymentModeDate: null,
+    payMode: null,
+    payModeNo: '',
+    payModeDate: null,
     paymentTotal: 0,
     attachments: [],
     transactionLog: [],
@@ -34,7 +34,7 @@ export class AddVendorPaymentComponent implements OnInit {
   };
   documentSlides = [];
   uploadedDocs = [];
-  paymentModeLabel = '';
+  payModeLabel = '';
   errors = {};
   response: any = '';
   hasError = false;
@@ -51,6 +51,7 @@ export class AddVendorPaymentComponent implements OnInit {
     amount: 0,
     currency: 'CAD'
 };
+showModal = false;
 pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(private listService: ListService,
               private toaster: ToastrService,
@@ -102,25 +103,25 @@ calculateInvoiceTotal() {
     let label = '';
     if (type === 'cash') {
       label = 'Cash';
-      this.paymentData.paymentModeNo = '';
+      this.paymentData.payModeNo = '';
     } else if (type === 'cheque') {
       label = 'Cheque';
-      this.paymentData.paymentModeNo = Date.now().toString();
+      this.paymentData.payModeNo = Date.now().toString();
     } else if (type === 'eft') {
       label = 'EFT';
-      this.paymentData.paymentModeNo = '';
+      this.paymentData.payModeNo = '';
     } else if (type === 'credit_card') {
       label = 'Credit Card';
-      this.paymentData.paymentModeNo = '';
+      this.paymentData.payModeNo = '';
     } else if (type === 'debit_card') {
       label = 'Debit Card';
-      this.paymentData.paymentModeNo = '';
+      this.paymentData.payModeNo = '';
     } else if (type === 'demand_draft') {
       label = 'Demand Draft';
-      this.paymentData.paymentModeNo = '';
+      this.paymentData.payModeNo = '';
     }
-    this.paymentModeLabel = label;
-    this.paymentData.paymentModeDate = null;
+    this.payModeLabel = label;
+    this.paymentData.payModeDate = null;
 
   }
   cancel() {
@@ -144,7 +145,6 @@ calculateInvoiceTotal() {
         this.toaster.error('Please add invoice.');
         return false;
     }
-    console.log('data', this.paymentData);
     this.submitDisabled = true;
      // create form data instance
     const formData = new FormData();
@@ -185,5 +185,20 @@ calculateInvoiceTotal() {
             this.cancel();
         },
     });
+}
+
+showCheque() {
+  this.showModal = true;
+  let obj = {
+    entityId: this.paymentData.entityId,
+    chequeDate: this.paymentData.payModeDate,
+    chequeAmount: this.paymentData.paymentTotal,
+    type: 'vendor',
+    chequeNo: this.paymentData.payModeNo,
+    currency: 'CAD',
+    formType: (this.paymentID) ? 'edit' : 'add',
+    showModal: this.showModal,
+  };
+  this.listService.openPaymentChequeModal(obj);
 }
 }

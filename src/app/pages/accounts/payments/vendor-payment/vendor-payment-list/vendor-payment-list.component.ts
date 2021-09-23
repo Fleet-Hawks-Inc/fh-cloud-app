@@ -58,7 +58,7 @@ export class VendorPaymentListComponent implements OnInit {
 
           result.map((v) => {
             v.url = `/accounts/payments/vendor-payments/detail/${v.paymentID}`;
-            v.paymentMode = v.paymentMode.replace('_', ' ');
+            v.payMode = v.payMode.replace('_', ' ');
             this.payments.push(v);
           });
           this.loaded = true;

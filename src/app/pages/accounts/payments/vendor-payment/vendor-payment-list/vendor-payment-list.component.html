@@ -85,7 +85,7 @@
                                   <tr *ngFor="let data of payments; let i=index">
                                     <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
                                     <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
-                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.paymentMode | titlecase}}</td>
+                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
                                     <td class="cursorpoint text-capitalize" [routerLink]="data.url">{{ (data.entityId != null) ? vendors[data.entityId] : '-' }}</td>
                                     <td class="cursorpoint" [routerLink]="data.url">{{ data.paymentTotal | number : '1.2-2' }} CAD</td>
                                 </tr>
