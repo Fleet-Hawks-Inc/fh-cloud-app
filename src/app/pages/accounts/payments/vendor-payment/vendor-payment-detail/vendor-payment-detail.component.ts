@@ -16,9 +16,9 @@ export class VendorPaymentDetailComponent implements OnInit {
     txnDate: '',
     paymentNo: '',
     accountID: null,
-    paymentMode: null,
-    paymentModeNo: '',
-    paymentModeDate: null,
+    payMode: null,
+    payModeNo: '',
+    payModeDate: null,
     paymentTotal: 0,
     attachments: [],
     transactionLog: [],
@@ -64,8 +64,8 @@ export class VendorPaymentDetailComponent implements OnInit {
           this.documentSlides.push(obj);
         });
       }
-      if (this.paymentData.paymentMode) {
-        this.paymentData.paymentMode = this.paymentData.paymentMode.replace('_', '');
+      if (this.paymentData.payMode) {
+        this.paymentData.payMode = this.paymentData.payMode.replace('_', '');
       }
       this.paymentData.transactionLog.map((v: any) => {
         v.type = v.type.replace('_', ' ');

@@ -51,6 +51,9 @@ export class AddVendorPaymentComponent implements OnInit {
     amount: 0,
     currency: 'CAD'
 };
+dateMinLimit = { year: 1950, month: 1, day: 1 };
+date = new Date();
+futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 showModal = false;
 pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(private listService: ListService,

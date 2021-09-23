@@ -56,30 +56,6 @@
 
                       </div>
                     </div>
-                    <div class="row mt-2" *ngIf="documentSlides.length > 0">
-                      <div class="col-lg-10">
-                          <div class="vehicle-common-box p-3">
-                              <div class="row mt-2">
-                                  <div class="col-lg-6">
-                                      <label
-                                          class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
-                                  </div>
-                              </div>
-                              <hr class="solid mt-3">
-                              <div class="row" *ngFor="let item of documentSlides;let d= index">
-                                  <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
-                                      data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
-                                      {{d+1}}</a> </div>
-                                  <div class="col-lg-3 text-right">
-                                      <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
-                                         data-toggle="modal" data-target="#viewDocModal"></i>
-                                      <a href="javascript:;" (click)="deleteDocument(item.name, d)"
-                                         class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
-                                   </div>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row" >
@@ -87,15 +63,11 @@
                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
                           Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
-                          (click)="txDnate.toggle()" ngbDatepicker #txDnate="ngbDatepicker" class="form-control"
-                          autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #txnDate="ngModel"
-                          required>
-                        <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)" class="text-danger">
-                          <div *ngIf="txnDate.errors.required">
-                            Payment date is required.
-                          </div>
-                        </div>
+                        <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
+                        placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
+                        #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
+                        #payDate="ngModel" required>
+
                       </div>
                     </div>
                     <div class="row mt-2" >
@@ -261,7 +233,7 @@
                           <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
                             #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #payDate="ngModel" required>
+                             #payDate="ngModel" required>
 
                           <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
                             <div *ngIf="payDate.errors.required">
@@ -286,11 +258,10 @@
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker readonly
-                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required>
+                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" #payDate="ngModel" required>
 
-                          <div *ngIf="payModeDate.invalid && (payModeDate.dirty || payModeDate.touched)" class="text-danger">
-                            <div *ngIf="payModeDate.errors.required">
+                          <div *ngIf="payDate.invalid && (payDate.dirty || payDate.touched)" class="text-danger">
+                            <div *ngIf="payDate.errors.required">
                               {{ payModeLabel }} Date is required.
                             </div>
                           </div>
