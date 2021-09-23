@@ -13,6 +13,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   settlements = [];
   paymentID;
   paymentData = {
+    paymentEnity: '',
     paymentTo: null,
     entityId: null,
     paymentNo: '',
@@ -76,7 +77,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       } else {
         this.paymentData.payMode = '';
       }
-      this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
+      // this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
+      this.paymentData.paymentEnity = this.paymentData.paymentTo.replace("_", " ");
     });
   }
 

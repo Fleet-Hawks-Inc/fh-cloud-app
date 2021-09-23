@@ -350,8 +350,6 @@ export class AddSettlementComponent implements OnInit {
                 this.tripsObject = _.merge(this.tripsObject, stlObj);
             })
     }
-    
-    formatFetchedTrips() {}
 
     setTripLoc(trp) {
         let planLoc = '';

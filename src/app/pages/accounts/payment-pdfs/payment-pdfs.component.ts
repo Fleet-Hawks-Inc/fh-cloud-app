@@ -29,6 +29,7 @@ export class PaymentPdfsComponent implements OnInit {
   settlements = [];
 
   paymentData = {
+    paymentEnity: '',
     paymentTo: null,
     entityId: null,
     paymentNo: '',
@@ -40,6 +41,9 @@ export class PaymentPdfsComponent implements OnInit {
     payMode: null,
     payModeNo: "",
     payModeDate: null,
+    settledAmount: 0,
+    vacPayPer: 0,
+    vacPayAmount: 0,
     totalAmount: <any>0,
     taxdata: {
       payPeriod: null,
@@ -61,8 +65,8 @@ export class PaymentPdfsComponent implements OnInit {
     advData: [],
     transactionLog: [],
     workerBenefit: 0,
-    vacationPay: 0,
-    incomeTax: 0
+    incomeTax: 0,
+    eiInsurable: 0,
   };
   locale = 'en-US';
   annualResult = {
@@ -75,7 +79,9 @@ export class PaymentPdfsComponent implements OnInit {
     regEarning: 0,
     vacationPay: 0,
     workerBenefit: 0,
-    incomeTax: 0
+    incomeTax: 0,
+    eiInsurable: 0,
+    netPay: 0,
   };
   setlTripIds = [];
   trips = [];
@@ -83,6 +89,11 @@ export class PaymentPdfsComponent implements OnInit {
   payStatus = 'paid';
   addCharges = [];
   dedCharges = [];
+  advancePayments = [];
+  fuelIds = [];
+  fueldata = [];
+  fuelAddTotal = 0;
+  fuelDedTotal = 0;
   
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(async (res: any) => {
@@ -90,9 +101,9 @@ export class PaymentPdfsComponent implements OnInit {
         res.showModal = false;
         this.paymentData = res.data;
         this.paymentData.workerBenefit = 0;
-        this.paymentData.vacationPay = 0;
         this.paymentData.incomeTax = Number(this.paymentData.taxdata.federalTax) + Number(this.paymentData.taxdata.provincialTax);
         this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");
+        this.paymentData.eiInsurable = this.paymentData.totalAmount;
         
         this.paymentData.settlData.map((p) => {
           if(p.status === 'partially_paid') {
@@ -102,6 +113,8 @@ export class PaymentPdfsComponent implements OnInit {
         this.pdfDetails.paymentNo = this.paymentData.paymentNo;
         if(this.paymentData.paymentTo === 'driver') {
           this.fetchDriverDetails();
+        } else if (this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
+          this.fetchCarrierDetails();
         }
 
         if(this.paymentData.fromDate && this.paymentData.toDate) {
@@ -111,15 +124,28 @@ export class PaymentPdfsComponent implements OnInit {
           this.pdfDetails.payPeriod = `${startDate} To ${endDate}`;  
           await this.getUserAnnualTax();
         }
-        
-        await this.getSettlementData();
+
+        if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
+          await this.getSettlementData();
+          await this.fetchAdvancePayments();
+
+          if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'owner_operator') {
+            await this.fetchSelectedFuelExpenses();
+          }
+        }
         await this.generatePaymentPDF();
       }
     })
   }
   
   async generatePaymentPDF() {
-    var data = document.getElementById('driver_pay_pdf');
+    let data = document.getElementById('driver_pay_pdf');
+    if(this.paymentData.paymentTo === 'driver') {
+      data = document.getElementById('driver_pay_pdf');
+    } else if (this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
+      data = document.getElementById('ownerOperator_pay_pdf');
+    }
+    
     html2pdf(data, {
       margin:       0,
       filename:     `${this.paymentData.paymentTo}-payment-${this.paymentData.paymentNo}.pdf`,
@@ -156,6 +182,17 @@ export class PaymentPdfsComponent implements OnInit {
           this.setlTripIds.push(k);
         }
       });
+
+      element.fuelIds.map((k) => {
+        if(!this.fuelIds.includes(k)) {
+          this.fuelIds.push(k);
+          element.fuelData.map((f) => {
+            if(k === f.fuelID) {
+              this.fueldata.push(f);
+            }
+          })
+        }
+      });
     }
     await this.fetchTrips();
   }
@@ -172,11 +209,16 @@ export class PaymentPdfsComponent implements OnInit {
     if(this.annualResult.workerBenefit === undefined) {
       this.annualResult.workerBenefit = 0;
     }
+
+    this.annualResult.eiInsurable = Number(this.annualResult.regEarning) + Number(this.annualResult.vacationPay);
+
+    // eiInsurable
     this.annualResult.incomeTax = Number(this.annualResult.federalTax) + Number(this.annualResult.provincialTax);
   }
 
   async fetchTrips() {
     let tripIDs = encodeURIComponent(JSON.stringify(this.setlTripIds));
+    this.paymentTrips = [];
     let result:any = await this.apiService.getData(`trips/driver/settled?entities=${tripIDs}`).toPromise();
     this.trips = result;
 
@@ -237,5 +279,64 @@ export class PaymentPdfsComponent implements OnInit {
         this.pdfDetails.address = result.address[0].userLocation;
       }
     });
+  }
+
+  fetchCarrierDetails() {
+    this.apiService.getData(`contacts/detail/${this.paymentData.entityId}`).subscribe((result: any) => {
+      result = result.Items[0];
+      this.pdfDetails.name = result.cName;
+      this.pdfDetails.email = result.workEmail;
+      if(result.adrs[0].manual) {
+        if(result.adrs[0].add1 !== '') {
+          this.pdfDetails.address = `${result.adrs[0].add1} ${result.adrs[0].add2} ${result.adrs[0].ctyName}, ${result.adrs[0].sName}, ${result.adrs[0].cName}`;
+        }
+      } else {
+        this.pdfDetails.address = result.adrs[0].userLoc;
+      }
+    });
+  }
+
+  async fetchAdvancePayments() {
+    if(this.paymentData.advancePayIds.length > 0) {
+      let ids = encodeURIComponent(JSON.stringify(this.paymentData.advancePayIds));
+      let result:any = await this.accountService.getData(`advance/get/selected?entities=${ids}`).toPromise();
+      this.advancePayments = result;
+      this.paymentData.advData.forEach((elem) => {
+        this.advancePayments.map((v) => {
+          if(v.paymentID === elem.paymentID) {
+            elem.paymentNo = v.paymentNo;
+            elem.paidAmount = Number(elem.paidAmount);
+            elem.txnDate = v.txnDate;
+            elem.ref = v.payModeNo
+          }
+        });
+      })
+    }
+  }
+  
+  async fetchSelectedFuelExpenses() {
+    if(this.fuelIds.length > 0) {
+      this.fuelAddTotal = 0;
+      this.fuelDedTotal = 0;
+      let fuelIDs = encodeURIComponent(JSON.stringify(this.fuelIds));
+      let result = await this.apiService.getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`).toPromise();
+      this.fueldata.map((k) => {
+        result.map((fuel) => {
+          k.city = fuel.cityName;
+          k.country = fuel.locationCountry;
+          k.vehicle = fuel.unitNumber;
+          k.card = fuel.fuelCardNumber;
+          k.quantity = `${fuel.quantity} ${fuel.unitOfMeasure}`;
+          k.fuelDate = fuel.fuelDate;
+        })
+
+        if(k.action === 'add') {
+          this.fuelAddTotal += Number(k.amount);
+        }
+        if(k.action === 'sub') {
+          this.fuelDedTotal += Number(k.amount);
+        }
+      })
+    }
   }
 }

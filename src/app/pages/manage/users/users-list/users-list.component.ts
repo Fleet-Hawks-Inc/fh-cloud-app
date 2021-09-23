@@ -5,8 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from 'src/app/pages/fleet/constants';
 import * as _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
-import {map} from 'rxjs/operators'
-import {from} from 'rxjs'
+import { map } from 'rxjs/operators'
+import { from } from 'rxjs'
 declare var $: any;
 
 @Component({
@@ -16,10 +16,10 @@ declare var $: any;
 })
 export class UsersListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
- contactID = '';
- setUsrName='';
- setRoles=[];
- suggestedUsers = [];
+  contactID = '';
+  setUsrName = '';
+  setRoles = [];
+  suggestedUsers = [];
   searchUserName = '';
   users: any = [];
   totalRecords = 20;
@@ -35,18 +35,13 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-  userRoles:any;
-  selectedUserData:any=''
-  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService,private httpClient:HttpClient) { }
-
-  ngOnInit() {
-    this.fetchUsers();
-  }
-
+  userRoles: any;
+  selectedUserData: any = '';
+  newRoles = [];
   getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
-    if (value != '') {
+    if (value !== '') {
       this.apiService
         .getData(`contacts/getEmployee/suggestions/${value}`)
         .subscribe((result) => {
@@ -61,7 +56,14 @@ export class UsersListComponent implements OnInit {
     } else {
       this.suggestedUsers = [];
     }
-  }, 800)
+  }, 800);
+  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
+
+  ngOnInit() {
+    this.fetchUsers();
+  }
+
+
 
   setUser(contactID, firstName, lastName) {
     this.searchUserName = firstName + ' ' + lastName;
@@ -70,40 +72,42 @@ export class UsersListComponent implements OnInit {
     this.suggestedUsers = [];
   }
   fetchUsers() {
-    this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID )
+    this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: () => { },
         next: (result: any) => {
           this.totalRecords = result.Count;
+          if (this.contactID !== '') {
+            this.userEndPoint = this.totalRecords;
+          }
           this.initDataTable();
         },
       });
   }
-  fetchUserRoles(){
+  fetchUserRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
-      this.userRoles=data
-        }
+      this.userRoles = data;
+    }
     );
 
   }
 
-  fetchRole(user:any){
+  fetchRole(user: any) {
     this.fetchUserRoles();
-    this.selectedUserData=user
-    this.setUsrName=user.userLoginData.userName
-    this.setRoles=user.userLoginData.userRoles
-    
-  }
-  cancel(){
-    $('#assignrole').modal('hide')
-    console.log($('#asdsignrole').modal('hide'))
+    this.selectedUserData = user;
+    this.setUsrName = user.userLoginData.userName;
+    this.setRoles = user.userLoginData.userRoles;
 
   }
-  assignRole(){
-  this.selectedUserData.userLoginData.userRoles=this.setRoles;
+  cancel() {
+    $('#assignrole').modal('hide');
 
-    this.apiService.putData('contacts/assignRole',this.selectedUserData).
+  }
+  assignRole() {
+    this.selectedUserData.userLoginData.userRoles = this.setRoles;
+
+    this.apiService.putData('contacts/assignRole', this.selectedUserData).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -115,10 +119,10 @@ export class UsersListComponent implements OnInit {
             )
             .subscribe({
               complete: () => {
-                
+
               },
               error: () => {
-                
+
               },
               next: () => { },
             });
@@ -132,14 +136,24 @@ export class UsersListComponent implements OnInit {
       });
   }
   initDataTable() {
-    this.spinner.show();
+   // this.spinner.show();
     this.apiService.getData('contacts/fetch/employee/records?searchValue=' + this.contactID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.users = result[`Items`];
-        console.log(this.users)
+        this.users.map((v: any) => {
+if (v.userLoginData.userRoles.length > 0) {
+for (const element of v.userLoginData.userRoles) {
+    const role = element.split('_');
+    const newRole = role[1];
+    this.newRoles.push(newRole);
+  }
+v.userLoginData.userRoles = this.newRoles;
+this.newRoles = [];
+}
+        });
         if (this.contactID !== '' || this.departmentName !== '') {
           this.userStartPoint = 1;
           this.userEndPoint = this.totalRecords;
@@ -191,18 +205,18 @@ export class UsersListComponent implements OnInit {
       return false;
     }
   }
- async deleteUser(contactID) {
+  async deleteUser(contactID, firstName: string, lastName: string) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-      .deleteData(`contacts/delete/employee/${contactID}`)
-      .subscribe(async(result: any) => {
-        this.userDraw = 0;
-        this.lastEvaluatedKey = '';
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.users = [];
-        this.fetchUsers();
-        this.toastr.success('User deleted successfully');
-      });
+        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}`)
+        .subscribe(async (result: any) => {
+          this.userDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.users = [];
+          this.fetchUsers();
+          this.toastr.success('User deleted successfully');
+        });
     }
   }
   getStartandEndVal() {

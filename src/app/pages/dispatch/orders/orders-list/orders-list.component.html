@@ -145,7 +145,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngIf="!records" class="text-center">
+                                                <tr *ngIf="orders.length === 0" class="text-center">
                                                     <td colspan="10">{{ dataMessage }}</td>
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let order of orders[ordersDraw];let i = index;">
@@ -172,7 +172,7 @@
                                                         </span>
                                                     </td>
                                                     <td [routerLink]="order.url">Date:- {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].dateAndTime | date:"yyyy/MM/dd hh:mm a" }}<br>
-                                                        Location: -
+                                                        Location:
                                                         <span *ngIf="order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.manual">
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.address}},
                                                             {{order.shippersReceiversInfo[0].receivers[0].dropPoint[0].address.cityName}},

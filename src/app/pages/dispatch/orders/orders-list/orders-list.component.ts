@@ -1,9 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {ApiService} from '../../../../services/api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
+
+import { from, Subject, throwError } from 'rxjs';
+
+import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+
 declare var $: any;
 @Component({
   selector: 'app-orders-list',
@@ -12,6 +18,7 @@ declare var $: any;
 })
 export class OrdersListComponent implements OnInit {
   environment = environment.isFeatureEnabled;
+  
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
@@ -46,6 +53,13 @@ export class OrdersListComponent implements OnInit {
   ordersPrevEvauatedKeys = [''];
   ordersStartPoint = 1;
   ordersEndPoint = this.pageLength;
+
+  newOrderID: string;
+  newOrderNumber: string;
+  newCustomerID: string;
+  confirmRef: any;
+
+  isConfirm: boolean = false;
 
   categoryFilter = [
     {
@@ -98,8 +112,15 @@ export class OrdersListComponent implements OnInit {
     status: false
   }
 
+  emailData = {
+    emails: [],
+    confirmEmail: false
+  }
+
+  confirmEmails = [];
+
   constructor(private apiService: ApiService,
-    private toastr: ToastrService,
+    private toastr: ToastrService,  private modalService: NgbModal,
     private spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
@@ -419,6 +440,62 @@ export class OrdersListComponent implements OnInit {
       }
     }
   }
+  // async changeStatus() {
+  //   this.isConfirm = true;
+  //   if(this.emailData.emails.length === 0) {
+  //     this.toastr.error('Please enter at least one email');
+  //     return
+  //   }
+  //   let newData = {
+  //     emails: [],
+  //     confirm: false,
+  //     customerID: this.newCustomerID
+  //   }
+  //   this.emailData.emails.forEach(elem => {
+  //     newData.emails.push(elem.label);
+  //   })
+  //   newData.confirm = this.emailData.confirmEmail;
+    
+  //   this.apiService.getData(`orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber}/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`).subscribe({
+  //     complete: () => { },
+  //     error: (err: any) => {
+  //       this.isConfirm = false;
+  //     },
+  //     next: (res) => {
+  //       this.dataMessage = Constants.FETCHING_DATA;
+  //       this.orders = [];
+  //       this.confirmOrders = [];
+  //       this.dispatchOrders = [];
+  //       this.deliveredOrders = [];
+  //       this.cancelledOrders = [];
+  //       this.invoicedOrders = [];
+  //       this.partiallyOrders = [];
+  //       this.tonuOrders = [];
+  //       this.lastEvaluatedKey = '';
+  //       this.fetchAllTypeOrderCount();
+  //       this.confirmRef.close();
+  //       this.isConfirm = false;
+  //     },
+  //   });
+    
+  // }
+
+
+
+     /*
+   * Get all customers's IDs of names from api
+   */
+ async fetchCustomersByID(id) {
+  let result = await this.apiService.getData(`contacts/detail/${id}`).toPromise();
+  if(result.Items.length > 0) {
+    return result.Items[0].workEmail;
+  }
+}
+
+  conEmailChange(value) {
+    this.emailData.confirmEmail = value;
+  }
+
 
   refreshData() {
       this.orderFiltr = {

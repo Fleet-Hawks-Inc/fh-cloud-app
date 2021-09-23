@@ -29,42 +29,44 @@ export class AddUserComponent implements OnInit {
   suggestedUsers = [];
   searchUserName = '';
   userData = {
-    companyName: '',
-    dbaName: '',
+    cName: '',
+    dba: '',
     firstName: '',
     lastName: '',
     employeeID: '',
     dateOfBirth: null,
-    phone: '',
-    email: '',
-    entityType: 'employee',
+    workPhone: '',
+    workEmail: '',
     profileImg: '',
     loginEnabled: false,
     paymentDetails: {
       payrollType: '',
-      payrollRate: '',
-      payrollRateUnit: '',
+      payrollRate: null,
+      payrollRateUnit: null,
       payPeriod: '',
       SIN: '',
       WCB: '',
       healthCare: ''
     },
-    address: [{
-      addressType: '',
-      countryCode: '',
-      countryName: '',
-      stateCode: '',
-      stateName: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
+    adrs: [{
+      aType: null,
+      cCode: null,
+      cName: '',
+      sCode: null,
+      sName: null,
+      ctyName: null,
+      zip: '',
+      add1: '',
+      add2: '',
       geoCords: {
         lat: '',
         lng: ''
       },
-      userLocation: '',
+      isSuggest: false,
+      userLoc: '',
       manual: false,
+      houseNo: '',
+      street: '',
       states: [],
       cities: []
     }],
@@ -74,25 +76,25 @@ export class AddUserComponent implements OnInit {
       department: '',
       designation: ''
     },
-    currentStatus: 'active',
+    currentStatus: 'Active',
     userLoginData: {
       userName: '',
-      userRoles: '',
+      userRoles: [],
       password: '',
       confirmPassword: ''
     }
   };
+  submitDisabled = false;
   public profilePath: any = '';
   public detailImgPath: any = 'assets/img/driver/driver.png';
   public defaultProfilePath: any = '';
-  imageText = 'Add Picture';
+  imageText = 'Add';
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
   loginDiv = false;
   fieldvisibility = 'false';
   uploadedPhotos: any = [];
   errors = {};
-  userDisabled = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
   userLocation: any;
@@ -121,11 +123,13 @@ export class AddUserComponent implements OnInit {
     number: false,
     specialCharacters: false,
     length: false
-  }
+  };
+  birthDateMinLimit: any;
+  birthDateMaxLimit: any;
   enableUserLogin = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
-  userRoles: any = []
-
+  userRoles: any = [];
+  deletedUploads = [];
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   constructor(
@@ -136,7 +140,15 @@ export class AddUserComponent implements OnInit {
     private route: ActivatedRoute,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService
-  ) { }
+  ) {
+    const date = new Date();
+    this.birthDateMinLimit = { year: 1950, month: 1, day: 1 };
+    this.birthDateMaxLimit = {
+      year: date.getFullYear() - 18,
+      month: 12,
+      day: 31,
+    };
+  }
 
 
   ngOnInit() {
@@ -155,7 +167,7 @@ export class AddUserComponent implements OnInit {
 
   fetchUserRoles() {
     this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
-      this.userRoles = data
+      this.userRoles = data;
     }
     );
 
@@ -169,28 +181,31 @@ export class AddUserComponent implements OnInit {
   }
   // ADDRESS Section
   addAddress() {
-    this.userData.address.push({
-      addressType: '',
-      countryCode: '',
-      countryName: '',
-      stateCode: '',
-      stateName: '',
-      cityName: '',
-      zipCode: '',
-      address1: '',
-      address2: '',
+    this.userData.adrs.push({
+      aType: null,
+      cCode: null,
+      cName: null,
+      sCode: null,
+      sName: '',
+      ctyName: '',
+      zip: '',
+      add1: '',
+      add2: '',
       geoCords: {
         lat: '',
         lng: ''
       },
-      userLocation: '',
+      userLoc: '',
       manual: false,
+      houseNo: '',
+      street: '',
+      isSuggest: false,
       states: [],
       cities: []
     });
   }
   removeAddress(index: any) {
-    this.userData.address.splice(index, 1);
+    this.userData.adrs.splice(index, 1);
   }
   public searchLocation() {
     let target;
@@ -212,59 +227,74 @@ export class AddUserComponent implements OnInit {
       this.searchResults = res;
     });
   }
+
   async userAddress(i, item) {
-    let result = await this.HereMap.geoCode(item.address.label);
-    result = result.items[0];
-    this.userData.address[i][`userLocation`] = result.address.label;
-    this.userData.address[i].geoCords.lat = result.position.lat;
-    this.userData.address[i].geoCords.lng = result.position.lng;
-    this.userData.address[i].countryName = result.address.countryName;
-    this.userData.address[i].countryCode = result.address.countryCode;
-    this.userData.address[i].stateCode = result.address.stateCode;
-    this.userData.address[i].stateName = result.address.state;
-    this.userData.address[i].cityName = result.address.city;
-    this.userData.address[i].zipCode = result.address.postalCode;
-    $('div').removeClass('show-search__result');
-    if (result.address.houseNumber === undefined) {
-      result.address.houseNumber = '';
+    this.userData.adrs[i].userLoc = item.address;
+    let result = await this.getAddressDetail(item.place_id);
+    if (result !== undefined) {
+      this.userData.adrs[i].geoCords.lat = result.position.lat;
+      this.userData.adrs[i].geoCords.lng = result.position.lng;
+      this.userData.adrs[i].cName = result.address.CountryFullName;
+      this.userData.adrs[i].sName = result.address.StateName;
+      this.userData.adrs[i].ctyName = result.address.City;
+      this.userData.adrs[i].cCode = result.address.Country;
+      this.userData.adrs[i].sCode = result.address.State;
+      this.userData.adrs[i].zip = result.address.Zip;
+      this.userData.adrs[i].add1 = result.address.StreetAddress ? result.address.StreetAddress : '';
+      this.userData.adrs[i].isSuggest = true;
+      $('div').removeClass('show-search__result');
     }
-    if (result.address.street === undefined) {
-      result.address.street = '';
-    }
+  }
+  async getAddressDetail(id) {
+    let result = await this.apiService
+      .getData(`pcMiles/detail/${id}`).toPromise();
+    return result;
   }
   async getStates(countryCode: any, index: any) {
-    this.userData.address[index].stateCode = '';
-    this.userData.address[index].cityName = '';
-    this.userData.address[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.userData.adrs[index].sCode = '';
+    this.userData.adrs[index].cName = '';
+    this.userData.adrs[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
   async getCities(stateCode: any, index: any, countryCode: any) {
-    this.userData.address[index].cityName = '';
-    this.userData.address[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.userData.address[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.userData.address[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.userData.adrs[index].cName = '';
+    this.userData.adrs[index].cName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.userData.adrs[index].sName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.userData.adrs[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   async fetchStates(countryCode: any, index: any) {
-    this.userData.address[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.userData.adrs[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
   async fetchCities(countryCode: any, stateCode: any, index: any) {
-    this.userData.address[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.userData.adrs[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
-    this.userData.address[i][`userLocation`] = '';
+    this.userData.adrs[i][`userLoc`] = '';
     $('div').removeClass('show-search__result');
   }
   manAddress(event, i) {
     if (event.target.checked) {
       $(event.target).closest('.address-item').addClass('open');
-      this.userData.address[i][`userLocation`] = '';
-      this.userData.address[i].countryCode = '';
-      this.userData.address[i].stateCode = '';
-      this.userData.address[i].cityName = '';
-      this.userData.address[i].zipCode = '';
-      this.userData.address[i].address1 = '';
-      this.userData.address[i].address2 = '';
+      this.userData.adrs[i][`userLoc`] = '';
+      this.userData.adrs[i].cCode = '';
+      this.userData.adrs[i].sCode = '';
+      this.userData.adrs[i].cName = '';
+      this.userData.adrs[i].sName = '';
+      this.userData.adrs[i].ctyName = '';
+      this.userData.adrs[i].zip = '';
+      this.userData.adrs[i].add1 = '';
+      this.userData.adrs[i].add2 = '';
     } else {
       $(event.target).closest('.address-item').removeClass('open');
+      this.userData.adrs[i][`userLoc`] = '';
+      this.userData.adrs[i].cCode = '';
+      this.userData.adrs[i].sCode = '';
+      this.userData.adrs[i].cName = '';
+      this.userData.adrs[i].sName = '';
+      this.userData.adrs[i].ctyName = '';
+      this.userData.adrs[i].zip = '';
+      this.userData.adrs[i].add1 = '';
+      this.userData.adrs[i].add2 = '';
+      $('#addErr' + i).css('display', 'none');
     }
   }
   cancel() {
@@ -283,33 +313,95 @@ export class AddUserComponent implements OnInit {
       .next()
       .remove('label');
   }
-  selectPhoto(event) {
-    let files = [...event.target.files];
-    this.uploadedPhotos = [];
-    this.uploadedPhotos.push(files[0]);
+  selectPhoto(event, name: any, type: string) {
+    if (type === 'Add') {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.profilePath = e.target.result;
+        };
+        reader.readAsDataURL(files[i]);
+        this.imageText = 'Change';
+      }
+    } else {
+      this.uploadedPhotos = [];
+      const files = [...event.target.files];
+      this.uploadedPhotos.push(files[0]);
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.profilePath = e.target.result;
+        };
+        reader.readAsDataURL(files[i]);
+      }
+      this.deletedUploads.push(name);
+    }
   }
+  deleteImage(type: string, name: string) {
+if (type === 'uploaded') {
+  this.profilePath = '';
+  this.uploadedPhotos = [];
+  this.imageText = 'Add';
+} else if (type === 'profile') {
+  this.userData.profileImg = '';
+  this.profilePath = '';
+  this.uploadedPhotos = [];
+  this.imageText = 'Add';
+  this.deletedUploads.push(name);
+}
+  }
+  async newGeoCode(data: any) {
+    let result = await this.apiService
+      .getData(`pcMiles/geocoding/${encodeURIComponent(JSON.stringify(data))}`)
+      .toPromise();
 
-  async addUser() {
+    if (result.items !== undefined && result.items.length > 0) {
+      return result.items[0].position;
+    }
+  }
+  async onAddUser() {
 
     this.hasError = false;
     this.hasSuccess = false;
-    this.userDisabled = true;
+
     this.hideErrors();
     // this.spinner.show();
-    for (let i = 0; i < this.userData.address.length; i++) {
-      const element = this.userData.address[i];
+    for (let i = 0; i < this.userData.adrs.length; i++) {
+      const element = this.userData.adrs[i];
       delete element.states;
       delete element.cities;
-      if (element.countryName !== '' && element.stateName !== '' && element.cityName !== '') {
-        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+
+      if (element.manual === true) {
+        let data = {
+          add1: element.add1,
+          add2: element.add2,
+          ctyName: element.ctyName,
+          sName: element.sName,
+          cName: element.cName,
+          zip: element.zip,
+        };
+
+        $('#addErr' + i).css('display', 'none');
+        let result = await this.newGeoCode(data);
+
+        if (result == null) {
+          $('#addErr' + i).css('display', 'block');
+          return false;
+        }
+        if (result !== undefined || result != null) {
+          element.geoCords = result;
+        }
+      } else {
+        $('#addErr' + i).css('display', 'none');
+        if (element.isSuggest !== true && element.userLoc !== '') {
+          $('#addErr' + i).css('display', 'block');
+          return;
+        }
       }
     }
-    console.log('userdata', this.userData);
     this.userData.userLoginData.userName = this.userData.userLoginData.userName.toLowerCase();
     // create form data instance
     const formData = new FormData();
@@ -321,8 +413,9 @@ export class AddUserComponent implements OnInit {
 
     // append other fields
     formData.append('data', JSON.stringify(this.userData));
+    this.submitDisabled = true;
     // this.lastEvaluatedKeyStaff = '';
-    this.apiService.postData('contacts', formData, true).
+    this.apiService.postData('contacts/user/add', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -336,11 +429,11 @@ export class AddUserComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.userDisabled = false;
+                this.submitDisabled = false;
 
               },
               error: () => {
-                this.userDisabled = false;
+                this.submitDisabled = false;
 
               },
               next: () => { },
@@ -349,7 +442,7 @@ export class AddUserComponent implements OnInit {
         next: (res) => {
           // this.spinner.hide();
           this.response = res;
-          this.userDisabled = false;
+          this.submitDisabled = false;
           this.hasSuccess = true;
           this.location.back();
           this.toastr.success('User Added Successfully');
@@ -379,15 +472,14 @@ export class AddUserComponent implements OnInit {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe(async (result: any) => {
       result = result.Items[0];
       this.userData = {
-        companyName: result.companyName,
-        dbaName: result.dbaName,
+        cName: result.cName,
+        dba: result.dba,
         firstName: result.firstName,
         lastName: result.lastName,
         employeeID: result.employeeID,
         dateOfBirth: result.dateOfBirth,
-        phone: result.phone,
-        email: result.email,
-        entityType: 'employee',
+        workPhone: result.workPhone,
+        workEmail: result.workEmail,
         loginEnabled: result.loginEnabled,
         profileImg: result.profileImg,
         currentStatus: result.currentStatus,
@@ -400,7 +492,7 @@ export class AddUserComponent implements OnInit {
           WCB: result.paymentDetails.WCB,
           healthCare: result.paymentDetails.healthCare,
         },
-        address: result.address,
+        adrs: result.adrs,
         userAccount: {
           contractStartDate: result.userAccount.contractStartDate,
           contractEndDate: result.userAccount.contractEndDate,
@@ -409,19 +501,11 @@ export class AddUserComponent implements OnInit {
         },
         userLoginData: {
           userName: result.userLoginData.userName,
-          userRoles: result.userLoginData.roles,
+          userRoles: result.userLoginData.userRoles,
           password: '',
           confirmPassword: ''
         }
       };
-      if (this.userData.address !== undefined) {
-        for (let a = 0; a < this.userData.address.length; a++) {
-          const countryCode = this.userData.address[a].countryCode;
-          const stateCode = this.userData.address[a].stateCode;
-          await this.fetchStates(countryCode, a);
-          await this.fetchCities(countryCode, stateCode, a);
-        }
-      }
       if (this.userData.loginEnabled === true) {
         this.enableUserLogin = true;
       } else {
@@ -433,31 +517,64 @@ export class AddUserComponent implements OnInit {
       // to show profile image
       if (result.profileImg !== '' && result.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${result.carrierID}/${result.profileImg}`;
-        this.imageText = 'Update Picture';
+        this.imageText = 'Change';
+      } else {
+        this.profilePath = '';
+        this.imageText = 'Add';
       }
     });
   }
-  async updateUser() {
+  scrollError() {
+    let errorList;
+    setTimeout(() => {
+      errorList = document.getElementsByClassName('error').length;
+      if (errorList > 0) {
+        let topPosition: any = $('.error').parent('div').offset().top;
+        window.scrollTo({ top: topPosition - 150, left: 0, behavior: 'smooth' });
+      }
+    }, 1500);
+  }
+  async onUpdateUser() {
     this.hasError = false;
     this.hasSuccess = false;
-    this.userDisabled = true;
     this.hideErrors();
     // this.spinner.show();
     this.userData[`contactID`] = this.contactID;
+    this.userData[`deletedUploads`] = this.deletedUploads;
     if (this.userData.loginEnabled === false) {
       this.userData.userLoginData.userName = '';
+      this.userData.userLoginData.userRoles = [];
     }
-    for (let i = 0; i < this.userData.address.length; i++) {
-      const element = this.userData.address[i];
+    for (let i = 0; i < this.userData.adrs.length; i++) {
+      const element = this.userData.adrs[i];
       delete element.states;
       delete element.cities;
-      if (element.countryName !== '' && element.stateName !== '' && element.cityName !== '') {
-        const fullAddress = `${element.address1} ${element.address2} ${element.cityName}
-        ${element.stateName} ${element.countryName}`;
-        let result = await this.HereMap.geoCode(fullAddress);
-        result = result.items[0];
-        element.geoCords.lat = result.position.lat;
-        element.geoCords.lng = result.position.lng;
+
+      if (element.manual === true) {
+        let data = {
+          address1: element.add1,
+          address2: element.add2,
+          cityName: element.ctyName,
+          stateName: element.sName,
+          countryName: element.cName,
+          zipCode: element.zip,
+        };
+
+        $('#addErr' + i).css('display', 'none');
+        let result = await this.newGeoCode(data);
+        if (result == null) {
+          $('#addErr' + i).css('display', 'block');
+          return false;
+        }
+        if (result !== undefined || result != null) {
+          element.geoCords = result;
+        }
+      } else {
+        $('#addErr' + i).css('display', 'none');
+        if (element.isSuggest !== undefined && element.isSuggest !== true && element.userLoc !== '') {
+          $('#addErr' + i).css('display', 'block');
+          return;
+        }
       }
     }
     // create form data instance
@@ -470,8 +587,9 @@ export class AddUserComponent implements OnInit {
     // append other fields
     formData.append('data', JSON.stringify(this.userData));
     // this.lastEvaluatedKeyStaff = '';
-
-    this.apiService.putData('contacts', formData, true).
+    this.submitDisabled = true;
+    try {
+      this.apiService.putData('contacts/user/update', formData, true).
       subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -485,10 +603,10 @@ export class AddUserComponent implements OnInit {
             .subscribe({
               complete: () => {
                 this.throwErrors();
-                this.userDisabled = false;
+                this.submitDisabled = false;
               },
               error: () => {
-                this.userDisabled = false;
+                this.submitDisabled = false;
               },
               next: () => { },
             });
@@ -496,15 +614,18 @@ export class AddUserComponent implements OnInit {
         next: (res) => {
           // this.spinner.hide();
           this.response = res;
-          this.userDisabled = false;
+          this.submitDisabled = false;
           this.hasSuccess = true;
           this.location.back();
           this.toastr.success('User is updated successfully');
         }
       });
+    } catch (error) {
+      this.submitDisabled = false;
+    }
   }
   validatePassword(password) {
-    let passwordVerify = passwordStrength(password)
+    let passwordVerify = passwordStrength(password);
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
     } else {
@@ -527,7 +648,7 @@ export class AddUserComponent implements OnInit {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
-      this.passwordValidation.length = true
+      this.passwordValidation.length = true;
     } else {
       this.passwordValidation.length = false;
     }
