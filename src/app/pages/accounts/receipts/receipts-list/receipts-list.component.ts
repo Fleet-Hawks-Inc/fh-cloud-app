@@ -52,8 +52,7 @@ export class ReceiptsListComponent implements OnInit {
           }
           if (result.length > 0) {
             this.disableSearch = false;
-            for (let index = 0; index < result.length; index++) {
-              const element = result[index];
+            for (const element of result) {
               this.receipts.push(element);
             }
             if (this.receipts[this.receipts.length - 1].sk !== undefined) {
@@ -70,6 +69,7 @@ export class ReceiptsListComponent implements OnInit {
     if (this.loaded) {
       this.fetchReceipts();
     }
+    this.loaded = false;
   }
   deleteReceipt(recID: string) {
     this.accountService.deleteData(`receipts/delete/${recID}`).subscribe((res) => {

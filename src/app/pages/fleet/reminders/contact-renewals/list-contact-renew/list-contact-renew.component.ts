@@ -25,8 +25,8 @@ export class ListContactRenewComponent implements OnInit {
   groups: any = {};
   currentDate = moment().format('YYYY-MM-DD');
   newData = [];
-  filterStatus= null;
-  usersList:any = {};
+  filterStatus = null;
+  usersList: any = {};
   contactID = null;
   firstName = '';
   serviceTasks = [];
@@ -44,7 +44,6 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewStartPoint = 1;
   contactRenewEndPoint = this.pageLength;
   loading = false;
-  allUsers = [];
   users = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
@@ -54,6 +53,7 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchServiceTaks();
     this.fetchUsersList();
     this.fetchTasksList();
+    this.fetchUsers();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -72,18 +72,22 @@ export class ListContactRenewComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });
   }
-
+  fetchUsers() {
+    this.apiService.getData('users/fetch/records').subscribe((result: any) => {
+      this.users = result.Items;
+    });
+  }
   fetchUsersList() {
-    this.apiService.getData('contacts/get/list/employee').subscribe((result: any) => {
+    this.apiService.getData('users/get/list').subscribe((result: any) => {
       this.usersList = result;
     });
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  
+
   getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=contact').subscribe({
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact').subscribe({
       complete: () => {},
       error: () => {},
       next: (result: any) => {
@@ -101,7 +105,7 @@ export class ListContactRenewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus +'&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if(result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
@@ -112,7 +116,7 @@ export class ListContactRenewComponent implements OnInit {
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
           this.contactRenewNext = false;
           // for prev button
           if (!this.contactRenewPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -169,12 +173,12 @@ export class ListContactRenewComponent implements OnInit {
 
   deleteRenewal(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
-      let record = {
-        date: eventData.createdDate,
-        time: eventData.createdTime,
-        eventID: eventData.reminderID,
-        type: eventData.type
-      }
+      // let record = {
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.reminderID,
+      //   type: eventData.type
+      // }
       this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
         this.remindersData = [];
         this.contactRenewDraw = 0;
@@ -187,7 +191,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   sendEmailNotification(value) {
-    if(value.status !== undefined && value.status !== '') {
+    if (value.status !== undefined && value.status !== '') {
       this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?type=contact&status=${value.status}`).subscribe((result) => {
         this.toastr.success('Email sent successfully');
       });

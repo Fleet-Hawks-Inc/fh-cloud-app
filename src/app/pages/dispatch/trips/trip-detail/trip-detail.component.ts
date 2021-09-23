@@ -95,12 +95,56 @@ export class TripDetailComponent implements OnInit {
     this.fetchTripLog();
     this.fetchExpenses();
     this.fetchExpenseCategories();
+    this.fetchTripDocuments();
+    
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
+  async fetchDriverStatus(driverID:any){
+
+    let result = await this.apiService.getData(`drivers/status/${this.tripID}/${driverID}`).toPromise();
+
+    return result.status.toUpperCase();
+
+
+  }
+
+  fetchTripDocuments() {
+    this.apiService.getData(`documents/trip/${this.tripID}`).subscribe((res: any) => {
+      let documents = res.Items
+      if (documents.length > 0) {
+        documents.forEach(el => {
+          if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
+            if (el.uploadedDocs.length > 0) {
+              el.uploadedDocs.forEach(element => {
+                let name = element.split('.');
+                let ext = name[name.length - 1];
+                let obj = {}
+                if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+                  obj = {
+                    imgPath: `${this.Asseturl}/${el.carrierID}/${element}`,
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                  }
+                } else {
+                  obj = {
+                    imgPath: 'assets/img/icon-pdf.png',
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                  }
+                }
+                this.uploadedDocSrc.push(obj);
+
+              });
+
+            }
+          }
+        });
+      }
+    })
+  }
+
   fetchTripLog() {
     this.apiService.getData(`auditLogs/details/${this.tripID}`).subscribe((res: any) => {
-      this.tripLog = res.Items; 
+      this.tripLog = res.Items;
       if (this.tripLog.length > 0) {
         this.tripLog.map((k) => {
           if (k.eventParams.userName !== undefined) {
@@ -149,15 +193,15 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       })
   }
-  fetchTripDetail() {
+   fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
     let locations = [];
     this.apiService.getData('trips/' + this.tripID).
-      subscribe((result: any) => {
+      subscribe(async (result: any) => {
         result = result.Items[0];
 
-        if(result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
+        if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
         } else {
           this.showEdit = true;
@@ -216,7 +260,9 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverID: element.driverID,
+            driverStatus:element.driverID? await this.fetchDriverStatus(element.driverID):'',
             coDriverID: element.coDriverID,
+            coDriverStatus:element.coDriverID? await this.fetchDriverStatus(element.coDriverID):'',
             driverUsername: element.driverUsername,
             locationName: element.location,
             mileType: element.mileType,
@@ -247,16 +293,16 @@ export class TripDetailComponent implements OnInit {
           this.trips.push(obj);
         }
 
-        if(result.split) {
+        if (result.split) {
           result.split.map((x, cind) => {
-              this.splitArr[cind] = [];
-              x.plan.map((c) => {
-                  this.trips.map((t) => {
-                      if(t.planID === c) {
-                        this.splitArr[cind].push(t);
-                      }
-                  })
+            this.splitArr[cind] = [];
+            x.plan.map((c) => {
+              this.trips.map((t) => {
+                if (t.planID === c) {
+                  this.splitArr[cind].push(t);
+                }
               })
+            })
           })
         }
 

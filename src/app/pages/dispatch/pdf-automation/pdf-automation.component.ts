@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { PdfAutomationService } from './pdf-automation.service';
-import * as S3 from 'aws-sdk/clients/s3';
+// import * as S3 from 'aws-sdk/clients/s3';
 
 declare var Tesseract: any;
 declare var $: any;
@@ -42,7 +42,7 @@ export class PdfAutomationComponent implements OnInit {
     "u1": "1000",
     "u2": "1100"
   };
-  
+
 
 
   $obj = {
@@ -79,418 +79,418 @@ export class PdfAutomationComponent implements OnInit {
 
   selectOpt = '';
   selectfile(value) {
-    
+
   }
   constructor(private service: PdfAutomationService, private http: HttpClient) {
 
-    $(() => {
-      // const canvas = document.getElementById('src');
-     
-
-      const canvas = this.pdfcanvas.nativeElement;
-      this.$canvas = canvas;
-      const savebtn = document.getElementById('fire');
-      const pdffile = document.getElementById('pdffile');
-      const el = document.getElementById('myFile');
-      const uf = document.getElementById('uploadedfile');
-
-      let text;
-      this.$text = text;
-
-      const ctx = canvas.getContext('2d');
-      this.$ctx = ctx;
-      const rect = {};
-      this.$rect = rect;
-      let drag = false;
-      const imageObj = null;
-      let renderTask;
-      const delay = ms => new Promise(res => setTimeout(res, ms));
-
-      const srcContext = canvas.getContext('2d');
-      this.$srcContext = srcContext;
-      this.$cursorVT = document.querySelector('.vt')
-      this.$cursorHL = document.querySelector('.hl')
-      interface HTMLInputEvent extends Event {
-        target: HTMLInputElement & EventTarget;
-      }
-
-
-
-      el.onchange = (e?: HTMLInputEvent) => {
-        const canvas = this.pdfcanvas.nativeElement;
-        this.$canvas = canvas;
-        const savebtn = document.getElementById('fire');
-        const pdffile = document.getElementById('pdffile');
-        const el = document.getElementById('myFile');
-        const uf = document.getElementById('uploadedfile');
-
-
-        let text;
-        this.$text = text;
-
-        const ctx = canvas.getContext('2d');
-        this.$ctx = ctx;
-        const rect = {};
-        this.$rect = rect;
-        let drag = false;
-        const imageObj = null;
-        let renderTask;
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-
-        const srcContext = canvas.getContext('2d');
-        this.$srcContext = srcContext;
-        this.$cursorVT = document.querySelector('.vt')
-        this.$cursorHL = document.querySelector('.hl')
-
-        
-       
-
-          let files: any = e.target.files[0];
-          
-
-          const contentType = files.type;
-          const bucket = new S3(
-            {
-              accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
-              secretAccessKey: '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',
-              region: 'us-east-2'
-            }
-          );
-
-          const params = {
-            Bucket: 'pdfautomation-bucket',
-            Key: files.name,
-            Body: files,
-            ACL: 'public-read',
-            ContentType: contentType
-          };
-          bucket.upload(params, function (err, data) {
-            if (err) {
-              return false;
-            }
-            return true;
-          });
-          //for upload progress   
-          /*bucket.upload(params).on('httpUploadProgress', function (evt) {
-                    
-                }).send(function (err, data) {
-                    if (err) {
-                        
-                        return false;
-                    }
-                    
-                    return true;
-                });*/
-
-
-
-
-
-
-          for (var i = 0, f; f = files[i]; i++) {
-            
-            var reader = new FileReader();
-
-            if (!f.type.match('image.*')) {
-              continue;
-            }
-            reader.onload = (function (theFile) {
-              return function (evt) {
-
-                var span = document.createElement('span');
-                span.innerHTML = ['<img class="thumb" src="', evt.target.result,
-                  '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById('list').insertBefore(span, null);
-              };
-            })(f);
-
-
-            reader.readAsDataURL(f);
-          }
-          // (async () => {
-          //   await delay(2000);
-
-
-          const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
-
-
-          // Loaded via <script> tag, create shortcut to access PDF.js exports.
-          const pdfjsLib = window['pdfjs-dist/build/pdf'];
-
-          // The workerSrc property shall be specified.
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-
-          const loadingTask = pdfjsLib.getDocument(url);
-
-
-          loadingTask.promise.then((pdf) => {
-            
-            // Fetch the first page
-            const pageNumber = 1;
-            pdf.getPage(pageNumber).then(function (page) {
-              
-
-              const scale = 2;
-              const viewport = page.getViewport({ scale: scale });
-
-              // Prepare canvas using PDF page dimensions
-              // const canvasShadowed = document.getElementById('src');
-              // const canvasShadowed = this.canva.nativeElement;
-              const canvasShadowed = canvas;
-              const context = canvasShadowed.getContext('2d');
-
-              canvasShadowed.height = viewport.height;
-              canvasShadowed.width = viewport.width;
-
-              // Render PDF page into canvas context
-              const renderContext = {
-                canvasContext: context,
-                viewport
-              };
-              renderTask = page.render(renderContext);
-              renderTask.promise.then(() => {
-              });
-            });
-          }, (reason) => {
-            // PDF loading error
-            
-          });
-        
-
-        // var ocrJson = {
-        //     // todo: other parameters. b&w, resizing strategy etc
-        //     'version': '1.0.0',
-        //     'schema': 'My OCR Meta JSON',
-        //     'rectangles': [
-        //         { 'left': 70, 'top': 95, 'width': 130, 'height': 15, 'label': 'PatientName' },
-        //         { 'left': 70, 'top': 110, 'width': 230, 'height': 15, 'label': 'Address' },
-        //         { 'left': 140, 'top': 135, 'width': 150, 'height': 15, 'label': 'DOS' },
-        //     ],
-        // };
-      }
-        uf.onchange = (e?: HTMLInputEvent) => {
-
-          let files: any = e.target.files[0];
-          
-          const contentType = files.type;
-          const bucket = new S3(
-            {
-              accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
-              secretAccessKey: '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',
-              region: 'us-east-2'
-            }
-          );
-
-          const params = {
-            Bucket: 'pdfautomation-bucket',
-            Key: files.name,
-            Body: files,
-            ACL: 'public-read',
-            ContentType: contentType
-          };
-          bucket.upload(params, function (err, data) {
-            if (err) {
-              return false;
-            }
-            return true;
-          });
-          //for upload progress   
-          /*bucket.upload(params).on('httpUploadProgress', function (evt) {
-                    
-                }).send(function (err, data) {
-                    if (err) {
-                        return false;
-                    }
-                    return true;
-                });*/
-
-
-
-
-
-
-          for (var i = 0, f; f = files[i]; i++) {
-            var reader = new FileReader();
-
-            if (!f.type.match('image.*')) {
-              continue;
-            }
-            reader.onload = (function (theFile) {
-              return function (evt) {
-
-                var span = document.createElement('span');
-                span.innerHTML = ['<img class="thumb" src="', evt.target.result,
-                  '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById('list').insertBefore(span, null);
-              };
-            })(f);
-
-
-            reader.readAsDataURL(f);
-          }
-          // (async () => {
-          //   await delay(2000);
-
-          const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
-
-          // Loaded via <script> tag, create shortcut to access PDF.js exports.
-          const pdfjsLib = window['pdfjs-dist/build/pdf'];
-
-          // The workerSrc property shall be specified.
-          pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
-
-          const loadingTask = pdfjsLib.getDocument(url);
-
-
-          loadingTask.promise.then((pdf) => {
-
-            const pageNumber = 1;
-            pdf.getPage(pageNumber).then(function (page) {
- 
-              const scale = 2;
-              const viewport = page.getViewport({ scale: scale });
-
-
-              const canvasShadowed = canvas;
-              const context = canvasShadowed.getContext('2d');
-
-              canvasShadowed.height = viewport.height;
-              canvasShadowed.width = viewport.width;
-
-              const renderContext = {
-                canvasContext: context,
-                viewport
-              };
-              renderTask = page.render(renderContext);
-              renderTask.promise.then(() => {
-                
-              });
-            });
-          }, (reason) => {
-            // PDF loading error
-          });
-
-
-          (async () => {
-            await delay(2000);
-
-            this.http.get(this.url + "/78fe60b0-6c37-11eb-9a16-fd33a4993a22").subscribe((data: any) => {
-              
-              const rectangles = [];
-              for (let i = 0; i < data.Items[0].rct.length; i++) {
-                let a = {
-                  left: data.Items[0].rct[i][1],
-                  top: data.Items[0].rct[i][2],
-                  width: data.Items[0].rct[i][3],
-                  height: data.Items[0].rct[i][4],
-                }
-                rectangles.push(a)
-              }
-              
-              // const rectangles = [
-              //   {
-              //     left:data.Items[0].rct[0][1],
-              //     top: data.Items[0].rct[0][2],
-              //     width:data.Items[0].rct[0][3],
-              //     height: data.Items[0].rct[0][4],
-              //   },
-              //   {
-              //     left: 462,
-              //     top: 29,
-              //     width: 299,
-              //     height: 80,
-              //   },
-              // ];
-
-
-
-              const worker = new Tesseract.TesseractWorker();
-
-
-              for (let i = 0; i < rectangles.length; i++) {
-                const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
-                if (cropImgCanvas) {
+    // $(() => {
+    //   // const canvas = document.getElementById('src');
+
+
+    //   const canvas = this.pdfcanvas.nativeElement;
+    //   this.$canvas = canvas;
+    //   const savebtn = document.getElementById('fire');
+    //   const pdffile = document.getElementById('pdffile');
+    //   const el = document.getElementById('myFile');
+    //   const uf = document.getElementById('uploadedfile');
+
+    //   let text;
+    //   this.$text = text;
+
+    //   const ctx = canvas.getContext('2d');
+    //   this.$ctx = ctx;
+    //   const rect = {};
+    //   this.$rect = rect;
+    //   let drag = false;
+    //   const imageObj = null;
+    //   let renderTask;
+    //   const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    //   const srcContext = canvas.getContext('2d');
+    //   this.$srcContext = srcContext;
+    //   this.$cursorVT = document.querySelector('.vt')
+    //   this.$cursorHL = document.querySelector('.hl')
+    //   interface HTMLInputEvent extends Event {
+    //     target: HTMLInputElement & EventTarget;
+    //   }
+
+
+
+    //   el.onchange = (e?: HTMLInputEvent) => {
+    //     const canvas = this.pdfcanvas.nativeElement;
+    //     this.$canvas = canvas;
+    //     const savebtn = document.getElementById('fire');
+    //     const pdffile = document.getElementById('pdffile');
+    //     const el = document.getElementById('myFile');
+    //     const uf = document.getElementById('uploadedfile');
+
+
+    //     let text;
+    //     this.$text = text;
+
+    //     const ctx = canvas.getContext('2d');
+    //     this.$ctx = ctx;
+    //     const rect = {};
+    //     this.$rect = rect;
+    //     let drag = false;
+    //     const imageObj = null;
+    //     let renderTask;
+    //     const delay = ms => new Promise(res => setTimeout(res, ms));
+
+    //     const srcContext = canvas.getContext('2d');
+    //     this.$srcContext = srcContext;
+    //     this.$cursorVT = document.querySelector('.vt')
+    //     this.$cursorHL = document.querySelector('.hl')
+
+
+
+
+    //     let files: any = e.target.files[0];
+
+
+    //     const contentType = files.type;
+    //     const bucket = new S3(
+    //       {
+    //         accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
+    //         secretAccessKey: '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',
+    //         region: 'us-east-2'
+    //       }
+    //     );
+
+    //     const params = {
+    //       Bucket: 'pdfautomation-bucket',
+    //       Key: files.name,
+    //       Body: files,
+    //       ACL: 'public-read',
+    //       ContentType: contentType
+    //     };
+    //     bucket.upload(params, function (err, data) {
+    //       if (err) {
+    //         return false;
+    //       }
+    //       return true;
+    //     });
+    //     //for upload progress   
+    //     /*bucket.upload(params).on('httpUploadProgress', function (evt) {
                   
-                }
-                else {
+    //           }).send(function (err, data) {
+    //               if (err) {
+                      
+    //                   return false;
+    //               }
                   
-                }
-
-                // just renderint to visualize - no need for actual crop
-
-                this.$srcContext.rect(rectangles[i].left, rectangles[i].top, rectangles[i].width, rectangles[i].height);
-                this.$srcContext.strokeStyle = '#FF0000';
-                this.$srcContext.stroke();
-
-
-
-
-                worker.recognize(cropImgCanvas)
-                  .progress(progress => {
-                    
-                  }).then(result => {
-                    
-
-                    const para = document.createElement('P');
-                    const h = document.createElement('h3');
-                    // h.innerHTML = document.getElementById('select').value;
-                    h.innerHTML = data.Items[0].rct[i][0];
-                    para.innerHTML = result.text;
-
-
-                    this.$val.push(result.text);
-                    this.$head.push(data.Items[0].rct[i][0]);
-                    this.$pdfjson[data.Items[0].rct[i][0]] = result.text;
-
-                    JSON.stringify(this.$pdfjson);
-                    
-
-
-                    document.getElementById('myDIV').appendChild(h);
-                    document.getElementById('myDIV').appendChild(para);
-
-
-
-                  });
+    //               return true;
+    //           });*/
 
 
 
 
 
 
+    //     for (var i = 0, f; f = files[i]; i++) {
 
-              }
-            });
-          })();
+    //       var reader = new FileReader();
 
-        }
+    //       if (!f.type.match('image.*')) {
+    //         continue;
+    //       }
+    //       reader.onload = (function (theFile) {
+    //         return function (evt) {
 
-      
-
-
-
-
-
-      async function init() {
-        // var drag = false;
-        // var canvas = document.getElementById('src');
-
-
-        // const worker = new Tesseract.TesseractWorker();
-        // var srcContext = document.getElementById('src').getContext('2d');
-        // var destContext = document.getElementById('dest').getContext('2d');
-        // let img = await loadImage('1.jpg');
-        // srcContext.drawImage(img, 0, 0);
+    //           var span = document.createElement('span');
+    //           span.innerHTML = ['<img class="thumb" src="', evt.target.result,
+    //             '" title="', escape(theFile.name), '"/>'].join('');
+    //           document.getElementById('list').insertBefore(span, null);
+    //         };
+    //       })(f);
 
 
-      }
+    //       reader.readAsDataURL(f);
+    //     }
+    //     // (async () => {
+    //     //   await delay(2000);
+
+
+    //     const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
+
+
+    //     // Loaded via <script> tag, create shortcut to access PDF.js exports.
+    //     const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+    //     // The workerSrc property shall be specified.
+    //     pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+    //     const loadingTask = pdfjsLib.getDocument(url);
+
+
+    //     loadingTask.promise.then((pdf) => {
+
+    //       // Fetch the first page
+    //       const pageNumber = 1;
+    //       pdf.getPage(pageNumber).then(function (page) {
+
+
+    //         const scale = 2;
+    //         const viewport = page.getViewport({ scale: scale });
+
+    //         // Prepare canvas using PDF page dimensions
+    //         // const canvasShadowed = document.getElementById('src');
+    //         // const canvasShadowed = this.canva.nativeElement;
+    //         const canvasShadowed = canvas;
+    //         const context = canvasShadowed.getContext('2d');
+
+    //         canvasShadowed.height = viewport.height;
+    //         canvasShadowed.width = viewport.width;
+
+    //         // Render PDF page into canvas context
+    //         const renderContext = {
+    //           canvasContext: context,
+    //           viewport
+    //         };
+    //         renderTask = page.render(renderContext);
+    //         renderTask.promise.then(() => {
+    //         });
+    //       });
+    //     }, (reason) => {
+    //       // PDF loading error
+
+    //     });
+
+
+    //     // var ocrJson = {
+    //     //     // todo: other parameters. b&w, resizing strategy etc
+    //     //     'version': '1.0.0',
+    //     //     'schema': 'My OCR Meta JSON',
+    //     //     'rectangles': [
+    //     //         { 'left': 70, 'top': 95, 'width': 130, 'height': 15, 'label': 'PatientName' },
+    //     //         { 'left': 70, 'top': 110, 'width': 230, 'height': 15, 'label': 'Address' },
+    //     //         { 'left': 140, 'top': 135, 'width': 150, 'height': 15, 'label': 'DOS' },
+    //     //     ],
+    //     // };
+    //   }
+    //   uf.onchange = (e?: HTMLInputEvent) => {
+
+    //     let files: any = e.target.files[0];
+
+    //     const contentType = files.type;
+    //     const bucket = new S3(
+    //       {
+    //         accessKeyId: 'AKIARUNMEEHU3LCMJJIK',
+    //         secretAccessKey: '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',
+    //         region: 'us-east-2'
+    //       }
+    //     );
+
+    //     const params = {
+    //       Bucket: 'pdfautomation-bucket',
+    //       Key: files.name,
+    //       Body: files,
+    //       ACL: 'public-read',
+    //       ContentType: contentType
+    //     };
+    //     bucket.upload(params, function (err, data) {
+    //       if (err) {
+    //         return false;
+    //       }
+    //       return true;
+    //     });
+    //     //for upload progress   
+    //     /*bucket.upload(params).on('httpUploadProgress', function (evt) {
+                  
+    //           }).send(function (err, data) {
+    //               if (err) {
+    //                   return false;
+    //               }
+    //               return true;
+    //           });*/
 
 
 
 
-      document.body.onload = init;
 
-    });
+
+    //     for (var i = 0, f; f = files[i]; i++) {
+    //       var reader = new FileReader();
+
+    //       //   if (!f.type.match('image.*')) {
+    //       //     continue;
+    //       //   }
+    //       //   reader.onload = (function (theFile) {
+    //       //     return function (evt) {
+
+    //       //       var span = document.createElement('span');
+    //       //       span.innerHTML = ['<img class="thumb" src="', evt.target.result,
+    //       //         '" title="', escape(theFile.name), '"/>'].join('');
+    //       //       document.getElementById('list').insertBefore(span, null);
+    //       //     };
+    //       //   })(f);
+
+
+    //       //   reader.readAsDataURL(f);
+    //       // }
+    //       // (async () => {
+    //       //   await delay(2000);
+
+    //       const url = "https://pdfautomation-bucket.s3.us-east-2.amazonaws.com/" + files.name;
+
+    //       // Loaded via <script> tag, create shortcut to access PDF.js exports.
+    //       const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+    //       // // The workerSrc property shall be specified.
+    //       // pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+    //       const loadingTask = pdfjsLib.getDocument(url);
+
+
+    //       loadingTask.promise.then((pdf) => {
+
+    //         const pageNumber = 1;
+    //         pdf.getPage(pageNumber).then(function (page) {
+
+    //           const scale = 2;
+    //           const viewport = page.getViewport({ scale: scale });
+
+
+    //           const canvasShadowed = canvas;
+    //           const context = canvasShadowed.getContext('2d');
+
+    //           canvasShadowed.height = viewport.height;
+    //           canvasShadowed.width = viewport.width;
+
+    //           const renderContext = {
+    //             canvasContext: context,
+    //             viewport
+    //           };
+    //           renderTask = page.render(renderContext);
+    //           renderTask.promise.then(() => {
+
+    //           });
+    //         });
+    //       }, (reason) => {
+    //         // PDF loading error
+    //       });
+
+
+    //       (async () => {
+    //         await delay(2000);
+
+    //         this.http.get(this.url + "/78fe60b0-6c37-11eb-9a16-fd33a4993a22").subscribe((data: any) => {
+
+    //           const rectangles = [];
+    //           for (let i = 0; i < data.Items[0].rct.length; i++) {
+    //             let a = {
+    //               left: data.Items[0].rct[i][1],
+    //               top: data.Items[0].rct[i][2],
+    //               width: data.Items[0].rct[i][3],
+    //               height: data.Items[0].rct[i][4],
+    //             }
+    //             rectangles.push(a)
+    //           }
+
+    //           // const rectangles = [
+    //           //   {
+    //           //     left:data.Items[0].rct[0][1],
+    //           //     top: data.Items[0].rct[0][2],
+    //           //     width:data.Items[0].rct[0][3],
+    //           //     height: data.Items[0].rct[0][4],
+    //           //   },
+    //           //   {
+    //           //     left: 462,
+    //           //     top: 29,
+    //           //     width: 299,
+    //           //     height: 80,
+    //           //   },
+    //           // ];
+
+
+
+    //           const worker = new Tesseract.TesseractWorker();
+
+
+    //           for (let i = 0; i < rectangles.length; i++) {
+    //             const cropImgCanvas = this.cropImage(this.$canvas, rectangles[i]);//img
+    //             if (cropImgCanvas) {
+
+    //             }
+    //             else {
+
+    //             }
+
+    //             // just renderint to visualize - no need for actual crop
+
+    //             this.$srcContext.rect(rectangles[i].left, rectangles[i].top, rectangles[i].width, rectangles[i].height);
+    //             this.$srcContext.strokeStyle = '#FF0000';
+    //             this.$srcContext.stroke();
+
+
+
+
+    //             worker.recognize(cropImgCanvas)
+    //               .progress(progress => {
+
+    //               }).then(result => {
+
+
+    //                 const para = document.createElement('P');
+    //                 const h = document.createElement('h3');
+    //                 // h.innerHTML = document.getElementById('select').value;
+    //                 h.innerHTML = data.Items[0].rct[i][0];
+    //                 para.innerHTML = result.text;
+
+
+    //                 this.$val.push(result.text);
+    //                 this.$head.push(data.Items[0].rct[i][0]);
+    //                 this.$pdfjson[data.Items[0].rct[i][0]] = result.text;
+
+    //                 JSON.stringify(this.$pdfjson);
+
+
+
+    //                 document.getElementById('myDIV').appendChild(h);
+    //                 document.getElementById('myDIV').appendChild(para);
+
+
+
+    //               });
+
+
+
+
+
+
+
+    //           }
+    //         });
+    //       })();
+
+    //     }
+
+
+
+
+
+
+
+    //     async function init() {
+    //       // var drag = false;
+    //       // var canvas = document.getElementById('src');
+
+
+    //       // const worker = new Tesseract.TesseractWorker();
+    //       // var srcContext = document.getElementById('src').getContext('2d');
+    //       // var destContext = document.getElementById('dest').getContext('2d');
+    //       // let img = await loadImage('1.jpg');
+    //       // srcContext.drawImage(img, 0, 0);
+
+
+    //     }
+
+
+
+
+    //     document.body.onload = init;
+
+    //   });
 
 
 
@@ -507,10 +507,10 @@ export class PdfAutomationComponent implements OnInit {
 
   cropImage(sourceImage, rect) {
     if (!sourceImage) {
-      
+
     }
     else {
-      
+
     }
     this.$rect = rect;
     // parameterize them
@@ -530,7 +530,7 @@ export class PdfAutomationComponent implements OnInit {
 
   mymousedown(e) {
 
-    this.$rect.startX = e.pageX - this.$canvas.offsetLeft  - 280;
+    this.$rect.startX = e.pageX - this.$canvas.offsetLeft - 280;
     this.$rect.startY = e.pageY - this.$canvas.offsetTop - 195;
 
 
@@ -540,7 +540,7 @@ export class PdfAutomationComponent implements OnInit {
   }
 
   mymouseup(e) {
-    
+
     this.drag = false;
 
 
@@ -561,13 +561,13 @@ export class PdfAutomationComponent implements OnInit {
 
 
     const rct = { left: this.$rect.startX, top: this.$rect.startY, width: this.$rect.w, height: this.$rect.h };
-    
+
     const cropImgCanvas = this.cropImage(this.$canvas, rct);//img
     if (cropImgCanvas) {
-      
+
     }
     else {
- 
+
     }
 
     // just renderint to visualize - no need for actual crop
@@ -579,9 +579,9 @@ export class PdfAutomationComponent implements OnInit {
     // todo: pass the rect info and promise them all?
     worker.recognize(cropImgCanvas)
       .progress(progress => {
-        
+
       }).then(result => {
-        
+
         // document.getElementById('text').value = result.text;
         // text = result.text
 
@@ -591,7 +591,7 @@ export class PdfAutomationComponent implements OnInit {
           "carrierId": "carrierId"
         }]
         this.$sitePersonel.objects = objects;
-        
+
 
 
         this.$xmin = rct.left;
@@ -617,13 +617,13 @@ export class PdfAutomationComponent implements OnInit {
         i = i + 1;
         this.$text = result.text;
         this.$sitePersonel.objects.push(object);
-        
+
 
 
 
         // document.getElementById('input').value = text;
         this.modalBody = this.$text;
-        
+
         const value = JSON.stringify(this.$sitePersonel);
 
 
@@ -638,7 +638,7 @@ export class PdfAutomationComponent implements OnInit {
   }
 
   mybutton() {
-    
+
     let rct = "rct" + this.i;
 
 
@@ -654,7 +654,7 @@ export class PdfAutomationComponent implements OnInit {
 
     this.$obj.rct.push(newData);
 
-    
+
 
 
     this.$jsonfile = {
@@ -687,12 +687,12 @@ export class PdfAutomationComponent implements OnInit {
     // // this.$ymin,
     // // this.$ymax;
 
-    
+
 
     // this.i++;
 
     JSON.stringify(this.$jsonfile);
-    
+
 
 
 
@@ -715,7 +715,7 @@ export class PdfAutomationComponent implements OnInit {
     this.$pdfjson[this.selectOpt] = inputValue;
 
     JSON.stringify(this.$pdfjson);
-    
+
     this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     document.getElementById('myDIV').appendChild(h);
     document.getElementById('myDIV').appendChild(para);
@@ -724,13 +724,13 @@ export class PdfAutomationComponent implements OnInit {
   myclick(e) {
     this.service.dataSubscribe.next(JSON.stringify(this.$pdfjson));
     this.http.post(this.url, this.$obj).subscribe((data) => {
-      
+
     });
     // this.http.get(this.url + "/fgfd").subscribe((data : any) => {
-    
+
     // });
 
-    
+
     this.service.missionAnnouncedSource.next(this.$pdfjson);
 
 
@@ -742,7 +742,7 @@ export class PdfAutomationComponent implements OnInit {
 
 
   mymousemove(e) {
-   
+
     this.$cursorVT.setAttribute('style', `left: ${e.clientX}px;`);
     this.$cursorHL.setAttribute('style', `top: ${e.clientY}px;`);
     if (this.drag) {

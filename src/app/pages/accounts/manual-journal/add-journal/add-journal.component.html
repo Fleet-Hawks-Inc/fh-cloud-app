@@ -1,225 +1,232 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
+            <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top: 10px">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                        Add Journal
+                    <div class="col-md-4 col-lg-4">
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Add Journal</h4>
                     </div>
-                    <div class="col-md-8 col-lg-8 text-right pr-4">
-                        <a routerLink="/accounts/manual-journal/list" class="btn btn-default"><i
-                                class="fas fa-list"></i> All
-                            Journals</a>
+                    <div class="col-md-8 col-lg-8 text-right pr-1">
+                        <a routerLink="/accounts/manual-journal/list" class="btn btn-sm btn-default"><i
+                                class="fas fa-list"></i> All Journals</a>
                     </div>
                 </div>
             </header>
-            <section class="card mt-0 mb-4">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col pr-0">
-                            <div class="card-body text-dark">
-                                <form class="form-horizontal form-bordered" method="get" #journalForm="ngForm">
-                                    <div class="row">
-                                        <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Journal Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <input [(ngModel)]="journal.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
-                                                            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #jDate="ngModel" required>
 
-                                                    <div *ngIf="jDate.invalid && (jDate.dirty || jDate.touched)" class="text-danger">
-                                                        <div *ngIf="jDate.errors.required">
-                                                            Journal date is required.
-                                                        </div>
-                                                    </div>
+            <section class="m-2">
+                <form class="form-horizontal form-bordered" method="get" #journalForm="ngForm">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row adddriverpl pt-3">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Journal Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <input [(ngModel)]="journal.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
+                                                ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #jDate="ngModel" required>
+
+                                        <div *ngIf="jDate.invalid && (jDate.dirty || jDate.touched)" class="text-danger">
+                                            <div *ngIf="jDate.errors.required">
+                                                Journal date is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-lg-5">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">Currency<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                        <ng-select [(ngModel)]="journal.currency" name="currency" placeholder="Select currency" #curr="ngModel" required>
+                                            <ng-option value="CAD">CAD</ng-option>
+                                            <ng-option value="USD">USD</ng-option>
+                                        </ng-select>
+
+                                        <div *ngIf="curr.invalid && (curr.dirty || curr.touched)" class="text-danger">
+                                            <div *ngIf="curr.errors.required">
+                                                Currency is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-lg-6">
+                                        <label class="control-label font-weight-bold text-lg-right">Attach
+                                            Document</label>
+                                        <input type="file" class="p-0 form-control" multiple (change)="selectDocuments($event)" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2" *ngIf="documentSlides.length > 0">
+                                    <div class="col-lg-10">
+                                        <div class="vehicle-common-box p-3">
+                                            <div class="row mt-2">
+                                                <div class="col-lg-6">
+                                                    <label
+                                                        class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
                                                 </div>
                                             </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-5">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">Currency<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                    <ng-select [(ngModel)]="journal.currency" name="currency" placeholder="Select currency" #curr="ngModel" required>
-                                                        <ng-option value="CAD">CAD</ng-option>
-                                                        <ng-option value="USD">USD</ng-option>
+                                            <hr class="solid mt-3">
+                                            <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                                <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                                    data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                                    {{d+1}}</a> </div>
+                                                <div class="col-lg-3 text-right">
+                                                    <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                                       data-toggle="modal" data-target="#viewDocModal"></i>
+                                                    <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                                       class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2">
+                                            Reference#</label>
+                                            <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" />
+
+                                        <!-- <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required /> -->
+
+                                        <!-- <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
+                                            <div *ngIf="refNo.errors.required">
+                                                Reference# is required.
+                                            </div>
+                                            <div *ngIf="refNo.errors.pattern">
+                                                Reference# must contain alphanumeric characters.
+                                               </div>
+                                        </div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-lg-10">
+                                        <label class="control-label font-weight-bold text-lg-right pt-2 ">Notes</label>
+                                        <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto" #Nmanual="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
+                                        <div *ngIf="Nmanual.invalid && (Nmanual.dirty || Nmanual.touched)" class="text-danger">
+                                            <div *ngIf="Nmanual.errors.pattern">
+                                             Only 500 characters are allowed.
+                                            </div>
+
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                         </div>
+                      </div>
+                   </div>
+                </div>
+
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row adddriverpl pt-3">
+                            <div class="col-lg-10">
+                               <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Journal Details</label>
+                            </div>
+                            <div class="col-lg-11">
+                                <div class="pt-2">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th width="30%">Account</th>
+                                                <th width="20%">Description</th>
+                                                <th width="20%">Contact</th>
+                                                <th width="15%">Debit</th>
+                                                <th width="15%">Credit</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let data of journal.details; let i=index">
+                                                <td>
+                                                    <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account" (change)="checkSelectedAccount($event, i)" #accID="ngModel" required>
+                                                        <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} - {{ item.actName | titlecase}}</ng-option>
                                                     </ng-select>
 
-                                                    <div *ngIf="curr.invalid && (curr.dirty || curr.touched)" class="text-danger">
-                                                        <div *ngIf="curr.errors.required">
-                                                            Currency is required.
+                                                    <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
+                                                        <div *ngIf="accID.errors.required">
+                                                            Account is required.
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control h-auto" placeholder="Enter description of the journal" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
+                                                </td>
+                                                <td>
+                                                    <ng-select [(ngModel)]="data.contactID" name="currency{{i}}" placeholder="Select contact">
+                                                        <ng-option *ngFor="let item of contacts | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
+                                                    </ng-select>
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0" placeholder="0.00"name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
+                                                </td>
+                                                <td>
+                                                    <input type="number" min="0"  placeholder="0.00" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
+                                                </td>
+                                                <td>
+                                                    <a *ngIf="i>1" href="javascript:;" (click)="deleteDetail(i)"><i class="fa fa-trash"> </i> </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <a class="btn btn-success btn-sm" href="javascript:;" (click)="addMoreDetails()"><i class="fas fa-plus"></i> Add
+                                    Another Line</a>
+                                <div class="row">
+                                    <div class="col-lg-4 offset-lg-8">
+                                        <div class="row">
+                                            <div class="col-lg-4 pt-1 bordtop">
+                                                <h5 class="font-weight-semibold text-4 text-dark">
+                                                    Total Amount
+                                                </h5>
                                             </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right">Attach
-                                                        Document</label>
-                                                    <input type="file" class="p-0 form-control" multiple (change)="selectDocuments($event)" />
-                                                </div>
+                                            <div class="col-lg-4 bordtop pt-1">
+                                                <p class="text-left">{{ journal.debitTotalAmount }}</p>
                                             </div>
-                                            <div class="row mt-2" *ngIf="documentSlides.length > 0">
-                                                <div class="col-lg-10">
-                                                    <div class="vehicle-common-box p-3">
-                                                        <div class="row mt-2">
-                                                            <div class="col-lg-6">
-                                                                <label
-                                                                    class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="solid mt-3">
-                                                        <div class="row" *ngFor="let item of documentSlides;let d= index">
-                                                            <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
-                                                                data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
-                                                                {{d+1}}</a> </div>
-                                                            <div class="col-lg-3 text-right">
-                                                                <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
-                                                                   data-toggle="modal" data-target="#viewDocModal"></i>
-                                                                <a href="javascript:;" (click)="deleteDocument(item.name, d)"
-                                                                   class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
-                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div class="col-lg-4 bordtop pt-1">
+                                                <p class="text-center">{{ journal.creditTotalAmount }}</p>
                                             </div>
                                         </div>
-                                        <div class="col-lg-5 offset-lg-1">
-                                            <div class="row">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2">
-                                                        Reference#</label>
-                                                        <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" />
 
-                                                    <!-- <input type="text" name="referenceNo" [(ngModel)]="journal.referenceNo" class="form-control" placeholder="Enter Unique Reference Number" #refNo="ngModel" required /> -->
-
-                                                    <!-- <div *ngIf="refNo.invalid && (refNo.dirty || refNo.touched)" class="text-danger">
-                                                        <div *ngIf="refNo.errors.required">
-                                                            Reference# is required.
-                                                        </div>
-                                                        <div *ngIf="refNo.errors.pattern">
-                                                            Reference# must contain alphanumeric characters.
-                                                           </div>
-                                                    </div>
-                                                    </div> -->
-                                                </div>
+                                        <div class="row">
+                                            <div class="col-lg-4 bordtop pt-1">
+                                                <h5 class="font-weight-semibold text-4 text-dark">
+                                                    Difference
+                                                </h5>
                                             </div>
-                                            <div class="row pt-2">
-                                                <div class="col-lg-10">
-                                                    <label class="control-label font-weight-bold text-lg-right pt-2 ">Notes</label>
-                                                    <textarea rows="3" name="notes" placeholder="Enter notes of the manual journal" [(ngModel)]="journal.notes" class="form-control h-auto" #Nmanual="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                                                    <div *ngIf="Nmanual.invalid && (Nmanual.dirty || Nmanual.touched)" class="text-danger">
-                                                        <div *ngIf="Nmanual.errors.pattern">
-                                                         Only 500 characters are allowed.
-                                                        </div>
-                                                
-                                                     </div>
-                                                </div>
+                                            <div class="col-lg-4 bordtop pt-1">
+                                                <p class="text-center"></p>
+                                            </div>
+                                            <div class="col-lg-4 bordtop pt-1">
+                                                <p class="text-center">{{ difference }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="row">
-                                                <div class="col-lg-6">
-                                                    <h4>Journal Details</h4>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-10 offset-lg-1">
-                                            <div class="row pt-2">
-                                                <table class="table table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th width="30%">Account</th>
-                                                            <th width="20%">Description</th>
-                                                            <th width="20%">Contact</th>
-                                                            <th width="15%">Debit</th>
-                                                            <th width="15%">Credit</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let data of journal.details; let i=index">
-                                                            <td>
-                                                                <ng-select [(ngModel)]="data.accountID" name="accountID{{i}}" placeholder="Select account" (change)="checkSelectedAccount($event, i)" #accID="ngModel" required>
-                                                                    <ng-option value="{{ item.actID }}" *ngFor="let item of accounts | async">{{ item.actNo }} - {{ item.actName | titlecase}}</ng-option>
-                                                                </ng-select>
+                                </div>
+                            </div>
 
-                                                                <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
-                                                                    <div *ngIf="accID.errors.required">
-                                                                        Account is required.
-                                                                    </div>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <textarea class="form-control h-auto" placeholder="Enter description of the journal" name="description{{i}}" [(ngModel)]="data.description" rows="1"></textarea>
-                                                            </td>
-                                                            <td>
-                                                                <ng-select [(ngModel)]="data.contactID" name="currency{{i}}" placeholder="Select contact">
-                                                                    <ng-option *ngFor="let item of contacts | async" value="{{item.contactID}}">{{item.companyName}}</ng-option>
-                                                                </ng-select>
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" min="0" placeholder="0.00"name="debit{{i}}" id="debitID{{i}}" [disabled]="data.debitDisabled" class="form-control" [(ngModel)]="data.debit" (input)="calculateTotal(); disableOtherField('debit', i)" />
-                                                            </td>
-                                                            <td>
-                                                                <input type="number" min="0"  placeholder="0.00" name="credit{{i}}" id="creditID{{i}}" [disabled]="data.creditDisabled" class="form-control" [(ngModel)]="data.credit" (input)="calculateTotal(); disableOtherField('credit', i)"/>
-                                                            </td>
-                                                            <td>
-                                                                <a *ngIf="i>1" href="javascript:;" (click)="deleteDetail(i)"><i class="fa fa-trash"> </i> </a>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <a class="btn btn-success btn-sm" href="javascript:;" (click)="addMoreDetails()"><i class="fas fa-plus"></i> Add
-                                                Another Line</a>
-                                            <div class="row">
-                                                <div class="col-lg-4 offset-lg-8">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 pt-1 bordtop">
-                                                            <h5 class="font-weight-semibold text-4 text-dark">
-                                                                Total Amount
-                                                            </h5>
-                                                        </div>
-                                                        <div class="col-lg-4 bordtop pt-1">
-                                                            <p class="text-left">{{ journal.debitTotalAmount }}</p>
-                                                        </div>
-                                                        <div class="col-lg-4 bordtop pt-1">
-                                                            <p class="text-center">{{ journal.creditTotalAmount }}</p>
-                                                        </div>
-                                                    </div>
+                         </div>
 
-                                                    <div class="row">
-                                                        <div class="col-lg-4 bordtop pt-1">
-                                                            <h5 class="font-weight-semibold text-4 text-dark">
-                                                                Difference
-                                                            </h5>
-                                                        </div>
-                                                        <div class="col-lg-4 bordtop pt-1">
-                                                            <p class="text-center"></p>
-                                                        </div>
-                                                        <div class="col-lg-4 bordtop pt-1">
-                                                            <p class="text-center">{{ difference }}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row mt-4">
-                                        <div class="col-lg-11 text-right">
-                                            <button type="button" class="btn btn-default mr-2" (click)="cancel()">
-                                                Cancel
-                                            </button>
-                                            <button *ngIf="!journalID" type="submit" (click)="addJournal()"  [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
-                                            <button *ngIf="journalID" type="submit" (click)="updateJournal()" [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Update</button>
-                                        </div>
-                                    </div>
-                                </form>
+                         <div class="form-group row mt-4">
+                            <div class="col-lg-11 text-right">
+                                <button type="button" class="btn btn-default mr-2" (click)="cancel()">
+                                    Cancel
+                                </button>
+                                <button *ngIf="!journalID" type="submit" (click)="addJournal()"  [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Save</button>
+                                <button *ngIf="journalID" type="submit" (click)="updateJournal()" [disabled]="!journalForm.form.valid || submitDisabled" class="btn btn-success">Update</button>
                             </div>
                         </div>
-                    </div>
+
+                      </div>
+                   </div>
                 </div>
-            </section>
+            </form>
+             </section>
+
+
         </section>
     </div>
 </section>

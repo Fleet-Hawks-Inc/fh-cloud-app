@@ -153,6 +153,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     if (this.loaded) {
     this.fetchPayments();
     }
+    this.loaded = false;
   }
 
   refreshData() {

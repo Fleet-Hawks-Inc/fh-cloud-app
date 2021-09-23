@@ -1,0 +1,12 @@
+.thumbnail{
+    width:70px;
+    height:70px;
+}
+.flex{
+    display:flex;
+    flex-wrap:wrap;
+}
+.bg-blue{
+    background-color: #0088cc;
+    color:#fff;
+}

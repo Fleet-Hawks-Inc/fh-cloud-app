@@ -64,62 +64,69 @@
                   [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                   <div class="card-body" style="display: block">
                     <div class="main-panel">
-                      <table class="table table-bordered table-striped mb-0 simple-table">
-                        <thead>
-                          <tr class="bgcol2">
-                            <th class="text-2">Payment#</th>
-                            <th class="text-2">Date</th>
-                            <th class="text-2">Payment Mode Information</th>
-                            <th class="text-2">Settlement#</th>
-                            <th class="text-2">Paid To</th>
-                            <th class="text-2">Amount</th>
-                            <th class="text-2">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr class="text-center" *ngIf="payments.length === 0">
-                            <td colspan="7">
-                              {{ dataMessage }}
-                            </td>
-                          </tr>
-                          <tr *ngFor="let data of payments; let i=index;">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <table class="table table-bordered table-striped mb-0 simple-table">
+                            <thead>
+                              <tr class="bgcol2">
+                                <th class="text-2">Payment#</th>
+                                <th class="text-2">Date</th>
+                                <th class="text-2">Payment Mode Information</th>
+                                <th class="text-2">Settlement#</th>
+                                <th class="text-2">Paid To</th>
+                                <th class="text-2">Amount</th>
+                                <!-- <th class="text-2">Action</th> -->
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr class="text-center" *ngIf="payments.length === 0">
+                                <td colspan="7">
+                                  {{ dataMessage }}
+                                </td>
+                              </tr>
+                              <tr *ngFor="let data of payments; let i=index;">
 
-                            <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
-                            <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate |
-                                 date:"yyyy/MM/dd" }}</td>
-                            <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
-                            <td class="cursorpoint" [routerLink]="data.url">
-                              <span *ngFor="let stl of data.settlData; let s=index;">
-                                <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
-                                <span *ngIf="s< data.settlementIds.length-1">,</span>
-                              </span>
-                            </td>
-                            <td class="cursorpoint" [routerLink]="data.url">
-                              <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
-                              <span *ngIf="data.paymentTo === 'driver'">
-                                {{ drivers[data.entityId] | titlecase}}
-                              </span>
-                              <span *ngIf="data.paymentTo !== 'driver'">
-                                {{ contacts[data.entityId] | titlecase}}
-                              </span>
-                            </td>
-                            <td class="cursorpoint" [routerLink]="data.url">{{ data.finalAmount | number : '1.2-2' }}
-                              CAD</td>
-                            <td>
-                              <div class="dropdown dropright">
-                                <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
-                                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  <i class="fas fa-ellipsis-v"></i>
-                                </button>
-                                <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                  <a class="dropdown-item"
-                                    routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
-                                </div>
-                                </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                                <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
+                                <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate |
+                                     date:"yyyy/MM/dd" }}</td>
+                                <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
+                                <td class="cursorpoint" [routerLink]="data.url">
+                                  <span *ngFor="let stl of data.settlData; let s=index;">
+                                    <b>{{ settlements[stl.settlementId] }}</b> ({{ stl.status }})
+                                    <span *ngIf="s< data.settlementIds.length-1">,</span>
+                                  </span>
+                                </td>
+                                <td class="cursorpoint" [routerLink]="data.url">
+                                  <strong class="text-capitalize">{{ data.paymentTo }}:</strong>
+                                  <span *ngIf="data.paymentTo === 'driver'">
+                                    {{ drivers[data.entityId] | titlecase}}
+                                  </span>
+                                  <span *ngIf="data.paymentTo !== 'driver'">
+                                    {{ contacts[data.entityId] | titlecase}}
+                                  </span>
+                                </td>
+                                <td class="cursorpoint" [routerLink]="data.url">{{ data.finalAmount | number : '1.2-2' }}
+                                  CAD</td>
+                                <!-- <td>
+                                  <div class="dropdown dropright">
+                                    <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}"
+                                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                      <a class="dropdown-item"
+                                        routerLink="/accounts/payments/driver-payments/edit/{{ data.paymentID }}">Edit</a>
+                                    </div>
+                                    </div>
+                                </td> -->
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
+                          <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
+                                               </div>
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -1,13 +1,15 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pt-0 pr-0 pl-0">
+            
             <header class="page-header">
                 <div class="row" style="padding-top: 10px">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
                         Order Details 
                     </div>
                     <div class="col-md-8 col-lg-8 text-right">
-                        <button (click)="isModalShow = true" data-target="#previewInvoiceModal" data-toggle="modal" class="btn btn-success btn-sm mr-2">
+                        
+                        <button (click)="showInv();isModalShow = true" class="btn btn-success btn-sm mr-2">
                             Invoice</button>
                         <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Order</a>
@@ -52,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div class="row mb-3">
                     <div class="col-lg-12">
                         <div class="bg-white p-3">
@@ -485,20 +487,7 @@
                                             <div class="col-lg-8 p-2 border-box text-capitalize">{{ additionalDetails.trailerType}}
                                             </div>
                                         </div>
-                                        <!-- <div class="row m-0">
-                      <div
-                        class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray"
-                      >
-                        Load Type:
-                      </div>
-                      <div class="col-lg-8 p-2 border-box">
-                         {{additionalDetails.loadType.hazMat ? 'Hazmat' : ''}}{{additionalDetails.loadType.oversize ? ',' : ''}}
-                         {{additionalDetails.loadType.oversize ? 'Over Size' : ''}}{{additionalDetails.loadType.reefer ? ',' : ''}}
-                         {{additionalDetails.loadType.reefer ? 'Reefer' : ''}}{{additionalDetails.loadType.tanker ? ',' : ''}}
-                         {{additionalDetails.loadType.tanker ? 'Tanker' : ''}}
-
-                      </div>
-                    </div> -->
+                                        
                                         <div class="row m-0" *ngIf="additionalDetails.trailerType == 'reefer'">
                                             <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
                                                 Temperature Required:
@@ -601,48 +590,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="col-xl-12 col-12 mb-3">
-                    <div class="boxshadow1 maindisbox w100 pull-left">
-                      <div class="widgetload">
-                        <div class="widgettbload">
-                          <span class="pull-right text-3 mt-2 text-dark">
-                          </span>
-                          <h2
-                            class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"
-                          >
-                            Advance Received
-                          </h2>
-                        </div>
-
-                        <div class="widgetlinfo">
-                          <table
-                            class="table table-responsive-lg table-bordered table-striped table-sm mb-0"
-                          >
-                            <thead>
-                              <tr class="bgcol2">
-                                <th>Receipt Number</th>
-                                <th>Payment Date</th>
-                                <th class="">Payment Mode</th>
-                                <th class="">Reference</th>
-                                <th class="">Amount</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td class="loadid">
-                                  <a href="#">RCP013676000001</a>
-                                </td>
-                                <td>5/28/2020</td>
-                                <td>Check</td>
-                                <td>-</td>
-                                <td>$50.00</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div> -->
+                                    
                                 </div>
                             </div>
                         </div>
@@ -778,7 +726,7 @@
                                                             </h2>
                                                         </div>
                                                         <div class="col-6">
-                                                            <input type="file" (change)="selectDocuments($event)"
+                                                            <input type="file" #uploadBol (change)="selectDocuments($event)"
                                                                 multiple class="p-0 form-control pull-right mb-0"
                                                                 id="bolUpload" />
                                                         </div>
@@ -818,6 +766,7 @@
         </section>
     </div>
 </section>
+
 <!-- Modal -->
 <div class="modal fade" id="templateSelectionModal" tabindex="-1" role="dialog"
     aria-labelledby="templateSelectionModalLabel" aria-hidden="true">
@@ -859,736 +808,829 @@
     </div>
 </div>
 
-<div class="modal fade" id="previewInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="previewInvoiceModalLabel"
-    aria-hidden="true" *ngIf="isModalShow">
-    <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
-        <div class="modal-content">
-            <div class="modal-body p-0">
-                <section class="invoice-wrapper p-0" style="background-color: #fff;">
-                    <table width="100%">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table width="100%">
+<!-- *ngIf="isModalShow" -->
+<ng-template #previewInvoiceModal let-modal>
+    <div class="modal-content">
+        <div class="modal-body p-0">
+            <section class="invoice-wrapper p-0" style="background-color: #fff;" id="print_wrap">
+                
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%" class="title" valign="middle"
+                                                style="padding: 10px;text-align: left;">
+                                                <h4
+                                                    style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                    INVOICE</h4>
+                                            </td>
+                                            <td width="60%" class="title" valign="middle"
+                                                style="padding: 10px;text-align: right;">
+                                                <h4
+                                                    style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                    {{invoiceData.carrierData.companyName}}</h4>
+                                                <h6 style="color: #040404;
+                                                font-weight: 500;
+                                                width: 250px;
+                                                float: right;"
+                                                    class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td >
+                                <div class="p-2">
+                                    <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" >
                                         <tbody>
                                             <tr>
-                                                <td width="60%" class="title" valign="middle"
-                                                    style="padding: 10px;text-align: left;">
-                                                    <h4
-                                                        style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
-                                                        INVOICE</h4>
+                                                <td valign="top">
+                                                    <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                                    <span style="text-transform: capitalize;">
+                                                        {{invoiceData.data[0].customerData.companyName}} <br></span>
+                                                    {{invoiceData.data[0].customerData.address}} <br>
+                                                    <span
+                                                        *ngIf="invoiceData.data[0].customerData.additionalContact != '' && invoiceData.data[0].customerData.additionalContact != null ">
+                                                        Contact Person: <b class="text-capitalize">{{invoiceData.data[0].customerData.additionalContact}}</b> <br></span>
+                                                    <span
+                                                        *ngIf="invoiceData.data[0].customerData.phone != '' && invoiceData.data[0].customerData.phone != null ">Phone:
+                                                        <b>{{invoiceData.data[0].customerData.phone}}</b></span>
                                                 </td>
-                                                <td width="60%" class="title" valign="middle"
-                                                    style="padding: 10px;text-align: right;">
-                                                    <h4
-                                                        style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
-                                                        {{invoiceData.carrierData.companyName}}</h4>
-                                                    <h6 style="color: #040404;
-                                                    font-weight: 500;
-                                                    width: 250px;
-                                                    float: right;"
-                                                        class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                                <td align="right">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Invoice#</b> <br>
+                                                                    </span>
+                                                                    {{orderNumber}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Invoice Date</b> <br>
+                                                                    </span>
+                                                                   {{today | date: 'yyyy/MM/dd'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Order#</b>
+                                                                    </span><br>
+                                                                    {{orderNumber}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td valign="top" colspan="2">
+                                                    <div *ngFor="let item of invoiceData.data; let m = index;">
+                                                        <div *ngFor="let ship of item.shippers;" style="align-items: flex-start;flex-wrap: wrap;display: flex;width: 100%;float: left;justify-content: space-between;">
+                                                            <p style="width: 100%;font-weight: 600;margin: 0;text-transform: uppercase;">Shipment - {{m + 1}} </p>
+                                                            <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
+                                                                <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                                                <span class="text-capitalize">{{ship.companyName}}</span> <br>
+                                                                {{ship.shipAddress}}
+
+                                                                <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
+                                                                    <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                                    <span *ngIf="pick.address.manual" style="width: 220px;
+                                                                    display: inline-block;
+                                                                    min-height: 45px;">
+                                                                        {{ pick.address.address }}
+                                                                        {{ pick.address.city }}
+                                                                        {{ pick.address.state }}
+                                                                        {{ pick.address.country }}
+                                                                        {{ pick.address.zipCode }}
+                                                                    </span>
+                                                                    <span *ngIf="!pick.address.manual" style="width: 220px;
+                                                                    display: inline-block;
+                                                                    min-height: 45px;">
+                                                                        {{ pick.address.pickupLocation }}
+                                                                    </span>
+                                                                    <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
+
+                                                                    <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td colspan="6" style="padding: 5px 0;">
+                                                                                    <table class="table-striped table-bordered" width="100%">
+                                                                                        <thead>
+                                                                                            <tr style="font-size: 12px;">
+                                                                                                <td class="text-capitalize" colspan="2">COMMODITY</td>
+                                                                                                <td style="width: 80px">PICK#</td>
+                                                                                                <td style="width: 70px">QTY </td>
+                                                                                                <td style="width: 70px">WEIGHT</td>
+
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr class="item" *ngFor="let commodity of pick.commodity;">
+                                                                                                <td colspan="2">{{commodity.name}}</td>
+                                                                                                <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
+                                                                                                <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                                <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+
+                                                                                            </tr>
+
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div  class="receivement__wrap" style="width: 49.5%;float: left;">
+                                                                <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;border: 1px dashed #8d8d8d;">
+                                                                <b style="font-size: 12px;">RECEIVER:</b> <br>
+                                                                <span class="text-capitalize">{{receive.companyName}}</span> <br>
+                                                                {{receive.receiverAddress}}
+    
+                                                                <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
+                                                                    <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+    
+                                                                    <span *ngIf="drop.address.manual" style="width: 220px;
+                                                                    display: inline-block;
+                                                                    min-height: 45px;">
+                                                                        {{ drop.address.address }}
+                                                                        {{ drop.address.city }}
+                                                                        {{ drop.address.state }}
+                                                                        {{ drop.address.country }}
+                                                                        {{ drop.address.zipCode }}
+                                                                    </span>
+                                                                    <span *ngIf="!drop.address.manual" style="width: 220px;
+                                                                    display: inline-block;
+                                                                    min-height: 45px;">
+                                                                        {{ drop.address.dropOffLocation }}
+                                                                    </span>
+                                                                    <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
+    
+                                                                    <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td colspan="6" style="padding: 5px 0;">
+                                                                                    <table class="table-striped table-bordered" width="100%">
+                                                                                        <thead>
+                                                                                            <tr style="font-size: 12px;">
+                                                                                                <td colspan="2">COMMODITY</td>
+                                                                                                <td style="width: 80px">DEL#</td>
+                                                                                                <td style="width: 70px">QTY </td>
+                                                                                                <td style="width: 70px">WEIGHT</td>
+    
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr class="item" *ngFor="let commodity of drop.commodity;">
+                                                                                                <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
+                                                                                                <td>{{commodity.del ? commodity.del : 'NA'}}</td>
+                                                                                                <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                                <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+    
+                                                                                            </tr>
+    
+    
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            </div>
+                                                            <div *ngIf="m > 0" class="html2pdf__page-break"></div>
+                                                        </div>
+                                                       
+                                                    </div>
+
+
+
+
+                                                </td>
+
+
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    
+                                    <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <table class="table-striped table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr style="font-size: 12px;">
+                                                                <td colspan="6">FEE METHOD</td>
+
+                                                                <td style="width: 100px" align="right">TOTAL</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                            <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr class="item">
+                                                                                <td colspan="6">{{invoiceData.charges.freightFee.type}}
+                                                                                    <small>(Freight Fees)</small></td>
+
+                                                                                <td align="right">
+                                                                                    {{invoiceData.charges.freightFee.amount}}
+                                                                                    <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td colspan="6">
+                                                                                    {{invoiceData.charges.fuelSurcharge.type}}<small>
+                                                                                        (Fuel Surcharge)</small></td>
+
+                                                                                <td align="right">
+                                                                                    {{invoiceData.charges.fuelSurcharge.amount}}
+                                                                                    <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                                </td>
+
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
+                                                                                <td colspan="6">{{item.type}} <small>(Fuel
+                                                                                        Surcharge)</small></td>
+                                                                                <td align="right">{{item.amount}}
+                                                                                    <small>{{item.currency}}</small></td>
+
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr
+                                                                            *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                                            <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                    Deduction)</small></td>
+                                                                            <td align="right">- {{item.amount}}
+                                                                                <small>{{item.currency}}</small></td>
+
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+
+
+                                                            <tr class="bg-transparent">
+                                                                <td align="right" colspan="6">Sub Total</td>
+                                                                <td align="right">{{invoiceData.subTotal}}
+                                                                    <small>{{charges.freightFee.currency}} </small></td>
+                                                            </tr>
+                                                            <tr class="bg-transparent">
+                                                                <td colspan="6" align="right">Tax</td>
+                                                                <td align="right">{{invoiceData.taxesAmt}}
+                                                                    <small>{{charges.freightFee.currency}} </small></td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                        <tfoot class="border-1">
+                                                            <tr>
+                                                                <th colspan="6" align="right">
+                                                                    <div style="text-align: right;">
+                                                                        TOTAL
+                                                                    </div>
+                                                                </th>
+                                                                <th align="right">
+                                                                    <div style="text-align: right;">
+                                                                        {{invoiceData.finalAmount}}
+                                                                        <small>{{charges.freightFee.currency}} </small>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </td>
-                            </tr>
+                                    <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                                        <tbody>
+                                            <tr *ngFor="let newDoc of docs;">
+                                                <td>
+                                                    <table>
+                                                        <tbody>
+                                                            <tr *ngIf="newDoc.ext === 'pdf'">
+                                                                <td>
+                                                                    <div class="html2pdf__page-break"></div>
+                                                                    <pdf-viewer
+                                                                        [src]="newDoc.path"
+                                                                        [fit-to-page]="false"
+                                                                        [show-all]="true"
+                                                                        [render-text]="true"
+                                                                        [original-size]="false" [autoresize]="true" style="max-width: 700px; display: block;">
+                                                                    </pdf-viewer>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
+                                                                <td>
+                                                                    <div class="html2pdf__page-break"></div>
+                                                                    <img crossorigin="*" [src]="newDoc.path" class="img-fluid rounded" height="200px" width="100%">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                            <tr>
-                                <td >
-                                    <div class="p-2">
-                                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" >
-                                            <tbody>
-                                                <tr>
-                                                    <td valign="top">
-                                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
-                                                        <span style="text-transform: capitalize;">
-                                                            {{invoiceData.data[0].customerData.companyName}} <br></span>
-                                                        {{invoiceData.data[0].customerData.address}} <br>
-                                                        <span
-                                                            *ngIf="invoiceData.data[0].customerData.additionalContact != '' && invoiceData.data[0].customerData.additionalContact != null ">
-                                                            Contact Person: <b class="text-capitalize">{{invoiceData.data[0].customerData.additionalContact}}</b> <br></span>
-                                                        <span
-                                                            *ngIf="invoiceData.data[0].customerData.phone != '' && invoiceData.data[0].customerData.phone != null ">Phone:
-                                                            <b>{{invoiceData.data[0].customerData.phone}}</b></span>
-                                                    </td>
-                                                    <td align="right">
-                                                        <table>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Invoice#</b> <br>
-                                                                        </span>
-                                                                        {{orderNumber}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Invoice Date</b> <br>
-                                                                        </span>
-                                                                       {{today | date: 'yyyy/MM/dd'}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Order#</b>
-                                                                        </span><br>
-                                                                        {{orderNumber}}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td valign="top" colspan="2">
-                                                        <div *ngFor="let item of invoiceData.data">
-                                                            <div *ngFor="let ship of item.shippers" style=" display: flex;width: 100%;float: left;justify-content: space-between;">
-                                                                <div  class="shipment__wrap" style="padding: 5px; float: left; margin-bottom: 5px;width: 49.5%;border-style: dashed;border-width: 1px;border-color: #8d8d8d;">
-                                                                    <b style="font-size: 12px;">SHIPPER:</b> <br>
-                                                                    <span class="text-capitalize">{{ship.companyName}}</span> <br>
-                                                                    {{ship.shipAddress}}
-
-                                                                    <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
-                                                                        <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
-
-                                                                        <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                            {{ pick.address.address }}
-                                                                            {{ pick.address.city }}
-                                                                            {{ pick.address.state }}
-                                                                            {{ pick.address.country }}
-                                                                            {{ pick.address.zipCode }}
-                                                                        </span>
-                                                                        <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                            {{ pick.address.pickupLocation }}
-                                                                        </span>
-                                                                        <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
-
-                                                                        <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td colspan="6" style="padding: 5px 0;">
-                                                                                        <table class="table-striped table-bordered" width="100%">
-                                                                                            <thead>
-                                                                                                <tr style="font-size: 12px;">
-                                                                                                    <td class="text-capitalize" colspan="2">COMMODITY</td>
-                                                                                                    <td style="width: 80px">PICK#</td>
-                                                                                                    <td style="width: 70px">QTY </td>
-                                                                                                    <td style="width: 70px">WEIGHT</td>
-
-                                                                                                </tr>
-                                                                                            </thead>
-                                                                                            <tbody>
-                                                                                                <tr class="item" *ngFor="let commodity of pick.commodity;">
-                                                                                                    <td colspan="2">{{commodity.name}}</td>
-                                                                                                    <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
-                                                                                                    <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
-                                                                                                    <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
-
-                                                                                                </tr>
-
-                                                                                            </tbody>
-                                                                                        </table>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div *ngFor="let receive of ship.receivers;" style=" padding: 5px; margin-bottom: 5px;width: 49.5%;float: left;border: 1px dashed #8d8d8d;">
-                                                            <b style="font-size: 12px;">RECEIVER:</b> <br>
-                                                            <span class="text-capitalize">{{receive.companyName}}</span> <br>
-                                                            {{receive.receiverAddress}}
-
-                                                            <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
-
-                                                                <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.address }}
-                                                                    {{ drop.address.city }}
-                                                                    {{ drop.address.state }}
-                                                                    {{ drop.address.country }}
-                                                                    {{ drop.address.zipCode }}
-                                                                </span>
-                                                                <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.dropOffLocation }}
-                                                                </span>
-                                                                <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
-
-                                                                <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td colspan="6" style="padding: 5px 0;">
-                                                                                <table class="table-striped table-bordered" width="100%">
-                                                                                    <thead>
-                                                                                        <tr style="font-size: 12px;">
-                                                                                            <td colspan="2">COMMODITY</td>
-                                                                                            <td style="width: 80px">DEL#</td>
-                                                                                            <td style="width: 70px">QTY </td>
-                                                                                            <td style="width: 70px">WEIGHT</td>
-
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="item" *ngFor="let commodity of drop.commodity;">
-                                                                                            <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.del ? commodity.del : 'NA'}}</td>
-                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
-                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
-
-                                                                                        </tr>
-
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                            </div>
-
-                                                        </div>
-
-
-
-
-                                                    </td>
-
-
-                                                </tr>
-                                            </tbody>
-
-                                        </table>
-
-                                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="6">
-                                                        <table class="table-striped table-bordered" width="100%">
-                                                            <thead>
-                                                                <tr style="font-size: 12px;">
-                                                                    <td colspan="6">FEE METHOD</td>
-
-                                                                    <td style="width: 100px" align="right">TOTAL</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                                <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr class="item">
-                                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
-                                                                                        <small>(Freight Fees)</small></td>
-
-                                                                                    <td align="right">
-                                                                                        {{invoiceData.charges.freightFee.amount}}
-                                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td colspan="6">
-                                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
-                                                                                            (Fuel Surcharge)</small></td>
-
-                                                                                    <td align="right">
-                                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
-                                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-
-                                                                <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr
-                                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
-                                                                                    <td colspan="6">{{item.type}} <small>(Fuel
-                                                                                            Surcharge)</small></td>
-                                                                                    <td align="right">{{item.amount}}
-                                                                                        <small>{{item.currency}}</small></td>
-
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr
-                                                                                *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
-                                                                                <td colspan="6">{{item.type}} <small>(Accessorial
-                                                                                        Deduction)</small></td>
-                                                                                <td align="right">- {{item.amount}}
-                                                                                    <small>{{item.currency}}</small></td>
-
-                                                                            </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-
-
-                                                                <tr class="bg-transparent">
-                                                                    <td align="right" colspan="6">Sub Total</td>
-                                                                    <td align="right">{{invoiceData.subTotal}}
-                                                                        <small>{{charges.freightFee.currency}} </small></td>
-                                                                </tr>
-                                                                <tr class="bg-transparent">
-                                                                    <td colspan="6" align="right">Tax</td>
-                                                                    <td align="right">{{invoiceData.taxesAmt}}
-                                                                        <small>{{charges.freightFee.currency}} </small></td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                            <tfoot class="border-1">
-                                                                <tr>
-                                                                    <th colspan="6" align="right">
-                                                                        <div style="text-align: right;">
-                                                                            TOTAL
-                                                                        </div>
-                                                                    </th>
-                                                                    <th align="right">
-                                                                        <div style="text-align: right;">
-                                                                            {{invoiceData.finalAmount}}
-                                                                            <small>{{charges.freightFee.currency}} </small>
-                                                                        </div>
-                                                                    </th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </td>
-                            </tr>
-                            <!-- <tr>
-                      <td colspan="6" style="padding-top: 20px;">
-                          <table>
-                              <tbody><tr>
-                                  <td><b style="font-size: 12px;">INSTRUCTIONS:</b></td>
-                              </tr>
-                              <tr>
-                                  <td>
-                                      <ol style="margin: 0; padding-left: 15px; ">
-                                          <li>Please ensure driver identifies himself as p/u on behalf of total logistics</li>
-                                          <li>Driver must be able and willing to provide either company photo id or another piece of suitable picture identification upon shipper/receiver request</li>
-                                          <li> All drivers are required to have safety shoes and vest</li>
-                                          <li>Please note that all food products are subject to fda review and therefore all drivers must report to the fda office at the time of crossing</li>
-                                      </ol>
-                                  </td>
-                              </tr>
-                          </tbody></table>
-                      </td>
-                  </tr> -->
-
-                            <!-- <tr>
+                            </td>
+                        </tr>
+                        <!-- <tr>
                   <td colspan="6" style="padding-top: 20px;">
                       <table>
                           <tbody><tr>
-                              <td><b style="font-size: 12px;">TERMS:</b></td>
+                              <td><b style="font-size: 12px;">INSTRUCTIONS:</b></td>
                           </tr>
                           <tr>
                               <td>
                                   <ol style="margin: 0; padding-left: 15px; ">
-                                      <li>Invoice with all paperwork has to be sent to apinvoice@totallogistics.Com</li>
-                                      <li>Time in &amp; out required for pick-up and delivery</li>
-                                      <li>Third party billing by total logistics control</li>
-                                      <li>All trailers must arrive at receiver’s sealed - ftl’s sealed and ltl‘s sealed or padlocked</li>
-                                      <li>Fuel surcharge included in all rates</li>
-                                      <li>All trailers must be 53' in length with barn doors, food grade, odour-free, dry and clean</li>
-                                      <li>Do not mix with hazmat or toxic materials</li>
+                                      <li>Please ensure driver identifies himself as p/u on behalf of total logistics</li>
+                                      <li>Driver must be able and willing to provide either company photo id or another piece of suitable picture identification upon shipper/receiver request</li>
+                                      <li> All drivers are required to have safety shoes and vest</li>
+                                      <li>Please note that all food products are subject to fda review and therefore all drivers must report to the fda office at the time of crossing</li>
                                   </ol>
                               </td>
                           </tr>
                       </tbody></table>
                   </td>
               </tr> -->
-                        </tbody>
-                    </table>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button class="btn btn-success" (click)="generate()">Print</button>
-                <button *ngIf="!isInvoiced" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
-            </div>
+
+                        <!-- <tr>
+              <td colspan="6" style="padding-top: 20px;">
+                  <table>
+                      <tbody><tr>
+                          <td><b style="font-size: 12px;">TERMS:</b></td>
+                      </tr>
+                      <tr>
+                          <td>
+                              <ol style="margin: 0; padding-left: 15px; ">
+                                  <li>Invoice with all paperwork has to be sent to apinvoice@totallogistics.Com</li>
+                                  <li>Time in &amp; out required for pick-up and delivery</li>
+                                  <li>Third party billing by total logistics control</li>
+                                  <li>All trailers must arrive at receiver’s sealed - ftl’s sealed and ltl‘s sealed or padlocked</li>
+                                  <li>Fuel surcharge included in all rates</li>
+                                  <li>All trailers must be 53' in length with barn doors, food grade, odour-free, dry and clean</li>
+                                  <li>Do not mix with hazmat or toxic materials</li>
+                              </ol>
+                          </td>
+                      </tr>
+                  </tbody></table>
+              </td>
+          </tr> -->
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" (click)="modal.dismiss('Cross click')">Cancel</button>
+            <!-- <button (click)="emailInv()" class="btn btn-success">Email Invoice</button> -->
+            <button class="btn btn-success" (click)="generate()">Print</button>
+            <button *ngIf="!isInvoiced" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
         </div>
     </div>
-</div>
+</ng-template>
 
-<div class="modal fade" id="generateInvoiceModal" tabindex="-1" role="dialog" aria-labelledby="generateInvoiceModalLabel"
-    aria-hidden="true" *ngIf="isShow">
-    <div class="modal-dialog text-dark" style="max-width: 900px" role="document">
-        <div class="modal-content">
-            <div class="modal-body p-0">
-                <section class="invoice-wrapper p-0" style="background-color: #fff;" id="print_wrap">
-                    <table width="100%">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table width="100%">
+<!-- *ngIf="isShow" -->
+<ng-template #generateInvoiceModal let-modal>
+    <div class="modal-content">
+        <div class="modal-body p-0">
+            <section class="invoice-wrapper p-0" style="background-color: #fff;" id="print_wrap">
+                
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <table width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%" class="title" valign="middle"
+                                                style="padding: 10px;text-align: left;">
+                                                <h4
+                                                    style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                    INVOICE</h4>
+                                            </td>
+                                            <td width="60%" class="title" valign="middle"
+                                                style="padding: 10px;text-align: right;">
+                                                <h4
+                                                    style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                                    {{invoiceData.carrierData.companyName}}</h4>
+                                                <h6 style="color: #040404;
+                                                font-weight: 500;
+                                                width: 250px;
+                                                float: right;"
+                                                    class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        
+                        
+                        <tr>
+                            <td *ngFor="let item of invoiceData.data; let idx = index;" style="display:block;width:99.9%;clear:both">
+                                <div class="p-2">
+                                    <table width="100%" cellspacing="0" class="invoice-iner__wrapper" style="padding: 10px;" *ngFor="let ship of item.shippers">
                                         <tbody>
                                             <tr>
-                                                <td width="60%" class="title" valign="middle"
-                                                    style="padding: 10px;text-align: left;">
-                                                    <h4
-                                                        style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
-                                                        INVOICE</h4>
+                                                <td valign="top">
+                                                    <b style="font-size: 12px;">CUSTOMER:</b> <br>
+                                                    <span style="text-transform: capitalize;">
+                                                        {{item.customerData.companyName}} <br></span>
+                                                    {{item.customerData.address}} <br>
+                                                    <span
+                                                        *ngIf="item.customerData.additionalContact != '' && item.customerData.additionalContact != null ">
+                                                        Contact Person: <b class="text-capitalize">{{item.customerData.additionalContact}}</b> <br></span>
+                                                    <span
+                                                        *ngIf="item.customerData.phone != '' && item.customerData.phone != null ">Phone:
+                                                        <b>{{item.customerData.phone}}</b></span>
                                                 </td>
-                                                <td width="60%" class="title" valign="middle"
-                                                    style="padding: 10px;text-align: right;">
-                                                    <h4
-                                                        style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
-                                                        {{invoiceData.carrierData.companyName}}</h4>
-                                                    <h6 style="color: #040404;
-                                                    font-weight: 500;
-                                                    width: 250px;
-                                                    float: right;"
-                                                        class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                                <td align="right">
+                                                    <table>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Invoice#</b> <br>
+                                                                    </span>
+                                                                    {{orderNumber}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Invoice Date</b> <br>
+                                                                    </span>
+                                                                   {{today | date: 'yyyy/MM/dd'}}
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right" style="padding: 0 0 10px">
+                                                                    <span
+                                                                        style="font-size: 12px;text-transform: uppercase;">
+                                                                        <b>Order#</b>
+                                                                    </span><br>
+                                                                    {{orderNumber}}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr >
+                                                <td valign="top" style="width: 50%;">
+                                                    <div  class="shipment__wrap" style=" border-style:dashed;   border-width: 1px ; border-color: #8d8d8d;
+                                                    padding: 10px;">
+                                                        <b style="font-size: 12px;">SHIPPER:</b> <br>
+                                                        <span class="text-capitalize">{{ship.companyName}}</span> <br>
+                                                        {{ship.shipAddress}}
+
+                                                        <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
+                                                            <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                            <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                {{ pick.address.address }}
+                                                                {{ pick.address.city }}
+                                                                {{ pick.address.state }}
+                                                                {{ pick.address.country }}
+                                                                {{ pick.address.zipCode }}
+                                                            </span>
+                                                            <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
+                                                                {{ pick.address.pickupLocation }}
+                                                            </span>
+                                                            <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
+
+                                                            <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="6" style="padding: 5px 0;">
+                                                                            <table class="table-striped table-bordered" width="100%">
+                                                                                <thead>
+                                                                                    <tr style="font-size: 12px;">
+                                                                                        <td class="text-capitalize" colspan="2">COMMODITY</td>
+                                                                                        <td style="width: 80px">PICK#</td>
+                                                                                        <td style="width: 70px">QTY </td>
+                                                                                        <td style="width: 70px">WEIGHT</td>
+
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="item" *ngFor="let commodity of pick.commodity;">
+                                                                                        <td colspan="2">{{commodity.name}}</td>
+                                                                                        <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
+                                                                                        <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                        <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+
+                                                                                    </tr>
+
+
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </td>
+
+                                                <td valign="top" align="right" style="width: 50%;">
+                                                    <div *ngFor="let receive of ship.receivers;" style="    border: 1px dashed #8d8d8d;
+                                                    padding: 10px;">
+                                                        <b style="font-size: 12px;">RECEIVER:</b> <br>
+                                                        <span class="text-capitalize">{{receive.companyName}}</span> <br>
+                                                        {{receive.receiverAddress}}
+
+                                                        <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
+                                                            <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+
+                                                            <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                {{ drop.address.address }}
+                                                                {{ drop.address.city }}
+                                                                {{ drop.address.state }}
+                                                                {{ drop.address.country }}
+                                                                {{ drop.address.zipCode }}
+                                                            </span>
+                                                            <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
+                                                                {{ drop.address.dropOffLocation }}
+                                                            </span>
+                                                            <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
+
+                                                            <table width="100%" style="border-top: none;font-size: 12px;">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td colspan="6" style="padding: 5px 0;">
+                                                                            <table class="table-striped table-bordered" width="100%">
+                                                                                <thead>
+                                                                                    <tr style="font-size: 12px;">
+                                                                                        <td colspan="2">COMMODITY</td>
+                                                                                        <td style="width: 80px">DEL#</td>
+                                                                                        <td style="width: 70px">QTY </td>
+                                                                                        <td style="width: 70px">WEIGHT</td>
+
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr class="item" *ngFor="let commodity of drop.commodity;">
+                                                                                        <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
+                                                                                        <td>{{commodity.del ? commodity.del : "NA"}}</td>
+                                                                                        <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
+                                                                                        <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+
+                                                                                    </tr>
+
+
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                   <div *ngIf="invoiceData.data?.length > 1" class="html2pdf__page-break"></div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <table class="invoice-iner__wrapper" width="100%" style="border-top: none;">
+                                        <tbody>
+                                            <tr *ngFor="let newDoc of docs;">
+                                                <td>
+                                                    <pdf-viewer
+                                                        [src]="newDoc.path"
+                                                        [show-all]="true"
+                                                        [render-text]="true"
+                                                        [original-size]="false" style="display: block;">
+                                                        </pdf-viewer>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
-                                </td>
-                            </tr>
+                                    <table class="invoice-iner__wrapper" *ngIf="invoiceData.data?.length - 1 === idx" width="100%" style="border-top: none;margin-top: 10px;">
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <table class="table-striped table-bordered" width="100%">
+                                                        <thead>
+                                                            <tr style="font-size: 12px;">
+                                                                <td colspan="6">FEE METHOD</td>
 
-                            <tr>
-                                <td *ngFor="let item of invoiceData.data; let idx = index;" style="display:block;width:99.9%;clear:both">
-                                    <div class="p-2">
-                                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px;" *ngFor="let ship of item.shippers">
-                                            <tbody>
-                                                <tr>
-                                                    <td valign="top">
-                                                        <b style="font-size: 12px;">CUSTOMER:</b> <br>
-                                                        <span style="text-transform: capitalize;">
-                                                            {{item.customerData.companyName}} <br></span>
-                                                        {{item.customerData.address}} <br>
-                                                        <span
-                                                            *ngIf="item.customerData.additionalContact != '' && item.customerData.additionalContact != null ">
-                                                            Contact Person: <b class="text-capitalize">{{item.customerData.additionalContact}}</b> <br></span>
-                                                        <span
-                                                            *ngIf="item.customerData.phone != '' && item.customerData.phone != null ">Phone:
-                                                            <b>{{item.customerData.phone}}</b></span>
-                                                    </td>
-                                                    <td align="right">
-                                                        <table>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Invoice#</b> <br>
-                                                                        </span>
-                                                                        {{orderNumber}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Invoice Date</b> <br>
-                                                                        </span>
-                                                                       {{today | date: 'yyyy/MM/dd'}}
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td align="right" style="padding: 0 0 10px">
-                                                                        <span
-                                                                            style="font-size: 12px;text-transform: uppercase;">
-                                                                            <b>Order#</b>
-                                                                        </span><br>
-                                                                        {{orderNumber}}
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                <tr >
-                                                    <td valign="top" style="width: 50%;">
-                                                        <div  class="shipment__wrap" style=" border-style:dashed;   border-width: 1px ; border-color: #8d8d8d;
-                                                        padding: 10px;">
-                                                            <b style="font-size: 12px;">SHIPPER:</b> <br>
-                                                            <span class="text-capitalize">{{ship.companyName}}</span> <br>
-                                                            {{ship.shipAddress}}
+                                                                <td style="width: 100px" align="right">TOTAL</td>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
 
-                                                            <div *ngFor="let pick of ship.pickupPoint; let i = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Pickup: {{i + 1}}</b> - {{pick.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
+                                                            <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr class="item">
+                                                                                <td colspan="6">{{invoiceData.charges.freightFee.type}}
+                                                                                    <small>(Freight Fees)</small></td>
 
-                                                                <span *ngIf="pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ pick.address.address }}
-                                                                    {{ pick.address.city }}
-                                                                    {{ pick.address.state }}
-                                                                    {{ pick.address.country }}
-                                                                    {{ pick.address.zipCode }}
-                                                                </span>
-                                                                <span *ngIf="!pick.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ pick.address.pickupLocation }}
-                                                                </span>
-                                                                <p class="m-0 text-dark">Contact Person: <b class="text-capitalize">{{pick.contactPerson}}</b></p>
+                                                                                <td align="right">
+                                                                                    {{invoiceData.charges.freightFee.amount}}
+                                                                                    <small>{{invoiceData.charges.freightFee.currency}}</small>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td colspan="6">
+                                                                                    {{invoiceData.charges.fuelSurcharge.type}}<small>
+                                                                                        (Fuel Surcharge)</small></td>
 
-                                                                <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td colspan="6" style="padding: 5px 0;">
-                                                                                <table class="table-striped table-bordered" width="100%">
-                                                                                    <thead>
-                                                                                        <tr style="font-size: 12px;">
-                                                                                            <td class="text-capitalize" colspan="2">COMMODITY</td>
-                                                                                            <td style="width: 80px">PICK#</td>
-                                                                                            <td style="width: 70px">QTY </td>
-                                                                                            <td style="width: 70px">WEIGHT</td>
+                                                                                <td align="right">
+                                                                                    {{invoiceData.charges.fuelSurcharge.amount}}
+                                                                                    <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
+                                                                                </td>
 
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="item" *ngFor="let commodity of pick.commodity;">
-                                                                                            <td colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.pu ? commodity.pu : 'NA'}}</td>
-                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
-                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
 
-                                                                                        </tr>
-
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
-
-
-                                                    </td>
-
-                                                    <td valign="top" align="right" style="width: 50%;">
-                                                        <div *ngFor="let receive of ship.receivers;" style="    border: 1px dashed #8d8d8d;
-                                                        padding: 10px;">
-                                                            <b style="font-size: 12px;">RECEIVER:</b> <br>
-                                                            <span class="text-capitalize">{{receive.companyName}}</span> <br>
-                                                            {{receive.receiverAddress}}
-
-                                                            <div *ngFor="let drop of receive.dropPoint; let j = index;" class="pickup-item mt-2">
-                                                                <p class="m-0 text-dark"><b>Drop: {{j + 1}}</b> - {{drop.dateAndTime | date:'yyyy/MM/dd hh:mm a'}}</p>
-
-                                                                <span *ngIf="drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.address }}
-                                                                    {{ drop.address.city }}
-                                                                    {{ drop.address.state }}
-                                                                    {{ drop.address.country }}
-                                                                    {{ drop.address.zipCode }}
-                                                                </span>
-                                                                <span *ngIf="!drop.address.manual" style="width: 70%;display: inline-block;">
-                                                                    {{ drop.address.dropOffLocation }}
-                                                                </span>
-                                                                <p class="m-0 text-dark">Contact Person: <b>{{drop.contactPerson}}</b></p>
-
-                                                                <table width="100%" style="border-top: none;font-size: 12px;">
-                                                                    <tbody>
-                                                                        <tr>
-                                                                            <td colspan="6" style="padding: 5px 0;">
-                                                                                <table class="table-striped table-bordered" width="100%">
-                                                                                    <thead>
-                                                                                        <tr style="font-size: 12px;">
-                                                                                            <td colspan="2">COMMODITY</td>
-                                                                                            <td style="width: 80px">DEL#</td>
-                                                                                            <td style="width: 70px">QTY </td>
-                                                                                            <td style="width: 70px">WEIGHT</td>
-
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="item" *ngFor="let commodity of drop.commodity;">
-                                                                                            <td class="text-capitalize" colspan="2">{{commodity.name}}</td>
-                                                                                            <td>{{commodity.del ? commodity.del : "NA"}}</td>
-                                                                                            <td>{{commodity.quantity ? commodity.quantity : 'NA'}} {{commodity.quantity ? commodity.quantityUnit : ''}}</td>
-                                                                                            <td>{{commodity.weight ? commodity.weight : 'NA'}} {{commodity.weight ? commodity.weightUnit : ''}}</td>
-
-                                                                                        </tr>
-
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </td>
-                                                                        </tr>
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-
-                                                       <div *ngIf="invoiceData.data?.length > 1" class="html2pdf__page-break"></div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-
-                                        </table>
-
-                                        <table class="invoice-iner__wrapper" *ngIf="invoiceData.data?.length - 1 === idx" width="100%" style="border-top: none;margin-top: 10px;">
-                                            <tbody>
-                                                <tr>
-                                                    <td colspan="6">
-                                                        <table class="table-striped table-bordered" width="100%">
-                                                            <thead>
-                                                                <tr style="font-size: 12px;">
-                                                                    <td colspan="6">FEE METHOD</td>
-
-                                                                    <td style="width: 100px" align="right">TOTAL</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                                <tr *ngIf="invoiceData.charges.freightFee.type != '' || invoiceData.charges.freightFee.type != null">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr class="item">
-                                                                                    <td colspan="6">{{invoiceData.charges.freightFee.type}}
-                                                                                        <small>(Freight Fees)</small></td>
-
-                                                                                    <td align="right">
-                                                                                        {{invoiceData.charges.freightFee.amount}}
-                                                                                        <small>{{invoiceData.charges.freightFee.currency}}</small>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr *ngIf="invoiceData.charges.fuelSurcharge.type != null">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr>
-                                                                                    <td colspan="6">
-                                                                                        {{invoiceData.charges.fuelSurcharge.type}}<small>
-                                                                                            (Fuel Surcharge)</small></td>
-
-                                                                                    <td align="right">
-                                                                                        {{invoiceData.charges.fuelSurcharge.amount}}
-                                                                                        <small>{{invoiceData.charges.fuelSurcharge.currency}}</small>
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-
-                                                                <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr
-                                                                                    *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
-                                                                                    <td colspan="6">{{item.type}} <small>(Accessorial
-                                                                                      Addition)</small></td>
-                                                                                    <td align="right">{{item.amount}}
-                                                                                        <small>{{item.currency}}</small></td>
-
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
-                                                                    <td colspan="8" style="padding: 0;">
-                                                                        <table style="width: 100%;">
-                                                                            <tbody>
-                                                                                <tr
-                                                                                *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                            <tr *ngIf="invoiceData.charges.accessorialFeeInfo.accessorialFee[0].type != ''">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
                                                                                 <td colspan="6">{{item.type}} <small>(Accessorial
-                                                                                        Deduction)</small></td>
-                                                                                <td align="right">- {{item.amount}}
+                                                                                  Addition)</small></td>
+                                                                                <td align="right">{{item.amount}}
                                                                                     <small>{{item.currency}}</small></td>
 
                                                                             </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                    </td>
-                                                                </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngIf="invoiceData.charges.accessorialDeductionInfo.accessorialDeduction[0].type != ''">
+                                                                <td colspan="8" style="padding: 0;">
+                                                                    <table style="width: 100%;">
+                                                                        <tbody>
+                                                                            <tr
+                                                                            *ngFor="let item of invoiceData.charges.accessorialDeductionInfo.accessorialDeduction;">
+                                                                            <td colspan="6">{{item.type}} <small>(Accessorial
+                                                                                    Deduction)</small></td>
+                                                                            <td align="right">- {{item.amount}}
+                                                                                <small>{{item.currency}}</small></td>
+
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
 
 
-                                                                <tr class="bg-transparent">
-                                                                    <td align="right" colspan="6">Sub Total</td>
-                                                                    <td align="right">{{invoiceData.subTotal}}
-                                                                        <small>{{charges.freightFee.currency}} </small></td>
-                                                                </tr>
-                                                                <tr class="bg-transparent">
-                                                                    <td colspan="6" align="right">Tax</td>
-                                                                    <td align="right">{{invoiceData.taxesAmt}}
-                                                                        <small>{{charges.freightFee.currency}} </small></td>
-                                                                </tr>
+                                                            <tr class="bg-transparent">
+                                                                <td align="right" colspan="6">Sub Total</td>
+                                                                <td align="right">{{invoiceData.subTotal}}
+                                                                    <small>{{charges.freightFee.currency}} </small></td>
+                                                            </tr>
+                                                            <tr class="bg-transparent">
+                                                                <td colspan="6" align="right">Tax</td>
+                                                                <td align="right">{{invoiceData.taxesAmt}}
+                                                                    <small>{{charges.freightFee.currency}} </small></td>
+                                                            </tr>
 
-                                                            </tbody>
-                                                            <tfoot class="border-1">
-                                                                <tr>
-                                                                    <th colspan="6" align="right">
-                                                                        <div style="text-align: right;">
-                                                                            TOTAL
-                                                                        </div>
-                                                                    </th>
-                                                                    <th align="right">
-                                                                        <div style="text-align: right;">
-                                                                            {{invoiceData.finalAmount}}
-                                                                            <small>{{charges.freightFee.currency}} </small>
-                                                                        </div>
-                                                                    </th>
-                                                                </tr>
-                                                            </tfoot>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                        </tbody>
+                                                        <tfoot class="border-1">
+                                                            <tr>
+                                                                <th colspan="6" align="right">
+                                                                    <div style="text-align: right;">
+                                                                        TOTAL
+                                                                    </div>
+                                                                </th>
+                                                                <th align="right">
+                                                                    <div style="text-align: right;">
+                                                                        {{invoiceData.finalAmount}}
+                                                                        <small>{{charges.freightFee.currency}} </small>
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
 
-                        </tbody>
-                    </table>
-                </section>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <a href="javascript:;" (click)="generatePDF()" class="btn btn-success">Generate & Print</a>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+        <!-- <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <a href="javascript:;" (click)="generatePDF()" class="btn btn-success">Generate & Print</a>
+        </div> -->
+    </div>
+</ng-template>
+
+<ng-template #emailInvoiceModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+        
+            <div class="email--invoice__main">
+                <div class="input-group mb-4">
+                    <ng-select multiple="true" notFoundText="Please type to add email" 
+                    [addTag]="true" placeholder="eg. johnsmith@gmail.com"
+                     
+                    [(ngModel)]="emailData.emails" name="emails" 
+                    type="text"  class="form-control h-auto"></ng-select>
+                    <!-- <div *ngIf="em.invalid && EmailInvF.submitted" class="text-danger w-100">
+                        <div *ngIf="em.errors.required">
+                        Email is required.
+                        </div>
+                        <div *ngIf="em.errors.pattern">
+                        Enter valid email eg. johnsmith@gmail.com
+                        </div>
+                    </div> -->
+                </div>
+                <div class="input-group">
+                    <textarea class="form-control h-auto" placeholder="eg. 0006,123" cols="5"></textarea>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+        <div class="modal-footer">
+            <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default">Cancel</button>
+            <button (click)="sendInvEmail()" class="btn btn-success">Send</button>
+        </div>
+    </form>
+</ng-template>
 
 <!-- VIEW DOCUMENT MODAL -->
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"

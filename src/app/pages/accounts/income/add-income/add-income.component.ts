@@ -95,8 +95,8 @@ export class AddIncomeComponent implements OnInit {
     private location: Location, private apiService: ApiService, private router: Router, private toaster: ToastrService, private route: ActivatedRoute, private listService: ListService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.incomeID = this.route.snapshot.params['incomeID'];
-    if(this.incomeID != undefined) {
+    this.incomeID = this.route.snapshot.params[`incomeID`];
+    if(this.incomeID !== undefined) {
       this.pageTitle = 'Edit Income';
       this.fetchIncomeByID();
     }
@@ -134,7 +134,7 @@ export class AddIncomeComponent implements OnInit {
     let files = [...event.target.files];
 
     for (let i = 0; i < files.length; i++) {
-      this.uploadedDocs.push(files[i])
+      this.uploadedDocs.push(files[i]);
     }
   }
   refreshCategory() {

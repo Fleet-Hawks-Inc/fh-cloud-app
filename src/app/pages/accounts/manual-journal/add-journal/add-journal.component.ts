@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ListService } from "../../../../services";
+import { ListService } from '../../../../services';
 import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -69,7 +69,8 @@ export class AddJournalComponent implements OnInit {
   uploadedDocs = [];
 
   constructor(private listService: ListService,private route: ActivatedRoute,
-    private location: Location, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
+    private location: Location, private router: Router, private toaster: ToastrService,
+     private accountService: AccountService, private apiService: ApiService, private domSanitizer: DomSanitizer) { }
 
   ngOnInit() {
     this.journalID = this.route.snapshot.params['journalID'];
@@ -127,7 +128,6 @@ export class AddJournalComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    console.log('this.journal', this.journal);
     // create form data instance
     const formData = new FormData();
 
@@ -211,12 +211,12 @@ export class AddJournalComponent implements OnInit {
     // create form data instance
     const formData = new FormData();
 
-    //append photos if any
+    // append photos if any
     for (let i = 0; i < this.uploadedDocs.length; i++) {
       formData.append('uploadedDocs', this.uploadedDocs[i]);
     }
 
-    //append other fields
+    // append other fields
     formData.append('data', JSON.stringify(this.journal));
 
     this.accountService.putData(`journal/${this.journalID}`, formData, true).subscribe({

@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "cd69feba-6fc4-4dd2-af5b-0cd13a13738b"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -23,6 +26,12 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "vendorChunk": false,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": false,
+            "optimization": false,
+            "namedChunks": false,
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/assets/css/jquerytable.css",
@@ -64,19 +73,24 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "aot": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                 "maximumWarning": "22mb",
+                  "maximumWarning": "22mb",
                   "maximumError": "22mb"
                 },
                 {
@@ -93,14 +107,19 @@
                   "with": "src/environments/environment.preprod.ts"
                 }
               ],
-              "optimization": true,
+              "aot": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
@@ -122,14 +141,19 @@
                   "with": "src/environments/environment.dev.ts"
                 }
               ],
-              "optimization": true,
+              "aot": true,
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": true,
               "buildOptimizer": true,
               "budgets": [
                 {
@@ -144,7 +168,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -208,9 +233,5 @@
         }
       }
     }
-  },
-  "defaultProject": "fleethawks-dashboard",
-  "cli": {
-    "analytics": "acb93201-6c0f-42b0-b193-a2570c85821e"
   }
 }

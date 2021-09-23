@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { HereMapService } from '../../../../services';
@@ -7,16 +7,20 @@ import { from, Subject, throwError } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import * as _ from 'lodash';
+import { NgForm } from '@angular/forms';
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 
 declare var $: any;
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.css']
+  styleUrls: ['./edit-profile.component.css'],
+  exportAs: 'cForm'
 })
 export class EditProfileComponent implements OnInit {
+  @ViewChild("cForm") cForm: NgForm;
   companyID = '';
   carrierID = '';
   bankID = '';
@@ -48,11 +52,11 @@ export class EditProfileComponent implements OnInit {
   phone = '';
   fax = '';
   uploadedLogo = '';
-  referral={
-    name:'',
-    company:'',
-    phone:'',
-    email:''
+  referral = {
+    name: '',
+    company: '',
+    phone: '',
+    email: ''
   }
   fleets = {
     curtainSide: 0,
@@ -134,15 +138,15 @@ export class EditProfileComponent implements OnInit {
   submitDisabled = false;
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
-    private route: ActivatedRoute, private location: Location, private HereMap: HereMapService) {
+    private route: ActivatedRoute, private location: Location, private HereMap: HereMapService, private countryStateCity: CountryStateCityService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.searchLocation(); // search location on keyup
     this.companyID = this.route.snapshot.params[`carrierID`];
     if (this.companyID) {
-      this.fetchCarrier();
+      await this.fetchCarrier();
     }
     // $(document).ready(() => {
     //   this.companyForm = $('#companyForm').validate();
@@ -152,7 +156,7 @@ export class EditProfileComponent implements OnInit {
     this.headerFnService.callHeaderFn();
   }
 
-  fetchCarrier() {
+  async fetchCarrier() {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe(async (result: any) => {
         this.carriers = result.Items[0];
@@ -171,7 +175,7 @@ export class EditProfileComponent implements OnInit {
         this.userName = this.carriers.userName;
         this.carrierName = this.carriers.carrierName;
         this.password = this.carriers.password,
-        
+
           // carrierBusinessName = '';
           this.findingWay = this.carriers.findingWay;
         this.firstName = this.carriers.firstName;
@@ -191,18 +195,18 @@ export class EditProfileComponent implements OnInit {
           trucks: this.carriers.fleets.trucks,
         };
         this.addressDetails = this.carriers.addressDetails;
-        if(this.carriers.referral){
-          this.referral.name=this.carriers.referral.name
-          this.referral.email=this.carriers.referral.email
-          this.referral.phone=this.carriers.referral.phone
-          this.referral.company=this.carriers.referral.company  
+        if (this.carriers.referral) {
+          this.referral.name = this.carriers.referral.name
+          this.referral.email = this.carriers.referral.email
+          this.referral.phone = this.carriers.referral.phone
+          this.referral.company = this.carriers.referral.company
         }
         if (this.carriers.addressDetails !== undefined) {
           for (let a = 0; a < this.carriers.addressDetails.length; a++) {
             const countryCode = this.carriers.addressDetails[a].countryCode;
             const stateCode = this.carriers.addressDetails[a].stateCode;
-            this.fetchStates(countryCode, a);
-            this.fetchCities(countryCode, stateCode, a);
+            await this.fetchStates(countryCode, a);
+            await this.fetchCities(countryCode, stateCode, a);
           }
         }
         this.banks = this.carriers.banks;
@@ -211,8 +215,8 @@ export class EditProfileComponent implements OnInit {
             for (let a = 0; a < this.carriers.banks[i].addressDetails.length; a++) {
               const countryCode = this.carriers.banks[i].addressDetails[a].countryCode;
               const stateCode = this.carriers.banks[i].addressDetails[a].stateCode;
-              this.fetchBankStates(countryCode, a, i);
-              this.fetchBankCities(countryCode, stateCode, a, i);
+              await this.fetchBankStates(countryCode, a, i);
+              await this.fetchBankCities(countryCode, stateCode, a, i);
             }
           }
         }
@@ -224,7 +228,7 @@ export class EditProfileComponent implements OnInit {
   /**
     * address
     */
-   defaultYardFn(e: any, index: number) {
+  defaultYardFn(e: any, index: number) {
     if (e === true) {
       this.addressDetails[index].defaultYard = true;
       this.yardDefault = true;
@@ -238,17 +242,17 @@ export class EditProfileComponent implements OnInit {
       this.addressDetails[index].defaultYard = false;
     }
   }
-  fetchStates(countryCode: any, index: any) {
-    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async fetchStates(countryCode: any, index: any) {
+    this.addressDetails[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  fetchCities(countryCode: any, stateCode: any, index: any) {
-    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchCities(countryCode: any, stateCode: any, index: any) {
+    this.addressDetails[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  fetchBankStates(countryCode: any, index: any, bankIndex: any) {
-    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+  async fetchBankStates(countryCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].bankStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  fetchBankCities(countryCode: any, stateCode: any, index: any, bankIndex: any) {
-    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async fetchBankCities(countryCode: any, stateCode: any, index: any, bankIndex: any) {
+    this.banks[bankIndex].addressDetails[index].bankCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
@@ -334,30 +338,30 @@ export class EditProfileComponent implements OnInit {
   }
   async getAddressDetail(id) {
     let result = await this.apiService
-    .getData(`pcMiles/detail/${id}`).toPromise();
+      .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
   }
-  getStates(countryCode: any, index: any) {
+  async getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
     this.addressDetails[index].cityName = '';
-    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.addressDetails[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getCities(stateCode: any, index: any, countryCode: any) {
+  async getCities(stateCode: any, index: any, countryCode: any) {
     this.addressDetails[index].cityName = '';
-    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.addressDetails[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  getBankStates(countryCode: any, index: any, bankIndex: any) {
+  async getBankStates(countryCode: any, index: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[index].stateCode = '';
     this.banks[bankIndex].addressDetails[index].cityName = '';
-    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.banks[bankIndex].addressDetails[index].bankStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+  async getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[index].cityName = '';
-    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.banks[bankIndex].addressDetails[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
@@ -416,7 +420,7 @@ export class EditProfileComponent implements OnInit {
     if (event === 'mailing') {
       this.addressDetails[index].defaultYard = false;
     }
-      }
+  }
   async userAddress(i, item) {
     this.addressDetails[i][`userLocation`] = item.address;
     const result = await this.getAddressDetail(item.place_id);
@@ -475,7 +479,7 @@ export class EditProfileComponent implements OnInit {
       }
     }
     for (const op of this.banks) {
-      for ( const addressElement of op.addressDetails) {
+      for (const addressElement of op.addressDetails) {
         delete addressElement.bankStates;
         delete addressElement.bankCities;
         if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
@@ -502,20 +506,20 @@ export class EditProfileComponent implements OnInit {
     for (let i = 0; i < this.addressDetails.length; i++) {
       if (this.addressDetails[i].addressType === 'yard') {
         if (this.addressDetails[i].manual) {
-         if (this.addressDetails[i].countryCode !== '' &&
-         this.addressDetails[i].stateCode !== '' &&
-         this.addressDetails[i].cityName !== '' &&
-         this.addressDetails[i].zipCode !== '' &&
-         this.addressDetails[i].address !== '') {
-           this.yardAddress = true;
-         }
+          if (this.addressDetails[i].countryCode !== '' &&
+            this.addressDetails[i].stateCode !== '' &&
+            this.addressDetails[i].cityName !== '' &&
+            this.addressDetails[i].zipCode !== '' &&
+            this.addressDetails[i].address !== '') {
+            this.yardAddress = true;
+          }
         } else if (!this.addressDetails[i].manual) {
-         if (this.addressDetails[i][`userLocation`] !== '' ) {
-           this.yardAddress = true;
-         }
+          if (this.addressDetails[i][`userLocation`] !== '') {
+            this.yardAddress = true;
+          }
         }
         break;
-    } else {
+      } else {
         this.yardAddress = false;
       }
     }
@@ -558,8 +562,8 @@ export class EditProfileComponent implements OnInit {
         uploadedLogo: this.uploadedLogo
 
       };
-      if(this.findingWay=="Referral"){
-        data["referral"]=this.referral
+      if (this.findingWay == "Referral") {
+        data["referral"] = this.referral
       }
       if (data.bizCountry === 'CA') {
         data.MC = null;
@@ -621,10 +625,10 @@ export class EditProfileComponent implements OnInit {
   throwErrors() {
     from(Object.keys(this.errors))
       .subscribe((v) => {
-        if(v === 'carrierName'){
+        if (v === 'carrierName') {
           $('[name="' + v + '"]')
-          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-          .addClass('error');
+            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+            .addClass('error');
         }
       });
   }

@@ -217,9 +217,9 @@ export class TripListComponent implements OnInit {
             result.Items[i].planCarrierId = element2.carrierID;
           }
           if(element.carrierIDs) {
-            result.Items[i].carrierIdCount = element.carrierIDs.length;  
+            result.Items[i].carrierIdCount = element.carrierIDs.length;
           }
-          
+
         }
 
         if (element2.driverID !== '' && element2.driverID !== undefined) {
@@ -263,7 +263,7 @@ export class TripListComponent implements OnInit {
       } else {
         element.canEdit = false;
       }
-      
+
       if (element.tripStatus == 'confirmed') {
         element.showStatus = true;
         this.confirmedTrips.push(result.Items[i]);
@@ -520,8 +520,11 @@ export class TripListComponent implements OnInit {
     this.apiService.postData('trips/updateStatus', tripObj).subscribe(async (result: any) => {
       this.statDisabled = false;
       if(result) {
+        if(this.tripStatus  === 'cancelled' || this.tripStatus  === 'delivered' || this.tripStatus  === 'tonu') {
+          this.trips[this.tripDraw][this.recIndex].canEdit = true;  
+        }
         if(this.activeTab == 'all') {
-          this.trips[this.tripDraw][this.recIndex].tripStatus = this.tripStatus;
+          this.trips[this.tripDraw][this.recIndex].tripStatus
           if(this.tripStatus === 'tonu') {
             this.trips[this.tripDraw][this.recIndex].tripStatus = this.trips[this.tripDraw][this.recIndex].tripStatus.toUpperCase();
           }
@@ -539,6 +542,7 @@ export class TripListComponent implements OnInit {
           } else if(this.activeTab  == 'cancelled') {
             this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'delivered') {
+            this.deliveredTrips[this.recIndex].canEdit = true;
             this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
           } else if(this.activeTab  == 'tonu') {
             this.tonuTrips[this.recIndex].tripStatus = this.tripStatus;
@@ -573,6 +577,9 @@ export class TripListComponent implements OnInit {
         } else {
           this.records = true;
         }
+        result.Items.map((v) => {
+          v.url = `/dispatch/trips/trip-details/${v.tripID}`;
+        });
         this.fetchedRecordsCount += result.Count;
         this.getStartandEndVal('all');
 

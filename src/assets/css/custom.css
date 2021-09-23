@@ -2337,7 +2337,8 @@ table.dataTable thead th, table.dataTable thead td {
 
 /* choose file line height class end*/
 .adddriverpl {
-  padding-left: 73px;
+  /* padding-left: 73px; */
+  padding-left: 120px;
 }
 
 /* add orderpadding class start 11.05.21 */
@@ -2626,5 +2627,14 @@ input:checked + .sliderbtn:before {
 /* 04.09.21 account classes */
 .detailbox{
   min-height: 125px;
+}
+.nav-tabs {
+  border: none;
+}
 
+.preview--invoice.modal .modal-dialog{
+  max-width: 900px;
+}
+.email--invoice.modal .modal-dialog{
+  max-width: 600px;
 }

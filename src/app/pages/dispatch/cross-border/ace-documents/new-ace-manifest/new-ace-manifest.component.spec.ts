@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NewAceManifestComponent } from './new-ace-manifest.component';
 
@@ -6,7 +6,7 @@ describe('NewAceManifestComponent', () => {
   let component: NewAceManifestComponent;
   let fixture: ComponentFixture<NewAceManifestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NewAceManifestComponent ]
     })

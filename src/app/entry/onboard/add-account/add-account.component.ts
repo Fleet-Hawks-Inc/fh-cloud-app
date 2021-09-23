@@ -7,9 +7,10 @@ import { map, debounceTime, distinctUntilChanged, switchMap, catchError, retryWh
 import { from, Subject, throwError } from 'rxjs';
 import { HereMapService } from '../../../services';
 import { Location } from '@angular/common';
-import { CountryStateCity } from 'src/app/shared/utilities/countryStateCities';
+
 import { passwordStrength } from 'check-password-strength'
-import {Router} from '@angular/router'
+import { Router } from '@angular/router'
+import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 declare var $: any;
 @Component({
   selector: 'app-add-account',
@@ -42,11 +43,11 @@ export class AddAccountComponent implements OnInit {
   fax = '';
   bizCountry = null;
   uploadedLogo = '';
-  referral={
-    name:'',
-    company:'',
-    phone:'',
-    email:''
+  referral = {
+    name: '',
+    company: '',
+    phone: '',
+    email: ''
   }
   fleets = {
     curtainSide: 0,
@@ -141,11 +142,12 @@ export class AddAccountComponent implements OnInit {
   };
   siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
   constructor(private apiService: ApiService,
-              private toaster: ToastrService,
-              private accountService: AccountService,
-              private location: Location,
-              private HereMap: HereMapService,
-              private router: Router) {
+    private toaster: ToastrService,
+    private accountService: AccountService,
+    private location: Location,
+    private HereMap: HereMapService,
+    private router: Router,
+    private countryStateCity: CountryStateCityService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -157,9 +159,9 @@ export class AddAccountComponent implements OnInit {
     });
   }
 
-  getCarrierData(){
-    this.apiService.getData('carriers/getCarrier').subscribe((res)=>{
-      if(res.Items.length > 0) {
+  getCarrierData() {
+    this.apiService.getData('carriers/getCarrier').subscribe((res) => {
+      if (res.Items.length > 0) {
         let data = res.Items[0];
         this.firstName = data.firstName;
         this.lastName = data.lastName;
@@ -169,7 +171,7 @@ export class AddAccountComponent implements OnInit {
         this.email = data.email;
         this.findingWay = data.findingWay;
         this.carrierID = data.carrierID;
-        this.referral=data.referral
+        this.referral = data.referral
       }
     });
   }
@@ -186,7 +188,7 @@ export class AddAccountComponent implements OnInit {
   /**
    * address
    */
-   clearUserLocation(i) {
+  clearUserLocation(i) {
     this.addressDetails[i][`userLocation`] = '';
     this.addressDetails[i].geoCords.lat = '';
     this.addressDetails[i].geoCords.lng = '';
@@ -266,27 +268,27 @@ export class AddAccountComponent implements OnInit {
       this.banks[bankIndex].addressDetails[i].address = '';
     }
   }
-  getStates(countryCode: any, index: any) {
+  async getStates(countryCode: any, index: any) {
     this.addressDetails[index].stateCode = '';
     this.addressDetails[index].cityName = '';
-    this.addressDetails[index].states = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.addressDetails[index].states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getCities(stateCode: any, index: any, countryCode: any) {
+  async getCities(stateCode: any, index: any, countryCode: any) {
     this.addressDetails[index].cityName = '';
-    this.addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.addressDetails[index].cities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.addressDetails[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.addressDetails[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.addressDetails[index].cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
-  getBankStates(countryCode: any, index: any, bankIndex: any) {
+  async getBankStates(countryCode: any, index: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[index].stateCode = '';
     this.banks[bankIndex].addressDetails[index].cityName = '';
-    this.banks[bankIndex].addressDetails[index].bankStates = CountryStateCity.GetStatesByCountryCode([countryCode]);
+    this.banks[bankIndex].addressDetails[index].bankStates = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
   }
-  getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
+  async getBankCities(stateCode: any, index: any, countryCode: any, bankIndex: any) {
     this.banks[bankIndex].addressDetails[index].cityName = '';
-    this.banks[bankIndex].addressDetails[index].countryName = CountryStateCity.GetSpecificCountryNameByCode(countryCode);
-    this.banks[bankIndex].addressDetails[index].stateName = CountryStateCity.GetStateNameFromCode(stateCode, countryCode);
-    this.banks[bankIndex].addressDetails[index].bankCities = CountryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.banks[bankIndex].addressDetails[index].countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
+    this.banks[bankIndex].addressDetails[index].stateName = await this.countryStateCity.GetStateNameFromCode(stateCode, countryCode);
+    this.banks[bankIndex].addressDetails[index].bankCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
     if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
@@ -340,7 +342,7 @@ export class AddAccountComponent implements OnInit {
   async userAddress(i, item) {
     this.addressDetails[i][`userLocation`] = item.address;
     let result = await this.getAddressDetail(item.place_id);
-    if(result != undefined) {
+    if (result != undefined) {
       this.addressDetails[i].geoCords.lat = result.position.lat;
       this.addressDetails[i].geoCords.lng = result.position.lng;
       this.addressDetails[i].countryName = result.address.CountryFullName;
@@ -357,7 +359,7 @@ export class AddAccountComponent implements OnInit {
 
   async getAddressDetail(id) {
     let result = await this.apiService
-    .getData(`pcMiles/detail/${id}`).toPromise();
+      .getData(`pcMiles/detail/${id}`).toPromise();
     return result;
   }
 
@@ -396,9 +398,9 @@ export class AddAccountComponent implements OnInit {
     }
   }
   setYardDefault(event: any, index: number) {
-if (event === 'mailing') {
-  this.addressDetails[index].defaultYard = false;
-}
+    if (event === 'mailing') {
+      this.addressDetails[index].defaultYard = false;
+    }
   }
   predefinedAccounts() {
     this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
@@ -424,7 +426,7 @@ if (event === 'mailing') {
       }
     }
     for (const op of this.banks) {
-      for( const addressElement of op.addressDetails) {
+      for (const addressElement of op.addressDetails) {
         delete addressElement.bankStates;
         delete addressElement.bankCities;
         if (addressElement.countryCode !== '' && addressElement.stateCode !== '' && addressElement.cityName !== '') {
@@ -494,7 +496,7 @@ if (event === 'mailing') {
         addressDetails: this.addressDetails,
         phone: this.phone,
         fax: this.fax,
-        
+
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -506,8 +508,8 @@ if (event === 'mailing') {
         },
         banks: this.banks
       };
-      if(this.findingWay=="Referral"){
-        data["referral"]=this.referral
+      if (this.findingWay == "Referral") {
+        data["referral"] = this.referral
       }
       if (data.bizCountry === 'CA') {
         data.MC = null;
@@ -524,7 +526,7 @@ if (event === 'mailing') {
       this.apiService.putData('carriers', formData, true).subscribe({
         complete: () => {
 
-         },
+        },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -545,7 +547,7 @@ if (event === 'mailing') {
             });
         },
         next: (res) => {
-          localStorage.setItem("isProfileComplete","true")
+          localStorage.setItem("isProfileComplete", "true")
           this.predefinedAccounts();
           this.response = res;
           this.submitDisabled = true;

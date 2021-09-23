@@ -173,7 +173,7 @@
                                  <a class="btn btn-success btn-sm text-light" (click)="openModal('form');"><i
                                        class="fas fa-plus"></i>
                                  </a>
-                                 <a data-toggle="modal" (click)="fetchData('customer')" href="javascript:;"
+                                 <a data-toggle="modal" (click)="fetchData('', 'customer')" href="javascript:;"
                                     class="modal-with-form btn btn-sm btn-success ml-2">
                                        <em class="fas fa-sync"></em>
                                     </a>
@@ -196,7 +196,6 @@
                                     </div>
                                     <div class="row pl-3 pr-3">
                                        <div class="col-lg-12 pr-0" >
-
 
                                           <div style="max-height: 200px;overflow-y: auto; overflow-x: hidden;"
                                              *ngFor="let item of customerSelected">
@@ -238,8 +237,8 @@
                                                    <label class="control-label"><span class=" font-weight-bold">Type:</span>
                                                       {{address.aType | titlecase}}</label>
                                                 </div>
-
-                                                <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
+                                                
+                                                <input *ngIf="item.adrs?.length > 1" class="address-icon" type="radio" name="select" (change)="getAddressID($event.target.checked, i, address.addressID)" [value]="address.addressID" [checked]="address.isChecked">
 
 
                                              </div>
@@ -445,7 +444,7 @@
                                                                class="modal-with-form btn btn-sm btn-success">
                                                                <em class="fas fa-plus"></em>
                                                            </a>
-                                                           <a data-toggle="modal" (click)="fetchData('shipper')" href="javascript:;"
+                                                           <a data-toggle="modal" (click)="fetchData(i, 'shipper')" href="javascript:;"
                                                            class="modal-with-form btn btn-sm btn-success ml-2">
                                                                <em class="fas fa-sync"></em>
                                                             </a>
@@ -673,17 +672,7 @@
                                                                </div>
 
                                                             </div>
-                                                            <div class="row mt-3 mr-4">
-
-                                                               <div class="col-12">
-                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer
-                                                                     PO#
-                                                                  </label>
-                                                                  <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="pick.customerPO" name="customerPO_{{i}}{{w}}" type="text"
-                                                                     class="form-control h-auto"></ng-select>
-
-                                                               </div>
-                                                            </div>
+                                                            
                                                             <div *ngFor="let commodity of pick.commodity; let z = index;">
                                                                <div class="row mt-3 mr-4 align-items-center">
                                                                   <div class="col-6">
@@ -800,6 +789,15 @@
 
                                                             </div>
 
+                                                            <div class="row mt-3 mr-4">
+
+                                                               <div class="col-12">
+                                                                  <label class="control-label font-weight-bold labelmt text-3 text-dark">Customer PO#</label>
+                                                                  <ng-select multiple="true" notFoundText="Please type to add numbers" [addTag]="true" placeholder="eg. 0006,123" [(ngModel)]="pick.customerPO" name="customerPO_{{i}}{{w}}" type="text"
+                                                                     class="form-control h-auto"></ng-select>
+                                                               </div>
+                                                            </div>
+
                                                          </div>
                                                       </div>
                                                       <div class="row mt-3 mr-4">
@@ -883,7 +881,7 @@
                                                                   class="modal-with-form btn btn-sm btn-success">
                                                                   <em class="fas fa-plus"></em>
                                                                </a>
-                                                               <a data-toggle="modal" (click)="fetchData('receiver');" href="javascript:;"
+                                                               <a data-toggle="modal" (click)="fetchData(i, 'receiver');" href="javascript:;"
                                                                   class="modal-with-form btn btn-sm btn-success ml-2">
                                                                      <em class="fas fa-sync"></em>
                                                                   </a>
@@ -1264,10 +1262,7 @@
                                                                   </div>
 
                                                                </div>
-                                                               <div class="row mt-3">
-
-
-                                                               </div>
+                                                               
                                                             </div>
                                                             <div class="row mt-3">
 
@@ -1940,7 +1935,7 @@
                                     <div class="col-lg-12 pl-3 mb-2">
                                        <div class="checkbox-custom checkbox-default">
                                           <input type="checkbox" id="ZeroRated" (change)="calculateAmount()" [(ngModel)]="orderData.zeroRated" name="zeroRated">
-                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Exempt </label>
+                                          <label class="control-label font-weight-semibold labelmt text-3 text-dark" for="ZeroRated">Tax </label>
                                        </div>
                                     </div>
                                     <div class="col-lg-12" *ngIf="!orderData.zeroRated">

@@ -13,6 +13,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   settlements = [];
   paymentID;
   paymentData = {
+    paymentEnity: '',
     paymentTo: null,
     entityId: null,
     paymentNo: '',
@@ -36,6 +37,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
   accounts = [];
   accountsObjects = {};
   accountsIntObjects = {};
+  showModal = false;
+  downloadDisabled = false;
 
   constructor(
     private listService: ListService,
@@ -75,7 +78,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       } else {
         this.paymentData.payMode = '';
       }
-      this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
+      // this.paymentData.paymentTo = this.paymentData.paymentTo.replace("_", " ");
+      this.paymentData.paymentEnity = this.paymentData.paymentTo.replace("_", " ");
     });
   }
 
@@ -94,5 +98,19 @@ export class DriverPaymentsDetailComponent implements OnInit {
     this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
       this.accountsIntObjects = result;
     });
+  }
+
+  downloadPaymentPdf() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      data: this.paymentData,
+    }
+    this.listService.triggerDownloadPaymentPdf(obj);
+    this.downloadDisabled = true;
+
+    setTimeout(() => {
+      this.downloadDisabled = false;
+    }, 15000)
   }
 }

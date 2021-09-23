@@ -6,13 +6,14 @@ export const environment = {
   production: false,
   isFeatureEnabled: true,
 
-
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+
   //BaseUrl: 'http://localhost:3000/api/v1/',
-  //AccountServiceUrl: 'http://localhost:4002/api/v1/',
+  AccountServiceUrl: 'http://localhost:4002/api/v1/',
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
-  AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
+  // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
+
 
 
   isFleetEnabled: true,
@@ -66,4 +67,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.

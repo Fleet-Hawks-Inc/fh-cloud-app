@@ -1,10 +1,8 @@
-import { EventEmitter, Injectable, Output, TemplateRef, ViewChild } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable, Subject } from "rxjs";
+import { Subject, BehaviorSubject } from "rxjs";
 import { AccountService } from 'src/app/services/account.service';
-import { HttpClient } from "@angular/common/http"
-import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 @Injectable({
   providedIn: "root",
 })
@@ -17,7 +15,7 @@ export class ListService {
 
   public isTrueDataSource = new BehaviorSubject<boolean>(false);
   isTrueList = this.isTrueDataSource.asObservable();
-  
+
 
   shipperObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   shipperObjectList = this.shipperObjectDataSource.asObservable();
@@ -92,13 +90,16 @@ export class ListService {
   contactsObjectDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   contactsList = this.contactsObjectDataSource.asObservable();
 
+  paymentPdfObjDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  paymentPdfList = this.paymentPdfObjDataSource.asObservable();
+
 
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
   public popup: Subject<any> = new Subject<any>();
 
-  constructor(private apiService: ApiService,private accountService: AccountService,private modalService: NgbModal) {}
+  constructor(private apiService: ApiService, private accountService: AccountService, private modalService: NgbModal) { }
 
   fetchVendors() {
     this.apiService.getData("contacts/get/type/vendor").subscribe((result: any) => {
@@ -173,7 +174,7 @@ fetchReceivers() {
       .getData(`servicePrograms`)
       .subscribe((result: any) => {
         this.serviceProgramDataSource.next(result.Items);
-    });
+      });
   }
   // fetchAssetModels() {
   //   this.apiService
@@ -210,7 +211,7 @@ fetchReceivers() {
     let promise: any = await this.apiService.getData(`issues/vehicle/${id}`).toPromise();
     let newIssues = [];
     promise.Items.filter(elem => {
-      if(elem.currentStatus == 'OPEN') {
+      if (elem.currentStatus == 'OPEN') {
         newIssues.push(elem);
       }
     })
@@ -222,7 +223,7 @@ fetchReceivers() {
     let promise: any = await this.apiService.getData(`issues/asset/${id}`).toPromise();
     let newIssues = [];
     promise.Items.filter(elem => {
-      if(elem.currentStatus == 'OPEN') {
+      if (elem.currentStatus == 'OPEN') {
         newIssues.push(elem);
       }
     })
@@ -235,7 +236,7 @@ fetchReceivers() {
     });
   }
 
-  appendIssues(data: any){
+  appendIssues(data: any) {
     this._subject.next(data);
     this.fetchAppendIssues();
   }
@@ -249,7 +250,7 @@ fetchReceivers() {
   fetchChartAccounts() {
     this.accountService.getData('chartAc/fetch/list').subscribe((res: any) => {
       this.accountsDataSource.next(res);
-      });
+    });
   }
 
   fetchShippersByIDs() {
@@ -270,7 +271,7 @@ fetchReceivers() {
     });
   }
 
-  public changeButton(value: boolean){
+  public changeButton(value: boolean) {
     this.isTrueDataSource.next(value);
   }
 
@@ -278,15 +279,19 @@ fetchReceivers() {
   triggerModal(value: any) {
     this.addressDataSource.next(value)
   }
-  openPaymentChequeModal(value){
+  openPaymentChequeModal(value) {
     this.paymentModelDataSource.next(value);
   }
 
   triggerPaymentSave(value) {
     this.paymentSaveDataSource.next(value);
   }
-  
-  separateModals(value){
+
+  separateModals(value) {
     this.otherModelDataSource.next(value);
+  }
+
+  triggerDownloadPaymentPdf(value) {
+    this.paymentPdfObjDataSource.next(value);
   }
 }

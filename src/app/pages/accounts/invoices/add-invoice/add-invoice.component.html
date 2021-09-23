@@ -1,13 +1,15 @@
 <section class="body">
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header">
-        <div class="row pr-5 " style="padding-top:10px;">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{ pageTitle }}</div>
-          <div class="col-md-8  col-lg-8 text-right pr-4"> <a routerLink="/accounts/invoices/list"
-              class="btn btn-default"><i class="fas fa-list"></i> All Invoices</a> </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/accounts/invoices/list"
+              class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Invoices</a> </div>
         </div>
       </header>
+
+     
       <section class="card mt-0 mb-4">
         <div class="card-body">
           <div class="row">
@@ -327,7 +329,7 @@
                                       </div>
                                   </div>
                                   <div class="row">
-                                    <div class="col-lg-5 offset-lg-2">
+                                    <div class="col-lg-6 offset-lg-1">
                                       <div class="row mt-4">
                                         <div class="col-lg-5">
                                           <input type="text" class="form-control" disabled value="Discount">
@@ -337,7 +339,7 @@
                                             <div class="col-lg-6 pr-0">
                                               <input type="number" min="0" class="form-control" placeholder="0.00" [(ngModel)]="invoiceData.discount" name="discount" (change)="calculateAmount()">
                                             </div>
-                                            <div class="col-lg-6 pl-0">
+                                            <div class="col-lg-6">
                                               <ng-select class="form-control populate" [(ngModel)]="invoiceData.discountUnit" name="discountUnit" (change)="calculateAmount()">
                                                 <ng-option value="%">%</ng-option>
                                                 <ng-option value="CAD">CAD</ng-option>
@@ -381,11 +383,11 @@
                                     </div>
                                   </div>
                                   <div class="row">
-                                    <div class="col-lg-10 offset-lg-2">
+                                    <div class="col-lg-10 offset-lg-1">
                                       <label class="control-label font-weight-bold text-3 text-dark"
                                         for="inputDefault">Province/State</label>
                                     </div>
-                                    <div class="col-lg-5 offset-lg-2">
+                                    <div class="col-lg-6 offset-lg-1">
                                       <ng-select
                                       [(ngModel)]="invoiceData.invStateProvince"
                                       name="invStateProvince"
@@ -396,7 +398,7 @@
                                     </div>
                                   </div>
                                   <div class="row">
-                                    <div class="col-lg-7 offset-lg-2">
+                                    <div class="col-lg-6 offset-lg-1">
                                           <div class="row mt-4" *ngFor="let item of invoiceData.taxesInfo; let i = index;">
                                              <div class="col-lg-5">
                                                 <input type="text" class="form-control" value="{{item.name}}" disabled>
@@ -416,7 +418,7 @@
                                              </div>
                                           </div>
                                     </div>
-                                    <div class="col-lg-3">
+                                    <div class="col-lg-5">
                                           <div class="row mt-4 pb-1 mb-1" *ngFor="let item of newTaxes; let i = index">
                                              <div class="col-lg-12 pt-1">
                                                 <p class="text-right m-0">{{item.taxAmount ? item.taxAmount : 0}}</p>
@@ -447,8 +449,8 @@
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
                       <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                      <button class="btn btn-success mr-2" type="button" *ngIf="!invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="addInvoice()">Save</button>
-                      <button class="btn btn-success mr-2" type="button" *ngIf="invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="updateInvoice()">Update</button>
+                      <button class="btn btn-success" type="button" *ngIf="!invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="addInvoice()">Save</button>
+                      <button class="btn btn-success" type="button" *ngIf="invID" [disabled]="!invForm.form.valid || submitDisabled" (click)="updateInvoice()">Update</button>
                       <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a> -->
                     </div>
                   </div>

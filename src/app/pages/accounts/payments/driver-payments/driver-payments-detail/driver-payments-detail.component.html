@@ -4,11 +4,13 @@
             <header class="page-header">
                 <div class="row pr-5 " style="padding-top:10px;">
                     <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                      {{ paymentData.paymentTo | titlecase }} Payment# - 1279430
+                      {{ paymentData.paymentEnity | titlecase }} Payment# - {{ paymentData.paymentNo }}
                     </div>
                     <div class="col-md-8  col-lg-8 text-right pr-4">
+                        <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-3"><i
+                            class="fas fa-download"></i> Payment PDF</button>
                         <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-sm btn-default"><i
-                                class="fas fa-list"></i> Payment List</a>
+                                class="fas fa-list"></i> Payment List</a> 
                     </div>
                 </div>
             </header>
@@ -32,14 +34,14 @@
                                                 <i class="fa fa-user text-7"></i>
                                                 <br>
                                                 <p class="mb-0 text-5 font-weight-bold text-dark">
-                                                    <span *ngIf="paymentData.paymentTo == 'driver'">
+                                                    <span *ngIf="paymentData.paymentEnity == 'driver'">
                                                         {{ drivers[paymentData.entityId] | titlecase}}
                                                     </span>
-                                                    <span *ngIf="paymentData.paymentTo !== 'driver'">
+                                                    <span *ngIf="paymentData.paymentEnity !== 'driver'">
                                                         {{ contacts[paymentData.entityId] | titlecase}}
                                                     </span>
                                                 </p>
-                                                <p class="mb-0 text-uppercase">{{ paymentData.paymentTo }}</p>
+                                                <p class="mb-0 text-uppercase">{{ paymentData.paymentEnity }}</p>
                                             </div>
                                         </div>
 
@@ -62,10 +64,12 @@
                                                         <td width="40%" class="back-color-gray font-weight-bold">
                                                             Settlement(s)</td>
                                                         <td width="60%">
-                                                            <!-- <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
-                                                                {{ settlements[settl] }}
-                                                                <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
-                                                            </span> -->
+                                                            <span *ngIf="paymentData.settlementIds.length > 0">
+                                                                <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
+                                                                    {{ settlements[settl] }}
+                                                                    <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
+                                                                </span>
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -127,7 +131,7 @@
                                             <tr *ngFor="let data of paymentData.transactionLog">
                                               <td><span *ngIf="data.actIDType === 'actID'">{{accountsObjects[data.accountID] | titlecase}}</span>
                                                 <span *ngIf="data.actIDType === 'actIntID'">{{accountsIntObjects[data.accountID] | titlecase}}</span></td>
-                                                <td class="text-capitalize">{{ paymentData.paymentTo }} payment</td>
+                                                <td class="text-capitalize">{{ paymentData.paymentEnity }} payment</td>
                                                 <td>
                                                     <span *ngIf="data.trxType === 'debit'">
                                                         {{ data.amount | number : '1.2-2' }} {{ data.currency }}
@@ -157,3 +161,4 @@
         </section>
     </div>
 </section>
+<app-payment-pdfs></app-payment-pdfs>
