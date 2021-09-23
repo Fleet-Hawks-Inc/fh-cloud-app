@@ -16,7 +16,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2" align="center">
-                                        <h1 class="font-weight-bold text-dark f-40">Driver Payment Advance</h1>
+                                        <h1 class="font-weight-bold text-dark f-40">{{ pdfTitle }}</h1>
                                     </td>
                                 </tr>
                                 <tr>
@@ -330,7 +330,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <div class="html2pdf__page-break"></div>
+                                        <div class="html2pdf__page-break" *ngIf="paymentData.paymentTo !== 'employee'"></div>
                                     </td>
                                 </tr>
                                 <tr>
