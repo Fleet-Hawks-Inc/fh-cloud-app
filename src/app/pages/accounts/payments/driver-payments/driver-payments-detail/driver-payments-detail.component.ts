@@ -38,6 +38,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   accountsObjects = {};
   accountsIntObjects = {};
   showModal = false;
+  downloadDisabled = false;
 
   constructor(
     private listService: ListService,
@@ -106,5 +107,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
       data: this.paymentData,
     }
     this.listService.triggerDownloadPaymentPdf(obj);
+    this.downloadDisabled = true;
+
+    setTimeout(() => {
+      this.downloadDisabled = false;
+    }, 15000)
   }
 }
