@@ -18,7 +18,6 @@ declare var $: any;
 })
 export class OrdersListComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-  @ViewChild('confirmEmailModal', { static: true }) confirmEmailModal: TemplateRef<any>;
   
   dataMessage: string = Constants.FETCHING_DATA;
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
@@ -481,24 +480,7 @@ export class OrdersListComponent implements OnInit {
     
   // }
 
-  async confirmEmail(order) {
-    this.emailData.emails = [];
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: 'email--invoice'
-    };
-    this.confirmRef = this.modalService.open(this.confirmEmailModal, ngbModalOptions)
-    this.newOrderID = order.orderID;
-    this.newOrderNumber = order.orderNumber;
-    this.newCustomerID = order.customerID;
-    let email = await this.fetchCustomersByID(order.customerID);
-    if(email != undefined && email != '') {
-      this.emailData.emails = [...this.emailData.emails, {label: email}];
-    }
-    
-    
-    
-  }
+
 
      /*
    * Get all customers's IDs of names from api
