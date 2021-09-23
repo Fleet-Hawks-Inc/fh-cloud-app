@@ -1,41 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService, ListService } from 'src/app/services';
-
 @Component({
-  selector: 'app-employee-payment-list',
-  templateUrl: './employee-payment-list.component.html',
-  styleUrls: ['./employee-payment-list.component.css']
+  selector: 'app-vendor-payment-list',
+  templateUrl: './vendor-payment-list.component.html',
+  styleUrls: ['./vendor-payment-list.component.css']
 })
-export class EmployeePaymentListComponent implements OnInit {
-
+export class VendorPaymentListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
-  employees = [];
   payments = [];
+  vendors = [];
   filter = {
     startDate: null,
     endDate: null,
     paymentNo: null
-  }
+  };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   lastItemSK = '';
   loaded = false;
   disableSearch = false;
-  constructor( private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
+  constructor(private toaster: ToastrService,
+              private accountService: AccountService,
+              private apiService: ApiService) { }
 
-  ngOnInit() {
-    this.fetchEmployees();
+  ngOnInit(): void {
     this.fetchPayments();
-  }
-
-  fetchEmployees() {
-    this.apiService.getData(`contacts/get/emp/list`).subscribe((result: any) => {
-      this.employees = result;
-    })
+    this.fetchVendors();
   }
 
   fetchPayments(refresh?: boolean) {
@@ -50,12 +43,12 @@ export class EmployeePaymentListComponent implements OnInit {
      } else {
        searchParam = null;
      }
-      this.accountService.getData(`employee-payments/paging?paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-        if(result.length === 0) {
+      this.accountService.getData(`vendor-payments/paging?paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+        if (result.length === 0) {
           this.disableSearch = false;
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        if(result.length > 0) {
+        if (result.length > 0) {
           this.disableSearch = false;
           if (result[result.length - 1].sk !== undefined) {
             this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
@@ -64,34 +57,41 @@ export class EmployeePaymentListComponent implements OnInit {
           }
 
           result.map((v) => {
-            v.url = `/accounts/payments/employee-payments/detail/${v.paymentID}`;
+            v.url = `/accounts/payments/vendor-payments/detail/${v.paymentID}`;
             v.payMode = v.payMode.replace('_', ' ');
             this.payments.push(v);
           });
           this.loaded = true;
         }
-
-      })
+      });
     }
   }
-
+  fetchVendors() {
+    this.apiService.getData(`contacts/get/list/vendor`)
+      .subscribe((result: any) => {
+        this.vendors = result;
+      });
+  }
   searchFilter() {
     if (this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
       this.disableSearch = true;
       if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
+        this.disableSearch = false;
         return false;
       } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
+        this.disableSearch = false;
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
-        this.toaster.error("Start date should be less then end date");
+        this.toaster.error('Start date should be less then end date');
+        this.disableSearch = false;
         return false;
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
@@ -134,4 +134,5 @@ export class EmployeePaymentListComponent implements OnInit {
     this.lastItemSK = '';
     this.fetchPayments();
   }
+
 }

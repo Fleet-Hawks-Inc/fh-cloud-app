@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,6 +24,8 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild('generateInvoiceModal', { static: true }) generateInvoiceModal: TemplateRef<any>;
   @ViewChild('previewInvoiceModal', { static: true }) previewInvoiceModal: TemplateRef<any>;
   @ViewChild('emailInvoiceModal', { static: true }) emailInvoiceModal: TemplateRef<any>;
+  @ViewChild('uploadBol', { static: true }) uploadBol: ElementRef;
+  
   
   @ViewChild(PdfViewerComponent, {static: false})
   private pdfComponent: PdfViewerComponent;
@@ -479,6 +481,12 @@ export class OrderDetailComponent implements OnInit {
       margin:       0.15,
       filename:     'invoice.pdf',
       image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true
+        },
       jsPDF:        { unit: 'in',  format: 'a4', orientation: 'portrait' },
 
     });
@@ -494,6 +502,12 @@ async generatePDF() {
         margin:       0.15,
         filename:     'invoice.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          dpi: 300,
+          letterRendering: true,
+          allowTaint: true,
+          useCORS: true
+        },
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
   
       }); 
@@ -614,7 +628,7 @@ async generatePDF() {
         let name = element.name.split('.');
         let ext = name[name.length - 1];
 
-        if (ext != 'doc' && ext != 'docx' && ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
+        if (ext != 'jpg' && ext != 'jpeg' && ext != 'png' && ext != 'pdf') {
           $('#bolUpload').val('');
           this.toastr.error('Only image and pdf files are allowed');
           return false;
@@ -663,6 +677,7 @@ async generatePDF() {
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
+        this.uploadBol.nativeElement.value = "";
         this.fetchOrder();
       })
     }

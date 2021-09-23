@@ -72,9 +72,9 @@
                                         <th class="text-2">Payment#</th>
                                         <th class="text-2">Date</th>
                                         <th class="text-2">Payment Mode</th>
-                                        <th class="text-2">Employee </th>
+                                        <th class="text-2">Vendor </th>
                                         <th class="text-2">Amount</th>
-                                        <th class="text-2">Action</th>
+                                        <!-- <th class="text-2">Action</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -89,7 +89,7 @@
                                         <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
                                         <td class="cursorpoint" [routerLink]="data.url">{{ employees[data.entityId] }}</td>
                                         <td class="cursorpoint" [routerLink]="data.url">{{ data.finalTotal | number : '1.2-2' }} CAD</td>
-                                        <td>
+                                        <!-- <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
@@ -102,7 +102,7 @@
                                                     routerLink="/accounts/payments/employee-payments/edit/{{ data.paymentID }}">Edit</a>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </tbody>
                             </table>

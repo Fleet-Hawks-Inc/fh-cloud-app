@@ -726,7 +726,7 @@
                                                             </h2>
                                                         </div>
                                                         <div class="col-6">
-                                                            <input type="file" (change)="selectDocuments($event)"
+                                                            <input type="file" #uploadBol (change)="selectDocuments($event)"
                                                                 multiple class="p-0 form-control pull-right mb-0"
                                                                 id="bolUpload" />
                                                         </div>
@@ -1165,12 +1165,12 @@
                                                                     </pdf-viewer>
                                                                 </td>
                                                             </tr>
-                                                            <!-- <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
+                                                            <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
                                                                 <td>
                                                                     <div class="html2pdf__page-break"></div>
-                                                                    <iframe src="newDoc.path" class="img-fluid rounded" height="200px" width="100%"></iframe>
+                                                                    <img crossorigin="*" [src]="newDoc.path" class="img-fluid rounded" height="200px" width="100%">
                                                                 </td>
-                                                            </tr> -->
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                     
@@ -1230,7 +1230,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" (click)="modal.dismiss('Cross click')">Cancel</button>
-            <button (click)="emailInv()" class="btn btn-success">Email Invoice</button>
+            <!-- <button (click)="emailInv()" class="btn btn-success">Email Invoice</button> -->
             <button class="btn btn-success" (click)="generate()">Print</button>
             <button *ngIf="!isInvoiced" [disabled]="generateBtnDisabled" (click)="generatePDF()" class="btn btn-success">Generate & Print</button>
         </div>

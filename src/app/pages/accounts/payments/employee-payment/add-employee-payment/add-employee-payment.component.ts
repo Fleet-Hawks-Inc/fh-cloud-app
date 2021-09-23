@@ -31,10 +31,15 @@ export class AddEmployeePaymentComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
+    fromDate: '',
+    toDate: '',
     accountID: null,
     payMode: null,
     payModeNo: "",
     payModeDate: null,
+    settledAmount: 0,
+    vacPayPer: 0,
+    vacPayAmount: 0,
     addition: [],
     deduction: [],
     paymentTotal: 0,
@@ -153,8 +158,9 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   fetchEmployees() {
-    this.apiService.getData(`contacts/get/list/employee`).subscribe((result: any) => {
+    this.apiService.getData(`contacts/get/emp/list`).subscribe((result: any) => {
       this.employees = result;
+      console.log('this.employees', this.employees);
     })
   }
   fetchAccounts() {
@@ -170,6 +176,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.payroll.amount = 0;
     this.paymentData.payroll.perHour = 0;
     this.paymentData.paymentTotal = 0;
+    this.paymentData.settledAmount = 0;
     this.paymentData.finalTotal = 0;
     this.paymentData.subTotal = 0;
     this.paymentData.advance = 0;
@@ -183,7 +190,9 @@ export class AddEmployeePaymentComponent implements OnInit {
       } else if (paymentInfo.payrollType === 'Flat') {
         this.paymentData.payroll.type = 'flat';
         this.paymentData.payroll.amount = Number(paymentInfo.payrollRate);
-        this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+        // this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+        this.paymentData.settledAmount = this.paymentData.payroll.amount;
+        this.paymentData.paymentTotal = Number(this.paymentData.settledAmount) + Number(this.paymentData.vacPayAmount);
         this.paymentData.finalTotal = this.paymentData.payroll.amount;
         this.paymentData.subTotal = this.paymentData.payroll.amount;
       }
@@ -196,13 +205,17 @@ export class AddEmployeePaymentComponent implements OnInit {
 
   EmpRateCalc() {
     this.paymentData.payroll.amount = Number(this.paymentData.payroll.perHour) * Number(this.paymentData.payroll.hours);
-    this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+    // this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+    this.paymentData.settledAmount = this.paymentData.payroll.amount;
+    this.paymentData.paymentTotal = Number(this.paymentData.settledAmount) + Number(this.paymentData.vacPayAmount);
     this.calculateFinalTotal();
   }
 
   empFlatRate() {
     this.paymentData.payroll.amount = Number(this.paymentData.payroll.amount);
-    this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+    // this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+    this.paymentData.settledAmount = this.paymentData.payroll.amount;
+    this.paymentData.paymentTotal = Number(this.paymentData.settledAmount) + Number(this.paymentData.vacPayAmount);
     this.calculateFinalTotal();
     this.calculatePayroll();
   }
@@ -304,7 +317,7 @@ export class AddEmployeePaymentComponent implements OnInit {
   }
 
   addRecord() {
-    if (this.paymentData.paymentTotal <= 0) {
+    if (this.paymentData.settledAmount <= 0) {
       this.toaster.error('Please enter valid amount');
       return false;
     }
@@ -345,9 +358,11 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.subTotal = Number(this.paymentData.subTotal);
     this.paymentData.taxes = Number(this.paymentData.taxes);
     this.paymentData.advance = Number(this.paymentData.advance);
-    this.paymentData.paymentTotal = Number(this.paymentData.paymentTotal);
+    this.paymentData.settledAmount = Number(this.paymentData.settledAmount);
     this.paymentData.additionTotal = Number(this.paymentData.additionTotal);
     this.paymentData.deductionTotal = Number(this.paymentData.deductionTotal);
+    this.paymentData.paymentTotal = Number(this.paymentData.vacPayAmount) + Number(this.paymentData.settledAmount);
+    this.paymentData.paymentTotal = Number(this.paymentData.paymentTotal);
     this.paymentData.subTotal = this.paymentData.paymentTotal + this.paymentData.additionTotal - this.paymentData.deductionTotal;
     this.paymentData.finalTotal = this.paymentData.subTotal - this.paymentData.taxes - this.paymentData.taxdata.cpp - this.paymentData.taxdata.ei - this.paymentData.advance;
 
@@ -589,5 +604,15 @@ export class AddEmployeePaymentComponent implements OnInit {
       showModal: this.showModal,
     }
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  calculateVacationPay() {
+    this.paymentData.vacPayAmount = (this.paymentData.vacPayPer/100) * this.paymentData.settledAmount;
+    if (this.paymentData.taxdata.payPeriod && this.paymentData.taxdata.stateCode) {
+      this.resetPayrollCalculations();
+      this.calculatePayroll();
+    } else {
+      this.calculateFinalTotal();
+    }
   }
 }

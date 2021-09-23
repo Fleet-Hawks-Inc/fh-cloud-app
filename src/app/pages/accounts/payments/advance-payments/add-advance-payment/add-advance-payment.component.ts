@@ -99,7 +99,7 @@ export class AddAdvancePaymentComponent implements OnInit {
 
   fetchEmployee() {
     this.apiService
-      .getData(`contacts/get/list/employee`)
+      .getData(`contacts/get/emp/list`)
       .subscribe((result: any) => {
         this.employees = result;
       });

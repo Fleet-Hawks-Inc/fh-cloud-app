@@ -15,6 +15,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
   paymentData = {
     entityId: null,
     txnDate: null,
+    fromDate: '',
+    toDate: '',
     paymentNo: '',
     payroll: {
       type: null,
@@ -52,6 +54,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
+  showModal = false;
+  downloadDisabled = false;
 
   constructor(private listService: ListService, private route: ActivatedRoute, private router: Router, private toaster: ToastrService, private accountService: AccountService, private apiService: ApiService) { }
 
@@ -78,7 +82,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
   }
 
   fetchEmployees() {
-    this.apiService.getData(`contacts/get/list/employee`).subscribe((result: any) => {
+    this.apiService.getData(`contacts/get/emp/list`).subscribe((result: any) => {
       this.employees = result;
     })
   }
@@ -104,6 +108,22 @@ export class EmployeePaymentDetailComponent implements OnInit {
     this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
       this.accountsIntObjects = result;
     });
+  }
+
+  downloadPaymentPdf() {
+    this.showModal = true;
+    this.paymentData[`advData`] = [];
+    this.paymentData[`paymentTo`] = "employee";
+    let obj = {
+      showModal: this.showModal,
+      data: this.paymentData,
+    }
+    this.listService.triggerDownloadPaymentPdf(obj);
+    this.downloadDisabled = true;
+
+    setTimeout(() => {
+      this.downloadDisabled = false;
+    }, 15000)
   }
 
 }
