@@ -13,10 +13,12 @@ import { IssueSettingComponent } from './issue-setting/issue-setting.component';
 import { DispatchSettingComponent } from './dispatch-setting/dispatch-setting.component';
 import { ComplianceSettingComponent } from './compliance-setting/compliance-setting.component';
 import { SafetySettingComponent } from './safety-setting/safety-setting.component';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  
+
   { path: 'overview', component: SettingsOverviewComponent },
   { path: 'general', component: GeneralSettingsComponent },
   { path: 'myaccount', component: MyAccountComponent },
@@ -29,7 +31,7 @@ const routes: Routes = [
   { path: 'dispatch', component: DispatchSettingComponent },
   { path: 'compliance', component: ComplianceSettingComponent },
   { path: 'safety', component: SafetySettingComponent },
-  
+
 ]
 
 @NgModule({
@@ -48,6 +50,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    FormsModule,
+    NgbModule,
+    NgSelectModule,
   ]
 })
 export class ManageSettingsModule { }
