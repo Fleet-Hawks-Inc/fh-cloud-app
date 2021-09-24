@@ -45,66 +45,6 @@
     </div>
   </div>
 </div>
-<!-- add asset model modal remove - Amitoj-->
-<ng-template #assetModelsModal let-modal>
-  <div class="modal-content">
-    <form class="form-horizontal form-bordered bg-white" method="get" name="form" id="assetModelForm" #amodel="ngForm">
-    <div class="modal-header">
-      <h5 class="modal-title">Add Asset Model</h5>
-      <button type="button" (click)="modal.dismiss('Cross click')" class="close" data-dismiss="modal" aria-label="Close">
-        <em class="far fa-window-close modal-dismiss" style="font-size:25px;"> </em>
-      </button>
-    </div>
-    <div class="modal-body text-dark">
-      <section class="card form-wizard">
-        <div class="card-body card-body-nopadding">
-
-            <div class="row">
-              <div class="col-lg-12">
-                <label class="control-label font-weight-bold text-lg-right pt-2">Select Asset Make<span
-                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                <ng-select [(ngModel)]="assetModelData.manufacturerID" name="manufacturerID"
-                  class="form-control populate" placeholder="Enter make of the asset" #sltMake="ngModel" required>
-                  <ng-option *ngFor="let manufacturer of assetManufacturers | async"
-                    [value]="manufacturer.manufacturerID">
-                    {{manufacturer.manufacturerName}}</ng-option>
-
-                </ng-select>
-                <div *ngIf="sltMake.invalid && (sltMake.dirty || sltMake.touched)" class="text-danger">
-                  <div *ngIf="sltMake.errors.required">
-                     Asset make is required.
-                  </div>
-
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-12">
-                <label class="control-label font-weight-bold text-lg-right pt-2">Enter Asset Model Name <span
-                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                <input [(ngModel)]="assetModelData.modelName" name="modelName" type="text" class="form-control"
-                  placeholder="eg. Cascadia" #txtModel="ngModel" required pattern="^[a-zA-Z0-9\s]+$">
-                  <div *ngIf="txtModel.invalid && (txtModel.dirty || txtModel.touched)" class="text-danger">
-                    <div *ngIf="txtModel.errors.required">
-                      Asset model name is required.
-                    </div>
-                    <div *ngIf="txtModel.errors.pattern">
-                     Asset model name must contain alphanumeric characters.
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-        </div>
-      </section>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-success" href="javascript:;" (click)="addAssetModel()" [disabled]="!amodel.form.valid">Save</button>
-    </div>
-  </form>
-  </div>
-</ng-template>
 
 <!--Service program modal-->
 <ng-template #vehProgramModal let-modal>
