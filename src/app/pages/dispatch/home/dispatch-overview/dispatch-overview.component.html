@@ -218,10 +218,10 @@
                                        <li>
                                          {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
                                          <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
-                                           <a  routerLink="/fleet/drivers/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b></a>
+                                           <a  routerLink="/fleet/drivers/detail/{{data.eventParams.eventID}}" href="javascript:;"><b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b></a>
                                          </span>
                                          <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
-                                          <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                                          <b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b>
                                         </span>
                                          <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
                                           <a  routerLink="/dispatch/trips/trip-details/{{ data.eventParams.eventID }}" href="javascript:;"><b class="text-success">{{ data.entityNumber }}</b></a>
@@ -387,10 +387,10 @@
                            <!-- <td>Dispatcher</td> -->
                            <td> {{ data.userFirstName | titlecase }}  {{ data.userLastName | titlecase }} {{ data.eventParams.message }} {{ data.eventParams.type }}
                             <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message !== 'deleted'" >
-                              <b class="text-success " (click)="goToDetails(data.eventParams.eventID, 'driver')"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                              <b class="text-success " (click)="goToDetails(data.eventParams.eventID, 'driver')"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b>
                             </span>
                             <span *ngIf="data.eventParams.type === 'driver' && data.eventParams.message === 'deleted'" >
-                             <b class="text-success"> {{ data.firstName | titlecase}} {{ data.lastName | titlecase}}</b>
+                             <b class="text-success"> {{ data.eventParams.firstName | titlecase}} {{ data.eventParams.lastName | titlecase}}</b>
                            </span>
                             <span *ngIf="data.eventParams.type === 'trip' && data.eventParams.message !== 'deleted'">
                              <b class="text-success" (click)="goToDetails(data.eventParams.eventID, 'trip')">{{ data.entityNumber }}</b>
