@@ -4,9 +4,9 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
-import  Constants  from '../../constants';
+import Constants from '../../constants';
 import {environment} from '../../../../../environments/environment';
-import {OnboardDefaultService}from '../../../../services/onboard-default.service';
+import {OnboardDefaultService} from '../../../../services/onboard-default.service';
 import * as _ from 'lodash';
 declare var $: any;
 
@@ -110,7 +110,7 @@ export class AssetListComponent implements OnInit {
     this.onboard.checkInspectionForms();
       this.fetchAssetsCount();
       this.fetchGroups();
-      this.initDataTable();    
+      this.initDataTable();
       this.fetchContacts();
 
   }
@@ -226,7 +226,7 @@ export class AssetListComponent implements OnInit {
           v.assetType = v.assetType.replace("_"," ")
         })
         this.allData = result[`Items`];
-        
+
 
         if(this.assetID != '' || this.assetType != null) {
           this.assetStartPoint = 1;
