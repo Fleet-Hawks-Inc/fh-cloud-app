@@ -164,6 +164,7 @@ groupData = {
 localPhotos = [];
 activeTab = 1;
 
+subscription: any;
 users = [];
 
   async ngOnInit() {
@@ -183,7 +184,7 @@ users = [];
   }
  
 fetchApis() {
-  this.listService.otherModelList.subscribe((res: any) => {
+  this.subscription = this.listService.otherModelList.subscribe((res: any) => {
     if(res === 'veh-program') {
       let ngbModalOptions: NgbModalOptions = {
         backdrop : 'static',
@@ -193,8 +194,10 @@ fetchApis() {
       const vehModal = this.modalService.open(this.vehProgramModal, ngbModalOptions);
       vehModal.result.then((data) => {
         this.clearServiceProg();
+        this.listService.separateModals('');
       }, (reason) => {
         this.clearServiceProg();
+        this.listService.separateModals('');
       });
       this.fetchVehicles();
       this.fetchTasks();
@@ -207,27 +210,15 @@ fetchApis() {
       const issueModal = this.modalService.open(this.addIssueModal, ngbModalOptions);
       issueModal.result.then((data) => {
         this.clearIssueData();
+        this.listService.separateModals('');
       }, (reason) => {
         this.clearIssueData();
+        this.listService.separateModals('');
       });
       this.fetchVehicles();
       this.fetchAssets();
       this.fetchUsers();
-    } else if (res === 'models') {
-      let ngbModalOptions: NgbModalOptions = {
-        backdrop : 'static',
-        keyboard : false,
-        windowClass: 'asset-models__main'
-      };
-      const assetModal = this.modalService.open(this.assetModelsModal, ngbModalOptions);
-      assetModal.result.then((data) => {
-        this.clearAssetModal();
-      }, (reason) => {
-        this.clearAssetModal();
-      });
-      // this.listService.fetchAssetManufacturers(); 
-      this.assetManufacturers = this.listService.assetManufacturesList;
-    }
+    } 
   })
 }
 
@@ -237,6 +228,10 @@ fetchApis() {
     .subscribe((result: any) => {
       this.inspectionForms = result.Items;
     });
+}
+
+ngOnDestroy() {
+  this.subscription.unsubscribe();
 }
 
 
@@ -602,12 +597,7 @@ fetchDrivers(){
   clearAssetMake() {
     this.assetMakeData.manufacturerName = '';
   }
-  clearAssetModal() {
-    this.assetModelData = {
-      manufacturerID: '',
-      modelName:''
-    }
-  }
+ 
 
   clearServiceProg() {
     this.serviceData.programName = '';
