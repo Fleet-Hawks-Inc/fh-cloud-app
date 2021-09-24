@@ -239,8 +239,8 @@ export class AddOrdersComponent implements OnInit {
         driverLoad: false,
         liveLoad: true,
         save: true,
-        update: false
-
+        update: false,
+        isShow: true
       },
       receivers: {
         receiverID: null,
@@ -284,9 +284,11 @@ export class AddOrdersComponent implements OnInit {
         driverUnload: false,
         liveUnLoad: true,
         save: true,
-        update: false
+        update: false,
+        isShow: true
       },
     },
+    
   ];
 
   accessFeesInfo = {
@@ -349,6 +351,7 @@ export class AddOrdersComponent implements OnInit {
   isInvoiceGenerated: boolean;
 
   cloneID: any;
+  showMinus: boolean;
 
   constructor(
     private apiService: ApiService,
@@ -476,9 +479,11 @@ export class AddOrdersComponent implements OnInit {
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
       this.fetchOrderByID();
+      this.showMinus = true;
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
+      this.showMinus = false;
       this.fetchStateTaxes();
     }
 
@@ -511,8 +516,8 @@ export class AddOrdersComponent implements OnInit {
 
     let result = await this.apiService
       .getData("stateTaxes").toPromise();
-    this.stateTaxes = result.Items;
-    if (!this.getOrderID) {
+      this.stateTaxes = result.Items;
+    if (!this.getOrderID  && !this.cloneID) {
       let getAddress = await this.getCarrierState();
       let data: any;
       if (getAddress.length > 0) {
@@ -520,7 +525,6 @@ export class AddOrdersComponent implements OnInit {
       } else {
         data = this.stateTaxes;
       }
-
       this.orderData.stateTaxID = data[0].stateTaxID;
 
       this.orderData.taxesInfo = [
@@ -537,7 +541,27 @@ export class AddOrdersComponent implements OnInit {
           amount: data[0].PST,
         },
       ];
-    } else {
+    } else if(!this.getOrderID && this.cloneID) {
+      this.stateTaxes.map((v: any) => {
+        if (this.orderData.stateTaxID == v.stateTaxID) {
+          this.orderData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: v.GST,
+            },
+            {
+              name: 'HST',
+              amount: v.HST,
+            },
+            {
+              name: 'PST',
+              amount: v.PST,
+            },
+          ];
+        }
+      })
+    } 
+    else {
       this.stateTaxes.map((v: any) => {
         if (this.orderData.stateTaxID == v.stateTaxID) {
           this.orderData.taxesInfo = [
@@ -689,10 +713,11 @@ export class AddOrdersComponent implements OnInit {
       driverLoad: this.shippersReceivers[i].shippers.driverLoad,
       liveLoad: this.shippersReceivers[i].shippers.liveLoad,
     };
-
+    console.log('aaya', currentShipper)
     this.finalShippersReceivers[i].shippers.push(currentShipper);
+    console.log('aaya 1')
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-
+    console.log('aaya 2')
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.toastr.success("Shipper added successfully.");
@@ -1205,6 +1230,12 @@ export class AddOrdersComponent implements OnInit {
   }
 
   onSubmit() {
+    if(this.orderData.zeroRated) {
+      this.orderData.taxesInfo.forEach(element => {
+        element.taxAmount = 0;
+      });
+    }
+    
     this.submitDisabled = true;
 
     if (this.orderData.additionalContact != null && this.orderData.additionalContact.label != undefined && this.orderData.additionalContact.label != null) {
@@ -1621,10 +1652,19 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
+  // viewList(elem: string, j: number, i: number) {
+  //   this.editList(elem, j, i);
+  //   if (elem === "shipper") {
+  //     this.shippersReceivers[j].shippers.update = false;  
+  //   } else {
+  //     this.shippersReceivers[j].receivers.update = false;  
+  //   }
+    
+  // }
+
   editList(elem, parentIndex, i) {
 
     let j = parentIndex;
-
 
     if (elem === "shipper") {
 
@@ -1651,7 +1691,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.driverLoad = data.driverLoad;
       this.shippersReceivers[j].shippers.save = false;
       this.shippersReceivers[j].shippers.update = true;
-
+      this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
 
@@ -1672,11 +1712,12 @@ export class AddOrdersComponent implements OnInit {
 
       this.shippersReceivers[j].receivers.save = false;
       this.shippersReceivers[j].receivers.update = true;
+      this.shippersReceivers[j].receivers.isShow = true;
       this.stateShipperIndex = i;
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
-
+    
   }
 
   async updateShipperReceiver(obj, i) {
@@ -1808,7 +1849,6 @@ export class AddOrdersComponent implements OnInit {
         result = result.Items[0];
         this.orderData.cusAddressID = result.cusAddressID;
         await this.fetchStateTaxes();
-
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
 
         this.orderData.taxesInfo = [
@@ -1870,17 +1910,15 @@ export class AddOrdersComponent implements OnInit {
 
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
 
-        let length = result.shippersReceiversInfo.length;
-        let emptyArr = [];
-        let newArray: any = this.shippersReceivers.slice();
-
-        for (let i = 0; i < length; i++) {
-          emptyArr.push(newArray[0]);
+        this.shippersReceivers = result.shippersReceiversInfo;
+        if (this.shippersReceivers.length === 1 ){
+          this.showMinus = false;
         }
-
-        this.shippersReceivers = emptyArr;
-
         this.finalShippersReceivers = result.shippersReceiversInfo;
+        this.shippersReceivers.forEach(elem => {
+          elem.shippers.isShow = false;
+          elem.receivers.isShow = false;
+        })
         this.shipperReceiverMerge();
 
         // let newLoadTypes = [];
@@ -2122,14 +2160,13 @@ export class AddOrdersComponent implements OnInit {
         driverLoad: false,
         liveLoad: true,
         save: true,
-        update: false
-
+        update: false,
+        isShow: true
       },
       receivers: {
         receiverID: null,
         dropPoint: [
           {
-
             unit: false,
             unitNumber: '',
             address: {
@@ -2167,8 +2204,10 @@ export class AddOrdersComponent implements OnInit {
         driverUnload: false,
         liveUnLoad: true,
         save: true,
-        update: false
+        update: false,
+        isShow: true
       },
+      
     };
     this.shippersReceivers.push(allFields);
     this.finalShippersReceivers.push({
@@ -2180,6 +2219,9 @@ export class AddOrdersComponent implements OnInit {
   removeAccordian(i) {
     this.shippersReceivers.splice(i, 1);
     this.finalShippersReceivers.splice(i, 1);
+    if(this.shippersReceivers.length === 1) {
+      this.showMinus = false;
+    }
   }
 
   searchFn(term: string, item: { name: string }) {
@@ -2420,7 +2462,6 @@ export class AddOrdersComponent implements OnInit {
       this.listService.fetchReceivers();
       
     } else if(value === 'customer') {
-      console.log('this.orderData.customerID', this.orderData.customerID)
       if(this.orderData.customerID != null) {
         let id = this.orderData.customerID;
         this.selectedCustomer(id)
@@ -2429,16 +2470,15 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  cloneOrder(id: any) {
+  async cloneOrder(id: any) {
     this.apiService
       .getData("orders/" + id)
       .subscribe(async (result: any) => {
         result = result.Items[0];
         this.orderData.cusAddressID = result.cusAddressID;
         await this.fetchStateTaxes();
-
         let state = this.stateTaxes.find(o => o.stateTaxID == result.stateTaxID);
-
+        
         this.orderData.taxesInfo = [
           {
             name: 'GST',

@@ -11,7 +11,7 @@
                         
                         <button (click)="showInv();isModalShow = true" class="btn btn-success btn-sm mr-2">
                             Invoice</button>
-                        <a routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
+                        <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{orderID}}" class="btn btn-default btn-sm mr-2"><i
                                 class="fas fa-pencil-alt"></i> Edit Order</a>
                         <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
                             Orders</a>

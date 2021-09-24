@@ -202,9 +202,9 @@
                                                             </button>
                                                             <div class="dropdown-menu"
                                                                 attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                                <a class="dropdown-item"
+                                                                <a *ngIf="order.orderStatus == 'created' || order.orderStatus == 'confirmed'" class="dropdown-item"
                                                                     routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
-                                                                <a class="dropdown-item" href="javascript:;"
+                                                                <a *ngIf="order.orderStatus == 'created' || order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                                                                     (click)="deactivateOrder(order)">Delete</a>
                                                                 <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
                                                                     (click)="changeStatus(order.orderID, order.orderNumber)">Confirm</a>

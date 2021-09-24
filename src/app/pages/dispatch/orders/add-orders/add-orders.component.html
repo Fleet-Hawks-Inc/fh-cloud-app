@@ -305,7 +305,7 @@
                         <div class="bg-white p-3 text-dark">
                            <div class="form-group row border-bottom-0 mb-0">
                               <div class="col-lg-12 mb-4 mb-lg-0">
-                                 <div *ngFor="let item of shippersReceivers; let i = index;">
+                                 <div *ngFor="let item of shippersReceivers; let i = index;" class="border-bottom py-3">
                                     <div class="row">
                                        <div class="col-lg-5 offset-lg-1">
                                           <h4 class="mt-0 text-dark font-weight-bold text-5">Shipment-{{i + 1}}</h4>
@@ -315,7 +315,7 @@
                                     <div class="row">
                                        <div class="col-lg-4 pr-0 offset-lg-1">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].shippers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4 px-2 mb-0" style="background-color: #999896;">Shipper</h4>
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4 p-2 mb-0" style="background-color: #dadada;">Shipper <button type="button" class="btn btn-success btn-sm pull-right"> <em class="fas fa-plus"></em> Shipper</button></h4>
                                              <table class="table table-bordered">
                                                 <tbody>
 
@@ -341,26 +341,23 @@
                                                                         </tr>
                                                                      </table>
                                                                   </td>
-                                                                  <td style="min-width: 70px;">
-                                                                     <i (click)="editList('shipper', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                  <td style="min-width: 70px;padding-left: 5px;padding-right: 5px;">
+                                                                     <i (click)="viewList('shipper', i, k)" class="fa fa-eye fa-fw"></i>
+                                                                     <i (click)="editList('shipper', i, k)" class="fa fa-edit fa-fw mx-1"></i>
                                                                      <i (click)="removeList('shipper', i, k)" class="fa fa-trash fa-fw"></i>
                                                                   </td>
                                                                </tr>
                                                             </tbody>
                                                          </table>
                                                       </td>
-
-
-
                                                    </tr>
-
                                                 </tbody>
                                              </table>
                                           </div>
                                        </div>
                                        <div class="col-lg-4 pr-0 offset-lg-2">
                                           <div class="shipper__listing" *ngIf="finalShippersReceivers[i].receivers?.length > 0">
-                                             <h4 class="mt-0 text-dark font-weight-bold text-4 px-2 mb-0" style="background-color: #999896;">Receiver </h4>
+                                             <h4 class="mt-0 text-dark font-weight-bold text-4 p-2 mb-0" style="background-color: #dadada;">Receiver <button type="button" class="btn btn-success btn-sm pull-right"> <em class="fas fa-plus"></em> Receiver</button> </h4>
                                              <table class="table table-bordered">
                                                 <tbody>
                                                    <tr *ngFor="let list of finalShippersReceivers; let j = index;">
@@ -386,7 +383,8 @@
                                                                      </table>
                                                                   </td>
                                                                   <td style="min-width: 70px;">
-                                                                     <i (click)="editList('receiver', i, k)" class="fa fa-edit fa-fw"></i>
+                                                                     <i (click)="editList('receiver', i, k)" class="fa fa-eye fa-fw"></i>
+                                                                     <i (click)="editList('receiver', i, k)" class="fa fa-edit fa-fw mx-1"></i>
                                                                      <i (click)="removeList('receiver', i, k)" class="fa fa-trash fa-fw"></i>
                                                                   </td>
                                                                </tr>
@@ -394,29 +392,27 @@
                                                          </table>
                                                       </td>
                                                    </tr>
-
-
                                                 </tbody>
                                              </table>
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="form-group row divderrel">
+                                    <div class="row divderrel">
                                        <!-- <p class="mb-1 mt-3 mr-1 midleicon btn btn-default"><i
                                              class="fas fa-arrow-circle-right"></i></p> -->
 
                                              <div class="col-lg-5 offset-lg-1">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Shipper</h4>
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4" *ngIf="item.shippers.isShow">Add Shipper</h4>
                                              </div>
 
                                              <div class="col-lg-5 offset-lg-1">
-                                                <h4 class="mt-0 text-dark font-weight-bold text-4">Add Receiver</h4>
+                                                <h4 class="mt-0 text-dark font-weight-bold text-4" *ngIf="item.receivers.isShow">Add Receiver</h4>
                                              </div>
 
 
-                                       <div class="col-lg-4 pr-0 offset-lg-1">
+                                       <div class="col-lg-4 pr-0 offset-lg-1" >
 
-                                          <div class="">
+                                          <div class="" *ngIf="item.shippers.isShow">
                                              <div class="">
                                                 <section>
                                                    <div id="collapseShipperArea-{{i}}" class="collapse show">
@@ -831,8 +827,10 @@
                                                          </div>
 
                                                          <div class="col-12 text-right mt-3">
+                                                            <a href="javascript:;"
+                                                               class="btn btnw90px btn-md btn-default">Cancel</a>
                                                             <a *ngIf="item.shippers.save" href="javascript:;" (click)="saveShipper(i)"
-                                                               class="btn btnw90px btn-md btn-dark">Save</a>
+                                                               class="btn btnw90px btn-md btn-dark ml-2">Save</a>
                                                             <a *ngIf="item.shippers.update" href="javascript:;" (click)="updateShipperReceiver('shipper', i)"
                                                                class="btn btnw90px btn-md btn-dark">Update</a>
                                                          </div>
@@ -852,7 +850,7 @@
 
                                        <div class="col-lg-4 pr-0 offset-lg-2">
 
-                                          <div class="">
+                                          <div class="" *ngIf="item.receivers.isShow">
                                              <div>
                                                 <section>
                                                    <div id="collapseReceiverArea-{{i}}" class="collapse show">
@@ -1338,16 +1336,16 @@
                                        </div>
                                     </div>
 
-                                    <div class="row" *ngIf="i != 0">
+                                    <div class="row" *ngIf="showMinus">
                                        <div class="col-11 pr-0 text-right">
-                                          <button (click)="removeAccordian(i)" type="button" class="btn btn-danger mt-3 ml-2">Remove</button>
+                                          <button (click)="removeAccordian(i)" type="button" class="btn btn-danger ml-2"><em class="fas fa-minus"></em></button>
                                        </div>
                                     </div>
                                  </div>
                               </div>
                            </div>
                            <div class="form-group row">
-                              <div class="col-lg-11 text-right">
+                              <div class="col-lg-11 text-right pr-0">
                                  <button  (click)="addAccordian()" type="button" class="btn btn-success pull-right">Add More</button>
                               </div>
                            </div>
