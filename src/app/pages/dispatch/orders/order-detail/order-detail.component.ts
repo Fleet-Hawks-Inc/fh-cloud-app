@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import {AccountService, ApiService} from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,6 +24,8 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild('generateInvoiceModal', { static: true }) generateInvoiceModal: TemplateRef<any>;
   @ViewChild('previewInvoiceModal', { static: true }) previewInvoiceModal: TemplateRef<any>;
   @ViewChild('emailInvoiceModal', { static: true }) emailInvoiceModal: TemplateRef<any>;
+  @ViewChild('uploadBol', { static: true }) uploadBol: ElementRef;
+  
   
   @ViewChild(PdfViewerComponent, {static: false})
   private pdfComponent: PdfViewerComponent;
@@ -675,6 +677,7 @@ async generatePDF() {
           }
         }
         this.toastr.success('BOL/POD uploaded successfully');
+        this.uploadBol.nativeElement.value = "";
         this.fetchOrder();
       })
     }

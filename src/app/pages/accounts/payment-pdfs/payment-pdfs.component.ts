@@ -94,6 +94,7 @@ export class PaymentPdfsComponent implements OnInit {
   fueldata = [];
   fuelAddTotal = 0;
   fuelDedTotal = 0;
+  pdfTitle = '';
   
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(async (res: any) => {
@@ -104,16 +105,17 @@ export class PaymentPdfsComponent implements OnInit {
         this.paymentData.incomeTax = Number(this.paymentData.taxdata.federalTax) + Number(this.paymentData.taxdata.provincialTax);
         this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");
         this.paymentData.eiInsurable = this.paymentData.totalAmount;
+
+        if(this.paymentData.paymentTo === 'driver') {
+          this.pdfTitle = 'Driver Payment Advance';
+        } else if (this.paymentData.paymentTo === 'employee') {
+          this.pdfTitle = 'Employee Payment';
+        }
         
-        this.paymentData.settlData.map((p) => {
-          if(p.status === 'partially_paid') {
-            this.payStatus = 'Partially paid';
-          }
-        });
         this.pdfDetails.paymentNo = this.paymentData.paymentNo;
         if(this.paymentData.paymentTo === 'driver') {
           this.fetchDriverDetails();
-        } else if (this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
+        } else if (this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier' || this.paymentData.paymentTo === 'employee') {
           this.fetchCarrierDetails();
         }
 
@@ -122,25 +124,32 @@ export class PaymentPdfsComponent implements OnInit {
           let startDate = formatDate(this.paymentData.fromDate, 'dd-MM-yyyy', this.locale);
           let endDate = formatDate(this.paymentData.toDate, 'dd-MM-yyyy', this.locale);
           this.pdfDetails.payPeriod = `${startDate} To ${endDate}`;  
-          await this.getUserAnnualTax();
+          if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'employee') {
+            await this.getUserAnnualTax();
+          }
         }
 
         if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
+          this.paymentData.settlData.map((p) => {
+            if(p.status === 'partially_paid') {
+              this.payStatus = 'Partially paid';
+            }
+          });
           await this.getSettlementData();
-          await this.fetchAdvancePayments();
-
+          
           if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'owner_operator') {
             await this.fetchSelectedFuelExpenses();
           }
         }
+        await this.fetchAdvancePayments();
         await this.generatePaymentPDF();
       }
     })
   }
   
   async generatePaymentPDF() {
-    let data = document.getElementById('driver_pay_pdf');
-    if(this.paymentData.paymentTo === 'driver') {
+    let data:any;
+    if(this.paymentData.paymentTo === 'driver' || this.paymentData.paymentTo === 'employee') {
       data = document.getElementById('driver_pay_pdf');
     } else if (this.paymentData.paymentTo === 'owner_operator' || this.paymentData.paymentTo === 'carrier') {
       data = document.getElementById('ownerOperator_pay_pdf');
@@ -164,7 +173,6 @@ export class PaymentPdfsComponent implements OnInit {
     let ids = encodeURIComponent(JSON.stringify(this.paymentData.settlementIds));
     let result:any = await this.accountService.getData(`settlement/get/selected?entities=${ids}`).toPromise();
     this.settlements = result;
-
     for (let index = 0; index < this.settlements.length; index++) {
       const element = this.settlements[index];
 

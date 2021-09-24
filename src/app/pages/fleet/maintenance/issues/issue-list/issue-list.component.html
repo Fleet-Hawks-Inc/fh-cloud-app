@@ -66,7 +66,7 @@
                         <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
                             <i class="fas fa-sync"></i>
                         </a>
-                         
+
                         <a [routerLink]="['/fleet', 'maintenance', 'issues', 'add']" class="btn btn-success btn-sm ml-2"
                             style="color: white"><i class="fas fa-plus"></i> Add Issue</a>
                     </div>
@@ -113,10 +113,10 @@
                                                 {{issue.reportedDate | date: 'yyyy/MM/dd'}}
 
                                             </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                            <td class="text-capitalize" routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ usersList[issue.reportedBy] }}
                                             </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                            <td class="text-capitalize" routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
                                                 {{ usersList[issue.assignedTo] }}
                                             </td>
                                             <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">

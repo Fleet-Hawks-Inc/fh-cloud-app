@@ -31,6 +31,8 @@ export class AddEmployeePaymentComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
+    fromDate: '',
+    toDate: '',
     accountID: null,
     payMode: null,
     payModeNo: "",
