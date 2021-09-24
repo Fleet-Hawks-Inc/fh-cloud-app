@@ -23,51 +23,73 @@
                                     <div class="col-lg-6">
                                         <div class="row" id="settlementListDiv">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                                    Employee
-                                                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                                                </label>
-                                                <ng-select [(ngModel)]="paymentData.entityId" name="type"
-                                                    placeholder="Select Employee" (change)="fetchEmployeDetail()"
-                                                    [disabled]="submitDisabled" #empID="ngModel" required>
-                                                    <ng-option value="{{ data.key }}"
-                                                        *ngFor="let data of employees | keyvalue">{{ data.value }}
-                                                    </ng-option>
-                                                </ng-select>
-
-                                                <div *ngIf="empID.invalid && (empID.dirty || empID.touched)"
-                                                    class="text-danger">
-                                                    <div *ngIf="empID.errors.required">
-                                                        Employee is required.
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Employee
+                                                            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                        </label>
+                                                        <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Employee"
+                                                            (change)="fetchEmployeDetail()" [disabled]="submitDisabled" #empID="ngModel" required>
+                                                            <ng-option value="{{ data.key }}" *ngFor="let data of employees | keyvalue">
+                                                                {{ data.value }}
+                                                            </ng-option>
+                                                        </ng-select>
+                            
+                                                        <div *ngIf="empID.invalid && (empID.dirty || empID.touched)" class="text-danger">
+                                                            <div *ngIf="empID.errors.required">
+                                                                Employee is required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                            Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                        </label>
+                                                        <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
+                                                            (click)="txDnate.toggle()" ngbDatepicker #txDnate="ngbDatepicker" class="form-control"
+                                                            autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"
+                                                            #txnDate="ngModel" required>
+                                                        <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)" class="text-danger">
+                                                            <div *ngIf="txnDate.errors.required">
+                                                                Payment date is required.
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="row" id="settlementListDiv">
+                                        <div class="row">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                                                    Date<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                                <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
+                                                    Period<span class="mandfield text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <input [(ngModel)]="paymentData.txnDate" name="txnDate" type="text"
-                                                    placeholder="yyyy/mm/dd" (click)="txDnate.toggle()" ngbDatepicker
-                                                    #txDnate="ngbDatepicker" class="form-control" autocomplete="off"
-                                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit"
-                                                    #txnDate="ngModel" required>
-                                                <div *ngIf="txnDate.invalid && (txnDate.dirty || txnDate.touched)"
-                                                    class="text-danger">
-                                                    <div *ngIf="txnDate.errors.required">
-                                                        Payment date is required.
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <input type="text" [(ngModel)]="paymentData.fromDate" name="fromDate" placeholder="Select from date" (click)="ppDate1.toggle()" ngbDatepicker
+                                                            #ppDate1="ngbDatepicker" class="form-control" autocomplete="off"
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frDate="ngModel">
+                                                        <div *ngIf="frDate.invalid && (frDate.dirty || frDate.touched)" class="text-danger">
+                                                            <div *ngIf="frDate.errors.required">
+                                                                From date is required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" [(ngModel)]="paymentData.toDate" name="toDate" placeholder="Select to date" (click)="ppDate2.toggle()" ngbDatepicker
+                                                            #ppDate2="ngbDatepicker" class="form-control" autocomplete="off"
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frtoDate="ngModel">
+                                                        <div *ngIf="frtoDate.invalid && (frtoDate.dirty || frtoDate.touched)" class="text-danger">
+                                                            <div *ngIf="frtoDate.errors.required">
+                                                                To date is required.
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
