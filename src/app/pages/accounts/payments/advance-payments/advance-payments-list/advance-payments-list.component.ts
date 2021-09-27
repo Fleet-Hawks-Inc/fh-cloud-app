@@ -95,7 +95,6 @@ export class AdvancePaymentsListComponent implements OnInit {
       .getData(`contacts/get/emp/list`)
       .subscribe((result: any) => {
         this.employees = result;
-        console.log('this.contacts', this.employees);
       });
   }
   fetchContactsList() {
@@ -103,7 +102,6 @@ export class AdvancePaymentsListComponent implements OnInit {
       .getData(`contacts/get/list`)
       .subscribe((result: any) => {
         this.contacts = result;
-        console.log('this.contacts', this.contacts);
       });
   }
 
