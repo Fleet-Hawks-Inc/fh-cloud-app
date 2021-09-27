@@ -207,7 +207,7 @@
                               Vehicle for Service Program<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                            <ng-select placeholder="Select vehicle for service program"[multiple]="true" (remove)="vehicleChange($event)"  [(ngModel)] ="serviceData.vehicles"
                               name="vehicles" style="width: 100%;" #Svsp="ngModel" required >
-                              <ng-option *ngFor="let vehicle of vehicles | async" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
+                              <ng-option *ngFor="let vehicle of vehicles" value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}</ng-option>
                            </ng-select>
                            <div *ngIf="Svsp.invalid && (Svsp.dirty || Svsp.touched)" class="text-danger">
 
