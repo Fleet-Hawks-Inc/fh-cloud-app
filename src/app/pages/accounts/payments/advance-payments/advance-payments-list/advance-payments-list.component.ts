@@ -21,7 +21,8 @@ export class AdvancePaymentsListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   drivers = [];
-  contacts = [];
+  contacts: any = {};
+  employees: any = {};
   lastItemSK = '';
   loaded = false;
   disableSearch = false;
@@ -35,6 +36,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.fetchPayments();
     this.fetchDrivers();
     this.fetchContactsList();
+    this.fetchEmployeesList();
   }
 
   fetchPayments(refresh?: boolean) {
@@ -88,11 +90,20 @@ export class AdvancePaymentsListComponent implements OnInit {
     });
   }
 
+  fetchEmployeesList() {
+    this.apiService
+      .getData(`contacts/get/emp/list`)
+      .subscribe((result: any) => {
+        this.employees = result;
+        console.log('this.contacts', this.employees);
+      });
+  }
   fetchContactsList() {
     this.apiService
       .getData(`contacts/get/list`)
       .subscribe((result: any) => {
         this.contacts = result;
+        console.log('this.contacts', this.contacts);
       });
   }
 
