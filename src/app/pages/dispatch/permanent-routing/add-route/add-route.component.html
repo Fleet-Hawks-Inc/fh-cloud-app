@@ -96,7 +96,7 @@
                                         </label>
                                         <ng-select [(ngModel)]="routeData.vehicleID" name="vehicleID"
                                             placeholder="Select vehicle">
-                                            <ng-option *ngFor="let vehicle of vehicles | async;"
+                                            <ng-option *ngFor="let vehicle of vehicles;"
                                                 value="{{vehicle.vehicleID}}">{{vehicle.vehicleIdentification}}
                                             </ng-option>
                                         </ng-select>
@@ -119,7 +119,7 @@
                                         </label>
                                         <ng-select [(ngModel)]="routeData.assetID" name="assetID"
                                             placeholder="Select asset">
-                                            <ng-option *ngFor="let asset of assets | async;"
+                                            <ng-option *ngFor="let asset of assets;"
                                                 value="{{ asset.assetID }}">{{ asset.assetIdentification }}
                                             </ng-option>
                                         </ng-select>
@@ -142,7 +142,7 @@
                                         </label>
                                         <ng-select [(ngModel)]="routeData.driverID" name="driverID"
                                             placeholder="Select driver" (change)="resetCodrivers()">
-                                            <ng-option *ngFor="let driver of drivers | async;"
+                                            <ng-option *ngFor="let driver of drivers;"
                                                 value="{{ driver.driverID }}">{{ driver.firstName }}</ng-option>
                                         </ng-select>
                                     </div>
@@ -165,7 +165,7 @@
                                         </label>
                                         <ng-select [(ngModel)]="routeData.coDriverID" id="codrvr"
                                             name="coDriverID" placeholder="Select co-driver">
-                                            <ng-container *ngFor="let driver of drivers | async;">
+                                            <ng-container *ngFor="let driver of drivers;">
                                                 <ng-option *ngIf="routeData.driverID != driver.driverID"
                                                     value="{{ driver.driverID }}">{{ driver.firstName }}
                                                 </ng-option>

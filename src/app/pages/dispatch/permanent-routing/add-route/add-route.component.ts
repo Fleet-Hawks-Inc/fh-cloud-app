@@ -99,10 +99,8 @@ export class AddRouteComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
 
-  ngOnInit() {
-    this.listService.fetchVehicles();
-    this.listService.fetchDrivers();
-    this.listService.fetchAssets();
+  async ngOnInit() {
+    
     this.routeID = this.route.snapshot.params['routeID'];
     if (this.routeID != undefined) {
       this.pageTitle = 'Edit Route';
@@ -113,18 +111,13 @@ export class AddRouteComponent implements OnInit {
 
     this.searchLocation();
 
-    this.vehicles = this.listService.vehicleList;
-    this.drivers = this.listService.driversList;
-    this.coDrivers = this.listService.driversList;
-    this.assets = this.listService.assetsList;
     if (this.routeID != undefined) {
-      this.fetchRouteByID();
+      await this.fetchRouteByID();
     }
 
-    $(document).ready(() => {
-      // this.form = $('#form_').validate();
-
-    });
+    this.listService.fetchVehicles();
+    this.listService.fetchDrivers();
+    this.listService.fetchAssets();
 
     $('#recurringBtn').on('click', function () {
       if (this.checked === true) {
@@ -135,6 +128,84 @@ export class AddRouteComponent implements OnInit {
         $('#recurringDate').css('display', 'none');
       }
     });
+
+    let vehicleList = new Array<any>();
+    this.getValidVehicles(vehicleList);
+    this.vehicles = vehicleList;
+
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
+    this.coDrivers = driverList;
+
+    let assetList = new Array<any>();
+    this.getValidAssets(assetList);
+    this.assets = assetList;
+  }
+
+  private getValidVehicles(vehicleList: any[]) {
+    let ids = [];
+    this.listService.vehicleList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 1 &&
+          element2.vehicleID === this.routeData.vehicleID
+        ) {
+          this.routeData.vehicleID = null;
+        }
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.vehicleID)
+        ) {
+          vehicleList.push(element2);
+          ids.push(element2.vehicleID);
+        }
+      });
+    });
+  }
+
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+
+        if (element2.isDeleted === 1) {
+          if(this.routeData.driverID === element2.driverID) {
+            this.routeData.driverID = null;
+          }
+          if(this.routeData.coDriverID === element2.driverID) {
+            this.routeData.coDriverID = null;
+          }
+        }
+      })
+    })
+  }
+
+  private getValidAssets(assetList: any[]) {
+    let ids = [];
+    this.listService.assetsList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.isDeleted === 1 &&
+          element2.assetID === this.routeData.assetID
+        ) {
+          this.routeData.assetID = null;
+        }
+        if (
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.assetID)
+        ) {
+          assetList.push(element2);
+          ids.push(element2.assetID);
+        }
+      });
+    })
   }
 
   eventCheck(event) {
@@ -362,22 +433,6 @@ export class AddRouteComponent implements OnInit {
       this.reinitMap();
       $('div').removeClass('show-search__result');
     }
-    
-
-    //if(labelResult.position != undefined) {
-      //item.lat = labelResult.position.lat;
-      // item.lng = labelResult.position.lng;
-    //}
-
-    // if (labelResult.address.countryName !== undefined) {
-    //   item.country = `${labelResult.address.countryName}`;
-    // }
-
-    // if (labelResult.address.state !== undefined) {
-    //   item.state = `${labelResult.address.state}`;
-    // }
-    
-
   }
 
   setSourceValue(labelResult, data) {
@@ -457,70 +512,67 @@ export class AddRouteComponent implements OnInit {
     }, 0.5)
   }
 
-  fetchRouteByID() {
-    this.apiService.getData('routes/' + this.routeID).
-      subscribe((result: any) => {
-        result = result.Items[0];
+  async fetchRouteByID() {
+    let result:any = await this.apiService.getData('routes/' + this.routeID).toPromise();
+    result = result.Items[0];
 
-        this.routeData['routeNo'] = result.routeNo;
-        this.routeData['routeName'] = result.routeName;
-        this.routeData['notes'] = result.notes;
-        this.routeData['vehicleID'] = result.vehicleID;
-        this.routeData['assetID'] = result.assetID;
-        this.routeData['driverID'] = result.driverID;
-        this.routeData['coDriverID'] = result.coDriverID;
-        this.routeData['miles'] = result.miles;
+    this.routeData['routeNo'] = result.routeNo;
+    this.routeData['routeName'] = result.routeName;
+    this.routeData['notes'] = result.notes;
+    this.routeData['vehicleID'] = result.vehicleID;
+    this.routeData['assetID'] = result.assetID;
+    this.routeData['driverID'] = result.driverID;
+    this.routeData['coDriverID'] = result.coDriverID;
+    this.routeData['miles'] = result.miles;
 
-        this.routeData['sourceInfo'] = {
-          address: result.sourceInfo.address,
-          country: result.sourceInfo.country,
-          state: result.sourceInfo.state,
-          city: result.sourceInfo.city,
-          zipCode: result.sourceInfo.zipCode,
-        };
-        this.routeData.recurring = {
-          route: result.recurring.route,
-          type: result.recurring.type,
-          date: result.recurring.date,
-        }
-        this.routeData.destInfo = {
-          address: result.destInfo.address,
-          country: result.destInfo.country,
-          state: result.destInfo.state,
-          city: result.destInfo.city,
-          zipCode: result.destInfo.zipCode,
-        };
-        this.routeData.stops = result.stops;
-        if (result.recurring.route === true) {
-          $("#recurringRadioDiv").css('display', 'block');
-          $("#recurringDate").css('display', 'block');
-        }
-        if (result.recurring.type == 'daily') {
-          this.dailyClass = 'selRecc';
-          this.weekClass = '';
-          this.biClass = '';
-        } else if (result.recurring.type == 'weekly') {
-          this.isDaily = true;
-          this.dailyClass = '';
-          this.weekClass = 'selRecc';
-          this.biClass = '';
-        } else if (result.recurring.type == 'biweekly') {
-          this.isDaily = true;
-          this.dailyClass = '';
-          this.weekClass = '';
-          this.biClass = 'selRecc';
-        }
-        this.routeData['timeCreated'] = result.timeCreated;
+    this.routeData['sourceInfo'] = {
+      address: result.sourceInfo.address,
+      country: result.sourceInfo.country,
+      state: result.sourceInfo.state,
+      city: result.sourceInfo.city,
+      zipCode: result.sourceInfo.zipCode,
+    };
+    this.routeData.recurring = {
+      route: result.recurring.route,
+      type: result.recurring.type,
+      date: result.recurring.date,
+    }
+    this.routeData.destInfo = {
+      address: result.destInfo.address,
+      country: result.destInfo.country,
+      state: result.destInfo.state,
+      city: result.destInfo.city,
+      zipCode: result.destInfo.zipCode,
+    };
+    this.routeData.stops = result.stops;
+    if (result.recurring.route === true) {
+      $("#recurringRadioDiv").css('display', 'block');
+      $("#recurringDate").css('display', 'block');
+    }
+    if (result.recurring.type == 'daily') {
+      this.dailyClass = 'selRecc';
+      this.weekClass = '';
+      this.biClass = '';
+    } else if (result.recurring.type == 'weekly') {
+      this.isDaily = true;
+      this.dailyClass = '';
+      this.weekClass = 'selRecc';
+      this.biClass = '';
+    } else if (result.recurring.type == 'biweekly') {
+      this.isDaily = true;
+      this.dailyClass = '';
+      this.weekClass = '';
+      this.biClass = 'selRecc';
+    }
+    this.routeData['timeCreated'] = result.timeCreated;
 
-        // show map route
-        this.destinationStop = true;
-        this.mapVisible = true;
-        if (result.stops.length > 1) {
-          this.getCoordsEdit(result.stops);
-        }
-        this.mapShow()
-
-      })
+    // show map route
+    this.destinationStop = true;
+    this.mapVisible = true;
+    if (result.stops.length > 1) {
+      this.getCoordsEdit(result.stops);
+    }
+    this.mapShow()
   }
 
   updateRoute() {

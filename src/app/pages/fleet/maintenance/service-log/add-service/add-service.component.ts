@@ -22,8 +22,8 @@ export class AddServiceComponent implements OnInit {
   logurl = this.apiService.AssetUrl;
   groups;
   vendors;
-  vehicles;
-  assets;
+  vehicles = [];
+  assets = [];
   tasks: any;
   newTaskResp;
   reminders = [];
@@ -161,24 +161,21 @@ export class AddServiceComponent implements OnInit {
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-  ngOnInit() {
+  async ngOnInit() {
     this.logID = this.route.snapshot.params['logID'];
     if (this.logID) {
       this.pageTitle = 'Edit Service Log';
       this.vehicleDisabled = true;
-      this.fetchServiceByID();
+      await this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Log';
-
     }
 
-
-
     this.fetchGroups();
-    this.fetchVehicles();
+    await this.fetchVehicles();
     this.fetchUsersList();
     this.fetchInventory();
-    this.fetchAssets();
+    await this.fetchAssets();
 
     this.listService.fetchVendors();
     this.listService.fetchTasks();
@@ -209,19 +206,31 @@ export class AddServiceComponent implements OnInit {
       window.localStorage.removeItem('reminderUnitID');
     }
 
-    //  if(this.serviceData.vehicleID != '') {
-    //    this.getVehicleIssues(this.serviceData.vehicleID)
-    //  }
-    //  if(this.serviceData.assetID != '') {
-    //    this.getAssetIssues(this.serviceData.assetID);
-    //  }
-
     this.tasks = this.listService.tasksList;
-    this.vendors = this.listService.vendorList;
-
-
+    // this.vendors = this.listService.vendorList;
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
   }
 
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.contactID)
+        ) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+
+        if(element2.isDeleted === 1 && this.serviceData.vendorID === element2.contactID) {
+          this.serviceData.vendorID = null;
+        }
+      })
+    })
+  }
   /*
    * Add new asset
    */
@@ -358,9 +367,15 @@ export class AddServiceComponent implements OnInit {
   /*
    * Get all vehicles from api
    */
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
+  async fetchVehicles() {
+    let result:any = await this.apiService.getData('vehicles').toPromise();
+    result.Items.forEach(element => {
+      if(element.isDeleted === 0) {
+        this.vehicles.push(element);
+      }
+      if(element.isDeleted === 1 && this.serviceData.unitID === element.vehicleID) {
+        this.serviceData.unitID = null;
+      }
     });
   }
 
@@ -385,9 +400,15 @@ export class AddServiceComponent implements OnInit {
   /*
    * Get all assets from api
    */
-  fetchAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.assets = result.Items;
+  async fetchAssets() {
+    let result:any = await this.apiService.getData('assets').toPromise();
+    result.Items.forEach(element => {
+      if(element.isDeleted === 0) {
+        this.assets.push(element);
+      }
+      if(element.isDeleted === 1 && this.serviceData.unitID === element.assetID) {
+        this.serviceData.unitID = null;
+      }
     });
   }
 
@@ -719,9 +740,9 @@ export class AddServiceComponent implements OnInit {
 
   async fetchServiceByID() {
     // this.spinner.show(); // loader init
-    this.apiService
-      .getData('serviceLogs/' + this.logID)
-      .subscribe(async (result: any) => {
+    let result:any = await this.apiService
+      .getData('serviceLogs/' + this.logID).toPromise();
+      // .subscribe(async (result: any) => {
         result = result.Items[0];
 
         this.serviceData['logID'] = this.logID;
@@ -811,7 +832,7 @@ export class AddServiceComponent implements OnInit {
 
         this.selectedIssues = result.selectedIssues;
         this.serviceData['timeCreated'] = result.timeCreated;
-      });
+      // });
   }
 
   onChangeUnitType(value: any) {
