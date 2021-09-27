@@ -178,7 +178,7 @@
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Reported
                                                     By<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select [(ngModel)]="reportedBy" name="reportedBy"
+                                                <ng-select [(ngModel)]="reportedBy" name="reportedBy" class="text-capitalize"
                                                     placeholder="Select Contact" #rName="ngModel" required>
                                                     <ng-option *ngFor="let user of users" value="{{user.userName}}">
                                                         {{user.firstName}} {{user.lastName}}</ng-option>
@@ -200,7 +200,7 @@
                                                 <label
                                                     class="control-label font-weight-bold font-bold text-lg-right pt-2">Assigned
                                                     To<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select [(ngModel)]="assignedTo" name="assignedTo"
+                                                <ng-select [(ngModel)]="assignedTo" name="assignedTo" class="text-capitalize"
                                                     placeholder="Select the contact to assign the issue"
                                                     #aIssue="ngModel" required>
                                                     <ng-option *ngFor="let user of users" value="{{user.userName}}">

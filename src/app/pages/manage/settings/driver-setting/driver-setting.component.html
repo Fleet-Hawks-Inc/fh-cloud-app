@@ -18,20 +18,20 @@
           <div class="col-lg-12 col-xl-12 mb-4">
             <div class=" ">
               <ul class="nav nav-tabs top-tabs">
-                <li class="nav-item active">
+                <!-- <li class="nav-item active">
                   <a class="nav-link active" href="#drlistset" data-toggle="tab">Driver Listing</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#dstatusset" data-toggle="tab">Driver Status</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#deletedDrivers" data-toggle="tab">Deleted Drivers</a>
+                </li> -->
+                <li class="nav-item active">
+                  <a class="nav-link active" href="#deletedDrivers" data-toggle="tab">Deleted Drivers</a>
                 </li>
               </ul>
 
               <div class="tab-content mt-3" style="box-shadow:none;border:none;">
                 <!-- driver listing -->
-                <div id="drlistset" class="tab-pane active">
+                <div id="drlistset" class="tab-pane">
                   <div class="row pt-2 text-dark">
                     <div class="col-12">
                       <p class="text-4 font-weight-bold back-color-gray p-2 text-dark">Set the visibility of driver
@@ -180,7 +180,7 @@
 
 
                 <!-- deleted drivers -->
-                <div id="deletedDrivers" class="tab-pane">
+                <div id="deletedDrivers" class="tab-pane active">
                   <div class="row">
                     <div class="col-10">
                       <p class="text-4 font-weight-bold text-dark">Restore deleted drivers</p>
@@ -229,59 +229,60 @@
                     </div>
                     <div class="col-12">
                       <div class="table-responsive">
-                      <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
-                        <thead>
-                           <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Phone</th>
-                              <th>Driver Type</th>
-                              <th>Start Date</th>
-                              <th>CDL#</th>
-                              <th>Licence Expiry</th>
-                              <th>Licence Province</th>
-                              <th>Status</th>
-                              <th>Actions</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr *ngIf="drivers.length == 0" class="text-center">
-                              <td colspan="10">{{dataMessage}}</td>
+                        <table id="diverTbl" class="row-border hover table table-bordered table-striped mb-0">
+                          <thead>
+                             <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Driver Type</th>
+                                <th>Start Date</th>
+                                <th>CDL#</th>
+                                <th>Licence Expiry</th>
+                                <th>Licence Province</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             <tr *ngIf="drivers.length == 0" class="text-center">
+                                <td colspan="10">{{dataMessage}}</td>
+                            </tr>
+                            <tr *ngFor="let driver of drivers;let i = index;">
+                             <td>
+                                <span class="font-weight-bold line-height-lg text-capitalize">
+                                   {{driver.firstName}} {{driver.lastName}}</span>
+                             </td>
+                             <td >{{ driver.email }}</td>
+                             <td >{{ driver.phone }}</td>
+                             <td class="cursorpoint text-capitalize" >{{ driver.driverType }}</td>
+                             <td >
+                                <span *ngIf="driver.driverType != 'contractor'">{{ driver.startDate | date: "yyyy/MM/dd" }}</span>
+                                <span *ngIf="driver.driverType == 'contractor'">{{ driver.contractStart | date: "yyyy/MM/dd" }}</span></td>
+                             <td >{{ driver.CDL_Number }}</td>
+                             <td >{{ driver.licenceDetails.licenceExpiry | date: "yyyy/MM/dd" }}</td>
+                             <td >{{ (driver.licenceDetails.licStateName) ? driver.licenceDetails.licStateName : '-' }}</td>
+                             <td>
+                                <span class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
+                             </td>
+                             <td class="border-0">
+                                <div class="dropdown dropright">
+                                   <button class="bg-transparent border-0" type="button"
+                                      id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
+                                      aria-expanded="false">
+                                      <i class="fas fa-ellipsis-v"></i>
+                                   </button>
+                                   <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                      <a href="javascript:;" class="dropdown-item"
+                                         (click)="restoreDriver(driver)">Restore</a>
+                                   </div>
+                                </div>
+                             </td>
                           </tr>
-                          <tr *ngFor="let driver of drivers;let i = index;">
-                           <td>
-                              <span class="font-weight-bold line-height-lg text-capitalize">
-                                 {{driver.firstName}} {{driver.lastName}}</span>
-                           </td>
-                           <td >{{ driver.email }}</td>
-                           <td >{{ driver.phone }}</td>
-                           <td class="cursorpoint text-capitalize" >{{ driver.driverType }}</td>
-                           <td >
-                              <span *ngIf="driver.driverType != 'contractor'">{{ driver.startDate | date: "yyyy/MM/dd" }}</span>
-                              <span *ngIf="driver.driverType == 'contractor'">{{ driver.contractStart | date: "yyyy/MM/dd" }}</span></td>
-                           <td >{{ driver.CDL_Number }}</td>
-                           <td >{{ driver.licenceDetails.licenceExpiry | date: "yyyy/MM/dd" }}</td>
-                           <td >{{ (driver.licenceDetails.licStateName) ? driver.licenceDetails.licStateName : '-' }}</td>
-                           <td>
-                              <span class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
-                           </td>
-                           <td class="border-0">
-                              <div class="dropdown dropright">
-                                 <button class="bg-transparent border-0" type="button"
-                                    id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true"
-                                    aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                 </button>
-                                 <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                    <a href="javascript:;" class="dropdown-item"
-                                       (click)="restoreDriver(driver)">Restore</a>
-                                 </div>
-                              </div>
-                           </td>
-                        </tr>
-                        </tbody>
-                     </table>
-                     </div>
+                          </tbody>
+                       </table>
+                      </div>
+
                      <div class="row mt-3 dtPaginate" *ngIf="drivers.length > 0">
                       <div class="col-6">
                           Showing {{ driverStartPoint }} to {{ driverEndPoint }} of {{ totalRecords }} enteries

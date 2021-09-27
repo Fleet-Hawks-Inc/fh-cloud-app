@@ -111,7 +111,7 @@ export class AddIssueComponent implements OnInit {
       });
     }
     fetchUsers() {
-      this.apiService.getData('users').subscribe((result: any) => {
+      this.apiService.getData('users/fetch/records').subscribe((result: any) => {
         this.users = result.Items;
       });
     }
@@ -187,7 +187,7 @@ export class AddIssueComponent implements OnInit {
                 // this.throwErrors();
                 this.submitDisabled=false;
               },
-              error: () => { 
+              error: () => {
                 this.submitDisabled=false;
               },
               next: () => { },
@@ -343,7 +343,7 @@ setSrcValue(){
               // this.throwErrors();
               this.submitDisabled=false;
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled=false;
             },
             next: () => { },

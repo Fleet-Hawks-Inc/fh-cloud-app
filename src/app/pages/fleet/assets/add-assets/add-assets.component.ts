@@ -320,9 +320,7 @@ export class AddAssetsComponent implements OnInit {
   refreshOpData() {
     this.listService.fetchOwnerOperators();
   }
-  openProgram(value) {
-    this.listService.separateModals(value);
-  }
+ 
   scrollError() {
     let errorList;
     setTimeout(() => {

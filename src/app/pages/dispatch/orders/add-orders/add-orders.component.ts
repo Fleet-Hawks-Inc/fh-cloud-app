@@ -512,7 +512,7 @@ export class AddOrdersComponent implements OnInit {
     let result = await this.apiService
       .getData("stateTaxes").toPromise();
     this.stateTaxes = result.Items;
-    if (!this.getOrderID) {
+    if (!this.getOrderID && !this.cloneID) {
       let getAddress = await this.getCarrierState();
       let data: any;
       if (getAddress.length > 0) {
@@ -537,6 +537,25 @@ export class AddOrdersComponent implements OnInit {
           amount: data[0].PST,
         },
       ];
+    } else if(!this.getOrderID && this.cloneID) {
+      this.stateTaxes.map((v: any) => {
+        if (this.orderData.stateTaxID == v.stateTaxID) {
+          this.orderData.taxesInfo = [
+            {
+              name: 'GST',
+              amount: v.GST,
+            },
+            {
+              name: 'HST',
+              amount: v.HST,
+            },
+            {
+              name: 'PST',
+              amount: v.PST,
+            },
+          ];
+        }
+      })
     } else {
       this.stateTaxes.map((v: any) => {
         if (this.orderData.stateTaxID == v.stateTaxID) {
