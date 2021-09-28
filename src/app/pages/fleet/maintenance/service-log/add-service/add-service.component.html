@@ -175,7 +175,7 @@
                                     class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select [(ngModel)]="serviceData.vendorID" name="vendorID" style="width: 100%;"
                                  placeholder="Select vendor" #Ven="ngModel" required>
-                                 <ng-option *ngFor="let vendor of vendors | async;" value="{{vendor.contactID}}">
+                                 <ng-option *ngFor="let vendor of vendors;" value="{{vendor.contactID}}">
                                     {{vendor.companyName}}</ng-option>
                               </ng-select>
                               <div *ngIf="Ven.invalid && (Ven.dirty || Ven.touched)" class="text-danger">
@@ -809,7 +809,7 @@
                               Vendor</label>
                            <ng-select [(ngModel)]="partData.preferredVendorID"
                               name="preferredVendorID" style="width: 100%;" placeholder="Select preferred vendor">
-                              <ng-option *ngFor="let data of vendors | async;" value="{{data.contactID}}">{{data.companyName}}</ng-option>
+                              <ng-option *ngFor="let data of vendors;" value="{{data.contactID}}">{{data.companyName}}</ng-option>
 
                            </ng-select>
                         </div>

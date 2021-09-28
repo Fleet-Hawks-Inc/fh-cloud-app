@@ -22,7 +22,7 @@ export class CompanyDocumentsComponent implements OnInit {
   environment = environment.isFeatureEnabled;
   Asseturl = this.apiService.AssetUrl;
   public documents = [];
-  trips;
+  trips = [];
   form;
   image;
   ifEdit = false;
@@ -83,6 +83,8 @@ export class CompanyDocumentsComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  alltrips = [];
+
   getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
     if (searchvalue !== '') {
@@ -127,7 +129,16 @@ export class CompanyDocumentsComponent implements OnInit {
    */
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
+      this.alltrips = result.Items;
+        result.Items.forEach((element) => {
+          if(element.isDeleted === 0) {
+            this.trips.push(element);
+          }
+
+          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+            this.documentData.tripID = null;
+          }
+        });
     });
   }
 
@@ -294,6 +305,11 @@ export class CompanyDocumentsComponent implements OnInit {
         result = result.Items[0];
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
+        this.alltrips.forEach((element) => {
+          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+            this.documentData.tripID = null;
+          }
+        });
         this.documentData.documentNumber = result.documentNumber;
         // this.documentData.documentName = result.documentName;
         this.documentData.docType = result.docType;

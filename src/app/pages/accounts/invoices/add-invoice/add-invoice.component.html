@@ -45,7 +45,7 @@
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="invoiceData.customerID" name="customerID" #customer="ngModel"
                             (change)="selectedCustomer($event)" placeholder="Select Customer" class="form-control" required>
-                            <ng-option *ngFor="let customer of customers | async" value="{{customer.contactID}}">
+                            <ng-option *ngFor="let customer of customers" value="{{customer.contactID}}">
                               {{customer.companyName}}
                             </ng-option>
                           </ng-select>
