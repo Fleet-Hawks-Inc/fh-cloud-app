@@ -67,7 +67,6 @@ export class UsersListComponent implements OnInit {
 
   setUser(contactID, firstName, lastName) {
     this.searchUserName = firstName + ' ' + lastName;
-    // this.driverID = driverID;
     this.contactID = firstName + '-' + lastName;
     this.suggestedUsers = [];
   }
@@ -143,6 +142,7 @@ export class UsersListComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.users = result[`Items`];
+        console.log('this.users', this.users);
         this.users.map((v: any) => {
 if (v.userLoginData.userRoles.length > 0) {
 for (const element of v.userLoginData.userRoles) {
@@ -205,10 +205,10 @@ this.newRoles = [];
       return false;
     }
   }
-  async deleteUser(contactID, firstName: string, lastName: string) {
+  async deleteUser(contactID, firstName: string, lastName: string, loginEnabled) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}`)
+        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}/${loginEnabled}`)
         .subscribe(async (result: any) => {
           this.userDraw = 0;
           this.lastEvaluatedKey = '';

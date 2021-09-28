@@ -71,7 +71,7 @@
                               (click)="fetchRole(user)" class="dropdown-item"> Assign Roles</a> -->
                             <a class="dropdown-item text-1" routerLink="/manage/users/edit/{{user.contactID}}">Edit</a>
                             <button class="dropdown-item text-1 modal-with-form"
-                              (click)="deleteUser(user.contactID, user.firstName, user.lastName)">Delete</button>
+                              (click)="deleteUser(user.contactID, user.firstName, user.lastName, user.loginEnabled)">Delete</button>
                           </div>
                         </div>
                       </td>
