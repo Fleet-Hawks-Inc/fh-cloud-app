@@ -4,11 +4,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import  Constants  from '../../../fleet/constants';
 import { environment } from 'src/environments/environment';
-
-import { from, Subject, throwError } from 'rxjs';
-
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as html2pdf from 'html2pdf.js';
+import * as moment from "moment";
 
 declare var $: any;
 @Component({
@@ -118,6 +116,58 @@ export class OrdersListComponent implements OnInit {
   }
 
   confirmEmails = [];
+  carriersObject = [];
+  brokerage = {
+    orderNo: '',
+    orderID: '',
+    carrierID: null,
+    finalAmount: '',
+    miles: 0,
+    currency: '',
+    draw: 0,
+    index: 0,
+    type: '',
+    today: moment().format('YYYY-MM-DD')
+  };
+  logoSrc = 'assets/img/logo.png';
+  orderData = {
+    additionalContact: <any> null,
+    carrierData: {
+      address: '',
+      companyName: '',
+      phone: '',
+      email: '',
+      fax: ''
+    },
+    charges: {
+      accessorialDeductionInfo: {},
+      accessorialFeeInfo: {},
+      freightFee: {
+        amount: 0,
+        currency: '',
+        type: '',
+      },
+      fuelSurcharge: {
+        amount: 0,
+        currency: '',
+        type: '',
+      },
+      cusAddressID: '',
+      customerID: '',
+    },
+    data: [],
+    finalAmount: 0,
+    phone: '',
+    subTotal: 0,
+    taxesAmt: 0
+  };
+  carrierData = {
+    name:'',
+    email: '',
+    address: '',
+    phone: ''
+  };
+  brokerageDisabled = false;
 
   constructor(private apiService: ApiService,
     private toastr: ToastrService,  private modalService: NgbModal,
@@ -522,5 +572,84 @@ export class OrdersListComponent implements OnInit {
       this.fetchOrdersCount();
   }
 
-  
+  async showBrokerageModal(order, draw, index, actionFrom) {
+    this.brokerage.orderID = order.orderID;
+    this.brokerage.orderNo = order.orderNumber;
+    this.brokerage.miles = order.milesInfo.totalMiles;
+    this.brokerage.finalAmount = order.finalAmount;
+    this.brokerage.currency = order.charges.freightFee.currency;
+    this.brokerage.draw = draw;
+    this.brokerage.index = index;
+    this.brokerage.type = actionFrom;
+    await this.fetchCarriers();
+    await this.fetchOrderData();
+    $("#orderStatusModal").modal('show');
+  }
+
+  async fetchCarriers() {
+    let result:any = await this.apiService.getData('contacts/get/list/carrier').toPromise();
+    this.carriersObject = result;
+  }
+
+  async fetchOrderData() {
+    let result:any = await this.apiService.getData(`orders/invoice/${this.brokerage.orderID}`).toPromise();
+    this.orderData = result[0];
+  }
+
+  async submitClick() {
+    this.brokerageDisabled = true;
+    await this.fetchCarrierDetails();
+    await this.generatePDF();
+    await this.updateBrokerageStatus();
+    $("#orderStatusModal").modal('hide');
+    this.brokerageDisabled = false;
+  }
+
+  async generatePDF() {
+    var data = document.getElementById('print_brokerage');
+    html2pdf(data, {
+      margin:       0,
+      filename:     `order-brokerage-${this.brokerage.orderNo}.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, logging: true, dpi: 192, letterRendering: true },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    });
+  }
+
+  async fetchCarrierDetails() {
+    let result:any = await this.apiService.getData(`contacts/detail/${this.brokerage.carrierID}`).toPromise();
+    result = result.Items[0];
+    this.carrierData.name = result.cName;
+    this.carrierData.email = result.workEmail;
+    this.carrierData.phone = result.workPhone;
+    if(result.adrs[0].manual) {
+      if(result.adrs[0].add1 !== '') {
+        this.carrierData.address = `${result.adrs[0].add1} ${result.adrs[0].add2} ${result.adrs[0].ctyName}, ${result.adrs[0].sName}, ${result.adrs[0].cName}`;
+      }
+    } else {
+      this.carrierData.address = result.adrs[0].userLoc;
+    }
+  }
+
+  async updateBrokerageStatus() {
+    const result = await this.apiService.getData(`orders/update/orderStatus/${this.brokerage.orderID}/${this.brokerage.orderNo}/brokerage`).toPromise();
+    if (result) {
+      if(this.brokerage.type === 'all') {
+        this.orders[this.brokerage.draw][this.brokerage.index].orderStatus = 'brokerage';
+      } else if(this.brokerage.type === 'section') {
+        this.confirmOrders[this.brokerage.index].orderStatus = 'brokerage';
+      }
+      this.toastr.success('Order updated successfully!');
+    }
+  }
+
+  async updateCreatedStatus(order, draw, index) {
+    if (confirm('Are you sure you want to cancel the brokerage and mark the order as created?') === true) {
+      const result = await this.apiService.getData(`orders/update/orderStatus/${order.orderID}/${order.orderNo}/created`).toPromise();
+      if (result) {
+        this.orders[draw][index].orderStatus = 'created';
+        this.toastr.success('Order updated successfully!');
+      }
+    }
+  }
 }
