@@ -532,9 +532,9 @@
                                                             <tr *ngIf="milesArr?.length == 0">
                                                                 <td colspan="2">No data found</td>
                                                             </tr>
-                                                            <tr *ngFor="let data of milesArr; let k = index;">
+                                                            <tr *ngFor="let data of milesArr;">
                                                                 <td style="width: 50%;">
-                                                                    <div *ngFor="let ship of data.shippers; " class="border-bottom mb-2 pb-2">
+                                                                    <div *ngFor="let ship of data.shippers; let k = index;" class="border-bottom mb-2 pb-2">
                                                                         <h5 class="m-0 text-dark"><strong>Shipper-{{k + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let point of ship.pickupPoint; let s=index">
@@ -557,8 +557,8 @@
                                                                 </td>
                                                                 <td style="width: 50%;">
                                                                     <div
-                                                                        *ngFor="let rec of data.receivers;" class="border-bottom mb-2 pb-2">
-                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{k + 1}}</strong></h5>
+                                                                        *ngFor="let rec of data.receivers;let m = index;" class="border-bottom mb-2 pb-2">
+                                                                        <h5 class="m-0 text-dark"><strong>Receiver-{{m + 1}}</strong></h5>
                                                                         <div
                                                                             *ngFor="let drop of rec.dropPoint; let s = index;">
                                                                              Drop-{{s + 1}}:
