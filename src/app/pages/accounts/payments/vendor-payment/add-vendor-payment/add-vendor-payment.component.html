@@ -182,62 +182,71 @@
                   <div class="form-group row adddriverpl pt-3">
                     <div class="col-lg-6">
                       <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign">Select Dedit Account<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="paymentData.drAct" name="drAct" placeholder="Select Debit Account"
-                            #drAccount="ngModel" required>
-                            <ng-container *ngFor="let data of accounts | async">
-                              <ng-option *ngIf="data.actID !== paymentData.accountID" value="{{ data.actID }}">
-                                {{ data.actNo }} - {{
-                              data.actName | titlecase}}</ng-option>
-                            </ng-container>
-                          </ng-select>
-                          <div *ngIf="drAccount.invalid && (drAccount.dirty || drAccount.touched)" class="text-danger">
-                            <div *ngIf="drAccount.errors.required">
-                              Account is required.
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-lg-2" style="margin-top: 32px;">
-                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
-                          </button>
-                          <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
-                            title="Refresh account data" class="btn btn-success btn-sm modal-with-form"><i
-                              class="fas fa-sync"></i></a>
-                        </div>
-                      </div>
-                      <div class="row mt-2">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold">Select Credit Account<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="paymentData.accountID" name="accountID"
-                            placeholder="Select Credit Account" #accountID="ngModel" required>
-                            <ng-container *ngFor="let data of accounts | async">
-                              <ng-option *ngIf="data.actID !== paymentData.drAct" value="{{ data.actID }}">
-                                {{ data.actNo }} - {{
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="col-lg-9">
+                              <label class="control-label font-weight-bold labelalign">Select Dedit Account<span
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <ng-select [(ngModel)]="paymentData.drAct" name="drAct" placeholder="Select Debit Account"
+                              #drAccount="ngModel" required>
+                              <ng-container *ngFor="let data of accounts | async">
+                                <ng-option *ngIf="data.actID !== paymentData.accountID" value="{{ data.actID }}">
+                                  {{ data.actNo }} - {{
                                 data.actName | titlecase}}</ng-option>
-                            </ng-container>
+                              </ng-container>
+                            </ng-select>
+                            <div *ngIf="drAccount.invalid && (drAccount.dirty || drAccount.touched)" class="text-danger">
+                              <div *ngIf="drAccount.errors.required">
+                                Account is required.
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-3 p-0" style="margin-top: 32px;">
+                              <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                              </button>
+                              <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
+                                title="Refresh account data" class="btn btn-success btn-sm modal-with-form"><i
+                                  class="fas fa-sync"></i></a>
+                            </div>
+                          </div>
 
-                          </ng-select>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="col-lg-9">
+                              <label class="control-label font-weight-bold">Select Credit Account<span
+                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <ng-select [(ngModel)]="paymentData.accountID" name="accountID"
+                              placeholder="Select Credit Account" #accountID="ngModel" required>
+                              <ng-container *ngFor="let data of accounts | async">
+                                <ng-option *ngIf="data.actID !== paymentData.drAct" value="{{ data.actID }}">
+                                  {{ data.actNo }} - {{
+                                  data.actName | titlecase}}</ng-option>
+                              </ng-container>
 
-                          <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
-                            <div *ngIf="accountID.errors.required">
-                              Account is required.
+                            </ng-select>
+
+                            <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
+                              <div *ngIf="accountID.errors.required">
+                                Account is required.
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-lg-3 p-0" style="margin-top: 32px;">
+                              <button type="button" data-target="#addAccountModal" data-toggle="modal"
+                                class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
+                              </button>
+                              <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
+                                title="Refresh account data" class="btn btn-success btn-sm modal-with-form"><i
+                                  class="fas fa-sync"></i></a>
                             </div>
                           </div>
                         </div>
-                        <div class="col-lg-2" style="margin-top: 32px;">
-                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm mr-1" style="color:white;"><i class="fas fa-plus"></i>
-                          </button>
-                          <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
-                            title="Refresh account data" class="btn btn-success btn-sm modal-with-form"><i
-                              class="fas fa-sync"></i></a>
-                        </div>
                       </div>
-                      <div class="row mt-2">
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="row">
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold labelalign">Payment
                             Mode<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -257,10 +266,16 @@
                             </div>
                           </div>
                         </div>
+                        <div class="col-lg-5">
+                          <label class="control-label font-weight-bold">
+                            Payment Amount</label>
+                          <input type="text" class="form-control" name="paymentTotal"
+                            [(ngModel)]="paymentData.paymentTotal" placeholder="e.g 150">
+                          </div>
                       </div>
                       <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Reference<span
+                          <label class="control-label font-weight-bold labelalign pt-2">{{ payModeLabel }} Reference<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo"
                             placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel"
@@ -276,7 +291,7 @@
                           </div>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign">{{ payModeLabel }} Date<span
+                          <label class="control-label font-weight-bold labelalign pt-2">{{ payModeLabel }} Date<span
                               class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
@@ -315,15 +330,6 @@
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="col-lg-3 offset-lg-2">
-                      <div class="row">
-                        <div class="col-lg-10 offset-lg-2">
-                          <label class="control-label font-weight-bold">
-                            Payment Amount</label>
-                          <input type="text" class="form-control" name="paymentTotal"
-                            [(ngModel)]="paymentData.paymentTotal" placeholder="e.g 150"></div>
                       </div>
                     </div>
                   </div>
