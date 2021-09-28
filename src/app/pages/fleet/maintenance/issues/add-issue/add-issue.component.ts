@@ -81,64 +81,71 @@ export class AddIssueComponent implements OnInit {
       return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
     }
 
-  ngOnInit() {
-    this.fetchVehicles();
-    this.fetchAssets();
-    this.fetchDrivers();
+  async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
     if (this.issueID) {
       this.title = 'Edit Issue';
-      this.fetchIssueByID();
+      await this.fetchIssueByID();
     } else {
       this.title = 'Add Issue';
     }
-    $(document).ready(() => {
-      // this.issueForm = $('#issueForm').validate();
-    });
+    await this.fetchVehicles();
+    await this.fetchAssets();
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
 
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-         this.vehicles = result.Items; });
-    }
-    fetchAssets() {
-      this.apiService.getData('assets').subscribe((result: any) => {
-        this.assets = result.Items;
-      });
-    }
-    fetchUsers() {
-      this.apiService.getData('users').subscribe((result: any) => {
-        this.users = result.Items;
-      });
-    }
-    fetchDrivers() {
-      this.apiService.getData('drivers').subscribe((result: any) => {
-        this.drivers = result.Items;
-      });
-    }
-    getToday(): string {
-      return new Date().toISOString().split('T')[0];
-    }
-    onChangeUnitType(value: any) {
-      if (this.issueID) {
-        if(value != this.fetchedUnitType){
-          this.unitID = '';
-          this.unitType = value;
-        }
-        else{
-          this.unitID = this.fetchedUnitID;
-          this.unitType = this.fetchedUnitType;
-        }
-      } else {
-        this.unitType = value;
-        this.unitID = '';
+  async fetchVehicles() { 
+    let result:any = await this.apiService.getData('vehicles').toPromise();
+    result.Items.forEach(element => {
+      if(element.isDeleted === 0) {
+        this.vehicles.push(element);
       }
+      if(element.isDeleted === 1 && this.unitID === element.vehicleID) {
+        this.unitID = null;
+      }
+    });
+  }
 
+  async fetchAssets() {
+    let result:any = await this.apiService.getData('assets').toPromise();
+    result.Items.forEach(element => {
+      if(element.isDeleted === 0) {
+        this.assets.push(element);
+      }
+      if(element.isDeleted === 1 && this.unitID === element.assetID) {
+        this.unitID = null;
+      }
+    });
+  }
+
+  fetchUsers() {
+    this.apiService.getData('users/fetch/records').subscribe((result: any) => {
+      this.users = result.Items;
+    });
+  }
+
+  getToday(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+  onChangeUnitType(value: any) {
+    if (this.issueID) {
+      if(value != this.fetchedUnitType){
+        this.unitID = '';
+        this.unitType = value;
+      }
+      else{
+        this.unitID = this.fetchedUnitID;
+        this.unitType = this.fetchedUnitType;
+      }
+    } else {
+      this.unitType = value;
+      this.unitID = '';
     }
+
+  }
   addIssue() {
     this.hideErrors();
     this.submitDisabled=true;
@@ -187,7 +194,7 @@ export class AddIssueComponent implements OnInit {
                 // this.throwErrors();
                 this.submitDisabled=false;
               },
-              error: () => { 
+              error: () => {
                 this.submitDisabled=false;
               },
               next: () => { },
@@ -245,11 +252,9 @@ hideErrors() {
     /*
    * Fetch Issue details before updating
   */
- fetchIssueByID() {
-  this.spinner.show(); // loader init
-  this.apiService
-    .getData('issues/' + this.issueID)
-    .subscribe((result: any) => {
+  async fetchIssueByID() {
+    let result:any = await this.apiService.getData('issues/' + this.issueID).toPromise();
+    // .subscribe((result: any) => {
       result = result.Items[0];
       this.issueID = this.issueID;
       this.issueName = result.issueName;
@@ -272,8 +277,7 @@ hideErrors() {
       if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
         this.issueDocs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
       }
-    });
-  this.spinner.hide();
+    // });
 }
 setPDFSrc(val) {
   const pieces = val.split(/[\s.]+/);
@@ -343,7 +347,7 @@ setSrcValue(){
               // this.throwErrors();
               this.submitDisabled=false;
             },
-            error: () => { 
+            error: () => {
               this.submitDisabled=false;
             },
             next: () => { },

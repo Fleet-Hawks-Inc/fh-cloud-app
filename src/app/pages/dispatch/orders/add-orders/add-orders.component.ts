@@ -512,7 +512,7 @@ export class AddOrdersComponent implements OnInit {
   }
 
 
-  async fetchStateTaxes() {
+ async fetchStateTaxes() {
 
     let result = await this.apiService
       .getData("stateTaxes").toPromise();

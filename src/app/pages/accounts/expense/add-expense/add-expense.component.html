@@ -221,7 +221,7 @@
                                             placeholder="Select {{ expenseData.unitType }}"
                                             *ngIf="expenseData.unitType === 'vehicle'">
                                             <ng-option value="{{ data.vehicleID }}"
-                                                *ngFor="let data of vehicles | async">{{ data.vehicleIdentification
+                                                *ngFor="let data of vehicles">{{ data.vehicleIdentification
                                                 }} </ng-option>
                                         </ng-select>
 
@@ -229,7 +229,7 @@
                                             placeholder="Select {{ expenseData.unitType }}"
                                             *ngIf="expenseData.unitType === 'asset'">
                                             <ng-option value="{{ data.assetID }}"
-                                                *ngFor="let data of assets | async">{{ data.assetIdentification }}
+                                                *ngFor="let data of assets">{{ data.assetIdentification }}
                                             </ng-option>
                                         </ng-select>
                                     </div>
@@ -243,7 +243,7 @@
                                         <ng-select [(ngModel)]="expenseData.vendorID" name="vendorID"
                                             placeholder="Select Vendor" #vendorID="ngModel" required>
                                             <ng-option value="{{ data.contactID }}"
-                                                *ngFor="let data of vendors | async">{{ data.companyName }}
+                                                *ngFor="let data of vendors">{{ data.companyName }}
                                             </ng-option>
                                         </ng-select>
 

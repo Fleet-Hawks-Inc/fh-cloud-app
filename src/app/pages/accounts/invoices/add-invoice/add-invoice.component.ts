@@ -105,22 +105,49 @@ export class AddInvoiceComponent implements OnInit {
   Success = '';
   submitDisabled = false;
   currentUser:any = '';
-  ngOnInit() {
-    this.listService.fetchCustomers();
+  async ngOnInit() {
+    
     this.getCurrentuser();
-    this.customers = this.listService.customersList;
+    // this.customers = this.listService.customersList;
     this.fetchStateTaxes();
    // this.fetchUsers();
     this.fetchAccounts();
     this.invID = this.route.snapshot.params[`invID`];
     if (this.invID) {
       this.pageTitle = 'Edit Invoice';
-      this.fetchInvoice();
+      await this.fetchInvoice();
     } else {
       this.pageTitle = 'Add Invoice';
     }
+    this.listService.fetchCustomers();
     this.fetchCustomersByIDs();
+
+    let customerList = new Array<any>();
+    this.getValidcustomers(customerList);
+    this.customers = customerList;
   }
+
+  private getValidcustomers(customerList: any[]) {
+    let ids = [];
+    this.listService.customersList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.isDeleted === 1 &&
+          element2.contactID === this.invoiceData.customerID
+        ) {
+          this.invoiceData.customerID = null;
+        }
+        if (
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.contactID)
+        ) {
+          customerList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    })
+  }
+
   fetchUsers() {
     this.apiService.getData('contacts/get/type/employee').subscribe((result: any) => {
       this.users = result;
@@ -370,33 +397,31 @@ export class AddInvoiceComponent implements OnInit {
     }
   }
 
-  fetchInvoice() {
-    this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
-      this.invoiceData = res[0];
-      this.selectedCustomer(this.invoiceData.customerID);
-      this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
-      this.fetchStateTaxes();
-      this.invoiceData.details = res[0].details;
-      this.invoiceData.transactionLog = res[0].transactionLog;
-      this.calculateAmount();
-      const state = this.stateTaxes.find(o => o.stateTaxID === res[0].invStateProvince);
+  async fetchInvoice() {
+    let res:any = await this.accountService.getData(`invoices/detail/${this.invID}`).toPromise();
+    this.invoiceData = res[0];
+    this.selectedCustomer(this.invoiceData.customerID);
+    this.invoiceData.invStateProvince = this.invoiceData.invStateProvince;
+    this.fetchStateTaxes();
+    this.invoiceData.details = res[0].details;
+    this.invoiceData.transactionLog = res[0].transactionLog;
+    this.calculateAmount();
+    const state = this.stateTaxes.find(o => o.stateTaxID === res[0].invStateProvince);
 
-      this.invoiceData.taxesInfo = [
-        {
-          name: 'GST',
-          amount: (state) ? state.GST : '',
-        },
-        {
-          name: 'HST',
-          amount: (state) ? state.HST : '',
-        },
-        {
-          name: 'PST',
-          amount: (state) ? state.PST : '',
-        },
-      ];
-
-      });
+    this.invoiceData.taxesInfo = [
+      {
+        name: 'GST',
+        amount: (state) ? state.GST : '',
+      },
+      {
+        name: 'HST',
+        amount: (state) ? state.HST : '',
+      },
+      {
+        name: 'PST',
+        amount: (state) ? state.PST : '',
+      },
+    ];
   }
   updateInvoice() {
     this.submitDisabled = true;
