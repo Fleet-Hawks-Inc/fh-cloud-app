@@ -14,6 +14,7 @@ export class VendorPaymentDetailComponent implements OnInit {
   paymentData = {
     entityId: null,
     txnDate: '',
+    payCur: null,
     paymentNo: '',
     accountID: null,
     payMode: null,

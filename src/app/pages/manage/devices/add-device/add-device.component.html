@@ -85,7 +85,7 @@
                     <div class="col-lg-5">
                       <label class="control-label font-weight-bold font-bold text-lg-right pt-2"
                         for="inputDefault">Device Type<span class="mandfield text-2 ml-1">*</span></label>
-                      <ng-select [disabled]="editMode" required name="deviceType" [(ngModel)]="device.deviceType" class="form-control populate">
+                      <ng-select [disabled]="editMode" (change)="deviceTypeSelected($event)" required name="deviceType" [(ngModel)]="device.deviceType" class="form-control populate">
 
                         <ng-option value="Tracker">Solar Tracker</ng-option>
                         <ng-option value="Tracker">Wired Tracker</ng-option>
@@ -111,8 +111,7 @@
                 <div class="col-lg-5">
                   <div class="row pt-2">
                     <div class="col-lg-10">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Device ID
-                        (Serial#)<span class="mandfield text-2 ml-1">*</span></label>
+                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">{{deviceIDText}}<span class="mandfield text-2 ml-1">*</span></label>
                       <input [disabled]="editMode" type="text" required #deviceSerialNo="ngModel" class="form-control" name="deviceSerialNo"
                         [(ngModel)]="device.deviceSerialNo">
                       <div *ngIf="deviceForm.submitted && deviceSerialNo.invalid && (deviceSerialNo.dirty || deviceSerialNo.touched)" class="alert">
