@@ -140,8 +140,12 @@ export class OrdersListComponent implements OnInit {
       fax: ''
     },
     charges: {
-      accessorialDeductionInfo: {},
-      accessorialFeeInfo: {},
+      accessorialDeductionInfo: {
+        accessorialDeduction: []
+      },
+      accessorialFeeInfo: {
+        accessorialFee: [],
+      },
       freightFee: {
         amount: 0,
         currency: '',

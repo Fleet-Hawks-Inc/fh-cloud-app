@@ -211,7 +211,7 @@
                                                                 <a *ngIf="order.orderStatus === 'created' || order.orderStatus === 'confirmed'" class="dropdown-item"
                                                                     (click)="showBrokerageModal(order, ordersDraw, i, 'all')">Brokerage</a>
                                                                     <a *ngIf="order.orderStatus === 'brokerage'" class="dropdown-item"
-                                                                    (click)="updateCreatedStatus(order, ordersDraw, i, 'all')">Cancel Brokerage</a>
+                                                                    (click)="updateCreatedStatus(order, ordersDraw, i)">Cancel Brokerage</a>
                                                                 <a class="dropdown-item"
                                                                     [routerLink]="['/dispatch', 'orders', 'add']" [queryParams]="{ cloneID: order.orderID }">Clone</a>
                                                             </div>
