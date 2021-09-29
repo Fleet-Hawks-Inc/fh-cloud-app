@@ -12,33 +12,6 @@ import { AccountService, ApiService, ListService } from 'src/app/services';
 export class EmployeePaymentDetailComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
   paymentID;
-  // paymentData = {
-  //   entityId: null,
-  //   txnDate: null,
-  //   fromDate: '',
-  //   toDate: '',
-  //   paymentNo: '',
-  //   payroll: {
-  //     type: null,
-  //     amount: 0,
-  //     hours: 0,
-  //     perHour: 0,
-  //   },
-  //   accountID: null,
-  //   payMode: null,
-  //   payModeNo: "",
-  //   payModeDate: null,
-  //   addition: [],
-  //   deduction: [],
-  //   paymentTotal: 0,
-  //   additionTotal: 0,
-  //   deductionTotal: 0,
-  //   subTotal: 0,
-  //   taxes: 0,
-  //   advance: 0,
-  //   finalTotal: 0,
-  //   transactionLog: []
-  // };
   paymentData = {
     entityId: null,
     txnDate: '',
