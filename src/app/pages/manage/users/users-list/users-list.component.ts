@@ -205,10 +205,10 @@ this.newRoles = [];
       return false;
     }
   }
-  async deleteUser(contactID, firstName: string, lastName: string, loginEnabled) {
+  async deleteUser(contactID, firstName: string, lastName: string, userName: string) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}/${loginEnabled}`)
+        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}/${userName}`)
         .subscribe(async (result: any) => {
           this.userDraw = 0;
           this.lastEvaluatedKey = '';
