@@ -75,6 +75,8 @@ export class AdvancePaymentsDetailComponent implements OnInit {
         this.changePaymentMode(this.paymentData.payMode);
         if (this.paymentData.paymentTo === "driver") {
           this.fetchDriverDetail(this.paymentData.entityId);
+        } else if (this.paymentData.paymentTo === "employee") {
+          this.fetchEmployee(this.paymentData.entityId);
         } else {
           this.fetchContact(this.paymentData.entityId);
         }
@@ -91,6 +93,11 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   fetchContact(contactID) {
     this.apiService.getData(`contacts/detail/${contactID}`).subscribe((result: any) => {
         this.entityName = result.Items[0].cName;
+      });
+  }
+  fetchEmployee(contactID) {
+    this.apiService.getData(`contacts/detail/${contactID}`).subscribe((result: any) => {
+        this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
       });
   }
 

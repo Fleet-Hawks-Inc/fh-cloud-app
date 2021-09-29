@@ -97,8 +97,10 @@
                                               <span *ngIf="data.paymentTo === 'driver'">
                                                   {{ drivers[data.entityId] | titlecase}}
                                               </span>
-
-                                              <span *ngIf="data.paymentTo !== 'driver'">
+                                              <span *ngIf="data.paymentTo === 'employee'">
+                                                {{ employees[data.entityId] | titlecase}}
+                                            </span>
+                                              <span *ngIf="data.paymentTo !== 'driver' && data.paymentTo !== 'employee'">
                                                   {{ contacts[data.entityId] | titlecase }}
                                               </span>
 

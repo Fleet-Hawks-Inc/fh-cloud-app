@@ -1,132 +1,252 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pl-1 pr-0 pt-0">
-            <header class="page-header pr27 pl18">
-               <div class="row">
-                  <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                     <h2 class="font-weight-bold pl-0">Assets Settings</h2>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr27 pl18">
+        <div class="row">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            <h2 class="font-weight-bold pl-0">Assets Settings</h2>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
+            <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i>
+              Go Back</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="routing-overview__wrapper m-3">
+        <div class="row">
+          <div class="col-lg-12 col-xl-12 mb-4">
+            <div class=" ">
+              <ul class="nav nav-tabs top-tabs">
+                <!-- <li class="nav-item active">
+                  <a class="nav-link active" href="#drlistset" data-toggle="tab">Assets Listing</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#dstatusset" data-toggle="tab">Assets Status</a>
+                </li> -->
+                <li class="nav-item active">
+                  <a class="nav-link active" href="#deletedAssets" data-toggle="tab">Deleted Assets</a>
+                </li>
+              </ul>
+              <div class="tab-content mt-3" style="box-shadow:none;border:none;">
+                <!-- driver listing -->
+                <div id="drlistset" class="tab-pane">
+                  <div class="row pt-2">
+                    <div class="col-12">
+                      <p class="text-4 font-weight-bold text-dark">Set the visibility of assets listing to:</p>
+                    </div>
+
+                    <div class="col-5 offset-lg-1">
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
+                          Assets Drivers
+                        </label>
+                      </div>
+                      <span class="text-2">By this setting active assets show only in driver listing</span>
+                    </div>
+
+                    <div class="col-5">
+                      <div class="radio">
+                        <label>
+                          <input type="radio" name="ad" id="ad" class="driver-type">
+                          Show Both Active/Inactive Assets
+                        </label>
+                      </div>
+                      <span class="text-2">In this setting all listing (active, in active) show</span>
+                    </div>
                   </div>
-                  <div class="col-md-8 col-lg-8 text-right pr-1 pt-2">
-                     <a routerLink="/manage/settings/overview" class="btn btn-success btn-sm"><i class="fas fa-arrow-left"></i> Go Back</a>
-                  </div>
-               </div>
-            </header>
-           
-            <div class="routing-overview__wrapper m-3">
-               <div class="row">
-                  <div class="col-lg-12 col-xl-12 mb-4">
-                     <div class=" ">
-                        <ul class="nav nav-tabs top-tabs">
-                           <li class="nav-item active">
-                              <a class="nav-link active" href="#drlistset" data-toggle="tab">Assets Listing</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link" href="#dstatusset" data-toggle="tab">Assets Status</a>
-                           </li>
-                          
-                        </ul>
-                        <div class="tab-content mt-3" style="box-shadow:none;border:none;">
-                           <!-- driver listing -->
-						   <div id="drlistset" class="tab-pane active">
-                              <div class="row pt-2">
-								<div class="col-12">
-                                    <p class="text-4 font-weight-bold text-dark">Set the visibility of assets listing to:</p>
-                                 </div>
-								 
-                                 <div class="col-5 offset-lg-1">
-									<div class="radio">
-										<label>
-										<input type="radio" name="ds" id="ds" class="driver-type" checked="checked">
-										Assets Drivers
-										</label>
-									</div>
-									<span class="text-2">By this setting active assets show only in driver listing</span>
-                                 </div>
-								 
-								 <div class="col-5">
-                                    <div class="radio">
-										<label>
-										<input type="radio" name="ad" id="ad" class="driver-type">
-										Show Both Active/Inactive Assets
-										</label>
-									</div>
-									<span class="text-2">In this setting all listing (active, in active) show</span>
-                                 </div>
+
+
+                </div>
+
+                <!-- assets status -->
+                <div id="dstatusset" class="tab-pane">
+                  <div class="row">
+                    <div class="col-10">
+                      <p class="text-4 font-weight-bold text-dark">Activate or deactivate your assets:</p>
+                    </div>
+                    <div class="col-2 text-right"> <a routerLink="/manage/settings/asset"
+                        class="btn btn-success btn-sm modal-with-form"><i class="fas fa-plus"></i> Change Status</a>
+                    </div>
+
+
+                    <div class="col-12">
+                      <table class="table table-striped table-bordered simple-table">
+                        <thead>
+                          <tr style="background-color:#ccc;">
+                            <th>Assets Name</th>
+                            <th>Assets Number</th>
+                            <th>Status</th>
+                            <th>Status Date/Time</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Horse Trailer</td>
+                            <td>A254280</td>
+                            <td>Active</td>
+                            <td>10/03/2020, 07:20 PM</td>
+                            <td>
+                              <div class="switch switch-sm switch-dark">
+                                <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
                               </div>
-							  
-							  
-                           </div>
-						   
-                           <!-- assets status -->
-                           <div id="dstatusset" class="tab-pane">
-                              <div class="row">
-                                 <div class="col-10">
-                                    <p class="text-4 font-weight-bold text-dark">Activate or deactivate your assets:</p>
-                                 </div>
-								 <div class="col-2 text-right"> <a routerLink="/manage/settings/asset" class="btn btn-success btn-sm modal-with-form"><i class="fas fa-plus"></i> Change Status</a> </div>
-								 
-							
-								<div class="col-12">
-											<table class="table table-striped table-bordered simple-table">
-												<thead>
-													<tr style="background-color:#ccc;">
-														<th>Assets Name</th>
-														<th>Assets Number</th>
-														<th>Status</th>
-														<th>Status Date/Time</th>
-														<th>Action</th>
-													</tr>
-												</thead>
-												<tbody>
-													<tr>
-														<td>Horse Trailer</td>
-														<td>A254280</td>
-														<td>Active</td>
-														<td>10/03/2020, 07:20 PM</td>
-														<td>
-															<div class="switch switch-sm switch-dark">
-															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
-															</div>
-														 </td>
-													</tr>
-													<tr>
-														<td>Asset Trailer</td>
-														<td>A254280</td>
-														<td>Inactive</td>
-														<td>10/05/2020, 10:25 AM</td>
-														<td>
-															<div class="switch switch-sm switch-dark">
-															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
-															</div>
-														 </td>
-													</tr>
-													<tr>
-														<td>Asset Test</td>
-														<td>A254280</td>
-														<td>Active</td>
-														<td>14/02/2020, 11:45 AM</td>
-														<td>
-															<div class="switch switch-sm switch-dark">
-															   <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
-															</div>
-														 </td>
-													</tr>
-													
-												</tbody>
-											</table>
-										</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Asset Trailer</td>
+                            <td>A254280</td>
+                            <td>Inactive</td>
+                            <td>10/05/2020, 10:25 AM</td>
+                            <td>
+                              <div class="switch switch-sm switch-dark">
+                                <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
                               </div>
-							  
-							  
-                           </div>
-						   
-             
-					
-                        </div>
-                     </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Asset Test</td>
+                            <td>A254280</td>
+                            <td>Active</td>
+                            <td>14/02/2020, 11:45 AM</td>
+                            <td>
+                              <div class="switch switch-sm switch-dark">
+                                <input type="checkbox" name="switch" data-plugin-ios-switch checked="checked" />
+                              </div>
+                            </td>
+                          </tr>
+
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-               </div>
+                </div>
+
+                <div id="deletedAssets" class="tab-pane active">
+                  <div class="row">
+                    <div class="col-10">
+                      <p class="text-4 font-weight-bold text-dark">Restore deleted vehicles:</p>
+                    </div>
+                    <div class="col-2 text-right">
+                    </div>
+
+                   <div class="col-lg-12">
+                    <div class="row" style="padding-top:10px;">
+                      <div class="col-md-2 col-lg-2">
+                         <div class="input-group input-group-md mb-3">
+                            <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
+                          </div>
+
+                         <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
+                            <ul>
+                               <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;" (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)"
+                               > {{ suggestedAsset.assetIdentification }}</li>
+                            </ul>
+                         </div>
+                      </div>
+                      <div class="col-md-2 col-lg-2 pl-0 pr-0">
+                         <ng-select class="form-control custom" name="assetType" [(ngModel)]="assetType" placeholder="Select Type">
+                           <ng-option value="container">Container</ng-option>
+                           <ng-option value="double_drop">Double Drop</ng-option>
+                           <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                           <ng-option value="flat_bed">Flat bed</ng-option>
+                           <ng-option value="lowboy">Lowboy</ng-option>
+                           <ng-option value="stepDeck">StepDeck</ng-option>
+                           <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                           <ng-option value="dry_van">Dry Van</ng-option>
+                           <ng-option value="reefer">Reefer</ng-option>
+                           <ng-option value="power_only">Power Only</ng-option>
+                           <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                           <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                           <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                           <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                           <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                           <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                           <ng-option value="chassis">Chassis</ng-option>
+                           <ng-option value="tank_trailer">Tank Trailer</ng-option>
+                         </ng-select>
+                      </div>
+                      <div class="col-md-2 col-lg-2">
+                         <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-2">Search</button>
+                         <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
+                      </div>
+                      <div class="col-md-6 col-lg-6 text-right page-buttons pr-1">
+
+                      </div>
+                   </div>
+                   </div>
+
+                   <div class="col-lg-12">
+                    <!-- LIST VIEW OF ASSETS  -->
+                    <div class="table-responsive">
+                       <table class="row-border hover table table-bordered table-striped mb-0">
+                          <thead>
+                             <tr>
+                                <th>Asset Name/Number</th>
+                                <th>VIN</th>
+                                <th>Asset Type</th>
+                                <th>Make</th>
+                                <th> Licence Plate Number</th>
+                                <th>Year</th>
+                                <th>Model</th>
+                                <th>Ownership</th>
+                                <th>Company Name</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                             </tr>
+                          </thead>
+                          <tbody>
+                             <tr *ngIf="allData.length == 0" class="text-center">
+                                <td colspan="15">{{ dataMessage }}</td>
+                            </tr>
+                             <tr class="cursorpoint text-capitalize" *ngFor="let item of allData;let i = index">
+                                <td> <span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span></td>
+                                <td >{{item.assetDetails.ownerShip !=='interchange' ? item.VIN : '-'}}</td>
+                                <td>{{item.assetType | titlecase}}</td>
+                                <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}</td>
+                                <td>{{item.assetDetails.licencePlateNumber ? item.assetDetails.licencePlateNumber : '-'}}</td>
+                                <td>{{ item.assetDetails.ownerShip !=='interchange' ? item.assetDetails.year : '-'}}</td>
+                                <td>{{item.assetDetails.model ? item.assetDetails.model : '-'}}</td>
+                                <td>{{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
+                                <td>
+                                  <span *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</span>
+                                  <span *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.rentCompany ? item.assetDetails.rentCompany : '-'}}</span>
+                                  <span *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'">-</span>
+                                </td>
+                                <td><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span></td>
+                                <td>
+                                   <div class="dropdown dropright">
+                                      <button class="bg-transparent border-0" type="button" id="dropdownMenuButton-{{i}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                         <i class="fas fa-ellipsis-v"></i>
+                                      </button>
+                                      <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                         <a class="dropdown-item" href="javascript:;" (click)="restoreAsset(item)">Restore</a>
+                                      </div>
+                                   </div>
+                                </td>
+                             </tr>
+                          </tbody>
+                       </table>
+
+                    </div>
+                    <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
+                       <div class="col-6">
+                           Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
+                       </div>
+                       <div class="col-6 text-right">
+                           <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="assetPrev">Prev</button>
+                           <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="assetNext">Next</button>
+                       </div>
+                   </div>
+                 </div>
+                  </div>
+                </div>
+              </div>
             </div>
-         </section>
-    </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>

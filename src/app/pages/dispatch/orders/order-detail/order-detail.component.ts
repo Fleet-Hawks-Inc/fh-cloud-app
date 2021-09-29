@@ -187,6 +187,8 @@ export class OrderDetailComponent implements OnInit {
     emails: []
   }
 
+  hideEdit: boolean = false;
+
   constructor(private apiService: ApiService,private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
@@ -219,6 +221,9 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
+          if(result.orderStatus === 'created' || result.orderStatus === 'confirmed') {
+            this.hideEdit = true;
+          }
           this.orderStatus = result.orderStatus;
           await this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;

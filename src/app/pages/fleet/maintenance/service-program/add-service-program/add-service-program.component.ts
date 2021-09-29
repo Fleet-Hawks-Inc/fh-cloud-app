@@ -71,11 +71,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   ) {}
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.programID = this.route.snapshot.params['programID'];
     if (this.programID) {
       this.pageTitle = 'Edit Service Program';
-      this.fetchServiceByID();
+      await this.fetchServiceByID();
     } else {
       this.pageTitle = 'New Service Program';
     }
@@ -87,9 +87,35 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     });
 
     this.tasks =  this.listService.tasksList;
-    this.vehicles = this.listService.vehicleList;
+    let vehicleList = new Array<any>();
+    this.getValidVehicles(vehicleList);
+    this.vehicles = vehicleList;
   }
 
+  private getValidVehicles(vehicleList: any[]) {
+    let ids = [];
+    this.listService.vehicleList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 1
+        ) {
+          if(this.selectedVehicles.includes(element2.vehicleID)) {
+            let index = this.selectedVehicles.indexOf(element2.vehicleID);
+            this.serviceData.vehicles.splice(index, 1);
+          }
+        }
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.vehicleID)
+        ) {
+          vehicleList.push(element2);
+          ids.push(element2.vehicleID);
+        }
+      });
+    });
+  }
 
   ngAfterViewInit() {
 
@@ -172,11 +198,11 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     this.errors = {};
   }
 
-  fetchServiceByID() {
+  async fetchServiceByID() {
     // this.spinner.show(); // loader init
-    this.apiService
-      .getData('servicePrograms/' + this.programID)
-      .subscribe((result: any) => {
+    let result:any = await this.apiService
+      .getData('servicePrograms/' + this.programID).toPromise();
+      // .subscribe((result: any) => {
         result = result.Items[0];
 
         this.serviceData['programID']= this.programID;
@@ -195,7 +221,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
         }
         this.serviceData.serviceScheduleDetails = newTasks;
         this.spinner.hide(); // hide loader
-      });
+      // });
   }
 
   /*

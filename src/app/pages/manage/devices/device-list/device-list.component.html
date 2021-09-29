@@ -1,117 +1,157 @@
 <section class="body">
-
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pt-0 pr-0">
       <header class="page-header">
         <form class="form-horizontal" method="get">
-          <div class="row pr-5" style="padding-top:10px;">
-
-            <div class="col-md-12  col-lg-12 text-right pr-4">
-              <div class="btn-group flex-wrap">
-              </div>
-              <a routerLink='/manage/devices/add' class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
-                Device</a>
-
+          <div class="row pr-5" style="padding-top: 10px">
+            <div class="col-md-12 col-lg-12 text-right pr-4">
+              <div class="btn-group flex-wrap"></div>
+              <a routerLink="/manage/devices/add" class="btn btn-success btn-sm"
+                ><i class="fas fa-plus"></i> Add Device</a
+              >
             </div>
           </div>
         </form>
       </header>
-      <!-- <section class="card">
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="wtopnav">
-              <ul>
-                <li><a href="devices-tracker.php" class="active">Devices</a></li>
-                <li><a href="sensors-temp.php">Sensors </a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-lg-4 pt-1 text-right">
-          </div>
-        </div>
-      </section>
-      <section class="card mt-1">
-        <div class="wtopnav">
-          <ul>
-            <li><a href="devices-tracker.php" class="active">Tracker </a></li>
-            <li><a href="devices-gateway.php">Gateway</a></li>
-            <li><a href="disconnects.php">Disconnects</a></li>
-
-          </ul>
-        </div>
-      </section> -->
 
       <div class="row text-dark">
         <div class="col pr-0">
           <section class="card">
             <div class="card-body">
-              <div id="simple-table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+              <div
+                id="simple-table_wrapper"
+                class="dataTables_wrapper dt-bootstrap4 no-footer"
+              >
                 <div class="row">
                   <div class="col-lg-6">
-                    <div class="dataTables_length" id="simple-table_length"><label>Show <select
-                          name="simple-table_length" aria-controls="simple-table"
-                          class="custom-select custom-select-sm form-control form-control-sm">
+                    <div class="dataTables_length" id="simple-table_length">
+                      <label
+                        >Show
+                        <select
+                          name="simple-table_length"
+                          aria-controls="simple-table"
+                          class="
+                            custom-select custom-select-sm
+                            form-control form-control-sm
+                          "
+                        >
                           <option value="10">10</option>
                           <option value="25">25</option>
                           <option value="50">50</option>
                           <option value="100">100</option>
-                        </select> entries</label></div>
+                        </select>
+                        entries</label
+                      >
+                    </div>
                   </div>
                   <div class="col-lg-6"></div>
                 </div>
                 <div class="table-responsive">
-                  <table class="row-border hover table table-bordered table-striped mb-0"
-                    id="simple-table" role="grid">
+                  <table
+                    class="
+                      row-border
+                      hover
+                      table table-bordered table-striped
+                      mb-0
+                    "
+                    id="simple-table"
+                    role="grid"
+                  >
                     <thead>
-                      <tr >
-                        <th width="10%" class="col3" style="width: 135px;">Serial</th>
-                        <th width="25%" class="col2" style="width: 371px;">Device Name</th>
-                        <th width="15%" class="col4" style="width: 213px;">Vehicle/Asset</th>
-                        <th width="10%" class="col1" style="width: 136px;">Status</th>
-                        <th id="" class="minWidth50" style="width:20px;">Actions</th>
+                      <tr>
+                        <th width="10%" class="col3" style="width: 135px">
+                          Serial/Devi
+                        </th>
+                        <th width="25%" class="col2" style="width: 371px">
+                          Device Name
+                        </th>
+                        <th width="15%" class="col4" style="width: 213px">
+                          Vehicle/Asset
+                        </th>
+                        <th width="10%" class="col1" style="width: 136px">
+                          Status
+                        </th>
+                        <th id="" class="minWidth50" style="width: 20px">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngIf="devices.length == 0" class="text-center">
                         <td colspan="15">{{ dataMessage }}</td>
-                    </tr>
+                      </tr>
 
                       <tr role="row" class="odd" *ngFor="let device of devices">
-                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceSerialNo}}</td>
-                        <td routerLink="/manage/devices/detail/{{device.deviceSerialNo.replace('#','/')}}">{{device.deviceName}}</td>
-                        <td *ngIf="device.vehicle.vehicleIdentification; else elseBlock">{{device.vehicle.vehicleIdentification}}</td>
-                        <ng-template #elseBlock><td  >{{device.asset.assetIdentification}}</td></ng-template>
-                        <td ><span
-                          class="badge badge-success text-3">{{device.deviceStatus}}</span></td>
+                        <td
+                          routerLink="/manage/devices/detail/{{
+                            device.deviceSerialNo.replace('#', '/')
+                          }}"
+                        >
+                          {{ device.deviceSerialNo.split("#")[1] }}
+                        </td>
+                        <td
+                          routerLink="/manage/devices/detail/{{
+                            device.deviceSerialNo.replace('#', '/')
+                          }}"
+                        >
+                          {{ device.deviceName }}
+                        </td>
+                        <td
+                          *ngIf="
+                            device.vehicle.vehicleIdentification;
+                            else elseBlock
+                          "
+                        >
+                          {{ device.vehicle.vehicleIdentification }}
+                        </td>
+                        <ng-template #elseBlock
+                          ><td>
+                            {{ device.asset.assetIdentification }}
+                          </td></ng-template
+                        >
+                        <td>
+                          <span class="badge badge-success text-3">{{
+                            device.deviceStatus
+                          }}</span>
+                        </td>
                         <td class="border-0">
                           <div class="dropdown dropright">
-                             <button class="bg-transparent border-0" type="button"
-                                 data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                             </button>
-                             <div class="dropdown-menu" >
-                                <a class="dropdown-item"
-                                   routerLink="/manage/devices/edit/{{device.deviceSerialNo.replace('#','/')}}">Edit</a>
-                                <a href="javascript:;" class="dropdown-item"
-                                   (click)="deactivateDevice(device.deviceType,device.deviceSerialNo)">Deactivate</a>
-                             </div>
+                            <button
+                              class="bg-transparent border-0"
+                              type="button"
+                              data-toggle="dropdown"
+                              aria-haspopup="true"
+                              aria-expanded="false"
+                            >
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                              <a
+                                class="dropdown-item"
+                                routerLink="/manage/devices/edit/{{
+                                  device.deviceSerialNo.replace('#', '/')
+                                }}"
+                                >Edit</a
+                              >
+                              <a
+                                href="javascript:;"
+                                class="dropdown-item"
+                                (click)="
+                                  deactivateDevice(
+                                    device.deviceType,
+                                    device.deviceSerialNo
+                                  )
+                                "
+                                >Deactivate</a
+                              >
+                            </div>
                           </div>
-                       </td>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <!-- <div class="dataTables_paginate paging_simple_numbers" id="simple-table_paginate">
-                  <ul class="pagination">
-                    <li class="paginate_button page-item previous disabled" id="simple-table_previous"><a href="#"
-                        aria-controls="simple-table" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-                    <li class="paginate_button page-item active"><a href="#" aria-controls="simple-table"
-                        data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                    <li class="paginate_button page-item next disabled" id="simple-table_next"><a href="#"
-                        aria-controls="simple-table" data-dt-idx="2" tabindex="0" class="page-link">Next</a></li>
-                  </ul>
-                </div> -->
+               
               </div>
             </div>
           </section>

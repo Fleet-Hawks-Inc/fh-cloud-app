@@ -39,8 +39,8 @@
                               <table class="table table-bordered table-responsive-lg">
                                  <tbody>
                                     <tr>
-                                       <td width="40%" class="back-color-gray font-weight-bold">Device Serial</td>
-                                       <td  width="60%">{{device.deviceSerialNo}} </td>
+                                       <td width="40%" class="back-color-gray font-weight-bold">Device Serial / IMEI </td>
+                                       <td  width="60%">{{device.deviceSerialNo.split('#')[1]}} </td>
                                     </tr>
                                     <tr>
                                        <td class="back-color-gray font-weight-bold">Device Name</td>
