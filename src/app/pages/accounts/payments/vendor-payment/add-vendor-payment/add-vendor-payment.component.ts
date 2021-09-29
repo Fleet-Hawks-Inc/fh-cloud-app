@@ -21,7 +21,9 @@ export class AddVendorPaymentComponent implements OnInit {
   paymentData = {
     entityId: null,
     txnDate: moment().format('YYYY-MM-DD'),
+    payCur: null,
     paymentNo: '',
+    drAct: null,
     accountID: null,
     payMode: null,
     payModeNo: '',
@@ -49,7 +51,9 @@ export class AddVendorPaymentComponent implements OnInit {
     invoiceNo: null,
     desc: '',
     amount: 0,
-    currency: 'CAD'
+    currency: 'CAD',
+    conAmt: 0,
+    conCur: null
 };
 dateMinLimit = { year: 1950, month: 1, day: 1 };
 date = new Date();
@@ -68,16 +72,54 @@ pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
+  changePayCur() {
+    this.paymentData.invoices = [];
+    this.paymentData.paymentTotal = 0;
+  }
   addInvoice() {
+    let outputCur = this.paymentData.payCur;
+    let baseCur;
+    if (outputCur === 'CAD') {
+      baseCur = 'USD';
+    } else {
+      baseCur = 'CAD';
+    }
+    let amount = this.invoiceData.amount;
     if (this.invoiceData.invoiceNo != null && this.invoiceData.amount !== 0 && this.invoiceData.currency !== null) {
+      if (this.invoiceData.currency === this.paymentData.payCur) {
+        this.invoiceData.conAmt = amount;
+        this.invoiceData.conCur = 'CAD';
         this.paymentData.invoices.push(this.invoiceData);
         this.invoiceData = {
             invoiceNo: null,
             desc: '',
             amount: 0,
-            currency: 'CAD'
+            currency: 'CAD',
+            conAmt: 0,
+            conCur: null
         };
         this.calculateInvoiceTotal();
+      } else {
+        this.accountService.getData(`currency-conversion/convert/${baseCur}/${outputCur}/${amount}`).subscribe((res) => {
+          if (res) {
+            this.invoiceData.conAmt = +res.toFixed(2);
+            this.invoiceData.conCur = outputCur;
+            this.paymentData.invoices.push(this.invoiceData);
+            this.invoiceData = {
+                invoiceNo: null,
+                desc: '',
+                amount: 0,
+                currency: 'CAD',
+                conAmt: 0,
+                conCur: null
+            };
+            this.calculateInvoiceTotal();
+          }
+
+        });
+
+      }
+
     }
 }
 openModal(unit: string) {
@@ -99,7 +141,7 @@ delInvoice(index: any) {
 calculateInvoiceTotal() {
   this.paymentData.paymentTotal = 0;
   for (const inv of this.paymentData.invoices) {
-      this.paymentData.paymentTotal += inv.amount;
+      this.paymentData.paymentTotal += inv.conAmt;
   }
 }
   changePaymentMode(type) {
