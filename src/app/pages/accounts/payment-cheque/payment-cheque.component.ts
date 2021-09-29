@@ -5,6 +5,7 @@ import { AccountService, ApiService, ListService } from 'src/app/services';
 import * as html2pdf from 'html2pdf.js';
 import { Subscription } from 'rxjs';
 import { formatDate } from "@angular/common";
+var converter = require('number-to-words');
 declare var $: any;
 
 @Component({
@@ -51,7 +52,8 @@ export class PaymentChequeComponent implements OnInit {
     },
     finalAmount: 0,
     advance: 0,
-    page: ''
+    page: '',
+    invoices: [],
   };
 
   cheqdata = {
@@ -79,15 +81,13 @@ export class PaymentChequeComponent implements OnInit {
     taxYTD: 0,
     grossPayYTD: 0,
     withHeldYTD: 0,
-    netPayYTD: 0
+    netPayYTD: 0,
+    amountWords: '',
+    decimals: '',
+    invoices: []
   };
   driverData;
 
-  cdnFund = ['*','*','*','*','*','*','*','*','*','*','*','*','*','*','*'];
-  sideVal = ['*','*','*','*','*','*','*','*','*','*','*'];
-  cdnFundSmall = ['AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST','AST'];
-  totalChars = 15;
-  prevClass = 'amt-words';
   subscription: Subscription;
   locale = 'en-US';
   
@@ -98,27 +98,40 @@ export class PaymentChequeComponent implements OnInit {
       if(res.showModal && res.length != 0) {
         this.paydata = res;
         this.cheqdata.payDate = formatDate(this.paydata.txnDate, 'dd-MM-yyyy', this.locale);
-        this.paydata.payYear = formatDate(this.paydata.toDate, 'yyyy', this.locale);
-        let startDate = formatDate(this.paydata.fromDate, 'dd-MM-yyyy', this.locale);
-        let endDate = formatDate(this.paydata.toDate, 'dd-MM-yyyy', this.locale);
-        this.cheqdata.payPeriod = `${startDate} To ${endDate}`;  
-        console.log('this.paydata', this.paydata);
+
+        if(this.paydata.type === 'driver' || this.paydata.type === 'employee' || this.paydata.type === 'owner_operator' || this.paydata.type === 'carrier') {
+          this.paydata.payYear = formatDate(this.paydata.toDate, 'yyyy', this.locale);
+          let startDate = formatDate(this.paydata.fromDate, 'dd-MM-yyyy', this.locale);
+          let endDate = formatDate(this.paydata.toDate, 'dd-MM-yyyy', this.locale);
+          this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+        }
         
         this.cheqdata.chqNo = this.paydata.chequeNo;
-        this.cheqdata.regularPay = this.paydata.settledAmount;
-        this.cheqdata.vacationPay = this.paydata.vacPayAmount;
-        this.cheqdata.grossPay = Number(this.cheqdata.regularPay) + Number(this.cheqdata.vacationPay);
-        this.cheqdata.cpp = this.paydata.taxdata.cpp;
-        this.cheqdata.ei = this.paydata.taxdata.ei;
-        this.cheqdata.tax = Number(this.paydata.taxdata.federalTax) + Number(this.paydata.taxdata.provincialTax);
-        this.cheqdata.withHeld = Number(this.cheqdata.cpp) + Number(this.cheqdata.ei) + Number(this.cheqdata.tax);
-        this.cheqdata.netPay = Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
+        if(this.paydata.type === 'driver' || this.paydata.type === 'employee') {
+          this.cheqdata.regularPay = this.paydata.settledAmount;
+          this.cheqdata.vacationPay = this.paydata.vacPayAmount;
+          this.cheqdata.grossPay = Number(this.cheqdata.regularPay) + Number(this.cheqdata.vacationPay);
+          this.cheqdata.cpp = this.paydata.taxdata.cpp;
+          this.cheqdata.ei = this.paydata.taxdata.ei;
+          this.cheqdata.tax = Number(this.paydata.taxdata.federalTax) + Number(this.paydata.taxdata.provincialTax);
+          this.cheqdata.withHeld = Number(this.cheqdata.cpp) + Number(this.cheqdata.ei) + Number(this.cheqdata.tax);
+          this.cheqdata.netPay = Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
+        } else if(this.paydata.type === 'owner_operator' || this.paydata.type === 'carrier' || this.paydata.type === 'vendor') {
+          this.cheqdata.regularPay = this.paydata.finalAmount;
+          this.cheqdata.grossPay = this.paydata.finalAmount;
+          if(this.paydata.type === 'vendor') {
+            this.cheqdata.invoices = this.paydata.invoices;
+          }
+        }
+        
         if(this.paydata.type == 'driver') {
           this.fetchDriver();
         } else {
           this.fetchContact();
         }
-        this.getUserAnnualTax();
+        if(this.paydata.type === 'driver' || this.paydata.type === 'employee' || this.paydata.type === 'owner_operator' || this.paydata.type === 'carrier') {
+          this.getUserAnnualTax();
+        }
         
         let ngbModalOptions: NgbModalOptions = {
           backdrop : 'static',
@@ -138,6 +151,17 @@ export class PaymentChequeComponent implements OnInit {
   prevCheck() {
     this.cheqdata.date = formatDate(this.paydata.chequeDate, 'ddMMyyyy', this.locale);
     this.cheqdata.amount  = this.paydata.finalAmount;
+    this.cheqdata.amountWords = converter.toWords(this.cheqdata.amount);
+    let amountSplit = this.paydata.finalAmount.toString().split('.');
+    let decimals = 0.00;
+    if(amountSplit.length > 0) {
+      let decc = Number(amountSplit[1]);
+      decimals = (decc > 0) ? decc : 0.00;
+    }
+
+    if(decimals > 0) {
+      this.cheqdata.decimals = ` and ${decimals}/100`;
+    }
     this.modalService.dismissAll();
     let ngbModalOptions: NgbModalOptions = {
       backdrop : 'static',
@@ -212,7 +236,6 @@ export class PaymentChequeComponent implements OnInit {
   fetchDriver() {
     this.apiService.getData(`drivers/${this.paydata.entityId}`).subscribe((result: any) => {
       this.driverData = result.Items[0];
-      console.log('this.driverDatathis.driverData', this.driverData);
       this.cheqdata.entityName = this.driverData.firstName +' '+ this.driverData.lastName;
       let addr = result.Items[0].address[0];
       if(addr.manual) {
@@ -226,7 +249,13 @@ export class PaymentChequeComponent implements OnInit {
   fetchContact() {
     if(this.paydata.entityId != null) {
       this.apiService.getData(`contacts/detail/${this.paydata.entityId}`).subscribe((result: any) => {
-        this.paydata.entityName = result.Items[0].cName;
+        this.cheqdata.entityName = result.Items[0].cName;
+        let addr = result.Items[0].adrs[0];
+        if(addr.manual) {
+          this.cheqdata.entityAddress = `${addr.add1} ${addr.add2}, ${addr.sName}, ${addr.ctyName}, ${addr.cName}, ${addr.zip}`;
+        } else {
+          this.cheqdata.entityAddress = addr.userLoc;
+        }
       });
     }
   }

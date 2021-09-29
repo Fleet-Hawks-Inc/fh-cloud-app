@@ -12,11 +12,36 @@ import { AccountService, ApiService, ListService } from 'src/app/services';
 export class EmployeePaymentDetailComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
   paymentID;
+  // paymentData = {
+  //   entityId: null,
+  //   txnDate: null,
+  //   fromDate: '',
+  //   toDate: '',
+  //   paymentNo: '',
+  //   payroll: {
+  //     type: null,
+  //     amount: 0,
+  //     hours: 0,
+  //     perHour: 0,
+  //   },
+  //   accountID: null,
+  //   payMode: null,
+  //   payModeNo: "",
+  //   payModeDate: null,
+  //   addition: [],
+  //   deduction: [],
+  //   paymentTotal: 0,
+  //   additionTotal: 0,
+  //   deductionTotal: 0,
+  //   subTotal: 0,
+  //   taxes: 0,
+  //   advance: 0,
+  //   finalTotal: 0,
+  //   transactionLog: []
+  // };
   paymentData = {
     entityId: null,
-    txnDate: null,
-    fromDate: '',
-    toDate: '',
+    txnDate: '',
     paymentNo: '',
     payroll: {
       type: null,
@@ -24,20 +49,39 @@ export class EmployeePaymentDetailComponent implements OnInit {
       hours: 0,
       perHour: 0,
     },
+    fromDate: '',
+    toDate: '',
     accountID: null,
     payMode: null,
     payModeNo: "",
     payModeDate: null,
+    settledAmount: 0,
+    vacPayPer: 0,
+    vacPayAmount: 0,
     addition: [],
     deduction: [],
     paymentTotal: 0,
     additionTotal: 0,
     deductionTotal: 0,
     subTotal: 0,
+    taxdata: {
+      payPeriod: null,
+      stateCode: null,
+      federalCode: 'claim_code_1',
+      provincialCode: null,
+      cpp: 0,
+      ei: 0,
+      federalTax: 0,
+      provincialTax: 0,
+      emplCPP: 0,
+      emplEI: 0
+    },
     taxes: 0,
     advance: 0,
     finalTotal: 0,
-    transactionLog: []
+    advancePayIds: [],
+    advData: [],
+    transactionLog: [],
   };
   employees = [];
   empdetail = {
@@ -124,6 +168,32 @@ export class EmployeePaymentDetailComponent implements OnInit {
     setTimeout(() => {
       this.downloadDisabled = false;
     }, 15000)
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalTotal,
+      type: 'employee',
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add',
+      showModal: this.showModal, 
+      fromDate: this.paymentData.fromDate,
+      toDate: this.paymentData.toDate,
+      vacPayPer: this.paymentData.vacPayPer,
+      vacPayAmount: this.paymentData.vacPayAmount,
+      totalAmount: this.paymentData.subTotal,
+      settledAmount: this.paymentData.settledAmount,
+      taxdata: this.paymentData.taxdata,
+      finalAmount: this.paymentData.finalTotal,
+      advance: this.paymentData.advance,
+      txnDate: this.paymentData.txnDate,
+      page: 'detail'
+    }
+    this.listService.openPaymentChequeModal(obj);
   }
 
 }

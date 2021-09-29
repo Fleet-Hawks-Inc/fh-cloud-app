@@ -9,6 +9,8 @@
                     <div class="col-md-8  col-lg-8 text-right pr-4">
                         <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-3"><i
                             class="fas fa-download"></i> Payment PDF</button>
+                        <button type="button" (click)="showCheque();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-3"><i
+                                class="fas fa-download"></i> Cheque</button>
                         <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i> Payment List</a> 
                     </div>
@@ -128,6 +130,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <tr class="text-center" *ngIf="paymentData.transactionLog.length === 0">
+                                                <td colspan="4">
+                                                    {{ dataMessage }}
+                                                </td>
+                                            </tr>
                                             <tr *ngFor="let data of paymentData.transactionLog">
                                               <td><span *ngIf="data.actIDType === 'actID'">{{accountsObjects[data.accountID] | titlecase}}</span>
                                                 <span *ngIf="data.actIDType === 'actIntID'">{{accountsIntObjects[data.accountID] | titlecase}}</span></td>
@@ -145,11 +152,6 @@
                                                     <span *ngIf="data.trxType !== 'credit'">0.00</span>
                                                 </td>
                                             </tr>
-                                            <!-- <tr>
-                                                <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                                <td>{{ paymentData.finalAmount }} CAD</td>
-                                                <td>{{ paymentData.finalAmount }} CAD</td>
-                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -162,3 +164,4 @@
     </div>
 </section>
 <app-payment-pdfs></app-payment-pdfs>
+<app-payment-cheque></app-payment-cheque>
