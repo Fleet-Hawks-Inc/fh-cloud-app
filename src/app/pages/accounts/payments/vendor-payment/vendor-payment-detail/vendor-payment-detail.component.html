@@ -7,6 +7,8 @@
                  Vendor Payment #{{ paymentData.paymentNo }}
               </div>
               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <button type="button" (click)="showCheque();" class="btn btn-success btn-sm mr-3"><i
+                  class="fas fa-download"></i> Cheque</button>
                  <a routerLink="/accounts/payments/vendor-payments/list" class="btn btn-sm btn-default"><i
                        class="fas fa-list"></i> Payment List</a>
               </div>
@@ -40,7 +42,7 @@
                                 <div class="text-center p-4 cerbor">
                                    <i class="fas fa-money-bill-wave text-7"></i>
                                    <br>
-                                   <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.paymentTotal | number : '1.2-2' }} CAD
+                                   <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }}
                                    </p>
                                    <p class="mb-0">AMOUNT</p>
                                 </div>
@@ -52,14 +54,18 @@
                              <div class="col-lg-12">
                                 <table class="table table-bordered table-responsive-lg">
                                    <tbody>
-                                      <tr>
+                                    <tr>
+                                      <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
+                                      <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td>
+                                   </tr>
+                                      <!-- <tr>
                                          <td class="back-color-gray font-weight-bold">Amount</td>
-                                         <td>{{ paymentData.paymentTotal | number : '1.2-2' }} CAD </td>
+                                         <td>{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }} </td>
                                       </tr>
                                       <tr>
                                         <td width="40%" class="back-color-gray font-weight-bold">Account</td>
                                         <td width="60%">{{ accountsObjects[paymentData.accountID] | titlecase}}</td>
-                                     </tr>
+                                     </tr> -->
                                      <tr>
                                       <td width="40%" class="back-color-gray font-weight-bold">Remarks</td>
                                       <td width="60%">{{ paymentData.remarks ? paymentData.remarks : '-'}}</td>
@@ -74,10 +80,6 @@
                              <div class="col-lg-12">
                                 <table class="table table-bordered table-responsive-lg">
                                    <tbody>
-                                      <tr>
-                                         <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                         <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td>
-                                      </tr>
                                       <tr *ngIf="paymentData.payMode">
                                          <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
                                          <td width="60%" class="text-capitalize">{{ paymentData.payModeNo }}</td>
@@ -147,7 +149,7 @@
                                 <tr *ngFor="let inv of paymentData.invoices">
                                   <td>{{inv.invoiceNo}}</td>
                                   <td>{{inv.desc}}</td>
-                                  <td>{{inv.amount}} {{inv.currency}}</td>
+                                  <td>{{inv.amount}} {{inv.currency}} <span *ngIf="inv.amount !== inv.conAmt">( {{inv.conAmt}} {{inv.conCur}} )</span></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -216,3 +218,4 @@
       </div>
    </div>
 </div>
+<app-payment-cheque></app-payment-cheque>
