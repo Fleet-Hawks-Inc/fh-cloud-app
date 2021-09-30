@@ -1,560 +1,1144 @@
 <section class="body">
-
   <div class="inner-wrapper">
-
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr19 pl11">
-         <div class="row" style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4">
-               <h4 class="font-weight-bold text-4 mt-0 text-dark">Asset Details</h4>
-            </div>
-            <div class="col-md-8 col-lg-8 text-right pr-1">
-              <a routerLink="/fleet/assets/edit/{{assetID}}" class="btn btn-default btn-sm mr-2"><i
-                class="fas fa-pencil-alt"></i> Edit Asset</a>
-             <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Assets List</a>
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="font-weight-bold text-4 mt-0 text-dark">
+              Asset Details
+            </h4>
           </div>
-         </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a
+              routerLink="/fleet/assets/edit/{{ assetID }}"
+              class="btn btn-default btn-sm mr-2"
+              ><i class="fas fa-pencil-alt"></i> Edit Asset</a
+            >
+            <a routerLink="/fleet/assets/list" class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> Assets List</a
+            >
+          </div>
+        </div>
       </header>
 
-
       <section class="m-2">
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12 pt-1">
-                           <table class="table table-bordered table-responsive-lg mb-2">
-                                  <tbody>
-                                     <tr>
-                                        <td width="40%" class="back-color-gray font-weight-bold">Asset Name/Number</td>
-                                        <td width="60%" class="text-capitalize">{{assetIdentification}}</td>
-                                     </tr>
-                                     <tr *ngIf="ownerShip !== 'interchange'">
-                                        <td width="40%" class="back-color-gray font-weight-bold">VIN</td>
-                                        <td width="60%" class="text-capitalize">{{VIN}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Group</td>
-                                        <td class="text-capitalize">{{groupID ? groupsObjects[groupID] : '-'}}</td>
-                                     </tr>
-                                     <tr>
-                                         <td class="back-color-gray font-weight-bold">Start Date</td>
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12 pt-1">
+                      <table
+                        class="table table-bordered table-responsive-lg mb-2"
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Asset Name/Number
+                            </td>
+                            <td width="60%" class="text-capitalize">
+                              {{ assetIdentification }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="ownerShip !== 'interchange'">
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              VIN
+                            </td>
+                            <td width="60%" class="text-capitalize">
+                              {{ VIN }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Group
+                            </td>
+                            <td class="text-capitalize">
+                              {{ groupID ? groupsObjects[groupID] : "-" }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Start Date
+                            </td>
 
-                                         <td class="text-capitalize">{{startDate | date:'yyyy/MM/dd'}}</td>
+                            <td class="text-capitalize">
+                              {{ startDate | date: "yyyy/MM/dd" }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Status
+                            </td>
+                            <td class="text-capitalize">{{ currentStatus }}</td>
+                          </tr>
 
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Asset Type
+                            </td>
+                            <td class="text-capitalize">{{ assetType }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Licence Plate Number
+                            </td>
+                            <td class="text-capitalize">
+                              {{ licencePlateNumber }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="ownerShip !== 'interchange'">
+                            <td class="back-color-gray font-weight-bold">
+                              Annual Safety Date
+                            </td>
+                            <td class="text-capitalize">
+                              {{ annualSafetyDate | date: "yyyy/MM/dd" }}
+                            </td>
+                          </tr>
 
-                                      </tr>
-                                      <tr>
-                                         <td class="back-color-gray font-weight-bold"> Status</td>
-                                         <td class="text-capitalize">{{currentStatus}}</td>
-                                      </tr>
+                          <tr *ngIf="ownerShip !== 'interchange'">
+                            <td class="back-color-gray font-weight-bold">
+                              Licence Province/State & Country
+                            </td>
+                            <td class="text-capitalize">
+                              {{ licenceStateName }}, {{ licenceCountryName }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              <span *ngIf="ownerShip !== 'interchange'">
+                                Year,</span
+                              >
+                              Make &amp; Model
+                            </td>
+                            <td class="text-capitalize">
+                              <span *ngIf="ownerShip !== 'interchange'">{{
+                                year ? year : "-"
+                              }}</span>
+                              <span *ngIf="manufacturer">{{
+                                manufacturer
+                              }}</span>
+                              <span *ngIf="model"> &amp;</span> {{ model }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Length
+                            </td>
+                            <td class="text-capitalize">
+                              {{ length ? length : "-" }} {{ lengthUnit }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Height
+                            </td>
+                            <td class="text-capitalize">
+                              {{ height ? height : "-" }} {{ heightUnit }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Axles
+                            </td>
+                            <td class="text-capitalize">
+                              {{ axle ? axle : "-" }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              GVWR
+                            </td>
+                            <td class="text-capitalize">
+                              {{ GVWR ? GVWR : "-" }} {{ GVWR_Unit }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              GAWR
+                            </td>
+                            <td class="text-capitalize">
+                              {{ GAWR ? GAWR : "-" }} {{ GAWR_Unit }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Ownership
+                            </td>
+                            <td class="text-capitalize">
+                              {{ ownerShip ? ownerShip : ("-" | titlecase) }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="ownerShip === 'rented'">
+                            <td class="back-color-gray font-weight-bold">
+                              Rented Company Name
+                            </td>
+                            <td class="text-capitalize">
+                              {{ rentCompany ? rentCompany : "-" }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="ownerShip === 'ownerOperator'">
+                            <td class="back-color-gray font-weight-bold">
+                              Owner Operator Name
+                            </td>
+                            <td class="text-capitalize">
+                              {{ contactsObjects[ownerOperatorName] }}
+                            </td>
+                          </tr>
+                          <tr *ngIf="inspectionFormName != ''">
+                            <td class="back-color-gray font-weight-bold">
+                              Inspection Form Name
+                            </td>
+                            <td class="text-capitalize">
+                              <a
+                                href="#inspectionFormModal"
+                                data-toggle="modal"
+                                data-target="#inspectionFormModal"
+                                class="modal-with-form font-weight-bold"
+                                >{{
+                                  inspectionFormName ? inspectionFormName : "-"
+                                }}
+                              </a>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Notes
+                            </td>
+                            <td class="text-capitalize">
+                              {{ remarks ? remarks : "-" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row mt-3" *ngIf="!environment">
+                    <div class="col-lg-12">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                          pt-2
+                        "
+                        >Two-Way Commands</label
+                      >
+                    </div>
+                    <div class="col-lg-12">
+                      <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Set Temperature</th>
+                            <th>Actual Temperature</th>
+                            <th>Clear Fault Code</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>21 F</td>
+                            <td>23 F</td>
+                            <td>
+                              <button class="btn btn-sm btn-dark">Clear</button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="!environment">
+                    <div class="col-lg-12">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                          pt-2
+                          d-flex
+                          justify-content-between
+                          align-items-center
+                        "
+                        >Device Specific Details
+                        <a
+                          href="javascript:;"
+                          data-toggle="modal"
+                          data-target="#attachDeviceModal"
+                          class="btn btn-sm btn-success"
+                          >Attach Device</a
+                        >
+                      </label>
+                    </div>
+                    <div class="col-lg-12">
+                      <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr>
+                            <th>Device SN</th>
+                            <th>Device Name</th>
+                            <th>Device Type</th>
+                            <th>Battery</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let device of allDevices; let i = index">
+                            <td>{{ device.sNo }}</td>
+                            <td>
+                              <a class="text-info" href="javascript:;">{{
+                                device.deviceName
+                              }}</a>
+                            </td>
+                            <td>{{ device.deviceType }}</td>
+                            <td>{{ device.batteryStatus }}</td>
+                            <td>
+                              <a href="javascript:;" (click)="removeDevices(i)"
+                                ><i class="fa fa-times text-danger"></i
+                              ></a>
+                            </td>
+                          </tr>
+                          <tr *ngIf="allDevices.length == 0">
+                            <td colspan="5">No Device Attached</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Asset Type</td>
-                                        <td class="text-capitalize">{{assetType}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Licence Plate Number</td>
-                                        <td class="text-capitalize">{{licencePlateNumber}}</td>
-                                     </tr>
-                                     <tr *ngIf="ownerShip !== 'interchange'">
-                                      <td class="back-color-gray font-weight-bold">Annual Safety Date</td>
-                                      <td class="text-capitalize">{{annualSafetyDate | date : 'yyyy/MM/dd'}}</td>
+                  <div class="row mt-1">
+                    <div class="col-lg-12 mb-1">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                        "
+                        >Cross Border Details</label
+                      >
+                    </div>
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              ACI ID
+                            </td>
+                            <td width="60%">{{ ACIID ? ACIID : "-" }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              ACE ID
+                            </td>
+                            <td>{{ ACEID ? ACEID : "-" }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
-                                   </tr>
-
-                                     <tr *ngIf="ownerShip !== 'interchange'">
-                                        <td class="back-color-gray font-weight-bold">Licence Province/State & Country </td>
-                                        <td class="text-capitalize">{{licenceStateName}}, {{licenceCountryName}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold"> <span *ngIf="ownerShip !== 'interchange'"> Year,</span> Make &amp; Model</td>
-                                        <td class="text-capitalize"><span *ngIf="ownerShip !== 'interchange'">{{year ? year : '-'}}</span> <span *ngIf="manufacturer">{{ manufacturer}}</span> <span *ngIf="model"> &amp;</span> {{model}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Length</td>
-                                        <td class="text-capitalize">{{length ? length : '-'}} {{lengthUnit}}</td>
-                                     </tr>
-                                     <tr>
-                                      <td class="back-color-gray font-weight-bold">Height</td>
-                                      <td class="text-capitalize">{{height ? height : '-'}} {{heightUnit}}</td>
-                                   </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Axles</td>
-                                        <td class="text-capitalize">{{axle ? axle : '-'}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">GVWR</td>
-                                        <td class="text-capitalize">{{GVWR ? GVWR : '-'}} {{GVWR_Unit}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">GAWR</td>
-                                        <td class="text-capitalize">{{GAWR ? GAWR : '-'}} {{GAWR_Unit}}</td>
-                                     </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">Ownership</td>
-                                        <td class="text-capitalize">{{ownerShip ? ownerShip : '-' | titlecase}}</td>
-                                     </tr>
-                                     <tr *ngIf="ownerShip === 'rented'">
-                                         <td class="back-color-gray font-weight-bold">Rented Company Name</td>
-                                         <td class="text-capitalize">{{rentCompany ? rentCompany : '-'}}</td>
-                                      </tr>
-                                      <tr *ngIf="ownerShip === 'ownerOperator'">
-                                       <td class="back-color-gray font-weight-bold">Owner Operator Name</td>
-                                       <td class="text-capitalize">{{contactsObjects[ownerOperatorName]}}</td>
-                                    </tr>
-                                      <tr *ngIf="inspectionFormName != ''">
-                                         <td class="back-color-gray font-weight-bold">Inspection Form Name</td>
-                                            <td class="text-capitalize">
-                                                <a href="#inspectionFormModal" data-toggle="modal" data-target="#inspectionFormModal" class="modal-with-form font-weight-bold">{{inspectionFormName ? inspectionFormName : '-'}}
-                                                </a>
-                                             </td>
-                                         </tr>
-                                     <tr>
-                                        <td class="back-color-gray font-weight-bold">
-                                           Notes
-                                        </td>
-                                        <td class="text-capitalize">{{remarks ? remarks : '-'}}</td>
-                                     </tr>
-                                  </tbody>
-                               </table>
-                         </div>
-                     </div>
-                     <div class="row mt-3" *ngIf="!environment">
-                       <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2">Two-Way Commands</label>
-                       </div>
-                          <div class="col-lg-12">
-                          <table class="table table-striped table-bordered">
-                                <thead>
-                                   <tr>
-                                      <th>Set Temperature</th>
-                                      <th>Actual Temperature</th>
-                                      <th>Clear Fault Code</th>
-                                   </tr>
-                                </thead>
-                                <tbody>
-                                   <tr>
-                                      <td>21 F</td>
-                                      <td>23 F</td>
-                                      <td><button class="btn btn-sm btn-dark">Clear</button></td>
-                                   </tr>
-                                </tbody>
-                             </table>
+                  <div class="row">
+                    <div class="col-lg-12" *ngIf="assetsImages?.length > 0">
+                      <div class="vehicle-common-box p-3 mb-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-3"
+                              >Photo(s)</label
+                            >
                           </div>
-                      </div>
-                      <div class="row" *ngIf="!environment">
-                         <div class="col-lg-12">
-                            <label class="control-label font-weight-bold text-lg-right text-dark text-4 pt-2 d-flex justify-content-between align-items-center">Device Specific Details
-                               <a href="javascript:;" data-toggle="modal" data-target="#attachDeviceModal" class="btn btn-sm btn-success">Attach Device</a>
-                            </label>
-                         </div>
-                         <div class="col-lg-12">
-                          <table class="table table-striped table-bordered">
-                             <thead>
-                                <tr>
-                                   <th>Device SN</th>
-                                   <th>Device Name</th>
-                                   <th>Device Type</th>
-                                   <th>Battery</th>
-                                   <th></th>
-                                </tr>
-                             </thead>
-                             <tbody>
-                                <tr *ngFor="let device of allDevices;let i = index;">
-                                   <td>{{device.sNo}}</td>
-                                   <td><a class="text-info" href="javascript:;">{{device.deviceName}}</a></td>
-                                   <td>{{device.deviceType}}</td>
-                                   <td>{{device.batteryStatus}}</td>
-                                   <td>
-                                      <a href="javascript:;" (click)="removeDevices(i)"><i class="fa fa-times text-danger"></i></a>
-                                   </td>
-                                </tr>
-                                <tr *ngIf="allDevices.length == 0">
-                                  <td colspan="5">
-                                     No Device Attached
-                                  </td>
-                                </tr>
-                             </tbody>
-                          </table>
-                         </div>
-                      </div>
-
-                       <div class="row mt-1">
-                          <div class="col-lg-12 mb-1">
-                             <label class="control-label font-weight-bold text-lg-right text-dark text-4">Cross Border Details</label>
-                          </div>
-                          <div class="col-lg-12">
-                             <table class="table table-bordered table-responsive-lg">
-                                <tbody>
-                                   <tr>
-                                      <td width="40%" class="back-color-gray font-weight-bold">ACI ID</td>
-                                      <td width="60%">{{ACIID ? ACIID : '-'}} </td>
-                                   </tr>
-                                   <tr>
-                                      <td class="back-color-gray font-weight-bold">ACE ID</td>
-                                      <td>{{ACEID ? ACEID : '-'}}</td>
-                                   </tr>
-                                </tbody>
-                             </table>
-                          </div>
-                       </div>
-
-                       <div class="row">
-
-                          <div class="col-lg-12" *ngIf="assetsImages?.length > 0">
-                             <div class="vehicle-common-box p-3 mb-3">
-                                <div class="row">
-                                   <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                                </div>
-                                <hr class="solid mt-3">
-                                <div class="row">
-                                   <div class="col-lg-6" *ngFor="let item of assetsImages; let i=index;">
-                                      <div class="vehicle-photo-box">
-                                         <img [src]="item.path" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                                         <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
-                                         <hr class="m-3">
-                                         <div class="row">
-                                            <div class="col-lg-8"> Image {{i+1}}</div>
-                                            <div class="col-lg-4 text-right">
-                                               <a href="javascript:;" class="modal-with-form">
-                                                  <i class="fas fa-times text-danger" (click)="deleteDocument('image',item.name)"></i>
-                                               </a>
-                                            </div>
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-
-                      <div class="row">
-                        <div class="col-lg-12">
-                           <label class="control-label font-weight-bold text-lg-right text-dark text-4">Loan Details</label>
-
                         </div>
-                        <div class="col-lg-12">
-                         <table class="table table-bordered table-responsive-lg text-capitalize">
-                            <tbody>
-                               <tr>
-                                  <td width="40%" class="back-color-gray font-weight-bold">Loan Vendor</td>
-                                  <td  width="60%">{{ loan.loanVendorID ? contactsObjects[loan.loanVendorID] : '-' }} </td>
-
-                               </tr>
-                               <tr>
-                                  <td class="back-color-gray font-weight-bold">Amount of Loan</td>
-                                  <td>{{ loan.amountOfLoan ? loan.amountOfLoan : '-' }} {{loan.amountOfLoanCurrency}}</td>
-
-
-                               </tr>
-
-                               <tr>
-                                  <td class="back-color-gray font-weight-bold">Annual Percentage Rate</td>
-                                  <td>{{ loan.annualPercentageRate ? loan.annualPercentageRate+'%' : '-' }}</td>
-                               </tr>
-                               <tr>
-                                  <td class="back-color-gray font-weight-bold">GST Included</td>
-                                  <td class="text-small">{{ loan.gstInc ? 'Yes' : 'No' }}</td>
-                               </tr>
-
-                               <tr>
-                                  <td class="back-color-gray font-weight-bold">Down Payment</td>
-                                  <td class="text-capitalize">{{ loan.downPayment ? loan.downPayment : '-' }} {{loan.downPaymentCurrency}}</td>
-                               </tr>
-
-                               <tr>
-                                 <td class="back-color-gray font-weight-bold">Date of Loan</td>
-                                 <td class="text-capitalize">{{ loan.dateOfLoan ? (loan.dateOfLoan | date:"yyyy/MM/dd") : '-' }}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Loan End Date</td>
-                                 <td class="text-capitalize">{{ loan.loadEndDate ? (loan.loadEndDate | date:"yyyy/MM/dd") : '-' }}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Loan Due Date</td>
-                                 <td class="text-capitalize">{{ loan.loanDueDate ? (loan.loanDueDate | date:"yyyy/MM/dd") : '-'  }}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Loan Due Date Reminder</td>
-                                 <td class="text-capitalize">{{ loan.lReminder ? loan.lReminder : '-'  }}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Number of Payments</td>
-                                 <td class="text-capitalize">{{ loan.numberOfPayments ? loan.numberOfPayments : '-' }}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Monthly Payment</td>
-                                 <td class="text-capitalize">{{ loan.monthlyPayment ? loan.monthlyPayment : '-' }} {{loan.monthlyPaymentCurrency}}</td>
-                              </tr>
-
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Notes</td>
-                                 <td class="text-capitalize">{{ loan.notes ? loan.notes : '-' }}</td>
-                              </tr>
-                            </tbody>
-                         </table>
-                         <div class="vehicle-common-box mt-4">
-                           <div class="row m-0">
-                             <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Loan Document(s)</div>
-                           </div>
-                           <table class="table table-responsive-lg mb-0">
-                             <tbody>
-                               <tr *ngIf="lDocs.length == 0" style="text-align: center;">
-                                 <td colspan="2">{{ noRecordMsg }}</td>
-                               </tr>
-                               <tr *ngFor="let data of lDocs; let i=index;">
-                                 <td width="80%">Document {{ i+1}} </td>
-                                 <td width="20%">
-                                   <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('loan', data.name)" ><i class="fas fa-trash-alt"></i></a>
-                                   <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
-                                   <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
-                                 </td>
-                               </tr>
-                             </tbody>
-                           </table>
-                         </div>
+                        <hr class="solid mt-3" />
+                        <div class="row">
+                          <div
+                            class="col-lg-6"
+                            *ngFor="let item of assetsImages; let i = index"
+                          >
+                            <div class="vehicle-photo-box">
+                              <img
+                                [src]="item.path"
+                                width="100%"
+                                class="img-fluid"
+                                style="height: 180px; object-fit: cover"
+                              />
+                              <!-- <iframe [src]="item" width="100px" height="100px" frameborder="0"></iframe> -->
+                              <hr class="m-3" />
+                              <div class="row">
+                                <div class="col-lg-8">Image {{ i + 1 }}</div>
+                                <div class="col-lg-4 text-right">
+                                  <a
+                                    href="javascript:;"
+                                    class="modal-with-form"
+                                  >
+                                    <i
+                                      class="fas fa-times text-danger"
+                                      (click)="
+                                        deleteDocument('image', item.name)
+                                      "
+                                    ></i>
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                        "
+                        >Loan Details</label
+                      >
+                    </div>
+                    <div class="col-lg-12">
+                      <table
+                        class="
+                          table table-bordered table-responsive-lg
+                          text-capitalize
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Loan Vendor
+                            </td>
+                            <td width="60%">
+                              {{
+                                loan.loanVendorID
+                                  ? contactsObjects[loan.loanVendorID]
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Amount of Loan
+                            </td>
+                            <td>
+                              {{ loan.amountOfLoan ? loan.amountOfLoan : "-" }}
+                              {{ loan.amountOfLoanCurrency }}
+                            </td>
+                          </tr>
 
-                  <div class="col-lg-6">
-                      <div class="row">
-                         <div class="col-lg-12" *ngIf="!environment"><label class="control-label font-weight-bold text-3">Reefer Temperature Graph:</label><span
-                               class="text-info"> 7576</span></div>
-                         <div class="col-lg-12" *ngIf="!environment">
-                            <!-- Morris: Line -->
-                            <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions"
-                               [legend]="chartLegend" [chartType]="chartType">
-                            </canvas>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Annual Percentage Rate
+                            </td>
+                            <td>
+                              {{
+                                loan.annualPercentageRate
+                                  ? loan.annualPercentageRate + "%"
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              GST Included
+                            </td>
+                            <td class="text-small">
+                              {{ loan.gstInc ? "Yes" : "No" }}
+                            </td>
+                          </tr>
 
-                         </div>
-                         <div class="col-lg-12">
-                          <label class="control-label font-weight-bold text-lg-right text-dark text-4">Insurance Details</label>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Down Payment
+                            </td>
+                            <td class="text-capitalize">
+                              {{ loan.downPayment ? loan.downPayment : "-" }}
+                              {{ loan.downPaymentCurrency }}
+                            </td>
+                          </tr>
 
-                       </div>
-                       <div class="col-lg-12">
-                        <table class="table table-bordered table-responsive-lg text-capitalize">
-                           <tbody>
-                              <tr>
-                                 <td width="40%" class="back-color-gray font-weight-bold">Date of Issue</td>
-                                 <td  width="60%">{{dateOfIssue ? ( dateOfIssue | date : 'yyyy/MM/dd') : '-'}} </td>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Date of Loan
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                loan.dateOfLoan
+                                  ? (loan.dateOfLoan | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
 
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Date of Expiry</td>
-                                 <td>{{dateOfExpiry ? (dateOfExpiry | date : 'yyyy/MM/dd') : '-'}}</td>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Loan End Date
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                loan.loadEndDate
+                                  ? (loan.loadEndDate | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
 
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Loan Due Date
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                loan.loanDueDate
+                                  ? (loan.loanDueDate | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
 
-                              </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Loan Due Date Reminder
+                            </td>
+                            <td class="text-capitalize">
+                              {{ loan.lReminder ? loan.lReminder : "-" }}
+                            </td>
+                          </tr>
 
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Premium Amount</td>
-                                 <td>{{premiumAmount ? premiumAmount : '-'}} {{premiumCurrency}}</td>
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Reminder Before Expiry</td>
-                                 <td class="text-small">{{reminderBefore ? reminderBefore : ''}} {{reminderBeforeUnit ? reminderBeforeUnit : '-'}}</td>
-                              </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Number of Payments
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                loan.numberOfPayments
+                                  ? loan.numberOfPayments
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
 
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Vendor</td>
-                                 <td class="text-capitalize">{{vendor ? contactsObjects[vendor] : '-'}}</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                       </div>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Monthly Payment
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                loan.monthlyPayment ? loan.monthlyPayment : "-"
+                              }}
+                              {{ loan.monthlyPaymentCurrency }}
+                            </td>
+                          </tr>
 
-                       <div class="col-lg-12">
-                        <label class="control-label font-weight-bold text-lg-right text-dark text-4">Purchase Details</label>
-
-                     </div>
-                     <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg text-capitalize">
-                         <tbody>
-                            <tr>
-                               <td width="40%" class="back-color-gray font-weight-bold">Purchase Vendor</td>
-                               <td  width="60%">{{ purchase.purchaseVendorID ? contactsObjects[purchase.purchaseVendorID] : '-'}} </td>
-
-                            </tr>
-                            <tr>
-                               <td class="back-color-gray font-weight-bold">Purchase Price</td>
-                               <td>{{ purchase.purchasePrice ? purchase.purchasePrice : '-' }} {{purchase.purchasePriceCurrency}}</td>
-
-
-                            </tr>
-
-                            <tr>
-                               <td class="back-color-gray font-weight-bold">GST Included</td>
-                               <td>{{ purchase.gstInc ? 'Yes' : 'No' }}</td>
-                            </tr>
-                            <tr>
-                               <td class="back-color-gray font-weight-bold">Purchase Date</td>
-                               <td class="text-small">{{ purchase.purchaseDate ? (purchase.purchaseDate | date:"yyyy/MM/dd") : '-'  }}</td>
-                            </tr>
-
-                            <tr>
-                               <td class="back-color-gray font-weight-bold">Purchase Odometer in Miles</td>
-                               <td class="text-capitalize">{{ purchase.purchaseOdometer ? purchase.purchaseOdometer : '-' }}</td>
-                            </tr>
-
-                            <tr>
-                              <td class="back-color-gray font-weight-bold">Warranty Expiration Date</td>
-                              <td class="text-capitalize">{{ purchase.warrantyExpirationDate ? (purchase.warrantyExpirationDate | date:"yyyy/MM/dd") : '-'  }}</td>
-                           </tr>
-
-                           <tr>
-                              <td class="back-color-gray font-weight-bold">Warranty Expiration Meter</td>
-                              <td class="text-capitalize">{{ purchase.warrantyExpirationMeter ? purchase.warrantyExpirationMeter : '-' }}</td>
-                           </tr>
-
-                           <tr>
-                              <td class="back-color-gray font-weight-bold">Purchase Comments</td>
-                              <td class="text-capitalize">{{ purchase.purchaseComments ? purchase.purchaseComments : '-' }}</td>
-                           </tr>
-                         </tbody>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Notes
+                            </td>
+                            <td class="text-capitalize">
+                              {{ loan.notes ? loan.notes : "-" }}
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
                       <div class="vehicle-common-box mt-4">
                         <div class="row m-0">
-                          <div class="col-lg-12 p-2 back-color-gray font-weight-bold border-0 text-4">Purchase Document(s)</div>
+                          <div
+                            class="
+                              col-lg-12
+                              p-2
+                              back-color-gray
+                              font-weight-bold
+                              border-0
+                              text-4
+                            "
+                          >
+                            Loan Document(s)
+                          </div>
                         </div>
                         <table class="table table-responsive-lg mb-0">
                           <tbody>
-                            <tr *ngIf="pDocs.length == 0" style="text-align: center;">
+                            <tr
+                              *ngIf="lDocs.length == 0"
+                              style="text-align: center"
+                            >
                               <td colspan="2">{{ noRecordMsg }}</td>
                             </tr>
-                            <tr *ngFor="let data of pDocs; let i=index;">
-                              <td width="80%">Document {{ i+1}} </td>
+                            <tr *ngFor="let data of lDocs; let i = index">
+                              <td width="80%">Document {{ i + 1 }}</td>
                               <td width="20%">
-                                <a href="javascript:;" class="btn btn-deafault pull-right btn-xs" (click)="deleteDocument('purchase', data.name)" ><i class="fas fa-trash-alt"></i></a>
-                                <a class="btn btn-deafault pull-right btn-xs" href="{{ data.path }}" target="_blank"><i class="fas fa-download"></i></a>
-                                <a href="javascript:;"  class="btn btn-deafault pull-right btn-xs" (click)="setPDFSrc(data.path)" data-toggle="modal" data-target="#viewDocModal"><i class="fas fa-eye"></i></a>
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="deleteDocument('loan', data.name)"
+                                  ><i class="fas fa-trash-alt"></i
+                                ></a>
+                                <a
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  href="{{ data.path }}"
+                                  target="_blank"
+                                  ><i class="fas fa-download"></i
+                                ></a>
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="setPDFSrc(data.path)"
+                                  data-toggle="modal"
+                                  data-target="#viewDocModal"
+                                  ><i class="fas fa-eye"></i
+                                ></a>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                     </div>
-
-                         <div class="col-lg-12 mt-3">
-                               <label class="control-label font-weight-bold text-3">Map Location:</label>
-                               <div id="map" style="height: 400px;width: 100%;"></div>
-                         </div>
-                         <div class="col-lg-12 mt-3" *ngIf="assetsDocs?.length > 0">
-                            <div class="vehicle-common-box p-3">
-                               <div class="row">
-                                  <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Document(s)</label></div>
-                               </div>
-                               <hr class="solid mt-3">
-                               <div class="row mb-1" *ngFor="let doc of assetsDocs;let d= index">
-                                  <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
-                                        (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
-                                  <div class="col-lg-3 text-right">
-                                     <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                        data-target="#viewDocModal"></em>
-                                     <a href="javascript:;" (click)="deleteDocument('doc',doc.name)" class="modal-with-form">
-                                        <em class="fas fa-times text-danger"></em></a>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
-
-                      </div>
-
+                    </div>
                   </div>
-                  
-               </div>
-             </div>
-           </div>
-         </div>
-         
-        
-         
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12" *ngIf="!environment">
+                      <label class="control-label font-weight-bold text-3"
+                        >Reefer Temperature Graph:</label
+                      ><span class="text-info"> 7576</span>
+                    </div>
+                    <div class="col-lg-12" *ngIf="!environment">
+                      <!-- Morris: Line -->
+                      <canvas
+                        baseChart
+                        [datasets]="chartData"
+                        [labels]="chartLabels"
+                        [options]="chartOptions"
+                        [legend]="chartLegend"
+                        [chartType]="chartType"
+                      >
+                      </canvas>
+                    </div>
+                    <div class="col-lg-12">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                        "
+                        >Insurance Details</label
+                      >
+                    </div>
+                    <div class="col-lg-12">
+                      <table
+                        class="
+                          table table-bordered table-responsive-lg
+                          text-capitalize
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Date of Issue
+                            </td>
+                            <td width="60%">
+                              {{
+                                dateOfIssue
+                                  ? (dateOfIssue | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Date of Expiry
+                            </td>
+                            <td>
+                              {{
+                                dateOfExpiry
+                                  ? (dateOfExpiry | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Premium Amount
+                            </td>
+                            <td>
+                              {{ premiumAmount ? premiumAmount : "-" }}
+                              {{ premiumCurrency }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Reminder Before Expiry
+                            </td>
+                            <td class="text-small">
+                              {{ reminderBefore ? reminderBefore : "" }}
+                              {{
+                                reminderBeforeUnit ? reminderBeforeUnit : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Vendor
+                            </td>
+                            <td class="text-capitalize">
+                              {{ vendor ? contactsObjects[vendor] : "-" }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="col-lg-12">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold
+                          text-lg-right text-dark text-4
+                        "
+                        >Purchase Details</label
+                      >
+                    </div>
+                    <div class="col-lg-12">
+                      <table
+                        class="
+                          table table-bordered table-responsive-lg
+                          text-capitalize
+                        "
+                      >
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Purchase Vendor
+                            </td>
+                            <td width="60%">
+                              {{
+                                purchase.purchaseVendorID
+                                  ? contactsObjects[purchase.purchaseVendorID]
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Purchase Price
+                            </td>
+                            <td>
+                              {{
+                                purchase.purchasePrice
+                                  ? purchase.purchasePrice
+                                  : "-"
+                              }}
+                              {{ purchase.purchasePriceCurrency }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              GST Included
+                            </td>
+                            <td>{{ purchase.gstInc ? "Yes" : "No" }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Purchase Date
+                            </td>
+                            <td class="text-small">
+                              {{
+                                purchase.purchaseDate
+                                  ? (purchase.purchaseDate | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Purchase Odometer in Miles
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                purchase.purchaseOdometer
+                                  ? purchase.purchaseOdometer
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Warranty Expiration Date
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                purchase.warrantyExpirationDate
+                                  ? (purchase.warrantyExpirationDate
+                                    | date: "yyyy/MM/dd")
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Warranty Expiration Meter
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                purchase.warrantyExpirationMeter
+                                  ? purchase.warrantyExpirationMeter
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Purchase Comments
+                            </td>
+                            <td class="text-capitalize">
+                              {{
+                                purchase.purchaseComments
+                                  ? purchase.purchaseComments
+                                  : "-"
+                              }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div class="vehicle-common-box mt-4">
+                        <div class="row m-0">
+                          <div
+                            class="
+                              col-lg-12
+                              p-2
+                              back-color-gray
+                              font-weight-bold
+                              border-0
+                              text-4
+                            "
+                          >
+                            Purchase Document(s)
+                          </div>
+                        </div>
+                        <table class="table table-responsive-lg mb-0">
+                          <tbody>
+                            <tr
+                              *ngIf="pDocs.length == 0"
+                              style="text-align: center"
+                            >
+                              <td colspan="2">{{ noRecordMsg }}</td>
+                            </tr>
+                            <tr *ngFor="let data of pDocs; let i = index">
+                              <td width="80%">Document {{ i + 1 }}</td>
+                              <td width="20%">
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="
+                                    deleteDocument('purchase', data.name)
+                                  "
+                                  ><i class="fas fa-trash-alt"></i
+                                ></a>
+                                <a
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  href="{{ data.path }}"
+                                  target="_blank"
+                                  ><i class="fas fa-download"></i
+                                ></a>
+                                <a
+                                  href="javascript:;"
+                                  class="btn btn-deafault pull-right btn-xs"
+                                  (click)="setPDFSrc(data.path)"
+                                  data-toggle="modal"
+                                  data-target="#viewDocModal"
+                                  ><i class="fas fa-eye"></i
+                                ></a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="col-lg-12 mt-3" *ngIf="rows.length === 0">
+                      <label
+                        *ngIf="!noDevices"
+                        class="control-label font-weight-bold text-3"
+                        >Loading Asset trackers .....</label
+                      >
+                      <label
+                        *ngIf="noDevices"
+                        class="control-label font-weight-bold text-3"
+                        >There are no asset tracker attached.</label
+                      >
+                    </div>
+                    <div class="col-lg-12 mt-3" *ngIf="rows.length > 0">
+                      <label class="control-label font-weight-bold text-3"
+                        >Map Location:</label
+                      >
+                      <google-map
+                        height="400px"
+                        width="100%"
+                        [center]="center"
+                        [zoom]="zoom"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                      >
+                        <map-marker
+                          *ngFor="let markerPosition of markerPositions"
+                          [position]="markerPosition"
+                          [options]="markerOptions"
+                        ></map-marker> </google-map
+                      ><br /><br />
+                      <label class="control-label font-weight-bold text-3"
+                        >Asset Tracker Data (Last 24 Hours):</label
+                      >
+                      <ngx-datatable
+                        class="ngx-datatable"
+                        [rows]="rows"
+                        [limit]="10"
+                        rowHeight="auto"
+                        [columnMode]="ColumnMode.force"
+                        [headerHeight]="50"
+                        [footerHeight]="50"
+                        [reorderable]="reorderable"
+                        [loadingIndicator]="loadingIndicator"
+                        [sortable]="false"
+                        [selectionType]="SelectionType.single"
+                        [selected]="selected"
+                        (select)="onLocationRowSelected($event)"
+                      >
+                        <ngx-datatable-column
+                          name="Message"
+                          prop="messageType"
+                          [sortable]="false"
+                          [width]="80"
+                        ></ngx-datatable-column>
+                        <ngx-datatable-column
+                          name="When"
+                          [sortable]="false"
+                          prop="time"
+                          [width]="80"
+                        ></ngx-datatable-column>
+                        <ngx-datatable-column
+                          name="Battery"
+                          prop="battery"
+                          [sortable]="false"
+                          [width]="50"
+                        ></ngx-datatable-column>
+                        <ngx-datatable-column
+                          [sortable]="false"
+                          name="Speed"
+                          prop="speed"
+                          [width]="30"
+                        ></ngx-datatable-column>
+                        <ngx-datatable-column
+                          name="Location"
+                          prop="location"
+                          [sortable]="false"
+                          [width]="150"
+                        ></ngx-datatable-column>
+                        <!-- <ngx-datatable-column [sortable]="false">
+                          <ng-template ngx-datatable-cell-template>
+                            <a href="#" style="text-align: right"
+                              >Show on Map</a
+                            ></ng-template
+                          ></ngx-datatable-column
+                        > -->
+                      </ngx-datatable>
+                    </div>
+                    <div class="col-lg-12 mt-3" *ngIf="assetsDocs?.length > 0">
+                      <div class="vehicle-common-box p-3">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <label class="control-label font-weight-bold text-3"
+                              >Document(s)</label
+                            >
+                          </div>
+                        </div>
+                        <hr class="solid mt-3" />
+                        <div
+                          class="row mb-1"
+                          *ngFor="let doc of assetsDocs; let d = index"
+                        >
+                          <div class="col-lg-9">
+                            <a
+                              href="javascript:;"
+                              data-toggle="modal"
+                              data-target="#viewDocModal"
+                              (click)="setPDFSrc(doc.path)"
+                              >Document {{ d + 1 }}</a
+                            >
+                          </div>
+                          <div class="col-lg-3 text-right">
+                            <em
+                              class="far fa-file text-dak mr-1"
+                              (click)="setPDFSrc(doc.path)"
+                              data-toggle="modal"
+                              data-target="#viewDocModal"
+                            ></em>
+                            <a
+                              href="javascript:;"
+                              (click)="deleteDocument('doc', doc.name)"
+                              class="modal-with-form"
+                            >
+                              <em class="fas fa-times text-danger"></em
+                            ></a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-
-
-   </section>
-
+    </section>
   </div>
 </section>
 
-<div class="modal fade" id="attachDeviceModal" tabindex="-1" role="dialog" aria-labelledby="attachDeviceModal"
-  aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" style="max-width: 600px;" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Add Device</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-              </button>
+<div
+  class="modal fade"
+  id="attachDeviceModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="attachDeviceModal"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 600px"
+    role="document"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Device</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
+          </i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          class="form-horizontal form-bordered"
+          id="vehicleForm"
+          method="get"
+        >
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label class="font-weight-bold control-label"
+                >Select Device</label
+              >
+              <ng-select
+                (change)="addDevicesIDs()"
+                [(ngModel)]="devices"
+                name="devices"
+                class="form-control populate"
+              >
+                <ng-option
+                  *ngFor="let device of deviceData"
+                  value="{{ device.deviceID }}"
+                  >{{ device.deviceName }}</ng-option
+                >
+              </ng-select>
+            </div>
           </div>
-          <div class="modal-body">
-             <form class="form-horizontal form-bordered" id="vehicleForm" method="get">
-                <div class="form-row">
-                   <div class="form-group col-md-12">
-                      <label class="font-weight-bold control-label">Select Device</label>
-                      <ng-select (change)="addDevicesIDs()" [(ngModel)]="devices" name="devices" class="form-control populate">
-                         <ng-option *ngFor="let device of deviceData" value="{{device.deviceID}}">{{device.deviceName}}</ng-option>
-                      </ng-select>
-                   </div>
-                </div>
-             </form>
-          </div>
-          <div class="modal-footer">
-             <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-             <button class="btn btn-success" (click)="addDevice()">Add</button>
-          </div>
-       </div>
+        <button class="btn btn-success" (click)="addDevice()">Add</button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
- aria-hidden="true">
- <div class="modal-dialog" role="document">
-    <div class="modal-content">
-       <div class="modal-header">
-          <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-             <span aria-hidden="true">&times;</span>
-          </button>
-       </div>
-       <div class="modal-body">
-          <div class="form-row">
-             <div class="form-group col-md-12">
-                <div>
-                   <iframe [src]="pdfSrc" title="" width="100%" height="400px"> </iframe>
-
-                </div>
-             </div>
-          </div>
-
-       </div>
-       <div class="modal-footer">
-          <button type="button" class="btn btn-default"
-             data-dismiss="modal">Cancel</button>
-       </div>
-    </div>
- </div>
-</div>
-
-<!-- view inspection form -->
-<div class="modal fade" id="inspectionFormModal" tabindex="-1" role="dialog" aria-labelledby="inspectionFormModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="viewDocModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="viewDocModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="inspectionFormModalLabel">Asset Inspection Detail</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <div>
+              <iframe [src]="pdfSrc" title="" width="100%" height="400px">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- view inspection form -->
+<div
+  class="modal fade"
+  id="inspectionFormModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="inspectionFormModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inspectionFormModalLabel">
+          Asset Inspection Detail
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -563,48 +1147,59 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="row text-dark">
-                <div class="col-lg-3 font-weight-bold">
-                  Form Name:
-                </div>
+                <div class="col-lg-3 font-weight-bold">Form Name:</div>
                 <div class="col-lg-9">
                   {{ inspectionForms.inspectionFormName }}
                 </div>
               </div>
               <div class="row text-dark mt-3">
-                <div class="col-lg-3 font-weight-bold">
-                  Form Type:
-                </div>
+                <div class="col-lg-3 font-weight-bold">Form Type:</div>
                 <div class="col-lg-9">
                   {{ inspectionForms.inspectionType }}
                 </div>
               </div>
               <div class="row text-dark mt-3">
-               <div class="col-lg-3 font-weight-bold">
-                 Default Inspection Form
-               </div>
-               <div class="col-lg-9">
-                  <span *ngIf="inspectionForms.isDefaultInspectionType=='0'">NO</span>
-                  <span *ngIf="inspectionForms.isDefaultInspectionType=='1'">YES</span>
-               </div>
-             </div>
+                <div class="col-lg-3 font-weight-bold">
+                  Default Inspection Form
+                </div>
+                <div class="col-lg-9">
+                  <span *ngIf="inspectionForms.isDefaultInspectionType == '0'"
+                    >NO</span
+                  >
+                  <span *ngIf="inspectionForms.isDefaultInspectionType == '1'"
+                    >YES</span
+                  >
+                </div>
+              </div>
             </div>
           </div>
           <div class="row mt-4">
             <div class="col-lg-12">
-              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">Parameter</h4>
+              <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">
+                Parameter
+              </h4>
               <table class="table table-bordered table-responsive-lg">
                 <thead>
                   <tr>
-                    <th width="20%" class="back-color-gray font-weight-bold">Sr. No.</th>
+                    <th width="20%" class="back-color-gray font-weight-bold">
+                      Sr. No.
+                    </th>
                     <th width="60%" class="back-color-gray">Parameters Name</th>
                     <th width="20%" class="back-color-gray">Remarks</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let data of inspectionForms.parameters; let i=index;">
-                    <td>{{ i+1 }}</td>
+                  <tr
+                    *ngFor="
+                      let data of inspectionForms.parameters;
+                      let i = index
+                    "
+                  >
+                    <td>{{ i + 1 }}</td>
                     <td class="font-weight-bold">{{ data.name }}</td>
-                    <td class="font-weight-bold">{{ (data.remarks != '') ? data.remarks : '-' }}</td>
+                    <td class="font-weight-bold">
+                      {{ data.remarks != "" ? data.remarks : "-" }}
+                    </td>
                   </tr>
                 </tbody>
               </table>

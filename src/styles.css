@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "~@ng-select/ng-select/themes/default.theme.css";
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
+@import "~@fullcalendar/core/main.css";
+@import "~@fullcalendar/daygrid/main.css";
 
+$ngx-datatable-selected-active-background: gray;
 .nav-active {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 .sidebar-left {
   height: 100%;
@@ -13,27 +14,32 @@
 .H_ib_content {
   min-width: 12em;
 }
-html, body { height: 100%; }
-body { margin: 0;}
-.H_logo {    right: 10px;
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+}
+.H_logo {
+  right: 10px;
   position: absolute;
-  bottom: 20px;}
-  .ng-option-label {
-    word-break: break-word;
-    white-space: normal;
-  }
-
-
+  bottom: 20px;
+}
+.ng-option-label {
+  word-break: break-word;
+  white-space: normal;
+}
 
 .ng-select.ng-select-single .ng-select-container {
-    height: 31px !important;
+  height: 31px !important;
 }
 
-  .ng-select.custom {
-    height: 31px !important;
+.ng-select.custom {
+  height: 31px !important;
 }
-.ng-select.custom .ng-select-container  {            
-    min-height: 31px !important;     
+.ng-select.custom .ng-select-container {
+  min-height: 31px !important;
 }
 
 .ng-select .ng-select-container {

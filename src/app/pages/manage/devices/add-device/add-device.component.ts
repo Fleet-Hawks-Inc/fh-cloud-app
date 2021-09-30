@@ -205,14 +205,7 @@ export class AddDeviceComponent implements OnInit {
   }
   public updateAndSubmit() {
     if (this.device) {
-      //   if(this.device.vehicle.vehicleID){
-      //   this.vehicles.forEach(element => {
-      //     if(element.vehicleID==this.device.vehicle.vehicleID){
 
-      //       this.device.vehicle.vehicleIdentification=element.vehicleIdentification
-      //     }
-
-      //   });
       if (this.device.vehicle.vehicleID) {
         this.vehicles.forEach(element => {
           if (this.device.vehicle.vehicleID == element.vehicleID) {
@@ -221,6 +214,15 @@ export class AddDeviceComponent implements OnInit {
           }
 
         });
+
+      }
+      if (this.device.asset.assetID) {
+        this.assets.forEach(element => {
+          if (this.device.asset.assetID == element.assetID) {
+            this.device.asset.assetIdentification = element.assetIdentification;
+            this.device.fleetID = element.assetIdentification;
+          }
+        })
       }
 
 
