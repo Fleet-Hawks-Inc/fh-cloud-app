@@ -84,6 +84,7 @@ export class OrderDetailComponent implements OnInit {
   customerID = '';
   orderNumber = '';
   orderMode = '';
+  showInvBtn: boolean = false;
   customerName = '';
   customerAddress = '';
   customerCityName = '';
@@ -435,7 +436,10 @@ export class OrderDetailComponent implements OnInit {
         this.customerName = `${result.cName}`;
         let newCusAddress = result.adrs.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
+            this.showInvBtn = true;
             return elem;
+          } else {
+            this.showInvBtn = false;
           }
         });
         newCusAddress = newCusAddress[0];
@@ -719,6 +723,7 @@ async generatePDF() {
       .subscribe((result: any) => {
 
         this.invoiceData = result[0];
+        console.log('invoiceData', this.invoiceData.charges.fuelSurcharge.type)
         this.isInvoice = true;
         
       });
