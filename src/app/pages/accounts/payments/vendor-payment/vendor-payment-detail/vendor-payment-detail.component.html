@@ -7,6 +7,8 @@
                  Vendor Payment #{{ paymentData.paymentNo }}
               </div>
               <div class="col-md-8  col-lg-8 text-right pr-4">
+                  <button type="button" (click)="showCheque();" class="btn btn-success btn-sm mr-3"><i
+                  class="fas fa-download"></i> Cheque</button>
                  <a routerLink="/accounts/payments/vendor-payments/list" class="btn btn-sm btn-default"><i
                        class="fas fa-list"></i> Payment List</a>
               </div>
@@ -216,3 +218,4 @@
       </div>
    </div>
 </div>
+<app-payment-cheque></app-payment-cheque>

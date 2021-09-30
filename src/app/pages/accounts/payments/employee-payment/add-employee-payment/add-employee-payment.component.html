@@ -69,7 +69,7 @@
                                                     <div class="col-lg-6">
                                                         <input type="text" [(ngModel)]="paymentData.fromDate" name="fromDate" placeholder="Select from date" (click)="ppDate1.toggle()" ngbDatepicker
                                                             #ppDate1="ngbDatepicker" class="form-control" autocomplete="off"
-                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frDate="ngModel">
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frDate="ngModel" readonly>
                                                         <div *ngIf="frDate.invalid && (frDate.dirty || frDate.touched)" class="text-danger">
                                                             <div *ngIf="frDate.errors.required">
                                                                 From date is required.
@@ -79,7 +79,7 @@
                                                     <div class="col-lg-6">
                                                         <input type="text" [(ngModel)]="paymentData.toDate" name="toDate" placeholder="Select to date" (click)="ppDate2.toggle()" ngbDatepicker
                                                             #ppDate2="ngbDatepicker" class="form-control" autocomplete="off"
-                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frtoDate="ngModel">
+                                                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" required #frtoDate="ngModel" readonly>
                                                         <div *ngIf="frtoDate.invalid && (frtoDate.dirty || frtoDate.touched)" class="text-danger">
                                                             <div *ngIf="frtoDate.errors.required">
                                                                 To date is required.

@@ -3,7 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
-import { AccountService, ApiService} from 'src/app/services';
+import { AccountService, ApiService, ListService} from 'src/app/services';
 @Component({
   selector: 'app-vendor-payment-detail',
   templateUrl: './vendor-payment-detail.component.html',
@@ -34,11 +34,14 @@ export class VendorPaymentDetailComponent implements OnInit {
   carrierID = '';
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   documentSlides = [];
+  showModal = false;
+
   constructor(private route: ActivatedRoute,
               private toaster: ToastrService,
               private accountService: AccountService,
               private domSanitizer: DomSanitizer,
-              private apiService: ApiService) { }
+              private apiService: ApiService,
+              private listService: ListService,) { }
 
   ngOnInit(): void {
     this.paymentID = this.route.snapshot.params[`paymentID`];
@@ -98,5 +101,26 @@ export class VendorPaymentDetailComponent implements OnInit {
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.paymentTotal,
+      type: 'vendor',
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add',
+      showModal: this.showModal,
+      vacPayPer: 0,
+      vacPayAmount: 0,
+      finalAmount: this.paymentData.paymentTotal,
+      txnDate: this.paymentData.txnDate,
+      page: 'addForm',
+      invoices: this.paymentData.invoices
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }
