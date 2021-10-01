@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import Constants from '../../../constants';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
+import { ListService } from '../../../../../services';
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -45,35 +46,58 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewEndPoint = this.pageLength;
   loading = false;
   users = [];
+  drivers: any;
   employeesList: any = {};
+  employees = [];
   driversList: any = {};
   mergedList: any = {};
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  constructor(private apiService: ApiService,
+              private listService: ListService,
+              private toastr: ToastrService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.listService.fetchDrivers();
     this.getRemindersCount();
     this.fetchServiceTaks();
-    this.fetchUsersList();
     this.fetchTasksList();
-    this.fetchUsers();
     this.fetchEmployeeList();
+    this.fetchEmployees();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
+  }
+  fetchEmployees() {
+    this.apiService.getData('contacts/employee/records').subscribe((res) => {
+    console.log('result', res);
+    this.employees = res.Items;
+    });
   }
   fetchEmployeeList() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
-     // console.log('emp', res);
       this.employeesList = res;
       if (res) {
         this.apiService.getData('drivers/get/list').subscribe((result) => {
           this.driversList = result;
-          console.log('this.driversList', result);
-          this.mergedList = {...res, ...result};
+          this.mergedList = {...res, ...result}; // merge id lists to one
         });
       }
+    });
+  }
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+      });
     });
   }
   fetchTasksList() {
@@ -86,16 +110,6 @@ export class ListContactRenewComponent implements OnInit {
     this.apiService.getData('tasks').subscribe((result: any) => {
       test = result.Items;
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
-    });
-  }
-  fetchUsers() {
-    this.apiService.getData('users/fetch/records').subscribe((result: any) => {
-      this.users = result.Items;
-    });
-  }
-  fetchUsersList() {
-    this.apiService.getData('users/id/get/list').subscribe((result: any) => {
-      this.usersList = result;
     });
   }
   setFilterStatus(val) {

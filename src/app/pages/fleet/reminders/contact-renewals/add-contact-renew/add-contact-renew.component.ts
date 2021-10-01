@@ -92,7 +92,7 @@ export class AddContactRenewComponent implements OnInit {
     } else {
       this.pageTitle = ' Add Contact Renewal Reminder';
     }
-    let driverList = new Array<any>();
+    const driverList = new Array<any>();
     this.getValidDrivers(driverList);
     this.drivers = driverList;
   }

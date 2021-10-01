@@ -7,7 +7,6 @@
 
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="contactID" name="contactID" style="width: 100%;" class="text-capitalize" placeholder="Search by contact">
-                            <!-- <ng-option *ngFor="let data of users" [value]="data.userID">{{data.firstName}} {{data.lastName}}</ng-option> -->
                             <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
                               {{driver.firstName}}
                            </ng-option>
