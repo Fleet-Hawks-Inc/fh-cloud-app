@@ -1,191 +1,220 @@
 <section class="body">
   <div class="inner-wrapper">
      <section role="main" class="content-body pl-0 pr-0 pt-0">
-        <header class="page-header">
-           <div class="row pr-5 " style="padding-top:10px;">
-              <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                 Vendor Payment #{{ paymentData.paymentNo }}
+        <header class="page-header pr19 pl7">
+           <div class="row" style="padding-top:10px;">
+              <div class="col-md-4 col-lg-4">
+               <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Vendor Payment #{{ paymentData.paymentNo }}</h4>
               </div>
-              <div class="col-md-8  col-lg-8 text-right pr-4">
-                  <button type="button" (click)="showCheque();" class="btn btn-success btn-sm mr-3"><i
+              <div class="col-md-8 col-lg-8 text-right pr-1">
+                  <button type="button" (click)="showCheque();" class="btn btn-success btn-sm mr-2"><i
                   class="fas fa-download"></i> Cheque</button>
                  <a routerLink="/accounts/payments/vendor-payments/list" class="btn btn-sm btn-default"><i
                        class="fas fa-list"></i> Payment List</a>
               </div>
            </div>
         </header>
-        <div class="row">
-           <div class="col pr-0">
-              <div class="card-body text-dark">
-                 <form class="form-horizontal form-bordered" method="get">
-                    <div class=" row">
-                       <div class="col-lg-12 mb-4">
-                          <div class="row cmaindiv">
-                             <div class="col">
-                                <div class="text-center p-4 cerbor">
-                                   <i class="far fa-calendar-alt text-7"></i>
-                                   <br>
-                                   <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate |
-                                      date:"yyyy/MM/dd" }}</p>
-                                   <p class="mb-0">DATE</p>
-                                </div>
-                             </div>
-                             <div class="col">
-                                <div class="text-center p-4 cerbor">
-                                   <i class="fa fa-user text-7"></i>
-                                   <br>
-                                   <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">{{ (paymentData.entityId) ? vendors[paymentData.entityId] : '-' }}</p>
-                                   <p class="mb-0">VENDOR NAME</p>
-                                </div>
-                             </div>
-                             <div class="col">
-                                <div class="text-center p-4 cerbor">
-                                   <i class="fas fa-money-bill-wave text-7"></i>
-                                   <br>
-                                   <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }}
-                                   </p>
-                                   <p class="mb-0">AMOUNT</p>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-6 pr-0">
-                          <div class="row">
-                             <div class="col-lg-12">
-                                <table class="table table-bordered table-responsive-lg">
-                                   <tbody>
-                                    <tr>
-                                      <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                      <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td>
-                                   </tr>
-                                      <!-- <tr>
-                                         <td class="back-color-gray font-weight-bold">Amount</td>
-                                         <td>{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }} </td>
-                                      </tr>
-                                      <tr>
-                                        <td width="40%" class="back-color-gray font-weight-bold">Account</td>
-                                        <td width="60%">{{ accountsObjects[paymentData.accountID] | titlecase}}</td>
-                                     </tr> -->
-                                     <tr>
-                                      <td width="40%" class="back-color-gray font-weight-bold">Remarks</td>
-                                      <td width="60%">{{ paymentData.remarks ? paymentData.remarks : '-'}}</td>
-                                   </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-6 pl-0">
-                          <div class="row">
-                             <div class="col-lg-12">
-                                <table class="table table-bordered table-responsive-lg">
-                                   <tbody>
-                                      <tr *ngIf="paymentData.payMode">
-                                         <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
-                                         <td width="60%" class="text-capitalize">{{ paymentData.payModeNo }}</td>
-                                      </tr>
-                                      <tr *ngIf="paymentData.payMode">
-                                         <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
-                                         <td width="60%">{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
-                                      </tr>
-                                   </tbody>
-                                </table>
-                             </div>
-                          </div>
-                       </div>
-                    </div>
-                    <div class="row">
-                       <div class="col-lg-6">
-                          <div class="row">
-                             <div class="col-lg-12">
-                                <h5 class="font-weight-bold">Journal</h5>
-                                <table class="table table-bordered table-hover">
-                                 <thead>
-                                   <tr>
-                                     <th>Account Name</th>
-                                     <th>Description</th>
-                                     <th>Type</th>
-                                     <th>Debit</th>
-                                     <th>Credit</th>
-                                   </tr>
-                                 </thead>
-                                 <tbody>
-                                   <tr *ngIf="paymentData.transactionLog.length === 0" class="text-center">
-                                      <td colspan="4">
-                                         {{ dataMessage }}
-                                      </td>
-                                   </tr>
-                                   <tr *ngFor="let dt of paymentData.transactionLog">
-                                     <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
-                                        <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
-                                     <td>{{dt.desc}}</td>
-                                     <td>{{dt.type | titlecase}}</td>
-                                     <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                                     <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                                   </tr>
-                                   <!-- <tr>
-                                     <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                     <td>{{ paymentData.finalTotal }} CAD</td>
-                                     <td>{{ paymentData.finalTotal }} CAD</td>
-                                  </tr> -->
-                                 </tbody>
-                               </table>
-                             </div>
-                          </div>
-                       </div>
-                       <div class="col-lg-6">
-                        <div class="row">
-                          <div class="col-lg-12">
-                             <h5 class="font-weight-bold">Invoice(s)</h5>
-                             <table class="table table-bordered table-hover">
-                              <thead>
-                                <tr>
-                                  <th>Invoice#</th>
-                                  <th>Description</th>
-                                  <th>Amount</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngFor="let inv of paymentData.invoices">
-                                  <td>{{inv.invoiceNo}}</td>
-                                  <td>{{inv.desc}}</td>
-                                  <td>{{inv.amount}} {{inv.currency}} <span *ngIf="inv.amount !== inv.conAmt">( {{inv.conAmt}} {{inv.conCur}} )</span></td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                       </div>
-                       </div>
-                       <div class="col-lg-6" *ngIf="documentSlides.length > 0">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="vehicle-common-box p-3">
-                                    <div class="row">
-                                        <div class="col-lg-6"><label
-                                                class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
-                                        </div>
-                                    </div>
-                                    <hr class="solid mt-2">
-                                    <div class="row" *ngFor="let item of documentSlides;let d= index">
-                                        <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
-                                            data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
-                                            {{d+1}}</a> </div>
-                                        <div class="col-lg-3 text-right">
-                                            <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
-                                               data-toggle="modal" data-target="#viewDocModal"></i>
-                                            <a href="javascript:;" (click)="deleteDocument(item.name, d)"
-                                               class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+
+        <section class="m-2">
+         <div class="row mb-3">
+           <div class="col-lg-12">
+             <div class="bg-white p-3 text-dark">
+               <div class="form-group row">
+                  <div class="col-lg-12">
+                     <div class="row">
+                        <div class="col">
+                           <div class="text-center p-4 cmaindiv boxheightVP">
+                              <i class="far fa-calendar-alt text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate |
+                                 date:"yyyy/MM/dd" }}</p>
+                              <p class="mb-0">DATE</p>
+                           </div>
                         </div>
-                    </div>
-                    </div>
-                 </form>
-              </div>
+                        <div class="col">
+                           <div class="text-center p-4 cmaindiv boxheightVP">
+                              <i class="fa fa-user text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">{{ (paymentData.entityId) ? vendors[paymentData.entityId] : '-' }}</p>
+                              <p class="mb-0">VENDOR NAME</p>
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="text-center p-4 cmaindiv boxheightVP">
+                              <i class="fas fa-money-bill-wave text-7"></i>
+                              <br>
+                              <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }}
+                              </p>
+                              <p class="mb-0">AMOUNT</p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>                 
+               </div>
+             </div>
            </div>
-        </div>
+         </div>
+         
+         <div class="row mb-3">
+           <div class="col-lg-12">
+             <div class="bg-white p-3 text-dark">
+               <div class="form-group row">
+                  <div class="col-lg-6">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <table class="table table-bordered table-responsive-lg">
+                              <tbody>
+                               <tr>
+                                 <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
+                                 <td width="60%" class="text-capitalize">{{ paymentData.payMode }}</td>
+                              </tr>
+                                 <!-- <tr>
+                                    <td class="back-color-gray font-weight-bold">Amount</td>
+                                    <td>{{ paymentData.paymentTotal | number : '1.2-2' }} {{ paymentData.payCur }} </td>
+                                 </tr>
+                                 <tr>
+                                   <td width="40%" class="back-color-gray font-weight-bold">Account</td>
+                                   <td width="60%">{{ accountsObjects[paymentData.accountID] | titlecase}}</td>
+                                </tr> -->
+                                <tr>
+                                 <td width="40%" class="back-color-gray font-weight-bold">Remarks</td>
+                                 <td width="60%">{{ paymentData.remarks ? paymentData.remarks : '-'}}</td>
+                              </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-lg-6">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <table class="table table-bordered table-responsive-lg">
+                              <tbody>
+                                 <tr *ngIf="paymentData.payMode">
+                                    <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
+                                    <td width="60%" class="text-capitalize">{{ paymentData.payModeNo }}</td>
+                                 </tr>
+                                 <tr *ngIf="paymentData.payMode">
+                                    <td width="40%" class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
+                                    <td width="60%">{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                 
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+         <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row">
+
+                  <div class="col-lg-6">
+                     <div class="row">
+                        <div class="col-lg-12">
+                           <h5 class="font-weight-bold">Journal</h5>
+                           <table class="table table-bordered table-hover">
+                            <thead>
+                              <tr>
+                                <th>Account Name</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngIf="paymentData.transactionLog.length === 0" class="text-center">
+                                 <td colspan="4">
+                                    {{ dataMessage }}
+                                 </td>
+                              </tr>
+                              <tr *ngFor="let dt of paymentData.transactionLog">
+                                <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                   <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                <td>{{dt.desc}}</td>
+                                <td>{{dt.type | titlecase}}</td>
+                                <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                                <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                              </tr>
+                              <!-- <tr>
+                                <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                <td>{{ paymentData.finalTotal }} CAD</td>
+                                <td>{{ paymentData.finalTotal }} CAD</td>
+                             </tr> -->
+                            </tbody>
+                          </table>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-lg-6">
+                   <div class="row">
+                     <div class="col-lg-12">
+                        <h5 class="font-weight-bold">Invoice(s)</h5>
+                        <table class="table table-bordered table-hover">
+                         <thead>
+                           <tr>
+                             <th>Invoice#</th>
+                             <th>Description</th>
+                             <th>Amount</th>
+                           </tr>
+                         </thead>
+                         <tbody>
+                           <tr *ngFor="let inv of paymentData.invoices">
+                             <td>{{inv.invoiceNo}}</td>
+                             <td>{{inv.desc}}</td>
+                             <td>{{inv.amount}} {{inv.currency}} <span *ngIf="inv.amount !== inv.conAmt">( {{inv.conAmt}} {{inv.conCur}} )</span></td>
+                           </tr>
+                         </tbody>
+                       </table>
+                     </div>
+                  </div>
+                  </div>
+                  <div class="col-lg-6" *ngIf="documentSlides.length > 0">
+                   <div class="row">
+                       <div class="col-lg-12">
+                           <div class="vehicle-common-box p-3">
+                               <div class="row">
+                                   <div class="col-lg-6"><label
+                                           class="control-label font-weight-bold text-3">Uploaded Document(s)</label>
+                                   </div>
+                               </div>
+                               <hr class="solid mt-2">
+                               <div class="row" *ngFor="let item of documentSlides;let d= index">
+                                   <div class="col-lg-9"><a href="javascript:;" data-toggle="modal"
+                                       data-target="#viewDocModal" (click)="setPDFSrc(item.path)">Document
+                                       {{d+1}}</a> </div>
+                                   <div class="col-lg-3 text-right">
+                                       <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)"
+                                          data-toggle="modal" data-target="#viewDocModal"></i>
+                                       <a href="javascript:;" (click)="deleteDocument(item.name, d)"
+                                          class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
+                                    </div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+
+                 </div>
+              </div>
+            </div>
+          </div>
+
+
+         
+      </section>
+
+
+       
      </section>
   </div>
 </section>
