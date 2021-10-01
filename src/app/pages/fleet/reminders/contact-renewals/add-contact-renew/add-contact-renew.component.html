@@ -32,9 +32,15 @@
                               <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Contact<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                               <ng-select [(ngModel)]="entityID" class="text-capitalize"
                                  name="entityID" placeholder="Select contact" #cnt="ngModel" required>
-                                 <ng-option *ngFor="let user of users" value="{{user.userID}}">
-                                  {{user.firstName}} {{user.lastName}}
+                                 <ng-option *ngFor="let driver of drivers" value="{{driver.driverID}}">
+                                  {{driver.firstName}}
                                </ng-option>
+                               <ng-option *ngFor="let emp of employees" value="{{emp.contactID}}">
+                                {{emp.firstName}} {{emp.lastName}}
+                             </ng-option>
+                                 <!-- <ng-option *ngFor="let user of users" value="{{user.userID}}">
+                                  {{user.firstName}} {{user.lastName}}
+                               </ng-option> -->
                               </ng-select>
                               <div *ngIf="cnt.invalid && (cnt.dirty || cnt.touched)" class="text-danger">
                                  <div *ngIf="cnt.errors.required">

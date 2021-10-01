@@ -45,7 +45,9 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewEndPoint = this.pageLength;
   loading = false;
   users = [];
-
+  employeesList: any = {};
+  driversList: any = {};
+  mergedList: any = {};
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
@@ -54,10 +56,24 @@ export class ListContactRenewComponent implements OnInit {
     this.fetchUsersList();
     this.fetchTasksList();
     this.fetchUsers();
+    this.fetchEmployeeList();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
+    });
+  }
+  fetchEmployeeList() {
+    this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
+     // console.log('emp', res);
+      this.employeesList = res;
+      if (res) {
+        this.apiService.getData('drivers/get/list').subscribe((result) => {
+          this.driversList = result;
+          console.log('this.driversList', result);
+          this.mergedList = {...res, ...result};
+        });
+      }
     });
   }
   fetchTasksList() {
@@ -88,11 +104,11 @@ export class ListContactRenewComponent implements OnInit {
 
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact').subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
-        if(this.contactID != null || this.searchServiceTask != null) {
+        if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
@@ -103,14 +119,15 @@ export class ListContactRenewComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus +'&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length === 0) {
+        if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
         this.remindersData = result[`Items`];
-        if(this.contactID != null || this.searchServiceTask != null) {
+        console.log(' this.remindersData',  this.remindersData);
+        if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;
         }
@@ -130,7 +147,7 @@ export class ListContactRenewComponent implements OnInit {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.contactRenewEndPoint) {
+        if (this.totalRecords < this.contactRenewEndPoint) {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
@@ -147,7 +164,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -157,7 +174,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.contactID = null;
       this.firstName = '';
       this.searchServiceTask = null;
