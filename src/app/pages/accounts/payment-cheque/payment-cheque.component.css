@@ -1,3 +1,5 @@
+/* .chqbg{background:url(img/chq-bg.jpg) 0 0 repeat; height:300px; width:100%;} */
+	
 @font-face {
   font-family: 'Open Sans', sans-serif, 'micr';
   /* font-family: micr; */
@@ -8,6 +10,11 @@
   font-family: 'micrFont'; font-size: 20px; color: #000;
 }
 
+.chqbg{
+  /* background:url(img/chq-bg.jpg) 0 0 repeat;  */
+  height:300px; 
+  width:100%;
+}
 
 @font-face {
   font-family: 'micrFont';
@@ -18,31 +25,6 @@
        url('../../../../assets/css/micrenc.ttf') format('truetype'), /* Safari, Android, iOS */
        url('../../../../assets/css/micrenc.svg#svgFontName') format('svg'); /* Legacy iOS */
 }
-
-
-.cheque-wrapper {
-  background: #fff;
-  padding: 15px;
-  max-width: 750px;
-  border: 1px solid #e2e2e2;
-  border-radius: 0.25rem;
-  font-size: 14px;
-  box-shadow: 0 0px 18px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  margin-bottom: 14px;
-  font-family: "Open Sans", sans-serif;
-}
-
-.cheque-inner-wrapper {
-  background-color: #deecfa;
-}
-
-.table-striped > tbody td,
-.table-striped > thead td,
-.table-striped > tfoot th {
-  padding: 5px;
-}
-
 .class_border {
   border: 1px solid #000;
 }
@@ -55,228 +37,37 @@
   border-bottom: 1px solid #000;
 }
 
-.font-bold {
-  font-weight: bold;
+.font22 {
+  font-size: 22px !important;
 }
-.font4 {
-  font-size: 4px;
-}
-.font5 {
-  font-size: 5px;
-}
-.font6 {
-  font-size: 6px;
-}
-.font7 {
-  font-size: 7px;
-}
-.font8 {
-  font-size: 8px;
+  
+.font-weight-semibold {
+  font-weight: 600 !important;
 }
 
-.font9 {
-  font-size: 9px;
-}
-
-.font10 {
-  font-size: 10px;
-}
-
-.font11 {
-  font-size: 11px;
-}
-
-.font12 {
-  font-size: 12px;
-}
-
-.font13 {
-  font-size: 13px;
-}
-
-.font14 {
+.amt-wordsN ul li span {
   font-size: 14px;
+  letter-spacing: -0.2px;
+}
+.amt-wordsN {
+  float: right;
 }
 
-.font15 {
-  font-size: 15px;
-}
-.font16 {
-  font-size: 16px;
-}
-.font17 {
-  font-size: 17px;
-}
-.font18 {
-  font-size: 18px;
-}
-.font19 {
-  font-size: 19px;
-}
-.font33 {
-  font-size: 33px;
-}
-.font35 {
-  font-size: 35px;
+.amt-wordsN ul {
+  list-style: none;
+  padding-left: 0px;
 }
 
-.p0 {
-  padding: 0px;
-}
-
-.p10 {
-  padding: 10px;
-}
-
-.pl1 {
-  padding-left: 1px;
-}
-
-.m1-1 {
-  margin-left: -2px;
-}
-
-.pl0_9 {
-  padding-left: 0.9px;
-}
-
-.pr0_9 {
-  padding-right: 0.9px;
-}
-
-.pr1 {
-  padding-right: 1px;
-}
-
-.pl2 {
-  padding-left: 2px;
-}
-
-.pr2 {
-  padding-right: 2px;
-}
-
-.pr2_5 {
-  padding-right: 2.5px;
-}
-
-.pl2_5 {
-  padding-left: 2.5px;
-}
-.pl3 {
-  padding-left: 3px;
-}
-
-.pr3 {
-  padding-right: 3px;
-}
-.pr3_5 {
-  padding-right: 3.5px;
-}
-.pl4 {
-  padding-left: 4px;
-}
-.pr4 {
-  padding-right: 4px;
-}
-
-.pl4_5 {
-  padding-left: 4.5px;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.text-left {
-  text-align: left;
-}
-
-.text-center {
+.amt-wordsN ul li {
+  float: left;
   text-align: center;
 }
-
-.bor_top {
-  border-top: 1px solid #000;
-}
-
-.p10 {
-  padding: 10px;
-}
-
-#backGrad {
-  background-image: linear-gradient(180deg, #deecfa, #fff);
-}
-
-#backGrad1 {
-  background-image: linear-gradient(0deg, #deecfa, #fff);
-}
-
-.back-class {
-  /* background-image: url("img/zig-zag.png"); */
-  background-repeat: repeat;
-  height: 46px;
-  opacity: 0.4;
-  z-index: 50;
-  position: absolute;
-  top: 8px;
-  width: 300px;
-  left: 0px;
-}
-
-.front-class {
-  z-index: 50;
-  top: 6px;
-  left: 0px;
-  position: absolute;
-}
-
-.margin_top1 {
-  margin-top: 1px;
-}
-.margin_bottom0 {
+.amt-wordsN ul li p {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
   margin-bottom: 0px;
 }
-.margin_top0 {
-  margin-top: 0px;
+.amt-wordsN ul li+li {
+  padding-left: 10px;
 }
-.line_height100 {
-  line-height: 100%;
-}
-
-.line_height95 {
-  line-height: 95%;
-}
-.line_height90 {
-  line-height: 90%;
-}
-.line_height99 {
-  line-height: 99%;
-}
-
-/* created by pankaj */
-/* for 15 digit for eg. *********$33.99 */
-.amt-words{float: left;}
-.amt-words ul{list-style: none; padding-left: 0px;}
-.amt-words ul li+li{padding-left: 10px;}
-
-/* for 15 digit with comma for eg. ******$8,290.88 */
-.amt-words4{float: left;}
-.amt-words4 ul{list-style: none; padding-left: 0px;}
-.amt-words4 ul li+li{padding-left: 8.5px;}
-
-/* for 15 digit with comma for eg. ******$28,610.7 */
-.amt-words5{float: left;}
-.amt-words5 ul{list-style: none; padding-left: 0px;}
-.amt-words5 ul li+li{padding-left: 9px;}
-
-
-/* for 15 digit with comma for eg. ***********$130 */
-.amt-words6{float: left;}
-.amt-words6 ul{list-style: none; padding-left: 0px;}
-.amt-words6 ul li+li{padding-left: 10.7px;}
-
-
-
-
-

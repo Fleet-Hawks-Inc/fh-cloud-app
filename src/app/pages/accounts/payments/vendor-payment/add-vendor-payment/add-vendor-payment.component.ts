@@ -230,20 +230,26 @@ calculateInvoiceTotal() {
             this.cancel();
         },
     });
-}
+  }
 
-showCheque() {
-  this.showModal = true;
-  let obj = {
-    entityId: this.paymentData.entityId,
-    chequeDate: this.paymentData.payModeDate,
-    chequeAmount: this.paymentData.paymentTotal,
-    type: 'vendor',
-    chequeNo: this.paymentData.payModeNo,
-    currency: 'CAD',
-    formType: (this.paymentID) ? 'edit' : 'add',
-    showModal: this.showModal,
-  };
-  this.listService.openPaymentChequeModal(obj);
-}
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.paymentTotal,
+      type: 'vendor',
+      chequeNo: this.paymentData.payModeNo,
+      currency: 'CAD',
+      formType: (this.paymentID) ? 'edit' : 'add',
+      showModal: this.showModal,
+      vacPayPer: 0,
+      vacPayAmount: 0,
+      finalAmount: this.paymentData.paymentTotal,
+      txnDate: this.paymentData.txnDate,
+      page: 'addForm',
+      invoices: this.paymentData.invoices
+    };
+    this.listService.openPaymentChequeModal(obj);
+  }
 }
