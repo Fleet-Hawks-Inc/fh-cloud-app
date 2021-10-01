@@ -84,6 +84,7 @@ export class OrderDetailComponent implements OnInit {
   customerID = '';
   orderNumber = '';
   orderMode = '';
+  showInvBtn: boolean = false;
   customerName = '';
   customerAddress = '';
   customerCityName = '';
@@ -187,6 +188,8 @@ export class OrderDetailComponent implements OnInit {
     emails: []
   }
 
+  hideEdit: boolean = false;
+
   constructor(private apiService: ApiService,private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
    }
@@ -219,6 +222,9 @@ export class OrderDetailComponent implements OnInit {
           this.zeroRated = result.zeroRated;
           this.carrierID = result.carrierID;
           this.customerID = result.customerID;
+          if(result.orderStatus === 'created' || result.orderStatus === 'confirmed') {
+            this.hideEdit = true;
+          }
           this.orderStatus = result.orderStatus;
           await this.fetchCustomersByID();
           this.cusAddressID = result.cusAddressID;
@@ -430,7 +436,10 @@ export class OrderDetailComponent implements OnInit {
         this.customerName = `${result.cName}`;
         let newCusAddress = result.adrs.filter((elem: any) => {
           if(elem.addressID === this.cusAddressID){
+            this.showInvBtn = true;
             return elem;
+          } else {
+            this.showInvBtn = false;
           }
         });
         newCusAddress = newCusAddress[0];
@@ -714,6 +723,7 @@ async generatePDF() {
       .subscribe((result: any) => {
 
         this.invoiceData = result[0];
+        console.log('invoiceData', this.invoiceData.charges.fuelSurcharge.type)
         this.isInvoice = true;
         
       });

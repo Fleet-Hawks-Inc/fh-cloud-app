@@ -1,164 +1,188 @@
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-0 pr-0 pt-0">
-            <header class="page-header">
-                <div class="row pr-5 " style="padding-top:10px;">
-                    <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-                      {{ paymentData.paymentEnity | titlecase }} Payment# - {{ paymentData.paymentNo }}
+            <header class="page-header pr19 pl7">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-md-4 col-lg-4">
+                      <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">{{ paymentData.paymentEnity | titlecase }} Payment# - {{ paymentData.paymentNo }}</h4>
                     </div>
-                    <div class="col-md-8  col-lg-8 text-right pr-4">
-                        <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-3"><i
+                    <div class="col-md-8  col-lg-8 text-right pr-1">
+                        <button type="button" (click)="downloadPaymentPdf();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-2"><i
                             class="fas fa-download"></i> Payment PDF</button>
+                        <button type="button" (click)="showCheque();" [disabled]="downloadDisabled" class="btn btn-success btn-sm mr-3"><i
+                                class="fas fa-download"></i> Cheque</button>
                         <a routerLink="/accounts/payments/driver-payments/list" class="btn btn-sm btn-default"><i
                                 class="fas fa-list"></i> Payment List</a> 
                     </div>
                 </div>
             </header>
-            <div class="row">
-                <div class="col pr-0">
-                    <div class="card-body text-dark">
-                        <form class="form-horizontal form-bordered" method="get">
-                            <div class=" row">
-                                <div class="col-lg-12 mb-4">
-                                    <div class="row cmaindiv">
-                                        <div class="col-md-4 col-lg-4">
-                                            <div class="text-center p-4 cerbor">
-                                                <i class="far fa-calendar-alt text-7"></i>
-                                                <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate | date: "yyyy/MM/dd" }}</p>
-                                                <p class="mb-0">DATE</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4 col-lg-4">
-                                            <div class="text-center p-4 cerbor">
-                                                <i class="fa fa-user text-7"></i>
-                                                <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">
-                                                    <span *ngIf="paymentData.paymentEnity == 'driver'">
-                                                        {{ drivers[paymentData.entityId] | titlecase}}
-                                                    </span>
-                                                    <span *ngIf="paymentData.paymentEnity !== 'driver'">
-                                                        {{ contacts[paymentData.entityId] | titlecase}}
-                                                    </span>
-                                                </p>
-                                                <p class="mb-0 text-uppercase">{{ paymentData.paymentEnity }}</p>
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-4 col-lg-4">
-                                            <div class="text-center p-4 cerbor">
-                                                <i class="fas fa-money-bill-wave text-7"></i>
-                                                <br>
-                                                <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.finalAmount | number : '1.2-2' }} CAD</p>
-                                                <p class="mb-0">AMOUNT</p>
-                                            </div>
+            <section class="m-2">
+                <form class="form-horizontal form-bordered" method="get">
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-md-4 col-lg-4">
+                                        <div class="text-center p-4 cmaindiv">
+                                            <i class="far fa-calendar-alt text-7"></i>
+                                            <br>
+                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.txnDate | date: "yyyy/MM/dd" }}</p>
+                                            <p class="mb-0">DATE</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 pr-0">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="table table-bordered table-responsive-lg">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="40%" class="back-color-gray font-weight-bold">
-                                                            Settlement(s)</td>
-                                                        <td width="60%">
-                                                            <span *ngIf="paymentData.settlementIds.length > 0">
-                                                                <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
-                                                                    {{ settlements[settl] }}
-                                                                    <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
-                                                                </span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td width="40%" class="back-color-gray font-weight-bold">Settled
-                                                            Amount</td>
-                                                        <td width="60%">{{ paymentData.finalAmount | number : '1.2-2' }} CAD</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="back-color-gray font-weight-bold">Advance</td>
-                                                        <td>{{ paymentData.advance | number : '1.2-2' }} CAD</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                    <div class="col-md-4 col-lg-4">
+                                        <div class="text-center p-4 boxheightDP cmaindiv">
+                                            <i class="fa fa-user text-7"></i>
+                                            <br>
+                                            <p class="mb-0 text-5 font-weight-bold text-dark">
+                                                <span *ngIf="paymentData.paymentEnity == 'driver'">
+                                                    {{ drivers[paymentData.entityId] | titlecase}}
+                                                </span>
+                                                <span *ngIf="paymentData.paymentEnity !== 'driver'">
+                                                    {{ contacts[paymentData.entityId] | titlecase}}
+                                                </span>
+                                            </p>
+                                            <p class="mb-0 text-uppercase">{{ paymentData.paymentEnity }}</p>
+                                            
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6 pl-0">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="table table-bordered table-responsive-lg">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="40%" class="back-color-gray font-weight-bold">Payment
-                                                            Mode</td>
-                                                        <td width="60%" class="text-capitalize">{{ (paymentData.payMode) ? paymentData.payMode : '-' }}</td>
-                                                    </tr>
-                                                    <tr *ngIf="paymentData.payMode">
-                                                        <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
-                                                        <td>{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
-                                                    </tr>
-                                                    <tr *ngIf="paymentData.payMode">
-                                                        <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
-                                                        <td>{{ paymentData.payModeNo }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+
+                                    <div class="col-md-4 col-lg-4">
+                                        <div class="text-center p-4 cmaindiv">
+                                            <i class="fas fa-money-bill-wave text-7"></i>
+                                            <br>
+                                            <p class="mb-0 text-5 font-weight-bold text-dark">{{ paymentData.finalAmount | number : '1.2-2' }} CAD</p>
+                                            <p class="mb-0">AMOUNT</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-
-
-
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <h5 class="font-weight-bold">Journal</h5>
-                                    <table class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr class="bgcol2">
-                                                <th>Account Name</th>
-                                                <th>Type</th>
-                                                <th>Debit</th>
-                                                <th>Credit</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let data of paymentData.transactionLog">
-                                              <td><span *ngIf="data.actIDType === 'actID'">{{accountsObjects[data.accountID] | titlecase}}</span>
-                                                <span *ngIf="data.actIDType === 'actIntID'">{{accountsIntObjects[data.accountID] | titlecase}}</span></td>
-                                                <td class="text-capitalize">{{ paymentData.paymentEnity }} payment</td>
-                                                <td>
-                                                    <span *ngIf="data.trxType === 'debit'">
-                                                        {{ data.amount | number : '1.2-2' }} {{ data.currency }}
-                                                    </span>
-                                                    <span *ngIf="data.trxType !== 'debit'">0.00</span>
-                                                </td>
-                                                <td>
-                                                    <span *ngIf="data.trxType === 'credit'">
-                                                        {{ data.amount | number : '1.2-2' }} {{ data.currency }}
-                                                    </span>
-                                                    <span *ngIf="data.trxType !== 'credit'">0.00</span>
-                                                </td>
-                                            </tr>
-                                            <!-- <tr>
-                                                <td colspan="3" class="font-weight-bold text-right">Total</td>
-                                                <td>{{ paymentData.finalAmount }} CAD</td>
-                                                <td>{{ paymentData.finalAmount }} CAD</td>
-                                            </tr> -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                            
+                         </div>
+                      </div>
+                   </div>
                 </div>
-            </div>
+                
+                <div class="row mb-3">
+                   <div class="col-lg-12">
+                      <div class="bg-white p-3 text-dark">
+                         <div class="form-group row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">
+                                                        Settlement(s)</td>
+                                                    <td width="60%">
+                                                        <span *ngIf="paymentData.settlementIds.length > 0">
+                                                            <span *ngFor="let settl of paymentData.settlementIds; let s=index;">
+                                                                {{ settlements[settl] }}
+                                                                <span *ngIf="s< paymentData.settlementIds.length-1">,</span>
+                                                            </span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">Settled
+                                                        Amount</td>
+                                                    <td width="60%">{{ paymentData.finalAmount | number : '1.2-2' }} CAD</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="back-color-gray font-weight-bold">Advance</td>
+                                                    <td>{{ paymentData.advance | number : '1.2-2' }} CAD</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered table-responsive-lg">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="40%" class="back-color-gray font-weight-bold">Payment
+                                                        Mode</td>
+                                                    <td width="60%" class="text-capitalize">{{ (paymentData.payMode) ? paymentData.payMode : '-' }}</td>
+                                                </tr>
+                                                <tr *ngIf="paymentData.payMode">
+                                                    <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Date</td>
+                                                    <td>{{ paymentData.payModeDate | date:"yyyy/MM/dd" }}</td>
+                                                </tr>
+                                                <tr *ngIf="paymentData.payMode">
+                                                    <td class="back-color-gray font-weight-bold text-capitalize">{{ paymentData.payMode }} Reference</td>
+                                                    <td>{{ paymentData.payModeNo }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> 
+                         </div>
+                      </div>
+                   </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                       <div class="bg-white p-3 text-dark">
+                          <div class="form-group row">
+                            <div class="col-lg-6">
+                                <h5 class="font-weight-bold">Journal</h5>
+                                <table class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr class="bgcol2">
+                                            <th>Account Name</th>
+                                            <th>Type</th>
+                                            <th>Debit</th>
+                                            <th>Credit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center" *ngIf="paymentData.transactionLog.length === 0">
+                                            <td colspan="4">
+                                                {{ dataMessage }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngFor="let data of paymentData.transactionLog">
+                                          <td><span *ngIf="data.actIDType === 'actID'">{{accountsObjects[data.accountID] | titlecase}}</span>
+                                            <span *ngIf="data.actIDType === 'actIntID'">{{accountsIntObjects[data.accountID] | titlecase}}</span></td>
+                                            <td class="text-capitalize">{{ paymentData.paymentEnity }} payment</td>
+                                            <td>
+                                                <span *ngIf="data.trxType === 'debit'">
+                                                    {{ data.amount | number : '1.2-2' }} {{ data.currency }}
+                                                </span>
+                                                <span *ngIf="data.trxType !== 'debit'">0.00</span>
+                                            </td>
+                                            <td>
+                                                <span *ngIf="data.trxType === 'credit'">
+                                                    {{ data.amount | number : '1.2-2' }} {{ data.currency }}
+                                                </span>
+                                                <span *ngIf="data.trxType !== 'credit'">0.00</span>
+                                            </td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td colspan="3" class="font-weight-bold text-right">Total</td>
+                                            <td>{{ paymentData.finalAmount }} CAD</td>
+                                            <td>{{ paymentData.finalAmount }} CAD</td>
+                                        </tr> -->
+                                    </tbody>
+                                </table>
+                            </div>
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+                </form>
+             </section>
+
         </section>
     </div>
 </section>
 <app-payment-pdfs></app-payment-pdfs>
+<app-payment-cheque></app-payment-cheque>
