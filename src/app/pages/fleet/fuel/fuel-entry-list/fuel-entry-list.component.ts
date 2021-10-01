@@ -263,13 +263,14 @@ export class FuelEntryListComponent implements OnInit {
       this.suggestedUnits = [];
       this.getStartandEndVal();
       result[`Items`].forEach(element => {
-        if(element.fuelProvider=="WEX"){
+        
+        if(element.data.fuelProvider=="WEX"){
         element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
         }
         else{
-          let date:any = moment(element.fuelDate)
-         if(element.fuelTime){
-         let time=moment(element.fuelTime,'h mm a')
+          let date:any = moment(element.data.date)
+         if(element.data.time){
+         let time=moment(element.data.time,'h mm a')
          date.set({
            hour: time.get('hour'),
            minute: time.get('minute')
@@ -288,6 +289,7 @@ export class FuelEntryListComponent implements OnInit {
 
       });
       this.fuelList = result[`Items`];
+      
 
       if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
@@ -298,7 +300,7 @@ export class FuelEntryListComponent implements OnInit {
         const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
-        //console.log(this.fuelPrevEvauatedKeys)
+        
         if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
           this.fuelPrevEvauatedKeys.push(lastEvalKey);
 

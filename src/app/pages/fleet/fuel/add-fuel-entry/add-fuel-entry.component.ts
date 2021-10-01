@@ -27,52 +27,45 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
-    unitType: 'vehicle',
-    fuelProvider: 'Manual',
     unitID: null,
-    billingCurrency: 'CAD',
-    fuelUnit: 'litre',
-    fuelQtyAmt: 0,
-    fuelQty: 0,
-    DEFFuelQty: 0,
-    DEFFuelQtyAmt: 0,
-    subTotal: 0,
-    discType: null,
-    discAmount: 0,
-    amountPaid: 0,
-    pricePerUnit: 0,
-    fuelDate: '',
-    fuelTime: '',
-    fuelType: null,
-    totalUnits: 0,
-    countryCode: null,
-    stateCode: null,
-    cityName: null,
-    reference: '',
-    tripID: null,
-    vendorID: '',
-    paidBy: null,
-    taxes: [
-      {
-        taxType: null,
-        taxAmount: 0
-      }
-    ],
-    paymentMode: '',
-    fuelCardNumber: '',
-    reimburseToDriver: false,
-    deductFromPay: false,
-    odometer: '',
-    description: '',
-    uploadedPhotos: [],
-    lineItems: [],
-  };
+    driverID: null,
+    data: {
+      useType: 'vehicle',
+      fuelProvider: 'Manual',
+      currency: 'CAD',
+      uom: 'litre',
+      amt: 0,
+      qty: 0,
+      discAmt: 0,
+      ppu: 0,
+      rPpu: 0,
+      rAmt: 0,
+      date: '',
+      time: '',
+      type: null,
+      country: null,
+      state: null,
+      city: null,
+      site: '',
+      taxes: [
+        {
+          taxType: null,
+          taxAmount: 0
+        }
+      ],
+      discRate: 0,
+      cardNo: '',
+      transID: '',
+      odometer: '',
+      excRate: 0
+    }
+  }
   fetchedUnitID;
-  fetchedUnitType;
+  fetcheduseType;
   // fuelQtyUnit = 'litre';
   // DEFFuelQtyUnit = 'litre';
   // costPerUnit = 0;
-  fuelDate: NgbDateStruct;
+  date: NgbDateStruct;
 
   selectedFiles: FileList;
   selectedFileNames: Map<any, any>;
@@ -153,7 +146,7 @@ export class AddFuelEntryComponent implements OnInit {
     });
 
     let vendorList = new Array<any>();
-    this.getValidVendors(vendorList);
+    //this.getValidVendors(vendorList);
     this.vendors = vendorList;
 
     let vehicleList = new Array<any>();
@@ -189,21 +182,21 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
 
-  private getValidVendors(vendorList: any[]) {
-    let ids = [];
-    this.listService.vendorList.forEach((element) => {
-      element.forEach((element2) => {
-        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
-          vendorList.push(element2);
-          ids.push(element2.contactID);
-        }
+  // private getValidVendors(vendorList: any[]) {
+  //   let ids = [];
+  //   this.listService.vendorList.forEach((element) => {
+  //     element.forEach((element2) => {
+  //       if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+  //         vendorList.push(element2);
+  //         ids.push(element2.contactID);
+  //       }
 
-        if (element2.isDeleted === 1 && this.fuelData.vendorID === element2.contactID) {
-          this.fuelData.vendorID = null;
-        }
-      })
-    })
-  }
+  //       if (element2.isDeleted === 1 && this.fuelData.vendorID === element2.contactID) {
+  //         this.fuelData.vendorID = null;
+  //       }
+  //     })
+  //   })
+  // }
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -214,13 +207,13 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   addFuelTaxRow() {
-    this.fuelData.taxes.push({
+    this.fuelData.data.taxes.push({
       taxType: null,
       taxAmount: 0
     });
   }
   deleteTaxRow(t) {
-    this.fuelData.taxes.splice(t, 1);
+    this.fuelData.data.taxes.splice(t, 1);
   }
   // fetchFuelTypes() {
   //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
@@ -261,13 +254,14 @@ export class AddFuelEntryComponent implements OnInit {
     });
   }
   async getStates(cntryCode) {
-    this.fuelData.stateCode = '';
-    this.fuelData.cityName = '';
+    this.fuelData.data.state = '';
+    this.fuelData.data.city = '';
     this.states = await this.countryStateCity.GetStatesByCountryCode([cntryCode]);
   }
-  async getCities(stateCode: any, countryCode: any) {
-    this.fuelData.cityName = '';
-    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+  async getCities(state: any, countryCode: any) {
+    this.fuelData.data.city = '';
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, state);
+
   }
   fetchVendors() {
     this.apiService.getData('vendors').subscribe((result: any) => {
@@ -281,53 +275,45 @@ export class AddFuelEntryComponent implements OnInit {
       .remove('label');
   }
 
-  async fillCountry(countryCode, stateCode) {
+  async fillCountry(countryCode, state) {
     this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
-    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
+    this.cities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, state);
   }
-  onChangeUnitType(value: any) {
+  onChangeuseType(value: any) {
     if (this.fuelID) {
-      if (value !== this.fetchedUnitType) {
+      if (value !== this.fetcheduseType) {
         this.fuelData.unitID = null;
-        this.fuelData.unitType = value;
+        this.fuelData.data.useType = value;
       } else {
         this.fuelData.unitID = this.fetchedUnitID;
-        this.fuelData.unitType = this.fetchedUnitType;
+        this.fuelData.data.useType = this.fetcheduseType;
       }
     } else {
-      this.fuelData.unitType = value;
+      this.fuelData.data.useType = value;
       this.fuelData.unitID = null;
     }
 
   }
-  // changeFuelUnit() {
-  //   if (this.fuelQtyUnit === 'gallon') {
-  //     this.DEFFuelQtyUnit = 'gallon';
+  // changeuom() {
+  //   if (this.qtyUnit === 'gallon') {
+  //     this.DEFqtyUnit = 'gallon';
   //   } else {
-  //     this.DEFFuelQtyUnit = 'litre';
+  //     this.DEFqtyUnit = 'litre';
   //   }
   // }
   changeCurrency(val) {
-    this.fuelData.billingCurrency = val;
+    this.fuelData.data.currency = val;
   }
   addFuelEntry() {
     this.hideErrors();
     this.submitDisabled = true;
-    this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-
-    if (this.fuelData.paymentMode != 'Fuel_Card') {
-      this.fuelData.fuelCardNumber = null;
+    if (this.fuelData.data.useType == "def") {
+      this.fuelData.data.type = "DEF"
     }
+    console.log(this.fuelData)
 
-    // create form data instance
-    const formData = new FormData();
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
     // append other fields
-    formData.append('data', JSON.stringify(this.fuelData));
-    this.apiService.postData('fuelEntries', formData, true).subscribe({
+    this.apiService.postData('fuelEntries', this.fuelData).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -380,16 +366,16 @@ export class AddFuelEntryComponent implements OnInit {
   /*
   * Selecting files before uploading
   */
-  selectDocuments(event, obj) {
-    let files = [...event.target.files];
+  // selectDocuments(event, obj) {
+  //   let files = [...event.target.files];
 
-    if (obj === 'uploadedPhotos') {
-      this.uploadedPhotos = [];
-      for (let i = 0; i < files.length; i++) {
-        this.uploadedPhotos.push(files[i])
-      }
-    }
-  }
+  //   if (obj === 'uploadedPhotos') {
+  //     this.uploadedPhotos = [];
+  //     for (let i = 0; i < files.length; i++) {
+  //       this.uploadedPhotos.push(files[i])
+  //     }
+  //   }
+  // }
   /*
   * Fetch Fuel Entry details before updating
  */
@@ -398,76 +384,40 @@ export class AddFuelEntryComponent implements OnInit {
       .getData('fuelEntries/' + this.fuelID).toPromise();
     // .subscribe((result: any) => {
     result = result.Items[0];
-    await this.fillCountry(result.countryCode, result.stateCode);
-    this.fuelData[`fuelID`] = this.fuelID;
-    this.fuelData.billingCurrency = result.billingCurrency,
-      this.fuelData.unitType = result.unitType;
+    await this.fillCountry(result.data.country, result.data.state);
+    this.fuelData['data'][`fuelID`] = this.fuelID;
+    this.fuelData.data.currency = result.data.currency,
+      this.fuelData.data.useType = result.data.useType;
     this.fuelData.unitID = result.unitID;
-    this.fuelData.fuelUnit = result.fuelUnit;
-    this.fuelData.fuelQty = result.fuelQty;
-    this.fuelData.fuelQtyAmt = +result.fuelQtyAmt;
-    this.fuelData.DEFFuelQty = +result.DEFFuelQty;
-    this.fuelData.DEFFuelQtyAmt = result.DEFFuelQtyAmt;
-    this.fuelData.discType = result.discType;
-    this.fuelData.discAmount = result.discAmount;
-    this.fuelData.subTotal = result.subTotal;
-    this.fuelData.pricePerUnit = result.pricePerUnit;
-    this.fuelData.taxes = result.taxes;
-    this.fuelData.totalUnits = result.totalUnits;
-    this.fuelData.amountPaid = result.amountPaid;
-    this.fuelData.fuelDate = result.fuelDate;
-    this.fuelData.fuelTime = result.fuelTime;
-    this.fuelData.fuelType = result.fuelType;
+    this.fuelData.data.uom = result.data.uom;
+    this.fuelData.data.qty = result.data.qty;
+    this.fuelData.data.amt = +result.data.amt;
+    this.fuelData.data.discAmt = result.data.discAmt;
+    this.fuelData.data.ppu = result.data.ppu;
+    this.fuelData.data.taxes = result.data.taxes;
+    this.fuelData.data.date = result.data.date;
+    this.fuelData.data.time = result.data.time;
+    this.fuelData.data.type = result.data.type;
 
-    this.fuelData.paidBy = result.paidBy;
-    this.fuelData.paymentMode = result.paymentMode;
-    this.fuelData.fuelCardNumber = result.fuelCardNumber;
-    this.fuelData.reference = result.reference;
-    this.fuelData.reimburseToDriver = result.reimburseToDriver;
-    this.fuelData.deductFromPay = result.deductFromPay;
-
-    this.fuelData.vendorID = result.vendorID;
-    this.fuelData.countryCode = result.countryCode;
-    this.fuelData.stateCode = result.stateCode;
-    this.fuelData.cityName = result.cityName;
-    this.fuelData.tripID = result.tripID;
-    this.fuelData.odometer = result.odometer;
-    this.fuelData.description = result.description;
-    this.fuelData.uploadedPhotos = result.uploadedPhotos;
-    this.fuelData[`timeCreated`] = result.timeCreated;
-    this.existingPhotos = result.uploadedPhotos;
+    this.fuelData.driverID = result.driverID;
+    this.fuelData.data.cardNo = result.data.cardNo;
+    this.fuelData.data.transID = result.data.transID;
+    this.fuelData.data.country = result.data.country;
+    this.fuelData.data.state = result.data.state;
+    this.fuelData.data.city = result.data.city;
+    this.fuelData.data.odometer = result.data.odometer;
+    this.existingPhotos = result.data.uploadedPhotos;
     this.fetchedUnitID = result.unitID;
-    this.fetchedUnitType = result.unitType;
-    this.fuelData.lineItems = result.lineItems;
-    this.fuelData[`createdDate`] = result.createdDate;
-    this.fuelData[`createdTime`] = result.createdTime;
-    if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
-      this.fuelEntryImages = result.uploadedPhotos.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
-    }
-    // });
+    this.fetcheduseType = result.data.useType;
   }
-  deleteImage(i: number) {
-    this.fuelData.uploadedPhotos.splice(i, 1);
-    this.fuelEntryImages.splice(i, 1);
-  }
+  // deleteImage(i: number) {
+  //   this.fuelData.uploadedPhotos.splice(i, 1);
+  //   this.fuelEntryImages.splice(i, 1);
+  // }
   updateFuelEntry() {
     this.submitDisabled = true;
     this.hideErrors();
-    this.fuelData.totalUnits = this.fuelData.fuelQty + this.fuelData.DEFFuelQty;
-    this.fuelData.uploadedPhotos = this.existingPhotos;
-    this.fuelData.lineItems = this.fuelData.lineItems;
-    if (this.fuelData.paymentMode != 'Fuel_Card') {
-      this.fuelData.fuelCardNumber = null;
-    }
-    // create form data instance
-    const formData = new FormData();
-    // append photos if any
-    for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-    }
-    // append other fields
-    formData.append('data', JSON.stringify(this.fuelData));
-    this.apiService.putData('fuelEntries', formData, true).subscribe({
+    this.apiService.putData('fuelEntries', this.fuelData).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)

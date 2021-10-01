@@ -47,7 +47,7 @@
                               </tr>
 
                               <tr>
-                                 <td class="back-color-gray font-weight-bold">Unit Type</td>
+                                 <td class="back-color-gray font-weight-bold">use Type</td>
                                  <td>{{fuelData.unitType}} </td>
                               </tr>
 
@@ -56,7 +56,7 @@
                                        <td>
                                           <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.unitNumber}}</span>
                                           <span *ngIf="fuelData.fuelProvider=='Manual'">
-                                             <span *ngIf="fuelData.unitType=='vehicle'">{{vehicleList[fuelData.unitNumber]}}</span>
+                                             <span *ngIf="fuelData.unitType!='reefer'">{{vehicleList[fuelData.unitNumber]}}</span>
                                              <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitNumber]}}</span>
                                              </span>
                                            </td>
@@ -152,9 +152,9 @@
 
                               </tr>
                               <tr>
-                                 <td class="back-color-gray font-weight-bold">Vendor</td>
+                                 <td class="back-color-gray font-weight-bold">Site</td>
                                  <td>
-                                 <span *ngIf="fuelData.fuelProvider=='Manual'">{{vendorList[fuelData.vendorID]}}</span>
+                                 <span *ngIf="fuelData.fuelProvider=='Manual'">{{fuelData.vendorID}}</span>
                                  <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.vendorID}}</span>
                                  </td>
                               </tr>
