@@ -897,8 +897,6 @@
                         width="100%"
                         [center]="center"
                         [zoom]="zoom"
-                        [headerHeight]="50"
-                        [footerHeight]="50"
                       >
                         <map-marker
                           *ngFor="let markerPosition of markerPositions"
@@ -919,7 +917,6 @@
                         [footerHeight]="50"
                         [reorderable]="reorderable"
                         [loadingIndicator]="loadingIndicator"
-                        [sortable]="false"
                         [selectionType]="SelectionType.single"
                         [selected]="selected"
                         (select)="onLocationRowSelected($event)"
