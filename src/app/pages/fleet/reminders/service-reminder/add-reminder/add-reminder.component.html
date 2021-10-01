@@ -1,288 +1,616 @@
 <section class="body">
-   <div class="inner-wrapper">
-      <section role="main" class="content-body pl-1 pr-0 pt-0">
-         <header class="page-header pr8 pl11">
-             <div class="row" style="padding-top:10px;">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
+      <header class="page-header pr8 pl11">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">
+              {{ pageTitle }}
+            </h4>
+          </div>
 
-               <div class="col-md-4 col-lg-4">
-                  <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{pageTitle}}</h4>
-               </div>
+          <div class="col-md-8 col-lg-8 text-right">
+            <a
+              routerLink="/fleet/reminders/service-reminder/list"
+              class="btn btn-default btn-sm mx-2"
+              style="color: black"
+              ><i class="fas fa-list"></i> Service Reminders List</a
+            >
+          </div>
+        </div>
+      </header>
 
-               <div class="col-md-8  col-lg-8 text-right">
-                  <a routerLink="/fleet/reminders/service-reminder/list" class="btn btn-default btn-sm mx-2"
-                     style="color:black;"><i class="fas fa-list"></i> Service Reminders List</a>
-               </div>
-            </div>
-         </header>
-
-         <section class="m-2">
-            <form id="serviceForm" name="serviceForm" class="form-horizontal form-bordered" method="get" #serviceF="ngForm">
-            <div class="row mb-3">
-              <div class="col-lg-12">
-                <div class="bg-white p-3 text-dark">
-                  <div class="form-group row adddriverpl pt-3">
-                     <div class="col-lg-11">
-                       <label class="control-label font-weight-bold font-weight-bold text-lg-right text-5">Service Reminder Details</label>
-                     </div>
-                     <div class="col-lg-5">
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                 Vehicle<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select [(ngModel)]="entityID" name="entityID"
-                                 placeholder="Select vehicle to add reminder" #vec="ngModel" required>
-
-                                 <ng-option *ngFor="let item of vehicles" value="{{item.vehicleID}}">
-                                    {{item.vehicleIdentification}}</ng-option>
-
-                              </ng-select>
-                              <div *ngIf="vec.invalid && (vec.dirty || vec.touched)" class="text-danger">
-                                 <div *ngIf="vec.errors.required">
-                                   Vehicle  is required.
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Subscribed
-                                 Emails<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="reminderData.subscribers" name="subscribers" type="text" class="form-control text-lowercase"
-                                 placeholder="e.g johnsmith@gmail.com, maria@email.com" #sMail="ngModel" required pattern=^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$>
-                                 <div *ngIf="sMail.invalid && (sMail.dirty || sMail.touched)" class="text-danger">
-                                    <div *ngIf="sMail.errors.required">
-                                      Email is required.
-                                    </div>
-                                    <div *ngIf="sMail.errors.pattern">
-                                      Enter valid email eg. johnsmith@gmail.com,maria@gmail.com
-                                    </div>
-                                  </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="col-lg-5 offset-lg-1">
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select
-                                 Service Tasks<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <ng-select [(ngModel)]="taskID" placeholder="Select service task to perform on vehicle" name="taskID"
-                                 style="width: 100%;" #sst="ngModel" required>
-                                 <optgroup label="Select Service Task">
-                                    <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">
-                                       {{task.taskName}}
-                                    </ng-option>
-                                 </optgroup>
-                              </ng-select>
-                              <div *ngIf="sst.invalid && (sst.dirty || sst.touched)" class="text-danger">
-                                 <div *ngIf="sst.errors.required">
-                                 Tasks is required.
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-2 pl-0" style="margin-top: 38px !important;">
-                              <button type="button" data-toggle="modal" data-target="#addServiceTasks"
-                                 class="modal-with-form btn cus-btn-padd btn-success mr-1"><i
-                                    class="fas fa-plus"></i></button>
-                              <a href="javascript:;" (click)="refreshTaskData()"
-                              data-toggle="tooltip" title="Refresh task data"
-                              class="btn btn-success btn-sm modal-with-form"><i
-                                    class="fas fa-sync"></i></a>
-                           </div>
-                        </div>
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <div class="row">
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Repeat By<span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <ng-select [(ngModel)]="reminderData.tasks.remindByUnit" placeholder="Select repeat by unit" name="remindByUnit">
-                                       <ng-option value="time">Time </ng-option>
-                                       <ng-option value="odometer">Odometer </ng-option>
-                                    </ng-select>
-
-                                 </div>
-
-                                 <div class="col-lg-7" *ngIf="reminderData.tasks.remindByUnit == 'time'">
-                                    <label
-                                       class="control-label font-weight-bold font-bold text-lg-right pt-2">Time<span
-                                          class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <div class="row">
-                                       <div class="col-lg-6">
-                                          <input [(ngModel)]="reminderData.tasks.time" name="tasks.time" type="number" min='1'
-                                             class="form-control" #time1="ngModel" placeholder="Enter time e.g 5" [required]="reminderData.tasks.remindByUnit == 'time'">
-                                             <div *ngIf="time1.invalid && (time1.dirty || time1.touched)" class="text-danger">
-                                                <div *ngIf="time1.errors.required">
-                                                   Time is required.
-                                                </div>
-                                             </div>
-
-                                       </div>
-                                       <div class="col-lg-6 pl-0">
-                                          <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit" placeholder="Select Duration" #timeZone="ngModel" [required]="reminderData.tasks.remindByUnit == 'time'" >
-                                             <ng-option value="day">Day(s)</ng-option>
-                                             <ng-option value="week">Week(s)</ng-option>
-                                             <ng-option value="month">Month(s)</ng-option>
-                                             <ng-option value="year">Year(s)</ng-option>
-                                          </ng-select>
-                                          <div *ngIf="timeZone.invalid && (timeZone.dirty || timeZone.touched)" class="text-danger">
-                                             <div *ngIf="timeZone.errors.required">
-                                                Select valid time period is required.
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-lg-7" *ngIf="reminderData.tasks.remindByUnit == 'odometer'">
-                                    <label
-                                       class="control-label font-weight-bold font-bold text-lg-right pt-2">Odometer
-                                       in Miles<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                    <input [(ngModel)]="reminderData.tasks.odometer"
-                                       placeholder="Miles to repeat service task" name="task.odometer" type="text"
-                                       class="form-control"  #odo1="ngModel" [required]="reminderData.tasks.remindByUnit == 'odometer'" pattern="^[0-9\.]+$">
-                                    <div *ngIf="odo1.invalid && (odo1.dirty || odo1.touched)" class="text-danger">
-                                       <div *ngIf="odo1.errors.required">
-                                          Odometer in miles are required.
-                                       </div>
-                                       <div *ngIf="odo1.errors.pattern">
-                                          Odometer in miles must contain numbers.
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-
-                     <div class="col-lg-5" *ngIf="!reminderID && reminderData.tasks.remindByUnit == 'time'">
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Last Service
-                                 Date (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="reminderData.lastServiceDate" name="reminderData.lastServiceDate" type="text"
-                                 placeholder="yyyy/mm/dd" (click)="pickupDate.toggle()" ngbDatepicker
-                                 #pickupDate="ngbDatepicker" class="form-control" autocomplete="off" #date123="ngModel" #lastService="ngModel" [required]="reminderData.tasks.remindByUnit == 'time'"
-                                 [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                 <div *ngIf="lastService.invalid && (lastService.dirty || lastService.touched)" class="text-danger">
-                                    <div *ngIf="lastService.errors.required">
-                                       Last service date is required.
-                                    </div>
-                                 </div>
-                           </div>
-
-                        </div>
-
-                     </div>
-
-                     <div class="col-lg-5" *ngIf="!reminderID && reminderData.tasks.remindByUnit == 'odometer'">
-                        <div class="row pt-2">
-                           <div class="col-lg-10">
-                              <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Last Service
-                                 Odometer (Approx)<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                              <input [(ngModel)]="reminderData.lastServiceOdometer"
-                                 placeholder="Approximate odometers of last service" name="lastServiceOdometer"
-                                 type="number" class="form-control" min='0' #meter1="ngModel" [required]="reminderData.tasks.remindByUnit == 'odometer'">
-                                 <div *ngIf="meter1.invalid && (meter1.dirty || meter1.touched)" class="text-danger">
-                                    <div *ngIf="meter1.errors.required">
-                                       Last service odometer is required.
-                                    </div>
-                                 </div>
-                           </div>
-                        </div>
-                     </div>
-
+      <section class="m-2">
+        <form
+          id="serviceForm"
+          name="serviceForm"
+          class="form-horizontal form-bordered"
+          method="get"
+          #serviceF="ngForm"
+        >
+          <div class="row mb-3">
+            <div class="col-lg-12">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row adddriverpl pt-3">
+                  <div class="col-lg-11">
+                    <label
+                      class="
+                        control-label
+                        font-weight-bold font-weight-bold
+                        text-lg-right text-5
+                      "
+                      >Service Reminder Details</label
+                    >
                   </div>
+                  <div class="col-lg-5">
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Select Vehicle<span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <ng-select
+                          [(ngModel)]="entityID"
+                          name="entityID"
+                          placeholder="Select vehicle to add reminder"
+                          #vec="ngModel"
+                          required
+                        >
+                          <ng-option
+                            *ngFor="let item of vehicles"
+                            value="{{ item.vehicleID }}"
+                          >
+                            {{ item.vehicleIdentification }}</ng-option
+                          >
+                        </ng-select>
+                        <div
+                          *ngIf="vec.invalid && (vec.dirty || vec.touched)"
+                          class="text-danger"
+                        >
+                          <div *ngIf="vec.errors.required">
+                            Vehicle is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-                  <div class="form-group row adddriverpl">
-                     <div class="col-lg-11 text-right pb-3">
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Subscribed Emails<span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <input
+                          [(ngModel)]="reminderData.subscribers"
+                          name="subscribers"
+                          type="text"
+                          class="form-control text-lowercase"
+                          placeholder="e.g johnsmith@gmail.com, maria@email.com"
+                          #sMail="ngModel"
+                          required
+                          pattern="^(\s?[^\s,]+@[^\s,]+\.[^\s,]+\s?,)*(\s?[^\s,]+@[^\s,]+\.[^\s,]+)$"
+                        />
+                        <div
+                          *ngIf="
+                            sMail.invalid && (sMail.dirty || sMail.touched)
+                          "
+                          class="text-danger"
+                        >
+                          <div *ngIf="sMail.errors.required">
+                            Email is required.
+                          </div>
+                          <div *ngIf="sMail.errors.pattern">
+                            Enter valid email eg.
+                            johnsmith@gmail.com,maria@gmail.com
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-5 offset-lg-1">
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Select Service Tasks<span
+                            class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <ng-select
+                          [(ngModel)]="taskID"
+                          placeholder="Select service task to perform on vehicle"
+                          name="taskID"
+                          style="width: 100%"
+                          #sst="ngModel"
+                          required
+                        >
+                          <optgroup label="Select Service Task">
+                            <ng-option
+                              *ngFor="let task of serviceTasks"
+                              [value]="task.taskID"
+                            >
+                              {{ task.taskName }}
+                            </ng-option>
+                          </optgroup>
+                        </ng-select>
+                        <div
+                          *ngIf="sst.invalid && (sst.dirty || sst.touched)"
+                          class="text-danger"
+                        >
+                          <div *ngIf="sst.errors.required">
+                            Tasks is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="col-2 pl-0 pr-0"
+                        style="margin-top: 38px !important"
+                      >
+                        <button
+                          type="button"
+                          data-toggle="modal"
+                          data-target="#addServiceTasks"
+                          class="
+                            modal-with-form
+                            btn
+                            cus-btn-padd
+                            btn-success
+                            mr-3
+                          "
+                        >
+                          <i class="fas fa-plus"></i>
+                        </button>
+                        <a
+                          href="javascript:;"
+                          (click)="refreshTaskData()"
+                          data-toggle="tooltip"
+                          title="Refresh task data"
+                          class="btn btn-success btn-sm modal-with-form"
+                          ><i class="fas fa-sync"></i
+                        ></a>
+                      </div>
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
                         <div class="row">
+                          <div class="col-lg-5">
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold font-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >Repeat By<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <ng-select
+                              [(ngModel)]="reminderData.tasks.remindByUnit"
+                              placeholder="Select repeat by unit"
+                              name="remindByUnit"
+                            >
+                              <ng-option value="time">Time </ng-option>
+                              <ng-option value="odometer">Odometer </ng-option>
+                            </ng-select>
+                          </div>
 
-                           <div class="col-12">
-                              <div class="row">
-                                 <div class="col-11 pr-1">
-                                    <a href="javascript:;" (click)="cancel()" class="btn btn-default mr-2">Cancel</a>
-                                    <!-- if there is some error in validation  -->
-
-                                    <button *ngIf="!reminderID && !serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Save</button>
-
-                                   <!--- if validations are ok and now the button will disable on submit click  -->
-                                    <button *ngIf="!reminderID && serviceF.form.valid" (click)="addReminder()" class="btn btn-success" [disabled]="submitDisabled">Save</button>
-                                        <!-- update case -->
-                                    <button *ngIf="reminderID  && !serviceF.form.valid" (click)="updateReminder()" class="btn btn-success" [disabled]="!serviceF.form.valid">Update</button>
-                                    <button *ngIf="reminderID  && serviceF.form.valid" (click)="updateReminder()" class="btn btn-success" [disabled]="submitDisabled">Update</button>
-
-
-                                 </div>
+                          <div
+                            class="col-lg-7"
+                            *ngIf="reminderData.tasks.remindByUnit == 'time'"
+                          >
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold font-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >Time<span class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <input
+                                  [(ngModel)]="reminderData.tasks.time"
+                                  name="tasks.time"
+                                  type="number"
+                                  min="1"
+                                  class="form-control"
+                                  #time1="ngModel"
+                                  placeholder="Enter time e.g 5"
+                                  [required]="
+                                    reminderData.tasks.remindByUnit == 'time'
+                                  "
+                                />
+                                <div
+                                  *ngIf="
+                                    time1.invalid &&
+                                    (time1.dirty || time1.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="time1.errors.required">
+                                    Time is required.
+                                  </div>
+                                </div>
                               </div>
-                           </div>
+                              <div class="col-lg-6">
+                                <ng-select
+                                  [(ngModel)]="reminderData.tasks.timeUnit"
+                                  name="tasks.timeUnit"
+                                  placeholder="Select Duration"
+                                  #timeZone="ngModel"
+                                  [required]="
+                                    reminderData.tasks.remindByUnit == 'time'
+                                  "
+                                >
+                                  <ng-option value="day">Day(s)</ng-option>
+                                  <ng-option value="week">Week(s)</ng-option>
+                                  <ng-option value="month">Month(s)</ng-option>
+                                  <ng-option value="year">Year(s)</ng-option>
+                                </ng-select>
+                                <div
+                                  *ngIf="
+                                    timeZone.invalid &&
+                                    (timeZone.dirty || timeZone.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="timeZone.errors.required">
+                                    Select valid time period is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="col-lg-7"
+                            *ngIf="
+                              reminderData.tasks.remindByUnit == 'odometer'
+                            "
+                          >
+                            <label
+                              class="
+                                control-label
+                                font-weight-bold font-bold
+                                text-lg-right
+                                pt-2
+                              "
+                              >Odometer in Miles<span
+                                class="mandfield text-2 ml-1"
+                                ><sup>*</sup></span
+                              ></label
+                            >
+                            <input
+                              [(ngModel)]="reminderData.tasks.odometer"
+                              placeholder="Miles to repeat service task"
+                              name="task.odometer"
+                              type="text"
+                              class="form-control"
+                              #odo1="ngModel"
+                              [required]="
+                                reminderData.tasks.remindByUnit == 'odometer'
+                              "
+                              pattern="^[0-9\.]+$"
+                            />
+                            <div
+                              *ngIf="
+                                odo1.invalid && (odo1.dirty || odo1.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <div *ngIf="odo1.errors.required">
+                                Odometer in miles are required.
+                              </div>
+                              <div *ngIf="odo1.errors.pattern">
+                                Odometer in miles must contain numbers.
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                     </div>
+                      </div>
+                    </div>
                   </div>
 
+                  <div
+                    class="col-lg-5"
+                    *ngIf="
+                      !reminderID && reminderData.tasks.remindByUnit == 'time'
+                    "
+                  >
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Last Service Date (Approx)<span
+                            class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <input
+                          [(ngModel)]="reminderData.lastServiceDate"
+                          name="reminderData.lastServiceDate"
+                          type="text"
+                          placeholder="yyyy/mm/dd"
+                          (click)="pickupDate.toggle()"
+                          ngbDatepicker
+                          #pickupDate="ngbDatepicker"
+                          class="form-control"
+                          autocomplete="off"
+                          #date123="ngModel"
+                          #lastService="ngModel"
+                          [required]="reminderData.tasks.remindByUnit == 'time'"
+                          [minDate]="dateMinLimit"
+                          [maxDate]="futureDatesLimit"
+                        />
+                        <div
+                          *ngIf="
+                            lastService.invalid &&
+                            (lastService.dirty || lastService.touched)
+                          "
+                          class="text-danger"
+                        >
+                          <div *ngIf="lastService.errors.required">
+                            Last service date is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="col-lg-5"
+                    *ngIf="
+                      !reminderID &&
+                      reminderData.tasks.remindByUnit == 'odometer'
+                    "
+                  >
+                    <div class="row pt-2">
+                      <div class="col-lg-10">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Last Service Odometer (Approx)<span
+                            class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <input
+                          [(ngModel)]="reminderData.lastServiceOdometer"
+                          placeholder="Approximate odometers of last service"
+                          name="lastServiceOdometer"
+                          type="number"
+                          class="form-control"
+                          min="0"
+                          #meter1="ngModel"
+                          [required]="
+                            reminderData.tasks.remindByUnit == 'odometer'
+                          "
+                        />
+                        <div
+                          *ngIf="
+                            meter1.invalid && (meter1.dirty || meter1.touched)
+                          "
+                          class="text-danger"
+                        >
+                          <div *ngIf="meter1.errors.required">
+                            Last service odometer is required.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group row adddriverpl">
+                  <div class="col-lg-11 text-right pb-3">
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="row">
+                          <div class="col-11 pr-1">
+                            <a
+                              href="javascript:;"
+                              (click)="cancel()"
+                              class="btn btn-default mr-2"
+                              >Cancel</a
+                            >
+                            <!-- if there is some error in validation  -->
+
+                            <button
+                              *ngIf="!reminderID && !serviceF.form.valid"
+                              (click)="addReminder()"
+                              class="btn btn-success"
+                              [disabled]="!serviceF.form.valid"
+                            >
+                              Save
+                            </button>
+
+                            <!--- if validations are ok and now the button will disable on submit click  -->
+                            <button
+                              *ngIf="!reminderID && serviceF.form.valid"
+                              (click)="addReminder()"
+                              class="btn btn-success"
+                              [disabled]="submitDisabled"
+                            >
+                              Save
+                            </button>
+                            <!-- update case -->
+                            <button
+                              *ngIf="reminderID && !serviceF.form.valid"
+                              (click)="updateReminder()"
+                              class="btn btn-success"
+                              [disabled]="!serviceF.form.valid"
+                            >
+                              Update
+                            </button>
+                            <button
+                              *ngIf="reminderID && serviceF.form.valid"
+                              (click)="updateReminder()"
+                              class="btn btn-success"
+                              [disabled]="submitDisabled"
+                            >
+                              Update
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-         </form>
-
-         </section>
-
+          </div>
+        </form>
       </section>
-   </div>
+    </section>
+  </div>
 </section>
 
-<div class="modal fade" id="addServiceTasks" tabindex="-1" role="dialog" aria-labelledby="serviceTaskModalTitle"
-   aria-hidden="true">
-   <div class="modal-dialog" style="max-width: 600px;" role="document">
-      <div class="modal-content">
-         <form id="serviceTaskForm" name="serviceTaskForm" class="form-horizontal form-bordered" method="get" #service="ngForm">
-         <div class="modal-header">
-            <h5 class="modal-title" id="serviceTaskModalTitle">Add Service Task</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-            </button>
-         </div>
-         <div class="modal-body text-dark">
+<div
+  class="modal fade"
+  id="addServiceTasks"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="serviceTaskModalTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" style="max-width: 600px" role="document">
+    <div class="modal-content">
+      <form
+        id="serviceTaskForm"
+        name="serviceTaskForm"
+        class="form-horizontal form-bordered"
+        method="get"
+        #service="ngForm"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="serviceTaskModalTitle">
+            Add Service Task
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <i
+              class="far fa-window-close modal-dismiss"
+              style="font-size: 25px"
+            >
+            </i>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+          <div class="row">
+            <div class="col-lg-12">
+              <label
+                class="control-label font-weight-bold font-bold text-lg-right"
+                >Service Task Name<span class="mandfield text-2 ml-1"
+                  ><sup>*</sup></span
+                ></label
+              >
+              <input
+                [(ngModel)]="serviceTask.taskName"
+                name="taskName"
+                type="text"
+                class="form-control"
+                placeholder="Enter service task name"
+                #txtTask="ngModel"
+                required
+                pattern="^[a-zA-Z0-9\s]+"
+              />
+              <div
+                *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)"
+                class="text-danger"
+              >
+                <div *ngIf="txtTask.errors.required">
+                  Service task name is required.
+                </div>
+                <div *ngIf="txtTask.errors.pattern">
+                  Service task name must contain alphanumeric characters.
+                </div>
+              </div>
+            </div>
+          </div>
 
-               <div class="row">
-                  <div class="col-lg-12">
-                     <label class="control-label font-weight-bold font-bold text-lg-right">Service Task Name<span
-                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                     <input [(ngModel)]="serviceTask.taskName" name="taskName" type="text" class="form-control"
-                        placeholder="Enter service task name" #txtTask="ngModel" required pattern="^[a-zA-Z0-9\s]+">
-                        <div *ngIf="txtTask.invalid && (txtTask.dirty || txtTask.touched)" class="text-danger">
-                           <div *ngIf="txtTask.errors.required">
-                             Service task name is required.
-                           </div>
-                           <div *ngIf="txtTask.errors.pattern">
-                                  Service task name must contain alphanumeric characters.
-                           </div>
-                         </div>
-                  </div>
-               </div>
-
-               <div class="row mt-2">
-                  <div class="col-lg-12">
-                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Service Task
-                        Description</label>
-                     <textarea class="form-control heighta" rows="3" [(ngModel)]="serviceTask.description" name="description"
-                        placeholder="Enter service task description" #aNotes227="ngModel"
-                        pattern="^[\s\S]{1,500}$"></textarea>
-                        <div *ngIf="aNotes227.invalid && (aNotes227.dirty || aNotes227.touched)" class="text-danger">
-                           <div *ngIf="aNotes227.errors.pattern">
-                              Only 500 characters are allowed.
-                           </div>
-
-                        </div>
-                  </div>
-               </div>
-
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-success" (click)="addServiceTask()" [disabled]="!service.form.valid">Save</button>
-         </div>
+          <div class="row mt-2">
+            <div class="col-lg-12">
+              <label
+                class="
+                  control-label
+                  font-weight-bold font-bold
+                  text-lg-right
+                  pt-2
+                "
+                >Service Task Description</label
+              >
+              <textarea
+                class="form-control heighta"
+                rows="3"
+                [(ngModel)]="serviceTask.description"
+                name="description"
+                placeholder="Enter service task description"
+                #aNotes227="ngModel"
+                pattern="^[\s\S]{1,500}$"
+              ></textarea>
+              <div
+                *ngIf="
+                  aNotes227.invalid && (aNotes227.dirty || aNotes227.touched)
+                "
+                class="text-danger"
+              >
+                <div *ngIf="aNotes227.errors.pattern">
+                  Only 500 characters are allowed.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="addServiceTask()"
+            [disabled]="!service.form.valid"
+          >
+            Save
+          </button>
+        </div>
       </form>
-      </div>
-   </div>
+    </div>
+  </div>
 </div>
