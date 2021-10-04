@@ -24,7 +24,7 @@ export class ChartOfAccountsComponent implements OnInit {
 
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  futureDatesLimit = { year: this.date.getFullYear(), month: 12, day: 31 };
   receivedActID = '';
   fetchedID = null;
   actName = null;

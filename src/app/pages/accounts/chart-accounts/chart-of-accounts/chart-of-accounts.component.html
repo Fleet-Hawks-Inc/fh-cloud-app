@@ -142,7 +142,7 @@
 					<div class="form-row mt-2">
 						<div class="form-group col-lg-12">
 							<label class="control-label font-weight-bold">Account Name<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-							<input type="text" class="form-control" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+							<input type="text" class="form-control text-capitalize" placeholder="eg. Property And Equipment" [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
 							<div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
 								<div *ngIf="accountName.errors.required"> Account name is required. </div>
 							</div>
