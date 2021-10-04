@@ -194,23 +194,30 @@ export class AddReceiptComponent implements OnInit {
     }
   }
   getAmountOrder(j: any) {
-    if (this.orderInvoices[j].fullPayment === true) {
-      this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    } else if (this.orderInvoices[j].fullPayment === true && this.orderInvoices[j].invStatus === 'partially_paid') {
-      this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    } else {
-      this.orderInvoices[j].amountPaid = 0;
+    for (let i = 0; i < this.orderInvoices.length; i++) {
+      if (i === j) {
+        if (this.orderInvoices[j].fullPayment === true) {
+          this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
+        } else if (this.orderInvoices[j].fullPayment === true && this.orderInvoices[j].invStatus === 'partially_paid') {
+          this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
+        } else {
+          this.orderInvoices[j].amountPaid = 0;
+        }
+      }
     }
-
     this.findReceivedAmtFn();
   }
   getAmountManual(k: any) {
-    if (this.invoices[k].fullPayment === true) {
-      this.invoices[k].amountPaid = this.invoices[k].balance;
-    } else if (this.invoices[k].fullPayment === true && this.invoices[k].invStatus === 'partially_paid') {
-      this.invoices[k].amountPaid = this.invoices[k].balance;
-    } else {
-      this.invoices[k].amountPaid = 0;
+    for (let i = 0; i < this.invoices.length; i++) {
+      if (i === k) {
+        if (this.invoices[k].fullPayment === true) {
+          this.invoices[k].amountPaid = this.invoices[k].balance;
+        } else if (this.invoices[k].fullPayment === true && this.invoices[k].invStatus === 'partially_paid') {
+          this.invoices[k].amountPaid = this.invoices[k].balance;
+        } else {
+          this.invoices[k].amountPaid = 0;
+        }
+      }
     }
     this.findReceivedAmtFn();
   }
