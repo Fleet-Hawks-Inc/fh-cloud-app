@@ -17,17 +17,23 @@ export class InvoiceListComponent implements OnInit {
   customersObjects = {};
   invNewStatus: string;
   invID: string;
-  total = 0;
+  totalCAD = 0;
+  totalUSD = 0;
   openInvoices = [];
-  openTotal = 0;
+  openTotalCAD = 0;
+  openTotalUSD = 0;
   paidInvoices = [];
-  paidTotal = 0;
+  paidTotalCAD = 0;
+  paidTotalUSD = 0;
   emailedInvoices = [];
-  emailedTotal = 0;
+  emailedTotalUSD = 0;
+  emailedTotalCAD = 0;
   partiallyPaidInvoices = [];
-  partiallyPaidTotal = 0;
+  partiallyPaidTotalCAD = 0;
+  partiallyPaidTotalUSD = 0;
   voidedInvoices = [];
-  voidedTotal = 0;
+  voidedTotalCAD = 0;
+  voidedTotalUSD = 0;
 
   // Order Invoice
   orderInvoices = [];
@@ -66,62 +72,101 @@ export class InvoiceListComponent implements OnInit {
   }
   fetchInvoices() {
     this.accountService.getData('order-invoice/all/invoices').subscribe((res: any) => {
-
       this.fetchedOrderInvoices = res;
-      this.getTotalInvoices(this.fetchedOrderInvoices);
+      this.getTotalInvoices(this.fetchedOrderInvoices, 'order');
     });
     this.accountService.getData('invoices/all/invoices').subscribe((res: any) => {
       this.fetchedManualInvoices = res;
-      this.getTotalInvoices(this.fetchedManualInvoices);
+      this.getTotalInvoices(this.fetchedManualInvoices, 'manual');
     });
   }
 
-  getTotalOrderInvoices(invoices: any) {
-    if (invoices.length > 0) {
-      for (const element of invoices) {
-        if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + Number(element.finalAmount);
-          this.openTotal = +(this.openTotal).toFixed(2);
-        } else if (element.invStatus === 'paid') {
-          this.paidTotal = this.paidTotal + Number(element.finalAmount);
-          this.paidTotal = +(this.paidTotal).toFixed(2);
-        } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
-          this.emailedTotal = +(this.emailedTotal).toFixed(2);
-        } else if (element.invStatus === 'partially_paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
-          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
-        } else if (element.invStatus === 'voided') {
-          this.voidedTotal = this.voidedTotal + Number(element.finalAmount);
-          this.voidedTotal = +(this.voidedTotal).toFixed(2);
+  // getTotalOrderInvoices(invoices: any) {
+  //   if (invoices.length > 0) {
+  //     for (const element of invoices) {
+  //       if (element.invStatus === 'open') {
+  //         this.openTotal = this.openTotal + Number(element.finalAmount);
+  //         this.openTotal = +(this.openTotal).toFixed(2);
+  //       } else if (element.invStatus === 'paid') {
+  //         this.paidTotal = this.paidTotal + Number(element.finalAmount);
+  //         this.paidTotal = +(this.paidTotal).toFixed(2);
+  //       } else if (element.invStatus === 'emailed') {
+  //         this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
+  //         this.emailedTotal = +(this.emailedTotal).toFixed(2);
+  //       } else if (element.invStatus === 'partially_paid') {
+  //         this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
+  //         this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+  //       } else if (element.invStatus === 'voided') {
+  //         this.voidedTotal = this.voidedTotal + Number(element.finalAmount);
+  //         this.voidedTotal = +(this.voidedTotal).toFixed(2);
+  //       }
+  //     }
+  //     this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
+  //     this.total = +(this.total).toFixed(2);
+  //   }
+  // }
+  getTotalInvoices(invoices: any, type: string) {
+    const invoicesCAD = [];
+    const invoicesUSD = [];
+    if (type === 'manual') {
+      invoices.map((e: any) => {
+        if (e.invCur === 'CAD') {
+          invoicesCAD.push(e);
+        } else {
+          invoicesUSD.push(e);
         }
-      }
-      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
-      this.total = +(this.total).toFixed(2);
+      });
+    } else {
+      invoices.map((e: any) => {
+        if (e.charges.freightFee.currency === 'CAD') {
+          invoicesCAD.push(e);
+        } else {
+          invoicesUSD.push(e);
+        }
+      });
     }
-  }
-  getTotalInvoices(invoices: any) {
-    if (invoices.length > 0) {
-      for (const element of invoices) {
+
+    if (invoicesCAD.length > 0 || invoicesUSD.length > 0) {
+      for (const element of invoicesCAD) {
         if (element.invStatus === 'open') {
-          this.openTotal = this.openTotal + Number(element.finalAmount);
-          this.openTotal = +(this.openTotal).toFixed(2);
+          this.openTotalCAD = this.openTotalCAD + Number(element.finalAmount);
+          this.openTotalCAD = +(this.openTotalCAD).toFixed(2);
         } else if (element.invStatus === 'paid') {
-          this.paidTotal = this.paidTotal + Number(element.finalAmount);
-          this.paidTotal = +(this.paidTotal).toFixed(2);
+          this.paidTotalCAD = this.paidTotalCAD + Number(element.finalAmount);
+          this.paidTotalCAD = +(this.paidTotalCAD).toFixed(2);
         } else if (element.invStatus === 'emailed') {
-          this.emailedTotal = this.emailedTotal + Number(element.finalAmount);
-          this.emailedTotal = +(this.emailedTotal).toFixed(2);
+          this.emailedTotalCAD = this.emailedTotalCAD + Number(element.finalAmount);
+          this.emailedTotalCAD = +(this.emailedTotalCAD).toFixed(2);
         } else if (element.invStatus === 'partially_paid') {
-          this.partiallyPaidTotal = this.partiallyPaidTotal + Number(element.finalAmount);
-          this.partiallyPaidTotal = +(this.partiallyPaidTotal).toFixed(2);
+          this.partiallyPaidTotalCAD = this.partiallyPaidTotalCAD + Number(element.finalAmount);
+          this.partiallyPaidTotalCAD = +(this.partiallyPaidTotalCAD).toFixed(2);
         } else if (element.invStatus === 'voided') {
-          this.voidedTotal = this.voidedTotal + Number(element.finalAmount);
-          this.voidedTotal = +(this.voidedTotal).toFixed(2);
+          this.voidedTotalCAD = this.voidedTotalCAD + Number(element.finalAmount);
+          this.voidedTotalCAD = +(this.voidedTotalCAD).toFixed(2);
         }
       }
-      this.total = this.openTotal + this.paidTotal + this.emailedTotal + this.partiallyPaidTotal + this.voidedTotal;
-      this.total = +(this.total).toFixed(2);
+      for (const element of invoicesUSD) {
+        if (element.invStatus === 'open') {
+          this.openTotalUSD = this.openTotalUSD + Number(element.finalAmount);
+          this.openTotalUSD = +(this.openTotalUSD).toFixed(2);
+        } else if (element.invStatus === 'paid') {
+          this.paidTotalUSD = this.paidTotalUSD + Number(element.finalAmount);
+          this.paidTotalUSD = +(this.paidTotalUSD).toFixed(2);
+        } else if (element.invStatus === 'emailed') {
+          this.emailedTotalUSD = this.emailedTotalUSD + Number(element.finalAmount);
+          this.emailedTotalUSD = +(this.emailedTotalUSD).toFixed(2);
+        } else if (element.invStatus === 'partially_paid') {
+          this.partiallyPaidTotalUSD = this.partiallyPaidTotalUSD + Number(element.finalAmount);
+          this.partiallyPaidTotalUSD = +(this.partiallyPaidTotalUSD).toFixed(2);
+        } else if (element.invStatus === 'voided') {
+          this.voidedTotalUSD = this.voidedTotalUSD + Number(element.finalAmount);
+          this.voidedTotalUSD = +(this.voidedTotalUSD).toFixed(2);
+        }
+      }
+      this.totalUSD = this.openTotalUSD + this.paidTotalUSD + this.emailedTotalUSD + this.partiallyPaidTotalUSD + this.voidedTotalUSD;
+      this.totalUSD = +(this.totalUSD).toFixed(2);
+      this.totalCAD = this.openTotalCAD + this.paidTotalCAD + this.emailedTotalCAD + this.partiallyPaidTotalCAD + this.voidedTotalCAD;
+      this.totalCAD = +(this.totalCAD).toFixed(2);
     }
   }
   async getInvoices(refresh?: boolean) {
@@ -319,17 +364,23 @@ export class InvoiceListComponent implements OnInit {
         if (result !== undefined) {
           this.lastItemSK = '';
           this.lastItemOrderSK = '';
-          this.total = 0;
+          this.totalCAD = 0;
+          this.totalUSD = 0;
           this.openInvoices = [];
-          this.openTotal = 0;
+          this.openTotalCAD = 0;
+          this.openTotalUSD = 0;
           this.paidInvoices = [];
-          this.paidTotal = 0;
+          this.paidTotalCAD = 0;
+          this.paidTotalUSD = 0;
           this.emailedInvoices = [];
-          this.emailedTotal = 0;
+          this.emailedTotalCAD = 0;
+          this.emailedTotalUSD = 0;
           this.partiallyPaidInvoices = [];
-          this.partiallyPaidTotal = 0;
+          this.partiallyPaidTotalCAD = 0;
+          this.partiallyPaidTotalUSD = 0;
           this.voidedInvoices = [];
-          this.voidedTotal = 0;
+          this.voidedTotalCAD = 0;
+          this.voidedTotalUSD = 0;
           this.invoices = [];
           this.fetchedManualInvoices = [];
           this.orderInvoices = [];
@@ -371,17 +422,23 @@ export class InvoiceListComponent implements OnInit {
           if (res !== undefined) {
             this.lastItemSK = '';
             this.lastItemOrderSK = '';
-            this.total = 0;
+            this.totalCAD = 0;
+            this.totalUSD = 0;
             this.openInvoices = [];
-            this.openTotal = 0;
+            this.openTotalCAD = 0;
+            this.openTotalUSD = 0;
             this.paidInvoices = [];
-            this.paidTotal = 0;
+            this.paidTotalCAD = 0;
+            this.paidTotalUSD = 0;
             this.emailedInvoices = [];
-            this.emailedTotal = 0;
+            this.emailedTotalCAD = 0;
+            this.emailedTotalUSD = 0;
             this.partiallyPaidInvoices = [];
-            this.partiallyPaidTotal = 0;
+            this.partiallyPaidTotalCAD = 0;
+            this.partiallyPaidTotalUSD = 0;
             this.voidedInvoices = [];
-            this.voidedTotal = 0;
+            this.voidedTotalCAD = 0;
+            this.voidedTotalUSD = 0;
             this.invoices = [];
             this.fetchedManualInvoices = [];
             this.orderInvoices = [];
@@ -409,19 +466,19 @@ export class InvoiceListComponent implements OnInit {
       this.disableSearchOrder = true;
       // this.dataMessage = Constants.FETCHING_DATA;
       if (
-        this.filter.startDate !== "" &&
-        this.filter.endDate === ""
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (
-        this.filter.startDate === "" &&
-        this.filter.endDate !== ""
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
       ) {
-        this.toaster.error("Please select both start and end dates.");
+        this.toaster.error('Please select both start and end dates.');
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
-        this.toaster.error("Start date should be less than end date");
+        this.toaster.error('Start date should be less than end date');
         return false;
       } else {
         this.invoices = [];
@@ -451,17 +508,23 @@ export class InvoiceListComponent implements OnInit {
     };
     this.lastItemSK = '';
     this.lastItemOrderSK = '';
-    this.total = 0;
+    this.totalCAD = 0;
+    this.totalUSD = 0;
     this.openInvoices = [];
-    this.openTotal = 0;
+    this.openTotalCAD = 0;
+    this.openTotalUSD = 0;
     this.paidInvoices = [];
-    this.paidTotal = 0;
+    this.paidTotalCAD = 0;
+    this.paidTotalUSD = 0;
     this.emailedInvoices = [];
-    this.emailedTotal = 0;
+    this.emailedTotalUSD = 0;
+    this.emailedTotalCAD = 0;
     this.partiallyPaidInvoices = [];
-    this.partiallyPaidTotal = 0;
+    this.partiallyPaidTotalCAD = 0;
+    this.partiallyPaidTotalUSD = 0;
     this.voidedInvoices = [];
-    this.voidedTotal = 0;
+    this.voidedTotalCAD = 0;
+    this.voidedTotalUSD = 0;
     this.invoices = [];
     this.orderInvoices = [];
     this.fetchedManualInvoices = [];
@@ -482,17 +545,23 @@ export class InvoiceListComponent implements OnInit {
     };
     this.lastItemSK = '';
     this.lastItemOrderSK = '';
-    this.total = 0;
+    this.totalCAD = 0;
+    this.totalUSD = 0;
     this.openInvoices = [];
-    this.openTotal = 0;
+    this.openTotalCAD = 0;
+    this.openTotalUSD = 0;
     this.paidInvoices = [];
-    this.paidTotal = 0;
+    this.paidTotalCAD = 0;
+    this.paidTotalUSD = 0;
     this.emailedInvoices = [];
-    this.emailedTotal = 0;
+    this.emailedTotalCAD = 0;
+    this.emailedTotalUSD = 0;
     this.partiallyPaidInvoices = [];
-    this.partiallyPaidTotal = 0;
+    this.partiallyPaidTotalCAD = 0;
+    this.partiallyPaidTotalUSD = 0;
     this.voidedInvoices = [];
-    this.voidedTotal = 0;
+    this.voidedTotalCAD = 0;
+    this.voidedTotalUSD = 0;
     this.invoices = [];
     this.orderInvoices = [];
     this.fetchedManualInvoices = [];
