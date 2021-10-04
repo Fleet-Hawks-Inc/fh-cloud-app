@@ -177,7 +177,7 @@ export class DriverSettingComponent implements OnInit {
 
     restoreDriver(eventData) {
       if (confirm('Are you sure you want to restore?') === true) {
-        this.apiService.deleteData(`drivers/restore/driver/${eventData.driverID}/${eventData.firstName}/${eventData.lastName}`).subscribe((result: any) => {
+        this.apiService.deleteData(`drivers/restore/driver/${eventData.driverID}/${eventData.firstName}/${eventData.lastName}/${eventData.userName}`).subscribe((result: any) => {
           this.drivers = [];
           this.driverDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;

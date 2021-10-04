@@ -607,6 +607,7 @@
                                                                   <input [(ngModel)]="pick.address.zipCode"
                                                                   name="zipCode_{{i}}{{w}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
+                                                               <div id="adrsErr1_{{i}}" class="text-danger px-3 mt-2" style="display: none;">Please select valid address</div>
                                                                <div class="col-12 pl-4 pr-4 pull-left">
                                                                   <div class="row">
                                                                      <div class="col-12 bordbtm">
@@ -614,7 +615,7 @@
                                                                      </div>
                                                                   </div>
                                                                </div>
-
+                                                               
                                                             </div>
 
                                                             <div class="row mt-3 mr-4">
@@ -1052,6 +1053,7 @@
                                                                   <input [(ngModel)]="dropItem.address.zipCode"
                                                                   name="zipCode_{{i}}{{y}}" type="text" class="form-control" placeholder="V6C 1Z6">
                                                                </div>
+                                                               <div id="adrsErr2_{{i}}" class="text-danger px-3 mt-2" style="display: none;">Please select valid address</div>
                                                                <div class="col-12 pl-4 pr-4 pull-left">
                                                                   <div class="row">
                                                                      <div class="col-12 bordbtm">
@@ -1347,14 +1349,10 @@
                                              </div>
                                           </div>
 
-                                          <!-- <a class="btn btn-success btn-sm" href="javascript:"
-                                             (click)="addReceiver()"><i class="fas fa-plus"></i> Add Next Receiver</a> -->
-
-
                                        </div>
                                     </div>
 
-                                    <div class="row" *ngIf="showMinus">
+                                    <div class="row" *ngIf="shippersReceivers?.length > 1">
                                        <div class="col-11 pr-0 text-right">
                                           <button (click)="removeAccordian(i)" type="button" class="btn btn-danger ml-2"><em class="fas fa-minus"></em> Shipment</button>
                                        </div>

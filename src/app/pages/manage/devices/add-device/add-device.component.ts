@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./add-device.component.css']
 })
 export class AddDeviceComponent implements OnInit {
-
+  public errorMessage = '';
   public deviceIDText = "Device ID (Serial#)";
   constructor(private apiService: ApiService,
     private toastr: ToastrService,
@@ -80,7 +80,7 @@ export class AddDeviceComponent implements OnInit {
       })
     }
     catch (error) {
-      console.error(error)
+
       throw new Error(error);
 
     }
@@ -94,7 +94,7 @@ export class AddDeviceComponent implements OnInit {
     try {
       this.apiService.getData(`devices/getDeviceBySerialNo/${this.deviceID}`).subscribe((result) => {
         if (result.Count > 0) {
-          console.log(result.Items[0])
+
           this.device = {
             deviceName: result.Items[0].deviceName,
             deviceStatus: result.Items[0].deviceStatus,
@@ -118,7 +118,7 @@ export class AddDeviceComponent implements OnInit {
       })
     }
     catch (error) {
-      console.error(error)
+
       throw new Error(error)
     }
   }
@@ -143,7 +143,7 @@ export class AddDeviceComponent implements OnInit {
       })
     }
     catch (error) {
-      console.error(error)
+
       throw new Error(error);
 
     }
@@ -174,20 +174,6 @@ export class AddDeviceComponent implements OnInit {
         this.apiService.postData('devices', this.device).subscribe({
           complete: () => { },
           error: (err: any) => {
-            from(err.error)
-              .pipe(
-                map((val: any) => {
-                  val.message = val.message.replace(/".*"/, 'This Field');
-
-                })
-              )
-              .subscribe({
-                complete: () => {
-
-                },
-                error: () => { },
-                next: () => { },
-              });
           },
           next: (res) => {
             this.toastr.success('Device Created successfully');
@@ -205,14 +191,7 @@ export class AddDeviceComponent implements OnInit {
   }
   public updateAndSubmit() {
     if (this.device) {
-      //   if(this.device.vehicle.vehicleID){
-      //   this.vehicles.forEach(element => {
-      //     if(element.vehicleID==this.device.vehicle.vehicleID){
 
-      //       this.device.vehicle.vehicleIdentification=element.vehicleIdentification
-      //     }
-
-      //   });
       if (this.device.vehicle.vehicleID) {
         this.vehicles.forEach(element => {
           if (this.device.vehicle.vehicleID == element.vehicleID) {
@@ -221,6 +200,15 @@ export class AddDeviceComponent implements OnInit {
           }
 
         });
+
+      }
+      if (this.device.asset.assetID) {
+        this.assets.forEach(element => {
+          if (this.device.asset.assetID == element.assetID) {
+            this.device.asset.assetIdentification = element.assetIdentification;
+            this.device.fleetID = element.assetIdentification;
+          }
+        })
       }
 
 

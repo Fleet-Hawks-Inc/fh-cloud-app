@@ -575,10 +575,20 @@ export class AddDriverPaymentComponent implements OnInit {
       currency: 'CAD',
       formType: (this.paymentID) ? 'edit' : 'add',
       showModal: this.showModal,
+      fromDate: this.paymentData.fromDate,
+      toDate: this.paymentData.toDate,
+      vacPayPer: this.paymentData.vacPayPer,
+      vacPayAmount: this.paymentData.vacPayAmount,
+      totalAmount: this.paymentData.totalAmount,
+      settledAmount: this.paymentData.settledAmount,
+      taxdata: this.paymentData.taxdata,
+      finalAmount: this.paymentData.finalAmount,
+      advance: this.paymentData.advance,
+      txnDate: this.paymentData.txnDate,
+      page: 'addForm'
     }
     this.listService.openPaymentChequeModal(obj);
   }
-
 
   openPayrollModel() {
     $('#payrollModal').modal('show');
