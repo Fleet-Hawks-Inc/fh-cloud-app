@@ -43,10 +43,10 @@
                         <i class="fas fa-file-invoice-dollar text-7"></i>
                         <br>
                         <p class="mb-0 text-5 font-weight-bold text-dark"><span
-                            *ngIf="account.firstName === 'ei' || account.firstName === 'cpp'">{{account.firstName | uppercase}}</span>
+                            *ngIf="account.first === 'ei' || account.first === 'cpp'">{{account.first | uppercase}}</span>
                           <span
-                            *ngIf="account.firstName !== 'ei' && account.firstName !== 'cpp'">{{account.firstName | titlecase}}</span>
-                          {{account.lastName | titlecase}}</p>
+                            *ngIf="account.first !== 'ei' && account.first !== 'cpp'">{{account.first | titlecase}}</span>
+                          {{account.last | titlecase}}</p>
                         <p class="mb-0">Account Name</p>
                       </div>
                     </div>

@@ -14,6 +14,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   categories: any = {};
   actID = '';
   account = {
+    first: '',
+    last: '',
     actName: '',
     actType: '',
     actNo: 0,
@@ -74,8 +76,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
 
-      this.account[`firstName`] = this.account.actName.substring(0, this.account.actName.indexOf(' '));
-      this.account[`lastName`] = this.account.actName.substring(this.account.actName.indexOf(' ') + 1, this.account.actName.length);
+      this.account[`first`] = this.account.actName.substring(0, this.account.actName.indexOf(' '));
+      this.account[`last`] = this.account.actName.substring(this.account.actName.indexOf(' ') + 1, this.account.actName.length);
       for (const element of this.account.transactionLogCAD) {
         element.type = element.type.replace('_', ' '); // replacing _ with white space in trx type
       }
@@ -133,6 +135,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         return false;
       } else {
         this.account = {
+          first: '',
+          last: '',
           actName: '',
           actType: '',
           actNo: 0,
