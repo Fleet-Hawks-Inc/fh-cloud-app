@@ -1,1 +1,8 @@
 .borderbtm-ul{border-bottom: 1px solid #ffffff !important;}
+
+.tileCur {
+  font-size: 20px;
+  float: right;
+  color: #000;
+  font-weight: 600;
+}

@@ -128,7 +128,8 @@
                           <tr *ngFor="let data of this.paymentData.invoices; let i=index;">
                             <td>{{ data.invoiceNo }}</td>
                             <td>{{ data.desc }}</td>
-                            <td>{{ data.amount }} {{ data.currency }} <span *ngIf="data.conAmt !== data.amount">( {{data.conAmt}} {{data.conCur}} )</span></td>
+                            <td>{{ data.amount }} {{ data.currency }} <span *ngIf="data.conAmt !== data.amount">(
+                                {{data.conAmt}} {{data.conCur}} )</span></td>
                             <td>
                               <span class="badge badge-dark p-2" (click)="delInvoice(i)"><i
                                   class="fas fa-trash-alt text-light"></i></span>
@@ -185,21 +186,22 @@
                         <div class="col-lg-6">
                           <div class="row">
                             <div class="col-lg-9">
-                              <label class="control-label font-weight-bold labelalign">Select Dedit Account<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [(ngModel)]="paymentData.drAct" name="drAct" placeholder="Select Debit Account"
-                              #drAccount="ngModel" required>
-                              <ng-container *ngFor="let data of accounts | async">
-                                <ng-option *ngIf="data.actID !== paymentData.accountID" value="{{ data.actID }}">
-                                  {{ data.actNo }} - {{
+                              <label class="control-label font-weight-bold labelalign">Select Debit Account<span
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="paymentData.drAct" name="drAct" placeholder="Select Debit Account"
+                                #drAccount="ngModel" required>
+                                <ng-container *ngFor="let data of accounts | async">
+                                  <ng-option *ngIf="data.actID !== paymentData.accountID" value="{{ data.actID }}">
+                                    {{ data.actNo }} - {{
                                 data.actName | titlecase}}</ng-option>
-                              </ng-container>
-                            </ng-select>
-                            <div *ngIf="drAccount.invalid && (drAccount.dirty || drAccount.touched)" class="text-danger">
-                              <div *ngIf="drAccount.errors.required">
-                                Account is required.
+                                </ng-container>
+                              </ng-select>
+                              <div *ngIf="drAccount.invalid && (drAccount.dirty || drAccount.touched)"
+                                class="text-danger">
+                                <div *ngIf="drAccount.errors.required">
+                                  Account is required.
+                                </div>
                               </div>
-                            </div>
                             </div>
                             <div class="col-lg-3 p-0" style="margin-top: 32px;">
                               <button type="button" data-target="#addAccountModal" data-toggle="modal"
@@ -216,22 +218,23 @@
                           <div class="row">
                             <div class="col-lg-9">
                               <label class="control-label font-weight-bold">Select Credit Account<span
-                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                            <ng-select [(ngModel)]="paymentData.accountID" name="accountID"
-                              placeholder="Select Credit Account" #accountID="ngModel" required>
-                              <ng-container *ngFor="let data of accounts | async">
-                                <ng-option *ngIf="data.actID !== paymentData.drAct" value="{{ data.actID }}">
-                                  {{ data.actNo }} - {{
+                                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                              <ng-select [(ngModel)]="paymentData.accountID" name="accountID"
+                                placeholder="Select Credit Account" #accountID="ngModel" required>
+                                <ng-container *ngFor="let data of accounts | async">
+                                  <ng-option *ngIf="data.actID !== paymentData.drAct" value="{{ data.actID }}">
+                                    {{ data.actNo }} - {{
                                   data.actName | titlecase}}</ng-option>
-                              </ng-container>
+                                </ng-container>
 
-                            </ng-select>
+                              </ng-select>
 
-                            <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)" class="text-danger">
-                              <div *ngIf="accountID.errors.required">
-                                Account is required.
+                              <div *ngIf="accountID.invalid && (accountID.dirty || accountID.touched)"
+                                class="text-danger">
+                                <div *ngIf="accountID.errors.required">
+                                  Account is required.
+                                </div>
                               </div>
-                            </div>
                             </div>
                             <div class="col-lg-3 p-0" style="margin-top: 32px;">
                               <button type="button" data-target="#addAccountModal" data-toggle="modal"
@@ -271,12 +274,12 @@
                             Payment Amount</label>
                           <input type="text" class="form-control" name="paymentTotal"
                             [(ngModel)]="paymentData.paymentTotal" placeholder="e.g 150">
-                          </div>
+                        </div>
                       </div>
                       <div class="row pt-1" *ngIf="paymentData.payMode && paymentData.payMode !== 'cheque'">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold labelalign pt-2">{{ payModeLabel }} Reference<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <label class="control-label font-weight-bold labelalign pt-2">{{ payModeLabel }}
+                            Reference<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo"
                             placeholder="{{ payModeLabel }} Reference" #payNoo="ngModel"
                             [required]="paymentData.payMode && paymentData.payMode !== 'cheque'"
