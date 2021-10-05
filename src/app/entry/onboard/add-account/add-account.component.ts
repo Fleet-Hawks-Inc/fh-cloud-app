@@ -171,7 +171,7 @@ export class AddAccountComponent implements OnInit {
         this.email = data.email;
         this.findingWay = data.findingWay;
         this.carrierID = data.carrierID;
-        this.referral = data.referral
+        this.referral = data.referral;
       }
     });
   }
@@ -342,7 +342,7 @@ export class AddAccountComponent implements OnInit {
   async userAddress(i, item) {
     this.addressDetails[i][`userLocation`] = item.address;
     let result = await this.getAddressDetail(item.place_id);
-    if (result != undefined) {
+    if (result !== undefined) {
       this.addressDetails[i].geoCords.lat = result.position.lat;
       this.addressDetails[i].geoCords.lng = result.position.lng;
       this.addressDetails[i].countryName = result.address.CountryFullName;
@@ -508,8 +508,8 @@ export class AddAccountComponent implements OnInit {
         },
         banks: this.banks
       };
-      if (this.findingWay == "Referral") {
-        data["referral"] = this.referral
+      if (this.findingWay === 'Referral') {
+        data[`referral`] = this.referral;
       }
       if (data.bizCountry === 'CA') {
         data.MC = null;
@@ -547,12 +547,12 @@ export class AddAccountComponent implements OnInit {
             });
         },
         next: (res) => {
-          localStorage.setItem("isProfileComplete", "true")
+          localStorage.setItem('isProfileComplete', 'true')
           this.predefinedAccounts();
           this.response = res;
           this.submitDisabled = true;
           this.toaster.success('Carrier completed successfully.');
-          this.router.navigate(['/Map-Dashboard'])
+          this.router.navigate(['/Map-Dashboard']);
         },
       });
     } else {
