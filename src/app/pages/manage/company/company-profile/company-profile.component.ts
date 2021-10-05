@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ApiService } from '../../../../services';
@@ -62,8 +61,9 @@ export class CompanyProfileComponent implements OnInit {
     length: false
   };
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService,
-    private countryStateCity: CountryStateCityService, private toastr: ToastrService
+  constructor(private route: ActivatedRoute,
+    private apiService: ApiService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -194,7 +194,6 @@ export class CompanyProfileComponent implements OnInit {
         if (result.Items.length > 0) {
           this.showData = true;
         }
-        this.fetchAddress(this.carriers.addressDetails);
         if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
           this.logoSrc = 'assets/img/logo.png';
         } else {
@@ -203,14 +202,4 @@ export class CompanyProfileComponent implements OnInit {
       });
   }
 
-  fetchAddress(address: any) {
-    for (let a = 0; a < address.length; a++) {
-      address.map(async (e: any) => {
-        if (e.manual) {
-          e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-          e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
-        }
-      });
-    }
-  }
 }
