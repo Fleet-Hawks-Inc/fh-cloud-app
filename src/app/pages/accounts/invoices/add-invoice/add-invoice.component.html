@@ -2,21 +2,32 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr19 pl7">
-        <div class="row" style="padding-top:10px;">
-          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark"> {{ pageTitle }}</div>
-          <div class="col-md-8 col-lg-8 text-right pr-1"> <a routerLink="/accounts/invoices/list"
-              class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Invoices</a> </div>
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            {{ pageTitle }}
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a
+              routerLink="/accounts/invoices/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> All Invoices</a
+            >
+          </div>
         </div>
       </header>
-
 
       <section class="card mt-0 mb-4">
         <div class="card-body">
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="post" #invForm="ngForm" id="invoiceForm">
-                  <div class=" row">
+                <form
+                  class="form-horizontal form-bordered"
+                  method="post"
+                  #invForm="ngForm"
+                  id="invoiceForm"
+                >
+                  <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <!-- <div class="col-lg-5">
@@ -29,13 +40,37 @@
                           </div>
                         </div> -->
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
-                            Date<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="invoiceData.txnDate" name="txnDate" type="text" placeholder="yyyy/mm/dd"
-                            (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control"
-                            autocomplete="off" #invoiceDate="ngModel" required>
-                          <div *ngIf="invoiceDate.invalid && (invoiceDate.dirty || invoiceDate.touched)"
-                            class="text-danger">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Invoice Date<span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <input
+                            [(ngModel)]="invoiceData.txnDate"
+                            name="txnDate"
+                            type="text"
+                            placeholder="yyyy/mm/dd"
+                            (click)="custexp.toggle()"
+                            ngbDatepicker
+                            #custexp="ngbDatepicker"
+                            class="form-control"
+                            autocomplete="off"
+                            #invoiceDate="ngModel"
+                            required
+                          />
+                          <div
+                            *ngIf="
+                              invoiceDate.invalid &&
+                              (invoiceDate.dirty || invoiceDate.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="invoiceDate.errors.required">
                               Invoice date is required.
                             </div>
@@ -44,114 +79,221 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer<span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="invoiceData.customerID" name="customerID" #customer="ngModel"
-                            (change)="selectedCustomer($event)" placeholder="Select Customer"
-                            class="form-control text-capitalize" required>
-                            <ng-option *ngFor="let customer of customers" value="{{customer.contactID}}">
-                              {{customer.companyName}}
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Customer<span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <ng-select
+                            [(ngModel)]="invoiceData.customerID"
+                            name="customerID"
+                            #customer="ngModel"
+                            (change)="selectedCustomer($event)"
+                            placeholder="Select Customer"
+                            class="form-control text-capitalize"
+                            required
+                          >
+                            <ng-option
+                              *ngFor="let customer of customers"
+                              value="{{ customer.contactID }}"
+                            >
+                              {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
                         </div>
-                        <div class="col-lg-2  mar-top-37 pr-0">
-                          <a href="javascript:;" (click)="openModal('form');"
-                            class="btn btn-sm btn-success modal-with-form mr-1"><i class="fas fa-plus"></i></a>
-                          <a href="javascript:;" (click)="refreshCustomerData()" data-toggle="tooltip"
-                            title="Refresh customer data" class="btn btn-success btn-sm modal-with-form"><i
-                              class="fas fa-sync"></i></a>
-
+                        <div class="col-lg-2 mar-top-37 pr-0">
+                          <a
+                            href="javascript:;"
+                            (click)="openModal('form')"
+                            class="btn btn-sm btn-success modal-with-form mr-3"
+                            ><i class="fas fa-plus"></i
+                          ></a>
+                          <a
+                            href="javascript:;"
+                            (click)="refreshCustomerData()"
+                            data-toggle="tooltip"
+                            title="Refresh customer data"
+                            class="btn btn-success btn-sm modal-with-form"
+                            ><i class="fas fa-sync"></i
+                          ></a>
                         </div>
-                        <div *ngIf="customer.invalid && (customer.dirty || customer.touched)" class="text-danger">
+                        <div
+                          *ngIf="
+                            customer.invalid &&
+                            (customer.dirty || customer.touched)
+                          "
+                          class="text-danger"
+                        >
                           <div>
-
                             <div *ngIf="customer.errors.required">
                               Customer is required.
                             </div>
                           </div>
-
                         </div>
                         <div class="col-10" *ngIf="notOfficeAddress">
-
-                          <div class="rounded p-2 mt-2" style="background-color:#e1e2e3;">
+                          <div
+                            class="rounded p-2 mt-2"
+                            style="background-color: #e1e2e3"
+                          >
                             There is no address of this customer
                           </div>
                         </div>
 
-                        <div class="col-lg-11 mt-2" *ngIf="customerSelected?.length > 0 && !notOfficeAddress">
-                          <div *ngIf="invoiceData.customerID"
-                            style="border: 0.4px solid #e1e2e3; border-radius: 0px 0px 15px 15px; width: 90%;">
-
+                        <div
+                          class="col-lg-11 mt-2"
+                          *ngIf="
+                            customerSelected?.length > 0 && !notOfficeAddress
+                          "
+                        >
+                          <div
+                            *ngIf="invoiceData.customerID"
+                            style="
+                              border: 0.4px solid #e1e2e3;
+                              border-radius: 0px 0px 15px 15px;
+                              width: 90%;
+                            "
+                          >
                             <div class="row pl-3 pr-3">
-                              <div class="col-lg-6" style="background-color:#e1e2e3;">
-                                <h5 class=" font-weight-bold">Details</h5>
+                              <div
+                                class="col-lg-6"
+                                style="background-color: #e1e2e3"
+                              >
+                                <h5 class="font-weight-bold">Details</h5>
                               </div>
-                              <div class="col-lg-6 text-right" style="background-color:#e1e2e3;">
+                              <div
+                                class="col-lg-6 text-right"
+                                style="background-color: #e1e2e3"
+                              >
                                 <!-- <button type="button" class="btn btn-default btn-xs mt-2" data-toggle="modal" data-target="#addressModal"><i class="fas fa-pencil-alt"></i>Edit</button> -->
                               </div>
                             </div>
                             <div class="row pl-3 pr-3">
                               <div class="col-lg-12 pr-0">
-
-
-                                <div style="max-height: 200px;overflow-y: auto; overflow-x: hidden;"
-                                  *ngFor="let item of customerSelected">
-                                  <div class="row" style="margin-left: 15px;">
+                                <div
+                                  style="
+                                    max-height: 200px;
+                                    overflow-y: auto;
+                                    overflow-x: hidden;
+                                  "
+                                  *ngFor="let item of customerSelected"
+                                >
+                                  <div class="row" style="margin-left: 15px">
                                     <div class="col-lg-6">
-                                      <label class="control-label"><span class=" font-weight-bold">Email:</span>
-                                        {{item.workEmail ? item.workEmail : '-'}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >Email:</span
+                                        >
+                                        {{
+                                          item.workEmail ? item.workEmail : "-"
+                                        }}</label
+                                      >
                                     </div>
                                     <div class="col-lg-6">
-                                      <label class="control-label"><span class=" font-weight-bold">Phone:</span>
-                                        {{item.workPhone ? item.workPhone : '-'}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >Phone:</span
+                                        >
+                                        {{
+                                          item.workPhone ? item.workPhone : "-"
+                                        }}</label
+                                      >
                                     </div>
                                   </div>
 
-                                  <div class="row border-top mb-1 pt-2 pb-2 pr-3 position-relative"
-                                    style="margin-left: 15px;" *ngFor="let address of item.adrs; let i = index;">
+                                  <div
+                                    class="
+                                      row
+                                      border-top
+                                      mb-1
+                                      pt-2
+                                      pb-2
+                                      pr-3
+                                      position-relative
+                                    "
+                                    style="margin-left: 15px"
+                                    *ngFor="
+                                      let address of item.adrs;
+                                      let i = index
+                                    "
+                                  >
                                     <div class="col-12">
-                                      <label class="control-label" *ngIf="address.manual"><span
-                                          class=" font-weight-bold">Address:</span>
-                                        {{address.add1}}
-                                        {{address.add2}}</label>
+                                      <label
+                                        class="control-label"
+                                        *ngIf="address.manual"
+                                        ><span class="font-weight-bold"
+                                          >Address:</span
+                                        >
+                                        {{ address.add1 }}
+                                        {{ address.add2 }}</label
+                                      >
 
-                                      <label class="control-label" *ngIf="!address.manual"><span
-                                          class=" font-weight-bold">Address:</span>
-                                        {{address.userLoc}}</label>
+                                      <label
+                                        class="control-label"
+                                        *ngIf="!address.manual"
+                                        ><span class="font-weight-bold"
+                                          >Address:</span
+                                        >
+                                        {{ address.userLoc }}</label
+                                      >
                                     </div>
-
 
                                     <div class="col-6">
-                                      <label class="control-label"><span class=" font-weight-bold">City:</span>
-                                        {{address.ctyName}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >City:</span
+                                        >
+                                        {{ address.ctyName }}</label
+                                      >
                                     </div>
                                     <div class="col-6">
-                                      <label class="control-label"><span
-                                          class=" font-weight-bold">Province/State:</span>
-                                        {{address.sName}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >Province/State:</span
+                                        >
+                                        {{ address.sName }}</label
+                                      >
                                     </div>
                                     <div class="col-6">
-                                      <label class="control-label"><span class=" font-weight-bold">Country:</span>
-                                        {{address.cName}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >Country:</span
+                                        >
+                                        {{ address.cName }}</label
+                                      >
                                     </div>
                                     <div class="col-6">
-                                      <label class="control-label"><span class=" font-weight-bold">Type:</span>
-                                        {{address.aType}}</label>
+                                      <label class="control-label"
+                                        ><span class="font-weight-bold"
+                                          >Type:</span
+                                        >
+                                        {{ address.aType }}</label
+                                      >
                                     </div>
 
-                                    <input *ngIf="item.adrs.length > 1" class="address-icon" type="radio" name="select"
-                                      (change)="getAddressID($event.target.checked, i, address.addressID)"
-                                      [value]="address.addressID" [checked]="address.isChecked">
-
-
+                                    <input
+                                      *ngIf="item.adrs.length > 1"
+                                      class="address-icon"
+                                      type="radio"
+                                      name="select"
+                                      (change)="
+                                        getAddressID(
+                                          $event.target.checked,
+                                          i,
+                                          address.addressID
+                                        )
+                                      "
+                                      [value]="address.addressID"
+                                      [checked]="address.isChecked"
+                                    />
                                   </div>
-
-
                                 </div>
-
-
                               </div>
-
                             </div>
                           </div>
                         </div>
@@ -160,21 +302,55 @@
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Reference#</label>
-                          <input type="text" class="form-control" [(ngModel)]="invoiceData.invRef" name="invRef"
-                            placeholder="Enter Unique Reference Number">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                          >
+                            Reference#</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="invoiceData.invRef"
+                            name="invRef"
+                            placeholder="Enter Unique Reference Number"
+                          />
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Select Invoice
-                            Currency<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select class="form-control populate" [(ngModel)]="invoiceData.invCur" name="invCur"
-                            placeholder="Select Currency" #invoiceCur="ngModel" required>
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Select Invoice Currency<span
+                              class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <ng-select
+                            class="form-control populate"
+                            [(ngModel)]="invoiceData.invCur"
+                            name="invCur"
+                            placeholder="Select Currency"
+                            #invoiceCur="ngModel"
+                            required
+                          >
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div *ngIf="invoiceCur.invalid && (invoiceCur.dirty || invoiceCur.touched)"
-                            class="text-danger">
+                          <div
+                            *ngIf="
+                              invoiceCur.invalid &&
+                              (invoiceCur.dirty || invoiceCur.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="invoiceCur.errors.required">
                               Invoice currency is required.
                             </div>
@@ -183,42 +359,96 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
-                            Terms</label>
-                          <ng-select class="form-control populate" placeholder="Select payment terms"
-                            [(ngModel)]="invoiceData.invPayTerms" name="invPayTerms" (change)="getInvDueDate($event)">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Terms</label
+                          >
+                          <ng-select
+                            class="form-control populate"
+                            placeholder="Select payment terms"
+                            [(ngModel)]="invoiceData.invPayTerms"
+                            name="invPayTerms"
+                            (change)="getInvDueDate($event)"
+                          >
                             <ng-option value="15">15 Days</ng-option>
                             <ng-option value="30">30 Days</ng-option>
                             <ng-option value="45">45 Days</ng-option>
-                            <ng-option value="dueReceipt">Due On Receipt</ng-option>
-                            <ng-option value="dueEnd">Due End Of The Month</ng-option>
+                            <ng-option value="dueReceipt"
+                              >Due On Receipt</ng-option
+                            >
+                            <ng-option value="dueEnd"
+                              >Due End Of The Month</ng-option
+                            >
                             <ng-option value="custom">Custom</ng-option>
                           </ng-select>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Due Date</label>
-                          <input [(ngModel)]="invoiceData.invDueDate" name="invDueDate" type="text"
-                            placeholder="yyyy/mm/dd" (click)="custexp1.toggle()" ngbDatepicker #custexp1="ngbDatepicker"
-                            class="form-control" autocomplete="off" [minDate]="dateMinLimit"
-                            [maxDate]="futureDatesLimit">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Due Date</label
+                          >
+                          <input
+                            [(ngModel)]="invoiceData.invDueDate"
+                            name="invDueDate"
+                            type="text"
+                            placeholder="yyyy/mm/dd"
+                            (click)="custexp1.toggle()"
+                            ngbDatepicker
+                            #custexp1="ngbDatepicker"
+                            class="form-control"
+                            autocomplete="off"
+                            [minDate]="dateMinLimit"
+                            [maxDate]="futureDatesLimit"
+                          />
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Invoice
-                            Subject</label>
-                          <input type="text" class="form-control" placeholder="Rent Invoice"
-                            [(ngModel)]="invoiceData.invSubject" name="invSubject">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Invoice Subject</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="Rent Invoice"
+                            [(ngModel)]="invoiceData.invSubject"
+                            name="invSubject"
+                          />
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">
-                            Salesperson: &nbsp;</label>
-                          <label class="control-label font-semi-bold"> {{ currentUser | titlecase}}</label>
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                          >
+                            Salesperson: &nbsp;</label
+                          >
+                          <label class="control-label font-semi-bold">
+                            {{ currentUser | titlecase }}</label
+                          >
                         </div>
                       </div>
-
                     </div>
                   </div>
                   <div class="row">
@@ -229,27 +459,65 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-lg-10 offset-lg-1">
-                      <div class="row pt-2">
+                    <div class="col-lg-10 offset-lg-1 pr-0">
+                      <div class="pt-2">
                         <table class="table table-bordered">
                           <thead>
                             <tr>
-                              <th width="25%">Commodity/Service<span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                              <th width="25%">
+                                Commodity/Service<span
+                                  class="mandfield text-2 ml-1"
+                                  ><sup>*</sup></span
+                                >
                               </th>
-                              <th width="15%">Quantity/Hours<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                              <th width="10%">Price/Rate<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                              <th width="20%">Amount<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
-                              <th width="25%">Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                              <th width="15%">
+                                Quantity/Hours<span
+                                  class="mandfield text-2 ml-1"
+                                  ><sup>*</sup></span
+                                >
+                              </th>
+                              <th width="10%">
+                                Price/Rate<span class="mandfield text-2 ml-1"
+                                  ><sup>*</sup></span
+                                >
+                              </th>
+                              <th width="20%">
+                                Amount<span class="mandfield text-2 ml-1"
+                                  ><sup>*</sup></span
+                                >
+                              </th>
+                              <th width="25%">
+                                Account<span class="mandfield text-2 ml-1"
+                                  ><sup>*</sup></span
+                                >
+                              </th>
                               <th width="5%">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let dt of invoiceData.details; let d = index;">
+                            <tr
+                              *ngFor="
+                                let dt of invoiceData.details;
+                                let d = index
+                              "
+                            >
                               <td>
-                                <input type="text" class="form-control" placeholder="Enter commodity/service"
-                                  [(ngModel)]="dt.commodityService" name="commodityService{{d}}" #accID="ngModel"
-                                  required>
-                                <div *ngIf="accID.invalid && (accID.dirty || accID.touched)" class="text-danger">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Enter commodity/service"
+                                  [(ngModel)]="dt.commodityService"
+                                  name="commodityService{{ d }}"
+                                  #accID="ngModel"
+                                  required
+                                />
+                                <div
+                                  *ngIf="
+                                    accID.invalid &&
+                                    (accID.dirty || accID.touched)
+                                  "
+                                  class="text-danger"
+                                >
                                   <div *ngIf="accID.errors.required">
                                     Commodity is required.
                                   </div>
@@ -258,10 +526,29 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="number" class="form-control" [(ngModel)]="dt.qtyHours" min="0"
-                                      name="qtyHours{{d}}" (change)="calculateDetailAmt($event.target.value,d, 'qty')"
-                                      #qty="ngModel" required>
-                                    <div *ngIf="qty.invalid && (qty.dirty || qty.touched)" class="text-danger">
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      [(ngModel)]="dt.qtyHours"
+                                      min="0"
+                                      name="qtyHours{{ d }}"
+                                      (change)="
+                                        calculateDetailAmt(
+                                          $event.target.value,
+                                          d,
+                                          'qty'
+                                        )
+                                      "
+                                      #qty="ngModel"
+                                      required
+                                    />
+                                    <div
+                                      *ngIf="
+                                        qty.invalid &&
+                                        (qty.dirty || qty.touched)
+                                      "
+                                      class="text-danger"
+                                    >
                                       <div *ngIf="qty.errors.required">
                                         Quantity/Hours is required.
                                       </div>
@@ -272,10 +559,29 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="number" class="form-control" [(ngModel)]="dt.priceRate" min="0"
-                                      name="priceRate{{d}}" (change)="calculateDetailAmt($event.target.value,d,'price')"
-                                      #rate="ngModel" required>
-                                    <div *ngIf="rate.invalid && (rate.dirty || rate.touched)" class="text-danger">
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      [(ngModel)]="dt.priceRate"
+                                      min="0"
+                                      name="priceRate{{ d }}"
+                                      (change)="
+                                        calculateDetailAmt(
+                                          $event.target.value,
+                                          d,
+                                          'price'
+                                        )
+                                      "
+                                      #rate="ngModel"
+                                      required
+                                    />
+                                    <div
+                                      *ngIf="
+                                        rate.invalid &&
+                                        (rate.dirty || rate.touched)
+                                      "
+                                      class="text-danger"
+                                    >
                                       <div *ngIf="rate.errors.required">
                                         Rate is required.
                                       </div>
@@ -286,21 +592,43 @@
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input type="number" class="form-control" placeholder="0.00" [(ngModel)]="dt.amount"
-                                      name="amount{{d}}" (change)="calculateAmount()" [disabled]="true">
+                                    <input
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      [(ngModel)]="dt.amount"
+                                      name="amount{{ d }}"
+                                      (change)="calculateAmount()"
+                                      [disabled]="true"
+                                    />
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <ng-select class="form-control populate" placeholder="Select account"
-                                      [(ngModel)]="dt.accountID" name="accountID{{d}}" #act="ngModel" required>
-                                      <ng-option *ngFor="let act of accounts" value="{{act.actID}}">{{act.actNo}} -
-                                        {{act.actName | titlecase}}</ng-option>
-
+                                    <ng-select
+                                      class="form-control populate"
+                                      placeholder="Select account"
+                                      [(ngModel)]="dt.accountID"
+                                      name="accountID{{ d }}"
+                                      #act="ngModel"
+                                      required
+                                    >
+                                      <ng-option
+                                        *ngFor="let act of accounts"
+                                        value="{{ act.actID }}"
+                                        >{{ act.actNo }} -
+                                        {{ act.actName | titlecase }}</ng-option
+                                      >
                                     </ng-select>
-                                    <div *ngIf="act.invalid && (act.dirty || act.touched)" class="text-danger">
+                                    <div
+                                      *ngIf="
+                                        act.invalid &&
+                                        (act.dirty || act.touched)
+                                      "
+                                      class="text-danger"
+                                    >
                                       <div *ngIf="act.errors.required">
                                         Account is required.
                                       </div>
@@ -309,53 +637,80 @@
                                 </div>
                               </td>
                               <td class="text-center">
-                                <button type="button" [disabled]="d===0"><i class="fas fa-trash"
-                                    (click)="deleteDetail(dt.amount,d)"></i></button>
+                                <button type="button" [disabled]="d === 0">
+                                  <i
+                                    class="fas fa-trash"
+                                    (click)="deleteDetail(dt.amount, d)"
+                                  ></i>
+                                </button>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <button type="button" class="btn btn-success btn-sm" (click)="addDetails()"><i
-                          class="fas fa-plus"></i> Add Another Line</button>
+
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm"
+                        (click)="addDetails()"
+                      >
+                        <i class="fas fa-plus"></i> Add Another Line
+                      </button>
                       <div class="row mb-3">
                         <div class="col-12">
                           <div class="bg-white text-dark">
-                            <div class=" pt-2 ">
+                            <div class="pt-2">
                               <div class="row">
-                                <div class="col-lg-6">
-                                  <label class="control-label font-weight-bold">Remarks</label>
-                                  <textarea class="form-control" placeholder="Enter remarks of the invoice" rows="7"
-                                    [(ngModel)]="invoiceData.remarks" name="remarks" #Iremarks="ngModel"
-                                    pattern="^[\s\S]{1,500}$"></textarea>
-                                  <div *ngIf="Iremarks.invalid && (Iremarks.dirty || Iremarks.touched)"
-                                    class="text-danger">
+                                <div class="col-lg-5">
+                                  <label class="control-label font-weight-bold"
+                                    >Remarks</label
+                                  >
+                                  <textarea
+                                    class="form-control"
+                                    placeholder="Enter remarks of the invoice"
+                                    rows="7"
+                                    [(ngModel)]="invoiceData.remarks"
+                                    name="remarks"
+                                    #Iremarks="ngModel"
+                                    pattern="^[\s\S]{1,500}$"
+                                  ></textarea>
+                                  <div
+                                    *ngIf="
+                                      Iremarks.invalid &&
+                                      (Iremarks.dirty || Iremarks.touched)
+                                    "
+                                    class="text-danger"
+                                  >
                                     <div *ngIf="Iremarks.errors.pattern">
                                       Only 500 characters are allowed.
                                     </div>
-
                                   </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 offset-lg-1">
                                   <div class="row">
                                     <div class="col-lg-5 offset-lg-2">
                                       <div class="row">
                                         <div class="col">
                                           <span>&nbsp;</span>
                                         </div>
-
                                       </div>
-
-
                                     </div>
                                     <div class="col-lg-5">
                                       <div class="row">
                                         <div class="col-lg-8">
-                                          <h5 class="text-right font-weight-bold text-4 text-dark">Total</h5>
+                                          <h5
+                                            class="
+                                              text-right
+                                              font-weight-bold
+                                              text-4 text-dark
+                                            "
+                                          >
+                                            Total
+                                          </h5>
                                         </div>
 
                                         <div class="col-lg-4">
-                                          <p class="text-right">{{midAmt}}</p>
+                                          <p class="text-right">{{ midAmt }}</p>
                                         </div>
                                       </div>
                                     </div>
@@ -364,22 +719,46 @@
                                     <div class="col-lg-6 offset-lg-1">
                                       <div class="row mt-4">
                                         <div class="col-lg-5">
-                                          <input type="text" class="form-control" disabled value="Discount">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            disabled
+                                            value="Discount"
+                                          />
                                         </div>
                                         <div class="col-lg-7">
                                           <div class="row">
-                                            <div class="col-lg-6 pr-0">
-                                              <input type="number" min="0" class="form-control" placeholder="0.00"
-                                                [(ngModel)]="invoiceData.discount" name="discount"
-                                                (change)="calculateAmount()">
+                                            <div class="col-lg-6">
+                                              <input
+                                                type="number"
+                                                min="0"
+                                                class="form-control"
+                                                placeholder="0.00"
+                                                [(ngModel)]="
+                                                  invoiceData.discount
+                                                "
+                                                name="discount"
+                                                (change)="calculateAmount()"
+                                              />
                                             </div>
                                             <div class="col-lg-6">
-                                              <ng-select class="form-control populate"
-                                                [(ngModel)]="invoiceData.discountUnit" name="discountUnit"
-                                                (change)="calculateAmount()">
-                                                <ng-option value="%">%</ng-option>
-                                                <ng-option value="CAD">CAD</ng-option>
-                                                <ng-option value="USD">USD</ng-option>
+                                              <ng-select
+                                                class="form-control populate"
+                                                [(ngModel)]="
+                                                  invoiceData.discountUnit
+                                                "
+                                                name="discountUnit"
+                                                (change)="calculateAmount()"
+                                              >
+                                                <ng-option value="%"
+                                                  >%</ng-option
+                                                >
+                                                <ng-option value="CAD"
+                                                  >CAD</ng-option
+                                                >
+                                                <ng-option value="USD"
+                                                  >USD</ng-option
+                                                >
                                               </ng-select>
                                             </div>
                                           </div>
@@ -401,48 +780,108 @@
                                     <div class="col-lg-5">
                                       <div class="row">
                                         <div class="col-lg-8">
-                                          <h5 class="text-right font-weight-bold text-4 text-dark">Discount Amount</h5>
+                                          <h5
+                                            class="
+                                              text-right
+                                              font-weight-bold
+                                              text-4 text-dark
+                                            "
+                                          >
+                                            Discount Amount
+                                          </h5>
                                         </div>
                                         <div class="col-lg-4">
-                                          <p class="text-right">{{invoiceData.discountAmount}}</p>
+                                          <p class="text-right">
+                                            {{ invoiceData.discountAmount }}
+                                          </p>
                                         </div>
                                       </div>
                                       <div class="row">
                                         <div class="col-lg-8 bordtop pt-1">
-                                          <h5 class="text-right font-weight-bold text-4 text-dark">Subtotal</h5>
+                                          <h5
+                                            class="
+                                              text-right
+                                              font-weight-bold
+                                              text-4 text-dark
+                                            "
+                                          >
+                                            Subtotal
+                                          </h5>
                                         </div>
 
                                         <div class="col-lg-4 bordtop pt-1">
-                                          <p class="text-right">{{invoiceData.subTotal}}</p>
+                                          <p class="text-right">
+                                            {{ invoiceData.subTotal }}
+                                          </p>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-lg-10 offset-lg-1">
-                                      <label class="control-label font-weight-bold text-3 text-dark"
-                                        for="inputDefault">Province/State</label>
+                                      <label
+                                        class="
+                                          control-label
+                                          font-weight-bold
+                                          text-3 text-dark
+                                        "
+                                        for="inputDefault"
+                                        >Province/State</label
+                                      >
                                     </div>
                                     <div class="col-lg-6 offset-lg-1">
-                                      <ng-select [(ngModel)]="invoiceData.invStateProvince" name="invStateProvince"
-                                        (change)="stateSelectChange()" class="form-control populate">
-                                        <ng-option *ngFor="let stateTax of stateTaxes" selected
-                                          value="{{stateTax.stateTaxID}}">{{stateTax.stateName}}</ng-option>
+                                      <ng-select
+                                        [(ngModel)]="
+                                          invoiceData.invStateProvince
+                                        "
+                                        name="invStateProvince"
+                                        (change)="stateSelectChange()"
+                                        class="form-control populate"
+                                      >
+                                        <ng-option
+                                          *ngFor="let stateTax of stateTaxes"
+                                          selected
+                                          value="{{ stateTax.stateTaxID }}"
+                                          >{{ stateTax.stateName }}</ng-option
+                                        >
                                       </ng-select>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-lg-6 offset-lg-1">
-                                      <div class="row mt-4" *ngFor="let item of invoiceData.taxesInfo; let i = index;">
+                                      <div
+                                        class="row mt-4"
+                                        *ngFor="
+                                          let item of invoiceData.taxesInfo;
+                                          let i = index
+                                        "
+                                      >
                                         <div class="col-lg-5">
-                                          <input type="text" class="form-control" value="{{item.name}}" disabled>
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{ item.name }}"
+                                            disabled
+                                          />
                                         </div>
                                         <div class="col-lg-7">
                                           <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="0.00"
-                                              value="{{item.amount}}" disabled>
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              placeholder="0.00"
+                                              value="{{ item.amount }}"
+                                              disabled
+                                            />
                                             <span class="input-group-append">
-                                              <span class="input-group-text pt-0 pb-0">%</span>
+                                              <span
+                                                class="
+                                                  input-group-text
+                                                  pt-0
+                                                  pb-0
+                                                "
+                                                >%</span
+                                              >
                                             </span>
                                           </div>
                                         </div>
@@ -454,9 +893,21 @@
                                       </div>
                                     </div>
                                     <div class="col-lg-5">
-                                      <div class="row mt-4 pb-1 mb-1" *ngFor="let item of newTaxes; let i = index">
+                                      <div
+                                        class="row mt-4 pb-1 mb-1"
+                                        *ngFor="
+                                          let item of newTaxes;
+                                          let i = index
+                                        "
+                                      >
                                         <div class="col-lg-12 pt-1">
-                                          <p class="text-right m-0">{{item.taxAmount ? item.taxAmount : 0}}</p>
+                                          <p class="text-right m-0">
+                                            {{
+                                              item.taxAmount
+                                                ? item.taxAmount
+                                                : 0
+                                            }}
+                                          </p>
                                         </div>
                                       </div>
                                     </div>
@@ -465,10 +916,20 @@
                                     <div class="col-lg-5 offset-lg-7">
                                       <div class="row">
                                         <div class="col-lg-8 bordtop pt-1">
-                                          <h5 class="text-right font-weight-bold text-4 text-dark">Total Amount</h5>
+                                          <h5
+                                            class="
+                                              text-right
+                                              font-weight-bold
+                                              text-4 text-dark
+                                            "
+                                          >
+                                            Total Amount
+                                          </h5>
                                         </div>
                                         <div class="col-lg-4 bordtop pt-1">
-                                          <p class="text-right">{{invoiceData.finalAmount}}</p>
+                                          <p class="text-right">
+                                            {{ invoiceData.finalAmount }}
+                                          </p>
                                         </div>
                                       </div>
                                     </div>
@@ -483,11 +944,27 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button class="btn btn-default mr-2" (click)="cancel()">Cancel</button>
-                      <button class="btn btn-success" type="button" *ngIf="!invID"
-                        [disabled]="!invForm.form.valid || submitDisabled" (click)="addInvoice()">Save</button>
-                      <button class="btn btn-success" type="button" *ngIf="invID"
-                        [disabled]="!invForm.form.valid || submitDisabled" (click)="updateInvoice()">Update</button>
+                      <button class="btn btn-default mr-2" (click)="cancel()">
+                        Cancel
+                      </button>
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        *ngIf="!invID"
+                        [disabled]="!invForm.form.valid || submitDisabled"
+                        (click)="addInvoice()"
+                      >
+                        Save
+                      </button>
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        *ngIf="invID"
+                        [disabled]="!invForm.form.valid || submitDisabled"
+                        (click)="updateInvoice()"
+                      >
+                        Update
+                      </button>
                       <!-- <a href="#templateSelectionModal" class="modal-with-form btn btn-success">Save & Send</a> -->
                     </div>
                   </div>
