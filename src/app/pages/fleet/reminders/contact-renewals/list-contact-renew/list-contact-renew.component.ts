@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import Constants from '../../../constants';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { environment } from '../../../../../../environments/environment';
+import { ListService } from '../../../../../services';
 @Component({
   selector: 'app-list-contact-renew',
   templateUrl: './list-contact-renew.component.html',
@@ -45,19 +46,58 @@ export class ListContactRenewComponent implements OnInit {
   contactRenewEndPoint = this.pageLength;
   loading = false;
   users = [];
-
-  constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
+  drivers: any;
+  employeesList: any = {};
+  employees = [];
+  driversList: any = {};
+  mergedList: any = {};
+  constructor(private apiService: ApiService,
+              private listService: ListService,
+              private toastr: ToastrService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.listService.fetchDrivers();
     this.getRemindersCount();
     this.fetchServiceTaks();
-    this.fetchUsersList();
     this.fetchTasksList();
-    this.fetchUsers();
+    this.fetchEmployeeList();
+    this.fetchEmployees();
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
+    });
+    let driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
+  }
+  fetchEmployees() {
+    this.apiService.getData('contacts/employee/records').subscribe((res) => {
+    console.log('result', res);
+    this.employees = res.Items;
+    });
+  }
+  fetchEmployeeList() {
+    this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
+      this.employeesList = res;
+      if (res) {
+        this.apiService.getData('drivers/get/list').subscribe((result) => {
+          this.driversList = result;
+          this.mergedList = {...res, ...result}; // merge id lists to one
+        });
+      }
+    });
+  }
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+      });
     });
   }
   fetchTasksList() {
@@ -72,27 +112,17 @@ export class ListContactRenewComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
     });
   }
-  fetchUsers() {
-    this.apiService.getData('users/fetch/records').subscribe((result: any) => {
-      this.users = result.Items;
-    });
-  }
-  fetchUsersList() {
-    this.apiService.getData('users/id/get/list').subscribe((result: any) => {
-      this.usersList = result;
-    });
-  }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
 
   getRemindersCount() {
     this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact').subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
-        if(this.contactID != null || this.searchServiceTask != null) {
+        if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
@@ -103,14 +133,15 @@ export class ListContactRenewComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus +'&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length === 0) {
+        if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
         this.remindersData = result[`Items`];
-        if(this.contactID != null || this.searchServiceTask != null) {
+        console.log(' this.remindersData',  this.remindersData);
+        if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;
         }
@@ -130,7 +161,7 @@ export class ListContactRenewComponent implements OnInit {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.contactRenewEndPoint) {
+        if (this.totalRecords < this.contactRenewEndPoint) {
           this.contactRenewEndPoint = this.totalRecords;
         }
 
@@ -147,7 +178,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
@@ -157,7 +188,7 @@ export class ListContactRenewComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
+    if (this.contactID != null || this.searchServiceTask != null || this.filterStatus !== null) {
       this.contactID = null;
       this.firstName = '';
       this.searchServiceTask = null;

@@ -44,6 +44,7 @@ export class AddContactRenewComponent implements OnInit {
   timeType = 'day';
   vehicles = [];
   contacts = [];
+  employees = [];
   drivers: any;
   users = [];
   test = [];
@@ -80,8 +81,10 @@ export class AddContactRenewComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listService.fetchDrivers();
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
+    this.fetchEmployees();
     this.fetchServiceTaks();
     if (this.reminderID) {
       this.pageTitle = ' Edit Contact Renewal Reminder';
@@ -89,6 +92,30 @@ export class AddContactRenewComponent implements OnInit {
     } else {
       this.pageTitle = ' Add Contact Renewal Reminder';
     }
+    const driverList = new Array<any>();
+    this.getValidDrivers(driverList);
+    this.drivers = driverList;
+  }
+  private getValidDrivers(driverList: any[]) {
+    let ids = [];
+    this.listService.driversList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.driverID)) {
+          driverList.push(element2);
+          ids.push(element2.driverID);
+        }
+
+        if (element2.isDeleted === 1 && this.driverID === element2.driverID) {
+          this.driverID = null;
+        }
+      });
+    });
+  }
+  fetchEmployees() {
+    this.apiService.getData('contacts/employee/records').subscribe((res) => {
+    console.log('result', res);
+    this.employees = res.Items;
+    });
   }
   fetchServiceTaks() {
     let test = [];
@@ -241,8 +268,8 @@ export class AddContactRenewComponent implements OnInit {
     }
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.entityID = (this.entityID != null) ? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null) ? this.taskID : '';
 
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },

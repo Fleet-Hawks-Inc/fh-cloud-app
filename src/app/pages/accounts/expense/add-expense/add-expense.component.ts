@@ -36,6 +36,7 @@ export class AddExpenseComponent implements OnInit {
     unitID: null,
     tripID: null,
     stlStatus: null,
+    settlmnt: false,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -294,7 +295,6 @@ export class AddExpenseComponent implements OnInit {
     this.hasSuccess = false;
 
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -305,7 +305,6 @@ export class AddExpenseComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.expenseData));
-
     this.accountService.postData('expense', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -378,7 +377,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-    this.expenseData.stlStatus = this.expenseData.tripID;
+    // this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
