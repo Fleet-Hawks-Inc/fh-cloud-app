@@ -7,7 +7,7 @@ import { ToastrService } from "ngx-toastr";
 })
 
 export class HandleErrorService {
-  constructor(private toastrs: ToastrService) {}
+  constructor(private toastrs: ToastrService) { }
 
   // Handling HTTP Errors using Toaster
   public handleError(err: HttpErrorResponse) {
@@ -19,7 +19,13 @@ export class HandleErrorService {
       // The backend returned an unsuccessful response code.
       switch (err.status) {
         case 400:
-          errorMessage = "Validation Error!";
+          console.log(err);
+          if (err && err.error && err.error.errorMessage) {
+            errorMessage = err.error.errorMessage;
+          } else {
+            errorMessage = err.error || "Validation errors.";
+          }
+
           break;
         case 401:
           errorMessage = "You need to log in to do this action.";

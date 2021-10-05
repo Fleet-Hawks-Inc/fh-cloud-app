@@ -51,65 +51,76 @@
   </div>
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
-      <label class="control-label font-weight-bold">Balance<span *ngIf="!transLog" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <label class="control-label font-weight-bold">Opening Balance(CAD)<span *ngIf="!transLogCAD" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
       <div class="row">
         <div class="col-lg-3">
-          <!-- <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog" [disabled]="transLog"> -->
-          <input type="number" class="form-control"  min="0" placeholder="0.00" [(ngModel)]="opnBal" name="opnBal" #actBal="ngModel" [required]="!transLog">
-
-          <div *ngIf="actBal.invalid && (actBal.dirty || actBal.touched)" class="text-danger">
-            <div *ngIf="actBal.errors.required">
-              Account balance is required.
-            </div>
-          </div>
-         </div>
-        <div class="col-lg-3">
-          <!-- <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBaCurrency" #balCur="ngModel" [required]="!transLog" [disabled]="transLog"> -->
-            <ng-select class="form-control populate" placeholder="Select currency" [(ngModel)]="opnBalCurrency" name="opnBalCurrency" #balCur="ngModel" [required]="!transLog">
-            <ng-option value="CAD">CAD</ng-option>
-            <ng-option value="USD">USD</ng-option>
-          </ng-select>
-          <div *ngIf="balCur.invalid && (balCur.dirty || balCur.touched)" class="text-danger">
-            <div *ngIf="balCur.errors.required">
-              Balance currency is required.
-            </div>
+          <input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBalCAD" name="opnBalCAD" #actBalCAD="ngModel" [required]="!transLogCAD" [disabled]="transLogCAD">
+          <div *ngIf="actBalCAD.invalid && (actBalCAD.dirty || actBalCAD.touched)" class="text-danger">
+            <div *ngIf="actBalCAD.errors.required"> Account balance is required. </div>
           </div>
         </div>
-        <div class="col-lg-2 text-center">
+        <div class="col-lg-2">
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+               [class.active]="opnBalTypeCAD === 'debit'"
+               (click)="onChangeType('debit','CAD')">
+               <input type="radio" [(ngModel)]="opnBalTypeCAD" name="opnBalTypeCAD" checked
+                  hidden value="debit"> Debit </label>
+            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+               [class.active]="opnBalTypeCAD === 'credit'"
+               (click)="onChangeType('credit', 'CAD')">
+               <input type="radio" [(ngModel)]="opnBalTypeCAD" name="opnBalTypeCAD" hidden
+                  value="credit"> Credit </label>
+         </div>
+        </div>
+        <div class="col-lg-1 pr-0">
           <label class="control-label font-weight-bold">as of</label>
         </div>
-        <div class="col-lg-4">
-          <input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()"
-            ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit"
-            [maxDate]="futureDatesLimit" #accountDate="ngModel" [required]="!transLog" >
-          <div *ngIf="accountDate.invalid && (accountDate.dirty || accountDate.touched)" class="text-danger">
-            <div *ngIf="accountDate.errors.required">
-              Account date is required.
-            </div>
+        <div class="col-lg-3 pr-0">
+          <input [(ngModel)]="actDateCAD" name="actDateCAD" type="text" placeholder="yyyy/mm/dd" (click)="custexp1.toggle()" ngbDatepicker #custexp1="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDateCAD="ngModel" [required]="!transLogCAD" [disabled]="transLogCAD">
+          <div *ngIf="accountDateCAD.invalid && (accountDateCAD.dirty || accountDateCAD.touched)" class="text-danger">
+            <div *ngIf="accountDateCAD.errors.required"> Account date is required. </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="form-row mt-3">
-    <div class="col-lg-2 col-sm-12 col-xs-12">
-       <label class="control-label font-weight-bold mb-0 text-3 text-dark">Opening Balance</label>
+  <div class="form-row mt-2">
+    <div class="form-group col-lg-12">
+      <label class="control-label font-weight-bold">Opening Balance(USD)<span *ngIf="!transLogUSD" class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+      <div class="row">
+        <div class="col-lg-3">
+          <input type="number" class="form-control" min="0" placeholder="0.00" [(ngModel)]="opnBalUSD" name="opnBalUSD" #actBalUSD="ngModel" [required]="!transLogUSD" [disabled]="transLogUSD">
+          <div *ngIf="actBalUSD.invalid && (actBalUSD.dirty || actBalUSD.touched)" class="text-danger">
+            <div *ngIf="actBalUSD.errors.required"> Account balance is required. </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+               [class.active]="opnBalTypeUSD === 'debit'"
+               (click)="onChangeType('debit','USD')">
+               <input type="radio" [(ngModel)]="opnBalTypeUSD" name="opnBalTypeUSD" checked
+                  hidden value="debit"> Debit </label>
+            <label class="btn btn-outline btn-yesno mr-2 mb-2"
+               [class.active]="opnBalTypeUSD === 'credit'"
+               (click)="onChangeType('credit', 'USD')">
+               <input type="radio" [(ngModel)]="opnBalTypeUSD" name="opnBalTypeUSD" hidden
+                  value="credit"> Credit </label>
+         </div>
+        </div>
+        <div class="col-lg-1 pr-0">
+          <label class="control-label font-weight-bold">as of</label>
+        </div>
+        <div class="col-lg-3 pr-0">
+          <input [(ngModel)]="actDateUSD" name="actDateUSD" type="text" placeholder="yyyy/mm/dd" (click)="custexp.toggle()" ngbDatepicker #custexp="ngbDatepicker" class="form-control" autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDateUSD="ngModel" [required]="!transLogUSD" [disabled]="transLogUSD">
+          <div *ngIf="accountDateUSD.invalid && (accountDateUSD.dirty || accountDateUSD.touched)" class="text-danger">
+            <div *ngIf="accountDateUSD.errors.required"> Account date is required. </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col-lg-6">
-       <div class="btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-outline btn-yesno mr-2 mb-2"
-             [class.active]="opnBalType === 'debit'"
-             (click)="onChangeType('debit')">
-             <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" checked
-                hidden value="debit"> Debit </label>
-          <label class="btn btn-outline btn-yesno mr-2 mb-2"
-             [class.active]="opnBalType === 'credit'"
-             (click)="onChangeType('credit')">
-             <input type="radio" [(ngModel)]="opnBalType" name="opnBalType" hidden
-                value="credit"> Credit </label>
-       </div>
-    </div>
- </div>
+  </div>
   <div class="form-row mt-2">
     <div class="form-group col-lg-12">
       <div class="checkbox-custom">
