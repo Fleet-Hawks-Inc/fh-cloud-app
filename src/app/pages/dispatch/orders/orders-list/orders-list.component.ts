@@ -190,7 +190,7 @@ export class OrdersListComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private listService: ListService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchAllTypeOrderCount();
@@ -201,8 +201,8 @@ export class OrdersListComponent implements OnInit {
     this.allordersCount = 0;
 
     this.apiService.getData("orders/get/allTypes/count").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.allordersCount = result.allCount;
         this.totalRecords = result.allCount;
@@ -216,17 +216,17 @@ export class OrdersListComponent implements OnInit {
     this.apiService
       .getData(
         "orders/get/filter/count?searchValue=" +
-          this.orderFiltr.searchValue +
-          "&startDate=" +
-          this.orderFiltr.start +
-          "&endDate=" +
-          this.orderFiltr.end +
-          "&category=" +
-          this.orderFiltr.category
+        this.orderFiltr.searchValue +
+        "&startDate=" +
+        this.orderFiltr.start +
+        "&endDate=" +
+        this.orderFiltr.end +
+        "&category=" +
+        this.orderFiltr.category
       )
       .subscribe({
-        complete: () => {},
-        error: () => {},
+        complete: () => { },
+        error: () => { },
         next: (result: any) => {
           this.totalRecords = result.Count;
 
@@ -278,15 +278,15 @@ export class OrdersListComponent implements OnInit {
     this.apiService
       .getData(
         "orders/fetch/records/all?searchValue=" +
-          this.orderFiltr.searchValue +
-          "&startDate=" +
-          this.orderFiltr.start +
-          "&endDate=" +
-          this.orderFiltr.end +
-          "&category=" +
-          this.orderFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+        this.orderFiltr.searchValue +
+        "&startDate=" +
+        this.orderFiltr.start +
+        "&endDate=" +
+        this.orderFiltr.end +
+        "&category=" +
+        this.orderFiltr.category +
+        "&lastKey=" +
+        this.lastEvaluatedKey
       )
       .subscribe(
         (result: any) => {
@@ -576,12 +576,11 @@ export class OrdersListComponent implements OnInit {
 
     this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${
-          this.newOrderNumber
+        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
         }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
       )
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.isConfirm = false;
         },
