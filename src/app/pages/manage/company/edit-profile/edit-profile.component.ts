@@ -136,9 +136,13 @@ export class EditProfileComponent implements OnInit {
   existingPhotos = [];
   yardAddress: boolean;
   submitDisabled = false;
+  uploadedPicture = '';
   constructor(private apiService: ApiService, private toaster: ToastrService,
     private headerFnService: InvokeHeaderFnService,
-    private route: ActivatedRoute, private location: Location, private HereMap: HereMapService, private countryStateCity: CountryStateCityService) {
+    private route: ActivatedRoute,
+    private location: Location,
+    private HereMap: HereMapService,
+    private countryStateCity: CountryStateCityService) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -196,10 +200,10 @@ export class EditProfileComponent implements OnInit {
         };
         this.addressDetails = this.carriers.addressDetails;
         if (this.carriers.referral) {
-          this.referral.name = this.carriers.referral.name
-          this.referral.email = this.carriers.referral.email
-          this.referral.phone = this.carriers.referral.phone
-          this.referral.company = this.carriers.referral.company
+          this.referral.name = this.carriers.referral.name;
+          this.referral.email = this.carriers.referral.email;
+          this.referral.phone = this.carriers.referral.phone;
+          this.referral.company = this.carriers.referral.company;
         }
         if (this.carriers.addressDetails !== undefined) {
           for (let a = 0; a < this.carriers.addressDetails.length; a++) {
@@ -213,10 +217,12 @@ export class EditProfileComponent implements OnInit {
         if (this.banks !== undefined) {
           for (let i = 0; i < this.carriers.banks.length; i++) {
             for (let a = 0; a < this.carriers.banks[i].addressDetails.length; a++) {
-              const countryCode = this.carriers.banks[i].addressDetails[a].countryCode;
-              const stateCode = this.carriers.banks[i].addressDetails[a].stateCode;
-              await this.fetchBankStates(countryCode, a, i);
-              await this.fetchBankCities(countryCode, stateCode, a, i);
+              if (this.carriers.banks[i].addressDetails[a].address !== '') {
+                const countryCode = this.carriers.banks[i].addressDetails[a].countryCode;
+                const stateCode = this.carriers.banks[i].addressDetails[a].stateCode;
+                await this.fetchBankStates(countryCode, a, i);
+                await this.fetchBankCities(countryCode, stateCode, a, i);
+              }
             }
           }
         }
@@ -563,7 +569,7 @@ export class EditProfileComponent implements OnInit {
 
       };
       if (this.findingWay == "Referral") {
-        data["referral"] = this.referral
+        data["referral"] = this.referral;
       }
       if (data.bizCountry === 'CA') {
         data.MC = null;
@@ -573,9 +579,9 @@ export class EditProfileComponent implements OnInit {
       const formData = new FormData();
 
       // append photos if any
-      // for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      //   formData.append('uploadedPhotos', this.uploadedPhotos[i]);
-      // }
+      for (let i = 0; i < this.uploadedPhotos.length; i++) {
+        formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      }
       // append other fields
       formData.append('data', JSON.stringify(data));
 
@@ -644,18 +650,28 @@ export class EditProfileComponent implements OnInit {
   }
   selectPhoto(event) {
     let files = [...event.target.files];
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.uploadedPicture = e.target.result;
+      };
+      reader.readAsDataURL(files[i]);
+    }
+    this.uploadedLogo = '';
+    this.logoSrc = '';
     this.uploadedPhotos = [];
     this.uploadedPhotos.push(files[0]);
   }
 
   deleteLogo() {
-    this.apiService.deleteData(`carriers/uploadDelete/${this.carrierID}/${this.uploadedLogo}`).subscribe((result: any) => {
-      this.toaster.success('Image Deleted Successfully');
-      this.uploadedPhotos = [];
-      this.uploadedLogo = '';
-      this.logoSrc = '';
-    });
+    if (confirm('Are you sure you want to delete logo?') === true) {
+      this.apiService.deleteData(`carriers/uploadDelete/${this.carrierID}/${this.uploadedLogo}`).subscribe((result: any) => {
+        this.toaster.success('Image Deleted Successfully');
+        this.uploadedPhotos = [];
+        this.uploadedLogo = '';
+        this.logoSrc = '';
+      });
+    }
   }
-
-
 }
