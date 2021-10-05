@@ -4,23 +4,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Cheque</h4>
-                <button type="button" class="close" (click)="modal.dismiss()">&times;</button>
+                <button type="button" class="close">&times;</button>
             </div>
             <form>
                 <div class="modal-body">
                     <section class="cheque-wrapper" id="print_brokerage">
-                        <table
-                            class="text-dark"
-                            width="90%"
-                            border="0"
-                            align="center"
-                            cellpadding="0"
-                            cellspacing="0">
+                        <table class="text-dark" width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
                             <tbody>
                                 <tr>
                                     <td colspan="2" align="center">
-                                        <h1
-                                            style="font-size: 22px;
+                                        <h1 style="font-size: 22px;
                                             font-weight: 700;
                                             margin-bottom: 1px;">
                                             Carrier Confirmation
@@ -28,26 +21,21 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" height="1"
-                                        bgcolor="#bbbbbb"></td>
+                                    <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
                                 </tr>
                                 <tr>
                                     <td width="50%" valign="top">
-                                        <h2
-                                            style="font-size: 18px;
+                                        <h2 style="font-size: 18px;
                                             font-weight: 600;
                                             margin-bottom: 1px;
                                             margin-top: 1px;">
                                             {{
                                             orderData.carrierData.companyName }}
                                         </h2>
-                                        <p
-                                            style="font-size: 12px;
+                                        <p style="font-size: 12px;
                                             margin-bottom:
-                                            2px"
-                                            class="text-dark">
-                                            {{ orderData.carrierData.address }}<br
-                                                />
+                                            2px" class="text-dark">
+                                            {{ orderData.carrierData.address }}<br />
                                             <strong>Phone:</strong> {{
                                             orderData.carrierData.phone
                                             }}<br />
@@ -60,60 +48,46 @@
                                         </p>
                                     </td>
                                     <td width="50%" valign="middle">
-                                        <img alt="Company Logo" height="50"
-                                            [src]="companyLogo" />
+                                        <img alt="Company Logo" height="50" [src]="companyLogo" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" height="1"
-                                        bgcolor="#bbbbbb"></td>
+                                    <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
                                 </tr>
                                 <tr>
                                     <td width="50%" valign="top">
-                                        <h2
-                                            style="font-size: 18px;
+                                        <h2 style="font-size: 18px;
                                             font-weight: 600;
                                             margin-bottom: 1px;
                                             margin-top: 1px;">
                                             Carrier: {{ carrierData.name }}
                                         </h2>
-                                        <p
-                                            style="font-size: 12px;
+                                        <p style="font-size: 12px;
                                             margin-bottom:
-                                            2px"
-                                            class="text-dark">
+                                            2px" class="text-dark">
                                             {{ carrierData.address }}<br />
                                             <strong>Phone:</strong> {{
                                             carrierData.phone }}<br />
                                             <strong>Email:</strong> {{
                                             carrierData.email }}<br />
 
-                                            <strong
-                                                style="font-size: 18px;
+                                            <strong style="font-size: 18px;
                                                 margin-bottom: 2px;
-                                                margin-top: 3px;">Agreed Amount</strong><br
-                                                />
+                                                margin-top: 3px;">Agreed Amount</strong><br />
                                             <strong style="font-size: 26px;
                                                 margin-bottom: 2px">{{
                                                 brokerage.brokerageAmount |
                                                 number:
                                                 "1.2-2" }}
-                                                {{ brokerage.currency }}</strong><br
-                                                />
+                                                {{ brokerage.currency }}</strong><br />
                                         </p>
                                     </td>
                                     <td valign="top">
-                                        <table
-                                            width="95%"
-                                            border="0"
-                                            align="right"
-                                            cellpadding="0"
-                                            cellspacing="0">
+                                        <table width="95%" border="0" align="right" cellpadding="0" cellspacing="0">
                                             <tbody>
                                                 <tr>
                                                     <td width="40" colspan="2">
-                                                        <h2
-                                                            style="font-size:
+                                                        <h2 style="font-size:
                                                             18px;
                                                             font-weight: 600;
                                                             margin-bottom: 1px;
@@ -124,23 +98,15 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2">
-                                                        <table
-                                                            class="text-dark"
-                                                            width="100%"
-                                                            border="0"
-                                                            style="border: 1px
+                                                        <table class="text-dark" width="100%" border="0" style="border: 1px
                                                             solid
                                                             #adadad;
                                                             font-size: 12px;
                                                             margin-bottom:
-                                                            10px;"
-                                                            cellpadding="0"
-                                                            cellspacing="0">
-                                                            <tbody
-                                                                class="text-dark">
+                                                            10px;" cellpadding="0" cellspacing="0">
+                                                            <tbody class="text-dark">
                                                                 <tr>
-                                                                    <td
-                                                                        style="border-bottom:
+                                                                    <td style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -149,19 +115,15 @@
                                                                         solid
                                                                         #adadad;
                                                                         padding-left:
-                                                                        10px;"
-                                                                        bgcolor="#f3f3f3"
-                                                                        width="25%">
-                                                                        <p
-                                                                            style="font-weight:
+                                                                        10px;" bgcolor="#f3f3f3" width="25%">
+                                                                        <p style="font-weight:
                                                                             600;
                                                                             color:
                                                                             #000000">
                                                                             Order#
                                                                         </p>
                                                                     </td>
-                                                                    <td
-                                                                        style="border-bottom:
+                                                                    <td style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -171,16 +133,14 @@
                                                                         #adadad;
                                                                         padding-left:
                                                                         10px;">
-                                                                        <p
-                                                                            style="color:
+                                                                        <p style="color:
                                                                             #000000">
                                                                             {{
                                                                             brokerage.orderNo
                                                                             }}
                                                                         </p>
                                                                     </td>
-                                                                    <td
-                                                                        style="border-bottom:
+                                                                    <td style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -189,19 +149,15 @@
                                                                         solid
                                                                         #adadad;
                                                                         padding-left:
-                                                                        10px;"
-                                                                        width="25%"
-                                                                        bgcolor="#f3f3f3">
-                                                                        <p
-                                                                            style="font-weight:
+                                                                        10px;" width="25%" bgcolor="#f3f3f3">
+                                                                        <p style="font-weight:
                                                                             600;
                                                                             color:
                                                                             #000000">
                                                                             Distance
                                                                         </p>
                                                                     </td>
-                                                                    <td
-                                                                        style="border-bottom:
+                                                                    <td style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -209,8 +165,7 @@
                                                                         10px;
                                                                         color:
                                                                         #000000;">
-                                                                        <p
-                                                                            style="color:
+                                                                        <p style="color:
                                                                             #000000">
                                                                             {{
                                                                             brokerage.miles
@@ -220,8 +175,7 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td
-                                                                        style="border-bottom:
+                                                                    <td style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -230,10 +184,8 @@
                                                                         solid
                                                                         #adadad;
                                                                         padding-left:
-                                                                        10px;"
-                                                                        bgcolor="#f3f3f3">
-                                                                        <p
-                                                                            style="font-weight:
+                                                                        10px;" bgcolor="#f3f3f3">
+                                                                        <p style="font-weight:
                                                                             600;
                                                                             color:
                                                                             #000000">
@@ -241,9 +193,7 @@
                                                                             Date
                                                                         </p>
                                                                     </td>
-                                                                    <td
-                                                                        colspan="3"
-                                                                        style="border-bottom:
+                                                                    <td colspan="3" style="border-bottom:
                                                                         1px
                                                                         solid
                                                                         #adadad;
@@ -253,8 +203,7 @@
                                                                         #adadad;
                                                                         padding-left:
                                                                         10px;">
-                                                                        <p
-                                                                            style="color:
+                                                                        <p style="color:
                                                                             #000000">
                                                                             {{
                                                                             brokerage.today
@@ -274,8 +223,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2" height="1"
-                                        bgcolor="#bbbbbb"></td>
+                                    <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -288,10 +236,8 @@
                                                         <table width="100%">
                                                             <tbody>
                                                                 <tr>
-                                                                    <td
-                                                                        colspan="2">
-                                                                        <h2
-                                                                            style="font-size:
+                                                                    <td colspan="2">
+                                                                        <h2 style="font-size:
                                                                             18px;
                                                                             font-weight:
                                                                             600;
@@ -307,29 +253,19 @@
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td
-                                                                        colspan="2">
-                                                                        <table
-                                                                            width="100%"
-                                                                            border="0"
-                                                                            style=""
-                                                                            cellspacing="0"
-                                                                            cellpadding="0">
+                                                                    <td colspan="2">
+                                                                        <table width="100%" border="0" style=""
+                                                                            cellspacing="0" cellpadding="0">
                                                                             <tbody>
-                                                                                <table
-                                                                                    width="100%"
-                                                                                    style="border:
+                                                                                <table width="100%" style="border:
                                                                                     1px
                                                                                     solid
                                                                                     #adadad;
                                                                                     font-size:
                                                                                     12px;">
                                                                                     <tbody>
-                                                                                        <tr
-                                                                                            bgcolor="#f3f3f3">
-                                                                                            <td
-                                                                                                width="40%"
-                                                                                                style="border-bottom:
+                                                                                        <tr bgcolor="#f3f3f3">
+                                                                                            <td width="40%" style="border-bottom:
                                                                                                 1px
                                                                                                 solid
                                                                                                 #adadad;
@@ -339,8 +275,7 @@
                                                                                                 #adadad;
                                                                                                 padding-left:
                                                                                                 10px;">
-                                                                                                <p
-                                                                                                    style="font-weight:
+                                                                                                <p style="font-weight:
                                                                                                     600;
                                                                                                     color:
                                                                                                     #000000;
@@ -349,9 +284,7 @@
                                                                                                     Shipper
                                                                                                 </p>
                                                                                             </td>
-                                                                                            <td
-                                                                                                width="60%"
-                                                                                                style="border-bottom:
+                                                                                            <td width="60%" style="border-bottom:
                                                                                                 1px
                                                                                                 solid
                                                                                                 #adadad;
@@ -361,8 +294,7 @@
                                                                                                 #adadad;
                                                                                                 padding-left:
                                                                                                 10px;">
-                                                                                                <p
-                                                                                                    style="font-weight:
+                                                                                                <p style="font-weight:
                                                                                                     600;
                                                                                                     color:
                                                                                                     #000000;
@@ -372,41 +304,35 @@
                                                                                                 </p>
                                                                                             </td>
                                                                                         </tr>
-                                                                                        <tr
-                                                                                            *ngFor="let
+                                                                                        <tr *ngFor="let
                                                                                             shipr
                                                                                             of
                                                                                             ship.allShipp">
-                                                                                            <td
-                                                                                                style="border-right:
+                                                                                            <td style="border-right:
                                                                                                 1px
                                                                                                 solid
                                                                                                 #adadad;
                                                                                                 padding-left:
                                                                                                 10px;">
-                                                                                                <p
-                                                                                                    style="color:
+                                                                                                <p style="color:
                                                                                                     #000000">
                                                                                                     <strong>
                                                                                                         {{
                                                                                                         shipr.companyName
                                                                                                         }}
-                                                                                                    </strong><br
-                                                                                                        />
+                                                                                                    </strong><br />
                                                                                                     {{
                                                                                                     shipr.shipAddress
                                                                                                     }}
                                                                                                 </p>
                                                                                             </td>
-                                                                                            <td
-                                                                                                style="border-right:
+                                                                                            <td style="border-right:
                                                                                                 1px
                                                                                                 solid
                                                                                                 #adadad;
                                                                                                 padding-left:
                                                                                                 10px;">
-                                                                                                <span
-                                                                                                    *ngFor="let
+                                                                                                <span *ngFor="let
                                                                                                     pick
                                                                                                     of
                                                                                                     shipr.pickupPoint;
@@ -443,26 +369,22 @@
                                                                                                         pick.address.countryName
                                                                                                         }}
                                                                                                     </span>
-                                                                                                    <br
-                                                                                                        /><strong>Date
+                                                                                                    <br /><strong>Date
                                                                                                         and
                                                                                                         Time:
                                                                                                     </strong>
                                                                                                     {{
                                                                                                     pick.dateAndTime
-                                                                                                    }}<br
-                                                                                                        />
+                                                                                                    }}<br />
                                                                                                     <strong>Commodity:</strong>
-                                                                                                    <span
-                                                                                                        *ngFor="let
+                                                                                                    <span *ngFor="let
                                                                                                         comm
                                                                                                         of
                                                                                                         pick.commodity;
                                                                                                         let
                                                                                                         cind=
                                                                                                         index">
-                                                                                                        <br
-                                                                                                            />
+                                                                                                        <br />
                                                                                                         {{
                                                                                                         cind
                                                                                                         +
@@ -491,23 +413,17 @@
                                                                                                         {{
                                                                                                         comm.quantityUnit
                                                                                                         }}
-                                                                                                        <br
-                                                                                                            />
+                                                                                                        <br />
                                                                                                     </span>
-                                                                                                    <br
-                                                                                                        />
+                                                                                                    <br />
                                                                                                 </span>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td
-                                                                                                colspan="3"
-                                                                                                style="margin-top:
+                                                                                            <td colspan="3" style="margin-top:
                                                                                                 20px">
-                                                                                                <table
-                                                                                                    width="100%"
-                                                                                                    border="0"
-                                                                                                    style="border:
+                                                                                                <table width="100%"
+                                                                                                    border="0" style="border:
                                                                                                     1px
                                                                                                     solid
                                                                                                     #adadad;
@@ -518,8 +434,7 @@
                                                                                                     <tbody>
                                                                                                         <tr
                                                                                                             bgcolor="#f3f3f3">
-                                                                                                            <td
-                                                                                                                width="40%"
+                                                                                                            <td width="40%"
                                                                                                                 style="border-bottom:
                                                                                                                 1px
                                                                                                                 solid
@@ -540,8 +455,7 @@
                                                                                                                     Receiver
                                                                                                                 </p>
                                                                                                             </td>
-                                                                                                            <td
-                                                                                                                width="60%"
+                                                                                                            <td width="60%"
                                                                                                                 style="border-bottom:
                                                                                                                 1px
                                                                                                                 solid
@@ -568,8 +482,7 @@
                                                                                                             recvr
                                                                                                             of
                                                                                                             ship.allRec">
-                                                                                                            <td
-                                                                                                                style="border-right:
+                                                                                                            <td style="border-right:
                                                                                                                 1px
                                                                                                                 solid
                                                                                                                 #adadad;
@@ -582,15 +495,13 @@
                                                                                                                     13px;">
                                                                                                                     <strong>{{
                                                                                                                         recvr.companyName
-                                                                                                                        }}</strong><br
-                                                                                                                        />
+                                                                                                                        }}</strong><br />
                                                                                                                     {{
                                                                                                                     recvr.shipAddress
                                                                                                                     }}
                                                                                                                 </p>
                                                                                                             </td>
-                                                                                                            <td
-                                                                                                                style="border-right:
+                                                                                                            <td style="border-right:
                                                                                                                 1px
                                                                                                                 solid
                                                                                                                 #adadad;
@@ -640,15 +551,13 @@
                                                                                                                         .countryName
                                                                                                                         }}
                                                                                                                     </span>
-                                                                                                                    <br
-                                                                                                                        /><strong>Date
+                                                                                                                    <br /><strong>Date
                                                                                                                         and
                                                                                                                         Time:
                                                                                                                     </strong>
                                                                                                                     {{
                                                                                                                     drop.dateAndTime
-                                                                                                                    }}<br
-                                                                                                                        />
+                                                                                                                    }}<br />
                                                                                                                     <strong>Commodity:</strong>
                                                                                                                     <span
                                                                                                                         *ngFor="let
@@ -658,8 +567,7 @@
                                                                                                                         let
                                                                                                                         cind=
                                                                                                                         index">
-                                                                                                                        <br
-                                                                                                                            />
+                                                                                                                        <br />
                                                                                                                         {{
                                                                                                                         cind
                                                                                                                         +
@@ -688,11 +596,9 @@
                                                                                                                         {{
                                                                                                                         comm.quantityUnit
                                                                                                                         }}
-                                                                                                                        <br
-                                                                                                                            />
+                                                                                                                        <br />
                                                                                                                     </span>
-                                                                                                                    <br
-                                                                                                                        />
+                                                                                                                    <br />
                                                                                                                 </span>
                                                                                                             </td>
                                                                                                         </tr>
@@ -703,8 +609,7 @@
                                                                                     </tbody>
                                                                                 </table>
                                                                                 <tr>
-                                                                                    <td
-                                                                                        colspan="3">&nbsp;</td>
+                                                                                    <td colspan="3">&nbsp;</td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -723,25 +628,17 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <table
-                                            width="100%"
-                                            border="0"
-                                            style="border: 1px solid #adadad;
-                                            font-size: 13px"
-                                            cellspacing="0"
-                                            cellpadding="0">
+                                        <table width="100%" border="0" style="border: 1px solid #adadad;
+                                            font-size: 13px" cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr bgcolor="#f3f3f3">
-                                                    <td
-                                                        width="50%"
-                                                        style="border-bottom:
+                                                    <td width="50%" style="border-bottom:
                                                         1px
                                                         solid #adadad;
                                                         border-right: 1px solid
                                                         #adadad;
                                                         padding-left: 10px;">
-                                                        <p
-                                                            style="font-weight:
+                                                        <p style="font-weight:
                                                             600;
                                                             color: #000000;
                                                             margin-bottom:
@@ -749,14 +646,11 @@
                                                             Description
                                                         </p>
                                                     </td>
-                                                    <td
-                                                        width="50%"
-                                                        style="border-bottom:
+                                                    <td width="50%" style="border-bottom:
                                                         1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
-                                                        <p
-                                                            style="font-weight:
+                                                        <p style="font-weight:
                                                             600;
                                                             color: #000000;
                                                             margin-bottom:
@@ -765,13 +659,10 @@
                                                         </p>
                                                     </td>
                                                 </tr>
-                                                <tr
-                                                    *ngIf="orderData.charges.fuelSurcharge"
-                                                    style="border-bottom: 1px
+                                                <tr *ngIf="orderData.charges.fuelSurcharge" style="border-bottom: 1px
                                                     solid
                                                     #adadad">
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -783,8 +674,7 @@
                                                             (Fuel Surcharge)
                                                         </p>
                                                     </td>
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -800,13 +690,10 @@
                                                         </p>
                                                     </td>
                                                 </tr>
-                                                <tr
-                                                    *ngIf="orderData.charges.freightFee"
-                                                    style="border-bottom: 1px
+                                                <tr *ngIf="orderData.charges.freightFee" style="border-bottom: 1px
                                                     solid
                                                     #adadad">
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -818,8 +705,7 @@
                                                             (Freight Fee)
                                                         </p>
                                                     </td>
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -835,14 +721,11 @@
                                                         </p>
                                                     </td>
                                                 </tr>
-                                                <tr
-                                                    *ngFor="let acss of
+                                                <tr *ngFor="let acss of
                                                     orderData.charges.accessorialFeeInfo
-                                                    .accessorialFee"
-                                                    style="border-bottom:
+                                                    .accessorialFee" style="border-bottom:
                                                     1px solid #adadad">
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -851,8 +734,7 @@
                                                             (Accessorial Fee)
                                                         </p>
                                                     </td>
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -864,14 +746,11 @@
                                                         </p>
                                                     </td>
                                                 </tr>
-                                                <tr
-                                                    *ngFor="let acssDed of
+                                                <tr *ngFor="let acssDed of
                                                     orderData.charges
-                                                    .accessorialDeductionInfo.accessorialDeduction"
-                                                    style="border-bottom:
+                                                    .accessorialDeductionInfo.accessorialDeduction" style="border-bottom:
                                                     1px solid #adadad">
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -882,8 +761,7 @@
                                                             Fee)
                                                         </p>
                                                     </td>
-                                                    <td
-                                                        style="border-right: 1px
+                                                    <td style="border-right: 1px
                                                         solid #adadad;
                                                         padding-left: 10px;">
                                                         <p style="color:
@@ -907,15 +785,13 @@
 
                                 <tr *ngIf="brokerage.instructions">
                                     <td colspan="2">
-                                        <p
-                                            style="font-size: 13px;
+                                        <p style="font-size: 13px;
                                             color: #000000;
 
                                             text-transform: uppercase;
                                             margin-top: 2px;
                                             margin-bottom: 12px;">
-                                            <strong><span
-                                                    style="background: #ffff00;
+                                            <strong><span style="background: #ffff00;
                                                     padding-top: 2px;
                                                     padding-bottom: 2px;">Special
                                                     Instructions: {{
@@ -927,8 +803,7 @@
 
                                 <tr>
                                     <td colspan="2">
-                                        <p
-                                            style="font-size: 9px;
+                                        <p style="font-size: 9px;
                                             color: #000000;
                                             line-height: 13px;
                                             margin-top: 5px;">
@@ -1123,8 +998,7 @@
 
                                 <tr>
                                     <td colspan="2">
-                                        <p
-                                            style="font-size: 13px;
+                                        <p style="font-size: 13px;
                                             color: #000000;
                                             line-height: 18px;
                                             margin-top: 12px;">
@@ -1137,8 +1011,7 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <table width="100%" cellspacing="0"
-                                            cellpadding="0">
+                                        <table width="100%" cellspacing="0" cellpadding="0">
                                             <tbody>
                                                 <tr>
                                                     <td width="10%">
@@ -1149,20 +1022,17 @@
                                                             </strong>
                                                         </p>
                                                     </td>
-                                                    <td width="23%"
-                                                        style="border-bottom:
+                                                    <td width="23%" style="border-bottom:
                                                         solid
                                                         1px #999">
                                                         &nbsp;
                                                     </td>
                                                     <td width="10%">
-                                                        <strong
-                                                            style="font-size:
+                                                        <strong style="font-size:
                                                             13px; color:
                                                             #000000">Date:</strong>
                                                     </td>
-                                                    <td width="23%"
-                                                        style="border-bottom:
+                                                    <td width="23%" style="border-bottom:
                                                         solid
                                                         1px #999">
                                                         &nbsp;
@@ -1187,24 +1057,15 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">
-                                        <table
-                                            border="0"
-                                            align="center"
-                                            cellpadding="0"
-                                            cellspacing="0">
+                                        <table border="0" align="center" cellpadding="0" cellspacing="0">
                                             <tbody>
                                                 <tr>
                                                     <td align="center">
                                                         <h2 style="font-size:
                                                             13px">Powered
                                                             By</h2>
-                                                        <img
-                                                            alt="Fleet Hawks
-                                                            Inc."
-                                                            [src]="logoSrc"
-                                                            width="207"
-                                                            height="28"
-                                                            />
+                                                        <img alt="Fleet Hawks
+                                                            Inc." [src]="logoSrc" width="207" height="28" />
                                                     </td>
                                                 </tr>
                                             </tbody>
