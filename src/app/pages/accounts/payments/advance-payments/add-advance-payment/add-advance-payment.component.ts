@@ -57,7 +57,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private location: Location
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -73,33 +73,52 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
   }
+
   fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
+    this.apiService
+      .getData(`drivers/get/all/active`)
+      .subscribe((result: any) => {
+        // this.drivers = result.Items;
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.drivers.push(element);
+          }
+        });
+        console.log("this.drivers", this.drivers);
+      });
   }
   refreshAccount() {
     this.listService.fetchChartAccounts();
   }
   fetchCarriers() {
     this.apiService
-      .getData(`contacts/get/list/carrier`)
+      .getData(`contacts/get/type/carrier`)
       .subscribe((result: any) => {
-        this.carriers = result;
+        // this.carriers = result;
+        result.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.carriers.push(element);
+          }
+        });
       });
   }
 
   fetchOwnerOperators() {
     this.apiService
-      .getData(`contacts/get/list/ownerOperator`)
+      .getData(`contacts/get/type/ownerOperator`)
       .subscribe((result: any) => {
-        this.ownerOperators = result;
+        // this.ownerOperators = result;
+        result.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.ownerOperators.push(element);
+          }
+        });
       });
   }
 
   fetchEmployee() {
     this.apiService
-      .getData(`contacts/get/emp/list`)
+      .getData(`contacts/get/all/employees`)
       .subscribe((result: any) => {
         this.employees = result;
       });
@@ -126,7 +145,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   addRecord() {
     this.submitDisabled = true;
     this.accountService.postData("advance", this.paymentData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -143,7 +162,7 @@ export class AddAdvancePaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -189,7 +208,7 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.accountService
       .putData(`advance/${this.paymentID}`, this.paymentData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -206,7 +225,7 @@ export class AddAdvancePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => { },
+              next: () => {},
             });
         },
         next: (res) => {
