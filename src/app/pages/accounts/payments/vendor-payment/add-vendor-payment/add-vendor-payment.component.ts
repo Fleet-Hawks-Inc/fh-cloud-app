@@ -54,17 +54,17 @@ export class AddVendorPaymentComponent implements OnInit {
     currency: 'CAD',
     conAmt: 0,
     conCur: null
-};
-dateMinLimit = { year: 1950, month: 1, day: 1 };
-date = new Date();
-futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-showModal = false;
-pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  };
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  showModal = false;
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   constructor(private listService: ListService,
-              private toaster: ToastrService,
-              private location: Location,
-              private domSanitizer: DomSanitizer,
-              private accountService: AccountService) { }
+    private toaster: ToastrService,
+    private location: Location,
+    private domSanitizer: DomSanitizer,
+    private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.listService.fetchVendors();
@@ -91,27 +91,27 @@ pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
         this.invoiceData.conCur = 'CAD';
         this.paymentData.invoices.push(this.invoiceData);
         this.invoiceData = {
-            invoiceNo: null,
-            desc: '',
-            amount: 0,
-            currency: 'CAD',
-            conAmt: 0,
-            conCur: null
+          invoiceNo: null,
+          desc: '',
+          amount: 0,
+          currency: 'CAD',
+          conAmt: 0,
+          conCur: null
         };
         this.calculateInvoiceTotal();
       } else {
-        this.accountService.getData(`currency-conversion/convert/${baseCur}/${outputCur}/${amount}`).subscribe((res) => {
+        this.accountService.getData(`vendor-payments/convert/${baseCur}/${outputCur}/${amount}`).subscribe((res) => {
           if (res) {
             this.invoiceData.conAmt = +res.toFixed(2);
             this.invoiceData.conCur = outputCur;
             this.paymentData.invoices.push(this.invoiceData);
             this.invoiceData = {
-                invoiceNo: null,
-                desc: '',
-                amount: 0,
-                currency: 'CAD',
-                conAmt: 0,
-                conCur: null
+              invoiceNo: null,
+              desc: '',
+              amount: 0,
+              currency: 'CAD',
+              conAmt: 0,
+              conCur: null
             };
             this.calculateInvoiceTotal();
           }
@@ -121,29 +121,29 @@ pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
       }
 
     }
-}
-openModal(unit: string) {
-  this.listService.triggerModal(unit);
-
-  localStorage.setItem('isOpen', 'true');
-  this.listService.changeButton(false);
-}
-refreshVendorData() {
-  this.listService.fetchVendors();
-}
-refreshAccount() {
-  this.listService.fetchChartAccounts();
-}
-delInvoice(index: any) {
-      this.paymentData.invoices.splice(index, 1);
-      this.calculateInvoiceTotal();
-}
-calculateInvoiceTotal() {
-  this.paymentData.paymentTotal = 0;
-  for (const inv of this.paymentData.invoices) {
-      this.paymentData.paymentTotal += inv.conAmt;
   }
-}
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem('isOpen', 'true');
+    this.listService.changeButton(false);
+  }
+  refreshVendorData() {
+    this.listService.fetchVendors();
+  }
+  refreshAccount() {
+    this.listService.fetchChartAccounts();
+  }
+  delInvoice(index: any) {
+    this.paymentData.invoices.splice(index, 1);
+    this.calculateInvoiceTotal();
+  }
+  calculateInvoiceTotal() {
+    this.paymentData.paymentTotal = 0;
+    for (const inv of this.paymentData.invoices) {
+      this.paymentData.paymentTotal += inv.conAmt;
+    }
+  }
   changePaymentMode(type) {
     let label = '';
     if (type === 'cash') {
@@ -172,10 +172,10 @@ calculateInvoiceTotal() {
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
-   /*
-    * Selecting files before uploading
-    */
-   selectDocuments(event) {
+  /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
     let files = [...event.target.files];
 
     for (let i = 0; i < files.length; i++) {
@@ -187,48 +187,48 @@ calculateInvoiceTotal() {
     this.hasError = false;
     this.hasSuccess = false;
     if (this.paymentData.paymentTotal <= 0) {
-        this.toaster.error('Please add invoice.');
-        return false;
+      this.toaster.error('Please add invoice.');
+      return false;
     }
     this.submitDisabled = true;
-     // create form data instance
+    // create form data instance
     const formData = new FormData();
 
-     // append photos if any
+    // append photos if any
     for (let i = 0; i < this.uploadedDocs.length; i++) {
-       formData.append('uploadedDocs', this.uploadedDocs[i]);
-     }
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
+    }
 
-     // append other fields
+    // append other fields
     formData.append('data', JSON.stringify(this.paymentData));
     this.accountService.postData('vendor-payments', formData, true).subscribe({
-        complete: () => { },
-        error: (err: any) => {
-            from(err.error)
-                .pipe(
-                    map((val: any) => {
-                        val.message = val.message.replace(/".*"/, 'This Field');
-                        this.errors[val.context.key] = val.message;
-                    })
-                )
-                .subscribe({
-                    complete: () => {
-                        this.submitDisabled = false;
-                        // this.throwErrors();
-                    },
-                    error: () => {
-                        this.submitDisabled = false;
-                    },
-                    next: () => {
-                    },
-                });
-        },
-        next: (res) => {
-            this.submitDisabled = false;
-            this.response = res;
-            this.toaster.success('Vendor payment added successfully.');
-            this.cancel();
-        },
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Vendor payment added successfully.');
+        this.cancel();
+      },
     });
   }
 
