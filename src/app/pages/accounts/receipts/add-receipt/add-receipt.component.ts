@@ -231,7 +231,6 @@ export class AddReceiptComponent implements OnInit {
     } else {
       this.orderInvoices[j].amountPaid = 0;
     }
-
     this.findReceivedAmtFn();
   }
   getAmountManual(k: any) {

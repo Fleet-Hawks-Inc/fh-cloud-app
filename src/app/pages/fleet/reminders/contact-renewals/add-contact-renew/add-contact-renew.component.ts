@@ -268,8 +268,8 @@ export class AddContactRenewComponent implements OnInit {
     }
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.entityID = (this.entityID != null) ? this.entityID : '';
+    this.reminderData.tasks.taskID = (this.taskID != null) ? this.taskID : '';
 
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
