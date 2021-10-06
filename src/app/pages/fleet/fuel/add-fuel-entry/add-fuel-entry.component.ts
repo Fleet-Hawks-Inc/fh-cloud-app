@@ -27,37 +27,37 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
-    unitID: null,
-    driverID: null,
+    unitID: '',
+    driverID: '',
+    fuelProvider: 'Manual',
     data: {
       useType: 'vehicle',
-      fuelProvider: 'Manual',
       currency: 'CAD',
-      uom: 'litre',
-      amt: 0,
-      qty: 0,
-      discAmt: 0,
-      ppu: 0,
-      rPpu: 0,
-      rAmt: 0,
+      uom: 'L',
+      amt: '0',
+      qty: '0',
+      discAmt: '0',
+      ppu: '0',
+      rPpu: '0',
+      rAmt: '0',
       date: '',
       time: '',
-      type: null,
-      country: null,
-      state: null,
-      city: null,
+      type: '',
+      country: '',
+      state: '',
+      city: '',
       site: '',
-      taxes: [
+      tax: [
         {
-          taxType: null,
-          taxAmount: 0
+          taxCode: '',
+          amount: 0
         }
       ],
-      discRate: 0,
+      discRate: '0',
       cardNo: '',
       transID: '',
       odometer: '',
-      excRate: 0
+      excRate: '0'
     }
   }
   fetchedUnitID;
@@ -207,13 +207,13 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   addFuelTaxRow() {
-    this.fuelData.data.taxes.push({
-      taxType: null,
-      taxAmount: 0
+    this.fuelData.data.tax.push({
+      taxCode: null,
+      amount: 0
     });
   }
   deleteTaxRow(t) {
-    this.fuelData.data.taxes.splice(t, 1);
+    this.fuelData.data.tax.splice(t, 1);
   }
   // fetchFuelTypes() {
   //   this.apiService.getData('fuelTypes').subscribe((result: any) => {
@@ -310,7 +310,7 @@ export class AddFuelEntryComponent implements OnInit {
     if (this.fuelData.data.useType == "def") {
       this.fuelData.data.type = "DEF"
     }
-    console.log(this.fuelData)
+
 
     // append other fields
     this.apiService.postData('fuelEntries', this.fuelData).subscribe({
@@ -391,10 +391,10 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.unitID = result.unitID;
     this.fuelData.data.uom = result.data.uom;
     this.fuelData.data.qty = result.data.qty;
-    this.fuelData.data.amt = +result.data.amt;
+    this.fuelData.data.amt = result.data.amt;
     this.fuelData.data.discAmt = result.data.discAmt;
     this.fuelData.data.ppu = result.data.ppu;
-    this.fuelData.data.taxes = result.data.taxes;
+    this.fuelData.data.tax = result.data.tax;
     this.fuelData.data.date = result.data.date;
     this.fuelData.data.time = result.data.time;
     this.fuelData.data.type = result.data.type;

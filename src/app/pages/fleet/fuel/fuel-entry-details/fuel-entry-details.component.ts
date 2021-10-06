@@ -9,6 +9,7 @@ import { environment } from '../../../../../environments/environment';
 import * as moment from 'moment';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 
+
 declare var H: any;
 declare var $: any;
 @Component({
@@ -42,11 +43,12 @@ export class FuelEntryDetailsComponent implements OnInit {
     DEFFuelQtyAmt: '',
     fuelCardNumber: '',
     paymentMode: '',
-    vendorID: '',
+    site: '',
     countryName: '',
     stateName: '',
     cityName: '',
     tripID: '',
+    unitNo: '',
     fuelProvider: '',
     discountAmount: '',
     discountType: '',
@@ -262,140 +264,84 @@ export class FuelEntryDetailsComponent implements OnInit {
     this.apiService
       .getData('fuelEntries/' + this.fuelID)
       .subscribe(async (result: any) => {
-
-        //  console.log(result)
         //console.log(result)
 
-        if (result.Items[0].fuelProvider == "WEX") {
-          let tax = [];
-
-          result = result.Items[0];
-
-          if (result.tax.length > 0) {
-            result.tax.forEach(element => {
-
-              let singleTax = {
-                taxCode: element.taxCode,
-                taxDesc: this.WEXTaxCodeList[element.taxCode],
-                taxAmount: element.amount
-              }
-              tax.push(singleTax)
-            })
-          }
-          //console.log(tax);
-          let date = moment(result.transactionDateTime)
-          this.carrierID = result.carrierID;
-          this.fuelData.fuelID = this.fuelID;
-          this.fuelData.billingCountry = result.billingCountryCode,
-            this.fuelData.billingCurrency = result.billingCurrency,
-            this.fuelData.unitType = this.WEXuseTypeCodeList[result.useType];
-          this.fuelData.unitNumber = result.unitNumber;
-          this.fuelData.unitOfMeasure = result.unitOfMeasure;
-          this.fuelData.discountType = this.WEXDiscountCodeList[result.discType];
-          this.fuelData.discountAmount = result.discAmount;
-          this.fuelData.category = this.wexCategories[result.category],
-            this.fuelData.groupCategory = result.groupCategory,
-            this.fuelData.carrierFee = result.carrierFee,
-            this.fuelData.conversionRate = result.conversionRate,
-            this.fuelData.ppu = result.ppu;
-          this.fuelData.amount = result.amount;
-          this.fuelData.retailPpu = result.retailPpu;
-          this.fuelData.retailAmount = result.retailAmount;
-          this.fuelData.fuelType = this.fuelTypeWEXCode[result.fuelType] || "non-fuel"
-          this.fuelData.transactionID = result.transactionID;
-
-          this.fuelData.fuelDateTime = date.format('MMM Do YYYY, h:mm a')
 
 
-          this.fuelData.paidBy = result.driverID;
 
-          this.fuelData.fuelCardNumber = result.fuelCardNumber;
+        let tax = [];
 
-          this.fuelData.vendorID = result.cityName;
-          this.fuelData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.locationCountry);
-          this.fuelData.stateName = await this.countryStateCity.GetStateNameFromCode(result.locationState, result.locationCountry);
-          this.fuelData.cityName = result.cityName;
-          this.fuelData.fuelProvider = result.fuelProvider;
-          this.fuelData.tripID = result.tripID;
-          this.fuelData.odometer = result.odometer;
-          this.fuelData.quantity = result.quantity;
-          this.fuelData.reference = result.transactionID
-          //  this.fuelData.reimburseToDriver=result.reimburseToDriver || false;
-          //  this.fuelData.deductFromPay=result.deductFromPay || false;
-
-
-          this.fuelData.taxes = tax;
-
+        result = result.Items[0];
+        //  console.log(result.uploadedPhotos);
+        if (Array.isArray(result.data.tax) && result.data.tax.length > 0) {
+          // console.log(result.data.tax)
+          result.data.tax.forEach(element => {
+            let singleTax = {
+              taxCode: element.taxCode,
+              amount: element.amount
+            }
+            tax.push(singleTax)
+          })
+        }
+        else {
+          tax = [
+            {
+              taxCode: '',
+              amount: 0
+            }
+          ]
         }
 
-        /* Manual entry Display
-        */
-
-        else if (result.Items[0].data.fuelProvider == "Manual") {
-          let tax = [];
-
-          result = result.Items[0];
-          //  console.log(result.uploadedPhotos);
-          if (result.data.taxes.length > 0) {
-            result.data.taxes.forEach(element => {
-              let singleTax = {
-                taxCode: element.taxType,
-                taxDesc: this.taxTypeList[element.taxType],
-                taxAmount: element.taxAmount
-              }
-              tax.push(singleTax)
-            })
-          }
-
-          let date: any = moment(result.data.date)
-          if (result.data.time) {
-            let time = moment(result.data.time, 'h mm a')
-            date.set({
-              hour: time.get('hour'),
-              minute: time.get('minute')
-            })
-            date = date.format('MMM Do YYYY, h:mm a')
-          }
-          else {
-            date = date.format('MMM Do YYYY')
-          }
-          this.carrierID = result.carrierID;
-          this.fuelData.fuelID = this.fuelID;
-          this.fuelData.billingCurrency = result.data.currency,
-            this.fuelData.unitType = result.data.useType;
-          this.fuelData.unitNumber = result.unitID;
-          this.fuelData.unitOfMeasure = result.data.uom;
-          // this.fuelData.discountType = this.discountList[result.data.discType];
-          this.fuelData.discountAmount = result.data.discAmt;
-          this.fuelData.fuelCardNumber = result.data.cardNo;
-          this.fuelData.ppu = result.data.ppu;
-          this.fuelData.amount = result.data.amt;
-          this.fuelData.retailPpu = result.data.rPpu;
-          this.fuelData.retailAmount = result.data.rAmt;
-          this.fuelData.fuelType = result.data.type
-          this.fuelData.transactionID = result.data.transID;
-          this.fuelData.fuelProvider = result.data.fuelProvider;
-          this.fuelData.amountPaid = result.data.amt;
-          this.fuelData.fuelDateTime = date;
-          this.fuelData.paidBy = result.driverID;
-          this.fuelData.fuelCardNumber = result.data.cardNo;
-          
-
-          this.fuelData.vendorID = result.data.site
-
-          this.fuelData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.data.country);
-          this.fuelData.stateName = result.data.city + "," + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
-          this.fuelData.cityName = result.data.city;
-          this.fuelData.odometer = result.data.odometer;
-          this.fuelData.quantity = result.data.qty;
-          this.fuelData.fuelProvider = result.data.fuelProvider;
-          
-          
-          this.fuelData.reference = result.data.transID;
-          
-
-          this.fuelData.taxes = tax;
+        let date: any = moment(result.data.date)
+        if (result.data.time) {
+          let time = moment(result.data.time, 'h mm a')
+          date.set({
+            hour: time.get('hour'),
+            minute: time.get('minute')
+          })
+          date = date.format('MMM Do YYYY, h:mm a')
         }
+        else {
+          date = date.format('MMM Do YYYY')
+        }
+        this.carrierID = result.carrierID;
+        this.fuelData.fuelID = this.fuelID;
+        this.fuelData.billingCurrency = result.data.currency,
+          this.fuelData.unitType = result.data.useType;
+        this.fuelData.unitID = result.unitID;
+        this.fuelData.unitNo = result.data.unitNo;
+        this.fuelData.unitOfMeasure = result.data.uom;
+        // this.fuelData.discountType = this.discountList[result.data.discType];
+        this.fuelData.discountAmount = result.data.discAmt;
+        this.fuelData.fuelCardNumber = result.data.cardNo;
+        this.fuelData.ppu = result.data.ppu;
+        this.fuelData.amount = result.data.amt;
+        this.fuelData.retailPpu = result.data.rPpu;
+        this.fuelData.retailAmount = result.data.rAmt;
+        this.fuelData.fuelType = result.data.type
+        this.fuelData.transactionID = result.data.transID;
+        this.fuelData.fuelProvider = result.data.fuelProvider;
+        this.fuelData.amountPaid = result.data.amt;
+        this.fuelData.fuelDateTime = date;
+        this.fuelData.paidBy = result.driverID;
+        this.fuelData.fuelCardNumber = result.data.cardNo;
+
+
+        this.fuelData.site = result.data.site
+
+        this.fuelData.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.data.country);
+        this.fuelData.stateName = result.data.city + "," + await this.countryStateCity.GetStateNameFromCode(result.data.state, result.data.country);
+        this.fuelData.cityName = result.data.city;
+        this.fuelData.odometer = result.data.odometer;
+        this.fuelData.quantity = result.data.qty;
+        this.fuelData.fuelProvider = result.data.fuelProvider;
+
+
+        this.fuelData.reference = result.data.transID;
+
+
+        this.fuelData.taxes = tax;
+
       });
   }
   deleteImage(i: number) {
