@@ -1184,7 +1184,7 @@ export class AddSettlementComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Settlement added successfully.");
-        // this.cancel();
+        this.cancel();
       },
     });
   }
@@ -1458,6 +1458,7 @@ export class AddSettlementComponent implements OnInit {
           `expense/trip-expenses?trips=${tripIds}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
         )
         .toPromise();
+      this.finalTripExpenses = [];
       for (const exp of result) {
         const expobj = {
           tripID: exp.tripID,
