@@ -519,10 +519,9 @@
                               text-lg-right
                               pt-2
                               ">Reference&nbsp;<span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                          <span class="text-1 optional-label-color">(optional when Fuel Card is used)</span></label>
+                          <span class="text-1 optional-label-color"></span></label>
                         <input type="text" class="form-control" name="reference" [(ngModel)]="fuelData.data.transID"
-                          placeholder="Eg. FP1234" #reference="ngModel"
-                          [required]="fuelData.data.paymentMode != 'Fuel_Card'" pattern="^[a-zA-Z0-9]+$" />
+                          placeholder="Eg. FP1234" #reference="ngModel" required pattern="^[a-zA-Z0-9]+$" />
                         <div *ngIf="
                               reference.invalid &&
                               (reference.dirty || reference.touched)
