@@ -21,7 +21,11 @@ export class ChartOfAccountsComponent implements OnInit {
     actType: null,
     actName: null,
   };
-
+  classData = {
+    acClassName: '',
+    acClassDesc: ''
+  };
+  classDisabled = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear(), month: 12, day: 31 };
@@ -51,6 +55,7 @@ export class ChartOfAccountsComponent implements OnInit {
   hasSuccess = false;
   Error = '';
   Success = '';
+  acClasses = [];
   submitDisabled = false;
   deactivatePredefined = true;
   addPredefined = false;
@@ -61,6 +66,7 @@ export class ChartOfAccountsComponent implements OnInit {
   ngOnInit() {
     this.checkPredefinedAccounts();
     this.fetchAccounts();
+    this.getAcClasses();
   }
   preAccounts() {
     this.addPredefined = true;
@@ -170,7 +176,7 @@ export class ChartOfAccountsComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-    this.fetchAccounts();
+      this.fetchAccounts();
     }
     this.loaded = false;
   }
@@ -399,5 +405,49 @@ export class ChartOfAccountsComponent implements OnInit {
     this.lastItemSK = '';
     this.accounts = [];
     this.fetchAccounts();
+  }
+
+  addAcClass() {
+    this.classDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.accountService.postData('chartAc/acClass/add', this.classData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error).pipe(map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message;
+        })).subscribe({
+          complete: () => {
+            this.classDisabled = false;
+          },
+          error: () => {
+            this.classDisabled = false;
+          },
+          next: () => { },
+        });
+      },
+      next: (res) => {
+        this.getAcClasses();
+        this.classDisabled = false;
+        this.response = res;
+        $('#addAccountClassModal').modal('hide');
+        this.classData = {
+          acClassName: '',
+          acClassDesc: ''
+        };
+        this.toaster.success('Account class added successfully.');
+      },
+    });
+  }
+
+  getAcClasses() {
+    this.accountService.getData('chartAc/get/acClasses').subscribe((res) => {
+      this.acClasses = res;
+    });
+  }
+  refreshClass() {
+    this.getAcClasses();
   }
 }
