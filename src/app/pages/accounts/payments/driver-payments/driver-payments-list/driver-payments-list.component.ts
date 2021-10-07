@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import Constants from 'src/app/pages/fleet/constants';
-import { AccountService, ApiService } from 'src/app/services';
+import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import Constants from "src/app/pages/fleet/constants";
+import { AccountService, ApiService } from "src/app/services";
 
 @Component({
-  selector: 'app-driver-payments-list',
-  templateUrl: './driver-payments-list.component.html',
-  styleUrls: ['./driver-payments-list.component.css']
+  selector: "app-driver-payments-list",
+  templateUrl: "./driver-payments-list.component.html",
+  styleUrls: ["./driver-payments-list.component.css"],
 })
 export class DriverPaymentsListComponent implements OnInit {
-
   dataMessage: string = Constants.FETCHING_DATA;
   drivers = [];
   contacts = [];
@@ -20,12 +19,12 @@ export class DriverPaymentsListComponent implements OnInit {
     startDate: null,
     endDate: null,
     type: null,
-    paymentNo: null
-  }
+    paymentNo: null,
+  };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  lastItemSK = '';
+  lastItemSK = "";
   loaded = false;
   disableSearch = false;
   constructor(
@@ -48,76 +47,82 @@ export class DriverPaymentsListComponent implements OnInit {
   }
 
   fetchContactsList() {
-    this.apiService
-      .getData(`contacts/get/list`)
-      .subscribe((result: any) => {
-        this.contacts = result;
-      });
+    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
+      this.contacts = result;
+    });
   }
 
   fetchDriverPayments(refresh?: boolean) {
     let searchParam = null;
     if (refresh === true) {
-      this.lastItemSK = '';
+      this.lastItemSK = "";
       this.payments = [];
     }
-    if (this.lastItemSK !== 'end') {
-      if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
+    if (this.lastItemSK !== "end") {
+      if (this.filter.paymentNo !== null && this.filter.paymentNo !== "") {
         searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
-     } else {
-       searchParam = null;
-     }
-      this.accountService.getData(`driver-payments/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-        if(result.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-          this.disableSearch = false;
-        }
-
-        if(result.length > 0) {
-          this.disableSearch = false;
-          if (result[result.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+      } else {
+        searchParam = null;
+      }
+      this.accountService
+        .getData(
+          `driver-payments/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        )
+        .subscribe((result: any) => {
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.disableSearch = false;
           }
-          result.map((v) => {
-            v.url = `/accounts/payments/driver-payments/detail/${ v.paymentID }`;
-            if (v.payMode) {
-              v.payMode = v.payMode.replace("_"," ");
+          console.log("pay result", result);
+          if (result.length > 0) {
+            this.disableSearch = false;
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(
+                result[result.length - 1].sk
+              );
             } else {
-              v.payMode = '-';
+              this.lastItemSK = "end";
             }
-            v.paymentTo = v.paymentTo.replace("_", " ");
-            v.settlData.map((k) => {
-              k.status = k.status.replace("_"," ");
+            result.map((v) => {
+              v.currency = v.currency ? v.currency : "CAD";
+              v.url = `/accounts/payments/driver-payments/detail/${v.paymentID}`;
+              if (v.payMode) {
+                v.payMode = v.payMode.replace("_", " ");
+              } else {
+                v.payMode = "-";
+              }
+              v.paymentTo = v.paymentTo.replace("_", " ");
+              v.settlData.map((k) => {
+                k.status = k.status.replace("_", " ");
+              });
+              this.payments.push(v);
             });
-            this.payments.push(v);
-          });
-          this.loaded = true;
-        }
-      });
+            this.loaded = true;
+          }
+        });
     }
   }
 
   fetchSettlement() {
-    this.accountService.getData(`settlement/get/list`).subscribe((result: any) => {
-      this.settlements = result;
-    });
+    this.accountService
+      .getData(`settlement/get/list`)
+      .subscribe((result: any) => {
+        this.settlements = result;
+      });
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.paymentNo !== '' || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (
+      this.filter.type !== null ||
+      this.filter.paymentNo !== "" ||
+      this.filter.endDate !== null ||
+      this.filter.startDate !== null
+    ) {
       this.disableSearch = true;
-      if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
-      ) {
+      if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
-      } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
-      ) {
+      } else if (this.filter.startDate == "" && this.filter.endDate != "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
@@ -126,7 +131,7 @@ export class DriverPaymentsListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.payments = [];
-        this.lastItemSK = '';
+        this.lastItemSK = "";
         this.fetchDriverPayments();
       }
     }
@@ -137,18 +142,18 @@ export class DriverPaymentsListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.payments = [];
     this.filter = {
-        startDate: null,
-        endDate: null,
-        type: null,
-        paymentNo: null
-    }
-    this.lastItemSK = '';
+      startDate: null,
+      endDate: null,
+      type: null,
+      paymentNo: null,
+    };
+    this.lastItemSK = "";
     this.fetchDriverPayments();
   }
 
   onScroll() {
     if (this.loaded) {
-    this.fetchDriverPayments();
+      this.fetchDriverPayments();
     }
     this.loaded = false;
   }
@@ -158,12 +163,12 @@ export class DriverPaymentsListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.payments = [];
     this.filter = {
-        startDate: null,
-        endDate: null,
-        type: null,
-        paymentNo: null
-    }
-    this.lastItemSK = '';
+      startDate: null,
+      endDate: null,
+      type: null,
+      paymentNo: null,
+    };
+    this.lastItemSK = "";
     this.fetchDriverPayments();
   }
 }

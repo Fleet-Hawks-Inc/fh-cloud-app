@@ -3,7 +3,7 @@
 
     <section role="main" class="content-body pl-1 pr-0 pt-0">
       <header class="page-header pr8 pl11">
-          <div class="row" style="padding-top:10px;">
+        <div class="row" style="padding-top:10px;">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 text-dark">{{pageTitle}}</h4>
           </div>
@@ -14,9 +14,10 @@
         </div>
       </header>
 
-      <form id="driverF" class="form-horizontal form-bordered" name="driverF"  [mustMatch]="['password', 'confirmPassword']"
-      (ngSubmit)="driverID ? (driverF.form.valid ? onUpdateDriver() : scrollError()) : (driverF.form.valid ? onAddDriver() : scrollError())"
-      novalidate #driverF="ngForm" ngNativeValidate >
+      <form id="driverF" class="form-horizontal form-bordered" name="driverF"
+        [mustMatch]="['password', 'confirmPassword']"
+        (ngSubmit)="driverID ? (driverF.form.valid ? onUpdateDriver() : scrollError()) : (driverF.form.valid ? onAddDriver() : scrollError())"
+        novalidate #driverF="ngForm" ngNativeValidate>
         <section class="m-2">
           <div class="row mb-3">
             <div class="col-12">
@@ -56,10 +57,11 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input [disabled]="isEdit" (change)="onChangeHideErrors('employeeContractorId'); validateEmployeeID();"
+                              <input [disabled]="isEdit"
+                                (change)="onChangeHideErrors('employeeContractorId'); validateEmployeeID();"
                                 [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" type="text"
                                 class="form-control" placeholder="Any Numbers or Name" #dName="ngModel" required
-                                 [ngClass]="{ 'error' : driverF.submitted && dName.invalid }"
+                                [ngClass]="{ 'error' : driverF.submitted && dName.invalid }"
                                 pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
 
                             </div>
@@ -77,10 +79,11 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId" (change)="onChangeHideErrors('employeeContractorId'); validateEmployeeID();"
-                                type="text" class="form-control" placeholder="Any Numbers or Name" #cName="ngModel"
-                                [ngClass]="{ 'error' : driverF.submitted && cName.invalid }"
-                                required pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
+                              <input [(ngModel)]="driverData.employeeContractorId" name="employeeContractorId"
+                                (change)="onChangeHideErrors('employeeContractorId'); validateEmployeeID();" type="text"
+                                class="form-control" placeholder="Any Numbers or Name" #cName="ngModel"
+                                [ngClass]="{ 'error' : driverF.submitted && cName.invalid }" required
+                                pattern="^[a-zA-Z0-9\s]{1,30}$" maxlength="30">
                             </div>
                             <div *ngIf="cName.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="cName.errors.required">
@@ -96,8 +99,8 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <ng-select [(ngModel)]="driverData.driverStatus" name="driverStatus"
-                              class="form-control form-control-sm" placeholder="Select driver status"
-                              #status="ngModel" required [ngClass]="{ 'error' : driverF.submitted && status.invalid }">
+                              class="form-control form-control-sm" placeholder="Select driver status" #status="ngModel"
+                              required [ngClass]="{ 'error' : driverF.submitted && status.invalid }">
                               <ng-option value="active">Active</ng-option>
                               <ng-option value="inActive">InActive</ng-option>
                             </ng-select>
@@ -115,7 +118,8 @@
                                 </label>
                                 <ng-select [(ngModel)]="driverData.corporationType" name="corporationType"
                                   class="form-control form-control-sm" placeholder="Select corporation"
-                                  (change)="changeCompany($event)" #corp="ngModel" required [ngClass]="{ 'error' : driverF.submitted && corp.invalid }">
+                                  (change)="changeCompany($event)" #corp="ngModel" required
+                                  [ngClass]="{ 'error' : driverF.submitted && corp.invalid }">
                                   <ng-option value="company">Company</ng-option>
                                   <!-- <ng-option value="corporation">Corporation</ng-option> -->
                                   <ng-option value="owner_operator">Owner Operator</ng-option>
@@ -128,11 +132,11 @@
                               </div>
                               <div class="col-4 pr-3" *ngIf="driverData.corporationType == 'owner_operator'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Owner Operator <span
-                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <ng-select [(ngModel)]="driverData.ownerOperator" name="ownerOperator"
                                   class="form-control form-control-sm" placeholder="Select Owner Operator "
-                                   #oSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oSlt.invalid }">
+                                  #oSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oSlt.invalid }">
                                   <ng-option *ngFor="let item of ownerOperators" value="{{item.contactID}}">
                                     {{item.companyName}}</ng-option>
                                 </ng-select>
@@ -142,21 +146,21 @@
                                   </div>
                                 </div>
                               </div>
-                              <div class="col-2  mar-top-37 text-left pl-1" *ngIf="driverData.corporationType == 'owner_operator'">
+                              <div class="col-2  mar-top-37 text-left pl-1"
+                                *ngIf="driverData.corporationType == 'owner_operator'">
                                 <a href="javascript:;" (click)="openModal('form');"
                                   class="btn btn-sm btn-success mr-3"><i class="fas fa-plus"></i></a>
-                                <a href="javascript:;" (click)="refreshOpData()"
-                                data-toggle="tooltip" title="Refresh owner operator data"
-                                class="btn btn-success btn-sm modal-with-form"><i
+                                <a href="javascript:;" (click)="refreshOpData()" data-toggle="tooltip"
+                                  title="Refresh owner operator data" class="btn btn-success btn-sm modal-with-form"><i
                                     class="fas fa-sync"></i></a>
                               </div>
                               <div class="col-4 pr-3" *ngIf="driverData.corporationType == 'company'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Vendor <span
-                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <ng-select [(ngModel)]="driverData.vendor" name="vendor"
-                                  class="form-control form-control-sm" placeholder="Select Vendor"
-                                   #vendor="ngModel" required [ngClass]="{ 'error' : driverF.submitted && vendor.invalid }">
+                                  class="form-control form-control-sm" placeholder="Select Vendor" #vendor="ngModel"
+                                  required [ngClass]="{ 'error' : driverF.submitted && vendor.invalid }">
                                   <ng-option *ngFor="let item of vendors" value="{{item.contactID}}">
                                     {{item.companyName}}</ng-option>
                                 </ng-select>
@@ -168,11 +172,12 @@
                               </div>
                               <div class="col-lg-6" *ngIf="driverData.corporationType == 'corporation'">
                                 <label class="control-label font-weight-bold text-lg-right pt-2">Corporation Name <span
-                                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span>
                                 </label>
                                 <input [(ngModel)]="driverData.corporation" name="corporation"
-                                class="form-control form-control-sm" placeholder="Enter Corporation name"
-                                #corp1="ngModel" required type="text" [ngClass]="{ 'error' : driverF.submitted && corp1.invalid }">
+                                  class="form-control form-control-sm" placeholder="Enter Corporation name"
+                                  #corp1="ngModel" required type="text"
+                                  [ngClass]="{ 'error' : driverF.submitted && corp1.invalid }">
 
                                 <div *ngIf="corp1.invalid && driverF.submitted" class="text-danger">
                                   <div *ngIf="corp1.errors.required">
@@ -181,13 +186,13 @@
                                 </div>
                               </div>
 
-                              <div class="col-2  mar-top-37 text-left pl-1" *ngIf="driverData.corporationType == 'company'">
+                              <div class="col-2  mar-top-37 text-left pl-1"
+                                *ngIf="driverData.corporationType == 'company'">
                                 <a href="javascript:;" (click)="openModal('form');"
                                   class="btn btn-sm btn-success modal-with-form mr-3"><i class="fas fa-plus"></i></a>
-                                  <a href="javascript:;" (click)="refreshVendorData()"
-                                  data-toggle="tooltip" title="Refresh vendor data"
-                                  class="btn btn-success btn-sm modal-with-form"><i
-                                      class="fas fa-sync"></i></a>
+                                <a href="javascript:;" (click)="refreshVendorData()" data-toggle="tooltip"
+                                  title="Refresh vendor data" class="btn btn-success btn-sm modal-with-form"><i
+                                    class="fas fa-sync"></i></a>
                               </div>
 
                             </div>
@@ -201,14 +206,18 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [disabled]="isEdit" (change)="onChangeHideErrors('userName'); validateUserName()"
-                          [(ngModel)]="driverData.userName" name="userName" type="text" class="form-control text-lowercase" [ngClass]="{ 'error' : driverF.submitted && uName.invalid }"
-                          placeholder=" eg. Johnsmith80" #uName="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$" maxlength="30" autocomplete="false">
+                          [(ngModel)]="driverData.userName" name="userName" type="text"
+                          class="form-control text-lowercase"
+                          [ngClass]="{ 'error' : driverF.submitted && uName.invalid }" placeholder=" eg. Johnsmith80"
+                          #uName="ngModel" required pattern="^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$"
+                          maxlength="30" autocomplete="false">
                         <div *ngIf="uName.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="uName.errors.required">
                             Username is required.
                           </div>
                           <div *ngIf="uName.errors.pattern">
-                            Username should be at-least 6 characters long and can be a combination of numbers, letters and dot(.).
+                            Username should be at-least 6 characters long and can be a combination of numbers, letters
+                            and dot(.).
 
                           </div>
                         </div>
@@ -218,9 +227,9 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input (click)="d6.toggle()" ngbDatepicker #d6="ngbDatepicker" id="birth"
-                         [(ngModel)]="driverData.DOB" readonly
-                          name="DOB" type="text"  class="form-control" placeholder="yyyy/mm/dd" value=""
-                          #dob="ngModel" required [maxDate]="birthDateMaxLimit" [minDate]="birthDateMinLimit" [ngClass]="{ 'error' : driverF.submitted && dob.invalid }">
+                          [(ngModel)]="driverData.DOB" readonly name="DOB" type="text" class="form-control"
+                          placeholder="yyyy/mm/dd" value="" #dob="ngModel" required [maxDate]="birthDateMaxLimit"
+                          [minDate]="birthDateMinLimit" [ngClass]="{ 'error' : driverF.submitted && dob.invalid }">
                         <div *ngIf="dob.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="dob.errors.required">
                             Birth date is required.
@@ -229,13 +238,13 @@
                       </div>
                       <div class="col-lg-10">
                         <div class="row">
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">First Name <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input [(ngModel)]="driverData.firstName"
-                              name="firstName" type="text" class="form-control" placeholder="eg. John" #fName="ngModel"
-                              required pattern="^[a-zA-Z\s]+$" maxlength="30" [ngClass]="{ 'error' : driverF.submitted && fName.invalid }">
+                            <input [(ngModel)]="driverData.firstName" name="firstName" type="text" class="form-control"
+                              placeholder="eg. John" #fName="ngModel" required pattern="^[a-zA-Z\s]+$" maxlength="30"
+                              [ngClass]="{ 'error' : driverF.submitted && fName.invalid }">
                             <div *ngIf="fName.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="fName.errors.required">
                                 First name is required.
@@ -245,13 +254,19 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-6">
+                          <div class="col-lg-4">
+                            <label class="control-label font-weight-bold text-lg-right pt-2">Middle Name
+                            </label>
+                            <input [(ngModel)]="driverData.middleName" name="middleName" type="text"
+                              class="form-control" placeholder="eg. Andrew">
+                          </div>
+                          <div class="col-lg-4">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Last Name <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input [(ngModel)]="driverData.lastName"
-                              name="lastName" type="text" class="form-control" placeholder="eg. Smith" #lName="ngModel"
-                              required pattern="^[a-zA-Z\s]+$" maxlength="30" [ngClass]="{ 'error' : driverF.submitted && lName.invalid }">
+                            <input [(ngModel)]="driverData.lastName" name="lastName" type="text" class="form-control"
+                              placeholder="eg. Smith" #lName="ngModel" required pattern="^[a-zA-Z\s]+$" maxlength="30"
+                              [ngClass]="{ 'error' : driverF.submitted && lName.invalid }">
                             <div *ngIf="lName.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="lName.errors.required">
                                 Last name is required.
@@ -270,74 +285,79 @@
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
                             <div class="input-group">
-                              <input  id="pd"  [(ngModel)]="driverData.password"  placeholder="eg.  $John@01"
-                               name="password"
-                                 #pwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
-                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
-                                  (input) ="validatePassword($event.target.value)" class="form-control"
-                                />
-                                <div class="input-group-append">
-                                  <span class="input-group-text eye">
-                                    <i class="fa" [ngClass]="{
+                              <input id="pd" [(ngModel)]="driverData.password" placeholder="eg.  $John@01"
+                                name="password" #pwd="ngModel" required
+                                [ngClass]="{ 'error' : driverF.submitted && pwd.invalid }"
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                                [type]="fieldTextType ? 'text' : 'password'"
+                                (input)="validatePassword($event.target.value)" class="form-control" />
+                              <div class="input-group-append">
+                                <span class="input-group-text eye">
+                                  <i class="fa" [ngClass]="{
                                       'fa-eye-slash': !fieldTextType,
                                       'fa-eye': fieldTextType
-                                    }"
-                                    (click)="toggleFieldTextType()"></i>
-                                  </span>
-                               </div>
+                                    }" (click)="toggleFieldTextType()"></i>
+                                </span>
+                              </div>
                             </div>
-                              <div *ngIf="pwd.invalid && driverF.submitted" class="text-danger">
-                                <div *ngIf="pwd.errors.required">
-                                  Password is required.
-                                </div>
-                                <div *ngIf="pwd.errors.pattern">
-                                  <div class="row">
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
-                                      </p>
-                                    </div>
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+                            <div *ngIf="pwd.invalid && driverF.submitted" class="text-danger">
+                              <div *ngIf="pwd.errors.required">
+                                Password is required.
+                              </div>
+                              <div *ngIf="pwd.errors.pattern">
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                        [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']">
+                                        </i></span> 8 characters minimum</p>
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                        [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']">
+                                        </i></span> atleast 1 number
+                                    </p>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                        [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                                        <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']">
+                                        </i></span> atleast 1 uppercase</p>
 
-                                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
-                                          [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
+                                    <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                                        [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
+                                          [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']">
+                                        </i></span> atleast 1 lowercase</p>
 
-                                    </div>
-                                    <div class="col-lg-12">
-                                      <p class="text-dark pt-2 mb-0"><span class="pr-1"
-                                          [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <p class="text-dark pt-2 mb-0"><span class="pr-1"
+                                        [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
+                                          [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                                      atleast 1 special character(!@#$%^&*.-)</p>
 
-                                    </div>
                                   </div>
                                 </div>
                               </div>
+                            </div>
                           </div>
                           <div class="col-lg-6">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                              <div class="input-group">
-                                <input  id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
-                                 #cpwd="ngModel" required
-                                 [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
-                                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
-                                  />
-                                  <div class="input-group-append">
-                                    <span class="input-group-text eye">
-                                      <i class="fa" [ngClass]="{
+                            <div class="input-group">
+                              <input id="cnf" [(ngModel)]="driverData.confirmPassword" name="confirmPassword"
+                                #cpwd="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cpwd.invalid }"
+                                [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                                class="form-control" />
+                              <div class="input-group-append">
+                                <span class="input-group-text eye">
+                                  <i class="fa" [ngClass]="{
                                         'fa-eye-slash': !cpwdfieldTextType,
                                         'fa-eye': cpwdfieldTextType
-                                      }"
-                                      (click)="togglecpwdfieldTextType()"></i>
-                                    </span>
-                                 </div>
+                                      }" (click)="togglecpwdfieldTextType()"></i>
+                                </span>
                               </div>
+                            </div>
                             <div *ngIf="cpwd.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="cpwd.errors.required">
                                 Confirm password is required.
@@ -358,14 +378,12 @@
                           </div>
                           <div class="col-lg-3 px-0">
                             <div class="btn-group-toggle" data-toggle="buttons">
-                              <label class="btn btn-outline btn-yesno  mr-2"
-                                [class.active]="driverData.gender === 'M'"
+                              <label class="btn btn-outline btn-yesno  mr-2" [class.active]="driverData.gender === 'M'"
                                 (click)="onChangeUnitType('gender', 'M')">
-                                <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked hidden
-                                  value="M"> Male
+                                <input type="radio" [(ngModel)]="driverData.gender" name="gender" id="male" checked
+                                  hidden value="M"> Male
                               </label>
-                              <label class="btn btn-outline btn-yesno mr-2 "
-                                [class.active]="driverData.gender === 'F'"
+                              <label class="btn btn-outline btn-yesno mr-2 " [class.active]="driverData.gender === 'F'"
                                 (click)="onChangeUnitType('gender', 'F')">
                                 <input type="radio" id="female" [(ngModel)]="driverData.gender" name="gender" hidden
                                   value="F"> Female
@@ -373,15 +391,20 @@
                             </div>
                           </div>
                           <div class="col-lg-5">
-                                <button type="button" data-toggle="modal" *ngIf="driverID && driverProfileSrc != '' && !showUploadedPicModal"
-                                data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
+                            <button type="button" data-toggle="modal"
+                              *ngIf="driverID && driverProfileSrc != '' && !showUploadedPicModal"
+                              data-target="#driverProfileModal" class="btn btn-sm btn-success mr-1"><i
+                                class="fas fa-eye text-light"></i>View Photo</button>
 
-                                <button type="button" data-toggle="modal" *ngIf="showUploadedPicModal"
-                                data-target="#driverPicUploadedModal" class="btn btn-sm btn-success mr-1"><i class="fas fa-eye text-light"></i>View Photo</button>
+                            <button type="button" data-toggle="modal" *ngIf="showUploadedPicModal"
+                              data-target="#driverPicUploadedModal" class="btn btn-sm btn-success mr-1"><i
+                                class="fas fa-eye text-light"></i>View Photo</button>
 
-                               <div  class="btn btn-sm btn-success pull-right" style="position: relative;"><i class="fas fa-plus"></i> {{imageTitle}} Photo
-                                <input  class="hidden_input" style="position: absolute; top: 0px; left: 0px; width: 100px;" (change)="selectPhoto($event,driverData.driverImage, imageTitle)" type="file">
-                             </div>
+                            <div class="btn btn-sm btn-success pull-right" style="position: relative;"><i
+                                class="fas fa-plus"></i> {{imageTitle}} Photo
+                              <input class="hidden_input" style="position: absolute; top: 0px; left: 0px; width: 100px;"
+                                (change)="selectPhoto($event,driverData.driverImage, imageTitle)" type="file">
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -390,8 +413,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input [(ngModel)]="driverData.phone" name="phone" type="text" class="form-control"
-                         placeholder="eg. 2234567891" #mob="ngModel"
-                          required pattern="[0-9]{10}$" [ngClass]="{ 'error' : driverF.submitted && mob.invalid }">
+                          placeholder="eg. 2234567891" #mob="ngModel" required pattern="[0-9]{10}$"
+                          [ngClass]="{ 'error' : driverF.submitted && mob.invalid }">
                         <div *ngIf="mob.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="mob.errors.required">
                             Phone is required.
@@ -405,10 +428,11 @@
                         <label class="control-label font-weight-bold text-lg-right">Email <span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input [(ngModel)]="driverData.email" name="email" type="text" class="form-control text-lowercase"
-                          (change)="onChangeHideErrors('email'); validateEmail()"
-                          [ngClass]="{ 'error' : driverF.submitted && em.invalid }" placeholder="eg. johnsmith@gmail.com" #em="ngModel"
-                          required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                        <input [(ngModel)]="driverData.email" name="email" type="text"
+                          class="form-control text-lowercase" (change)="onChangeHideErrors('email'); validateEmail()"
+                          [ngClass]="{ 'error' : driverF.submitted && em.invalid }"
+                          placeholder="eg. johnsmith@gmail.com" #em="ngModel" required
+                          pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
                         <div *ngIf="em.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="em.errors.required">
                             Email is required.
@@ -421,21 +445,19 @@
                       <div class="col-lg-3 pr-0">
                         <label class="control-label font-weight-bold pt-2 font-weight-bold text-lg-right">Group
                         </label>
-                        <ng-select class="form-control form-control-sm text-capitalize" [(ngModel)]="driverData.groupID" name="groupID"
-                          placeholder="Select group of which driver will be part of">
+                        <ng-select class="form-control form-control-sm text-capitalize" [(ngModel)]="driverData.groupID"
+                          name="groupID" placeholder="Select group of which driver will be part of">
                           <ng-option *ngFor="let group of groups" value="{{group.groupID}}">
                             {{group.groupName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37 text-right">
-                        <a data-toggle="modal"
-                          data-target="#addDriverGroupModal" href="javascript:;"
+                        <a data-toggle="modal" data-target="#addDriverGroupModal" href="javascript:;"
                           class="modal-with-form btn cus-btn-padd btn-success mr-3">
                           <em class="fas fa-plus"></em>
                         </a>
-                        <a href="javascript:;" (click)="refreshGroupsData()"
-                        data-toggle="tooltip" title="Refresh group data"
-                        class="btn btn-success btn-sm modal-with-form"><i
+                        <a href="javascript:;" (click)="refreshGroupsData()" data-toggle="tooltip"
+                          title="Refresh group data" class="btn btn-success btn-sm modal-with-form"><i
                             class="fas fa-sync"></i></a>
                       </div>
                       <div class="col-3 pr-0">
@@ -449,12 +471,10 @@
                         </ng-select>
                       </div>
                       <div class="col-2 mar-top-37 text-right">
-                        <a class="btn btn-success btn-sm cus-btn-pad mr-3"
-                                href="javascript:;" routerLink="/fleet/vehicles/add" target="_blank"><i
-                                    class="fas fa-plus"></i></a>
-                        <a href="javascript:;" (click)="refreshVehicleData()"
-                        data-toggle="tooltip" title="Refresh vehicle data"
-                        class="btn btn-success btn-sm modal-with-form"><i
+                        <a class="btn btn-success btn-sm cus-btn-pad mr-3" href="javascript:;"
+                          routerLink="/fleet/vehicles/add" target="_blank"><i class="fas fa-plus"></i></a>
+                        <a href="javascript:;" (click)="refreshVehicleData()" data-toggle="tooltip"
+                          title="Refresh vehicle data" class="btn btn-success btn-sm modal-with-form"><i
                             class="fas fa-sync"></i></a>
                       </div>
                       <div class="col-lg-10">
@@ -463,10 +483,11 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Start Date <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (click)="d11.toggle()" ngbDatepicker
-                              #d11="ngbDatepicker" readonly [(ngModel)]="driverData.startDate" name="startDate" type="text"
-                              class="form-control" placeholder="yyyy/mm/dd" #date1="ngModel" required
-                              [ngClass]="{ 'error' : driverF.submitted && date1.invalid }" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
+                            <input (click)="d11.toggle()" ngbDatepicker #d11="ngbDatepicker" readonly
+                              [(ngModel)]="driverData.startDate" name="startDate" type="text" class="form-control"
+                              placeholder="yyyy/mm/dd" #date1="ngModel" required
+                              [ngClass]="{ 'error' : driverF.submitted && date1.invalid }" [minDate]="birthDateMinLimit"
+                              [maxDate]="futureDatesLimit">
                             <div *ngIf="date1.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="date1.errors.required">
                                 Start date is required.
@@ -478,7 +499,6 @@
                             </label>
                             <input (click)="d12.toggle()" readonly ngbDatepicker #d12="ngbDatepicker"
                               [(ngModel)]="driverData.terminationDate" name="terminationDate" type="text"
-
                               data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
                               [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="tDate.invalid && (tDate.dirty || tDate.touched)" class="text-danger">
@@ -494,10 +514,11 @@
                             <label class="control-label font-weight-bold text-lg-right pt-2">Start Date <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span>
                             </label>
-                            <input (click)="d4.toggle()" ngbDatepicker
-                              #d4="ngbDatepicker" [(ngModel)]="driverData.contractStart" name="contractStart"
-                              type="text" data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #date2="ngModel" required  [ngClass]="{ 'error' : driverF.submitted && date2.invalid }" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
+                            <input (click)="d4.toggle()" ngbDatepicker #d4="ngbDatepicker"
+                              [(ngModel)]="driverData.contractStart" name="contractStart" type="text"
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #date2="ngModel"
+                              required [ngClass]="{ 'error' : driverF.submitted && date2.invalid }"
+                              [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <div *ngIf="date2.invalid && driverF.submitted" class="text-danger">
                               <div *ngIf="date2.errors.required">
                                 Start date is required.
@@ -510,9 +531,8 @@
                             </label>
                             <input (click)="d5.toggle()" ngbDatepicker #d5="ngbDatepicker"
                               [(ngModel)]="driverData.contractEnd" name="contractEnd" type="text"
-
-                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd"
-                              #endDate="ngModel" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
+                              data-plugin-datepicker="" class="form-control" placeholder="yyyy/mm/dd" #endDate="ngModel"
+                              [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                             <!-- <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="text-danger">
                               <div *ngIf="endDate.errors.required">
                                 End date is required.
@@ -526,8 +546,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.citizenship" name="citizenship"
-                          placeholder="Select the citizenship country of driver"
-                           #cSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cSlt.invalid }">
+                          placeholder="Select the citizenship country of driver" #cSlt="ngModel" required
+                          [ngClass]="{ 'error' : driverF.submitted && cSlt.invalid }">
                           <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
@@ -543,14 +563,16 @@
                             <div class="btn btn-sm btn-success"><i class="fas fa-plus"></i> Add
                               Abstract History Document &nbsp; <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                               <input (change)="selectDocuments($event, nullVar)" class="hidden_input1 w-100" name=""
-                                 type="file">
-                           </div>
+                                type="file">
+                            </div>
                           </div>
-                          <div class="col-lg-12 text-right" *ngIf="driverF.submitted && abstractDocs.length == 0 && !driverID">
-                            <label class ="text-danger">Add Abstract History Document</label>
+                          <div class="col-lg-12 text-right"
+                            *ngIf="driverF.submitted && abstractDocs.length == 0 && !driverID">
+                            <label class="text-danger">Add Abstract History Document</label>
                           </div>
-                          <div class="col-lg-12 text-right" *ngIf="driverF.submitted && absDocs.length == 0 && abstractDocs.length == 0 && driverID">
-                            <label class ="text-danger">Add Abstract History Document</label>
+                          <div class="col-lg-12 text-right"
+                            *ngIf="driverF.submitted && absDocs.length == 0 && abstractDocs.length == 0 && driverID">
+                            <label class="text-danger">Add Abstract History Document</label>
                           </div>
                           <!-- <div class="col-lg-12 text-right" *ngIf="errorAbstract && abstractDocs.length == 0">
                             <label [class.text-danger]="errorAbstract">Add Abstract History Document</label>
@@ -577,8 +599,8 @@
                             <div class="col-lg-3 text-right">
                               <i class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.path)" data-toggle="modal"
                                 data-target="#viewDocModal"></i>
-                              <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)" class="modal-with-form"><i
-                                  class="fas fa-times text-danger"></i></a>
+                              <a href="javascript:;" (click)="delete('abs',item.name, d,nullVar)"
+                                class="modal-with-form"><i class="fas fa-times text-danger"></i></a>
                             </div>
                           </div>
                         </div>
@@ -678,18 +700,19 @@
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               Province/State</label>
-                            <ng-select (change)="getCities($event,i,item.countryCode)" [(ngModel)]="item.stateCode" name="stateCode{{i}}"
-                              placeholder="Select Province/State">
-                              <ng-option class="text-capitalize" *ngFor="let state of item.states" value="{{state.stateCode}}">
+                            <ng-select (change)="getCities($event,i,item.countryCode)" [(ngModel)]="item.stateCode"
+                              name="stateCode{{i}}" placeholder="Select Province/State">
+                              <ng-option class="text-capitalize" *ngFor="let state of item.states"
+                                value="{{state.stateCode}}">
                                 {{state.stateName}}</ng-option>
                             </ng-select>
                           </div>
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold text-lg-right pt-2">Select
                               City</label>
-                            <ng-select  [(ngModel)]="item.cityName" name="cityName{{i}}"
-                              placeholder="Select city">
-                              <ng-option class="text-capitalize" *ngFor="let city of item.cities" value="{{city.cityName}}">
+                            <ng-select [(ngModel)]="item.cityName" name="cityName{{i}}" placeholder="Select city">
+                              <ng-option class="text-capitalize" *ngFor="let city of item.cities"
+                                value="{{city.cityName}}">
                                 {{city.cityName}}</ng-option>
                             </ng-select>
                           </div>
@@ -720,7 +743,8 @@
                       </div>
                     </div>
                   </div>
-                  <label style="display: none; color: '#dc3545';" class="mt-2" id="addErr{{i}}">Your address or zip code is not valid</label>
+                  <label style="display: none; color: '#dc3545';" class="mt-2" id="addErr{{i}}">Your address or zip code
+                    is not valid</label>
                 </div>
               </div>
             </div>
@@ -730,7 +754,8 @@
               <div class="bg-white p-3">
                 <div class="row adddriverpl mb-3">
                   <div class="col-lg-6">
-                    <label class="control-label font-weight-bold text-lg-right text-dark text-5">Documents Details</label>
+                    <label class="control-label font-weight-bold text-lg-right text-dark text-5">Documents
+                      Details</label>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -754,11 +779,9 @@
                         </label>
                         <ng-select [(ngModel)]="document.documentType"
                           [attr.name]="'documentDetails['+i+'].documentType'" [ngModelOptions]="{standalone: true}"
-                          placeholder="Select document type"
-
-                           #doc1="ngModel" >
+                          placeholder="Select document type" #doc1="ngModel">
                           <ng-container *ngFor="let documentType of documentTypeList">
-                            <ng-option *ngIf="documentType.code != '5K'"  [value]="documentType.code">
+                            <ng-option *ngIf="documentType.code != '5K'" [value]="documentType.code">
                               {{documentType.description}}</ng-option>
                           </ng-container>
 
@@ -772,16 +795,15 @@
                     </div>
                   </div>
                   <div class="col-lg-6">
-                      <div class="row">
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Document#
-                          </label>
-                          <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
-                            [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                            placeholder="eg. Certificate number 201717ABC" #docNum="ngModel"
-                            >
+                    <div class="row">
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Document#
+                        </label>
+                        <input [(ngModel)]="document.document" [attr.name]="'documentDetails['+i+'].document'"
+                          [ngModelOptions]="{standalone: true}" type="text" class="form-control"
+                          placeholder="eg. Certificate number 201717ABC" #docNum="ngModel">
 
-                          <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
+                        <!-- <div *ngIf="docNum.invalid && (docNum.dirty || docNum.touched)" class="text-danger">
                             <div *ngIf="docNum.errors.required">
                               Document# is required.
                             </div>
@@ -789,43 +811,41 @@
                               Document# must contain alphanumeric characters.
                             </div>
                           </div> -->
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority
-                          </label>
-                          <input [(ngModel)]="document.issuingAuthority"
-                            [attr.name]="'documentDetails['+i+'].issuingAuthority'"
-                            [ngModelOptions]="{standalone: true}" type="text" class="form-control"
-                            placeholder="eg. Ontario,canada" #authority="ngModel" >
-                          <!-- <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Authority
+                        </label>
+                        <input [(ngModel)]="document.issuingAuthority"
+                          [attr.name]="'documentDetails['+i+'].issuingAuthority'" [ngModelOptions]="{standalone: true}"
+                          type="text" class="form-control" placeholder="eg. Ontario,canada" #authority="ngModel">
+                        <!-- <div *ngIf="authority.invalid && (authority.dirty || authority.touched)" class="text-danger">
 
                             <div *ngIf="authority.errors.pattern">
                               Issuing authority must contain letters and allowed characters(,).
                             </div>
                           </div> -->
-                        </div>
                       </div>
+                    </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Country
                         </label>
-                        <ng-select
-                          (change)="getDocStates($event,i)"
-                          [(ngModel)]="document.issuingCountry" [attr.name]="'documentDetails['+i+'].issuingCountry'"
-                          [ngModelOptions]="{standalone: true}" class="form-control populate"
-                          placeholder="Select the issuing country">
+                        <ng-select (change)="getDocStates($event,i)" [(ngModel)]="document.issuingCountry"
+                          [attr.name]="'documentDetails['+i+'].issuingCountry'" [ngModelOptions]="{standalone: true}"
+                          class="form-control populate" placeholder="Select the issuing country">
                           <ng-option class="text-capitalize" *ngFor="let country of docCountries"
                             value="{{country.countryCode}}">{{country.countryName}}</ng-option>
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issuing Province/State </label>
-                        <ng-select
-                          [(ngModel)]="document.issuingState" [attr.name]="'documentDetails['+i+'].issuingState'"
-                          [ngModelOptions]="{standalone: true}" placeholder="Select issuing Province/State">
-                          <ng-option class="text-capitalize" *ngFor="let state of document.docStates" value="{{state.stateCode}}">
+                        <ng-select [(ngModel)]="document.issuingState"
+                          [attr.name]="'documentDetails['+i+'].issuingState'" [ngModelOptions]="{standalone: true}"
+                          placeholder="Select issuing Province/State">
+                          <ng-option class="text-capitalize" *ngFor="let state of document.docStates"
+                            value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
                       </div>
@@ -836,9 +856,8 @@
                       <div class="col-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issue Date
                         </label>
-                        <input [(ngModel)]="document.issueDate"
-                          (click)="d.toggle()" ngbDatepicker
-                          #d="ngbDatepicker" readonly type="text" class="form-control" [maxDate]="getcurrentDate"
+                        <input [(ngModel)]="document.issueDate" (click)="d.toggle()" ngbDatepicker #d="ngbDatepicker"
+                          readonly type="text" class="form-control" [maxDate]="getcurrentDate"
                           [minDate]="birthDateMinLimit" placeholder="yyyy/mm/dd"
                           [attr.name]="'documentDetails['+i+'].issueDate'" [ngModelOptions]="{standalone: true}"
                           #idSlt="ngModel">
@@ -852,10 +871,9 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2"> Expiry Date
                         </label>
                         <input [(ngModel)]="document.expiryDate" [attr.name]="'documentDetails['+i+'].expiryDate'"
-                          [ngModelOptions]="{standalone: true}" readonly
-                          (click)="d1.toggle()" ngbDatepicker
+                          [ngModelOptions]="{standalone: true}" readonly (click)="d1.toggle()" ngbDatepicker
                           #d1="ngbDatepicker" placeholder="yyyy/mm/dd" [maxDate]="futureDatesLimit"
-                          [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel" >
+                          [minDate]="birthDateMinLimit" type="text" class="form-control" #expSlt="ngModel">
                         <!-- <div *ngIf="expSlt.invalid && (expSlt.dirty || expSlt.touched)" class="text-danger">
                           <div *ngIf="expSlt.errors.required">
                             Expiry date is required.
@@ -903,8 +921,8 @@
                     <div class="row">
                       <div class="col-5"></div>
                       <div class="col-5 text-right">
-                        <a href="javascript:;" *ngIf="i != 0"  (click)="remove('document', i)"
-                          class="btn btn-danger"><i class="fa fa-minus"></i></a>
+                        <a href="javascript:;" *ngIf="i != 0" (click)="remove('document', i)" class="btn btn-danger"><i
+                            class="fa fa-minus"></i></a>
                       </div>
                     </div>
 
@@ -928,8 +946,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">ACI ID
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACI_ID" name="crossBorderDetails.ACI_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676"
-                        >
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676">
                         <!-- <div *ngIf="aci.invalid && (aci.dirty || aci.touched)" class="text-danger">
                           <div *ngIf="aci.errors.pattern">
                             ACI ID must contain 10 numbers.
@@ -941,8 +958,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">ACE ID
                         </label>
                         <input [(ngModel)]="driverData.crossBorderDetails.ACE_ID" name="crossBorderDetails.ACE_ID"
-                          type="text" class="form-control" placeholder="10 digits , eg.4567895676"
-                          >
+                          type="text" class="form-control" placeholder="10 digits , eg.4567895676">
                         <!-- <div *ngIf="ace.invalid && (ace.dirty || ace.touched)" class="text-danger">
                           <div *ngIf="ace.errors.pattern">
                             ACE ID must contain 10 numbers.
@@ -954,7 +970,8 @@
                     <div class="row pt-2">
                       <div class="col-lg-10">
                         <div class="checkbox-custom">
-                          <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa" name="crossBorderDetails.csa" >
+                          <input type="checkbox" [(ngModel)]="driverData.crossBorderDetails.csa"
+                            name="crossBorderDetails.csa">
                           <label for="csa">CSA</label>
                         </div>
                       </div>
@@ -969,7 +986,7 @@
                           <input [(ngModel)]="driverData.crossBorderDetails.fast_ID" name="crossBorderDetails.fast_ID"
                             type="text" class="form-control"
                             placeholder="14 digits, beginning with 4270/4110 and ending with 00/01/02 (42700012345601)"
-                            #fastCard="ngModel" >
+                            #fastCard="ngModel">
                           <!-- <div *ngIf="fastCard.invalid && (fastCard.dirty || fastCard.touched)" class="text-danger">
                             <div *ngIf="fastCard.errors.pattern">
                               Fast Card must contain only 14 numbers beginning with 4270/4110 and ending with 00/01.
@@ -982,8 +999,9 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">FAST Expiry
                           </label>
                           <input [(ngModel)]="driverData.crossBorderDetails.fastExpiry"
-                            name="crossBorderDetails.fastExpiry" readonly (click)="d2.toggle()" ngbDatepicker #d2="ngbDatepicker"
-                            type="text" class="form-control" placeholder="yyyy/mm/dd" [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
+                            name="crossBorderDetails.fastExpiry" readonly (click)="d2.toggle()" ngbDatepicker
+                            #d2="ngbDatepicker" type="text" class="form-control" placeholder="yyyy/mm/dd"
+                            [minDate]="birthDateMinLimit" [maxDate]="futureDatesLimit">
                         </div>
                       </div>
                     </div>
@@ -1000,7 +1018,8 @@
                     <label class="control-label font-weight-bold text-lg-right text-5">Licence Details</label>
                   </div>
                   <div class="col-lg-10">
-                    <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence) in the documents section.</label>
+                    <label class="control-label text-4 pt-2">Add other licence details (eg. Enhanced drivers licence) in
+                      the documents section.</label>
                   </div>
                   <div class="col-lg-6">
                     <div class="row">
@@ -1008,9 +1027,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">CDL#
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number"
-                          type="text" class="form-control" placeholder="9 digits eg. 0005-04440"
-                          (change)="onChangeHideErrors('CDL_Number'); validateCDL();" #cdl="ngModel" required [ngClass]="{ 'error' : driverF.submitted && cdl.invalid}">
+                        <input [(ngModel)]="driverData.CDL_Number" name="CDL_Number" type="text" class="form-control"
+                          placeholder="9 digits eg. 0005-04440"
+                          (change)="onChangeHideErrors('CDL_Number'); validateCDL();" #cdl="ngModel" required
+                          [ngClass]="{ 'error' : driverF.submitted && cdl.invalid}">
                         <div *ngIf="cdl.invalid && driverF.submitted" class="text-danger">
                           <div *ngIf="cdl.errors.required">
                             CDL# is required.
@@ -1022,10 +1042,10 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Licence Expiration
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <input (click)="d3.toggle()" ngbDatepicker
-                          #d3="ngbDatepicker" readonly [(ngModel)]="driverData.licenceDetails.licenceExpiry"
-                          name="licenceDetails.licenceExpiry"  [ngClass]="{ 'error' : driverF.submitted && leSlt.invalid }"
-                          type="text" class="form-control" placeholder="yyyy/mm/dd" #leSlt="ngModel" required>
+                        <input (click)="d3.toggle()" ngbDatepicker #d3="ngbDatepicker" readonly
+                          [(ngModel)]="driverData.licenceDetails.licenceExpiry" name="licenceDetails.licenceExpiry"
+                          [ngClass]="{ 'error' : driverF.submitted && leSlt.invalid }" type="text" class="form-control"
+                          placeholder="yyyy/mm/dd" #leSlt="ngModel" required>
                         <div *ngIf="leSlt.invalid && driverF.submitted " class="text-danger">
                           <div *ngIf="leSlt.errors.required">
                             Licence expiration is required.
@@ -1036,12 +1056,12 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Issued Country
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select (change)="getLicStates($event)"
-                          [(ngModel)]="driverData.licenceDetails.issuedCountry" placeholder="Select country"
-                          name="licenceDetails.issuedCountry" class="form-control populate" #conSlt="ngModel"  [ngClass]="{ 'error' : driverF.submitted && conSlt.invalid }" required>
+                        <ng-select (change)="getLicStates($event)" [(ngModel)]="driverData.licenceDetails.issuedCountry"
+                          placeholder="Select country" name="licenceDetails.issuedCountry" class="form-control populate"
+                          #conSlt="ngModel" [ngClass]="{ 'error' : driverF.submitted && conSlt.invalid }" required>
 
                           <ng-option value="CA">Canada</ng-option>
-                              <ng-option value="US">United States</ng-option>
+                          <ng-option value="US">United States</ng-option>
 
                         </ng-select>
                         <div *ngIf="conSlt.invalid && driverF.submitted " class="text-danger">
@@ -1055,11 +1075,10 @@
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.licenceDetails.issuedState" name="licenceDetails.issuedState"
-                          placeholder="Select Province/State"
-                          (change)="getLicenseStateName();" required #ipSlt="ngModel"
-                           [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }"
-                          >
-                          <ng-option class="text-capitalize" *ngFor="let state of licStates" value="{{state.stateCode}}">
+                          placeholder="Select Province/State" (change)="getLicenseStateName();" required
+                          #ipSlt="ngModel" [ngClass]="{ 'error' : driverF.submitted && ipSlt.invalid }">
+                          <ng-option class="text-capitalize" *ngFor="let state of licStates"
+                            value="{{state.stateCode}}">
                             {{state.stateName}}</ng-option>
                         </ng-select>
                         <div *ngIf="ipSlt.invalid && driverF.submitted" class="text-danger">
@@ -1071,8 +1090,10 @@
                       <div class="col-lg-10 pt-2">
                         <div class="checkbox-custom">
 
-                            <input type="checkbox" name="licenceDetails.licenceNotification" [(ngModel)]="driverData.licenceDetails.licenceNotification"  value="">
-                            <label class="control-label font-weight-bold">Send notification (Before 30 days of expiration)</label>
+                          <input type="checkbox" name="licenceDetails.licenceNotification"
+                            [(ngModel)]="driverData.licenceDetails.licenceNotification" value="">
+                          <label class="control-label font-weight-bold">Send notification (Before 30 days of
+                            expiration)</label>
                         </div>
                       </div>
                     </div>
@@ -1084,8 +1105,7 @@
                         </label>
                         <input [(ngModel)]="driverData.licenceDetails.WCB" name="licenceDetails.WCB" type="text"
                           class="form-control"
-                          placeholder="total 7 digits , 1 is alphabetical and 6 is numeric . eg.123456A" #wcb="ngModel"
-                         >
+                          placeholder="total 7 digits , 1 is alphabetical and 6 is numeric . eg.123456A" #wcb="ngModel">
                         <!-- <div *ngIf="wcb.invalid && (wcb.dirty || wcb.touched)" class="text-danger">
                           <div *ngIf="wcb.errors.pattern">
                             WCB must contain 7 characters only in which 1 is alphabetical and 6 is numeric. eg.123456A.
@@ -1097,16 +1117,15 @@
                         </label>
                         <input (click)="d7.toggle()" ngbDatepicker #d7="ngbDatepicker"
                           [(ngModel)]="driverData.licenceDetails.medicalCardRenewal"
-                          name="licenceDetails.medicalCardRenewal" type="text"
-                          class="form-control" placeholder="yyyy/mm/dd">
+                          name="licenceDetails.medicalCardRenewal" type="text" class="form-control"
+                          placeholder="yyyy/mm/dd">
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label font-weight-bold text-lg-right pt-2">Health Care#
                         </label>
                         <input [(ngModel)]="driverData.licenceDetails.healthCare" name="licenceDetails.healthCare"
                           type="text" class="form-control"
-                          placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB"
-                          >
+                          placeholder="total 13 digits , 11 is numeric and 2 is alphabets , eg. 12345678923AB">
                         <!-- <div *ngIf="hCare.invalid && (hCare.dirty || hCare.touched)" class="text-danger">
                           <div *ngIf="hCare.errors.pattern">
                             Health Care must contain 13 characters only in which 2 is alphabetical and 11 is numeric.
@@ -1143,8 +1162,7 @@
                           Payment Type</label>
                         <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                           placeholder="Select the payment type" id="paymentTypeForm"
-                          (change)="changePaymentModeForm($event)"
-                          #paySlt="ngModel" >
+                          (change)="changePaymentModeForm($event)" #paySlt="ngModel">
                           <ng-option value="Pay Per Mile">Pay Per Mile</ng-option>
                           <ng-option value="Percentage">Percentage</ng-option>
                           <ng-option value="Pay Per Hour">Pay Per Hour</ng-option>
@@ -1158,19 +1176,17 @@
                       </div>
                       <div class="col-lg-10" *ngIf="driverData.driverType === 'employee'">
                         <label class="control-label font-weight-bold text-lg-right pt-2">SIN
-                         </label>
-                        <input
-                          [(ngModel)]="driverData.SIN" name="SIN"
-                          type="text" class="form-control" placeholder="9 digits , eg.123456789" #sin1="ngModel" pattern="^[0-9]{9}$"
-                           >
-                           <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
-                            <!-- <div *ngIf="sin1.errors.required">
+                        </label>
+                        <input [(ngModel)]="driverData.SIN" name="SIN" type="text" class="form-control"
+                          placeholder="9 digits , eg.123456789" #sin1="ngModel" pattern="^[0-9]{9}$">
+                        <div *ngIf="sin1.invalid && (sin1.dirty || sin1.touched)" class="text-danger">
+                          <!-- <div *ngIf="sin1.errors.required">
                               SIN is required.
                             </div> -->
-                            <div *ngIf="sin1.errors.pattern">
-                              SIN must contain 9 numbers.
-                            </div>
+                          <div *ngIf="sin1.errors.pattern">
+                            SIN must contain 9 numbers.
                           </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1180,9 +1196,8 @@
                       <div class="col-lg-4">
                         <label class="control-label font-weight-bold text-lg-right pt-2"> Rate</label>
                         <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
-
-                          class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" >
-                          <!-- <div *ngIf="payHour.invalid && (payHour.dirty || payHour.touched)" class="text-danger">
+                          class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel">
+                        <!-- <div *ngIf="payHour.invalid && (payHour.dirty || payHour.touched)" class="text-danger">
                             <div *ngIf="payHour.errors.required">
                               Rate is required.
                             </div>
@@ -1193,8 +1208,9 @@
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.rateUnit" placeholder="Select Currency" >
+                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.rateUnit"
+                          (change)="changeCurrency($event)" name="paymentDetails.rateUnit"
+                          placeholder="Select Currency">
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
@@ -1211,9 +1227,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Waiting
                           period Pay</label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingPay" name="paymentDetails.waitingPay"
-
-                          type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel" >
-                          <!-- <div *ngIf="payWait.invalid && (payWait.dirty || payWait.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder=" eg. $20 ,$40 ,$60" #payWait="ngModel">
+                        <!-- <div *ngIf="payWait.invalid && (payWait.dirty || payWait.touched)" class="text-danger">
                             <div *ngIf="payWait.errors.required">
                               Waiting period pay is required.
                             </div>
@@ -1224,8 +1239,9 @@
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.waitingPayUnit" placeholder="Select Currency" >
+                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.waitingPayUnit"
+                          (change)="changeCurrency($event)" name="paymentDetails.waitingPayUnit"
+                          placeholder="Select Currency">
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
@@ -1243,9 +1259,8 @@
                           start after</label>
                         <input [(ngModel)]="driverData.paymentDetails.waitingHourAfter"
                           name="paymentDetails.waitingHourAfter" type="text" class="form-control"
-
                           placeholder="eg. Min 3 hours">
-                          <!-- <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
+                        <!-- <div *ngIf="payWait1.invalid && (payWait1.dirty || payWait1.touched)" class="text-danger">
                             <div *ngIf="payWait1.errors.required">
                               Waiting hour start is required.
                             </div>
@@ -1263,9 +1278,8 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Delivery
                           Rate</label>
                         <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
-
-                          type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60"  >
-                          <!-- <div *ngIf="dRate.invalid && (dRate.dirty || dRate.touched)" class="text-danger">
+                          type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60">
+                        <!-- <div *ngIf="dRate.invalid && (dRate.dirty || dRate.touched)" class="text-danger">
                             <div *ngIf="dRate.errors.required">
                               Delivery rate is required.
                             </div>
@@ -1277,8 +1291,9 @@
                       </div>
                       <div class="col-lg-6">
                         <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit" (change)="changeCurrency($event)"
-                          name="paymentDetails.deliveryRateUnit" placeholder="Select Currency" >
+                        <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.deliveryRateUnit"
+                          (change)="changeCurrency($event)" name="paymentDetails.deliveryRateUnit"
+                          placeholder="Select Currency">
 
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
@@ -1302,7 +1317,7 @@
                             <input [(ngModel)]="driverData.paymentDetails.loadPayPercentage"
                               name="paymentDetails.loadPayPercentage" type="text" class="form-control"
                               placeholder="eg. 2%, 5%, 10%">
-                              <!-- <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
+                            <!-- <div *ngIf="lPay1.invalid && (lPay1.dirty || lPay1.touched)" class="text-danger">
                                 <div *ngIf="lPay1.errors.required">
                                  Load pay percent is required.
                                 </div>
@@ -1318,7 +1333,7 @@
                           </div>
                           <div class="col-lg-7">
                             <ng-select [(ngModel)]="driverData.paymentDetails.loadPayPercentageOf"
-                              name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of" >
+                              name="paymentDetails.loadPayPercentageOf" placeholder="Select the percentage type of">
 
                               <ng-option value="Freight Fees">Freight Fees</ng-option>
                               <ng-option value="Freight + Fuel Surcharge">Freight + Fuel Surcharge
@@ -1344,9 +1359,8 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Loaded
                             Miles</label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
-
-                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
-                            <!-- <div *ngIf="payM.invalid && (payM.dirty || payM.touched)" class="text-danger">
+                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2">
+                          <!-- <div *ngIf="payM.invalid && (payM.dirty || payM.touched)" class="text-danger">
                               <div *ngIf="payM.errors.required">
                                Loaded miles are required.
                               </div>
@@ -1360,8 +1374,8 @@
                         <div class="col-lg-2 ">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesUnit"
-                            name="paymentDetails.loadedMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                            >
+                            name="paymentDetails.loadedMilesUnit" placeholder="Select Currency"
+                            (change)="changeCurrency($event)">
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
@@ -1378,9 +1392,8 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Empty
                             Miles</label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
-
-                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2" >
-                            <!-- <div *ngIf="eMiles1.invalid && (eMiles1.dirty || eMiles1.touched)" class="text-danger">
+                            type="text" class="form-control" placeholder="eg. $0.5, $1, $2">
+                          <!-- <div *ngIf="eMiles1.invalid && (eMiles1.dirty || eMiles1.touched)" class="text-danger">
                               <div *ngIf="eMiles1.errors.required">
                                Empty miles are required.
                               </div>
@@ -1393,8 +1406,8 @@
                         <div class="col-lg-2 ">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
                           <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesUnit"
-                            name="paymentDetails.emptyMilesUnit" placeholder="Select Currency" (change)="changeCurrency($event)"
-                             >
+                            name="paymentDetails.emptyMilesUnit" placeholder="Select Currency"
+                            (change)="changeCurrency($event)">
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -1411,14 +1424,14 @@
                             Miles (Team)</label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMilesTeam"
                             name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
-
                             placeholder="eg. $0.5, $1, $2">
 
                         </div>
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit" (change)="changeCurrency($event)"
-                            name="paymentDetails.loadedMilesTeamUnit" placeholder="Select Currency">
+                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.loadedMilesTeamUnit"
+                            (change)="changeCurrency($event)" name="paymentDetails.loadedMilesTeamUnit"
+                            placeholder="Select Currency">
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
@@ -1430,14 +1443,14 @@
                             Miles (Team)</label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMilesTeam"
                             name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
-
                             placeholder="eg. $0.5, $1, $2">
 
                         </div>
                         <div class="col-lg-2">
                           <label class="control-label font-weight-bold text-lg-right pt-2 mt-1"></label>
-                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit" (change)="changeCurrency($event)"
-                            name="paymentDetails.emptyMilesTeamUnit" placeholder="Select Currency">
+                          <ng-select class="mt-2" [(ngModel)]="driverData.paymentDetails.emptyMilesTeamUnit"
+                            (change)="changeCurrency($event)" name="paymentDetails.emptyMilesTeamUnit"
+                            placeholder="Select Currency">
 
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
@@ -1450,7 +1463,7 @@
                           <label class="control-label font-weight-bold text-lg-right pt-2">Pay
                             Period</label>
                           <ng-select [(ngModel)]="driverData.paymentDetails.payPeriod" name="paymentDetails.payPeriod"
-                            placeholder="Select pay period of the driver" #ppSlt="ngModel" >
+                            placeholder="Select pay period of the driver" #ppSlt="ngModel">
 
                             <ng-option value="Weekly">Weekly</ng-option>
                             <ng-option value="Biweekly">Biweekly</ng-option>
@@ -1487,10 +1500,10 @@
                         <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Status<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
-                        <ng-select [(ngModel)]="driverData.hosDetails.hosStatus"
-                          (change)="complianceChange($event);"
+                        <ng-select [(ngModel)]="driverData.hosDetails.hosStatus" (change)="complianceChange($event);"
                           name="hosDetails.hosStatus" class="form-control populate"
-                          placeholder="Select exemption status of the driver" #sSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && sSlt.invalid }">
+                          placeholder="Select exemption status of the driver" #sSlt="ngModel" required
+                          [ngClass]="{ 'error' : driverF.submitted && sSlt.invalid }">
 
                           <ng-option value="non_Exempted">Non Exempted</ng-option>
                           <ng-option value="exempted">Exempted</ng-option>
@@ -1509,13 +1522,14 @@
                         </label>
                         <textarea style="height: unset !important;" [(ngModel)]="driverData.hosDetails.hosRemarks"
                           name="hosDetails.hosRemarks" class="form-control" rows="4"
-                          placeholder=" Enter remarks for the exempted driver" #remarks1= "ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                          <div *ngIf="remarks1.invalid && (remarks1.dirty || remarks1.touched)" class="text-danger">
-                            <div *ngIf="remarks1.errors.pattern">
-                             Only 500 characters are allowed.
-                            </div>
+                          placeholder=" Enter remarks for the exempted driver" #remarks1="ngModel"
+                          pattern="^[\s\S]{1,500}$"></textarea>
+                        <div *ngIf="remarks1.invalid && (remarks1.dirty || remarks1.touched)" class="text-danger">
+                          <div *ngIf="remarks1.errors.pattern">
+                            Only 500 characters are allowed.
+                          </div>
 
-                         </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1526,8 +1540,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.type" name="hosDetails.type"
-                          placeholder="Select the record keeping type"
-                          #tSlt="ngModel" required [ngClass]="{ 'error' : driverF.submitted && tSlt.invalid }">
+                          placeholder="Select the record keeping type" #tSlt="ngModel" required
+                          [ngClass]="{ 'error' : driverF.submitted && tSlt.invalid }">
                           <ng-option *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'" value="ELD">ELD
                           </ng-option>
                           <ng-option *ngIf="driverData.hosDetails.hosStatus == 'exempted'" value="Log Book">Log Book
@@ -1544,8 +1558,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.homeTerminal" name="hosDetails.homeTerminal"
-                          class="form-control populate"
-                          placeholder="Select home terminal of the driver" #home="ngModel" required [ngClass]="{ 'error' : driverF.submitted && home.invalid }">
+                          class="form-control populate" placeholder="Select home terminal of the driver" #home="ngModel"
+                          required [ngClass]="{ 'error' : driverF.submitted && home.invalid }">
                           <ng-option class="text-capitalize" *ngFor="let yard of carrierYards"
                             value="{{yard.addressID}}">
                             <div *ngIf="yard.manual">
@@ -1567,8 +1581,8 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.optZone" name="hosDetails.optZone"
-                           class="form-control populate"
-                          placeholder="Select the Operating Zone" #oz1="ngModel" required [ngClass]="{ 'error' : driverF.submitted && oz1.invalid }">
+                          class="form-control populate" placeholder="Select the Operating Zone" #oz1="ngModel" required
+                          [ngClass]="{ 'error' : driverF.submitted && oz1.invalid }">
                           <ng-option class="text-capitalize" value="South (Canada)">South (Canada)
                           </ng-option>
                           <ng-option class="text-capitalize" value="North (Canada)">North (Canada)
@@ -1587,9 +1601,10 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.timezone" name="hosDetails.timezone"
-                          class="form-control populate"
-                          placeholder="Select the home terminal timezone" #ht="ngModel" required [ngClass]="{ 'error' : driverF.submitted && ht.invalid }">
-                          <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones" [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
+                          class="form-control populate" placeholder="Select the home terminal timezone" #ht="ngModel"
+                          required [ngClass]="{ 'error' : driverF.submitted && ht.invalid }">
+                          <ng-option class="text-capitalize" *ngFor="let timezone of finaltimezones"
+                            [value]="timezone.name">{{timezone.country}} - {{timezone.name}}
                           </ng-option>
                         </ng-select>
                         <div *ngIf="ht.invalid && driverF.submitted" class="text-danger">
@@ -1604,8 +1619,9 @@
                             class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <ng-select [(ngModel)]="driverData.hosDetails.hosCycleName" name="hosDetails.hosCycleName"
-                          class="form-control populate"  [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
-                          placeholder="Select the cycle for the driver" #cycle1="ngModel" [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
+                          class="form-control populate" [ngClass]="{ 'error' : driverF.submitted && cycle1.invalid }"
+                          placeholder="Select the cycle for the driver" #cycle1="ngModel"
+                          [required]="driverData.hosDetails.hosStatus == 'non_Exempted'">
                           <ng-option value="USA 60 hour / 7 day">USA 60 hour / 7 day</ng-option>
                           <ng-option value="USA 70 hour / 8 day">USA 70 hour / 8 day</ng-option>
                           <ng-option value="Canada South 70 hour / 7 day">Canada South 70 hour / 7 day</ng-option>
@@ -1623,17 +1639,17 @@
                       <div class="col-lg-6" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
                         <div class="checkbox-custom">
 
-                            <input type="checkbox" value="" [(ngModel)]="driverData.hosDetails.pcAllowed"
-                              name="hosDetails.pcAllowed">
-                              <label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
+                          <input type="checkbox" value="" [(ngModel)]="driverData.hosDetails.pcAllowed"
+                            name="hosDetails.pcAllowed">
+                          <label class="control-label font-weight-bold">Allow Personal Conveyance (PC)</label>
                         </div>
                       </div>
                       <div class="col-lg-4" *ngIf="driverData.hosDetails.hosStatus == 'non_Exempted'">
                         <div class="checkbox-custom">
 
-                            <input type="checkbox" [(ngModel)]="driverData.hosDetails.ymAllowed"
-                              name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">
-                               <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
+                          <input type="checkbox" [(ngModel)]="driverData.hosDetails.ymAllowed"
+                            name="hosDetails.ymAllowed" value="Allow Yard Move (YM)">
+                          <label class="control-label font-weight-bold">Allow Yard Move (YM)</label>
                         </div>
                       </div>
                     </div>
@@ -1656,7 +1672,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Name
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.name" name="name" type="text"
-                          class="form-control" placeholder="eg. John Smith" >
+                          class="form-control" placeholder="eg. John Smith">
                         <!-- <div *ngIf="eName.invalid && (eName.dirty || eName.touched)" class="text-danger">
                           <div *ngIf="eName.errors.pattern">
                             Name must contain letters.
@@ -1667,8 +1683,7 @@
                         <label class="control-label font-weight-bold text-lg-right pt-2">Phone
                         </label>
                         <input [(ngModel)]="driverData.emergencyDetails.phone" name="emergencyDetails.phone" type="text"
-                          class="form-control" placeholder="eg. 2234567891"
-                          >
+                          class="form-control" placeholder="eg. 2234567891">
                         <!-- <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="text-danger">
                           <div *ngIf="phone.errors.pattern">
                             Phone must contain 10 numbers eg. +12234567891
@@ -1692,9 +1707,12 @@
                 </div>
                 <div class="form-group row mt-3">
                   <div class="col-lg-11 text-right pb-1 pt-1 pr-2">
-                    <button type="button" (click)="cancel()" class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</button>
-                    <button type="submit" *ngIf="!driverID" [disabled]="submitDisabled" class="cus-btn-padd btn btn-success" >Save</button>
-                    <button type="submit"  *ngIf="driverID" [disabled]="submitDisabled" class="btn cus-btn-padd btn-success" >Update</button>
+                    <button type="button" (click)="cancel()"
+                      class="btn cus-btn-padd btn-default btnPrevious mr-2">Cancel</button>
+                    <button type="submit" *ngIf="!driverID" [disabled]="submitDisabled"
+                      class="cus-btn-padd btn btn-success">Save</button>
+                    <button type="submit" *ngIf="driverID" [disabled]="submitDisabled"
+                      class="btn cus-btn-padd btn-success">Update</button>
                   </div>
                 </div>
               </div>
@@ -1739,32 +1757,31 @@
   <div class="modal-dialog" style="max-width: 600px;" role="document">
     <div class="modal-content">
       <form id="groupForm1" class="form-horizontal form-bordered bg-white" method="get" name="form" #grouphide="ngForm"
-       (ngSubmit)="grouphide.form.valid && addGroup()" novalidate>
-      <div class="modal-header">
-        <h5 class="modal-title">Add Group</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-        <div class="card-body p-0">
+        (ngSubmit)="grouphide.form.valid && addGroup()" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title">Add Group</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeGroupModal()">
+            <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+          </button>
+        </div>
+        <div class="modal-body text-dark">
+          <div class="card-body p-0">
             <div class="form-row">
               <div class="form-group col-lg-12 mb-0">
-                <label class="control-label font-weight-bold" >Group Name
-                  <span
-                    class="mandfield text-2 ml-1"><sup>*</sup></span>
-                  </label>
+                <label class="control-label font-weight-bold">Group Name
+                  <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                </label>
                 <input [(ngModel)]="groupData.groupName" name="groupName" type="text" class="form-control"
                   placeholder="eg. Fleet Group " #groupModel="ngModel" required pattern="^[a-zA-Z\s]+$"
                   [ngClass]="{ 'error' : grouphide.submitted && groupModel.invalid }">
-                  <div *ngIf="groupModel.invalid && grouphide.submitted" class="text-danger">
-                    <div *ngIf="groupModel.errors.required">
-                      Group name is required.
-                    </div>
-                    <div *ngIf="groupModel.errors.pattern">
-                        Group name must contain letters.
-                    </div>
+                <div *ngIf="groupModel.invalid && grouphide.submitted" class="text-danger">
+                  <div *ngIf="groupModel.errors.required">
+                    Group name is required.
                   </div>
+                  <div *ngIf="groupModel.errors.pattern">
+                    Group name must contain letters.
+                  </div>
+                </div>
               </div>
               <div class="form-group col-lg-12">
                 <label class="control-label font-weight-bold">Group Members</label>
@@ -1781,29 +1798,58 @@
                   <div class="col-lg-12">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Description</label>
                     <textarea [(ngModel)]="groupData.description" name="description" class="form-control h-auto"
-                      rows="4" placeholder="Enter group description"#dNotes="ngModel" pattern ="^[\s\S]{1,500}$"></textarea>
-                      <div *ngIf="dNotes.invalid && (dNotes.dirty || dNotes.touched)" class="text-danger">
-                        <div *ngIf="dNotes.errors.pattern">
-                         Only 500 characters are allowed.
-                        </div>
-                     </div>
+                      rows="4" placeholder="Enter group description" #dNotes="ngModel"
+                      pattern="^[\s\S]{1,500}$"></textarea>
+                    <div *ngIf="dNotes.invalid && (dNotes.dirty || dNotes.touched)" class="text-danger">
+                      <div *ngIf="dNotes.errors.pattern">
+                        Only 500 characters are allowed.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
+          </div>
+        </div>
+        <div class="modal-footer text-right">
+          <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
+          <button type="submit" class="btn btn-success" [disabled]="groupSubmitDisabled">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog" aria-labelledby="driverProfileModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Driver Profile Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="row">
+          <div class="col-lg-12">
+            <img [src]="driverProfileSrc" class="img-fluid rounded" height="200px" width="100%">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-right">
+            <i class="fas fa-times text-danger" data-toggle="tooltip" data-placement="top"
+              title="Delete profile picture" (click)="delete('profile',driverData.driverImage, nullVar,nullVar)"></i>
+          </div>
         </div>
       </div>
-      <div class="modal-footer text-right">
-        <a class="btn btn-default modal-dismiss" (click)="closeGroupModal()" data-dismiss="modal">Cancel</a>
-        <button type="submit" class="btn btn-success" [disabled]="groupSubmitDisabled">Save</button>
-      </div>
-    </form>
     </div>
   </div>
 </div>
-<div class="modal fade" id="driverProfileModal" tabindex="-1" role="dialog"
-  aria-labelledby="driverProfileModal" aria-hidden="true">
+
+
+<div class="modal fade" id="driverPicUploadedModal" tabindex="-1" role="dialog" aria-labelledby="driverPicUploadedModal"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
     <div class="modal-content">
       <div class="modal-header">
@@ -1813,45 +1859,17 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-          <div class="row">
-            <div class="col-lg-12">
-              <img [src]="driverProfileSrc" class="img-fluid rounded" height="200px" width="100%">
-            </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <img [src]="uploadedPic" class="img-fluid rounded" height="200px" width="100%">
           </div>
-          <div class="row">
-            <div class="col-lg-12 text-right">
-              <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
-              title="Delete profile picture" (click)="delete('profile',driverData.driverImage, nullVar,nullVar)"></i>
-            </div>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="modal fade" id="driverPicUploadedModal" tabindex="-1" role="dialog"
-  aria-labelledby="driverPicUploadedModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 250px;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Driver Profile Image</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
-        </button>
-      </div>
-      <div class="modal-body text-dark">
-          <div class="row">
-            <div class="col-lg-12">
-              <img [src]="uploadedPic" class="img-fluid rounded" height="200px" width="100%">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-12 text-right">
-              <i class="fas fa-times text-danger"data-toggle="tooltip" data-placement="top"
+        </div>
+        <div class="row">
+          <div class="col-lg-12 text-right">
+            <i class="fas fa-times text-danger" data-toggle="tooltip" data-placement="top"
               title="Delete profile picture" (click)="delete('uploaded',driverData.driverImage, nullVar,nullVar)"></i>
-            </div>
           </div>
+        </div>
       </div>
     </div>
   </div>

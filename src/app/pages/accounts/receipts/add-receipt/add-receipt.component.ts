@@ -10,9 +10,10 @@ import { ActivatedRoute } from "@angular/router";
 import * as moment from "moment";
 declare var $: any;
 @Component({
-  selector: "app-add-receipt",
-  templateUrl: "./add-receipt.component.html",
-  styleUrls: ["./add-receipt.component.css"],
+  selector: 'app-add-receipt',
+  templateUrl: './add-receipt.component.html',
+  styleUrls: ['./add-receipt.component.css'],
+
 })
 export class AddReceiptComponent implements OnInit {
   pageTitle = "Add Receipt";
@@ -32,7 +33,7 @@ export class AddReceiptComponent implements OnInit {
     recNo: null,
     recAmount: 0,
     totalAmount: 0,
-    recAmountCur: null,
+    recAmountCur: 'CAD',
     accountID: null,
     advAmt: 0,
     advAmtCur: null,
@@ -44,28 +45,30 @@ export class AddReceiptComponent implements OnInit {
   };
   paymentMode = [
     {
-      name: "Cash",
-      value: "cash",
+
+      name: 'Cash',
+      value: 'cash',
     },
     {
-      name: "Cheque",
-      value: "cheque",
+      name: 'Cheque',
+      value: 'cheque',
     },
     {
-      name: "EFT",
-      value: "eft",
+      name: 'EFT',
+      value: 'eft',
     },
     {
-      name: "Credit Card",
-      value: "creditCard",
+      name: 'Credit Card',
+      value: 'creditCard',
     },
     {
-      name: "Debit Card",
-      value: "debitCard",
+      name: 'Debit Card',
+      value: 'debitCard',
     },
     {
-      name: "Demand Draft",
-      value: "demandDraft",
+      name: 'Demand Draft',
+      value: 'demandDraft',
+
     },
   ];
   advancePayments = [];
@@ -84,6 +87,10 @@ export class AddReceiptComponent implements OnInit {
   newTotal = 0;
   totalErr = false;
   paidAmtErr = false;
+  currency = 'CAD';
+  totalCur = 'CAD';
+  curError: true;
+  rate = 0;
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -91,7 +98,8 @@ export class AddReceiptComponent implements OnInit {
     private apiService: ApiService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
+
 
   ngOnInit() {
     this.listService.fetchCustomers();
@@ -123,47 +131,67 @@ export class AddReceiptComponent implements OnInit {
     });
   }
 
+
+  recCurFn(e) {
+    this.totalCur = e;
+  }
   async getInvoices() {
-    this.newTotal = 0;
-    this.advancePayments = [];
-    this.accountService
-      .getData(`order-invoice/customer/${this.receiptData.customerID}`)
-      .subscribe((res: any) => {
-        if (res !== undefined) {
-          this.orderInvoices = res;
-          this.orderInvoices.map((v: any) => {
-            v.invStatus = v.invStatus.replace("_", " ");
-          });
-          if (this.orderInvoices.length > 0) {
-            this.receiptData.recAmountCur =
-              this.orderInvoices[0].charges.freightFee.currency;
+    if (this.currency === undefined || this.currency === null) {
+      this.curError = true;
+    } else {
+      this.newTotal = 0;
+      this.advancePayments = [];
+      this.accountService
+        .getData(`order-invoice/customer/${this.receiptData.customerID}`)
+        .subscribe((res: any) => {
+          if (res !== undefined) {
+            this.orderInvoices = res.filter((e: any) => {
+              return e.charges.freightFee.currency === this.currency;
+            });
+            this.orderInvoices.map((v: any) => {
+              v.invStatus = v.invStatus.replace('_', ' ');
+            });
+            if (this.orderInvoices.length > 0) {
+              this.receiptData.recAmountCur =
+                this.orderInvoices[0].charges.freightFee.currency;
+            }
+            for (const op of this.orderInvoices) {
+              this.newTotal += op.balance;
+              this.receiptData.totalAmount = this.newTotal;
+            }
           }
-          for (const op of this.orderInvoices) {
-            this.newTotal += op.balance;
-            this.receiptData.totalAmount = this.newTotal;
+        });
+      this.accountService
+        .getData(`invoices/customer/${this.receiptData.customerID}`)
+        .subscribe((result) => {
+          if (result !== undefined) {
+            this.invoices = result.filter((e: any) => {
+              return e.invCur === this.currency;
+            });
+            this.invoices.map((v: any) => {
+              v.invStatus = v.invStatus.replace('_', ' ');
+            });
+            if (this.invoices.length > 0) {
+              this.receiptData.recAmountCur = this.invoices[0].invCur;
+              this.receiptData.advAmtCur = this.invoices[0].invCur;
+            }
+            for (const op of this.invoices) {
+              this.newTotal += op.balance;
+              this.receiptData.totalAmount = this.newTotal;
+            }
           }
-        }
-      });
-    this.accountService
-      .getData(`invoices/customer/${this.receiptData.customerID}`)
-      .subscribe((result) => {
-        if (result !== undefined) {
-          this.invoices = result;
-          this.invoices.map((v: any) => {
-            v.invStatus = v.invStatus.replace("_", " ");
-          });
-          if (this.invoices.length > 0) {
-            this.receiptData.recAmountCur = this.invoices[0].invCur;
-            this.receiptData.advAmtCur = this.invoices[0].invCur;
-          }
-          for (const op of this.invoices) {
-            this.newTotal += op.balance;
-            this.receiptData.totalAmount = this.newTotal;
-          }
-        }
-      });
+        });
+    }
+
+
 
     //  this.fetchAdvancePayments();
+  }
+  getConvertedCur(e) {
+    this.accountService.getData(`receipts/convert/${this.currency}/${e}/${this.receiptData.recAmount}`).subscribe((res) => {
+      this.rate = res.rate.toFixed(2);
+      this.receiptData.recAmount = res.result.toFixed(2);
+    });
   }
   refreshAccount() {
     this.listService.fetchChartAccounts();
@@ -185,13 +213,16 @@ export class AddReceiptComponent implements OnInit {
         this.advancePayments.map((v) => {
           v.selected = false;
           if (v.payMode) {
-            v.payMode = v.payMode.replace("_", " ");
+            v.payMode = v.payMode.replace('_', ' ');
+
           }
           v.fullPayment = false;
           v.paidAmount = 0;
           v.paidStatus = false;
-          v.status = v.status.replace("_", " ");
-          v.errText = "";
+
+          v.status = v.status.replace('_', ' ');
+          v.errText = '';
+
           v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
           v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
         });
@@ -225,12 +256,13 @@ export class AddReceiptComponent implements OnInit {
       this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
     } else if (
       this.orderInvoices[j].fullPayment === true &&
-      this.orderInvoices[j].invStatus === "partially_paid"
+      this.orderInvoices[j].invStatus === 'partially_paid'
     ) {
       this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
     } else {
       this.orderInvoices[j].amountPaid = 0;
     }
+
     this.findReceivedAmtFn();
   }
   getAmountManual(k: any) {
@@ -238,7 +270,8 @@ export class AddReceiptComponent implements OnInit {
       this.invoices[k].amountPaid = this.invoices[k].balance;
     } else if (
       this.invoices[k].fullPayment === true &&
-      this.invoices[k].invStatus === "partially_paid"
+      this.invoices[k].invStatus === 'partially_paid'
+
     ) {
       this.invoices[k].amountPaid = this.invoices[k].balance;
     } else {
@@ -299,39 +332,44 @@ export class AddReceiptComponent implements OnInit {
   }
 
   async addReceipt() {
-    this.submitDisabled = true;
-    this.errors = {};
-    this.hasError = false;
-    this.hasSuccess = false;
-    await this.getPaidInvoices();
-    this.accountService.postData("receipts", this.receiptData).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.submitDisabled = false;
-        this.response = res;
-        this.toastr.success("Receipt added successfully.");
-        this.router.navigateByUrl("/accounts/receipts/list");
-      },
-    });
+    if (this.receiptData.recAmount === 0) {
+      this.toastr.error('Select invoice');
+    } else {
+      this.submitDisabled = true;
+      this.errors = {};
+      this.hasError = false;
+      this.hasSuccess = false;
+      await this.getPaidInvoices();
+      this.accountService.postData('receipts', this.receiptData).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, 'This Field');
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                this.submitDisabled = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                this.submitDisabled = false;
+              },
+              next: () => { },
+            });
+        },
+        next: (res) => {
+          this.submitDisabled = false;
+          this.response = res;
+          this.toastr.success('Receipt added successfully.');
+          this.router.navigateByUrl('/accounts/receipts/list');
+        },
+      });
+    }
+
   }
   findReceivedAmtFn() {
     this.matchPayment();

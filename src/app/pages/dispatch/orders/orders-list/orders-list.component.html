@@ -352,7 +352,11 @@
                                                                         ||
                                                                         order.orderStatus
                                                                         ==
-                                                                        'confirmed'"
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
@@ -573,21 +577,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
                                                                         *ngIf="order.orderStatus
-                                                                        ===
+                                                                        ==
                                                                         'created'
                                                                         ||
                                                                         order.orderStatus
-                                                                        ===
+                                                                        ==
                                                                         'confirmed'"
-                                                                        class="dropdown-item"
-                                                                        (click)="showBrokerageModal(order,
-                                                                        '', i,
-                                                                        'section')">Brokerage</a>
-                                                                    <a
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -750,9 +760,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -914,9 +942,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -1078,9 +1124,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -1242,9 +1306,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -1408,9 +1490,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>
@@ -1572,9 +1672,27 @@
                                                                     class="dropdown-menu"
                                                                     attr.aria-labelledby="dropdownMenuButton-{{i}}">
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'TONU'"
                                                                         class="dropdown-item"
                                                                         routerLink="/dispatch/orders/edit/{{order.orderID}}">Edit</a>
                                                                     <a
+                                                                        *ngIf="order.orderStatus
+                                                                        ==
+                                                                        'created'
+                                                                        ||
+                                                                        order.orderStatus
+                                                                        ==
+                                                                        'confirmed'"
                                                                         class="dropdown-item"
                                                                         href="javascript:;"
                                                                         (click)="deactivateOrder(order)">Delete</a>

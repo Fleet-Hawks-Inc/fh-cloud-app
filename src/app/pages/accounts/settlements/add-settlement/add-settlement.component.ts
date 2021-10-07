@@ -66,6 +66,7 @@ export class AddSettlementComponent implements OnInit {
     status: "unpaid",
     paymentLinked: false,
     pendingPayment: 0,
+    currency: "",
     paymentInfo: {
       lMiles: 0,
       lMileTeam: 0,
@@ -95,14 +96,14 @@ export class AddSettlementComponent implements OnInit {
     chargeName: "",
     desc: "",
     amount: "",
-    currency: "CAD",
+    currency: "",
   };
   deductionRowData = {
     tripID: null,
     chargeName: "",
     desc: "",
     amount: "",
-    currency: "CAD",
+    currency: "",
   };
   selectedTrips = [];
   trips = [];
@@ -221,6 +222,15 @@ export class AddSettlementComponent implements OnInit {
             this.settlementData.paymentInfo.dRate = paymentInfo.deliveryRate
               ? paymentInfo.deliveryRate
               : 0;
+            let payCurr = "CAD";
+            if (paymentInfo.paymentType === "Pay Per Mile") {
+              payCurr = paymentInfo.loadedMilesUnit;
+            } else if (paymentInfo.paymentType === "Pay Per Hour") {
+              payCurr = paymentInfo.rateUnit;
+            } else if (paymentInfo.paymentType === "Pay Per Delivery") {
+              payCurr = paymentInfo.deliveryRateUnit;
+            }
+            this.settlementData.currency = payCurr;
           }
         });
     }
@@ -462,15 +472,17 @@ export class AddSettlementComponent implements OnInit {
     if (
       this.additionRowData.tripID != null &&
       this.additionRowData.chargeName != "" &&
-      this.additionRowData.amount != ""
+      this.additionRowData.amount != "" &&
+      this.settlementData.currency !== ""
     ) {
+      this.additionRowData.currency = this.settlementData.currency;
       this.settlementData.addition.push(this.additionRowData);
       this.additionRowData = {
         tripID: null,
         chargeName: "",
         desc: "",
         amount: "",
-        currency: "CAD",
+        currency: this.settlementData.currency,
       };
       this.calculateAddTotal();
     }
@@ -480,15 +492,17 @@ export class AddSettlementComponent implements OnInit {
     if (
       this.deductionRowData.tripID != null &&
       this.deductionRowData.chargeName != "" &&
-      this.deductionRowData.amount != ""
+      this.deductionRowData.amount != "" &&
+      this.settlementData.currency !== ""
     ) {
+      this.deductionRowData.currency = this.settlementData.currency;
       this.settlementData.deduction.push(this.deductionRowData);
       this.deductionRowData = {
         tripID: null,
         chargeName: "",
         desc: "",
         amount: "",
-        currency: "CAD",
+        currency: this.settlementData.currency,
       };
       this.calculateDedTotal();
     }
@@ -1159,6 +1173,7 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
+    // console.log("this.settlementData", this.settlementData);
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -1184,7 +1199,7 @@ export class AddSettlementComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Settlement added successfully.");
-        // this.cancel();
+        this.cancel();
       },
     });
   }
@@ -1458,6 +1473,7 @@ export class AddSettlementComponent implements OnInit {
           `expense/trip-expenses?trips=${tripIds}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
         )
         .toPromise();
+      this.finalTripExpenses = [];
       for (const exp of result) {
         const expobj = {
           tripID: exp.tripID,
@@ -1709,7 +1725,7 @@ export class AddSettlementComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Settlement updated successfully.");
-          // this.cancel();
+          this.cancel();
         },
       });
   }
@@ -1741,6 +1757,16 @@ export class AddSettlementComponent implements OnInit {
                 this.settlementData.paymentInfo.dRate = paymentInfo.dr
                   ? paymentInfo.dr
                   : 0;
+
+                let payCurr = "CAD";
+                if (paymentInfo.pType === "Pay Per Mile") {
+                  payCurr = paymentInfo.lmCur;
+                } else if (paymentInfo.pType === "Pay Per Hour") {
+                  payCurr = paymentInfo.pRCurr;
+                } else if (paymentInfo.pType === "Pay Per Delivery") {
+                  payCurr = paymentInfo.drCur;
+                }
+                this.settlementData.currency = payCurr;
               }
             } else if (this.settlementData.type === "owner_operator") {
               if (curKey[0] === "opData") {
@@ -1760,6 +1786,16 @@ export class AddSettlementComponent implements OnInit {
                 this.settlementData.paymentInfo.dRate = paymentInfo.dr
                   ? paymentInfo.dr
                   : 0;
+
+                let payCurr = "CAD";
+                if (paymentInfo.pType === "Pay Per Mile") {
+                  payCurr = paymentInfo.lmCur;
+                } else if (paymentInfo.pType === "Pay Per Hour") {
+                  payCurr = paymentInfo.pRCurr;
+                } else if (paymentInfo.pType === "Pay Per Delivery") {
+                  payCurr = paymentInfo.drCur;
+                }
+                this.settlementData.currency = payCurr;
               }
             }
           });
