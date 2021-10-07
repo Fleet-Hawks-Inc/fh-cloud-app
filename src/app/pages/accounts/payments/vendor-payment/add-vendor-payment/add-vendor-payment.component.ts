@@ -59,6 +59,7 @@ export class AddVendorPaymentComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   showModal = false;
+
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   constructor(
     private listService: ListService,
@@ -67,6 +68,7 @@ export class AddVendorPaymentComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private accountService: AccountService
   ) {}
+
 
   ngOnInit(): void {
     this.listService.fetchVendors();
@@ -115,41 +117,42 @@ export class AddVendorPaymentComponent implements OnInit {
         this.paymentData.invoices.push(this.invoiceData);
         this.invoiceData = {
           invoiceNo: null,
-          desc: "",
+          desc: '',
           amount: 0,
-          currency: "CAD",
+          currency: 'CAD',
           conAmt: 0,
-          conCur: null,
+          conCur: null
         };
         this.calculateInvoiceTotal();
       } else {
-        this.accountService
-          .getData(
-            `currency-conversion/convert/${baseCur}/${outputCur}/${amount}`
-          )
-          .subscribe((res) => {
-            if (res) {
-              this.invoiceData.conAmt = +res.toFixed(2);
-              this.invoiceData.conCur = outputCur;
-              this.paymentData.invoices.push(this.invoiceData);
-              this.invoiceData = {
-                invoiceNo: null,
-                desc: "",
-                amount: 0,
-                currency: "CAD",
-                conAmt: 0,
-                conCur: null,
-              };
-              this.calculateInvoiceTotal();
-            }
-          });
+        this.accountService.getData(`vendor-payments/convert/${baseCur}/${outputCur}/${amount}`).subscribe((res) => {
+          if (res) {
+            this.invoiceData.conAmt = +res.toFixed(2);
+            this.invoiceData.conCur = outputCur;
+            this.paymentData.invoices.push(this.invoiceData);
+            this.invoiceData = {
+              invoiceNo: null,
+              desc: '',
+              amount: 0,
+              currency: 'CAD',
+              conAmt: 0,
+              conCur: null
+            };
+            this.calculateInvoiceTotal();
+          }
+
+        });
+
+
       }
     }
   }
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
+
     localStorage.setItem("isOpen", "true");
+
     this.listService.changeButton(false);
   }
   refreshVendorData() {
@@ -210,7 +213,7 @@ export class AddVendorPaymentComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     if (this.paymentData.paymentTotal <= 0) {
-      this.toaster.error("Please add invoice.");
+      this.toaster.error('Please add invoice.');
       return false;
     }
     this.submitDisabled = true;
@@ -219,18 +222,20 @@ export class AddVendorPaymentComponent implements OnInit {
 
     // append photos if any
     for (let i = 0; i < this.uploadedDocs.length; i++) {
-      formData.append("uploadedDocs", this.uploadedDocs[i]);
+      formData.append('uploadedDocs', this.uploadedDocs[i]);
     }
 
     // append other fields
-    formData.append("data", JSON.stringify(this.paymentData));
-    this.accountService.postData("vendor-payments", formData, true).subscribe({
-      complete: () => {},
+    formData.append('data', JSON.stringify(this.paymentData));
+    this.accountService.postData('vendor-payments', formData, true).subscribe({
+      complete: () => { },
+
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
+              val.message = val.message.replace(/".*"/, 'This Field');
+
               this.errors[val.context.key] = val.message;
             })
           )
@@ -248,7 +253,8 @@ export class AddVendorPaymentComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success("Vendor payment added successfully.");
+        this.toaster.success('Vendor payment added successfully.');
+
         this.cancel();
       },
     });

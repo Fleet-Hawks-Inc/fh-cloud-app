@@ -1418,19 +1418,19 @@ export class AddTripComponent implements OnInit {
     // this.tripData.orderType = tabType;
   }
 
-  fetchOrders() {
+  async fetchOrders() {
     this.ltlOrders = [];
     this.ftlOrders = [];
-    this.spinner.show();
-    this.apiService.getData("orders/get/confirmed").subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.spinner.hide();
-        let data = result.Items;
-        this.setOrdersDataFormat(data, "all");
-      },
-    });
+    let result: any = await this.apiService
+      .getData("orders/get/confirmed")
+      .toPromise();
+    let result2: any = await this.apiService
+      .getData("orders/get/brokerage")
+      .toPromise();
+    let data = result.Items;
+    let data2 = result2.Items;
+    let newData = data.concat(data2);
+    this.setOrdersDataFormat(newData, "all");
   }
 
   setOrdersDataFormat(orders, type) {
