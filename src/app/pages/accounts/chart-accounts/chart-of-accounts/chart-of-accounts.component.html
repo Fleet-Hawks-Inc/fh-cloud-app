@@ -134,19 +134,21 @@
               <label class="control-label font-weight-bold">Account#<span
                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
               <input type="number" class="form-control" min="0" placeholder="eg. 1100,1150 " [(ngModel)]="actNo"
-                name="actNo" #accountNo="ngModel" required>
+                name="actNo" #accountNo="ngModel" required (change)="validateAcNumber(actNo)">
               <div *ngIf="accountNo.invalid && (accountNo.dirty || accountNo.touched)" class="text-danger">
                 <div *ngIf="accountNo.errors.required"> Account number is required. </div>
               </div>
+              <div *ngIf="actNoError" class="text-danger">Account# already exists.</div>
             </div>
             <div class="col-lg-6">
               <label class="control-label font-weight-bold">Account Name<span
                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
               <input type="text" class="form-control text-capitalize" placeholder="eg. Property And Equipment"
-                [(ngModel)]="actName" name="actName" #accountName="ngModel" required>
+                [(ngModel)]="actName" name="actName" #accountName="ngModel" required (change)="validateAcName(actName)">
               <div *ngIf="accountName.invalid && (accountName.dirty || accountName.touched)" class="text-danger">
                 <div *ngIf="accountName.errors.required"> Account name is required. </div>
               </div>
+              <div *ngIf="actNameError" class="text-danger">Account name already exists.</div>
             </div>
           </div>
           <div class="row mt-2">
@@ -171,7 +173,7 @@
                   <label class="control-label font-weight-bold pt-2">Account Class<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                   <ng-select class="form-control populate" placeholder="Select account class" [(ngModel)]="actClass"
-                    name="actClass" #accountType="ngModel" required>
+                    name="actClass" #accountClass="ngModel" required>
                     <ng-option *ngFor="let acClass of acClasses" value="{acClass.acClassID}">{{acClass.acClassName}}
                     </ng-option>
                     <!-- <ng-option value="current assets">Current Assets</ng-option>
@@ -187,6 +189,9 @@
                     <ng-option value="sales">Sales</ng-option>
                     <ng-option value="current liability">Current Liability</ng-option> -->
                   </ng-select>
+                  <div *ngIf="accountClass.invalid && (accountClass.dirty || accountClass.touched)" class="text-danger">
+                    <div *ngIf="accountClass.errors.required"> Account class is required. </div>
+                  </div>
                 </div>
                 <div class="col-lg-2 mar-top-37 pl-0">
                   <button type="button" data-target="#addAccountClassModal" data-toggle="modal"

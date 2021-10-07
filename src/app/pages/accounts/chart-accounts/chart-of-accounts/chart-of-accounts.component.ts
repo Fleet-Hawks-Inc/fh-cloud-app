@@ -61,6 +61,8 @@ export class ChartOfAccountsComponent implements OnInit {
   addPredefined = false;
   disableSearch = false;
   loaded = false;
+  actNoError = false;
+  actNameError = false;
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
@@ -190,7 +192,29 @@ export class ChartOfAccountsComponent implements OnInit {
       }
     });
   }
-
+  validateAcNumber(actNo) {
+    console.log('accountNumber', actNo);
+    this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
+      console.log('res', res);
+      if (res === true) {
+        this.actNoError = true;
+        this.submitDisabled = true;
+      } else {
+        this.actNoError = false;
+        this.submitDisabled = true;
+      }
+    });
+  }
+  validateAcName(actName) {
+    actName = actName.trim();
+    this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
+      if (res === true) {
+        this.actNameError = true;
+      } else {
+        this.actNameError = false;
+      }
+    });
+  }
   addAccount() {
     this.submitDisabled = true;
     const data = {
