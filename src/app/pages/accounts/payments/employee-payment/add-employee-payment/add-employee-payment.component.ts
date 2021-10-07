@@ -22,6 +22,7 @@ declare var $: any;
 export class AddEmployeePaymentComponent implements OnInit {
   dataMessage: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
+    currency: "",
     entityId: null,
     txnDate: moment().format("YYYY-MM-DD"),
     paymentNo: "",
@@ -81,14 +82,14 @@ export class AddEmployeePaymentComponent implements OnInit {
     chargeName: "",
     desc: "",
     amount: <any>"",
-    currency: "CAD",
+    currency: "",
   };
   deductionRowData = {
     eventDate: null,
     chargeName: "",
     desc: "",
     amount: <any>"",
-    currency: "CAD",
+    currency: "",
   };
   accounts;
   payModeLabel = "";
@@ -197,32 +198,37 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.paymentData.finalTotal = 0;
     this.paymentData.subTotal = 0;
     this.paymentData.advance = 0;
-    this.apiService
-      .getData(`contacts/detail/${this.paymentData.entityId}`)
-      .subscribe((result: any) => {
-        this.empDetails = result.Items[0];
-        let paymentInfo = this.empDetails.paymentDetails;
-        if (paymentInfo.payrollType === "Hours") {
-          this.paymentData.payroll.type = "hourly";
-          this.paymentData.payroll.amount =
-            Number(paymentInfo.payrollRate) *
-            Number(this.paymentData.payroll.hours);
-          this.paymentData.payroll.perHour = Number(paymentInfo.payrollRate);
-        } else if (paymentInfo.payrollType === "Flat") {
-          this.paymentData.payroll.type = "flat";
-          this.paymentData.payroll.amount = Number(paymentInfo.payrollRate);
-          // this.paymentData.paymentTotal = this.paymentData.payroll.amount;
-          this.paymentData.settledAmount = this.paymentData.payroll.amount;
-          this.paymentData.paymentTotal =
-            Number(this.paymentData.settledAmount) +
-            Number(this.paymentData.vacPayAmount);
-          this.paymentData.finalTotal = this.paymentData.payroll.amount;
-          this.paymentData.subTotal = this.paymentData.payroll.amount;
-        }
-      });
-    this.fetchLastAdded();
-    this.fetchAdvancePayments();
-    this.calculatePayroll();
+    if (this.paymentData.entityId) {
+      this.apiService
+        .getData(`contacts/detail/${this.paymentData.entityId}`)
+        .subscribe((result: any) => {
+          this.empDetails = result.Items[0];
+          let paymentInfo = this.empDetails.paymentDetails;
+          this.paymentData.currency = paymentInfo.payrollRateUnit
+            ? paymentInfo.payrollRateUnit
+            : "CAD";
+          if (paymentInfo.payrollType === "Hours") {
+            this.paymentData.payroll.type = "hourly";
+            this.paymentData.payroll.amount =
+              Number(paymentInfo.payrollRate) *
+              Number(this.paymentData.payroll.hours);
+            this.paymentData.payroll.perHour = Number(paymentInfo.payrollRate);
+          } else if (paymentInfo.payrollType === "Flat") {
+            this.paymentData.payroll.type = "flat";
+            this.paymentData.payroll.amount = Number(paymentInfo.payrollRate);
+            // this.paymentData.paymentTotal = this.paymentData.payroll.amount;
+            this.paymentData.settledAmount = this.paymentData.payroll.amount;
+            this.paymentData.paymentTotal =
+              Number(this.paymentData.settledAmount) +
+              Number(this.paymentData.vacPayAmount);
+            this.paymentData.finalTotal = this.paymentData.payroll.amount;
+            this.paymentData.subTotal = this.paymentData.payroll.amount;
+          }
+        });
+      this.fetchLastAdded();
+      this.fetchAdvancePayments();
+      this.calculatePayroll();
+    }
   }
 
   EmpRateCalc() {
@@ -250,10 +256,12 @@ export class AddEmployeePaymentComponent implements OnInit {
 
   addAdditionalExp() {
     if (
-      this.additionRowData.eventDate != null &&
-      this.additionRowData.chargeName != "" &&
-      this.additionRowData.amount != ""
+      this.additionRowData.eventDate !== null &&
+      this.additionRowData.chargeName !== "" &&
+      this.additionRowData.amount !== "" &&
+      this.paymentData.currency !== ""
     ) {
+      this.additionRowData.currency = this.paymentData.currency;
       this.additionRowData.amount = Number(this.additionRowData.amount);
       this.paymentData.addition.push(this.additionRowData);
       this.additionRowData = {
@@ -261,7 +269,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         chargeName: "",
         desc: "",
         amount: "",
-        currency: "CAD",
+        currency: this.paymentData.currency,
       };
       this.calculateAddTotal();
     }
@@ -271,8 +279,10 @@ export class AddEmployeePaymentComponent implements OnInit {
     if (
       this.deductionRowData.eventDate != null &&
       this.deductionRowData.chargeName != "" &&
-      this.deductionRowData.amount != ""
+      this.deductionRowData.amount != "" &&
+      this.paymentData.currency !== ""
     ) {
+      this.deductionRowData.currency = this.paymentData.currency;
       this.deductionRowData.amount = Number(this.deductionRowData.amount);
       this.paymentData.deduction.push(this.deductionRowData);
       this.deductionRowData = {
@@ -280,7 +290,7 @@ export class AddEmployeePaymentComponent implements OnInit {
         chargeName: "",
         desc: "",
         amount: "",
-        currency: "CAD",
+        currency: this.paymentData.currency,
       };
       this.calculateDedTotal();
     }
@@ -321,7 +331,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       this.paymentData.payModeNo = "";
     } else if (type == "cheque") {
       label = "Cheque";
-      this.paymentData.payModeNo = Date.now().toString();
+      this.paymentData.payModeNo = "";
     } else if (type == "eft") {
       label = "EFT";
       this.paymentData.payModeNo = "";
@@ -690,7 +700,7 @@ export class AddEmployeePaymentComponent implements OnInit {
       chequeAmount: this.paymentData.finalTotal,
       type: "employee",
       chequeNo: this.paymentData.payModeNo,
-      currency: "CAD",
+      currency: this.paymentData.currency,
       formType: this.paymentID ? "edit" : "add",
       showModal: this.showModal,
       fromDate: this.paymentData.fromDate,

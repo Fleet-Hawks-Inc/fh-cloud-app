@@ -175,7 +175,7 @@ export class AddVendorPaymentComponent implements OnInit {
       this.paymentData.payModeNo = "";
     } else if (type === "cheque") {
       label = "Cheque";
-      this.paymentData.payModeNo = Date.now().toString();
+      this.paymentData.payModeNo = "";
     } else if (type === "eft") {
       label = "EFT";
       this.paymentData.payModeNo = "";

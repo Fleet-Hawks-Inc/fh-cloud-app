@@ -66,6 +66,7 @@ export class AddSettlementComponent implements OnInit {
     status: "unpaid",
     paymentLinked: false,
     pendingPayment: 0,
+    currency: "",
     paymentInfo: {
       lMiles: 0,
       lMileTeam: 0,
@@ -75,7 +76,6 @@ export class AddSettlementComponent implements OnInit {
       pRate: 0,
       dRate: 0,
       pType: "",
-      currency: "",
       // drivers: [],
     },
     fuelIds: [],
@@ -230,7 +230,7 @@ export class AddSettlementComponent implements OnInit {
             } else if (paymentInfo.paymentType === "Pay Per Delivery") {
               payCurr = paymentInfo.deliveryRateUnit;
             }
-            this.settlementData.paymentInfo.currency = payCurr;
+            this.settlementData.currency = payCurr;
           }
         });
     }
@@ -473,16 +473,16 @@ export class AddSettlementComponent implements OnInit {
       this.additionRowData.tripID != null &&
       this.additionRowData.chargeName != "" &&
       this.additionRowData.amount != "" &&
-      this.settlementData.paymentInfo.currency !== ""
+      this.settlementData.currency !== ""
     ) {
-      this.additionRowData.currency = this.settlementData.paymentInfo.currency;
+      this.additionRowData.currency = this.settlementData.currency;
       this.settlementData.addition.push(this.additionRowData);
       this.additionRowData = {
         tripID: null,
         chargeName: "",
         desc: "",
         amount: "",
-        currency: this.settlementData.paymentInfo.currency,
+        currency: this.settlementData.currency,
       };
       this.calculateAddTotal();
     }
@@ -493,16 +493,16 @@ export class AddSettlementComponent implements OnInit {
       this.deductionRowData.tripID != null &&
       this.deductionRowData.chargeName != "" &&
       this.deductionRowData.amount != "" &&
-      this.settlementData.paymentInfo.currency !== ""
+      this.settlementData.currency !== ""
     ) {
-      this.deductionRowData.currency = this.settlementData.paymentInfo.currency;
+      this.deductionRowData.currency = this.settlementData.currency;
       this.settlementData.deduction.push(this.deductionRowData);
       this.deductionRowData = {
         tripID: null,
         chargeName: "",
         desc: "",
         amount: "",
-        currency: this.settlementData.paymentInfo.currency,
+        currency: this.settlementData.currency,
       };
       this.calculateDedTotal();
     }
@@ -1725,7 +1725,7 @@ export class AddSettlementComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Settlement updated successfully.");
-          // this.cancel();
+          this.cancel();
         },
       });
   }
@@ -1766,7 +1766,7 @@ export class AddSettlementComponent implements OnInit {
                 } else if (paymentInfo.pType === "Pay Per Delivery") {
                   payCurr = paymentInfo.drCur;
                 }
-                this.settlementData.paymentInfo.currency = payCurr;
+                this.settlementData.currency = payCurr;
               }
             } else if (this.settlementData.type === "owner_operator") {
               if (curKey[0] === "opData") {
@@ -1795,7 +1795,7 @@ export class AddSettlementComponent implements OnInit {
                 } else if (paymentInfo.pType === "Pay Per Delivery") {
                   payCurr = paymentInfo.drCur;
                 }
-                this.settlementData.paymentInfo.currency = payCurr;
+                this.settlementData.currency = payCurr;
               }
             }
           });
@@ -1931,7 +1931,6 @@ export class AddSettlementComponent implements OnInit {
       pRate: 0,
       dRate: 0,
       pType: "",
-      currency: "",
       // drivers: [],
     };
     this.settlementData.paymentTotal = 0;
