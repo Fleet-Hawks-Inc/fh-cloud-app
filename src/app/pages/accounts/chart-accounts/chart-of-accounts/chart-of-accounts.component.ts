@@ -193,20 +193,17 @@ export class ChartOfAccountsComponent implements OnInit {
     });
   }
   validateAcNumber(actNo) {
-    console.log('accountNumber', actNo);
     this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
       console.log('res', res);
       if (res === true) {
         this.actNoError = true;
-        this.submitDisabled = true;
       } else {
         this.actNoError = false;
-        this.submitDisabled = true;
       }
     });
   }
   validateAcName(actName) {
-    actName = actName.trim();
+    actName = actName.replace(/\s+/g, ' ').trim(); // trim the double or more spaces if in between words
     this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
       if (res === true) {
         this.actNameError = true;

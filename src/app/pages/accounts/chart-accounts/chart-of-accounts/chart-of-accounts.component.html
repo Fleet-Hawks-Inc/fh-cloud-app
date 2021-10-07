@@ -293,8 +293,14 @@
           <div class="form-row mt-2">
             <div class="form-group col-lg-12">
               <label class="control-label font-weight-bold">Description</label>
-              <textarea rows="3" class="form-control" placeholder="Enter description of the account"
-                [(ngModel)]="actDesc" name="actDesc"></textarea>
+              <textarea rows="3" class="form-control heighta" placeholder="Enter description of the account"
+                [(ngModel)]="actDesc" name="actDesc" #adescription="ngModel" pattern="^[\s\S]{1,500}$"></textarea>
+              <div *ngIf="adescription.invalid && (adescription.dirty || adescription.touched)" class="text-danger">
+                <div *ngIf="adescription.errors.pattern">
+                  Only 500 characters are allowed.
+                </div>
+
+              </div>
             </div>
           </div>
           <div class="form-row mt-2">

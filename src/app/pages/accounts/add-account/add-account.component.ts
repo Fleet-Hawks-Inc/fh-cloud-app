@@ -40,12 +40,20 @@ export class AddAccountComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
+  actNoError = false;
+  actNameError = false;
+  classData = {
+    acClassName: '',
+    acClassDesc: ''
+  };
+  classDisabled = false;
+  acClasses = [];
   constructor(
     private accountService: AccountService,
     private listService: ListService,
     private toaster: ToastrService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
   addAccount() {
     this.submitDisabled = true;
     const data = {
@@ -128,6 +136,70 @@ export class AddAccountComponent implements OnInit {
     this.transLogCAD = false;
     this.transLogUSD = false;
   }
+  validateAcNumber(actNo) {
+    console.log('accountNumber', actNo);
+    this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
+      console.log('res', res);
+      if (res === true) {
+        this.actNoError = true;
+        this.submitDisabled = true;
+      } else {
+        this.actNoError = false;
+        this.submitDisabled = true;
+      }
+    });
+  }
+  validateAcName(actName) {
+    actName = actName.replace(/\s+/g, ' ').trim(); // trim the double or more spaces if in between words
+    this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
+      if (res === true) {
+        this.actNameError = true;
+      } else {
+        this.actNameError = false;
+      }
+    });
+  }
+  addAcClass() {
+    this.classDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.accountService.postData('chartAc/acClass/add', this.classData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error).pipe(map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message;
+        })).subscribe({
+          complete: () => {
+            this.classDisabled = false;
+          },
+          error: () => {
+            this.classDisabled = false;
+          },
+          next: () => { },
+        });
+      },
+      next: (res) => {
+        this.getAcClasses();
+        this.classDisabled = false;
+        this.response = res;
+        $('#addAccountClassModal').modal('hide');
+        this.classData = {
+          acClassName: '',
+          acClassDesc: ''
+        };
+        this.toaster.success('Account class added successfully.');
+      },
+    });
+  }
 
-
+  getAcClasses() {
+    this.accountService.getData('chartAc/get/acClasses').subscribe((res) => {
+      this.acClasses = res;
+    });
+  }
+  refreshClass() {
+    this.getAcClasses();
+  }
 }
