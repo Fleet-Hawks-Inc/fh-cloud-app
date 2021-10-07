@@ -146,7 +146,7 @@ export class AddReceiptComponent implements OnInit {
         .subscribe((res: any) => {
           if (res !== undefined) {
             this.orderInvoices = res.filter((e: any) => {
-              return e.invCur === this.currency;
+              return e.charges.freightFee.currency === this.currency;
             });
             this.orderInvoices.map((v: any) => {
               v.invStatus = v.invStatus.replace('_', ' ');
@@ -333,7 +333,7 @@ export class AddReceiptComponent implements OnInit {
 
   async addReceipt() {
     if (this.receiptData.recAmount === 0) {
-      this.toastr.error('Received Amount can not be 0, select invoice currency');
+      this.toastr.error('Select invoice');
     } else {
       this.submitDisabled = true;
       this.errors = {};
