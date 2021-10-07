@@ -1382,17 +1382,9 @@ export class NewAddressBookComponent implements OnInit {
         }
       }
       this.unitData.addlCnt = res.addlCnt;
-      console.log('res.data', res.data);
       this.unitData.data = res.data;
-      // this.unitData.data.map((e: any) => {
-      //   if(e.carrierData) {
-      //     if (e.carrierData.wcb === undefined){
-      //       e.carrierData.wcb = false;
-      //     }
-      //   }
-      // });
       //to show profile image
-      if (res.profileImg != '' && res.profileImg != undefined) {
+      if (res.profileImg !== '' && res.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;
         this.imageText = 'Update Picture';
       } else {
