@@ -7,7 +7,10 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2 pr-0">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" class="form-control" placeholder="Search by payment#" name="paymentNo" [(ngModel)]="filter.paymentNo">
+                                <input type="text" class="form-control"
+                                    placeholder="Search by payment#"
+                                    name="paymentNo"
+                                    [(ngModel)]="filter.paymentNo">
                             </div>
                         </div>
 
@@ -19,32 +22,46 @@
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
                                 </span>
-                                <input [(ngModel)]="filter.startDate" name="startDate"
-                                    type="text" placeholder="yyyy/mm/dd" (click)="startDate.toggle()"
-                                    ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                                <input [(ngModel)]="filter.startDate"
+                                    name="startDate"
+                                    type="text" placeholder="yyyy/mm/dd"
+                                    (click)="startDate.toggle()"
+                                    ngbDatepicker #startDate="ngbDatepicker"
+                                    class="form-control"
                                     autocomplete="off" [minDate]="dateMinLimit"
                                     [maxDate]="futureDatesLimit">
                                 <span class="input-group-text border-left-0
                                     border-right-0 rounded-0">
                                     to
                                 </span>
-                                <input [(ngModel)]="filter.endDate" name="endDate"
-                                    type="text" placeholder="yyyy/mm/dd" (click)="endDate.toggle()"
-                                    ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                                <input [(ngModel)]="filter.endDate"
+                                    name="endDate"
+                                    type="text" placeholder="yyyy/mm/dd"
+                                    (click)="endDate.toggle()"
+                                    ngbDatepicker #endDate="ngbDatepicker"
+                                    class="form-control"
                                     autocomplete="off" [minDate]="dateMinLimit"
                                     [maxDate]="futureDatesLimit">
                             </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2">
-                            <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch" (click)="searchFilter()">Search</button>
-                            <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch" (click)="resetFilter()">Reset</button>
+                            <button type="submit" class="btn btn-sm btn-success
+                                mr-3" [disabled]="disableSearch"
+                                (click)="searchFilter()">Search</button>
+                            <button type="submit" class="btn btn-sm btn-success"
+                                [disabled]="disableSearch"
+                                (click)="resetFilter()">Reset</button>
                         </div>
                         <div class="col-md-5 col-lg-5 text-right pr-1">
-                            <button [disabled]="disableSearch" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm mr-2">
+                            <button [disabled]="disableSearch"
+                                (click)="refreshData()" data-toggle="tooltip"
+                                title="Refresh data" class="btn btn-success
+                                btn-sm mr-2">
                                 <i class="fas fa-sync"></i>
                             </button>
-                            <a routerLink="/accounts/payments/employee-payments/add"
+                            <a
+                                routerLink="/accounts/payments/employee-payments/add"
                                 class="btn btn-success btn-sm ml-2"
                                 style="color:white;"><i class="fas fa-plus"></i>
                                 Add Payment </a>
@@ -56,40 +73,61 @@
 
             <section class="m-2">
                 <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                        <div infiniteScroll
-                        [infiniteScrollDistance]="1"
-                        [infiniteScrollUpDistance]="1"
-                        [infiniteScrollThrottle]="5"
-                        (scrolled)="onScroll()">
-                         <div class="form-group row">
-                            <div class="col-lg-12">
-                                <table class="table table-bordered table-striped
-                                mb-0 simple-table">
-                                <thead>
-                                    <tr class="bgcol2">
-                                        <th class="text-2">Payment#</th>
-                                        <th class="text-2">Date</th>
-                                        <th class="text-2">Payment Mode</th>
-                                        <th class="text-2">Vendor </th>
-                                        <th class="text-2">Amount</th>
-                                        <!-- <th class="text-2">Action</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngIf="payments.length === 0" class="text-center">
-                                        <td colspan="6">
-                                            {{ dataMessage }}
-                                        </td>
-                                    </tr>
-                                    <tr *ngFor="let data of payments; let i=index">
-                                        <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }}</td>
-                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
-                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.payMode | titlecase}}</td>
-                                        <td class="cursorpoint" [routerLink]="data.url">{{ employees[data.entityId] }}</td>
-                                        <td class="cursorpoint" [routerLink]="data.url">{{ data.finalTotal | number : '1.2-2' }} CAD</td>
-                                        <!-- <td>
+                    <div class="col-lg-12">
+                        <div class="bg-white p-3 text-dark">
+                            <div infiniteScroll
+                                [infiniteScrollDistance]="1"
+                                [infiniteScrollUpDistance]="1"
+                                [infiniteScrollThrottle]="5"
+                                (scrolled)="onScroll()">
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-bordered
+                                            table-striped
+                                            mb-0 simple-table">
+                                            <thead>
+                                                <tr class="bgcol2">
+                                                    <th class="text-2">Payment#</th>
+                                                    <th class="text-2">Date</th>
+                                                    <th class="text-2">Payment
+                                                        Mode</th>
+                                                    <th class="text-2">Vendor
+                                                    </th>
+                                                    <th class="text-2">Amount</th>
+                                                    <!-- <th class="text-2">Action</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngIf="payments.length ===
+                                                    0" class="text-center">
+                                                    <td colspan="6">
+                                                        {{ dataMessage }}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let data of
+                                                    payments; let i=index">
+                                                    <td class="font-weight-bold
+                                                        cursorpoint"
+                                                        [routerLink]="data.url">{{
+                                                        data.paymentNo }}</td>
+                                                    <td class="cursorpoint"
+                                                        [routerLink]="data.url">{{
+                                                        data.txnDate | date:
+                                                        "yyyy/MM/dd" }}</td>
+                                                    <td class="cursorpoint"
+                                                        [routerLink]="data.url">{{
+                                                        data.payMode |
+                                                        titlecase}}</td>
+                                                    <td class="cursorpoint"
+                                                        [routerLink]="data.url">{{
+                                                        employees[data.entityId]
+                                                        }}</td>
+                                                    <td class="cursorpoint"
+                                                        [routerLink]="data.url">{{
+                                                        data.finalTotal | number
+                                                        : '1.2-2' }} {{
+                                                        data.currency }}</td>
+                                                    <!-- <td>
                                             <div class="dropdown dropright">
                                                 <button class="bg-transparent border-0" type="button"
                                                 id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
@@ -103,20 +141,24 @@
                                                 </div>
                                             </div>
                                         </td> -->
-                                    </tr>
-                                </tbody>
-                            </table>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-12 mt-3 text-center"
+                                        *ngIf="lastItemSK !== 'end' &&
+                                        payments.length !== 0">
+                                        <button type="button" class="btn
+                                            btn-success btn-sm text-light"
+                                            (click)="onScroll()">Load More..</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
-                              <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
-                                                   </div>
-                         </div>
                         </div>
-                      </div>
-                   </div>
+                    </div>
                 </div>
 
-             </section>
+            </section>
 
 
 

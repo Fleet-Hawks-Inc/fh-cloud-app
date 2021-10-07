@@ -60,17 +60,7 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="row" id="settlementListDiv">
-                                            <!-- <div class="col-lg-5">
-                                        <label
-                                            class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment#<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input type="text" class="form-control" [(ngModel)]="paymentData.paymentNo" name="paymentNo" placeholder="Enter payment#" #payNo="ngModel" required>
-                                        <div *ngIf="payNo.invalid && (payNo.dirty || payNo.touched)" class="text-danger">
-                                            <div *ngIf="payNo.errors.required">
-                                                Payment# is required.
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                            <div class="col-lg-10">
+                                            <div class="col-lg-5">
                                                 <label
                                                     class="control-label
                                                     font-weight-bold font-bold
@@ -102,6 +92,28 @@
                                                         required.
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label
+                                                    class="control-label
+                                                    font-weight-bold font-bold
+                                                    text-lg-right pt-2">Payment
+                                                    Currency<span
+                                                        class="mandfield
+                                                        text-2 ml-1"><sup>*</sup></span>
+                                                </label>
+                                                <ng-select
+                                                    [(ngModel)]="paymentData.currency"
+                                                    name="payCurr"
+                                                    placeholder="Select
+                                                    Currency"
+                                                    #paymentCurr="ngModel"
+                                                    required
+                                                    [clearable]="false"
+                                                    [disabled]="editDisabled">
+                                                    <ng-option value="CAD">CAD</ng-option>
+                                                    <ng-option value="USD">USD</ng-option>
+                                                </ng-select>
                                             </div>
                                         </div>
                                     </div>
@@ -365,10 +377,12 @@
                                                             </span>
                                                         </td>
                                                         <td>{{ data.finalTotal
-                                                            }} CAD</td>
+                                                            }} {{ data.currency
+                                                            }}</td>
                                                         <td>{{
                                                             paymentData.totalAmount
-                                                            }} CAD</td>
+                                                            }} {{ data.currency
+                                                            }}</td>
                                                         <td><span class="badge
                                                                 badge-dark p-1
                                                                 text-uppercase">{{
@@ -471,11 +485,12 @@
                                                         </td>
                                                         <td>{{ data.finalTotal |
                                                             number : '1.2-2' }}
-                                                            CAD</td>
+                                                            {{ data.currency }}</td>
                                                         <td>{{
                                                             data.pendingPayment
                                                             | number : '1.2-2'
-                                                            }} CAD</td>
+                                                            }} {{ data.currency
+                                                            }}</td>
                                                         <td>{{
                                                             data.prevPaidAmount
                                                             | number : '1.2-2'
