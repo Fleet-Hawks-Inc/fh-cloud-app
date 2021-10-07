@@ -82,9 +82,9 @@ export class CalendarViewComponent implements OnInit {
   assignConfirmModal: any;
   submitDisabled = false;
   assetData = {
-    assetIdentification: '',
+    assetIdentification: "",
     isTemp: true,
-  }
+  };
 
   async ngOnInit() {
     await this.fetchCustomers();
@@ -120,10 +120,10 @@ export class CalendarViewComponent implements OnInit {
     this.apiService.getData("vehicles").subscribe((result: any) => {
       // this.vehicles = result.Items;
       result.Items.map((element) => {
-        if(element.isDeleted === 0) {
+        if (element.isDeleted === 0) {
           this.vehicles.push(element);
         }
-      })
+      });
     });
   }
 
@@ -131,10 +131,10 @@ export class CalendarViewComponent implements OnInit {
     this.assets = [];
     this.apiService.getData("assets").subscribe((result: any) => {
       result.Items.map((element) => {
-        if(element.isDeleted === 0) {
+        if (element.isDeleted === 0) {
           this.assets.push(element);
         }
-      })
+      });
     });
   }
 
@@ -142,10 +142,10 @@ export class CalendarViewComponent implements OnInit {
     this.apiService.getData("drivers").subscribe((result: any) => {
       let drv = [];
       result.Items.map((i) => {
-        if(i.isDeleted === 0) {
+        if (i.isDeleted === 0) {
           i.fullName = i.firstName;
+          drv.push(i);
         }
-        drv.push(i);
       });
       this.drivers = drv;
       this.codrivers = drv;
@@ -159,7 +159,7 @@ export class CalendarViewComponent implements OnInit {
       .getData("trips/get/calendarActive")
       .subscribe((result: any) => {
         result.Items.map((i) => {
-          if(i.isDeleted === 0) {
+          if (i.isDeleted === 0) {
             if (i.tripStatus == "confirmed") {
               backgroundColor = "#005ce6";
               borderColor = "#005ce6";
@@ -178,7 +178,6 @@ export class CalendarViewComponent implements OnInit {
             };
             this.events.push(eventObj);
           }
-          
         });
       });
   }
@@ -205,7 +204,10 @@ export class CalendarViewComponent implements OnInit {
       this.tempTextFieldValues.vehicleID = $event.vehicleID;
       $(".vehicleClass").removeClass("td_border");
       $("#veh_" + $event.vehicleID).addClass("td_border");
-      $('.trips-vehicle__listing').animate({scrollTop: $("#veh_" + $event.vehicleID).position().top}, "slow");
+      $(".trips-vehicle__listing").animate(
+        { scrollTop: $("#veh_" + $event.vehicleID).position().top },
+        "slow"
+      );
     }
   }
 
@@ -239,7 +241,10 @@ export class CalendarViewComponent implements OnInit {
         }
         $(".driverClass").removeClass("td_border");
         $("#drivr_" + $event.driverID).addClass("td_border");
-        $('.trips-drivers__listing').animate({scrollTop: $("#drivr_" + $event.driverID).position().top}, "slow");
+        $(".trips-drivers__listing").animate(
+          { scrollTop: $("#drivr_" + $event.driverID).position().top },
+          "slow"
+        );
 
         await this.spinner.hide();
       } else if (type === "codriver") {
@@ -252,7 +257,10 @@ export class CalendarViewComponent implements OnInit {
         $(".codriverClass").removeClass("td_border");
         $("#codrivr_" + $event.driverID).addClass("td_border");
 
-        $('.trips-codrivers__listing').animate({scrollTop: $("#codrivr_" + $event.driverID).position().top}, "slow");
+        $(".trips-codrivers__listing").animate(
+          { scrollTop: $("#codrivr_" + $event.driverID).position().top },
+          "slow"
+        );
       }
     }
   }
@@ -278,10 +286,13 @@ export class CalendarViewComponent implements OnInit {
           };
           this.tempTextFieldValues.trailer.push(objj);
         }
-        if( $event.length > 0) {
+        if ($event.length > 0) {
           let lastItem = $event[$event.length - 1];
-          $('.trips-assets__listing').animate({scrollTop: $("#asset_" + lastItem  .assetID).position().top}, "slow");
-      }
+          $(".trips-assets__listing").animate(
+            { scrollTop: $("#asset_" + lastItem.assetID).position().top },
+            "slow"
+          );
+        }
       } else {
         arayy = [];
         $("#asset_" + $event.assetID).addClass("td_border");
@@ -537,7 +548,6 @@ export class CalendarViewComponent implements OnInit {
       }
     }
 
-    
     await this.getTripsData(this.tempTrips);
     this.assignCompanyName();
   }
@@ -546,9 +556,10 @@ export class CalendarViewComponent implements OnInit {
    * Get all customers
    */
   async fetchCustomers() {
-    let result:any = await this.apiService
-      .getData("contacts/get/calendar/customers").toPromise();
-        this.allCustomers = result;
+    let result: any = await this.apiService
+      .getData("contacts/get/calendar/customers")
+      .toPromise();
+    this.allCustomers = result;
   }
 
   assignCompanyName() {

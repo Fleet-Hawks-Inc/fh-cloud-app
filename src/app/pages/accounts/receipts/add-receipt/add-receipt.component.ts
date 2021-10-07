@@ -1,21 +1,22 @@
-import { AccountService, ApiService } from './../../../../services';
-import { ListService } from './../../../../services/list.service';
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import Constants from 'src/app/pages/fleet/constants';
-import { Router } from '@angular/router';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
+import { AccountService, ApiService } from "./../../../../services";
+import { ListService } from "./../../../../services/list.service";
+import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import Constants from "src/app/pages/fleet/constants";
+import { Router } from "@angular/router";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { ActivatedRoute } from "@angular/router";
+import * as moment from "moment";
 declare var $: any;
 @Component({
   selector: 'app-add-receipt',
   templateUrl: './add-receipt.component.html',
   styleUrls: ['./add-receipt.component.css'],
+
 })
 export class AddReceiptComponent implements OnInit {
-  pageTitle = 'Add Receipt';
+  pageTitle = "Add Receipt";
   public recID: string;
   dataMessage: string = Constants.NO_RECORDS_FOUND;
   dataMessageAdv: string = Constants.NO_RECORDS_FOUND;
@@ -28,7 +29,7 @@ export class AddReceiptComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   receiptData = {
     customerID: null,
-    txnDate: moment().format('YYYY-MM-DD'),
+    txnDate: moment().format("YYYY-MM-DD"),
     recNo: null,
     recAmount: 0,
     totalAmount: 0,
@@ -44,6 +45,7 @@ export class AddReceiptComponent implements OnInit {
   };
   paymentMode = [
     {
+
       name: 'Cash',
       value: 'cash',
     },
@@ -66,21 +68,22 @@ export class AddReceiptComponent implements OnInit {
     {
       name: 'Demand Draft',
       value: 'demandDraft',
+
     },
   ];
   advancePayments = [];
-  paymentLabel = '';
+  paymentLabel = "";
   errors = {};
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
-  Error = '';
-  Success = '';
+  Error = "";
+  Success = "";
   submitDisabled = false;
   orderInvoices = [];
   totalReceivedAmt = 0;
   accList = [];
-  advErr = '';
+  advErr = "";
   newTotal = 0;
   totalErr = false;
   paidAmtErr = false;
@@ -97,6 +100,7 @@ export class AddReceiptComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
 
+
   ngOnInit() {
     this.listService.fetchCustomers();
     // this.customers = this.listService.customersList;
@@ -105,9 +109,9 @@ export class AddReceiptComponent implements OnInit {
     this.accounts = this.listService.accountsList;
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
-      this.pageTitle = 'Edit Receipt';
+      this.pageTitle = "Edit Receipt";
     } else {
-      this.pageTitle = 'Add Receipt';
+      this.pageTitle = "Add Receipt";
     }
 
     let customerList = new Array<any>();
@@ -126,6 +130,7 @@ export class AddReceiptComponent implements OnInit {
       });
     });
   }
+
 
   recCurFn(e) {
     this.totalCur = e;
@@ -179,6 +184,7 @@ export class AddReceiptComponent implements OnInit {
     }
 
 
+
     //  this.fetchAdvancePayments();
   }
   getConvertedCur(e) {
@@ -208,12 +214,15 @@ export class AddReceiptComponent implements OnInit {
           v.selected = false;
           if (v.payMode) {
             v.payMode = v.payMode.replace('_', ' ');
+
           }
           v.fullPayment = false;
           v.paidAmount = 0;
           v.paidStatus = false;
+
           v.status = v.status.replace('_', ' ');
           v.errText = '';
+
           v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
           v.prevPaidAmount = v.prevPaidAmount.toFixed(2);
         });
@@ -223,23 +232,23 @@ export class AddReceiptComponent implements OnInit {
    * Get all customers's IDs of names from api
    */
   fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.customersObjects = result;
     });
   }
   showPaymentFields(type) {
-    if (type === 'creditCard') {
-      this.paymentLabel = 'Credit Card';
-    } else if (type === 'debitCard') {
-      this.paymentLabel = 'Debit Card';
-    } else if (type === 'demandDraft') {
-      this.paymentLabel = 'Demand Card';
-    } else if (type === 'eft') {
-      this.paymentLabel = 'EFT';
-    } else if (type === 'cash') {
-      this.paymentLabel = 'Cash';
-    } else if (type === 'cheque') {
-      this.paymentLabel = 'Cheque';
+    if (type === "creditCard") {
+      this.paymentLabel = "Credit Card";
+    } else if (type === "debitCard") {
+      this.paymentLabel = "Debit Card";
+    } else if (type === "demandDraft") {
+      this.paymentLabel = "Demand Card";
+    } else if (type === "eft") {
+      this.paymentLabel = "EFT";
+    } else if (type === "cash") {
+      this.paymentLabel = "Cash";
+    } else if (type === "cheque") {
+      this.paymentLabel = "Cheque";
     }
   }
   getAmountOrder(j: any) {
@@ -262,6 +271,7 @@ export class AddReceiptComponent implements OnInit {
     } else if (
       this.invoices[k].fullPayment === true &&
       this.invoices[k].invStatus === 'partially_paid'
+
     ) {
       this.invoices[k].amountPaid = this.invoices[k].balance;
     } else {
@@ -278,7 +288,7 @@ export class AddReceiptComponent implements OnInit {
           invNo: element.invNo,
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
-          invType: 'orderInvoice',
+          invType: "orderInvoice",
           amountPaid: element.amountPaid,
           balance: element.balance,
           invCur: element.charges.freightFee.currency,
@@ -293,7 +303,7 @@ export class AddReceiptComponent implements OnInit {
           invNo: element.invNo,
           amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
-          invType: 'manual',
+          invType: "manual",
           amountPaid: element.amountPaid,
           balance: element.balance,
           invCur: element.invCur,
@@ -359,6 +369,7 @@ export class AddReceiptComponent implements OnInit {
         },
       });
     }
+
   }
   findReceivedAmtFn() {
     this.matchPayment();

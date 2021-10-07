@@ -1,77 +1,98 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import Constants from 'src/app/pages/fleet/constants';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AccountService } from 'src/app/services/account.service';
-import { ListService } from 'src/app/services/list.service';
-import { Location } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import Constants from "src/app/pages/fleet/constants";
+import { ActivatedRoute, Router } from "@angular/router";
+import * as moment from "moment";
+import { ToastrService } from "ngx-toastr";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { AccountService } from "src/app/services/account.service";
+import { ListService } from "src/app/services/list.service";
+import { Location } from "@angular/common";
+import { DomSanitizer } from "@angular/platform-browser";
 declare var $: any;
 @Component({
-  selector: 'app-add-vendor-payment',
-  templateUrl: './add-vendor-payment.component.html',
-  styleUrls: ['./add-vendor-payment.component.css']
+  selector: "app-add-vendor-payment",
+  templateUrl: "./add-vendor-payment.component.html",
+  styleUrls: ["./add-vendor-payment.component.css"],
 })
 export class AddVendorPaymentComponent implements OnInit {
   dataMessage: string = Constants.NO_RECORDS_FOUND;
   paymentData = {
     entityId: null,
-    txnDate: moment().format('YYYY-MM-DD'),
+    txnDate: moment().format("YYYY-MM-DD"),
     payCur: null,
-    paymentNo: '',
+    paymentNo: "",
     drAct: null,
     accountID: null,
     payMode: null,
-    payModeNo: '',
+    payModeNo: "",
     payModeDate: null,
     paymentTotal: 0,
     attachments: [],
     transactionLog: [],
     invoices: [],
-    remarks: null
+    remarks: null,
   };
   documentSlides = [];
   uploadedDocs = [];
-  payModeLabel = '';
+  payModeLabel = "";
   errors = {};
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
-  Error = '';
-  Success = '';
+  Error = "";
+  Success = "";
   submitDisabled = false;
   paymentID;
-  vendors;
+  vendors = [];
   accounts: any = [];
   invoiceData = {
     invoiceNo: null,
-    desc: '',
+    desc: "",
     amount: 0,
-    currency: 'CAD',
+    currency: "CAD",
     conAmt: 0,
-    conCur: null
+    conCur: null,
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   showModal = false;
-  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
-  constructor(private listService: ListService,
+
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
+  constructor(
+    private listService: ListService,
     private toaster: ToastrService,
     private location: Location,
     private domSanitizer: DomSanitizer,
-    private accountService: AccountService) { }
+    private accountService: AccountService
+  ) {}
+
 
   ngOnInit(): void {
     this.listService.fetchVendors();
-    this.vendors = this.listService.vendorList;
+    // this.vendors = this.listService.vendorList;
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
+
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
   }
+
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    });
+  }
+
   changePayCur() {
     this.paymentData.invoices = [];
     this.paymentData.paymentTotal = 0;
@@ -79,16 +100,20 @@ export class AddVendorPaymentComponent implements OnInit {
   addInvoice() {
     let outputCur = this.paymentData.payCur;
     let baseCur;
-    if (outputCur === 'CAD') {
-      baseCur = 'USD';
+    if (outputCur === "CAD") {
+      baseCur = "USD";
     } else {
-      baseCur = 'CAD';
+      baseCur = "CAD";
     }
     let amount = this.invoiceData.amount;
-    if (this.invoiceData.invoiceNo != null && this.invoiceData.amount !== 0 && this.invoiceData.currency !== null) {
+    if (
+      this.invoiceData.invoiceNo != null &&
+      this.invoiceData.amount !== 0 &&
+      this.invoiceData.currency !== null
+    ) {
       if (this.invoiceData.currency === this.paymentData.payCur) {
         this.invoiceData.conAmt = amount;
-        this.invoiceData.conCur = 'CAD';
+        this.invoiceData.conCur = "CAD";
         this.paymentData.invoices.push(this.invoiceData);
         this.invoiceData = {
           invoiceNo: null,
@@ -118,14 +143,16 @@ export class AddVendorPaymentComponent implements OnInit {
 
         });
 
-      }
 
+      }
     }
   }
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
-    localStorage.setItem('isOpen', 'true');
+
+    localStorage.setItem("isOpen", "true");
+
     this.listService.changeButton(false);
   }
   refreshVendorData() {
@@ -145,29 +172,28 @@ export class AddVendorPaymentComponent implements OnInit {
     }
   }
   changePaymentMode(type) {
-    let label = '';
-    if (type === 'cash') {
-      label = 'Cash';
-      this.paymentData.payModeNo = '';
-    } else if (type === 'cheque') {
-      label = 'Cheque';
+    let label = "";
+    if (type === "cash") {
+      label = "Cash";
+      this.paymentData.payModeNo = "";
+    } else if (type === "cheque") {
+      label = "Cheque";
       this.paymentData.payModeNo = Date.now().toString();
-    } else if (type === 'eft') {
-      label = 'EFT';
-      this.paymentData.payModeNo = '';
-    } else if (type === 'credit_card') {
-      label = 'Credit Card';
-      this.paymentData.payModeNo = '';
-    } else if (type === 'debit_card') {
-      label = 'Debit Card';
-      this.paymentData.payModeNo = '';
-    } else if (type === 'demand_draft') {
-      label = 'Demand Draft';
-      this.paymentData.payModeNo = '';
+    } else if (type === "eft") {
+      label = "EFT";
+      this.paymentData.payModeNo = "";
+    } else if (type === "credit_card") {
+      label = "Credit Card";
+      this.paymentData.payModeNo = "";
+    } else if (type === "debit_card") {
+      label = "Debit Card";
+      this.paymentData.payModeNo = "";
+    } else if (type === "demand_draft") {
+      label = "Demand Draft";
+      this.paymentData.payModeNo = "";
     }
     this.payModeLabel = label;
     this.paymentData.payModeDate = null;
-
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -203,11 +229,13 @@ export class AddVendorPaymentComponent implements OnInit {
     formData.append('data', JSON.stringify(this.paymentData));
     this.accountService.postData('vendor-payments', formData, true).subscribe({
       complete: () => { },
+
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
               val.message = val.message.replace(/".*"/, 'This Field');
+
               this.errors[val.context.key] = val.message;
             })
           )
@@ -219,14 +247,14 @@ export class AddVendorPaymentComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {
-            },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success('Vendor payment added successfully.');
+
         this.cancel();
       },
     });
@@ -238,17 +266,17 @@ export class AddVendorPaymentComponent implements OnInit {
       entityId: this.paymentData.entityId,
       chequeDate: this.paymentData.payModeDate,
       chequeAmount: this.paymentData.paymentTotal,
-      type: 'vendor',
+      type: "vendor",
       chequeNo: this.paymentData.payModeNo,
-      currency: 'CAD',
-      formType: (this.paymentID) ? 'edit' : 'add',
+      currency: "CAD",
+      formType: this.paymentID ? "edit" : "add",
       showModal: this.showModal,
       vacPayPer: 0,
       vacPayAmount: 0,
       finalAmount: this.paymentData.paymentTotal,
       txnDate: this.paymentData.txnDate,
-      page: 'addForm',
-      invoices: this.paymentData.invoices
+      page: "addForm",
+      invoices: this.paymentData.invoices,
     };
     this.listService.openPaymentChequeModal(obj);
   }
