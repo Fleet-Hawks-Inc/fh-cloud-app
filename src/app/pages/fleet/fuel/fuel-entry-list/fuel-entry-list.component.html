@@ -61,6 +61,12 @@
                 <i class="fas fa-sync"></i>
               </a>
 
+              <div ngbDropdown class="d-inline-block">
+                <button class="btn btn-success" id="dropdownBasic1" ngbDropdownToggle>Import</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button ngbDropdownItem data-toggle="modal" data-target="#bvdModal">BVD Report</button>
+                </div>
+              </div>
               <a routerLink="/fleet/fuel/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
                   class="fas fa-plus"></i> Add Fuel Entry</a>
             </div>
@@ -212,3 +218,46 @@
     </section>
   </div>
 </section>
+
+<div class="modal fade" id="bvdModal" tabindex="-1" role="dialog" area-labelledby="bvdModal" aria-hidden="true"
+  data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document" style="width: 600px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">BVD Report Upload</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
+        </button>
+      </div>
+      <div class="modal-body text-dark">
+        <div class="row">
+          <div class="col-log-10 text-center">
+            Please upload the BVD report in CSV fromat.
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="form-group col-lg-12 mb-3">
+              <label class="control-label font-weight-bold labelmt text-3 text-dark">Choose File
+                <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <input (change)="selectDoc($event)" name="" id="uploadedDocs" type="file"
+                class="form-control choosefileLH">
+              <div>
+                <label class="text-danger">Add Document</label>
+              </div>
+              <span>
+                Only .csv format is accepted. The maximum
+                file size can be 15MB.</span>
+              <div *ngIf="newDoc" class="border my-2 p-2">
+                <h4 class="mt-0">Uploaded Document</h4>
+                <a href="{{newDoc}}" target="_blank">Document</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,8 @@ export class FuelEntryListComponent implements OnInit {
   fromDate: any = '';
   toDate: any = '';
   fuelID = '';
+  uploadedDocs = []
+  disable = false;
   vehicles = [];
   vehicleList: any = {};
   tripList: any = {};
@@ -425,5 +427,50 @@ export class FuelEntryListComponent implements OnInit {
     this.fuelList = [];
     this.fuelEntriesCount();
     this.resetCountResult();
+  }
+  selectDoc(event) {
+    let files = [...event.target.files];
+    let condition = true;
+    for (let i = 0; i < files.length; i++) {
+      const element = files[i];
+      let name = element.name.split('.');
+      let ext = name[name.length - 1].toLowerCase();
+
+
+      if (ext != 'csv') {
+        $('#uploadedDocs').val('');
+        condition = false;
+        this.toastr.error('Only csv is allowed');
+        return false;
+      }
+    }
+    if (condition) {
+      this.uploadedDocs = []
+      this.uploadedDocs = files
+      this.postDocument();
+    }
+
+  }
+
+  postDocument() {
+    console.log(this.uploadedDocs.length)
+    if (this.uploadedDocs.length > 0) {
+      this.spinner.show();
+      const formData = new FormData();
+      for (let i = 0; i < this.uploadedDocs.length; i++) {
+        formData.append("uploadedDocs", this.uploadedDocs[i])
+      }
+      this.apiService.postData('fuelEntries/import/BVD', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+
+        },
+        next: (res) => {
+          console.log("Uploaded Successfully")
+          $('#uploadedDocs').val('');
+        }
+      })
+    }
+
   }
 }
