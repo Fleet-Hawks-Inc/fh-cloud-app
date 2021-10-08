@@ -1,17 +1,17 @@
 import { Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import {AccountService, ApiService} from '../../../../services';
+import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
-import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from 'html2pdf.js';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import autoTable from 'jspdf-autotable';
 declare var $: any;
 
 @Component({
@@ -25,9 +25,9 @@ export class OrderDetailComponent implements OnInit {
   @ViewChild('previewInvoiceModal', { static: true }) previewInvoiceModal: TemplateRef<any>;
   @ViewChild('emailInvoiceModal', { static: true }) emailInvoiceModal: TemplateRef<any>;
   @ViewChild('uploadBol', { static: true }) uploadBol: ElementRef;
-  
-  
-  @ViewChild(PdfViewerComponent, {static: false})
+
+
+  @ViewChild(PdfViewerComponent, { static: false })
   private pdfComponent: PdfViewerComponent;
   docs = [];
   attachments = [];
@@ -74,7 +74,7 @@ export class OrderDetailComponent implements OnInit {
   ]
 
   orderDocs = [];
-  pdfSrc:any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
   pageVariable = 1;
@@ -99,7 +99,7 @@ export class OrderDetailComponent implements OnInit {
   createdDate = '';
   createdTime = '';
   additionalContactName = '';
-  additionalPhone  = '';
+  additionalPhone = '';
   additionalEmail = '';
 
   additionalDetails = {
@@ -190,9 +190,9 @@ export class OrderDetailComponent implements OnInit {
 
   hideEdit: boolean = false;
 
-  constructor(private apiService: ApiService,private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
+  constructor(private apiService: ApiService, private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
-   }
+  }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params['orderID'];
@@ -209,55 +209,55 @@ export class OrderDetailComponent implements OnInit {
     this.apiService
       .getData(`orders/${this.orderID}`)
       .subscribe(async (result: any) => {
-          this.newOrderData = result;
-          result = result.Items[0];
-          if(result.stateTaxID != undefined) {
-            if(result.stateTaxID != '') {
-              this.apiService.getData('stateTaxes/'+result.stateTaxID).subscribe((result) => {
-                this.stateCode = result.Items[0].stateCode;
-              });
-            }
+        this.newOrderData = result;
+        result = result.Items[0];
+        if (result.stateTaxID != undefined) {
+          if (result.stateTaxID != '') {
+            this.apiService.getData('stateTaxes/' + result.stateTaxID).subscribe((result) => {
+              this.stateCode = result.Items[0].stateCode;
+            });
           }
+        }
 
-          this.zeroRated = result.zeroRated;
-          this.carrierID = result.carrierID;
-          this.customerID = result.customerID;
-          if(result.orderStatus === 'created' || result.orderStatus === 'confirmed') {
-            this.hideEdit = true;
-          }
-          this.orderStatus = result.orderStatus;
-          await this.fetchCustomersByID();
-          this.cusAddressID = result.cusAddressID;
-          this.reference = result.reference;
-          this.createdDate = result.createdDate;
-          this.createdTime = result.timeCreated;
-          if(result.additionalContact != null && result.additionalContact.label != undefined) {
-            this.additionalContactName = result.additionalContact.label;
-          } else {
-            this.additionalContactName = result.additionalContact;
-          }
+        this.zeroRated = result.zeroRated;
+        this.carrierID = result.carrierID;
+        this.customerID = result.customerID;
+        if (result.orderStatus === 'created' || result.orderStatus === 'confirmed') {
+          this.hideEdit = true;
+        }
+        this.orderStatus = result.orderStatus;
+        await this.fetchCustomersByID();
+        this.cusAddressID = result.cusAddressID;
+        this.reference = result.reference;
+        this.createdDate = result.createdDate;
+        this.createdTime = result.timeCreated;
+        if (result.additionalContact != null && result.additionalContact.label != undefined) {
+          this.additionalContactName = result.additionalContact.label;
+        } else {
+          this.additionalContactName = result.additionalContact;
+        }
 
-          this.additionalPhone  = result.phone;
-          this.additionalEmail = result.email;
-          this.isInvoiced = result.invoiceGenerate;
-          this.shipperReceiversInfos = result.shippersReceiversInfo;
+        this.additionalPhone = result.phone;
+        this.additionalEmail = result.email;
+        this.isInvoiced = result.invoiceGenerate;
+        this.shipperReceiversInfos = result.shippersReceiversInfo;
 
-          for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
-            const element = this.shipperReceiversInfos[u];
-              // for (let k = 0; k < element.shippers.length; k++) {
-              //   const element1 = element.shippers[k];
-              //   element1.date = '';
-              //   element1.time = '';
+        for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
+          const element = this.shipperReceiversInfos[u];
+          // for (let k = 0; k < element.shippers.length; k++) {
+          //   const element1 = element.shippers[k];
+          //   element1.date = '';
+          //   element1.time = '';
 
-              //   let datetime = element1.dateAndTime.split(' ');
-              //   if(datetime[0] != undefined) {
-              //     element1.date = datetime[0];
-              //   }
-              //   if(datetime[1] != undefined) {
-              //     element1.time = datetime[1];
-              //   }
+          //   let datetime = element1.dateAndTime.split(' ');
+          //   if(datetime[0] != undefined) {
+          //     element1.date = datetime[0];
+          //   }
+          //   if(datetime[1] != undefined) {
+          //     element1.time = datetime[1];
+          //   }
 
-              // }
+          // }
 
 
           this.additionalDetails.sealType = result.additionalDetails.sealType ? result.additionalDetails.sealType.replace('_', ' ') : '-';;
@@ -290,115 +290,115 @@ export class OrderDetailComponent implements OnInit {
           //   }
 
           // }
-      }
-      for(let i = 0; i < this.taxesInfo.length; i++){
-        if(this.taxesInfo[i].amount){
-          this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
         }
-      }
-
-          this.milesArr = result.shippersReceiversInfo;
-
-
-          let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
-          let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
-          let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
-          let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
-
-          let totalAmount = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
-          this.taxableAmount = (totalAmount * parseInt(this.taxesTotal) ) / 100;
-          if(!this.zeroRated){
-            this.totalCharges = totalAmount + this.taxableAmount;
-          } else {
-            this.totalCharges = totalAmount;
+        for (let i = 0; i < this.taxesInfo.length; i++) {
+          if (this.taxesInfo[i].amount) {
+            this.taxesTotal = this.taxesTotal + this.taxesInfo[i].amount;
           }
+        }
 
-          // this.advances = result.advance;
-          // this.balance = this.totalCharges - this.advances;
-          this.balance = this.totalCharges;
-
-          if(result.attachments != undefined && result.attachments.length > 0){
-            this.attachments = result.attachments.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
-          }
-          if(result.uploadedDocs != undefined && result.uploadedDocs.length > 0){
-            this.docs = result.uploadedDocs.map(x => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x, ext: x.split('.')[1]}));
-          }
-          
-
-          // if (
-          //   result.uploadedDocs != undefined &&
-          //   result.uploadedDocs.length > 0
-          // ) {
-          //   // this.docs = result.uploadedDocs.map(
-          //   //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-          //   // );
-          //   result.uploadedDocs.map((x) => {
-          //     let name = x.split('.');
-          //     let ext = name[name.length-1];
-          //     let obj = {
-          //       imgPath: '',
-          //       docPath:''
-          //     }
-          //     if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-          //       obj = {
-          //         imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
-          //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-          //       }
-          //     } else {
-          //       obj = {
-          //         imgPath: 'assets/img/icon-pdf.png',
-          //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-          //       }
-          //     }
-          //     this.docs.push(obj);
-          //   });
-          //   this.allPhotos = result.uploadedDocs;
-          // }
-          // this.orderData = result['Items'];
-
-          // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
-
-          // this.shipperReceiversInfo.forEach(element => {
-          //   element.shippers.forEach(item => {
-          //     this.totalPickups++;
-          //   });
-          //   element.receivers.forEach(item1 => {
-          //     this.totalDrops++;
-          //   });
-          // });
-
-          // let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
-          // this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
-
-          // let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
-          // this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
-
-          // this.totalMiles = this.orderData[0].milesInfo.totalMiles;
-          // this.calculateBy = this.orderData[0].milesInfo.calculateBy;
-
-          // this.charges = this.orderData[0].charges;
-          // this.accessrialData = this.charges.accessorialFeeInfo.accessorialFee;
-          // this.deductionsData = this.charges.accessorialDeductionInfo.accessorialDeduction;
-          // this.totalFreightFee = this.orderData[0].charges.freightFee.amount;
-
-          // this.getCurrency = this.orderData[0].charges.freightFee.currency;
-
-          // this.totalFuelSurcharge = this.orderData[0].charges.fuelSurcharge.amount;
-          // this.totalAccessotial = this.orderData[0].charges.accessorialFeeInfo.total;
-          // this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
-          // this.discountAmount = this.orderData[0].discount.amount;
-          // this.discountAmtUnit = this.orderData[0].discount.unit;
-
-          // this.orderData[0].taxesInfo.forEach(item => {
-          //   this.totalTax += parseFloat(item.amount);
-          // });
-          // this.taxesData = this.orderData[0].taxesInfo;
-          // this.totalAmount = this.orderData[0].totalAmount;
+        this.milesArr = result.shippersReceiversInfo;
 
 
-          // if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
-          //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
-          // }
+        let freightFee = isNaN(this.charges.freightFee.amount) ? 0 : this.charges.freightFee.amount;
+        let fuelSurcharge = isNaN(this.charges.fuelSurcharge.amount) ? 0 : this.charges.fuelSurcharge.amount;
+        let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
+        let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
+
+        let totalAmount = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
+        this.taxableAmount = (totalAmount * parseInt(this.taxesTotal)) / 100;
+        if (!this.zeroRated) {
+          this.totalCharges = totalAmount + this.taxableAmount;
+        } else {
+          this.totalCharges = totalAmount;
+        }
+
+        // this.advances = result.advance;
+        // this.balance = this.totalCharges - this.advances;
+        this.balance = this.totalCharges;
+
+        if (result.attachments != undefined && result.attachments.length > 0) {
+          this.attachments = result.attachments.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+        }
+        if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
+          this.docs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x, ext: x.split('.')[1] }));
+        }
+
+
+        // if (
+        //   result.uploadedDocs != undefined &&
+        //   result.uploadedDocs.length > 0
+        // ) {
+        //   // this.docs = result.uploadedDocs.map(
+        //   //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+        //   // );
+        //   result.uploadedDocs.map((x) => {
+        //     let name = x.split('.');
+        //     let ext = name[name.length-1];
+        //     let obj = {
+        //       imgPath: '',
+        //       docPath:''
+        //     }
+        //     if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+        //       obj = {
+        //         imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+        //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+        //       }
+        //     } else {
+        //       obj = {
+        //         imgPath: 'assets/img/icon-pdf.png',
+        //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
+        //       }
+        //     }
+        //     this.docs.push(obj);
+        //   });
+        //   this.allPhotos = result.uploadedDocs;
+        // }
+        // this.orderData = result['Items'];
+
+        // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
+
+        // this.shipperReceiversInfo.forEach(element => {
+        //   element.shippers.forEach(item => {
+        //     this.totalPickups++;
+        //   });
+        //   element.receivers.forEach(item1 => {
+        //     this.totalDrops++;
+        //   });
+        // });
+
+        // let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
+        // this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
+
+        // let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
+        // this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
+
+        // this.totalMiles = this.orderData[0].milesInfo.totalMiles;
+        // this.calculateBy = this.orderData[0].milesInfo.calculateBy;
+
+        // this.charges = this.orderData[0].charges;
+        // this.accessrialData = this.charges.accessorialFeeInfo.accessorialFee;
+        // this.deductionsData = this.charges.accessorialDeductionInfo.accessorialDeduction;
+        // this.totalFreightFee = this.orderData[0].charges.freightFee.amount;
+
+        // this.getCurrency = this.orderData[0].charges.freightFee.currency;
+
+        // this.totalFuelSurcharge = this.orderData[0].charges.fuelSurcharge.amount;
+        // this.totalAccessotial = this.orderData[0].charges.accessorialFeeInfo.total;
+        // this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
+        // this.discountAmount = this.orderData[0].discount.amount;
+        // this.discountAmtUnit = this.orderData[0].discount.unit;
+
+        // this.orderData[0].taxesInfo.forEach(item => {
+        //   this.totalTax += parseFloat(item.amount);
+        // });
+        // this.taxesData = this.orderData[0].taxesInfo;
+        // this.totalAmount = this.orderData[0].totalAmount;
+
+
+        // if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
+        //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
+        // }
 
 
 
@@ -407,35 +407,35 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-   /*
-   * Get all shippers's IDs of names from api
-   */
+  /*
+  * Get all shippers's IDs of names from api
+  */
   fetchShippersByIDs() {
     this.apiService.getData('contacts/get/list/consignor').subscribe((result: any) => {
       this.shippersObjects = result;
     });
   }
 
-     /*
-   * Get all receivers's IDs of names from api
-   */
+  /*
+* Get all receivers's IDs of names from api
+*/
   fetchReceiversByIDs() {
     this.apiService.getData('contacts/get/list/consignee').subscribe((result: any) => {
       this.receiversObjects = result;
     });
   }
 
-     /*
-   * Get all customers's IDs of names from api
-   */
- async fetchCustomersByID() {
+  /*
+* Get all customers's IDs of names from api
+*/
+  async fetchCustomersByID() {
     this.apiService.getData(`contacts/detail/${this.customerID}`).subscribe((result: any) => {
 
-      if(result.Items.length > 0) {
+      if (result.Items.length > 0) {
         result = result.Items[0];
         this.customerName = `${result.cName}`;
         let newCusAddress = result.adrs.filter((elem: any) => {
-          if(elem.addressID === this.cusAddressID){
+          if (elem.addressID === this.cusAddressID) {
             this.showInvBtn = true;
             return elem;
           } else {
@@ -443,8 +443,8 @@ export class OrderDetailComponent implements OnInit {
           }
         });
         newCusAddress = newCusAddress[0];
-        if(result.adrs.length > 0) {
-          if(newCusAddress.manual) {
+        if (result.adrs.length > 0) {
+          if (newCusAddress.manual) {
             this.customerAddress = newCusAddress.add1;
           } else {
             this.customerAddress = newCusAddress.userLoc;
@@ -460,13 +460,13 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  emailInv(){
+  emailInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: 'email--invoice'
     };
     this.emailRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
-    this.emailData.emails.push({label: this.customerEmail})
+    this.emailData.emails.push({ label: this.customerEmail })
   }
 
   showInv() {
@@ -477,55 +477,59 @@ export class OrderDetailComponent implements OnInit {
     this.previewRef = this.modalService.open(this.previewInvoiceModal, ngbModalOptions);
   }
 
-  sendInvEmail(){
+  sendInvEmail() {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    this.emailData.emails.forEach(elem => { let result = re.test(String(elem.label).toLowerCase()); if(!result) this.toastr.error('Please enter valid email(s)'); return })
+    this.emailData.emails.forEach(elem => { let result = re.test(String(elem.label).toLowerCase()); if (!result) this.toastr.error('Please enter valid email(s)'); return })
   }
 
   async generate() {
     this.isShow = true;
     this.previewRef.close();
     var data = document.getElementById('print_wrap');
+    const doc = new jsPDF()
+    autoTable(doc, { html: '#my-table' })
+    doc.save('table.pdf')
+
+    // html2pdf(data, {
+    //   margin: 0.15,
+    //   filename: 'invoice.pdf',
+    //   image: { type: 'jpeg', quality: 0.98 },
+    //   html2canvas: {
+    //     dpi: 300,
+    //     letterRendering: true,
+    //     allowTaint: true,
+    //     useCORS: true
+    //   },
+    //   jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+
+    // });
+
+
+    $('#previewInvoiceModal').modal('hide');
+  }
+
+  async generatePDF() {
+    this.isShow = true;
+    var data = document.getElementById('print_wrap');
     html2pdf(data, {
-      margin:       0.15,
-      filename:     'invoice.pdf',
-      image:        { type: 'jpeg', quality: 0.98 },
+      margin: 0.15,
+      filename: 'invoice.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
       html2canvas: {
         dpi: 300,
         letterRendering: true,
         allowTaint: true,
         useCORS: true
-        },
-      jsPDF:        { unit: 'in',  format: 'a4', orientation: 'portrait' },
+      },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
 
     });
-    
-    
-    $('#previewInvoiceModal').modal('hide');
-  }
-
-async generatePDF() {
-    this.isShow = true;
-    var data = document.getElementById('print_wrap');
-      html2pdf(data, {
-        margin:       0.15,
-        filename:     'invoice.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          dpi: 300,
-          letterRendering: true,
-          allowTaint: true,
-          useCORS: true
-        },
-        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' },
-  
-      }); 
     await this.saveInvoice();
     await this.invoiceGenerated();
     await this.fetchOrder();
-    
+
   }
-  
+
   pageRendered(event) {
     this.pdfComponent.pdfViewer.currentScaleValue = 'page-fit';
   }
@@ -598,7 +602,7 @@ async generatePDF() {
     //   time: this.createdTime
     // }
     await this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`).toPromise();
-    if(type == 'attachment') {
+    if (type == 'attachment') {
       this.attachments.splice(index, 1);
     } else {
       this.docs.splice(index, 1);
@@ -608,24 +612,24 @@ async generatePDF() {
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length-1];
+    let ext = pieces[pieces.length - 1];
     this.pdfSrc = '';
-    if(ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url='+val+'&embedded=true');
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
 
 
-   /*
-   * Selecting files before uploading
-   */
+  /*
+  * Selecting files before uploading
+  */
   selectDocuments(event) {
     let files = [...event.target.files];
-    let totalCount = this.docs.length+files.length;
+    let totalCount = this.docs.length + files.length;
 
-    if(totalCount > 4) {
+    if (totalCount > 4) {
       this.uploadedDocs = [];
       $('#bolUpload').val('');
       this.toastr.error('Only 4 documents can be uploaded');
@@ -692,10 +696,10 @@ async generatePDF() {
     }
   }
 
-  setSrcValue(){}
+  setSrcValue() { }
 
-  caretClickShipper(i, j){
-    if($('#shipperArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')){
+  caretClickShipper(i, j) {
+    if ($('#shipperArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')) {
       $('#shipperArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
       $('#shipperArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
     }
@@ -705,8 +709,8 @@ async generatePDF() {
     }
   }
 
-  caretClickReceiver(i, j){
-    if($('#receiverArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')){
+  caretClickReceiver(i, j) {
+    if ($('#receiverArea-' + i + '-' + j).children('i').hasClass('fa-caret-right')) {
       $('#receiverArea-' + i + '-' + j).children('i').removeClass('fa-caret-right')
       $('#receiverArea-' + i + '-' + j).children('i').addClass('fa-caret-down');
     }
@@ -725,7 +729,7 @@ async generatePDF() {
         this.invoiceData = result[0];
         console.log('invoiceData', this.invoiceData.charges.fuelSurcharge.type)
         this.isInvoice = true;
-        
+
       });
   }
 

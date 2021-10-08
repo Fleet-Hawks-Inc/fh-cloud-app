@@ -631,8 +631,8 @@ export class AddDriverComponent
         this.fetchStates(countryCode, a);
       }
       if (stateCode !== '' && stateCode !== null) {
-      this.fetchCities(countryCode, stateCode, a);
-     }
+        this.fetchCities(countryCode, stateCode, a);
+      }
     }
   }
   async fetchDocStates(docs) {
@@ -847,8 +847,6 @@ export class AddDriverComponent
 
       for (let i = 0; i < this.driverData.address.length; i++) {
         const element = this.driverData.address[i];
-        delete element.states;
-        delete element.cities;
 
         if (element.manual === true) {
           let data = {
@@ -862,7 +860,6 @@ export class AddDriverComponent
 
           $("#addErr" + i).css("display", "none");
           let result = await this.newGeoCode(data);
-
           if (result == null) {
             $("#addErr" + i).css("display", "block");
             return false;
@@ -877,8 +874,10 @@ export class AddDriverComponent
             return;
           }
         }
-      }
 
+        delete element.states;
+        delete element.cities;
+      }
       // create form data instance
       const formData = new FormData();
       // append photos if any
