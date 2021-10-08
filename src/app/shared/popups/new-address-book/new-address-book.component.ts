@@ -177,7 +177,7 @@ export class NewAddressBookComponent implements OnInit {
     this.searchLocation();
     this.fetchCountries();
 
-    this.listService.addressList.subscribe((res: any) => {
+    this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
 
         let ngbModalOptions: NgbModalOptions = {
@@ -272,6 +272,10 @@ export class NewAddressBookComponent implements OnInit {
         this.modalService.dismissAll();
       }
     })
+  }
+
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
   }
 
   /*
