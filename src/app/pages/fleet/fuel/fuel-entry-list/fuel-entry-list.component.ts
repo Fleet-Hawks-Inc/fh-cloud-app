@@ -3,7 +3,7 @@ import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import  Constants  from '../../constants';
+import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
@@ -27,9 +27,9 @@ export class FuelEntryListComponent implements OnInit {
   vehicleList: any = {};
   tripList: any = {};
   assetList: any = {};
-  driverList: any  = {};
-  vendorList: any  = {};
-  WEXCodeList: any  = {};
+  driverList: any = {};
+  vendorList: any = {};
+  WEXCodeList: any = {};
   fuelCodeList: any = {};
   countries = [];
   checked = false;
@@ -63,7 +63,7 @@ export class FuelEntryListComponent implements OnInit {
   fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
-  wexCategories:any={};
+  wexCategories: any = {};
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -101,7 +101,7 @@ export class FuelEntryListComponent implements OnInit {
     this.suggestedUnits = [];
   }
 
-  fetchWexCategories(){
+  fetchWexCategories() {
     this.httpClient.get('assets/jsonFiles/fuel/wexCategories.json').subscribe((result: any) => {
 
       this.wexCategories = result;
@@ -109,20 +109,20 @@ export class FuelEntryListComponent implements OnInit {
   }
   getSuggestions(value) {
     value = value.toLowerCase();
-    if(value != '') {
+    if (value != '') {
       this.apiService
-      .getData(`vehicles/suggestion/${value}`)
-      .subscribe((result) => {
-        result = result.Items;
-        this.suggestedUnits = [];
-        for(let i = 0; i < result.length; i++){
-          this.suggestedUnits.push({
-            unitID: result[i].vehicleID,
-            unitName: result[i].vehicleIdentification
-          });
-        }
-        this.getAssetsSugg(value);
-      });
+        .getData(`vehicles/suggestion/${value}`)
+        .subscribe((result) => {
+          result = result.Items;
+          this.suggestedUnits = [];
+          for (let i = 0; i < result.length; i++) {
+            this.suggestedUnits.push({
+              unitID: result[i].vehicleID,
+              unitName: result[i].vehicleIdentification
+            });
+          }
+          this.getAssetsSugg(value);
+        });
     } else {
       this.suggestedUnits = [];
     }
@@ -130,18 +130,18 @@ export class FuelEntryListComponent implements OnInit {
 
   getAssetsSugg(value) {
     value = value.toLowerCase();
-    if(value != '') {
+    if (value != '') {
       this.apiService
-      .getData(`assets/suggestion/${value}`)
-      .subscribe((result) => {
-        result = result.Items;
-        for(let i = 0; i < result.length; i++){
-          this.suggestedUnits.push({
-            unitID: result[i].assetID,
-            unitName: result[i].assetIdentification
-          });
-        }
-      });
+        .getData(`assets/suggestion/${value}`)
+        .subscribe((result) => {
+          result = result.Items;
+          for (let i = 0; i < result.length; i++) {
+            this.suggestedUnits.push({
+              unitID: result[i].assetID,
+              unitName: result[i].assetIdentification
+            });
+          }
+        });
     } else {
       this.suggestedUnits = [];
     }
@@ -150,8 +150,8 @@ export class FuelEntryListComponent implements OnInit {
   fetchVendorList() {
     this.apiService.getData('vendors').subscribe((result: any) => {
 
-       result.forEach(element=>{
-         this.vendorList[element.contactID]=element.companyName
+      result.forEach(element => {
+        this.vendorList[element.contactID] = element.companyName
 
       });
     });
@@ -192,18 +192,18 @@ export class FuelEntryListComponent implements OnInit {
     this.httpClient.get('assets/jsonFiles/fuel/wexFuelType.json').subscribe((result: any) => {
 
       result.forEach(element => {
-        this.WEXCodeList[element.code]=element.type
+        this.WEXCodeList[element.code] = element.type
       });
     });
   }
   fuelEntriesCount() {
     this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
+        if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
           this.fuelEndPoint = this.totalRecords;
         }
 
@@ -263,33 +263,36 @@ export class FuelEntryListComponent implements OnInit {
       this.suggestedUnits = [];
       this.getStartandEndVal();
       result[`Items`].forEach(element => {
-        if(element.fuelProvider=="WEX"){
-        element.dateTime=moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
-        }
-        else{
-          let date:any = moment(element.fuelDate)
-         if(element.fuelTime){
-         let time=moment(element.fuelTime,'h mm a')
-         date.set({
-           hour: time.get('hour'),
-           minute: time.get('minute')
-         })
-         date = date.format('MMM Do YYYY, h:mm a')
-        }
-        else{
-          date=date.format('MMM Do YYYY')
-        }
-        element.dateTime=date
 
-         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+        if (element.data.fuelProvider == "WEX") {
+          element.dateTime = moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
+        }
+        else {
+          let date: any = moment(element.data.date)
+          if (element.data.time) {
+            let time = moment(element.data.time, 'h mm a')
+            date.set({
+              hour: time.get('hour'),
+              minute: time.get('minute')
+            })
+            date = date.format('MMM Do YYYY, h:mm a')
+          }
+          else {
+            date = date.format('MMM Do YYYY')
+          }
+          element.dateTime = date
+
+          // element.fuelTime=moment(element.fuelTime).format('h:mm a')
 
         }
 
 
       });
+
       this.fuelList = result[`Items`];
 
-      if(this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
+
+      if (this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
         this.fuelStartPoint = 1;
         this.fuelEndPoint = this.totalRecords;
       }
@@ -298,7 +301,7 @@ export class FuelEntryListComponent implements OnInit {
         const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
         this.fuelNext = false;
         // for prev button
-        //console.log(this.fuelPrevEvauatedKeys)
+
         if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
           this.fuelPrevEvauatedKeys.push(lastEvalKey);
 
@@ -329,10 +332,10 @@ export class FuelEntryListComponent implements OnInit {
 
   searchFilter() {
     if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
-      if(this.fromDate !== '') {
+      if (this.fromDate !== '') {
         this.start = this.fromDate;
       }
-      if(this.toDate !== '') {
+      if (this.toDate !== '') {
         this.end = this.toDate;
       }
       this.dataMessage = Constants.FETCHING_DATA;
@@ -399,7 +402,7 @@ export class FuelEntryListComponent implements OnInit {
   fetchAllAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       result.Items.forEach((e: any) => {
-        if(e.assetType == 'reefer') {
+        if (e.assetType == 'reefer') {
           let obj = {
             assetID: e.assetID,
             assetIdentification: e.assetIdentification

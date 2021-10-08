@@ -130,15 +130,15 @@ export class CompanyDocumentsComponent implements OnInit {
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
       this.alltrips = result.Items;
-        result.Items.forEach((element) => {
-          if(element.isDeleted === 0) {
-            this.trips.push(element);
-          }
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.trips.push(element);
+        }
 
-          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
-            this.documentData.tripID = null;
-          }
-        });
+        if (element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+          this.documentData.tripID = null;
+        }
+      });
     });
   }
 
@@ -175,11 +175,10 @@ export class CompanyDocumentsComponent implements OnInit {
       let ext = name[name.length - 1].toLowerCase();
 
 
-      if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
-        && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+      if (ext !== 'jpg' && ext !== 'pdf' && ext !== 'jpeg' && ext !== 'png') {
         $('#uploadedDocs').val('');
         condition = false;
-        this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
+        this.toastr.error('Only pdf, jpg, jpeg and png file formats are allowed');
         return false;
       }
     }
@@ -241,7 +240,7 @@ export class CompanyDocumentsComponent implements OnInit {
                   this.submitDisabled = false;
                   // this.throwErrors();
                 },
-                error: () => {this.submitDisabled = false; },
+                error: () => { this.submitDisabled = false; },
                 next: () => { },
               });
           },
@@ -252,6 +251,9 @@ export class CompanyDocumentsComponent implements OnInit {
             this.documentData.documentNumber = '';
             this.documentData.docType = null;
             this.documentData.tripID = null;
+            this.documentData.uploadedDocs = [];
+            this.uploadeddoc = [];
+            $('#uploadedDocs').val('');
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
@@ -306,7 +308,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.alltrips.forEach((element) => {
-          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+          if (element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
             this.documentData.tripID = null;
           }
         });
@@ -370,6 +372,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.documentData.docType = null;
             this.documentData.tripID = '';
             this.documentData.uploadedDocs = [];
+            $('#uploadedDocs').val('');
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
