@@ -177,7 +177,7 @@ export class NewAddressBookComponent implements OnInit {
     this.searchLocation();
     this.fetchCountries();
 
-    this.listService.addressList.subscribe((res: any) => {
+    this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
 
         let ngbModalOptions: NgbModalOptions = {
@@ -274,6 +274,10 @@ export class NewAddressBookComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
+  }
+
   /*
    * Get all countries from api
    */
@@ -359,7 +363,7 @@ export class NewAddressBookComponent implements OnInit {
       this.brokers = [];
       this.units.forEach(element => {
         if (element.eTypes.includes('broker')) {
-          this.brokers.push(element)
+          this.brokers.push(element);
         }
       });
       if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -617,6 +621,9 @@ export class NewAddressBookComponent implements OnInit {
               wsib: false,
               wsibAcc: '',
               wsibExp: null,
+              wcb: false,
+              wcbAcc: '',
+              wcbExp: null,
               banks: [{
                 bName: '',
                 acc: '',
@@ -913,7 +920,18 @@ export class NewAddressBookComponent implements OnInit {
           delete elem.carrierData.wsibAcc;
           delete elem.carrierData.wsibExp;
         }
-      })
+      });
+
+    }
+  }
+  carrierWCB(value) {
+    if (value !== true) {
+      this.unitData.data.forEach(elem => {
+        if (elem.carrierData) {
+          delete elem.carrierData.wcbAcc;
+          delete elem.carrierData.wcbExp;
+        }
+      });
 
     }
   }
@@ -1042,7 +1060,6 @@ export class NewAddressBookComponent implements OnInit {
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' ' + element.lName;
     }
-
     // create form data instance
     const formData = new FormData();
 
@@ -1265,30 +1282,30 @@ export class NewAddressBookComponent implements OnInit {
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
 
-    if (this.lastKey != 'end') {
+    if (this.lastKey !== 'end') {
       this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
 
-        if (res.length == 0) {
+        if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         res.forEach(element => {
           this.units.push(element);
           if (element.eTypes.includes('customer')) {
-            this.customers.push(element)
+            this.customers.push(element);
           } else if (element.eTypes.includes('broker')) {
-            this.brokers.push(element)
+            this.brokers.push(element);
           } else if (element.eTypes.includes('carrier')) {
-            this.carriers.push(element)
+            this.carriers.push(element);
           } else if (element.eTypes.includes('shipper')) {
-            this.shippers.push(element)
+            this.shippers.push(element);
           } else if (element.eTypes.includes('receiver')) {
-            this.receivers.push(element)
+            this.receivers.push(element);
           } else if (element.eTypes.includes('fc')) {
-            this.fcCompanies.push(element)
+            this.fcCompanies.push(element);
           } else if (element.eTypes.includes('vendor')) {
-            this.vendors.push(element)
+            this.vendors.push(element);
           } else if (element.eTypes.includes('owner_operator')) {
-            this.owners.push(element)
+            this.owners.push(element);
           }
 
         });
@@ -1334,7 +1351,7 @@ export class NewAddressBookComponent implements OnInit {
       this.units = [];
       this.fetchUnits();
     } else {
-      return false
+      return false;
     }
 
   }
@@ -1349,7 +1366,7 @@ export class NewAddressBookComponent implements OnInit {
 
       this.unitTypes.filter((item: any) => {
         if (this.unitData.eTypes.includes(item.value)) {
-          let index = this.unitTypes.indexOf(item)
+          let index = this.unitTypes.indexOf(item);
           this.unitTypes[index].disabled = true;
         }
       })
@@ -1370,18 +1387,17 @@ export class NewAddressBookComponent implements OnInit {
       }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
-
       //to show profile image
-      if (res.profileImg != '' && res.profileImg != undefined) {
+      if (res.profileImg !== '' && res.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;
         this.imageText = 'Update Picture';
       } else {
         this.profilePath = this.defaultProfilePath;
         this.imageText = 'Add Picture';
       }
-      this.unitData['contactID'] = res.contactID;
-      this.unitData['createdDate'] = res.createdDate;
-      this.unitData['createdTime'] = res.createdTime;
+      this.unitData[`contactID`] = res.contactID;
+      this.unitData[`createdDate`] = res.createdDate;
+      this.unitData[`createdTime`] = res.createdTime;
 
     })
   }

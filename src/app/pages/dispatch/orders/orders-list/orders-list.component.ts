@@ -540,30 +540,15 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  // async changeStatus(id: any, orderNo: any) {
-  //   if (confirm('Are you sure you want to confirm the order?') === true) {
-  //     const result = await this.apiService.getData(`orders/update/orderStatus/${id}/${orderNo}/confirmed`).toPromise();
-  //     if (result) {
-  //       this.dataMessage = Constants.FETCHING_DATA;
-  //       this.orders = [];
-  //       this.confirmOrders = [];
-  //       this.dispatchOrders = [];
-  //       this.deliveredOrders = [];
-  //       this.cancelledOrders = [];
-  //       this.invoicedOrders = [];
-  //       this.partiallyOrders = [];
-  //       this.tonuOrders = [];
-  //       this.lastEvaluatedKey = '';
-  //       this.fetchAllTypeOrderCount();
-  //     }
-  //   }
-  // }
+
   async changeStatus() {
     this.isConfirm = true;
-    if (this.emailData.emails.length === 0) {
+    if (this.emailData.confirmEmail && this.emailData.emails.length === 0) {
       this.toastr.error("Please enter at least one email");
+      this.isConfirm = false;
       return;
     }
+
     let newData = {
       emails: [],
       confirm: false,
@@ -573,7 +558,6 @@ export class OrdersListComponent implements OnInit {
       newData.emails.push(elem.label);
     });
     newData.confirm = this.emailData.confirmEmail;
-
     this.apiService
       .getData(
         `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber

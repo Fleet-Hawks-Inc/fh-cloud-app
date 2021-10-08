@@ -85,6 +85,7 @@ export class AddDriverComponent
     driverStatus: null,
     userName: "",
     firstName: null,
+    middleName: '',
     lastName: null,
     startDate: null,
     terminationDate: null,
@@ -631,8 +632,8 @@ export class AddDriverComponent
         this.fetchStates(countryCode, a);
       }
       if (stateCode !== '' && stateCode !== null) {
-      this.fetchCities(countryCode, stateCode, a);
-     }
+        this.fetchCities(countryCode, stateCode, a);
+      }
     }
   }
   async fetchDocStates(docs) {
@@ -1101,6 +1102,11 @@ export class AddDriverComponent
     this.driverData.driverStatus = result.driverStatus;
     this.driverData.userName = result.userName;
     this.driverData.firstName = result.firstName;
+    if (result.middleName === undefined) {
+      this.driverData.middleName = '';
+    } else {
+      this.driverData.middleName = result.middleName;
+    }
     this.driverData.lastName = result.lastName;
     this.driverData.DOB = _.isEmpty(result.DOB) ? null : result.DOB;
     this.driverData.startDate = _.isEmpty(result.startDate)

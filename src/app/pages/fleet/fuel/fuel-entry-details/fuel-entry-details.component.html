@@ -2,205 +2,211 @@
 
   <div class="inner-wrapper">
 
-   <section role="main" class="content-body pl-1 pr-0 pt-0">
+    <section role="main" class="content-body pl-1 pr-0 pt-0">
       <header class="page-header pr19 pl11">
-         <div class="row" style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4">
-             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
-            </div>
-            <div class="col-md-8 col-lg-8 text-right por-1">
-               <a routerLink="/fleet/fuel/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Fuel Entries List</a>
-            </div>
-         </div>
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right por-1">
+            <a routerLink="/fleet/fuel/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Fuel Entries
+              List</a>
+          </div>
+        </div>
       </header>
 
-      
+
       <section class="m-2">
-         <div class="row mb-3">
+        <div class="row mb-3">
           <div class="col-lg-12">
-           <div class="bg-white p-3 text-dark">
-            <div class="form-group row pt-3">
-               <div class="col-lg-12">
-                  <label class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Fuel Details</label>
-               </div>
-               <div class="col-lg-6">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row pt-3">
+                <div class="col-lg-12">
+                  <label
+                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Fuel
+                    Details</label>
+                </div>
+                <div class="col-lg-6">
                   <div class="row">
-                     <div class="col-lg-12">
-                        <table class="table table-bordered table-responsive-lg">
-                           <tbody>
-                            <!-- <tr *ngIf="fuelData.unitType">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <!-- <tr *ngIf="fuelData.data.unitType">
                                <td width="40%" class="back-color-gray font-weight-bold">
-                                  {{fuelData.unitType | titlecase}}</td>
-                               <td width="60%"><a routerLink="/fleet/assets/detail/{{fuelData.unitID}}"  class="text-info">
-                                  <span *ngIf= "fuelData.unitType === 'reefer'">{{assetList[fuelData.unitID]}}</span></a>
-                                  <a routerLink="/fleet/vehicles/detail/{{fuelData.unitID}}" class="text-info">
-                                      <span *ngIf= "fuelData.unitType === 'vehicle'">{{vehicleList[fuelData.unitID]}}</span></a>
+                                  {{fuelData.data.unitType | titlecase}}</td>
+                               <td width="60%"><a routerLink="/fleet/assets/detail/{{fuelData.data.unitID}}"  class="text-info">
+                                  <span *ngIf= "fuelData.data.unitType === 'reefer'">{{assetList[fuelData.data.unitID]}}</span></a>
+                                  <a routerLink="/fleet/vehicles/detail/{{fuelData.data.unitID}}" class="text-info">
+                                      <span *ngIf= "fuelData.data.unitType === 'vehicle'">{{vehicleList[fuelData.data.unitID]}}</span></a>
                                </td>
                             </tr> -->
-                              <tr *ngIf="fuelData.tripID">
-                                 <td class="back-color-gray font-weight-bold">Trip#</td>
-                                 <td><a routerLink="/dispatch/trips/trip-details/{{fuelData.tripID }}" class="text-info">{{tripList[fuelData.tripID]}}</a></td>
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Date/Time</td>
-                                 <td>{{fuelData.fuelDateTime}} </td>
-                              </tr>
 
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Unit Type</td>
-                                 <td>{{fuelData.unitType}} </td>
-                              </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Date/Time</td>
+                            <td>{{fuelData.fuelDateTime}} </td>
+                          </tr>
 
-                                    <tr>
-                                       <td class="back-color-gray font-weight-bold">Unit Name</td>
-                                       <td>
-                                          <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.unitNumber}}</span>
-                                          <span *ngIf="fuelData.fuelProvider=='Manual'">
-                                             <span *ngIf="fuelData.unitType=='vehicle'">{{vehicleList[fuelData.unitNumber]}}</span>
-                                             <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitNumber]}}</span>
-                                             </span>
-                                           </td>
-                                    </tr>
-                                    
-                                    <tr *ngIf="fuelData.category">
-                                       <td class="back-color-gray font-weight-bold">Item Type</td>
-                                       <td>{{fuelData.category}} </td>
-                                    </tr>
-                                    <tr *ngIf="fuelData.groupCategory">
-                                       <td class="back-color-gray font-weight-bold">Category</td>
-                                       <td>{{fuelData.groupCategory}} </td>
-                                    </tr>
-                                    <tr *ngIf="fuelData.carrierFee">
-                                       <td class="back-color-gray font-weight-bold">Carrier Fee</td>
-                                       <td>{{fuelData.carrierFee}} </td>
-                                    </tr>
-                                    <tr *ngIf="fuelData.conversionRate">
-                                       <td class="back-color-gray font-weight-bold">Conversion Rate</td>
-                                       <td>{{fuelData.conversionRate}} </td>
-                                    </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">use Type</td>
+                            <td>{{fuelData.unitType}} </td>
+                          </tr>
+
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Unit Name</td>
+                            <td>
+                              <span *ngIf="fuelData.unitID">
+                                <span *ngIf="fuelData.unitType!='reefer'">{{vehicleList[fuelData.unitID]}}</span>
+                                <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitID]}}</span>
+                              </span>
+                              <span *ngIf="fuelData.unitNo">{{fuelData.unitNo}}</span>
+
+                            </td>
+                          </tr>
+
+                          <tr *ngIf="fuelData.category">
+                            <td class="back-color-gray font-weight-bold">Item Type</td>
+                            <td>{{fuelData.category}} </td>
+                          </tr>
+                          <tr *ngIf="fuelData.groupCategory">
+                            <td class="back-color-gray font-weight-bold">Category</td>
+                            <td>{{fuelData.groupCategory}} </td>
+                          </tr>
+                          <tr *ngIf="fuelData.carrierFee">
+                            <td class="back-color-gray font-weight-bold">Carrier Fee</td>
+                            <td>{{fuelData.carrierFee}} </td>
+                          </tr>
+                          <tr *ngIf="fuelData.conversionRate">
+                            <td class="back-color-gray font-weight-bold">Conversion Rate</td>
+                            <td>{{fuelData.conversionRate}} </td>
+                          </tr>
 
 
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Odometer in Miles</td>
-                                 <td>{{fuelData.odometer}} </td>
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity</td>
-                                 <td>{{fuelData.quantity}} {{fuelData.unitOfMeasure}}</td>
-                              </tr>
-                              <tr>
-                               <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount</td>
-                               <td>{{fuelData.amount}} {{fuelData.billingCurrency}}</td>
-                            </tr>
-                              <tr *ngIf="fuelData.DEFFuelQty">
-                               <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
-                               <td>{{fuelData.DEFFuelQty}}</td>
-                            </tr>
-                            <tr *ngIf="fuelData.DEFFuelQtyAmt">
-                               <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
-                               <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
-                            </tr>
-                              <tr *ngIf="fuelData.retailPpu">
-                                 <td class="back-color-gray font-weight-bold">Retail Price Per {{fuelData.unitOfMeasure}}</td>
-                                 <td>{{fuelData.retailPpu}} {{fuelData.billingCurrency}}</td>
-                              </tr>
-                              <tr *ngIf="fuelData.retailAmount">
-                                 <td class="back-color-gray font-weight-bold">Retail Amount</td>
-                                 <td>{{fuelData.retailAmount}} {{fuelData.billingCurrency}}</td>
-                              </tr>
-                              <tr *ngIf="fuelData.amountPaid">
-                                 <td class="back-color-gray font-weight-bold">Amount Paid</td>
-                                 <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Price Per {{fuelData.unitOfMeasure}}</td>
-                                 <td>{{fuelData.ppu}} {{fuelData.billingCurrency}}</td>
-                              </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Odometer in Miles</td>
+                            <td>{{fuelData.odometer}} </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Quantity
+                            </td>
+                            <td>{{fuelData.quantity}} {{fuelData.unitOfMeasure}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">{{fuelData.unitType | titlecase}} Fuel Amount
+                            </td>
+                            <td>{{fuelData.amount}} {{fuelData.billingCurrency}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.DEFFuelQty">
+                            <td class="back-color-gray font-weight-bold">DEF Fuel Quantity</td>
+                            <td>{{fuelData.DEFFuelQty}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.DEFFuelQtyAmt">
+                            <td class="back-color-gray font-weight-bold">DEF Fuel Amount</td>
+                            <td>{{fuelData.DEFFuelQtyAmt}} {{fuelData.billingCurrency}} </td>
+                          </tr>
+                          <tr *ngIf="fuelData.retailPpu">
+                            <td class="back-color-gray font-weight-bold">Retail Price Per {{fuelData.unitOfMeasure}}
+                            </td>
+                            <td>{{fuelData.retailPpu}} {{fuelData.billingCurrency}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.retailAmount">
+                            <td class="back-color-gray font-weight-bold">Retail Amount</td>
+                            <td>{{fuelData.retailAmount}} {{fuelData.billingCurrency}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.amountPaid">
+                            <td class="back-color-gray font-weight-bold">Amount Paid</td>
+                            <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Price Per {{fuelData.unitOfMeasure}}</td>
+                            <td>{{fuelData.ppu}} {{fuelData.billingCurrency}}</td>
+                          </tr>
 
-                              <!-- <tr>
+                          <!-- <tr>
                                 <td class="back-color-gray font-weight-bold">Sub Total</td>
                                 <td>{{fuelData.subTotal}} {{fuelData.billingCurrency}}</td>
                              </tr> -->
-                              <tr *ngIf="fuelData.discountType">
-                                <td class="back-color-gray font-weight-bold">Discount Type </td>
-                                <td>{{fuelData.discountType}} </td>
-                             </tr>
-                             <tr *ngIf="fuelData.discountAmount">
-                              <td class="back-color-gray font-weight-bold">Discount Amount</td>
-                              <td>{{fuelData.discountAmount}} {{fuelData.billingCurrency}}</td>
-                           </tr>
-                              <tr *ngIf="fuelData.taxes.length > 0">
-                                <td class="back-color-gray font-weight-bold">Taxes</td>
-                                <td><span *ngFor="let tax of fuelData.taxes">
-                                   <span *ngIf="tax.taxCode != '' && tax.taxAmount != 0 ;else none">
-                                      {{tax.taxDesc}} - {{tax.taxAmount}} {{fuelData.billingCurrency}},&nbsp;</span></span></td>
-                                      <ng-template #none>0</ng-template>
-                             </tr>
-                             <!-- <tr>
+                          <tr *ngIf="fuelData.discountType">
+                            <td class="back-color-gray font-weight-bold">Discount Type </td>
+                            <td>{{fuelData.discountType}} </td>
+                          </tr>
+                          <tr *ngIf="fuelData.discountAmount">
+                            <td class="back-color-gray font-weight-bold">Discount Amount</td>
+                            <td>{{fuelData.discountAmount}} {{fuelData.billingCurrency}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.taxes.length > 0">
+                            <td class="back-color-gray font-weight-bold">Taxes</td>
+                            <td><span *ngFor="let tax of fuelData.taxes">
+                                <span *ngIf="tax.taxCode != '';">
+                                  {{tax.taxCode}} - {{tax.amount}} {{fuelData.billingCurrency}},&nbsp;</span>
+                                <ng-template *ngIf="tax.taxCode=='' && tax.amount==0">0</ng-template>
+                              </span>
+                            </td>
+
+                          </tr>
+                          <!-- <tr>
                               <td class="back-color-gray font-weight-bold">Total {{fuelData.fuelUnit}}</td>
                               <td>{{fuelData.totalUnits}}</td>
                            </tr> -->
-                              <!-- <tr>
+                          <!-- <tr>
                                  <td class="back-color-gray font-weight-bold">Total Amount Paid</td>
                                  <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>
                               </tr> -->
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Fuel Type</td>
-                                 <td >
-                                    {{fuelData.fuelType}}
-                                    </td>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Fuel Type</td>
+                            <td>
+                              {{fuelData.fuelType}}
+                            </td>
 
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Vendor</td>
-                                 <td>
-                                 <span *ngIf="fuelData.fuelProvider=='Manual'">{{vendorList[fuelData.vendorID]}}</span>
-                                 <span *ngIf="fuelData.fuelProvider=='WEX'">{{fuelData.vendorID}}</span>
-                                 </td>
-                              </tr>
-                              <tr>
-                                 <td class="back-color-gray font-weight-bold">Location</td>
-                                 <td>{{fuelData.stateName}},{{fuelData.countryName}}</td>
-                              </tr>
-                              <tr *ngIf="fuelData.paidBy">
-                                <td class="back-color-gray font-weight-bold">Paid By</td>
-                                <td>
-                                   <span *ngIf="driverList[fuelData.paidBy]">{{driverList[fuelData.paidBy]}}</span>
-                                   <span *ngIf="!driverList[fuelData.paidBy]">Driver: {{fuelData.paidBy}}</span>
-                                </td>
-                             </tr>
-                             <tr *ngIf="fuelData.reimburseToDriver">
-                              <td class="back-color-gray font-weight-bold">Reimburse to driver</td>
-                              <td><span *ngIf="fuelData.reimburseToDriver">YES</span>
-                                <!-- <span *ngIf="fuelData.reimburseToDriver == false">NO</span></td> -->
-                           </tr>
-                           <tr *ngIf="fuelData.deductFromPay">
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Site</td>
+                            <td>
+                              {{fuelData.site}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">Location</td>
+                            <td>{{fuelData.stateName}},{{fuelData.countryName}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.paidBy">
+                            <td class="back-color-gray font-weight-bold">Paid By</td>
+                            <td>
+                              <span *ngIf="driverList[fuelData.paidBy]">{{driverList[fuelData.paidBy]}}</span>
+                              <span *ngIf="!driverList[fuelData.paidBy]">Driver: {{fuelData.paidBy}}</span>
+                            </td>
+                          </tr>
+                          <tr *ngIf="fuelData.reimburseToDriver">
+                            <td class="back-color-gray font-weight-bold">Reimburse to driver</td>
+                            <td><span *ngIf="fuelData.reimburseToDriver">YES</span>
+                              <!-- <span *ngIf="fuelData.reimburseToDriver == false">NO</span></td> -->
+                          </tr>
+                          <tr *ngIf="fuelData.deductFromPay">
                             <td class="back-color-gray font-weight-bold">Deduct from pay</td>
                             <td><span *ngIf="fuelData.deductFromPay">YES</span>
                               <!-- <span *ngIf="fuelData.deductFromPay == false">NO</span></td> -->
-                         </tr>
-                             <tr *ngIf="fuelData.paymentMode">
-                              <td class="back-color-gray font-weight-bold">Payment Mode</td>
-                              <td>{{fuelData.paymentMode}}</td>
-                           </tr>
-                           <tr *ngIf="fuelData.fuelCardNumber">
+                          </tr>
+                          <tr *ngIf="fuelData.paymentMode">
+                            <td class="back-color-gray font-weight-bold">Payment Mode</td>
+                            <td>{{fuelData.paymentMode}}</td>
+                          </tr>
+                          <tr *ngIf="fuelData.fuelCardNumber">
                             <td class="back-color-gray font-weight-bold">Fuel Card Number</td>
                             <td>{{fuelData.fuelCardNumber}}</td>
-                         </tr>
-                           <tr *ngIf="fuelData.reference">
+                          </tr>
+                          <tr *ngIf="fuelData.reference">
                             <td class="back-color-gray font-weight-bold">Reference</td>
                             <td>{{fuelData.reference}}</td>
-                           </tr>
-                           <tr *ngIf="fuelData.description">
+                          </tr>
+                          <tr *ngIf="fuelData.description">
                             <td class="back-color-gray font-weight-bold">Description</td>
                             <td>{{fuelData.description}}</td>
-                           </tr>
-                           </tbody>
-                        </table>
-                     </div>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-               </div>
-               <div class="col-lg-6">
+                </div>
+                <div class="col-lg-6">
                   <!-- MAP -->
                   <!-- <div class="row">
                      <div class="col-lg-12">
@@ -219,38 +225,40 @@
                   </div> -->
                   <!-- PHOTO DIV -->
                   <div class="row" *ngIf="fuelEntryImages.length>0">
-                   <div class="col-lg-12">
+                    <div class="col-lg-12">
                       <div class="vehicle-common-box p-3">
-                         <div class="row">
-                            <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label></div>
-                            <div class="col-lg-6 text-right">
+                        <div class="row">
+                          <div class="col-lg-6"><label class="control-label font-weight-bold text-3">Photo(s)</label>
+                          </div>
+                          <div class="col-lg-6 text-right">
+                          </div>
+                        </div>
+                        <hr class="solid mt-3">
+                        <div class="row">
+                          <div class="col-lg-6" *ngFor="let photo of fuelEntryImages; let i=index">
+                            <div class="vehicle-photo-box">
+                              <img src="{{photo.path}}" width="100%" class="img-fluid"
+                                style="height: 180px; object-fit: cover;">
+                              <hr class="m-3">
+                              <div class="row">
+                                <div class="col-lg-8">Image {{i+1}}</div>
+                                <div class="col-lg-4 text-right">
+                                  <a class="fas fa-times text-danger" (click)="delete(photo.name)"></a>
+                                </div>
+                              </div>
                             </div>
-                         </div>
-                         <hr class="solid mt-3">
-                         <div class="row" >
-                            <div class="col-lg-6"  *ngFor="let photo of fuelEntryImages; let i=index">
-                               <div class="vehicle-photo-box">
-                                  <img src="{{photo.path}}" width="100%" class="img-fluid" style="height: 180px; object-fit: cover;">
-                                  <hr class="m-3">
-                                  <div class="row">
-                                     <div class="col-lg-8">Image {{i+1}}</div>
-                                     <div class="col-lg-4 text-right">
-                                        <a class="fas fa-times text-danger" (click)="delete(photo.name)"></a>
-                                     </div>
-                                  </div>
-                               </div>
-                            </div>
-                         </div>
+                          </div>
+                        </div>
                       </div>
-                   </div>
+                    </div>
+                  </div>
                 </div>
-               </div>
-               
-            </div>
 
-            <div class="row mt-4" >
-               <div class="col">
-                <!-- <table class="table table-bordered table-responsive-lg">
+              </div>
+
+              <div class="row mt-4">
+                <div class="col">
+                  <!-- <table class="table table-bordered table-responsive-lg">
                  <thead>
                   <tr>
                      <th width="5%">Sr</th>
@@ -284,17 +292,17 @@
                   </tr><tr>
                  </tr></tbody>
                 </table> -->
-               </div>
-            </div>
+                </div>
+              </div>
 
-           </div>
+            </div>
           </div>
-         </div>
-         
-      
+        </div>
+
+
       </section>
 
 
-   </section>
+    </section>
   </div>
 </section>
