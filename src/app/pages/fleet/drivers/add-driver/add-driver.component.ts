@@ -85,7 +85,7 @@ export class AddDriverComponent
     driverStatus: null,
     userName: "",
     firstName: null,
-    middleName: null,
+    middleName: '',
     lastName: null,
     startDate: null,
     terminationDate: null,
@@ -1103,7 +1103,9 @@ export class AddDriverComponent
     this.driverData.userName = result.userName;
     this.driverData.firstName = result.firstName;
     if (result.middleName === undefined) {
-      this.driverData.middleName = null;
+      this.driverData.middleName = '';
+    } else {
+      this.driverData.middleName = result.middleName;
     }
     this.driverData.lastName = result.lastName;
     this.driverData.DOB = _.isEmpty(result.DOB) ? null : result.DOB;

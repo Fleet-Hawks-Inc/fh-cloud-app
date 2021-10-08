@@ -96,11 +96,11 @@ export class TripDetailComponent implements OnInit {
     this.fetchExpenses();
     this.fetchExpenseCategories();
     this.fetchTripDocuments();
-    
+
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
-  async fetchDriverStatus(driverID:any){
+  async fetchDriverStatus(driverID: any) {
 
     let result = await this.apiService.getData(`drivers/status/${this.tripID}/${driverID}`).toPromise();
 
@@ -117,6 +117,7 @@ export class TripDetailComponent implements OnInit {
           if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
             if (el.uploadedDocs.length > 0) {
               el.uploadedDocs.forEach(element => {
+                console.log('element', element);
                 let name = element.split('.');
                 let ext = name[name.length - 1];
                 let obj = {}
@@ -131,6 +132,7 @@ export class TripDetailComponent implements OnInit {
                     docPath: `${this.Asseturl}/${el.carrierID}/${element}`
                   }
                 }
+                console.log('object image', obj);
                 this.uploadedDocSrc.push(obj);
 
               });
@@ -193,7 +195,7 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       })
   }
-   fetchTripDetail() {
+  fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
     let locations = [];
@@ -225,7 +227,6 @@ export class TripDetailComponent implements OnInit {
         if (result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
-
             let name = element.split('.');
             let ext = name[name.length - 1];
             let obj = {
@@ -260,9 +261,9 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverID: element.driverID,
-            driverStatus:element.driverID? await this.fetchDriverStatus(element.driverID):'',
+            driverStatus: element.driverID ? await this.fetchDriverStatus(element.driverID) : '',
             coDriverID: element.coDriverID,
-            coDriverStatus:element.coDriverID? await this.fetchDriverStatus(element.coDriverID):'',
+            coDriverStatus: element.coDriverID ? await this.fetchDriverStatus(element.coDriverID) : '',
             driverUsername: element.driverUsername,
             locationName: element.location,
             mileType: element.mileType,
@@ -546,6 +547,7 @@ export class TripDetailComponent implements OnInit {
                   docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
                 }
               }
+              console.log('object', obj);
               this.uploadedDocSrc.push(obj);
             }
           }
