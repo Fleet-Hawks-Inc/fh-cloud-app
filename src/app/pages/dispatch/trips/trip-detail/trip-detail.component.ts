@@ -82,6 +82,7 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  tripStatus = '';
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -96,11 +97,11 @@ export class TripDetailComponent implements OnInit {
     this.fetchExpenses();
     this.fetchExpenseCategories();
     this.fetchTripDocuments();
-    
+
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
-  async fetchDriverStatus(driverID:any){
+  async fetchDriverStatus(driverID: any) {
 
     let result = await this.apiService.getData(`drivers/status/${this.tripID}/${driverID}`).toPromise();
 
@@ -193,13 +194,18 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       })
   }
-   fetchTripDetail() {
+  fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
     let locations = [];
     this.apiService.getData('trips/' + this.tripID).
       subscribe(async (result: any) => {
         result = result.Items[0];
+        if (result.settlmnt) {
+          this.tripStatus = 'Settled';
+        } else {
+          this.tripStatus = result.tripStatus;
+        }
 
         if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
@@ -260,9 +266,9 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverID: element.driverID,
-            driverStatus:element.driverID? await this.fetchDriverStatus(element.driverID):'',
+            driverStatus: element.driverID ? await this.fetchDriverStatus(element.driverID) : '',
             coDriverID: element.coDriverID,
-            coDriverStatus:element.coDriverID? await this.fetchDriverStatus(element.coDriverID):'',
+            coDriverStatus: element.coDriverID ? await this.fetchDriverStatus(element.coDriverID) : '',
             driverUsername: element.driverUsername,
             locationName: element.location,
             mileType: element.mileType,
