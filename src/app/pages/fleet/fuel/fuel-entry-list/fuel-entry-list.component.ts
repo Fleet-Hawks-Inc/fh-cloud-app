@@ -266,7 +266,7 @@ export class FuelEntryListComponent implements OnInit {
       this.getStartandEndVal();
       result[`Items`].forEach(element => {
 
-        if (element.data.fuelProvider == "WEX") {
+        if (element.fuelProvider == "WEX") {
           element.dateTime = moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
         }
         else {
