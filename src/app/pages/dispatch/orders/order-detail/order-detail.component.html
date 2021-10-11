@@ -126,7 +126,7 @@
                         Order Creation Date/Time:
                       </div>
                       <div class="col-lg-8 p-2 border-box">{{ createdTime | date : 'yyyy/MM/dd
-                                                hh:mm:ss a' }}</div>
+                        hh:mm:ss a' }}</div>
                     </div>
                     <div class="row m-0">
                       <div class="col-lg-4 p-2 font-weight-bold text-3 text-left back-color-gray">
@@ -247,7 +247,7 @@
                                               <strong>Pickup
                                                 Date/Time:</strong>
                                               {{pick.dateAndTime |
-                                                                                                date:'yyyy/MM/dd hh:mm a' }}
+                                              date:'yyyy/MM/dd hh:mm a' }}
                                             </p>
                                             <p class="mb-0 text-dark">
                                               <strong>Customer PO#</strong> <span *ngFor="let po of pick.customerPO"
@@ -366,7 +366,7 @@
                                             <p class="mb-0 text-dark">
                                               <strong>Delivery Date/Time:</strong>
                                               {{drop.dateAndTime
-                                                                                            | date:'yyyy/MM/dd hh:mm a'}}
+                                              | date:'yyyy/MM/dd hh:mm a'}}
 
                                             </p>
                                             <p class="mb-0 text-dark text-capitalize">
@@ -426,7 +426,7 @@
                                 <p class="mb-0 text-dark">
                                   <strong>Will Driver Unload ?:</strong>
                                   {{receiver.driverUnload
-                                                                    ? 'Yes': 'No'}}
+                                  ? 'Yes': 'No'}}
                                 </p>
                                 <div class="mt-3"></div>
                               </div>
@@ -628,7 +628,7 @@
                               Tax Amount
                               <span *ngIf="stateCode != ''">
                                 ( <span class="font-weight-semibold">{{ stateCode
-                                                                    }}</span> )
+                                  }}</span> )
                               </span>
                               <span class="pull-right">{{taxableAmount}}
                                 {{charges.freightFee.currency}}</span>
@@ -1053,7 +1053,8 @@
                                     <tbody>
                                       <tr class="item">
                                         <td colspan="6">{{invoiceData.charges.freightFee.type}}
-                                          <small>(Freight Fees)</small></td>
+                                          <small>(Freight Fees)</small>
+                                        </td>
 
                                         <td align="right">
                                           {{invoiceData.charges.freightFee.amount}}
@@ -1094,7 +1095,8 @@
                                       <tr *ngFor="let item of invoiceData.charges.accessorialFeeInfo.accessorialFee;">
                                         <td colspan="6">{{item.type}} <small>(Accessorial Fee)</small></td>
                                         <td align="right">{{item.amount}}
-                                          <small>{{item.currency}}</small></td>
+                                          <small>{{item.currency}}</small>
+                                        </td>
 
                                       </tr>
                                     </tbody>
@@ -1111,7 +1113,8 @@
                                         <td colspan="6">{{item.type}} <small>(Accessorial
                                             Deduction)</small></td>
                                         <td align="right">- {{item.amount}}
-                                          <small>{{item.currency}}</small></td>
+                                          <small>{{item.currency}}</small>
+                                        </td>
 
                                       </tr>
                                     </tbody>
@@ -1123,12 +1126,14 @@
                               <tr class="bg-transparent">
                                 <td align="right" colspan="6">Sub Total</td>
                                 <td align="right">{{invoiceData.subTotal}}
-                                  <small>{{charges.freightFee.currency}} </small></td>
+                                  <small>{{charges.freightFee.currency}} </small>
+                                </td>
                               </tr>
                               <tr class="bg-transparent">
                                 <td colspan="6" align="right">Tax</td>
                                 <td align="right">{{invoiceData.taxesAmt}}
-                                  <small>{{charges.freightFee.currency}} </small></td>
+                                  <small>{{charges.freightFee.currency}} </small>
+                                </td>
                               </tr>
 
                             </tbody>
@@ -1223,7 +1228,8 @@
                       <td width="20%" style="border-bottom:solid 1px #000;">&nbsp;</td>
                       <td width="6%">
                         <p style="font-size:13px;    text-align: center;color: #000;margin: 0;">
-                          <strong>Signature</strong></p>
+                          <strong>Signature</strong>
+                        </p>
                       </td>
                       <td width="23%" style="border-bottom:solid 1px #000;">&nbsp;</td>
                     </tr>
@@ -1509,7 +1515,8 @@
                                     <tbody>
                                       <tr class="item">
                                         <td colspan="6">{{invoiceData.charges.freightFee.type}}
-                                          <small>(Freight Fees)</small></td>
+                                          <small>(Freight Fees)</small>
+                                        </td>
 
                                         <td align="right">
                                           {{invoiceData.charges.freightFee.amount}}
@@ -1548,7 +1555,8 @@
                                         <td colspan="6">{{item.type}} <small>(Accessorial
                                             Addition)</small></td>
                                         <td align="right">{{item.amount}}
-                                          <small>{{item.currency}}</small></td>
+                                          <small>{{item.currency}}</small>
+                                        </td>
 
                                       </tr>
                                     </tbody>
@@ -1565,7 +1573,8 @@
                                         <td colspan="6">{{item.type}} <small>(Accessorial
                                             Deduction)</small></td>
                                         <td align="right">- {{item.amount}}
-                                          <small>{{item.currency}}</small></td>
+                                          <small>{{item.currency}}</small>
+                                        </td>
 
                                       </tr>
                                     </tbody>
@@ -1577,12 +1586,14 @@
                               <tr class="bg-transparent">
                                 <td align="right" colspan="6">Sub Total</td>
                                 <td align="right">{{invoiceData.subTotal}}
-                                  <small>{{charges.freightFee.currency}} </small></td>
+                                  <small>{{charges.freightFee.currency}} </small>
+                                </td>
                               </tr>
                               <tr class="bg-transparent">
                                 <td colspan="6" align="right">Tax</td>
                                 <td align="right">{{invoiceData.taxesAmt}}
-                                  <small>{{charges.freightFee.currency}} </small></td>
+                                  <small>{{charges.freightFee.currency}} </small>
+                                </td>
                               </tr>
 
                             </tbody>
@@ -1659,7 +1670,7 @@
 </ng-template>
 
 <!-- VIEW DOCUMENT MODAL -->
-<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+<!-- <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -1686,4 +1697,4 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->

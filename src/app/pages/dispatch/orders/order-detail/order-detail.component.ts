@@ -648,16 +648,16 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setPDFSrc(val) {
-    let pieces = val.split(/[\s.]+/);
-    let ext = pieces[pieces.length - 1];
-    this.pdfSrc = '';
-    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
-    } else {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
-    }
-  }
+  // setPDFSrc(val) {
+  //   let pieces = val.split(/[\s.]+/);
+  //   let ext = pieces[pieces.length - 1];
+  //   this.pdfSrc = '';
+  //   if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+  //     this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+  //   } else {
+  //     this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+  //   }
+  // }
 
 
   /*
@@ -703,7 +703,6 @@ export class OrderDetailComponent implements OnInit {
         this.docs = [];
         this.uploadedDocs = [];
         if (result.length > 0) {
-          console.log('result', result);
           result.forEach((x: any) => {
             let obj: any = {};
             if ((x.storedName).split('.')[1] === 'jpg' || (x.storedName).split('.')[1] === 'png' || (x.storedName).split('.')[1] === 'jpeg') {
@@ -725,32 +724,6 @@ export class OrderDetailComponent implements OnInit {
             }
             this.docs.push(obj);
           });
-          console.log('docs', this.docs);
-          // for (let k = 0; k < result.length; k++) {
-          //   const element = result[k];
-          //   let name = element.storedName.split('.');
-          //   let ext = name[name.length - 1];
-          //   let obj = {
-          //     imgPath: '',
-          //     docPath: ''
-          //   }
-          //   if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-          //     obj = {
-          //       imgPath: `${this.Asseturl}/${this.carrierID}/${element.storedName}`,
-          //       docPath: `${this.Asseturl}/${this.carrierID}/${element.storedName}`
-          //     }
-          //   } else {
-          //     obj = {
-          //       imgPath: 'assets/img/icon-pdf.png',
-          //       docPath: `${this.Asseturl}/${this.carrierID}/${element.storedName}`
-          //     }
-          //   }
-          //   console.log('object', obj);
-          //   this.docs.push(obj);
-          //   // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-
-
-          // }
         }
         this.toastr.success('BOL/POD uploaded successfully');
         this.uploadBol.nativeElement.value = "";
