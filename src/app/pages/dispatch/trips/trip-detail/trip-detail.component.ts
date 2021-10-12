@@ -87,6 +87,7 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  tripStatus = '';
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -122,18 +123,24 @@ export class TripDetailComponent implements OnInit {
           if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
             if (el.uploadedDocs.length > 0) {
               el.uploadedDocs.forEach(element => {
-                let name = element.split('.');
-                let ext = name[name.length - 1];
+                let name = element.storedName;
+                let ext = (element.storedName).split('.')[1];
                 let obj = {}
                 if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
                   obj = {
-                    imgPath: `${this.Asseturl}/${el.carrierID}/${element}`,
-                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                    imgPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext
                   }
                 } else {
                   obj = {
                     imgPath: 'assets/img/icon-pdf.png',
-                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext
                   }
                 }
                 this.uploadedDocSrc.push(obj);
@@ -205,6 +212,11 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe(async (result: any) => {
         result = result.Items[0];
+        if (result.settlmnt) {
+          this.tripStatus = 'Settled';
+        } else {
+          this.tripStatus = result.tripStatus;
+        }
 
         if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
@@ -230,22 +242,30 @@ export class TripDetailComponent implements OnInit {
         if (result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
-
-            let name = element.split('.');
-            let ext = name[name.length - 1];
+            let name = element.storedName;
+            let ext = (element.storedName).split('.')[1];
             let obj = {
               imgPath: '',
-              docPath: ''
+              docPath: '',
+              displayName: '',
+              name: '',
+              ext: ''
             }
             if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
               obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+                imgPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext
               }
             } else {
               obj = {
                 imgPath: 'assets/img/icon-pdf.png',
-                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+                docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext
               }
             }
             this.uploadedDocSrc.push(obj);
@@ -534,21 +554,30 @@ export class TripDetailComponent implements OnInit {
               const element = res[k];
               // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
 
-              let name = element.split('.');
-              let ext = name[name.length - 1];
+              let name = element.storedName;
+              let ext = (element.storedName).split('.')[1];
               let obj = {
                 imgPath: '',
-                docPath: ''
+                docPath: '',
+                displayName: '',
+                name: '',
+                ext: ''
               }
               if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
                 obj = {
-                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`,
-                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  displayName: element.displayName,
+                  name: name,
+                  ext: ext
                 }
               } else {
                 obj = {
                   imgPath: 'assets/img/icon-pdf.png',
-                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  displayName: element.displayName,
+                  name: name,
+                  ext: ext
                 }
               }
               this.uploadedDocSrc.push(obj);

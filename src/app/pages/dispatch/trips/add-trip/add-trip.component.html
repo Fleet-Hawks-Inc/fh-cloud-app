@@ -215,6 +215,10 @@
                                                             150px; width:
                                                             150px;min-width:
                                                             150px;">Location</th>
+                                                        <th width="4%">MM <i class="fas
+                                                            fa-exclamation-circle" data-placement="top"
+                                                                data-toggle="tooltip" title="Manual
+                                                            Miles"></i></th>
                                                         <th width="7%">Loaded/
                                                             Empty</th>
                                                         <th width="5%">Miles</th>
@@ -274,7 +278,15 @@
                                                             {{ trip.locationName
                                                             }}
                                                         </td>
-
+                                                        <td id="labelCell51{{i}}" class="labelRow{{i}}">
+                                                            <!-- <input type="checkbox" class="form-control" /> -->
+                                                            <span class="badge
+                                                                badge-dark p-1
+                                                                text-uppercase">
+                                                                {{ (trip.milesMan)
+                                                                ? 'yes' : 'no'
+                                                                }}</span>
+                                                        </td>
                                                         <td id="labelCell5{{i}}" class="labelRow{{i}}">
                                                             <span class="badge
                                                                 badge-dark p-1
@@ -421,6 +433,13 @@
                                                             </ul>
                                                         </td>
 
+                                                        <td class="rowStatus
+                                                            textRows
+                                                            editRow{{i}}">
+                                                            <input type="checkbox" class="form-control
+                                                                manCheck" id="editCell51{{i}}"
+                                                                [(ngModel)]="trip.milesMan" name="editmilesMan{{i}}" />
+                                                        </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
@@ -574,6 +593,11 @@
                                                                         title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
+                                                        </td>
+                                                        <td>
+                                                            <input type="checkbox" class="form-control
+                                                                newRow manCheck" [(ngModel)]="textFieldValues.milesMan"
+                                                                name="milesMantxt" />
                                                         </td>
                                                         <td>
                                                             <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5"
