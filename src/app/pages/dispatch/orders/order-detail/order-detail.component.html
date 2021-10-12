@@ -1166,7 +1166,7 @@
                               <tr *ngIf="newDoc.ext === 'pdf'">
                                 <td>
                                   <div class="html2pdf__page-break"></div>
-                                  <pdf-viewer [src]="newDoc.path" [fit-to-page]="false" [show-all]="true"
+                                  <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
                                     [render-text]="true" [original-size]="false" [autoresize]="true"
                                     style="max-width: 700px; display: block;">
                                   </pdf-viewer>
@@ -1175,7 +1175,7 @@
                               <tr *ngIf="newDoc.ext === 'jpg' || newDoc.ext === 'jpeg' || newDoc.ext === 'png'">
                                 <td>
                                   <div class="html2pdf__page-break"></div>
-                                  <img crossorigin="*" [src]="newDoc.path" class="img-fluid rounded" height="200px"
+                                  <img crossorigin="*" [src]="newDoc.docPath" class="img-fluid rounded" height="200px"
                                     width="100%">
                                 </td>
                               </tr>
@@ -1486,7 +1486,7 @@
                     <tbody>
                       <tr *ngFor="let newDoc of docs;">
                         <td>
-                          <pdf-viewer [src]="newDoc.path" [show-all]="true" [render-text]="true" [original-size]="false"
+                          <pdf-viewer [src]="newDoc.docPath" [show-all]="true" [render-text]="true" [original-size]="false"
                             style="display: block;">
                           </pdf-viewer>
                         </td>
