@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/services';
-import { ApiService } from 'src/app/services/api.service';
-import Constants from '../../../fleet/constants';
+import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import { AccountService } from "src/app/services";
+import { ApiService } from "src/app/services/api.service";
+import Constants from "../../../fleet/constants";
 
 @Component({
   selector: "app-settlements-list",
@@ -25,7 +25,7 @@ export class SettlementsListComponent implements OnInit {
     type: null,
     settlementNo: "",
   };
-  lastItemSK = '';
+  lastItemSK = "";
   loaded = false;
   disableSearch = false;
   constructor(
@@ -67,46 +67,51 @@ export class SettlementsListComponent implements OnInit {
   fetchSettlements(refresh?: boolean) {
     let searchParam = null;
     if (refresh === true) {
-      this.lastItemSK = '';
+      this.lastItemSK = "";
       this.settlements = [];
     }
-    if (this.lastItemSK !== 'end') {
-      if (this.filter.settlementNo !== null && this.filter.settlementNo !== '') {
+    if (this.lastItemSK !== "end") {
+      if (
+        this.filter.settlementNo !== null &&
+        this.filter.settlementNo !== ""
+      ) {
         searchParam = encodeURIComponent(`"${this.filter.settlementNo}"`);
-     } else {
-       searchParam = null;
-     }
+      } else {
+        searchParam = null;
+      }
       this.accountService
-      .getData(
-        `settlement/paging?type=${this.filter.type}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
-      )
-      .subscribe((result: any) => {
-        if (result.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-          this.disableSearch = false;
-        }
-        if (result.length > 0) {
-          this.disableSearch = false;
-          if (result[result.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+        .getData(
+          `settlement/paging?type=${this.filter.type}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        )
+        .subscribe((result: any) => {
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.disableSearch = false;
           }
-          result.map((v) => {
-            v.url = `/accounts/settlements/detail/${ v.sttlID }`;
-            v.entityType = v.type.replace("_", " ");
-            v.status = v.status.replace("_", " ");
-            if (v.status == undefined) {
-              v.status = "unpaid";
+          if (result.length > 0) {
+            this.disableSearch = false;
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(
+                result[result.length - 1].sk
+              );
+            } else {
+              this.lastItemSK = "end";
             }
+            result.map((v) => {
+              v.url = `/accounts/settlements/detail/${v.sttlID}`;
+              v.entityType = v.type.replace("_", " ");
+              v.status = v.status.replace("_", " ");
+              if (v.status == undefined) {
+                v.status = "unpaid";
+              }
 
-            v.paidAmount = v.finalTotal - v.pendingPayment;
-            v.paidAmount = v.paidAmount.toFixed(2);
-            this.settlements.push(v);
-          });
-          this.loaded = true;
-        }
-      });
+              v.paidAmount = v.finalTotal - v.pendingPayment;
+              v.paidAmount = v.paidAmount.toFixed(2);
+              this.settlements.push(v);
+            });
+            this.loaded = true;
+          }
+        });
     }
   }
 
@@ -117,18 +122,17 @@ export class SettlementsListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.settlementNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (
+      this.filter.type !== null ||
+      this.filter.settlementNo !== null ||
+      this.filter.endDate !== null ||
+      this.filter.startDate !== null
+    ) {
       this.disableSearch = true;
-      if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
-      ) {
+      if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
-      } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
-      ) {
+      } else if (this.filter.startDate == "" && this.filter.endDate != "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
@@ -137,7 +141,7 @@ export class SettlementsListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.settlements = [];
-        this.lastItemSK = '';
+        this.lastItemSK = "";
         this.fetchSettlements();
       }
     }
@@ -153,7 +157,7 @@ export class SettlementsListComponent implements OnInit {
       settlementNo: null,
     };
     this.settlements = [];
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.fetchSettlements();
   }
 
@@ -162,7 +166,7 @@ export class SettlementsListComponent implements OnInit {
       this.accountService
         .deleteData(`settlement/delete/${settlementID}`)
         .subscribe((result: any) => {
-          this.lastItemSK = '';
+          this.lastItemSK = "";
           this.settlements = [];
           this.fetchSettlements();
           this.toaster.success("Settlement deleted successfully.");
@@ -172,7 +176,7 @@ export class SettlementsListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-    this.fetchSettlements();
+      this.fetchSettlements();
     }
   }
 
@@ -186,7 +190,7 @@ export class SettlementsListComponent implements OnInit {
       settlementNo: null,
     };
     this.settlements = [];
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.fetchSettlements();
   }
 }

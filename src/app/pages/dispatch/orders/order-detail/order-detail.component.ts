@@ -206,6 +206,7 @@ export class OrderDetailComponent implements OnInit {
    * fetch Asset data
    */
   async fetchOrder() {
+    this.docs = [];
     this.apiService
       .getData(`orders/${this.orderID}`)
       .subscribe(async (result: any) => {
@@ -320,11 +321,50 @@ export class OrderDetailComponent implements OnInit {
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
         }
-        if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
-          this.docs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x, ext: x.split('.')[1] }));
+        if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+          result.uploadedDocs.forEach((x: any) => {
+            if ((x.storedName).split('.')[1] === 'jpg' || (x.storedName).split('.')[1] === 'png' || (x.storedName).split('.')[1] === 'jpeg') {
+              const obj = {
+                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: (x.storedName).split('.')[1]
+              };
+              this.docs.push(obj);
+            } else {
+              const obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: (x.storedName).split('.')[1]
+              };
+              this.docs.push(obj);
+            }
+          });
+
+
+
+          // this.docs = result.uploadedDocs.map(x => ({
+          //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+          //   displayName: x.displayName,
+          //   name: x.storedName,
+          //   ext: (x.storedName).split('.')[1]
+          // }));
         }
 
-
+        // if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+        //   obj = {
+        //     imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
+        //     docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+        //   }
+        // } else {
+        //   obj = {
+        //     imgPath: 'assets/img/icon-pdf.png',
+        //     docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+        //   }
+        // }
         // if (
         //   result.uploadedDocs != undefined &&
         //   result.uploadedDocs.length > 0
@@ -601,13 +641,15 @@ export class OrderDetailComponent implements OnInit {
     //   date: this.createdDate,
     //   time: this.createdTime
     // }
-    await this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`).toPromise();
-    if (type == 'attachment') {
-      this.attachments.splice(index, 1);
-    } else {
-      this.docs.splice(index, 1);
+    if (confirm('Are you sure you want to delete?') === true) {
+      await this.apiService.deleteData(`orders/uploadDelete/${this.orderID}/${name}/${type}`).toPromise();
+      if (type == 'attachment') {
+        this.attachments.splice(index, 1);
+      } else {
+        this.docs.splice(index, 1);
+      }
+      this.toastr.success('Document deleted successfully');
     }
-    this.toastr.success('Document deleted successfully');
   }
 
   setPDFSrc(val) {
@@ -626,7 +668,9 @@ export class OrderDetailComponent implements OnInit {
   * Selecting files before uploading
   */
   selectDocuments(event) {
-    let files = [...event.target.files];
+    let files = [];
+    this.uploadedDocs = [];
+    files = [...event.target.files];
     let totalCount = this.docs.length + files.length;
 
     if (totalCount > 4) {
@@ -647,15 +691,13 @@ export class OrderDetailComponent implements OnInit {
           return false;
         }
       }
-
       for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i])
+        this.uploadedDocs.push(files[i]);
       }
-
       // create form data instance
       const formData = new FormData();
 
-      //append photos if any
+      // append photos if any
       for (let i = 0; i < this.uploadedDocs.length; i++) {
         formData.append('uploadedDocs', this.uploadedDocs[i]);
       }
@@ -663,31 +705,29 @@ export class OrderDetailComponent implements OnInit {
       this.apiService.postData(`orders/uploadDocs/${this.orderID}`, formData, true).subscribe((result: any) => {
 
         this.docs = [];
+        this.uploadedDocs = [];
         if (result.length > 0) {
-          for (let k = 0; k < result.length; k++) {
-            const element = result[k];
-            let name = element.split('.');
-            let ext = name[name.length - 1];
-            let obj = {
-              imgPath: '',
-              docPath: ''
-            }
-            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
+          result.forEach((x: any) => {
+            let obj: any = {};
+            if ((x.storedName).split('.')[1] === 'jpg' || (x.storedName).split('.')[1] === 'png' || (x.storedName).split('.')[1] === 'jpeg') {
               obj = {
-                imgPath: `${this.Asseturl}/${this.carrierID}/${element}`,
-                docPath: `${this.Asseturl}/${this.carrierID}/${element}`
-              }
+                imgPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: (x.storedName).split('.')[1]
+              };
             } else {
               obj = {
                 imgPath: 'assets/img/icon-pdf.png',
-                docPath: `${this.Asseturl}/${this.carrierID}/${element}`
-              }
+                docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: (x.storedName).split('.')[1]
+              };
             }
             this.docs.push(obj);
-            // this.docs.push(`${this.Asseturl}/${this.carrierID}/${element}`);
-
-
-          }
+          });
         }
         this.toastr.success('BOL/POD uploaded successfully');
         this.uploadBol.nativeElement.value = "";
@@ -727,7 +767,6 @@ export class OrderDetailComponent implements OnInit {
       .subscribe((result: any) => {
 
         this.invoiceData = result[0];
-        console.log('invoiceData', this.invoiceData.charges.fuelSurcharge.type)
         this.isInvoice = true;
 
       });
