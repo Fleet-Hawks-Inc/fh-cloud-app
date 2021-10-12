@@ -648,16 +648,16 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  // setPDFSrc(val) {
-  //   let pieces = val.split(/[\s.]+/);
-  //   let ext = pieces[pieces.length - 1];
-  //   this.pdfSrc = '';
-  //   if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-  //     this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
-  //   } else {
-  //     this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
-  //   }
-  // }
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = '';
+    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
 
 
   /*
