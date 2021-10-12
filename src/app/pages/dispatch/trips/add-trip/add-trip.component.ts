@@ -834,7 +834,10 @@ export class AddTripComponent implements OnInit {
       this.apiService
         .getData("trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles)
         .subscribe((result) => {
-          this.trips[tripLength].miles = result;
+          if (this.trips[tripLength].milesMan === false || this.trips[tripLength].milesMan === undefined) {
+            this.trips[tripLength].miles = result;
+          }
+
           this.calculateActualMiles(result);
           this.getStateWiseMiles();
         });
