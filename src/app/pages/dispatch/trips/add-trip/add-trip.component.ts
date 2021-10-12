@@ -134,6 +134,7 @@ export class AddTripComponent implements OnInit {
     coDriverID: "",
     locationName: "",
     locMan: false,
+    milesMan: false,
     lat: "",
     lng: "",
   };
@@ -243,7 +244,7 @@ export class AddTripComponent implements OnInit {
     private location: Location,
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -323,7 +324,10 @@ export class AddTripComponent implements OnInit {
     }
     newArr.map(function (v) {
       if (v.locationName != undefined && v.locationName != "") {
-        v.miles = 0;
+        if (v.milesMan === false || v.milesMan === undefined) {
+          v.miles = 0;
+        }
+
         locations.push(v.locationName);
       }
     });
@@ -380,6 +384,7 @@ export class AddTripComponent implements OnInit {
         driverID: "",
         coDriverID: "",
         locMan: false,
+        milesMan: false,
       };
       this.emptyAssetModalFields();
       this.selectedAssets = [];
@@ -499,8 +504,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -682,6 +687,7 @@ export class AddTripComponent implements OnInit {
                     lng: pk.address.geoCords.lng,
                     locData: {},
                     locMan: false,
+                    milesMan: false,
                   };
                   if (n.pickupLocation != "" && n.pickupLocation != undefined) {
                     locations.push(n.pickupLocation);
@@ -742,6 +748,7 @@ export class AddTripComponent implements OnInit {
                     lng: dr.address.geoCords.lng,
                     locData: {},
                     locMan: false,
+                    milesMan: false,
                   };
                   if (
                     k.dropOffLocation != "" &&
@@ -796,7 +803,9 @@ export class AddTripComponent implements OnInit {
                 "trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles
               )
               .subscribe((result) => {
-                element.miles = result;
+                if (element.milesMan === false || element.milesMan === undefined) {
+                  element.miles = result;
+                }
                 this.calculateActualMiles(result);
               });
           } catch (error) {
@@ -806,7 +815,10 @@ export class AddTripComponent implements OnInit {
           savedCord = endingPoint;
         }
       } else {
-        element.miles = 0;
+        if (element.milesMan === false || element.milesMan === undefined) {
+          element.miles = 0;
+        }
+
         savedCord = element.lng + "," + element.lat;
       }
     }
@@ -1253,6 +1265,7 @@ export class AddTripComponent implements OnInit {
           coDriverID: "",
           locData: {},
           locMan: false,
+          milesMan: false,
           planID: "",
         };
         const element = planData[i];
@@ -1274,7 +1287,8 @@ export class AddTripComponent implements OnInit {
         obj.driverID = element.driverID;
         obj.coDriverID = element.coDriverID;
         obj.locData = element.locData;
-        obj.locMan = element.locMan;
+        obj.locMan = element.locMan ? element.locMan : false;
+        obj.milesMan = element.milesMan ? element.milesMan : false;
         obj.planID = element.planID;
 
         if (
@@ -1350,11 +1364,12 @@ export class AddTripComponent implements OnInit {
     this.tripData.stlStatus = stlStatus;
     this.tripData.carrierIDs = selectedCarrierids;
     this.splitTripArr();
+
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1372,7 +1387,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1391,12 +1406,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1687,6 +1702,7 @@ export class AddTripComponent implements OnInit {
             lat: element.lat,
             lng: element.lng,
             locMan: element.locMan,
+            milesMan: element.milesMan,
             locData: element.locData,
           };
 
@@ -1821,6 +1837,7 @@ export class AddTripComponent implements OnInit {
         coDriverID: "",
         locData: {},
         locMan: false,
+        milesMan: false,
         planID: "",
       };
       const element = planData[i];
@@ -1843,7 +1860,8 @@ export class AddTripComponent implements OnInit {
       obj.driverID = element.driverID;
       obj.coDriverID = element.coDriverID;
       obj.locData = element.locData;
-      obj.locMan = element.locMan;
+      obj.locMan = element.locMan ? element.locMan : false;
+      obj.milesMan = element.milesMan ? element.milesMan : false;
       obj.planID = element.planID;
 
       if (element.trailer != undefined && element.trailer != null) {
@@ -1923,9 +1941,8 @@ export class AddTripComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.updateOrderStatusToConfirmed();
     this.apiService.putData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1943,7 +1960,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -2011,19 +2028,6 @@ export class AddTripComponent implements OnInit {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.currentUser = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
   };
-
-  updateOrderStatusToConfirmed() {
-    for (let i = 0; i < this.OldOrderIDs.length; i++) {
-      const orderID = this.OldOrderIDs[i];
-      const orderStatus = "confirmed";
-      const orderNo = 0;
-      this.apiService
-        .getData(
-          `orders/update/orderStatus/${orderID}/${orderNo}/${orderStatus}`
-        )
-        .subscribe((result: any) => {});
-    }
-  }
 
   resetMap() {
     this.newCoords = [];
@@ -2511,7 +2515,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -2524,8 +2528,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {

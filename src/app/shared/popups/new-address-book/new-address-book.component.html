@@ -135,11 +135,31 @@
                       <td>{{ customer.workPhone }}</td>
                       <td *ngIf="customer.address[0]">
                         <span *ngIf="customer.address[0].manual">
-                          {{ customer.address[0].add1 }}
-                          {{ customer.address[0].add }},
-                          {{ customer.address[0].ctyName }},
-                          {{ customer.address[0].sName }},
-                          {{ customer.address[0].cName }},
+                          {{
+                            customer.address[0].add1
+                              ? customer.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            customer.address[0].add
+                              ? customer.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            customer.address[0].ctyName
+                              ? customer.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            customer.address[0].sName
+                              ? customer.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            customer.address[0].cName
+                              ? customer.address[0].cName + ","
+                              : ""
+                          }}
                           {{ customer.address[0].zip }}
                         </span>
                         <span *ngIf="!customer.address[0].manual">
@@ -208,11 +228,31 @@
                         <td>{{ item.workPhone }}</td>
                         <td *ngIf="item.address[0] != undefined" class="text-capitalize">
                           <span *ngIf="item.address[0].manual">
-                            {{ item.address[0].add1 }}
-                            {{ item.address[0].add2 }},
-                            {{ item.address[0].ctyName }},
-                            {{ item.address[0].sName }},
-                            {{ item.address[0].cName }},
+                            {{
+                              item.address[0].add1
+                                ? item.address[0].add1 + ","
+                                : ""
+                            }}
+                            {{
+                              item.address[0].add
+                                ? item.address[0].add + ","
+                                : ""
+                            }}
+                            {{
+                              item.address[0].ctyName
+                                ? item.address[0].ctyName + ","
+                                : ""
+                            }}
+                            {{
+                              item.address[0].sName
+                                ? item.address[0].sName + ","
+                                : ""
+                            }}
+                            {{
+                              item.address[0].cName
+                                ? item.address[0].cName + ","
+                                : ""
+                            }}
                             {{ item.address[0].zip }}
                           </span>
                           <span *ngIf="!item.address[0].manual">
@@ -278,11 +318,31 @@
                       <td>{{ broker.workPhone }}</td>
                       <td *ngIf="broker.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="broker.address[0].manual">
-                          {{ broker.address[0].add1 }}
-                          {{ broker.address[0].add2 }},
-                          {{ broker.address[0].ctyName }},
-                          {{ broker.address[0].sName }},
-                          {{ broker.address[0].cName }},
+                          {{
+                            broker.address[0].add1
+                              ? broker.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            broker.address[0].add
+                              ? broker.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            broker.address[0].ctyName
+                              ? broker.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            broker.address[0].sName
+                              ? broker.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            broker.address[0].cName
+                              ? broker.address[0].cName + ","
+                              : ""
+                          }}
                           {{ broker.address[0].zip }}
                         </span>
                         <span *ngIf="!broker.address[0].manual">
@@ -341,11 +401,31 @@
                       <td>{{ vendor.workPhone }}</td>
                       <td *ngIf="vendor.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="vendor.address[0].manual">
-                          {{ vendor.address[0].add1 }}
-                          {{ vendor.address[0].add2 }},
-                          {{ vendor.address[0].ctyName }},
-                          {{ vendor.address[0].sName }},
-                          {{ vendor.address[0].cName }},
+                          {{
+                            vendor.address[0].add1
+                              ? vendor.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            vendor.address[0].add
+                              ? vendor.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            vendor.address[0].ctyName
+                              ? vendor.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            vendor.address[0].sName
+                              ? vendor.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            vendor.address[0].cName
+                              ? vendor.address[0].cName + ","
+                              : ""
+                          }}
                           {{ vendor.address[0].zip }}
                         </span>
                         <span *ngIf="!vendor.address[0].manual">
@@ -403,11 +483,31 @@
                       <td>{{ carrier.workPhone }}</td>
                       <td *ngIf="carrier.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="carrier.address[0].manual">
-                          {{ carrier.address[0].add1 }}
-                          {{ carrier.address[0].add2 }},
-                          {{ carrier.address[0].ctyName }},
-                          {{ carrier.address[0].sName }},
-                          {{ carrier.address[0].cName }},
+                          {{
+                            carrier.address[0].add1
+                              ? carrier.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            carrier.address[0].add
+                              ? carrier.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            carrier.address[0].ctyName
+                              ? carrier.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            carrier.address[0].sName
+                              ? carrier.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            carrier.address[0].cName
+                              ? carrier.address[0].cName + ","
+                              : ""
+                          }}
                           {{ carrier.address[0].zip }}
                         </span>
                         <span *ngIf="!carrier.address[0].manual">
@@ -469,11 +569,31 @@
                       <td>{{ operator.workPhone }}</td>
                       <td *ngIf="operator.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="operator.address[0].manual">
-                          {{ operator.address[0].add1 }}
-                          {{ operator.address[0].add2 }},
-                          {{ operator.address[0].ctyName }},
-                          {{ operator.address[0].sName }},
-                          {{ operator.address[0].cName }},
+                          {{
+                            operator.address[0].add1
+                              ? operator.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            operator.address[0].add
+                              ? operator.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            operator.address[0].ctyName
+                              ? operator.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            operator.address[0].sName
+                              ? operator.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            operator.address[0].cName
+                              ? operator.address[0].cName + ","
+                              : ""
+                          }}
                           {{ operator.address[0].zip }}
                         </span>
                         <span *ngIf="!operator.address[0].manual">
@@ -532,11 +652,31 @@
                       <td>{{ shipper.workPhone }}</td>
                       <td *ngIf="shipper.address[0] != undefined">
                         <span *ngIf="shipper.address[0].manual">
-                          {{ shipper.address[0].add1 }}
-                          {{ shipper.address[0].add2 }},
-                          {{ shipper.address[0].ctyName }},
-                          {{ shipper.address[0].sName }},
-                          {{ shipper.address[0].cName }},
+                          {{
+                            shipper.address[0].add1
+                              ? shipper.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            shipper.address[0].add
+                              ? shipper.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            shipper.address[0].ctyName
+                              ? shipper.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            shipper.address[0].sName
+                              ? shipper.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            shipper.address[0].cName
+                              ? shipper.address[0].cName + ","
+                              : ""
+                          }}
                           {{ shipper.address[0].zip }}
                         </span>
                         <span *ngIf="!shipper.address[0].manual">
@@ -595,11 +735,31 @@
                       <td>{{ receiver.workPhone }}</td>
                       <td *ngIf="receiver.address[0] != undefined">
                         <span *ngIf="receiver.address[0].manual">
-                          {{ receiver.address[0].add1 }}
-                          {{ receiver.address[0].add2 }},
-                          {{ receiver.address[0].ctyName }},
-                          {{ receiver.address[0].sName }},
-                          {{ receiver.address[0].cName }},
+                          {{
+                            receiver.address[0].add1
+                              ? receiver.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            receiver.address[0].add
+                              ? receiver.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            receiver.address[0].ctyName
+                              ? receiver.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            receiver.address[0].sName
+                              ? receiver.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            receiver.address[0].cName
+                              ? receiver.address[0].cName + ","
+                              : ""
+                          }}
                           {{ receiver.address[0].zip }}
                         </span>
                         <span *ngIf="!receiver.address[0].manual">
@@ -662,11 +822,31 @@
                       <td>{{ company.workPhone }}</td>
                       <td *ngIf="company.address[0] != undefined">
                         <span *ngIf="company.address[0].manual">
-                          {{ company.address[0].add1 }}
-                          {{ company.address[0].add2 }},
-                          {{ company.address[0].ctyName }},
-                          {{ company.address[0].sName }},
-                          {{ company.address[0].cName }},
+                          {{
+                            company.address[0].add1
+                              ? company.address[0].add1 + ","
+                              : ""
+                          }}
+                          {{
+                            company.address[0].add
+                              ? company.address[0].add + ","
+                              : ""
+                          }}
+                          {{
+                            company.address[0].ctyName
+                              ? company.address[0].ctyName + ","
+                              : ""
+                          }}
+                          {{
+                            company.address[0].sName
+                              ? company.address[0].sName + ","
+                              : ""
+                          }}
+                          {{
+                            company.address[0].cName
+                              ? company.address[0].cName + ","
+                              : ""
+                          }}
                           {{ company.address[0].zip }}
                         </span>
                         <span *ngIf="!company.address[0].manual">

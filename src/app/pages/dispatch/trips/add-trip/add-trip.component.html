@@ -9,22 +9,18 @@
                     </div>
                     <div class="col-md-4 col-lg-4 text-dark" *ngIf="tripID">
                         <span class="font-weight-bold text-4">{{ pageTitle }} -
-                            #{{ tripData.tripNo }} </span> <span
-                            class="badge p-1 badge-dark mt-2 mb-0
+                            #{{ tripData.tripNo }} </span> <span class="badge p-1 badge-dark mt-2 mb-0
                             text-uppercase">{{ tripData.tripStatus }}</span>
                     </div>
 
                     <div class="col-md-8 col-lg-8 text-right">
-                        <a href="javascript:;"
-                            routerLink="/dispatch/trips/trip-list" class="btn
-                            btn-sm btn-default"><i
-                                class="fas fa-list"></i> All Trips</a>
+                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn
+                            btn-sm btn-default"><i class="fas fa-list"></i> All Trips</a>
                     </div>
                 </div>
             </header>
 
-            <form class="form-horizontal form-bordered" method="get" id="form_"
-                #tripForm="ngForm">
+            <form class="form-horizontal form-bordered" method="get" id="form_" #tripForm="ngForm">
                 <section class="m-2">
                     <div class="row mb-3">
                         <div class="col-lg-12">
@@ -33,8 +29,7 @@
                                     <div class="col-lg-6 mb-1">
                                         <div class="row">
                                             <div class="col-lg-3">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Dispatcher</label>
                                             </div>
@@ -48,28 +43,19 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Select
-                                                    Order# <span
-                                                        class="mandfield text-2
+                                                    Order# <span class="mandfield text-2
                                                         ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <input type="text"
-                                                    class="form-control"
-                                                    (click)="showMOdal()"
-                                                    [(ngModel)]="orderNo"
-                                                    name="ordr" placeholder="eg.
-                                                    776,1234"
-                                                    autocomplete="off"
-                                                    #order="ngModel" required>
+                                                <input type="text" class="form-control" (click)="showMOdal()"
+                                                    [(ngModel)]="orderNo" name="ordr" placeholder="eg.
+                                                    776,1234" autocomplete="off" #order="ngModel" required>
                                                 <div *ngIf="order.invalid &&
                                                     (order.dirty ||
-                                                    order.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="order.errors.required">
+                                                    order.touched)" class="text-danger">
+                                                    <div *ngIf="order.errors.required">
                                                         Order# is required.
                                                     </div>
                                                 </div>
@@ -78,23 +64,17 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Select
                                                     Permanent Route
 
                                                 </label>
-                                                <ng-select
-                                                    [(ngModel)]="tripData.routeID"
-                                                    name="routeID"
-                                                    (change)="makeRoutePlan()"
-                                                    placeholder="eg. Calgary to
-                                                    Edmonton"
-                                                    #pRoute="ngModel">
+                                                <ng-select [(ngModel)]="tripData.routeID" name="routeID"
+                                                    (change)="makeRoutePlan()" placeholder="eg. Calgary to
+                                                    Edmonton" #pRoute="ngModel">
                                                     <ng-option *ngFor="let route
-                                                        of permanentRoutes"
-                                                        value="{{ route.routeID
+                                                        of permanentRoutes" value="{{ route.routeID
                                                         }}">
                                                         {{ route.routeName }}</ng-option>
                                                 </ng-select>
@@ -103,25 +83,20 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-10">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Create
                                                     this trip using
                                                     <span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span></label>
                                                 <div class="btn-group-toggle">
-                                                    <label
-                                                        class="btn btn-outline
+                                                    <label class="btn btn-outline
                                                         btn-yesno mr-2 {{
-                                                        mapOrderActive}} mb-2"
-                                                        (click)="changeMapRoute('order')">Order
+                                                        mapOrderActive}} mb-2" (click)="changeMapRoute('order')">Order
                                                         Number</label>
-                                                    <label
-                                                        class="btn btn-outline
+                                                    <label class="btn btn-outline
                                                         btn-yesno mr-2 mb-2 {{
-                                                        mapRouteActive}}"
-                                                        (click)="changeMapRoute('route')">Permanent
+                                                        mapRouteActive}}" (click)="changeMapRoute('route')">Permanent
                                                         Route</label>
                                                 </div>
                                             </div>
@@ -139,18 +114,14 @@
                                                 <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">BOL/POD#</label>
-                                                <input type="text"
-                                                    class="form-control"
-                                                    name="bol"
-                                                    [(ngModel)]="tripData.bol"
-                                                    placeholder="eg. 13253578">
+                                                <input type="text" class="form-control" name="bol"
+                                                    [(ngModel)]="tripData.bol" placeholder="eg. 13253578">
                                             </div>
                                         </div>
 
                                         <div class="row mb-2">
                                             <div class="col-lg-10 col-md-12">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Select
                                                     Trip Date
@@ -158,24 +129,15 @@
                                                         text-2 ml-1"><sup>*</sup></span>
                                                 </label>
 
-                                                <input [(ngModel)]="dateCreated"
-                                                    name="dateCreated"
-                                                    type="text"
-                                                    placeholder="yyyy/mm/dd"
-                                                    (click)="from.toggle()"
-                                                    ngbDatepicker
-                                                    #from="ngbDatepicker"
-                                                    class="form-control"
-                                                    autocomplete="off"
-                                                    #tDate="ngModel" required
-                                                    [minDate]="dateMinLimit"
+                                                <input [(ngModel)]="dateCreated" name="dateCreated" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="from.toggle()" ngbDatepicker
+                                                    #from="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    #tDate="ngModel" required [minDate]="dateMinLimit"
                                                     [maxDate]="futureDatesLimit">
                                                 <div *ngIf="tDate.invalid &&
                                                     (tDate.dirty ||
-                                                    tDate.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="tDate.errors.required">
+                                                    tDate.touched)" class="text-danger">
+                                                    <div *ngIf="tDate.errors.required">
                                                         Trip date is required.
                                                     </div>
                                                 </div>
@@ -184,8 +146,7 @@
 
                                         <div class="row mb-2">
                                             <div class="col-lg-12">
-                                                <label
-                                                    class="control-label
+                                                <label class="control-label
                                                     font-weight-semibold text-3
                                                     text-dark">Reefer
                                                     Temperature </label>
@@ -193,24 +154,17 @@
                                             <div class="col-lg-10 col-md-12">
                                                 <div class="row">
                                                     <div class="col-lg-6">
-                                                        <input type="number"
-                                                            class="form-control"
+                                                        <input type="number" class="form-control"
                                                             name="reeferTemperature"
-                                                            [(ngModel)]="tripData.reeferTemperature"
-                                                            placeholder="eg. 10
+                                                            [(ngModel)]="tripData.reeferTemperature" placeholder="eg. 10
                                                             °C or °F">
                                                     </div>
                                                     <div class="col-lg-6 pl-0">
-                                                        <ng-select
-                                                            [(ngModel)]="tripData.reeferTemperatureUnit"
-                                                            name="reeferTemperatureUnit"
-                                                            placeholder="Select
-                                                            Temperature Unit"
-                                                            #sltReeferTemp="ngModel">
-                                                            <ng-option
-                                                                value="C">°C</ng-option>
-                                                            <ng-option
-                                                                value="F">°F</ng-option>
+                                                        <ng-select [(ngModel)]="tripData.reeferTemperatureUnit"
+                                                            name="reeferTemperatureUnit" placeholder="Select
+                                                            Temperature Unit" #sltReeferTemp="ngModel">
+                                                            <ng-option value="C">°C</ng-option>
+                                                            <ng-option value="F">°F</ng-option>
                                                         </ng-select>
 
                                                     </div>
@@ -228,23 +182,20 @@
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row pt-1">
                                     <div class="col-lg-12 mb-2">
-                                        <label
-                                            class="control-label
+                                        <label class="control-label
                                             font-weight-bold font-weight-bold
                                             text-lg-right text-5 m-0">Plan
                                             Trip</label>
                                         <button (click)="splitTrip()" class="btn
                                             btn-sm btn-success pull-right
-                                            ml-auto mb-1"
-                                            [disabled]="disableSplit">Split Trip</button>
+                                            ml-auto mb-1" [disabled]="disableSplit">Split Trip</button>
                                     </div>
 
                                     <div class="col-lg-12 mb-1">
                                         <div class="table-responsive">
                                             <table class="table table-sm
                                                 table-bordered table-striped
-                                                table-hover mb-2"
-                                                id="locationTable">
+                                                table-hover mb-2" id="locationTable">
                                                 <thead>
                                                     <tr>
                                                         <th width="4%">Select</th>
@@ -256,18 +207,18 @@
                                                         <!-- <th width="4%">Actual Pickup Time</th> -->
                                                         <!-- <th width="4%">Actual Drop Off Time</th> -->
                                                         <th width="8%">Name</th>
-                                                        <th width="4%">ML <i
-                                                                class="fas
-                                                                fa-exclamation-circle"
-                                                                data-placement="top"
-                                                                data-toggle="tooltip"
-                                                                title="Manual
+                                                        <th width="4%">ML <i class="fas
+                                                                fa-exclamation-circle" data-placement="top"
+                                                                data-toggle="tooltip" title="Manual
                                                                 Location"></i></th>
-                                                        <th width="100px"
-                                                            style="max-width:
+                                                        <th width="100px" style="max-width:
                                                             150px; width:
                                                             150px;min-width:
                                                             150px;">Location</th>
+                                                        <th width="4%">MM <i class="fas
+                                                            fa-exclamation-circle" data-placement="top"
+                                                                data-toggle="tooltip" title="Manual
+                                                            Miles"></i></th>
                                                         <th width="7%">Loaded/
                                                             Empty</th>
                                                         <th width="5%">Miles</th>
@@ -280,56 +231,36 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="ui-sortable
-                                                    example-list txttt"
-                                                    cdkDropList
+                                                    example-list txttt" cdkDropList
                                                     (cdkDropListDropped)="drop($event)">
-                                                    <tr
-                                                        class="ui-sortable-handle"
-                                                        cdkDrag
-                                                        *ngFor="let trip of
+                                                    <tr class="ui-sortable-handle" cdkDrag *ngFor="let trip of
                                                         trips; let i= index">
-                                                        <td
-                                                            class="labelRow{{i}}">
-                                                            <input
-                                                                class="form-control
-                                                                manCheck"
-                                                                type="checkbox"
-                                                                name="splitt{{i}}"
-                                                                [(ngModel)]="trip.split"
-                                                                [disabled]="trip.splitDone"
-                                                                />
+                                                        <td class="labelRow{{i}}">
+                                                            <input class="form-control
+                                                                manCheck" type="checkbox" name="splitt{{i}}"
+                                                                [(ngModel)]="trip.split" [disabled]="trip.splitDone" />
                                                         </td>
-                                                        <td id="labelCell1{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell1{{i}}" class="labelRow{{i}}">{{
                                                             trip.type }}</td>
-                                                        <td id="labelCell2{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell2{{i}}" class="labelRow{{i}}">{{
                                                             trip.date |
                                                             date:"yyyy/MM/dd" }}</td>
                                                         <!-- <td id="labelCell12{{i}}" class="labelRow{{i}}">{{ trip.time }}</td> -->
-                                                        <td
-                                                            id="labelCell13{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell13{{i}}" class="labelRow{{i}}">{{
                                                             trip.pickupTime
                                                             }}</td>
-                                                        <td
-                                                            id="labelCell14{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell14{{i}}" class="labelRow{{i}}">{{
                                                             trip.dropTime }}
                                                         </td>
                                                         <!-- <td id="labelCell15{{i}}" class="labelRow{{i}}">{{
                                                           trip.actualPickupTime }}</td>
                                                       <td id="labelCell16{{i}}" class="labelRow{{i}}">{{
                                                           trip.actualDropTime }}</td> -->
-                                                        <td id="labelCell3{{i}}"
-                                                            class="labelRow{{i}}">
-                                                            <a
-                                                                class="modal-with-form">{{
+                                                        <td id="labelCell3{{i}}" class="labelRow{{i}}">
+                                                            <a class="modal-with-form">{{
                                                                 trip.name }}</a>
                                                         </td>
-                                                        <td
-                                                            id="labelCell333{{i}}"
-                                                            class="labelRow{{i}}">
+                                                        <td id="labelCell333{{i}}" class="labelRow{{i}}">
                                                             <!-- <input type="checkbox" class="form-control" /> -->
                                                             <span class="badge
                                                                 badge-dark p-1
@@ -343,34 +274,33 @@
                                                             100px; width:
                                                             100px;word-wrap:
                                                             break-word;white-space:
-                                                            normal;"
-                                                            id="labelCell4{{i}}"
-                                                            class="labelRow{{i}}">
+                                                            normal;" id="labelCell4{{i}}" class="labelRow{{i}}">
                                                             {{ trip.locationName
                                                             }}
                                                         </td>
-
-                                                        <td id="labelCell5{{i}}"
-                                                            class="labelRow{{i}}">
+                                                        <td id="labelCell51{{i}}" class="labelRow{{i}}">
+                                                            <!-- <input type="checkbox" class="form-control" /> -->
                                                             <span class="badge
                                                                 badge-dark p-1
-                                                                text-uppercase"
-                                                                title=""
-                                                                data-original-title="Empty
-                                                                Miles"
-                                                                *ngIf="!!trip.mileType">{{
+                                                                text-uppercase">
+                                                                {{ (trip.milesMan)
+                                                                ? 'yes' : 'no'
+                                                                }}</span>
+                                                        </td>
+                                                        <td id="labelCell5{{i}}" class="labelRow{{i}}">
+                                                            <span class="badge
+                                                                badge-dark p-1
+                                                                text-uppercase" title="" data-original-title="Empty
+                                                                Miles" *ngIf="!!trip.mileType">{{
                                                                 trip.mileType }}</span>
                                                         </td>
-                                                        <td id="labelCell6{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell6{{i}}" class="labelRow{{i}}">{{
                                                             trip.miles }}
                                                         </td>
-                                                        <td id="labelCell7{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell7{{i}}" class="labelRow{{i}}">{{
                                                             vehiclesObjects[trip.vehicleID]
                                                             }}</td>
-                                                        <td id="labelCell8{{i}}"
-                                                            class="labelRow{{i}}">
+                                                        <td id="labelCell8{{i}}" class="labelRow{{i}}">
                                                             <span *ngFor="let
                                                                 addt of
                                                                 trip.trailerID;
@@ -381,34 +311,25 @@
                                                                 <span *ngIf="f>0">,</span>
                                                             </span>
                                                         </td>
-                                                        <td id="labelCell9{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell9{{i}}" class="labelRow{{i}}">{{
                                                             driversObjects[trip.driverID]
                                                             }}
                                                         </td>
-                                                        <td
-                                                            id="labelCell10{{i}}"
-                                                            class="labelRow{{i}}">{{
+                                                        <td id="labelCell10{{i}}" class="labelRow{{i}}">{{
                                                             driversObjects[trip.coDriverID]
                                                             }}</td>
-                                                        <td
-                                                            id="labelCell11{{i}}"
-                                                            class="labelRow{{i}}">
+                                                        <td id="labelCell11{{i}}" class="labelRow{{i}}">
                                                             {{
                                                             carriersObject[trip.carrierID]
                                                             }}
                                                         </td>
-                                                        <td
-                                                            class="labelRow{{i}}">
+                                                        <td class="labelRow{{i}}">
                                                             <i class="fas
-                                                                fa-edit mr-2"
-                                                                title="Edit Row"
+                                                                fa-edit mr-2" title="Edit Row"
                                                                 (click)="showEditRow(i)"></i>
                                                             <i class="fas
-                                                                fa-trash-alt"
-                                                                title="Delete
-                                                                Row"
-                                                                (click)="delRow(i)"></i>
+                                                                fa-trash-alt" title="Delete
+                                                                Row" (click)="delRow(i)"></i>
                                                         </td>
 
                                                         <!-- text fields -->
@@ -418,16 +339,11 @@
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <ng-select
-                                                                [(ngModel)]="trip.type"
-                                                                id="editCell1{{i}}"
-                                                                name="tripType"
-                                                                placeholder="Select
+                                                            <ng-select [(ngModel)]="trip.type" id="editCell1{{i}}"
+                                                                name="tripType" placeholder="Select
                                                                 trip type">
-                                                                <ng-option
-                                                                    value="{{
-                                                                    type }}"
-                                                                    *ngFor="let
+                                                                <ng-option value="{{
+                                                                    type }}" *ngFor="let
                                                                     type of
                                                                     typeOptions">{{
                                                                     type }}</ng-option>
@@ -436,41 +352,27 @@
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input
-                                                                id="cell2{{i}}"
-                                                                name="cell2"
-                                                                type="text"
-                                                                placeholder="yyyy/mm/dd"
-                                                                (click)="to.toggle()"
-                                                                ngbDatepicker
-                                                                #to="ngbDatepicker"
-                                                                [(ngModel)]="trip.date"
-                                                                class="form-control
-                                                                newRow"
-                                                                autocomplete="off"
-                                                                [minDate]="dateMinLimit"
+                                                            <input id="cell2{{i}}" name="cell2" type="text"
+                                                                placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                                ngbDatepicker #to="ngbDatepicker"
+                                                                [(ngModel)]="trip.date" class="form-control
+                                                                newRow" autocomplete="off" [minDate]="dateMinLimit"
                                                                 [maxDate]="futureDatesLimit">
                                                         </td>
 
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="time"
-                                                                class="form-control"
-                                                                id="editCell13{{i}}"
-                                                                name="editCell13"
-                                                                value="{{
+                                                            <input type="time" class="form-control" id="editCell13{{i}}"
+                                                                name="editCell13" value="{{
                                                                 trip.pickupTime
                                                                 }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="time"
-                                                                class="form-control"
-                                                                id="editCell14{{i}}"
-                                                                name="editCell14"
-                                                                value="{{
+                                                            <input type="time" class="form-control" id="editCell14{{i}}"
+                                                                name="editCell14" value="{{
                                                                 trip.dropTime
                                                                 }}">
                                                         </td>
@@ -485,66 +387,45 @@
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell3{{i}}"
+                                                            <input type="text" class="form-control" id="editCell3{{i}}"
                                                                 value="{{
                                                                 trip.name }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input
-                                                                type="checkbox"
-                                                                class="form-control
-                                                                manCheck"
-                                                                id="editCell18{{i}}"
-                                                                [(ngModel)]="trip.locMan"
-                                                                name="editlocMan{{i}}"
-                                                                (change)="selectManualAddress(i)"
-                                                                />
+                                                            <input type="checkbox" class="form-control
+                                                                manCheck" id="editCell18{{i}}"
+                                                                [(ngModel)]="trip.locMan" name="editlocMan{{i}}"
+                                                                (change)="selectManualAddress(i)" />
                                                         </td>
 
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                id="editCell4{{i}}"
-                                                                name="editCell4{{i}}"
-                                                                [(ngModel)]="trip.locationName"
-                                                                class="form-control
-                                                                newRow"
-                                                                autocomplete="off"
-                                                                (keyup)="searchTerm.next($event);"
-                                                                placeholder="Start
+                                                            <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
+                                                                [(ngModel)]="trip.locationName" class="form-control
+                                                                newRow" autocomplete="off"
+                                                                (keyup)="searchTerm.next($event);" placeholder="Start
                                                                 typing to get
                                                                 location
-                                                                suggestions"
-                                                                *ngIf="!trip.locMan">
-                                                            <input type="text"
-                                                                id="editCell4{{i}}"
-                                                                name="editCell4{{i}}"
-                                                                [(ngModel)]="trip.locationName"
-                                                                class="form-control
-                                                                newRow"
-                                                                placeholder="Start
+                                                                suggestions" *ngIf="!trip.locMan">
+                                                            <input type="text" id="editCell4{{i}}" name="editCell4{{i}}"
+                                                                [(ngModel)]="trip.locationName" class="form-control
+                                                                newRow" placeholder="Start
                                                                 add location
-                                                                from popup"
-                                                                *ngIf="trip.locMan"
+                                                                from popup" *ngIf="trip.locMan"
                                                                 (click)="locationModel('edit',i)">
                                                             <ul class="p-0 m-0
                                                                 text-left
                                                                 map-search__resultstrip
-                                                                bg-white"
-                                                                *ngIf="searchResults
+                                                                bg-white" *ngIf="searchResults
                                                                 &&
                                                                 !trip.locMan">
                                                                 <li *ngFor="let
                                                                     item of
                                                                     searchResults;">
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        (click)="assignLocation('editLoc',
+                                                                    <a href="javascript:;" (click)="assignLocation('editLoc',
                                                                         item,
                                                                         i)"
                                                                         title="{{item.address}}">{{item.address}}</a>
@@ -555,87 +436,68 @@
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <ng-select
-                                                                [(ngModel)]="trip.mileType"
-                                                                id="editCell5{{i}}"
-                                                                name="tripmileType{{i}}"
-                                                                placeholder="Select
+                                                            <input type="checkbox" class="form-control
+                                                                manCheck" id="editCell51{{i}}"
+                                                                [(ngModel)]="trip.milesMan" name="editmilesMan{{i}}" />
+                                                        </td>
+                                                        <td class="rowStatus
+                                                            textRows
+                                                            editRow{{i}}">
+                                                            <ng-select [(ngModel)]="trip.mileType" id="editCell5{{i}}"
+                                                                name="tripmileType{{i}}" placeholder="Select
                                                                 miles type">
-                                                                <ng-option
-                                                                    value="empty">EMPTY</ng-option>
-                                                                <ng-option
-                                                                    value="loaded">LOADED</ng-option>
+                                                                <ng-option value="empty">EMPTY</ng-option>
+                                                                <ng-option value="loaded">LOADED</ng-option>
                                                             </ng-select>
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell6{{i}}"
-                                                                name="miles"
-                                                                value="{{
+                                                            <input type="text" class="form-control" id="editCell6{{i}}"
+                                                                name="miles" value="{{
                                                                 trip.miles }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell7{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{
+                                                            <input type="text" class="form-control" id="editCell7{{i}}"
+                                                                (click)="showAssetModal('edit',i)" value="{{
                                                                 vehiclesObjects[trip.vehicleID]
                                                                 }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell8{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{
+                                                            <input type="text" class="form-control" id="editCell8{{i}}"
+                                                                (click)="showAssetModal('edit',i)" value="{{
                                                                 trip.trailerName
                                                                 }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell9{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{
+                                                            <input type="text" class="form-control" id="editCell9{{i}}"
+                                                                (click)="showAssetModal('edit',i)" value="{{
                                                                 driversObjects[trip.driverID]
                                                                 }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <input type="text"
-                                                                class="form-control"
-                                                                id="editCell10{{i}}"
-                                                                (click)="showAssetModal('edit',i)"
-                                                                value="{{
+                                                            <input type="text" class="form-control" id="editCell10{{i}}"
+                                                                (click)="showAssetModal('edit',i)" value="{{
                                                                 driversObjects[trip.coDriverID]
                                                                 }}">
                                                         </td>
                                                         <td class="rowStatus
                                                             textRows
                                                             editRow{{i}}">
-                                                            <ng-select
-                                                                [(ngModel)]="trip.carrierID"
-                                                                id="editCell11{{i}}"
-                                                                name="editCarrID"
-                                                                placeholder="Select
-                                                                Carrier"
-                                                                [disabled]="trip.disablecarr">
-                                                                <ng-option
-                                                                    value="{{
+                                                            <ng-select [(ngModel)]="trip.carrierID" id="editCell11{{i}}"
+                                                                name="editCarrID" placeholder="Select
+                                                                Carrier" [disabled]="trip.disablecarr">
+                                                                <ng-option value="{{
                                                                     carrier.contactID
-                                                                    }}"
-                                                                    *ngFor="let
+                                                                    }}" *ngFor="let
                                                                     carrier of
                                                                     carriers">{{
                                                                     carrier.companyName
@@ -646,63 +508,41 @@
                                                             textRows
                                                             editRow{{i}}">
                                                             <i class="fas
-                                                                fa-check mr-2"
-                                                                (click)="editRow(i)"></i>
+                                                                fa-check mr-2" (click)="editRow(i)"></i>
                                                             <i class="fas
-                                                                fa-times"
-                                                                (click)="closeEditRow(i)"></i>
+                                                                fa-times" (click)="closeEditRow(i)"></i>
                                                         </td>
                                                     </tr>
-                                                    <tr
-                                                        class="ui-sortable-handle">
+                                                    <tr class="ui-sortable-handle">
                                                         <td></td>
                                                         <td>
-                                                            <ng-select
-                                                                [(ngModel)]="textFieldValues.type"
-                                                                class="newRow"
-                                                                id="cell1"
-                                                                name="newTripType"
-                                                                placeholder="Select
+                                                            <ng-select [(ngModel)]="textFieldValues.type" class="newRow"
+                                                                id="cell1" name="newTripType" placeholder="Select
                                                                 type">
-                                                                <ng-option
-                                                                    value="{{
-                                                                    type }}"
-                                                                    *ngFor="let
+                                                                <ng-option value="{{
+                                                                    type }}" *ngFor="let
                                                                     type of
                                                                     typeOptions">{{
                                                                     type }}</ng-option>
                                                             </ng-select>
                                                         </td>
                                                         <td>
-                                                            <input id="cell2"
-                                                                name="newDate"
-                                                                type="text"
+                                                            <input id="cell2" name="newDate" type="text"
                                                                 [(ngModel)]="textFieldValues.date"
-                                                                placeholder="yyyy/mm/dd"
-                                                                (click)="to.toggle()"
-                                                                ngbDatepicker
-                                                                #to="ngbDatepicker"
-                                                                class="form-control
-                                                                newRow"
-                                                                autocomplete="off"
-                                                                [minDate]="dateMinLimit"
+                                                                placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                                                                ngbDatepicker #to="ngbDatepicker" class="form-control
+                                                                newRow" autocomplete="off" [minDate]="dateMinLimit"
                                                                 [maxDate]="futureDatesLimit">
                                                         </td>
                                                         <td>
-                                                            <input type="time"
-                                                                [(ngModel)]="textFieldValues.pickupTime"
+                                                            <input type="time" [(ngModel)]="textFieldValues.pickupTime"
                                                                 class="form-control
-                                                                newRow"
-                                                                id="cell13"
-                                                                name="cell13">
+                                                                newRow" id="cell13" name="cell13">
                                                         </td>
                                                         <td>
-                                                            <input type="time"
-                                                                [(ngModel)]="textFieldValues.dropTime"
+                                                            <input type="time" [(ngModel)]="textFieldValues.dropTime"
                                                                 class="form-control
-                                                                newRow"
-                                                                id="cell14"
-                                                                name="cell14">
+                                                                newRow" id="cell14" name="cell14">
                                                         </td>
                                                         <!-- <td>
                                                           <input type="time" [(ngModel)]="textFieldValues.actualPickupTime" class="form-control newRow" id="cell15"
@@ -713,152 +553,99 @@
                                                               name="cell16">
                                                       </td> -->
                                                         <td>
-                                                            <input type="text"
-                                                                [(ngModel)]="textFieldValues.name"
-                                                                name="shipName"
-                                                                id="cell3"
-                                                                class="form-control
-                                                                newRow"
-                                                                autocomplete="off">
+                                                            <input type="text" [(ngModel)]="textFieldValues.name"
+                                                                name="shipName" id="cell3" class="form-control
+                                                                newRow" autocomplete="off">
                                                         </td>
                                                         <td>
-                                                            <input
-                                                                type="checkbox"
-                                                                class="form-control
-                                                                newRow manCheck"
-                                                                [(ngModel)]="textFieldValues.locMan"
+                                                            <input type="checkbox" class="form-control
+                                                                newRow manCheck" [(ngModel)]="textFieldValues.locMan"
                                                                 name="locMan" />
                                                         </td>
                                                         <td>
-                                                            <input type="text"
-                                                                id="cell4"
-                                                                name="locationName"
-                                                                [(ngModel)]="textFieldValues.locationName"
-                                                                class="form-control
-                                                                newRow"
-                                                                autocomplete="off"
+                                                            <input type="text" id="cell4" name="locationName"
+                                                                [(ngModel)]="textFieldValues.locationName" class="form-control
+                                                                newRow" autocomplete="off"
                                                                 (keyup)="searchTerm.next($event);"
-                                                                [(ngModel)]="textFieldValues.locationName"
-                                                                placeholder="Start
+                                                                [(ngModel)]="textFieldValues.locationName" placeholder="Start
                                                                 typing to get
                                                                 location
-                                                                suggestions"
-                                                                *ngIf="!textFieldValues.locMan">
-                                                            <input type="text"
-                                                                id="cell4"
-                                                                name="locationName"
-                                                                [(ngModel)]="textFieldValues.locationName"
-                                                                class="form-control
-                                                                newRow"
-                                                                [(ngModel)]="textFieldValues.locationName"
+                                                                suggestions" *ngIf="!textFieldValues.locMan">
+                                                            <input type="text" id="cell4" name="locationName"
+                                                                [(ngModel)]="textFieldValues.locationName" class="form-control
+                                                                newRow" [(ngModel)]="textFieldValues.locationName"
                                                                 placeholder="Enter
                                                                 location from
-                                                                popup"
-                                                                *ngIf="textFieldValues.locMan"
-                                                                (click)="locationModel('add','')"
-                                                                readonly>
+                                                                popup" *ngIf="textFieldValues.locMan"
+                                                                (click)="locationModel('add','')" readonly>
 
                                                             <ul class="p-0 m-0
                                                                 text-left
                                                                 map-search__resultstrip
-                                                                bg-white"
-                                                                *ngIf="searchResults
+                                                                bg-white" *ngIf="searchResults
                                                                 &&
                                                                 !textFieldValues.locMan">
                                                                 <li *ngFor="let
                                                                     item of
                                                                     searchResults;">
-                                                                    <a
-                                                                        href="javascript:;"
-                                                                        (click)="assignLocation('loc',
+                                                                    <a href="javascript:;" (click)="assignLocation('loc',
                                                                         item,'')"
                                                                         title="{{item.address}}">{{item.address}}</a>
                                                                 </li>
                                                             </ul>
                                                         </td>
                                                         <td>
-                                                            <ng-select
-                                                                [(ngModel)]="textFieldValues.mileType"
-                                                                id="cell5"
-                                                                name="newMileType"
-                                                                placeholder="Select
+                                                            <input type="checkbox" class="form-control
+                                                                newRow manCheck" [(ngModel)]="textFieldValues.locMan"
+                                                                name="locMan" />
+                                                        </td>
+                                                        <td>
+                                                            <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5"
+                                                                name="newMileType" placeholder="Select
                                                                 type">
-                                                                <ng-option
-                                                                    value="empty">EMPTY</ng-option>
-                                                                <ng-option
-                                                                    value="loaded">LOADED</ng-option>
+                                                                <ng-option value="empty">EMPTY</ng-option>
+                                                                <ng-option value="loaded">LOADED</ng-option>
                                                             </ng-select>
                                                         </td>
                                                         <td>
-                                                            <input type="text"
-                                                                id="cell6"
-                                                                class="form-control
-                                                                newRow"
-                                                                name="newMiles"
+                                                            <input type="text" id="cell6" class="form-control
+                                                                newRow" name="newMiles"
                                                                 [(ngModel)]="textFieldValues.miles"
                                                                 (change)="getNewRowValues($event,'miles')"
                                                                 autocomplete="off">
                                                         </td>
                                                         <td>
-                                                            <input type="text"
-                                                                id="cell7"
-                                                                class="form-control
-                                                                newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{
+                                                            <input type="text" id="cell7" class="form-control
+                                                                newRow" (click)="showAssetModal('add','')" value="{{
                                                                 textFieldValues.vehicleName
-                                                                }}"
-                                                                autocomplete="off"
+                                                                }}" autocomplete="off" readonly>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="cell8" class="form-control
+                                                                newRow" (click)="showAssetModal('add','')" value="{{
+                                                                textFieldValues.trailerName}}" autocomplete="off"
                                                                 readonly>
                                                         </td>
                                                         <td>
-                                                            <input type="text"
-                                                                id="cell8"
-                                                                class="form-control
-                                                                newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{
-                                                                textFieldValues.trailerName}}"
-                                                                autocomplete="off"
-                                                                readonly>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text"
-                                                                id="cell9"
-                                                                class="form-control
-                                                                newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{
+                                                            <input type="text" id="cell9" class="form-control
+                                                                newRow" (click)="showAssetModal('add','')" value="{{
                                                                 textFieldValues.driverName
-                                                                }}"
-                                                                autocomplete="off"
-                                                                readonly>
+                                                                }}" autocomplete="off" readonly>
                                                         </td>
                                                         <td>
-                                                            <input type="text"
-                                                                id="cell10"
-                                                                class="form-control
-                                                                newRow"
-                                                                (click)="showAssetModal('add','')"
-                                                                value="{{
+                                                            <input type="text" id="cell10" class="form-control
+                                                                newRow" (click)="showAssetModal('add','')" value="{{
                                                                 textFieldValues.coDriverName
-                                                                }}"
-                                                                autocomplete="off"
-                                                                readonly>
+                                                                }}" autocomplete="off" readonly>
                                                         </td>
                                                         <td>
-                                                            <ng-select
-                                                                [(ngModel)]="textFieldValues.carrierID"
-                                                                class="newRow"
-                                                                id="cell1"
-                                                                name="newcarrierID"
+                                                            <ng-select [(ngModel)]="textFieldValues.carrierID"
+                                                                class="newRow" id="cell1" name="newcarrierID"
                                                                 placeholder="Select
                                                                 Carrier">
-                                                                <ng-option
-                                                                    value="{{
+                                                                <ng-option value="{{
                                                                     carrier.contactID
-                                                                    }}"
-                                                                    *ngFor="let
+                                                                    }}" *ngFor="let
                                                                     carrier of
                                                                     carriers">{{
                                                                     carrier.companyName
@@ -866,12 +653,9 @@
                                                             </ng-select>
                                                         </td>
                                                         <td>
-                                                            <button
-                                                                type="button"
-                                                                class="btn
+                                                            <button type="button" class="btn
                                                                 btn-sm
-                                                                btn-success"
-                                                                (click)="addRow()">Add
+                                                                btn-success" (click)="addRow()">Add
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -891,16 +675,12 @@
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row pt-3">
                                     <div class="col-lg-10">
-                                        <label
-                                            class="control-label
+                                        <label class="control-label
                                             font-weight-bold font-weight-bold
                                             text-lg-right text-5">Sub Trip: {{
                                             tripData.tripNo }} ({{ sp+1 }})
-                                            <a class="mandfield ml-5"
-                                                title="Delete sub trip"
-                                                href="javascript:;"
-                                                (click)="delSubTrip(sp)"> <i
-                                                    class="fa fa-trash"> </i>
+                                            <a class="mandfield ml-5" title="Delete sub trip" href="javascript:;"
+                                                (click)="delSubTrip(sp)"> <i class="fa fa-trash"> </i>
                                             </a>
                                         </label>
                                     </div>
@@ -931,9 +711,7 @@
                                                 </thead>
                                                 <tbody class="ui-sortable
                                                     example-list">
-                                                    <tr
-                                                        class="ui-sortable-handle"
-                                                        *ngFor="let trip of
+                                                    <tr class="ui-sortable-handle" *ngFor="let trip of
                                                         split; let i= index">
                                                         <td>{{ trip.type }}</td>
                                                         <td>{{ trip.date |
@@ -951,11 +729,8 @@
                                                         <td>
                                                             <span class="badge
                                                                 badge-dark p-1
-                                                                text-uppercase"
-                                                                title=""
-                                                                data-original-title="Empty
-                                                                Miles"
-                                                                *ngIf="!!trip.mileType">{{
+                                                                text-uppercase" title="" data-original-title="Empty
+                                                                Miles" *ngIf="!!trip.mileType">{{
                                                                 trip.mileType }}</span>
                                                         </td>
                                                         <td>{{ trip.miles }}
@@ -998,8 +773,7 @@
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row pt-1">
                                     <div class="col-lg-10">
-                                        <label
-                                            class="control-label
+                                        <label class="control-label
                                             font-weight-bold font-weight-bold
                                             text-lg-right text-5">Trip
                                             Info</label>
@@ -1008,8 +782,7 @@
                                     <div class="col-lg-12">
 
                                         <div class="row">
-                                            <div class="col-lg-4 text-center"
-                                                *ngIf="trips.length> 0; else
+                                            <div class="col-lg-4 text-center" *ngIf="trips.length> 0; else
                                                 sourceElseBlock">
                                                 <p class="mb-0 mt-3 text-5
                                                     font-weight-bold text-dark">Source</p>
@@ -1038,8 +811,7 @@
                                             </ng-template>
 
                                             <ng-template [ngIf]="trips.length>
-                                                1"
-                                                [ngIfElse]="destinationElseBlock">
+                                                1" [ngIfElse]="destinationElseBlock">
                                                 <div class="col-lg-4
                                                     text-center">
                                                     <p class="mb-0 mt-3 text-5
@@ -1047,8 +819,7 @@
                                                         text-dark">Miles</p>
                                                     <p class="mb-0 text-4
                                                         font-weight-semibold
-                                                        text-dark"
-                                                        *ngIf="orderMiles.calculateBy
+                                                        text-dark" *ngIf="orderMiles.calculateBy
                                                         != '' &&
                                                         orderMiles.calculateBy
                                                         != null &&
@@ -1065,8 +836,7 @@
                                                         font-weight-semibold
                                                         text-dark">Actual
                                                         Miles(Pc Miler):
-                                                        <span
-                                                            class="mb-0 text-4
+                                                        <span class="mb-0 text-4
                                                             font-weight-semibold
                                                             text-dark">{{actualMiles
                                                             | number : '1.2-2'
@@ -1128,23 +898,16 @@
                                         </div>
 
                                         <div class="tripinfoscroll">
-                                            <div
-                                                class="row d-flex flex-row
+                                            <div class="row d-flex flex-row
                                                 flex-nowrap
                                                 justify-content-between pl-3
                                                 pr-3">
-                                                <div class="text-center"
-                                                    *ngFor="let trip of trips">
-                                                    <div class="tripcirclen"
-                                                        data-toggle="tooltip"
-                                                        title="{{
+                                                <div class="text-center" *ngFor="let trip of trips">
+                                                    <div class="tripcirclen" data-toggle="tooltip" title="{{
                                                         trip.locationName }}"></div>
-                                                    <div class="tripcontentn"
-                                                        data-toggle="tooltip"
-                                                        title="{{
+                                                    <div class="tripcontentn" data-toggle="tooltip" title="{{
                                                         trip.locationName }}">
-                                                        <p
-                                                            class="font-weight-bold
+                                                        <p class="font-weight-bold
                                                             text-dark text-2
                                                             line-height-xs">{{
                                                             trip.type}}
@@ -1171,8 +934,7 @@
                         <div class="col-12">
                             <mat-accordion>
                                 <mat-expansion-panel hideToggle>
-                                    <mat-expansion-panel-header
-                                        (click)="resetMap()">
+                                    <mat-expansion-panel-header (click)="resetMap()">
                                         <mat-panel-title>
                                             <label class="text-3 mt-2
                                                 font-weight-semibold">Map View</label>
@@ -1183,8 +945,7 @@
                                             <div class="">
                                                 <div class="">
 
-                                                    <ng-template
-                                                        [ngIf]="selectedVehicleSpecs.length==0
+                                                    <ng-template [ngIf]="selectedVehicleSpecs.length==0
                                                         && trips.length>1">
                                                         <p class="text-4
                                                             font-weight-normal">*Vehicle
@@ -1193,8 +954,7 @@
                                                             Vehicle route please
                                                             select the truck</p>
                                                     </ng-template>
-                                                    <div class="mapclass"
-                                                        id="map_view">
+                                                    <div class="mapclass" id="map_view">
                                                         <div id="map" class=""></div>
                                                     </div>
 
@@ -1285,13 +1045,11 @@
 
                             <button type="button" class="mt-1 mr-2 cus-btn-padd
                                 btn btn-default" (click)="cancel()">Cancel</button>
-                            <button type="submit" *ngIf="!tripID"
-                                [disabled]="submitDisabled"
-                                (click)="onAddTrip()" class="cus-btn-padd btn
+                            <button type="submit" *ngIf="!tripID" [disabled]="submitDisabled" (click)="onAddTrip()"
+                                class="cus-btn-padd btn
                                 btn-success">Save</button>
-                            <button type="submit" *ngIf="tripID"
-                                [disabled]="submitDisabled"
-                                (click)="onUpdateTrip()" class="btn cus-btn-padd
+                            <button type="submit" *ngIf="tripID" [disabled]="submitDisabled" (click)="onUpdateTrip()"
+                                class="btn cus-btn-padd
                                 btn-success">Update</button>
                         </div>
                     </div>
@@ -1304,36 +1062,27 @@
 </section>
 
 <!-- order modal start -->
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog"
-    aria-labelledby="orderModal" aria-hidden="true">
+<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Select Order</h5>
-                <button type="button" class="close" data-dismiss="modal"
-                    aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss"
-                        style="font-size:25px;"> </i>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i class="far fa-window-close modal-dismiss" style="font-size:25px;"> </i>
                 </button>
             </div>
             <form>
                 <div class="modal-body text-dark">
                     <div class="m-2">
-                        <ul class="nav nav-tabs top-tabs" id="top-tabs"
-                            role="tablist">
+                        <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link pl-5 pr-5 active"
-                                    id="loadFTL-tab" data-toggle="tab"
-                                    href="#loadFTL"
-                                    role="tab" aria-controls="loadFTL"
-                                    aria-selected="true"
+                                <a class="nav-link pl-5 pr-5 active" id="loadFTL-tab" data-toggle="tab" href="#loadFTL"
+                                    role="tab" aria-controls="loadFTL" aria-selected="true"
                                     (click)="changeOrderTab('FTL')">FTL</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link pl-5 pr-5" id="loadLTL-tab"
-                                    data-toggle="tab" href="#loadLTL"
-                                    role="tab" aria-controls="loadLTL"
-                                    aria-selected="false"
+                                <a class="nav-link pl-5 pr-5" id="loadLTL-tab" data-toggle="tab" href="#loadLTL"
+                                    role="tab" aria-controls="loadLTL" aria-selected="false"
                                     (click)="changeOrderTab('LTL')">LTL</a>
                             </li>
                         </ul>
@@ -1342,84 +1091,59 @@
                         <div class="col-lg-12">
                             <section class="card">
                                 <div class="card-body" style="display: block;">
-                                    <div class="tab-content p-0"
-                                        id="myTabContent">
-                                        <div class="tab-pane show active"
-                                            id="loadFTL" role="tabpanel"
+                                    <div class="tab-content p-0" id="myTabContent">
+                                        <div class="tab-pane show active" id="loadFTL" role="tabpanel"
                                             aria-labelledby="loadFTL-tab">
                                             <div class="tripvet-scroll-y
                                                 addtrip-odnuscrollbar">
                                                 <div class="table-responsive">
-                                                    <table
-                                                        class="table
+                                                    <table class="table
                                                         table-bordered
                                                         table-striped mb-0
                                                         dataTable no-footer">
                                                         <thead>
-                                                            <tr class=""
-                                                                role="row">
+                                                            <tr class="" role="row">
                                                                 <th></th>
-                                                                <th
-                                                                    class="text-2">Order#</th>
-                                                                <th
-                                                                    class="text-2">Customer</th>
-                                                                <th
-                                                                    class="text-2">Pickup
+                                                                <th class="text-2">Order#</th>
+                                                                <th class="text-2">Customer</th>
+                                                                <th class="text-2">Pickup
                                                                     Location</th>
-                                                                <th
-                                                                    class="text-2">Drop
+                                                                <th class="text-2">Drop
                                                                     Off Location</th>
-                                                                <th
-                                                                    class="text-2">Total
+                                                                <th class="text-2">Total
                                                                     Amount</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody
-                                                            class="ui-sortable">
-                                                            <tr
-                                                                *ngIf="ftlOrders.length
-                                                                == 0"
-                                                                class="text-center">
+                                                        <tbody class="ui-sortable">
+                                                            <tr *ngIf="ftlOrders.length
+                                                                == 0" class="text-center">
                                                                 <td colspan="7">No
                                                                     records
                                                                     found</td>
                                                             </tr>
-                                                            <tr
-                                                                class="ui-sortable-handle
-                                                                odd" role="row"
-                                                                *ngFor="let
+                                                            <tr class="ui-sortable-handle
+                                                                odd" role="row" *ngFor="let
                                                                 order of
                                                                 ftlOrders">
-                                                                <td
-                                                                    class="sorting_1">
-                                                                    <input
-                                                                        type="radio"
-                                                                        name="ftlOrderIds"
-                                                                        value="{{
+                                                                <td class="sorting_1">
+                                                                    <input type="radio" name="ftlOrderIds" value="{{
                                                                         order.orderNumber
-                                                                        }}"
-                                                                        [checked]="order.selected"
-                                                                        id="{{
+                                                                        }}" [checked]="order.selected" id="{{
                                                                         order.orderID
-                                                                        }}"
-                                                                        (change)="selectOrderIDS('ftl')">
+                                                                        }}" (change)="selectOrderIDS('ftl')">
                                                                 </td>
 
-                                                                <td
-                                                                    class="loadid"><a
-                                                                        href="javascript:;">{{
+                                                                <td class="loadid"><a href="javascript:;">{{
                                                                         order.orderNumber
                                                                         }}</a></td>
                                                                 <td>{{
                                                                     customersObjects[order.customerID]
                                                                     }}</td>
                                                                 <td>
-                                                                    <div
-                                                                        [innerHTML]="order.pickupLocations"></div>
+                                                                    <div [innerHTML]="order.pickupLocations"></div>
                                                                 </td>
                                                                 <td>
-                                                                    <div
-                                                                        [innerHTML]="order.deliveryLocations"></div>
+                                                                    <div [innerHTML]="order.deliveryLocations"></div>
                                                                 </td>
                                                                 <td> {{
                                                                     order.totalAmount
@@ -1430,8 +1154,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="loadLTL"
-                                            role="tabpanel"
+                                        <div class="tab-pane fade" id="loadLTL" role="tabpanel"
                                             aria-labelledby="loadLTL-tab">
                                             <table class="table table-bordered
                                                 table-striped mb-0 dataTable
@@ -1451,31 +1174,22 @@
                                                 </thead>
                                                 <tbody class="ui-sortable">
                                                     <tr *ngIf="ltlOrders.length
-                                                        == 0"
-                                                        class="text-center">
+                                                        == 0" class="text-center">
                                                         <td colspan="7">No
                                                             records found</td>
                                                     </tr>
-                                                    <tr
-                                                        class="ui-sortable-handle"
-                                                        *ngFor="let order of
+                                                    <tr class="ui-sortable-handle" *ngFor="let order of
                                                         ltlOrders">
                                                         <td>
                                                             <!-- <input type="checkbox"> -->
-                                                            <input
-                                                                type="checkbox"
-                                                                value="{{
+                                                            <input type="checkbox" value="{{
                                                                 order.orderNumber
-                                                                }}"
-                                                                name="ltlOrderIds"
-                                                                id="{{
+                                                                }}" name="ltlOrderIds" id="{{
                                                                 order.orderID
-                                                                }}"
-                                                                [checked]="order.selected"
+                                                                }}" [checked]="order.selected"
                                                                 (change)="selectOrderIDS('ltl')">
                                                         </td>
-                                                        <td class="loadid"><a
-                                                                href="javascript:;">{{
+                                                        <td class="loadid"><a href="javascript:;">{{
                                                                 order.orderNumber
                                                                 }}</a></td>
 
@@ -1484,12 +1198,10 @@
                                                             }}</td>
 
                                                         <td>
-                                                            <div
-                                                                [innerHTML]="order.pickupLocations"></div>
+                                                            <div [innerHTML]="order.pickupLocations"></div>
                                                         </td>
                                                         <td>
-                                                            <div
-                                                                [innerHTML]="order.deliveryLocations"></div>
+                                                            <div [innerHTML]="order.deliveryLocations"></div>
                                                         </td>
                                                         <td> {{
                                                             order.totalAmount }}
@@ -1506,11 +1218,9 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-md-12 text-right">
-                        <a class="btn btn-success modal-confirm mr-3"
-                            href="javascript:;"
+                        <a class="btn btn-success modal-confirm mr-3" href="javascript:;"
                             (click)="saveSelectOrderIDS()">Select</a>
-                        <button class="btn btn-default modal-dismiss"
-                            data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-default modal-dismiss" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </form>
@@ -1527,8 +1237,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Assign</h4>
-                <button type="button" (click)="modal.dismiss('Cross click')"
-                    class="close" data-dismiss="modal">&times;</button>
+                <button type="button" (click)="modal.dismiss('Cross click')" class="close"
+                    data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body text-capitalize">
                 <div class="trip-search__main">
@@ -1541,8 +1251,7 @@
                                     <div class="d-flex justify-content-between
                                         align-items-center">
                                         <span>Asset</span>
-                                        <span><button
-                                                (click)="openManualAsset(manualAssetModel)"
+                                        <span><button (click)="openManualAsset(manualAssetModel)"
                                                 class="btn btn-success btn-sm">Manual
                                                 Asset</button></span>
                                     </div>
@@ -1554,40 +1263,27 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <ng-select [items]="vehicles"
-                                        bindLabel="vehicleIdentification"
-                                        bindValue="vehicleID"
-                                        name="assetDataVehicleID"
-                                        [(ngModel)]="assetDataVehicleID"
-                                        id="vehicleSelect"
-                                        (change)="vehicleChange($event,'change')">
+                                    <ng-select [items]="vehicles" bindLabel="vehicleIdentification"
+                                        bindValue="vehicleID" name="assetDataVehicleID" [(ngModel)]="assetDataVehicleID"
+                                        id="vehicleSelect" (change)="vehicleChange($event,'change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="informationAsset"
-                                        [(ngModel)]="informationAsset"
-                                        id="informationAsset" [items]="assets"
-                                        bindLabel="assetIdentification"
-                                        [multiple]="true" bindValue="assetID"
-                                        (change)="assetsChange($event,'change')">
+                                    <ng-select name="informationAsset" [(ngModel)]="informationAsset"
+                                        id="informationAsset" [items]="assets" bindLabel="assetIdentification"
+                                        [multiple]="true" bindValue="assetID" (change)="assetsChange($event,'change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="assetDataDriverUsername"
-                                        [(ngModel)]="assetDataDriverUsername"
-                                        id="driverSelect" [items]="drivers"
-                                        bindLabel="fullName"
-                                        bindValue="userName"
+                                    <ng-select name="assetDataDriverUsername" [(ngModel)]="assetDataDriverUsername"
+                                        id="driverSelect" [items]="drivers" bindLabel="fullName" bindValue="userName"
                                         (change)="driverChange($event,'driver','change')">
                                     </ng-select>
                                 </td>
                                 <td>
-                                    <ng-select name="assetDataCoDriverUsername"
-                                        [(ngModel)]="assetDataCoDriverUsername"
-                                        id="coDriverSelect" [items]="codrivers"
-                                        bindLabel="fullName"
-                                        bindValue="userName"
-                                        (change)="driverChange($event,'codriver','change')">
+                                    <ng-select name="assetDataCoDriverUsername" [(ngModel)]="assetDataCoDriverUsername"
+                                        id="coDriverSelect" [items]="codrivers" bindLabel="fullName"
+                                        bindValue="userName" (change)="driverChange($event,'codriver','change')">
                                     </ng-select>
                                 </td>
                             </tr>
@@ -1610,20 +1306,15 @@
                                             <tbody>
                                                 <tr *ngFor="let vehicle of
                                                     vehicles">
-                                                    <td class="vehicleClass"
-                                                        id="veh_{{
-                                                        vehicle.vehicleID }}"
-                                                        (click)="vehicleChange(vehicle,'click')">
+                                                    <td class="vehicleClass" id="veh_{{
+                                                        vehicle.vehicleID }}" (click)="vehicleChange(vehicle,'click')">
                                                         <div class="">
                                                             <p class="mb-1
                                                                 text-4
                                                                 font-weight-bold
-                                                                text-dark"><i
-                                                                    class="fas
-                                                                    fa-truck-moving"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="bottom"
-                                                                    title=""
+                                                                text-dark"><i class="fas
+                                                                    fa-truck-moving" data-toggle="tooltip"
+                                                                    data-placement="bottom" title=""
                                                                     data-original-title="Vehicle"></i>
                                                                 {{
                                                                 vehicle.vehicleIdentification
@@ -1654,10 +1345,8 @@
                                             <tbody>
                                                 <tr *ngFor="let asset of
                                                     assets">
-                                                    <td class="assetClass"
-                                                        id="asset_{{
-                                                        asset.assetID }}"
-                                                        (click)="assetsChange(asset,'click')">
+                                                    <td class="assetClass" id="asset_{{
+                                                        asset.assetID }}" (click)="assetsChange(asset,'click')">
                                                         <div class="">
                                                             <p class="mb-1
                                                                 text-4
@@ -1682,8 +1371,7 @@
                                             <tbody>
                                                 <tr *ngFor="let driver of
                                                     drivers">
-                                                    <td class="driverClass"
-                                                        id="drivr_{{driver.driverID}}"
+                                                    <td class="driverClass" id="drivr_{{driver.driverID}}"
                                                         (click)="driverChange(driver,'driver','click')">
                                                         <div class="">
                                                             <p class="mb-1
@@ -1718,11 +1406,9 @@
                                             <tbody>
                                                 <tr *ngFor="let driver of
                                                     codrivers">
-                                                    <td class="codriverClass"
-                                                        id="codrivr_{{driver.driverID}}"
+                                                    <td class="codriverClass" id="codrivr_{{driver.driverID}}"
                                                         (click)="driverChange(driver,'codriver','click')">
-                                                        <span
-                                                            class="font-weight-bold">{{
+                                                        <span class="font-weight-bold">{{
                                                             driver.fullName }}</span>
                                                         <!--<span class="offduty pull-right" >OFF</span>
                                                        <span class="driverstatus"><i class="fas fa-clock"></i> <span
@@ -1748,14 +1434,12 @@
                 <div class="row">
                     <div class="col-md-12 text-right">
 
-                        <button (click)="modal.dismiss('Cross click')"
-                            class="btn btn-default modal-dismiss mr-2"
+                        <button (click)="modal.dismiss('Cross click')" class="btn btn-default modal-dismiss mr-2"
                             data-dismiss="modal"> Cancel</button>
-                        <a href="javascript:;" class="btn btn-success mr-2"
-                            (click)="saveAssetModalData('')"> Assign</a>
+                        <a href="javascript:;" class="btn btn-success mr-2" (click)="saveAssetModalData('')"> Assign</a>
                         <a href="javascript:;" *ngIf="tempTextFieldValues.type
-                            == 'edit'" class="btn btn-success mr-2"
-                            (click)="showConfirmationPopup()"> Assign for all</a>
+                            == 'edit'" class="btn btn-success mr-2" (click)="showConfirmationPopup()"> Assign for
+                            all</a>
                         <!-- <a href="javascript:;" *ngIf="tempTextFieldValues.type == 'edit'" class="btn btn-success mr-2" (click)="saveAssetModalData('populate')"> Save and populate</a> -->
                     </div>
                 </div>
@@ -1770,8 +1454,8 @@
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Confirmation</h4>
-            <button type="button" (click)="modal.dismiss('Cross click')"
-                class="close" data-dismiss="modal">&times;</button>
+            <button type="button" (click)="modal.dismiss('Cross click')" class="close"
+                data-dismiss="modal">&times;</button>
         </div>
         <form>
             <div class="modal-body">
@@ -1789,10 +1473,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" (click)="modal.dismiss('Cross click')"
-                    class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-success"
-                    (click)="saveAssetModalData('populate')">Yes</button>
+                <button type="button" (click)="modal.dismiss('Cross click')" class="btn btn-default"
+                    data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-success" (click)="saveAssetModalData('populate')">Yes</button>
             </div>
         </form>
     </div>
@@ -1822,21 +1505,15 @@
                                                     <span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <input type="text"
-                                                    class="form-control"
-                                                    name="address1"
-                                                    [(ngModel)]="locObj.addr"
-                                                    #aaddr="ngModel" required
-                                                    placeholder="eg. 71,New
+                                                <input type="text" class="form-control" name="address1"
+                                                    [(ngModel)]="locObj.addr" #aaddr="ngModel" required placeholder="eg. 71,New
                                                     Highway Road, Ontario,
                                                     Canada">
 
                                                 <div *ngIf="aaddr.invalid &&
                                                     (aaddr.dirty ||
-                                                    aaddr.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="aaddr.errors.required">
+                                                    aaddr.touched)" class="text-danger">
+                                                    <div *ngIf="aaddr.errors.required">
                                                         Address is required.
                                                     </div>
                                                 </div>
@@ -1849,18 +1526,11 @@
                                                 <label class="control-label
                                                     font-weight-bold
                                                     text-lg-right pt-2">Select
-                                                    Country <span
-                                                        class="mandfield text-2
+                                                    Country <span class="mandfield text-2
                                                         ml-1"><sup>*</sup></span></label>
-                                                <ng-select
-                                                    (change)="getStates($event)"
-                                                    [(ngModel)]="locObj.cCode"
-                                                    #adrCountry="ngModel"
-                                                    required
-                                                    name="countryCode"
-                                                    class="form-control
-                                                    populate"
-                                                    placeholder="Select
+                                                <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode"
+                                                    #adrCountry="ngModel" required name="countryCode" class="form-control
+                                                    populate" placeholder="Select
                                                     Country">
                                                     <ng-option value="CA">Canada</ng-option>
                                                     <ng-option value="US">United
@@ -1869,10 +1539,8 @@
                                                 </ng-select>
                                                 <div *ngIf="adrCountry.invalid
                                                     && (adrCountry.dirty ||
-                                                    adrCountry.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="adrCountry.errors.required">
+                                                    adrCountry.touched)" class="text-danger">
+                                                    <div *ngIf="adrCountry.errors.required">
                                                         Country is required.
                                                     </div>
                                                 </div>
@@ -1882,19 +1550,13 @@
                                                 <label class="control-label
                                                     font-weight-bold
                                                     text-lg-right pt-2">Select
-                                                    Province/State<span
-                                                        class="mandfield text-2
+                                                    Province/State<span class="mandfield text-2
                                                         ml-1"><sup>*</sup></span>
                                                 </label>
-                                                <ng-select
-                                                    (change)="getCities($event,
-                                                    locObj.cCode)"
-                                                    [(ngModel)]="locObj.sCode"
-                                                    #adrState="ngModel" required
-                                                    name="stateCode"
-                                                    class="form-control
-                                                    populate"
-                                                    placeholder="Select State">
+                                                <ng-select (change)="getCities($event,
+                                                    locObj.cCode)" [(ngModel)]="locObj.sCode" #adrState="ngModel"
+                                                    required name="stateCode" class="form-control
+                                                    populate" placeholder="Select State">
                                                     <ng-option *ngFor="let state
                                                         of states" value="{{
                                                         state.stateCode }}">
@@ -1903,10 +1565,8 @@
                                                 </ng-select>
                                                 <div *ngIf="adrState.invalid &&
                                                     (adrState.dirty ||
-                                                    adrState.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="adrState.errors.required">
+                                                    adrState.touched)" class="text-danger">
+                                                    <div *ngIf="adrState.errors.required">
                                                         Province/State is
                                                         required.
                                                     </div>
@@ -1918,12 +1578,8 @@
                                                     text-lg-right pt-2">Select
                                                     City <span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span></label>
-                                                <ng-select
-                                                    [(ngModel)]="locObj.ctName"
-                                                    name="ctName"
-                                                    class="form-control
-                                                    populate" #adrCity="ngModel"
-                                                    required placeholder="Select
+                                                <ng-select [(ngModel)]="locObj.ctName" name="ctName" class="form-control
+                                                    populate" #adrCity="ngModel" required placeholder="Select
                                                     City">
                                                     <ng-option *ngFor="let city
                                                         of cities" value="{{
@@ -1933,10 +1589,8 @@
                                                 </ng-select>
                                                 <div *ngIf="adrCity.invalid &&
                                                     (adrCity.dirty ||
-                                                    adrCity.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="adrCity.errors.required">
+                                                    adrCity.touched)" class="text-danger">
+                                                    <div *ngIf="adrCity.errors.required">
                                                         City is required.
                                                     </div>
                                                 </div>
@@ -1947,19 +1601,13 @@
                                                     text-lg-right pt-2">Zip
                                                     Code<span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span></label>
-                                                <input type="text"
-                                                    class="form-control"
-                                                    placeholder="eg. 7V23R4"
-                                                    [(ngModel)]="locObj.zipCode"
-                                                    name="zipCode"
-                                                    #adrZipcode="ngModel"
+                                                <input type="text" class="form-control" placeholder="eg. 7V23R4"
+                                                    [(ngModel)]="locObj.zipCode" name="zipCode" #adrZipcode="ngModel"
                                                     required>
                                                 <div *ngIf="adrZipcode.invalid
                                                     && (adrZipcode.dirty ||
-                                                    adrZipcode.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="adrZipcode.errors.required">
+                                                    adrZipcode.touched)" class="text-danger">
+                                                    <div *ngIf="adrZipcode.errors.required">
                                                         Zip Code is required.
                                                     </div>
                                                 </div>
@@ -1972,10 +1620,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                        data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-success"
-                        (click)="saveManualLocation()"
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" (click)="saveManualLocation()"
                         [disabled]="!addManLoc.form.valid || locDisabled">Submit</button>
                 </div>
             </form>
@@ -1987,17 +1633,13 @@
 <ng-template #manualAssetModel let-modal>
     <div class="modal-header">
         <h5 class="modal-title">Add Manual Asset</h5>
-        <button type="button"
-            (click)="modal.dismiss()"
-            class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
             <i class="far fa-window-close modal-dismiss" style="font-size:
                 25px"> </i>
         </button>
     </div>
-    <form class="form-horizontal form-bordered" method="get" name="form"
-        id="form_" #ManualAssetF="ngForm"
-        (ngSubmit)="ManualAssetF.form.valid && addManualAsset()" novalidate
-        ngNativeValidate>
+    <form class="form-horizontal form-bordered" method="get" name="form" id="form_" #ManualAssetF="ngForm"
+        (ngSubmit)="ManualAssetF.form.valid && addManualAsset()" novalidate ngNativeValidate>
         <div class="modal-body text-dark">
             <div class="row">
                 <div class="col-lg-12">
@@ -2005,15 +1647,11 @@
                         <label class="control-label font-weight-bold font-bold
                             text-lg-right pt-2">Asset Name/Number <span
                                 class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <input type="text"
-                            [(ngModel)]="assetData.assetIdentification"
-                            name="assetIdentification" maxlength="20"
-                            class="form-control" placeholder="eg. Box asset"
-                            #assetName="ngModel" required
-                            [ngClass]="{ 'error' : ManualAssetF.submitted &&
+                        <input type="text" [(ngModel)]="assetData.assetIdentification" name="assetIdentification"
+                            maxlength="20" class="form-control" placeholder="eg. Box asset" #assetName="ngModel"
+                            required [ngClass]="{ 'error' : ManualAssetF.submitted &&
                             assetName.invalid }">
-                        <div *ngIf="assetName.invalid && ManualAssetF.submitted"
-                            class="text-danger">
+                        <div *ngIf="assetName.invalid && ManualAssetF.submitted" class="text-danger">
                             <div *ngIf="assetName.errors.required">
                                 Asset name/number is required.
                             </div>

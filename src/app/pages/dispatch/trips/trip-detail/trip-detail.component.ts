@@ -82,6 +82,7 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  tripStatus = '';
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -206,6 +207,12 @@ export class TripDetailComponent implements OnInit {
     this.apiService.getData('trips/' + this.tripID).
       subscribe(async (result: any) => {
         result = result.Items[0];
+        if (result.settlmnt) {
+          this.tripStatus = 'Settled';
+        } else {
+          this.tripStatus = result.tripStatus;
+        }
+
         if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
         } else {
