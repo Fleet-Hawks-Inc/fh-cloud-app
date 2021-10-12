@@ -5,13 +5,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
 import { environment } from 'src/environments/environment';
-import pdfMake from "pdfmake/build/pdfmake";
 import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from 'html2pdf.js';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { PdfViewerComponent } from 'ng2-pdf-viewer';
+import autoTable from 'jspdf-autotable';
 declare var $: any;
 
 @Component({
@@ -526,19 +526,23 @@ export class OrderDetailComponent implements OnInit {
     this.isShow = true;
     this.previewRef.close();
     var data = document.getElementById('print_wrap');
-    html2pdf(data, {
-      margin: 0.15,
-      filename: 'invoice.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: {
-        dpi: 300,
-        letterRendering: true,
-        allowTaint: true,
-        useCORS: true
-      },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+    const doc = new jsPDF()
+    autoTable(doc, { html: '#my-table' })
+    doc.save('table.pdf')
 
-    });
+    // html2pdf(data, {
+    //   margin: 0.15,
+    //   filename: 'invoice.pdf',
+    //   image: { type: 'jpeg', quality: 0.98 },
+    //   html2canvas: {
+    //     dpi: 300,
+    //     letterRendering: true,
+    //     allowTaint: true,
+    //     useCORS: true
+    //   },
+    //   jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+
+    // });
 
 
     $('#previewInvoiceModal').modal('hide');
@@ -763,7 +767,6 @@ export class OrderDetailComponent implements OnInit {
       .subscribe((result: any) => {
 
         this.invoiceData = result[0];
-        console.log('invoiceData', this.invoiceData.charges.fuelSurcharge.type)
         this.isInvoice = true;
 
       });
