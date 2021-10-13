@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
@@ -15,9 +17,12 @@ import Constants from 'src/app/pages/fleet/constants';
   styleUrls: ['./trip-detail.component.css']
 })
 export class TripDetailComponent implements OnInit {
+  @ViewChild("tripInfoModal", { static: true })
+  tripInfoModal: TemplateRef<any>;
+
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
-  constructor(private apiService: ApiService, private route: ActivatedRoute,
+  constructor(private apiService: ApiService, private modalService: NgbModal, private route: ActivatedRoute,
     private accountService: AccountService,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
@@ -610,5 +615,15 @@ export class TripDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.driversObject = result;
       });
+  }
+
+
+  openTripInfo() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "trip--info__main",
+    };
+    this.modalService.open(this.tripInfoModal, ngbModalOptions)
   }
 }
