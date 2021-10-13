@@ -10,6 +10,7 @@ import { VendorPaymentDetailComponent } from './vendor-payments/vendor-payment-d
 import { VendorCreditNotesListComponent } from './vendor-credit-notes/vendor-credit-notes-list/vendor-credit-notes-list.component';
 import { VendorCreditNoteDetailComponent } from './vendor-credit-notes/vendor-credit-note-detail/vendor-credit-note-detail.component';
 import { AddVendorCreditNoteComponent } from './vendor-credit-notes/add-vendor-credit-note/add-vendor-credit-note.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const routes: Routes = [
   { path: 'orders/list', component: PurchaseOrdersListComponent },
@@ -36,6 +37,7 @@ const routes: Routes = [
     AddVendorCreditNoteComponent],
   imports: [
     CommonModule,
+    NgSelectModule,
     RouterModule.forChild(routes)
   ]
 })
