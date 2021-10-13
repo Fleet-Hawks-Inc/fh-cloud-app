@@ -189,6 +189,10 @@ export class OrderDetailComponent implements OnInit {
   }
 
   hideEdit: boolean = false;
+  tripData: {
+    tripNo: '',
+    tripID: ''
+  };
 
   constructor(private apiService: ApiService, private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
@@ -218,6 +222,10 @@ export class OrderDetailComponent implements OnInit {
               this.stateCode = result.Items[0].stateCode;
             });
           }
+        }
+
+        if (result.tripData) {
+          this.tripData = result.tripData;
         }
 
         this.zeroRated = result.zeroRated;

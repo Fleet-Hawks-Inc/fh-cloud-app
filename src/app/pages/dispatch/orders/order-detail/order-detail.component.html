@@ -46,11 +46,13 @@
               <div>
                 <h4 class="m-0 font-weight-bold">{{orderMode}} - ORD{{orderNumber}}</h4>
               </div>
-              <!-- <div class="pull-right">
-                <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"
-                  ><i class="fas fa-plus"></i> Add Order</a
-                >
-              </div> -->
+              <div class="pull-right" *ngIf="tripData">
+                <h4 class="m-0 font-weight-bold">Trip#:
+                  <a routerLink="/dispatch/trips/trip-details/{{tripData.tripID}}"> {{ tripData.tripNo }} </a>
+                </h4>
+                <!-- <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
+                  Order</a> -->
+              </div>
             </div>
           </div>
         </div>
