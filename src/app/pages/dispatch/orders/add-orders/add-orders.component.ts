@@ -2381,6 +2381,7 @@ export class AddOrdersComponent implements OnInit {
       });
     }
     this.orderData["loc"] = selectedLoc;
+    this.orderData.cusPOs = this.cusPOs;
 
     if (!flag) {
       this.toastr.error(
