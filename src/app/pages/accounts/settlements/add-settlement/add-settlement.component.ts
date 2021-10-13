@@ -2049,6 +2049,15 @@ export class AddSettlementComponent implements OnInit {
         .toPromise();
       this.fuelEnteries = result;
       this.fuelEnteries.map((elem) => {
+        elem.fuelID = elem.data.fuelID;
+        elem.fuelDate = elem.data.date;
+        elem.unitNumber = this.vehicles[elem.unitID];
+        elem.cityName = elem.data.city;
+        elem.locationCountry = elem.data.country;
+        elem.fuelCardNumber = elem.data.cardNo;
+        elem.unitOfMeasure = elem.data.uom;
+        elem.subTotal = elem.data.amt;
+        elem.billingCurrency = elem.data.currency;
         elem.add = false;
         elem.deduction = false;
         elem.addDisabled = false;
@@ -2114,6 +2123,15 @@ export class AddSettlementComponent implements OnInit {
         .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
         .toPromise();
       result.map((k) => {
+        k.fuelID = k.data.fuelID;
+        k.fuelDate = k.data.date;
+        k.unitNumber = this.vehicles[k.unitID];
+        k.cityName = k.data.city;
+        k.locationCountry = k.data.country;
+        k.fuelCardNumber = k.data.cardNo;
+        k.unitOfMeasure = k.data.uom;
+        k.subTotal = k.data.amt;
+        k.billingCurrency = k.data.currency;
         this.settlementData.fuelData.map((v) => {
           if (v.fuelID === k.fuelID) {
             k.action = v.action === "add" ? "Added" : "Deducted";
