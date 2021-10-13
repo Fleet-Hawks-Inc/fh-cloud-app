@@ -69,9 +69,10 @@ export class AddOrdersComponent implements OnInit {
   countries;
   states;
   cities;
-
+  cusPOs = [];
   getOrderNumber: string;
   orderData = {
+    cusPOs: [],
     stateTaxID: "",
     invoiceGenerate: false,
     customerID: null,
@@ -1118,7 +1119,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1419,6 +1420,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
+    this.orderData.cusPOs = this.cusPOs;
 
     // create form data instance
     const formData = new FormData();
@@ -1432,7 +1434,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1458,7 +1460,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1474,12 +1476,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1925,7 +1927,6 @@ export class AddOrdersComponent implements OnInit {
 
           $("#adrsErr1_" + i).css("display", "none");
           let result = await this.newGeoCode(location);
-          console.log("result update", result);
           if (result == null) {
             $("#adrsErr1_" + i).css("display", "block");
             this.toastr.error("Please add valid address");
@@ -2115,6 +2116,7 @@ export class AddOrdersComponent implements OnInit {
           },
         ];
         this.orderData["customerID"] = result.customerID;
+        this.orderData.cusConfirmation = result.cusConfirmation;
         this.selectedCustomer(result.customerID);
 
         if (result.attachments !== undefined && result.attachments.length > 0) {
@@ -2379,6 +2381,7 @@ export class AddOrdersComponent implements OnInit {
       });
     }
     this.orderData["loc"] = selectedLoc;
+    this.orderData.cusPOs = this.cusPOs;
 
     if (!flag) {
       this.toastr.error(
@@ -2400,7 +2403,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.putData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2421,7 +2424,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3016,4 +3019,15 @@ export class AddOrdersComponent implements OnInit {
       this.calculateAmount();
     });
   }
+
+  addPos(pos) {
+    this.cusPOs.push(pos.label)
+  }
+
+  removePos(pos) {
+    let index = this.cusPOs.indexOf(pos.label);
+    this.cusPOs.splice(index, 1);
+  }
+
 }
+
