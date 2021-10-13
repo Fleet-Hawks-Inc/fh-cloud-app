@@ -9,6 +9,7 @@ import * as _ from 'lodash';
 import constants from '../../../constants';
 declare var $: any;
 import * as moment from 'moment';
+import { result } from 'lodash';
 @Component({
   selector: 'app-add-reminder',
   templateUrl: './add-reminder.component.html',
@@ -80,6 +81,12 @@ export class AddReminderComponent implements OnInit {
     // this.fetchUsers();
     // this.fetchGroups();
     this.fetchServiceTaks();
+    // this.demoFunction();
+    this.trydemofunction();
+    this.doworkfunction();
+    
+    
+    this.sendEmailNotification();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
       this.fetchReminderByID();
@@ -224,6 +231,28 @@ export class AddReminderComponent implements OnInit {
       },
     });
 
+  }
+  // demoFunction(){
+  //   this.apiService.getData("/reminders/data").subscribe((result:any)=>{
+  //     console.log("hiii" , result);
+  //   })
+  // }
+  sendEmailNotification(){
+      this.apiService.getData("/reminders/sreminders").subscribe((result:any)=>{
+        console.log("hii",result)
+      })
+      
+    }
+  trydemofunction(){
+    this.apiService.getData("reminders/data/demmo").subscribe((result: any) =>{
+      console.log("tryyy new", result);
+
+    })
+  }
+  doworkfunction(){
+    this.apiService.getData("reminders/id/work").subscribe((result:any)=>{
+      console.log("new",result)
+    })
   }
 
   throwErrors() {

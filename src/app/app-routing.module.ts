@@ -22,6 +22,8 @@ import { CheckUserService } from './services/check-user.service';
 import { CheckProfileServiceService } from './services/check-profile-service.service';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
+import { HttpClientModule } from '@angular/common/http';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
@@ -80,11 +82,12 @@ const routes: Routes = [
   }
 ];
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {
+  imports: [ HttpClientModule , RouterModule.forRoot(routes, {
     preloadingStrategy: PreLoadStrategy,
     useHash: true,
     relativeLinkResolution: 'legacy',
-    initialNavigation: 'enabled'
+    initialNavigation: 'enabled',
+    
 }), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],

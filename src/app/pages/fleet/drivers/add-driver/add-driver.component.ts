@@ -1660,7 +1660,7 @@ export class AddDriverComponent
         });
     }
   }
-
+  
   validateCDL() {
     this.hideVal();
     if (this.driverData.CDL_Number !== '') {

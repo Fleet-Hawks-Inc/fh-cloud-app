@@ -26,7 +26,7 @@ export class VehicleListComponent implements OnInit {
   vehicleIdentification = '';
   allOptions: any = {};
   groupsList: any = {};
-  vehicleModelList: any = {};
+  vehicleModelList: any = {}; 
   vehicleManufacturersList: any = {};
   serviceProgramsList:any = {};
   driversList:any = {};

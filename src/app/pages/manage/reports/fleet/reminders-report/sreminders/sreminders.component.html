@@ -60,8 +60,9 @@
                   <div class="col-4 mb-3">
                      <div class="bg-white p-3">
                         <div>
-                           <h4 class="m-0 text-4">Total Service Reminders</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">300</h3>
+                           <h4 class="m-0 text-4" >Total Service Reminders</h4>
+                           <h3 class="mt-1 mb-0 font-weight-bold" >{{allData.length}} </h3>
+                           <!-- <td ng-repeat = "item.entityID"></td> -->
                         </div>
                      </div>
                   </div>
@@ -69,7 +70,7 @@
                      <div class="bg-white p-3">
                         <div>
                            <h4 class="m-0 text-4">Total Overdue Service</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">45</h3>
+                           <h3 class="mt-1 mb-0 font-weight-bold">{{OverdueService}}</h3>
                         </div>
                      </div>
                   </div>
@@ -77,7 +78,7 @@
                      <div class="bg-white p-3">
                         <div>
                            <h4 class="m-0 text-4">Total Due Soon</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">55</h3>
+                           <h3 class="mt-1 mb-0 font-weight-bold">{{due}}</h3>
                         </div>
                      </div>
                   </div>
@@ -90,15 +91,14 @@
 								  <tr class="back-color-gray">
 									 <th>Vehicle</th>
 									 <th>Service Task</th>
-									 <th>Renewal Status</th>
 									 <th>Next Due</th>
 									 <th>Subscribers</th>
-                            <th>Status</th>
+                            <th>Renewal Status</th>
 									 
 								  </tr>
 							   </thead>
 							   <tbody>
-								  <tr>
+								  <!-- <tr>
 									 <td >421543</td>
 									 <td ><span  class="font-weight-bold" title="Service Task">Rotate Tires</span></td>
 									 <td ><span class="text-danger font-weight-bold font-size-12">Overdue</span></td>
@@ -106,8 +106,8 @@
 									 <td>jeet@iload.com</td>
                             <td>Active</td>
 									
-								  </tr>
-								  <tr>
+								  </tr> -->
+								  <!-- <tr>
 									 
 									 <td>32548</td>
 									 <td><span  class="font-weight-bold" title="Service Task">Oil Change</span></td>
@@ -126,7 +126,16 @@
                             <td>marr@truckingcanada.ca</td>
 									 <td>Inactive</td>
 									 
-								  </tr>
+								  </tr> -->
+                          <tr *ngFor = "let item of allData">
+                             <td>{{vehicleList[item.entityID]}}</td>
+                             <td>{{tasksfunction[item.tasks.taskID]}}</td>
+                             <td>{{item.createdDate}}</td>
+                             <td>{{item.subscribers}}</td>
+                             <td>{{item.status}} </td>
+                       
+                     
+                          </tr>
 								 
 							   </tbody>
                               </table>

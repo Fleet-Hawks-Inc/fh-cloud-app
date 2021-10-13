@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 
@@ -9,7 +10,7 @@ export class ModalService {
   public urlToRedirect$ = this.urlToRedirect.asObservable();
   public triggerRedirect: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public triggerRedirect$ = this.triggerRedirect.asObservable();
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   setUrlToNavigate(url: string) {
     this.urlToRedirect.next(url);
