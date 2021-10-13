@@ -1,53 +1,53 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { ListService } from '../../../../services';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { ApiService } from "../../../../services";
+import { Router } from "@angular/router";
+import { map } from "rxjs/operators";
+import { from } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { ToastrService } from "ngx-toastr";
+import { ActivatedRoute } from "@angular/router";
+import { Location } from "@angular/common";
+import { ListService } from "../../../../services";
+import { DomSanitizer } from "@angular/platform-browser";
 
-import * as _ from 'lodash';
-import { NgForm } from '@angular/forms';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import * as _ from "lodash";
+import { NgForm } from "@angular/forms";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 declare var $: any;
 
 @Component({
-  selector: 'app-add-vehicle',
-  templateUrl: './add-vehicle.component.html',
-  styleUrls: ['./add-vehicle.component.css'],
-  exportAs: "vehicleF"
+  selector: "app-add-vehicle",
+  templateUrl: "./add-vehicle.component.html",
+  styleUrls: ["./add-vehicle.component.css"],
+  exportAs: "vehicleF",
 })
 export class AddVehicleComponent implements OnInit {
-  @ViewChild('vehicleF') vehicleF: NgForm;
+  @ViewChild("vehicleF") vehicleF: NgForm;
   showDriverModal = false;
-  createdDate = '';
-  createdTime = '';
-  title = 'Add Vehicle';
+  createdDate = "";
+  createdTime = "";
+  title = "Add Vehicle";
   Asseturl = this.apiService.AssetUrl;
   activeTab = 1;
-  modalImage = '';
-  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  modalImage = "";
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
 
   /**
    * Quantum prop
    */
   quantumsList = [];
-  quantum = '';
-  quantumSelected = '';
-  quantumcurrentStatus = '';
+  quantum = "";
+  quantumSelected = "";
+  quantumcurrentStatus = "";
   /**
    *Group Properties
-  */
+   */
   groupData = {
-    groupType: 'vehicles',
-    groupName: '',
+    groupType: "vehicles",
+    groupName: "",
     groupMembers: [],
-    description: '',
+    description: "",
   };
   vehicles = [];
 
@@ -60,173 +60,173 @@ export class AddVehicleComponent implements OnInit {
   hasSpecs: boolean = false;
   hasFluids: boolean = false;
   vehicleTypeList: any = [];
-  vehicleIdentification = '';
+  vehicleIdentification = "";
   vehicleType = null;
-  VIN = '';
-  DOT = '';
+  VIN = "";
+  DOT = "";
   year = null;
   manufacturerID = null;
   modelID = null;
-  plateNumber = '';
+  plateNumber = "";
   countryCode = null;
   stateCode = null;
   driverID = null;
   teamDriverID = null;
   servicePrograms = null;
-  repeatByTime = '';
-  repeatByTimeUnit = '';
-  reapeatbyOdometerMiles = '';
+  repeatByTime = "";
+  repeatByTimeUnit = "";
+  reapeatbyOdometerMiles = "";
   annualSafetyDate = null;
   annualSafetyReminder = true;
   currentStatus = null;
   ownership = null;
   ownerOperatorID = null;
   groupID = null;
-  aceID = '';
-  aciID = '';
+  aceID = "";
+  aciID = "";
   iftaReporting = false;
-  vehicleColor = '';
-  bodyType = '';
-  bodySubType = '';
-  msrp = '';
+  vehicleColor = "";
+  bodyType = "";
+  bodySubType = "";
+  msrp = "";
   inspectionFormID = null;
   lifeCycle = {
-    inServiceDate: '',
+    inServiceDate: "",
     startDate: null,
-    inServiceOdometer: '',
-    estimatedServiceYears: '',
-    estimatedServiceMonths: '',
-    estimatedServiceMiles: '',
-    estimatedResaleValue: '',
+    inServiceOdometer: "",
+    estimatedServiceYears: "",
+    estimatedServiceMonths: "",
+    estimatedServiceMiles: "",
+    estimatedResaleValue: "",
     outOfServiceDate: null,
-    outOfServiceOdometer: '',
+    outOfServiceOdometer: "",
   };
   specifications = {
     height: null,
-    heightUnit: 'Feet',
-    length: '',
-    lengthUnit: '',
-    width: '',
-    widthUnit: '',
-    interiorVolume: '',
-    passangerVolume: '',
-    groundClearnce: '',
-    groundClearnceUnit: 'Feet',
-    bedLength: '',
-    bedLengthUnit: '',
-    cargoVolume: '',
-    tareWeight: '',
-    grossVehicleWeightRating: '',
-    towingCapacity: '',
-    maxPayload: '',
-    EPACity: '',
-    EPACombined: '',
-    EPAHighway: '',
+    heightUnit: "Feet",
+    length: "",
+    lengthUnit: "",
+    width: "",
+    widthUnit: "",
+    interiorVolume: "",
+    passangerVolume: "",
+    groundClearnce: "",
+    groundClearnceUnit: "Feet",
+    bedLength: "",
+    bedLengthUnit: "",
+    cargoVolume: "",
+    tareWeight: "",
+    grossVehicleWeightRating: "",
+    towingCapacity: "",
+    maxPayload: "",
+    EPACity: "",
+    EPACombined: "",
+    EPAHighway: "",
   };
   insurance = {
     dateOfIssue: null,
-    premiumAmount: '',
+    premiumAmount: "",
     premiumCurrency: null,
     vendorID: null,
     dateOfExpiry: null,
-    reminder: '',
+    reminder: "",
     remiderEvery: null,
-    policyNumber: '',
+    policyNumber: "",
     amount: 0,
-    amountCurrency: null
+    amountCurrency: null,
   };
   fluid = {
     fuelType: null,
-    fuelTankOneCapacity: '',
-    fuelTankOneType: '',
-    fuelQuality: '',
-    fuelTankTwoCapacity: '',
-    fuelTankTwoType: '',
+    fuelTankOneCapacity: "",
+    fuelTankOneType: "",
+    fuelQuality: "",
+    fuelTankTwoCapacity: "",
+    fuelTankTwoType: "",
     oilCapacity: null,
-    oilCapacityType: '',
+    oilCapacityType: "",
     def: null,
-    defType: ''
+    defType: "",
   };
   wheelsAndTyres = {
-    numberOfTyres: '',
-    driveType: '',
-    brakeSystem: '',
-    wheelbase: '',
-    rearAxle: '',
-    frontTyreType: '',
-    rearTyreType: '',
-    frontTrackWidth: '',
-    rearTrackWidth: '',
-    frontWheelDiameter: '',
-    rearWheelDiameter: '',
-    frontTyrePSI: '',
-    rearTyrePSI: '',
+    numberOfTyres: "",
+    driveType: "",
+    brakeSystem: "",
+    wheelbase: "",
+    rearAxle: "",
+    frontTyreType: "",
+    rearTyreType: "",
+    frontTrackWidth: "",
+    rearTrackWidth: "",
+    frontWheelDiameter: "",
+    rearWheelDiameter: "",
+    frontTyrePSI: "",
+    rearTyrePSI: "",
   };
   engine = {
-    engineSummary: '',
-    engineBrand: '',
-    aspiration: '',
-    blockType: '',
-    bore: '',
-    camType: '',
-    stroke: '',
-    valves: '',
-    compression: '',
-    cylinders: '',
-    displacement: '',
-    fuelIndication: '',
-    fuelQuality: '',
-    maxHP: '',
+    engineSummary: "",
+    engineBrand: "",
+    aspiration: "",
+    blockType: "",
+    bore: "",
+    camType: "",
+    stroke: "",
+    valves: "",
+    compression: "",
+    cylinders: "",
+    displacement: "",
+    fuelIndication: "",
+    fuelQuality: "",
+    maxHP: "",
     maxTorque: 0,
-    readlineRPM: '',
-    transmissionSummary: '',
-    transmissionType: '',
-    transmissonBrand: '',
-    transmissionGears: '',
+    readlineRPM: "",
+    transmissionSummary: "",
+    transmissionType: "",
+    transmissonBrand: "",
+    transmissionGears: "",
   };
   purchase = {
     purchaseVendorID: null,
     warrantyExpirationDate: null,
     warrantyExpirationDateReminder: false,
-    purchasePrice: '',
+    purchasePrice: "",
     purchasePriceCurrency: null,
-    warrantyExpirationMeter: '',
+    warrantyExpirationMeter: "",
     purchaseDate: null,
-    purchaseComments: '',
-    purchaseOdometer: '',
-    gstInc: true
+    purchaseComments: "",
+    purchaseOdometer: "",
+    gstInc: true,
   };
   loan = {
     loanVendorID: null,
-    amountOfLoan: '',
+    amountOfLoan: "",
     amountOfLoanCurrency: null,
-    aspiration: '',
-    annualPercentageRate: '',
+    aspiration: "",
+    annualPercentageRate: "",
     gstInc: true,
-    downPayment: '',
+    downPayment: "",
     downPaymentCurrency: null,
     dateOfLoan: null,
-    monthlyPayment: '',
+    monthlyPayment: "",
     monthlyPaymentCurrency: null,
-    firstPaymentDate: '',
-    numberOfPayments: '',
+    firstPaymentDate: "",
+    numberOfPayments: "",
     loadEndDate: null,
-    accountNumber: '',
-    generateExpenses: '',
-    notes: '',
+    accountNumber: "",
+    generateExpenses: "",
+    notes: "",
     loanDueDate: null,
     lReminder: true,
   };
   settings = {
-    primaryMeter: 'miles',
-    fuelUnit: 'gallons(CA)',
+    primaryMeter: "miles",
+    fuelUnit: "gallons(CA)",
     hardBreakingParams: 0,
     hardAccelrationParams: 0,
     turningParams: 0,
-    measurmentUnit: 'imperial',
+    measurmentUnit: "imperial",
   };
 
-  ownerOperators: any = []
+  ownerOperators: any = [];
   serviceProgramss: any = [];
   inspectionForms = [];
   manufacturers: any = [];
@@ -242,21 +242,21 @@ export class AddVehicleComponent implements OnInit {
   loanDocs = [];
   existingPhotos = [];
   existingDocs = [];
-  existPDocs = []
+  existPDocs = [];
   existLDocs = [];
   carrierID;
   programs = [];
   vendors: any = [];
-  timeCreated: '';
+  timeCreated: "";
   errors = {};
   vehicleForm;
-  response: any = '';
+  response: any = "";
   hasError: boolean = false;
   hasSuccess: boolean = false;
-  Error: string = '';
-  Success: string = '';
+  Error: string = "";
+  Success: string = "";
   manufacturerDataSource: any = [];
-  modals: any = []
+  modals: any = [];
   slides = [];
   pDocs = [];
   lDocs = [];
@@ -274,24 +274,28 @@ export class AddVehicleComponent implements OnInit {
   vendorModalStatus = false;
   submitDisabled = false;
   groupSubmitDisabled = false;
-  countryName = '';
-  stateName = '';
+  countryName = "";
+  stateName = "";
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute,
-    private location: Location, private toastr: ToastrService,
-    private router: Router, private httpClient: HttpClient,
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private toastr: ToastrService,
+    private router: Router,
+    private httpClient: HttpClient,
     private listService: ListService,
     private domSanitizer: DomSanitizer,
-    private countryStateCity: CountryStateCityService) {
+    private countryStateCity: CountryStateCityService
+  ) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
       // this.vehicleForm = $('#vehicleForm').validate();
     });
-
   }
 
   async ngOnInit() {
@@ -306,25 +310,25 @@ export class AddVehicleComponent implements OnInit {
 
     this.vehicleID = this.route.snapshot.params[`vehicleID`];
     if (this.vehicleID) {
-      this.title = 'Edit Vehicle';
+      this.title = "Edit Vehicle";
       await this.fetchVehicleByID();
     } else {
-      this.title = 'Add Vehicle';
+      this.title = "Add Vehicle";
     }
 
-    this.apiService.getData('devices').subscribe((result: any) => {
+    this.apiService.getData("devices").subscribe((result: any) => {
       this.quantumsList = result.Items;
     });
-    this.httpClient.get('assets/vehicleType.json').subscribe(data => {
+    this.httpClient.get("assets/vehicleType.json").subscribe((data) => {
       this.vehicleTypeList = data;
     });
     this.settings.hardBreakingParams = 6;
     this.settings.hardAccelrationParams = 6;
     this.settings.turningParams = 6;
 
-    $('#hardBreakingParametersValue').html(6);
-    $('#hardAccelrationParametersValue').html(6);
-    $('#turningParametersValue').html(6);
+    $("#hardBreakingParametersValue").html(6);
+    $("#hardAccelrationParametersValue").html(6);
+    $("#turningParametersValue").html(6);
 
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
@@ -365,8 +369,8 @@ export class AddVehicleComponent implements OnInit {
             this.loan.loanVendorID = null;
           }
         }
-      })
-    })
+      });
+    });
   }
 
   private getValidPrograms(programsList: any[]) {
@@ -378,12 +382,17 @@ export class AddVehicleComponent implements OnInit {
           ids.push(element2.programID);
         }
 
-        if (element2.isDeleted === 1 && this.servicePrograms.includes(element2.programID)) {
-          let ind = this.servicePrograms.indexOf(this.servicePrograms[element2.programID]);
+        if (
+          element2.isDeleted === 1 &&
+          this.servicePrograms.includes(element2.programID)
+        ) {
+          let ind = this.servicePrograms.indexOf(
+            this.servicePrograms[element2.programID]
+          );
           this.servicePrograms.splice(ind, 1);
         }
-      })
-    })
+      });
+    });
   }
 
   private getValidOperators(operatorsList: any[]) {
@@ -395,11 +404,14 @@ export class AddVehicleComponent implements OnInit {
           ids.push(element2.contactID);
         }
 
-        if (element2.isDeleted === 1 && this.ownerOperatorID === element2.contactID) {
+        if (
+          element2.isDeleted === 1 &&
+          this.ownerOperatorID === element2.contactID
+        ) {
           this.ownerOperatorID = null;
         }
-      })
-    })
+      });
+    });
   }
 
   private getValidDrivers(driverList: any[]) {
@@ -414,79 +426,85 @@ export class AddVehicleComponent implements OnInit {
         if (element2.isDeleted === 1 && this.driverID === element2.driverID) {
           this.driverID = null;
         }
-      })
-    })
+      });
+    });
   }
 
   async getInspectionForms() {
     await this.fetchInspectionForms();
-
   }
 
   fetchDrivers() {
-    this.apiService.getData('drivers').subscribe((result: any) => {
+    this.apiService.getData("drivers").subscribe((result: any) => {
       this.drivers = result.Items;
     });
   }
 
   fetchManufacturers() {
-    this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
-      data.forEach(element => {
-
-        this.manufacturerDataSource.push(Object.keys(element)[0].toUpperCase())
-
+    this.httpClient
+      .get("assets/jsonFiles/vehicles/trucks.json")
+      .subscribe((data: any) => {
+        data.forEach((element) => {
+          this.manufacturerDataSource.push(
+            Object.keys(element)[0].toUpperCase()
+          );
+        });
       });
-
-    });
   }
   fetchModels() {
     this.modals = [];
-    let manufacturer: any = '';
+    let manufacturer: any = "";
     if (this.manufacturerID !== null) {
       manufacturer = this.manufacturerID.toLowerCase();
     }
-    this.httpClient.get('assets/jsonFiles/vehicles/trucks.json').subscribe((data: any) => {
-      data.forEach(element => {
-        let output = [];
-        if (element[manufacturer]) {
-          element[manufacturer].forEach(element => {
-            output.push(element.toUpperCase());
-
-          });
-          this.modals = output;
-        }
+    this.httpClient
+      .get("assets/jsonFiles/vehicles/trucks.json")
+      .subscribe((data: any) => {
+        data.forEach((element) => {
+          let output = [];
+          if (element[manufacturer]) {
+            element[manufacturer].forEach((element) => {
+              output.push(element.toUpperCase());
+            });
+            this.modals = output;
+          }
+        });
       });
-
-    });
-
   }
 
   async getStates(event: any) {
     const countryCode: any = event;
-    this.stateCode = '';
-    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.stateCode = "";
+    this.states = await this.countryStateCity.GetStatesByCountryCode([
+      countryCode,
+    ]);
   }
-
 
   resetModel() {
     this.fetchModels();
     this.modelID = null;
-    $('#vehicleSelect').val('');
+    $("#vehicleSelect").val("");
   }
-
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
   }
 
   gotoVehiclePage() {
-    $('#addDriverModelVehicle').modal('show');
+    $("#addDriverModelVehicle").modal("show");
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
-      this.groups = result.Items;
-    });
+    this.apiService
+      .getData(`groups/getGroup/${this.groupData.groupType}`)
+      .subscribe((result: any) => {
+        // this.groups = result.Items;
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.groups.push(element);
+          }
+        });
+      });
   }
 
   getGroups() {
@@ -499,7 +517,7 @@ export class AddVehicleComponent implements OnInit {
 
   fetchInspectionForms() {
     this.apiService
-      .getData('inspectionForms/type/vehicle')
+      .getData("inspectionForms/type/vehicle")
       .subscribe((result: any) => {
         this.inspectionForms = result.Items;
       });
@@ -507,7 +525,7 @@ export class AddVehicleComponent implements OnInit {
   async onAddVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
-    this.Error = '';
+    this.Error = "";
     this.submitDisabled = true;
 
     this.hideErrors();
@@ -526,7 +544,9 @@ export class AddVehicleComponent implements OnInit {
       stateName: this.stateName,
       driverID: this.driverID,
       teamDriverID: this.teamDriverID,
-      servicePrograms: Array.isArray(this.servicePrograms) ? this.servicePrograms : [],
+      servicePrograms: Array.isArray(this.servicePrograms)
+        ? this.servicePrograms
+        : [],
       annualSafetyDate: this.annualSafetyDate,
       annualSafetyReminder: this.annualSafetyReminder,
       currentStatus: this.currentStatus,
@@ -586,7 +606,7 @@ export class AddVehicleComponent implements OnInit {
         remiderEvery: this.insurance.remiderEvery,
         policyNumber: this.insurance.policyNumber,
         amount: this.insurance.amount,
-        amountCurrency: this.insurance.amountCurrency
+        amountCurrency: this.insurance.amountCurrency,
       },
       fluid: {
         fuelType: this.fluid.fuelType,
@@ -598,7 +618,7 @@ export class AddVehicleComponent implements OnInit {
         oilCapacity: this.fluid.oilCapacity,
         oilCapacityType: this.fluid.oilCapacityType,
         def: this.fluid.def,
-        defType: this.fluid.defType
+        defType: this.fluid.defType,
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
@@ -640,14 +660,15 @@ export class AddVehicleComponent implements OnInit {
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
-        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
+        warrantyExpirationDateReminder:
+          this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
         purchaseOdometer: this.purchase.purchaseOdometer,
-        gstInc: this.purchase.gstInc
+        gstInc: this.purchase.gstInc,
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -678,7 +699,7 @@ export class AddVehicleComponent implements OnInit {
         turningParams: this.settings.turningParams,
         measurmentUnit: this.settings.measurmentUnit,
       },
-      activeTab: this.activeTab
+      activeTab: this.activeTab,
     };
 
     // create form data instance
@@ -686,30 +707,30 @@ export class AddVehicleComponent implements OnInit {
 
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
 
     // append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
     // append purchase docs if any
     for (let j = 0; j < this.purchaseDocs.length; j++) {
-      formData.append('purchaseDocs', this.purchaseDocs[j]);
+      formData.append("purchaseDocs", this.purchaseDocs[j]);
     }
 
     // append loan docs if any
     for (let j = 0; j < this.loanDocs.length; j++) {
-      formData.append('loanDocs', this.loanDocs[j]);
+      formData.append("loanDocs", this.loanDocs[j]);
     }
 
     // append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
     try {
       return await new Promise((resolve, reject) => {
-        this.apiService.postData('vehicles', formData, true).subscribe({
-          complete: () => { },
+        this.apiService.postData("vehicles", formData, true).subscribe({
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -728,87 +749,96 @@ export class AddVehicleComponent implements OnInit {
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => { },
+                next: () => {},
               });
           },
           next: (res) => {
             this.response = res;
-            this.Success = '';
+            this.Success = "";
             this.submitDisabled = false;
             // this.uploadFiles(); // upload selected files to bucket
-            this.toastr.success('Vehicle Added Successfully');
-            this.router.navigateByUrl('/fleet/vehicles/list');
+            this.toastr.success("Vehicle Added Successfully");
+            this.router.navigateByUrl("/fleet/vehicles/list");
             // this.location.back();
           },
-        })
+        });
       });
     } catch (error) {
       this.submitDisabled = false;
-      return 'error found';
+      return "error found";
     }
-
   }
 
   throwErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
-        if (v == 'vehicleIdentification' || v == 'VIN') {
-          $('[name="' + v + '"]')
-            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-            .addClass('error');
-        }
-      });
+    from(Object.keys(this.errors)).subscribe((v) => {
+      if (v == "vehicleIdentification" || v == "VIN") {
+        $('[name="' + v + '"]')
+          .after(
+            '<label id="' +
+              v +
+              '-error" class="error" for="' +
+              v +
+              '">' +
+              this.errors[v] +
+              "</label>"
+          )
+          .addClass("error");
+      }
+    });
   }
 
   hideErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
-        $('[name="' + v + '"]')
-          .removeClass('error')
-          .next()
-          .remove('label');
-      });
+    from(Object.keys(this.errors)).subscribe((v) => {
+      $('[name="' + v + '"]')
+        .removeClass("error")
+        .next()
+        .remove("label");
+    });
     this.errors = {};
   }
   scrollError() {
     let errorList;
     setTimeout(() => {
-      errorList = document.getElementsByClassName('error').length;
+      errorList = document.getElementsByClassName("error").length;
       if (errorList > 0) {
-        let topPosition: any = $('.error').parent('div').offset().top;
-        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+        let topPosition: any = $(".error").parent("div").offset().top;
+        window.scrollTo({
+          top: topPosition - 200,
+          left: 0,
+          behavior: "smooth",
+        });
       }
     }, 1500);
   }
 
   /*
-    * Selecting files before uploading
-    */
+   * Selecting files before uploading
+   */
   selectDocuments(event, obj) {
     let files = [...event.target.files];
 
-    if (obj === 'uploadedDocs') {
+    if (obj === "uploadedDocs") {
       for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i])
+        this.uploadedDocs.push(files[i]);
       }
-    } else if (obj === 'purchase') {
+    } else if (obj === "purchase") {
       for (let i = 0; i < files.length; i++) {
-        this.purchaseDocs.push(files[i])
+        this.purchaseDocs.push(files[i]);
       }
-    } else if (obj === 'loan') {
+    } else if (obj === "loan") {
       for (let i = 0; i < files.length; i++) {
-        this.loanDocs.push(files[i])
+        this.loanDocs.push(files[i]);
       }
     } else {
       for (let i = 0; i < files.length; i++) {
-        this.uploadedPhotos.push(files[i])
+        this.uploadedPhotos.push(files[i]);
       }
 
       for (let i = 0; i < files.length; i++) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.slides.push(e.target.result);
-        }
+        };
         reader.readAsDataURL(files[i]);
       }
     }
@@ -816,7 +846,9 @@ export class AddVehicleComponent implements OnInit {
 
   // EDIT
   async fetchVehicleByID() {
-    let result: any = await this.apiService.getData('vehicles/' + this.vehicleID).toPromise();
+    let result: any = await this.apiService
+      .getData("vehicles/" + this.vehicleID)
+      .toPromise();
     // .subscribe((result: any) => {
     this.editDisabled = true;
     result = result.Items[0];
@@ -836,16 +868,18 @@ export class AddVehicleComponent implements OnInit {
     this.driverID = result.driverID;
     this.teamDriverID = result.teamDriverID;
     this.servicePrograms = result.servicePrograms;
-    this.annualSafetyDate = _.isEmpty(result.annualSafetyDate) ? null : result.annualSafetyDate,
-      this.annualSafetyReminder = result.annualSafetyReminder,
-      this.currentStatus = result.currentStatus;
+    (this.annualSafetyDate = _.isEmpty(result.annualSafetyDate)
+      ? null
+      : result.annualSafetyDate),
+      (this.annualSafetyReminder = result.annualSafetyReminder),
+      (this.currentStatus = result.currentStatus);
     this.ownership = result.ownership;
     this.ownerOperatorID = result.ownerOperatorID;
     this.groupID = result.groupID;
     this.aceID = result.aceID;
     this.aciID = result.aciID;
-    this.iftaReporting = result.iftaReporting,
-      this.vehicleColor = result.vehicleColor;
+    (this.iftaReporting = result.iftaReporting),
+      (this.vehicleColor = result.vehicleColor);
     this.bodyType = result.bodyType;
     this.bodySubType = result.bodySubType;
     this.msrp = result.msrp;
@@ -853,15 +887,21 @@ export class AddVehicleComponent implements OnInit {
     this.createdDate = result.createdDate;
     this.createdTime = result.createdTime;
     this.lifeCycle = {
-      inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate) ? null : result.lifeCycle.inServiceDate,
+      inServiceDate: _.isEmpty(result.lifeCycle.inServiceDate)
+        ? null
+        : result.lifeCycle.inServiceDate,
       inServiceOdometer: result.lifeCycle.inServiceOdometer,
-      startDate: _.isEmpty(result.lifeCycle.startDate) ? null : result.lifeCycle.startDate,
+      startDate: _.isEmpty(result.lifeCycle.startDate)
+        ? null
+        : result.lifeCycle.startDate,
       estimatedServiceYears: result.lifeCycle.estimatedServiceYears,
       estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
       estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
       estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
-      outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate) ? null : result.lifeCycle.outOfServiceDate,
-      outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer
+      outOfServiceDate: _.isEmpty(result.lifeCycle.outOfServiceDate)
+        ? null
+        : result.lifeCycle.outOfServiceDate,
+      outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
     };
     this.specifications = {
       height: result.specifications.height,
@@ -883,19 +923,23 @@ export class AddVehicleComponent implements OnInit {
       maxPayload: result.specifications.maxPayload,
       EPACity: result.specifications.EPACity,
       EPACombined: result.specifications.EPACombined,
-      EPAHighway: result.specifications.EPAHighway
+      EPAHighway: result.specifications.EPAHighway,
     };
     this.insurance = {
-      dateOfIssue: _.isEmpty(result.insurance.dateOfIssue) ? null : result.insurance.dateOfIssue,
+      dateOfIssue: _.isEmpty(result.insurance.dateOfIssue)
+        ? null
+        : result.insurance.dateOfIssue,
       premiumAmount: result.insurance.premiumAmount,
       premiumCurrency: result.insurance.premiumCurrency,
       vendorID: result.insurance.vendorID,
-      dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry) ? null : result.insurance.dateOfExpiry,
+      dateOfExpiry: _.isEmpty(result.insurance.dateOfExpiry)
+        ? null
+        : result.insurance.dateOfExpiry,
       reminder: result.insurance.reminder,
       remiderEvery: result.insurance.remiderEvery,
       policyNumber: result.insurance.policyNumber,
       amount: result.insurance.amount,
-      amountCurrency: result.insurance.amountCurrency
+      amountCurrency: result.insurance.amountCurrency,
     };
     this.fluid = {
       fuelType: result.fluid.fuelType,
@@ -907,7 +951,7 @@ export class AddVehicleComponent implements OnInit {
       oilCapacity: result.fluid.oilCapacity,
       oilCapacityType: result.fluid.oilCapacityType,
       def: result.fluid.def,
-      defType: result.fluid.defType
+      defType: result.fluid.defType,
     };
     this.wheelsAndTyres = {
       numberOfTyres: result.wheelsAndTyres.numberOfTyres,
@@ -922,7 +966,7 @@ export class AddVehicleComponent implements OnInit {
       frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
       rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
       frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
-      rearTyrePSI: result.wheelsAndTyres.rearTyrePSI
+      rearTyrePSI: result.wheelsAndTyres.rearTyrePSI,
     };
     this.engine = {
       engineSummary: result.engine.engineSummary,
@@ -944,19 +988,24 @@ export class AddVehicleComponent implements OnInit {
       transmissionSummary: result.engine.transmissionSummary,
       transmissionType: result.engine.transmissionType,
       transmissonBrand: result.engine.transmissonBrand,
-      transmissionGears: result.engine.transmissionGears
+      transmissionGears: result.engine.transmissionGears,
     };
     this.purchase = {
       purchaseVendorID: result.purchase.purchaseVendorID,
-      warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate) ? null : result.purchase.warrantyExpirationDate,
-      warrantyExpirationDateReminder: result.purchase.warrantyExpirationDateReminder,
+      warrantyExpirationDate: _.isEmpty(result.purchase.warrantyExpirationDate)
+        ? null
+        : result.purchase.warrantyExpirationDate,
+      warrantyExpirationDateReminder:
+        result.purchase.warrantyExpirationDateReminder,
       purchasePrice: result.purchase.purchasePrice,
       purchasePriceCurrency: result.purchase.purchasePriceCurrency,
       warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
-      purchaseDate: _.isEmpty(result.purchase.purchaseDate) ? null : result.purchase.purchaseDate,
+      purchaseDate: _.isEmpty(result.purchase.purchaseDate)
+        ? null
+        : result.purchase.purchaseDate,
       purchaseComments: result.purchase.purchaseComments,
       purchaseOdometer: result.purchase.purchaseOdometer,
-      gstInc: result.purchase.gstInc
+      gstInc: result.purchase.gstInc,
     };
     this.loan = {
       loanVendorID: result.loan.loanVendorID,
@@ -967,12 +1016,18 @@ export class AddVehicleComponent implements OnInit {
       gstInc: result.loan.gstInc,
       downPayment: result.loan.downPayment,
       downPaymentCurrency: result.loan.downPaymentCurrency,
-      dateOfLoan: _.isEmpty(result.loan.dateOfLoan) ? null : result.loan.dateOfLoan,
+      dateOfLoan: _.isEmpty(result.loan.dateOfLoan)
+        ? null
+        : result.loan.dateOfLoan,
       monthlyPayment: result.loan.monthlyPayment,
       monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
-      firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate) ? null : result.loan.firstPaymentDate,
+      firstPaymentDate: _.isEmpty(result.loan.firstPaymentDate)
+        ? null
+        : result.loan.firstPaymentDate,
       numberOfPayments: result.loan.numberOfPayments,
-      loadEndDate: _.isEmpty(result.loan.loadEndDate) ? null : result.loan.loadEndDate,
+      loadEndDate: _.isEmpty(result.loan.loadEndDate)
+        ? null
+        : result.loan.loadEndDate,
       accountNumber: result.loan.accountNumber,
       generateExpenses: result.loan.generateExpenses,
       notes: result.loan.notes,
@@ -985,63 +1040,63 @@ export class AddVehicleComponent implements OnInit {
       hardBreakingParams: result.settings.hardBreakingParams,
       hardAccelrationParams: result.settings.hardAccelrationParams,
       turningParams: result.settings.turningParams,
-      measurmentUnit: result.settings.measurmentUnit
+      measurmentUnit: result.settings.measurmentUnit,
     };
     this.existingPhotos = result.uploadedPhotos;
     this.existingDocs = result.uploadedDocs;
     this.existPDocs = result.purchaseDocs;
     this.existLDocs = result.loanDocs;
-    if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
-      this.slides = result.uploadedPhotos.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    if (
+      result.uploadedPhotos != undefined &&
+      result.uploadedPhotos.length > 0
+    ) {
+      this.slides = result.uploadedPhotos.map(
+        (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+      );
     }
 
     if (result.purchaseDocs != undefined && result.purchaseDocs.length > 0) {
       result.purchaseDocs.map((x) => {
         let obj = {
           name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
+          path: `${this.Asseturl}/${result.carrierID}/${x}`,
+        };
         this.pDocs.push(obj);
-      })
+      });
     }
     if (result.loanDocs != undefined && result.loanDocs.length > 0) {
       result.loanDocs.map((x) => {
         let obj = {
           name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
+          path: `${this.Asseturl}/${result.carrierID}/${x}`,
+        };
         this.lDocs.push(obj);
-      })
+      });
     }
 
     if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
       result.uploadedDocs.map((x) => {
         let obj = {
           name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`
-        }
+          path: `${this.Asseturl}/${result.carrierID}/${x}`,
+        };
         this.documentSlides.push(obj);
-      })
+      });
       // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
     }
     this.timeCreated = result.timeCreated;
 
-    $('#hardBreakingParametersValue').html(
-      this.settings.hardBreakingParams
-    );
-    $('#hardAccelrationParametersValue').html(
+    $("#hardBreakingParametersValue").html(this.settings.hardBreakingParams);
+    $("#hardAccelrationParametersValue").html(
       this.settings.hardAccelrationParams
     );
-    $('#turningParametersValue').html(
-      this.settings.turningParams
-    );
+    $("#turningParametersValue").html(this.settings.turningParams);
     // });
-
   }
   async onUpdateVehicle() {
     this.hasError = false;
     this.hasSuccess = false;
-    this.Error = '';
+    this.Error = "";
     this.submitDisabled = true;
     this.hideErrors();
     const data = {
@@ -1120,7 +1175,7 @@ export class AddVehicleComponent implements OnInit {
         remiderEvery: this.insurance.remiderEvery,
         policyNumber: this.insurance.policyNumber,
         amount: this.insurance.amount,
-        amountCurrency: this.insurance.amountCurrency
+        amountCurrency: this.insurance.amountCurrency,
       },
       fluid: {
         fuelType: this.fluid.fuelType,
@@ -1132,7 +1187,7 @@ export class AddVehicleComponent implements OnInit {
         oilCapacity: this.fluid.oilCapacity,
         oilCapacityType: this.fluid.oilCapacityType,
         def: this.fluid.def,
-        defType: this.fluid.defType
+        defType: this.fluid.defType,
       },
       wheelsAndTyres: {
         numberOfTyres: this.wheelsAndTyres.numberOfTyres,
@@ -1174,14 +1229,15 @@ export class AddVehicleComponent implements OnInit {
       purchase: {
         purchaseVendorID: this.purchase.purchaseVendorID,
         warrantyExpirationDate: this.purchase.warrantyExpirationDate,
-        warrantyExpirationDateReminder: this.purchase.warrantyExpirationDateReminder,
+        warrantyExpirationDateReminder:
+          this.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.purchase.purchasePrice,
         purchasePriceCurrency: this.purchase.purchasePriceCurrency,
         warrantyExpirationMeter: this.purchase.warrantyExpirationMeter,
         purchaseDate: this.purchase.purchaseDate,
         purchaseComments: this.purchase.purchaseComments,
         purchaseOdometer: this.purchase.purchaseOdometer,
-        gstInc: this.purchase.gstInc
+        gstInc: this.purchase.gstInc,
       },
       loan: {
         loanVendorID: this.loan.loanVendorID,
@@ -1216,72 +1272,70 @@ export class AddVehicleComponent implements OnInit {
       uploadedDocs: this.existingDocs,
       purchaseDocs: this.existPDocs,
       loanDocs: this.existLDocs,
-      activeTab: this.activeTab
+      activeTab: this.activeTab,
     };
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
 
     //append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
     // append purchase docs if any
     for (let j = 0; j < this.purchaseDocs.length; j++) {
-      formData.append('purchaseDocs', this.purchaseDocs[j]);
+      formData.append("purchaseDocs", this.purchaseDocs[j]);
     }
 
     // append loan docs if any
     for (let j = 0; j < this.loanDocs.length; j++) {
-      formData.append('loanDocs', this.loanDocs[j]);
+      formData.append("loanDocs", this.loanDocs[j]);
     }
 
     //append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
 
     try {
       return await new Promise((resolve, reject) => {
-        this.apiService.putData('vehicles', formData, true).
-          subscribe({
-            complete: () => { },
-            error: (err: any) => {
-              from(err.error)
-                .pipe(
-                  map((val: any) => {
-                    //val.message = val.message.replace(/".*"/, 'This Field');
-                    this.errors[val.context.label] = val.message;
-                  })
-                )
-                .subscribe({
-                  complete: () => {
-                    this.throwErrors();
-                    if (err) return reject(err);
-                    this.submitDisabled = false;
-                  },
-                  error: () => {
-                    this.submitDisabled = false;
-                  },
-                  next: () => { },
-                });
-            },
-            next: (res) => {
-              this.submitDisabled = false;
-              this.response = res;
-              this.Success = '';
-              this.toastr.success('Vehicle Updated successfully');
-              this.cancel();
-            }
-          })
+        this.apiService.putData("vehicles", formData, true).subscribe({
+          complete: () => {},
+          error: (err: any) => {
+            from(err.error)
+              .pipe(
+                map((val: any) => {
+                  //val.message = val.message.replace(/".*"/, 'This Field');
+                  this.errors[val.context.label] = val.message;
+                })
+              )
+              .subscribe({
+                complete: () => {
+                  this.throwErrors();
+                  if (err) return reject(err);
+                  this.submitDisabled = false;
+                },
+                error: () => {
+                  this.submitDisabled = false;
+                },
+                next: () => {},
+              });
+          },
+          next: (res) => {
+            this.submitDisabled = false;
+            this.response = res;
+            this.Success = "";
+            this.toastr.success("Vehicle Updated successfully");
+            this.cancel();
+          },
+        });
       });
     } catch (error) {
       this.submitDisabled = false;
     }
-
   }
   onChangePrimaryMeter(value: any) {
     this.settings.primaryMeter = value;
@@ -1297,22 +1351,22 @@ export class AddVehicleComponent implements OnInit {
 
   onChangeHardBreakingParameters(value: any) {
     this.settings.hardBreakingParams = value;
-    $('#hardBreakingParametersValue').html(value);
+    $("#hardBreakingParametersValue").html(value);
   }
 
   onChangeAccelrationParameters(value: any) {
     this.settings.hardAccelrationParams = value;
-    $('#hardAccelrationParametersValue').html(value);
+    $("#hardAccelrationParametersValue").html(value);
   }
 
   onChangeturningParameters(value: any) {
     this.settings.turningParams = value;
-    $('#turningParametersValue').html(value);
+    $("#turningParametersValue").html(value);
   }
 
   quantumModal() {
     $(document).ready(function () {
-      $('#quantumModal').modal('show');
+      $("#quantumModal").modal("show");
     });
   }
 
@@ -1322,20 +1376,25 @@ export class AddVehicleComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
+    this.apiService.getData("vehicles").subscribe((result: any) => {
+      // this.vehicles = result.Items;
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.vehicles.push(element);
+        }
+      });
     });
   }
   // GROUP MODAL
   addGroup() {
     this.groupSubmitDisabled = true;
-    this.apiService.postData('groups', this.groupData).subscribe({
-      complete: () => { },
+    this.apiService.postData("groups", this.groupData).subscribe({
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
           )
@@ -1347,7 +1406,7 @@ export class AddVehicleComponent implements OnInit {
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1355,8 +1414,8 @@ export class AddVehicleComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
-        this.toastr.success('Group added successfully');
-        $('#addGroupModal').modal('hide');
+        this.toastr.success("Group added successfully");
+        $("#addGroupModal").modal("hide");
         this.fetchGroups();
       },
     });
@@ -1364,7 +1423,7 @@ export class AddVehicleComponent implements OnInit {
 
   openImageModal(slide) {
     this.modalImage = slide;
-    $('#imageModal').modal('show');
+    $("#imageModal").modal("show");
   }
 
   deleteUploadedImage(index) {
@@ -1378,75 +1437,85 @@ export class AddVehicleComponent implements OnInit {
   }
 
   driverChange(driverType) {
-    if (driverType == 'main' && this.driverID != null && this.driverID == this.teamDriverID) {
-      alert('Both drivers cant be same.');
+    if (
+      driverType == "main" &&
+      this.driverID != null &&
+      this.driverID == this.teamDriverID
+    ) {
+      alert("Both drivers cant be same.");
       this.driverID = null;
-      $('#main_driver').val(null);
-    } else if (driverType == 'team' && this.teamDriverID != null && this.driverID == this.teamDriverID) {
-      alert('Both drivers cant be same.');
+      $("#main_driver").val(null);
+    } else if (
+      driverType == "team" &&
+      this.teamDriverID != null &&
+      this.driverID == this.teamDriverID
+    ) {
+      alert("Both drivers cant be same.");
       this.teamDriverID = null;
-      $('#team_driver').val(null);
+      $("#team_driver").val(null);
     }
   }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
-    this.pdfSrc = '';
-    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    this.pdfSrc = "";
+    if (ext == "doc" || ext == "docx" || ext == "xlsx") {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        "https://docs.google.com/viewer?url=" + val + "&embedded=true"
+      );
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
   }
 
   deleteDocument(value: any, name: string, index: number) {
-    this.apiService.deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`).subscribe((result: any) => {
-      if (value == 'doc') {
-        this.documentSlides = [];
-        this.uploadedDocs = result.Attributes.uploadedDocs;
-        this.existingDocs = result.Attributes.uploadedDocs;
-        result.Attributes.uploadedDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.documentSlides.push(obj);
-        })
-      } else if (value == 'loan') {
-        this.lDocs = [];
-        this.uploadedDocs = result.Attributes.loanDocs;
-        this.existingDocs = result.Attributes.loanDocs;
-        result.Attributes.loanDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.lDocs.push(obj);
-        })
-      } else {
-        this.pDocs = [];
-        this.uploadedDocs = result.Attributes.purchaseDocs;
-        this.existingDocs = result.Attributes.purchaseDocs;
-        result.Attributes.purchaseDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.pDocs.push(obj);
-        })
-      }
-
-
-    });
+    this.apiService
+      .deleteData(`vehicles/uploadDelete/${this.vehicleID}/${value}/${name}`)
+      .subscribe((result: any) => {
+        if (value == "doc") {
+          this.documentSlides = [];
+          this.uploadedDocs = result.Attributes.uploadedDocs;
+          this.existingDocs = result.Attributes.uploadedDocs;
+          result.Attributes.uploadedDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.documentSlides.push(obj);
+          });
+        } else if (value == "loan") {
+          this.lDocs = [];
+          this.uploadedDocs = result.Attributes.loanDocs;
+          this.existingDocs = result.Attributes.loanDocs;
+          result.Attributes.loanDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.lDocs.push(obj);
+          });
+        } else {
+          this.pDocs = [];
+          this.uploadedDocs = result.Attributes.purchaseDocs;
+          this.existingDocs = result.Attributes.purchaseDocs;
+          result.Attributes.purchaseDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.pDocs.push(obj);
+          });
+        }
+      });
   }
 
   clearGroup() {
     this.groupData = {
-      groupType: 'vehicles',
-      groupName: '',
+      groupType: "vehicles",
+      groupName: "",
       groupMembers: [],
-      description: '',
+      description: "",
     };
   }
   refreshDriverData() {
@@ -1460,7 +1529,7 @@ export class AddVehicleComponent implements OnInit {
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
-    localStorage.setItem('isOpen', 'true');
+    localStorage.setItem("isOpen", "true");
     this.listService.changeButton(false);
   }
 
@@ -1471,5 +1540,4 @@ export class AddVehicleComponent implements OnInit {
   refreshOpData() {
     this.listService.fetchOwnerOperators();
   }
-
 }
