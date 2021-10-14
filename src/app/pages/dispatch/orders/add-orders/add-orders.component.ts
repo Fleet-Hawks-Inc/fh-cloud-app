@@ -1389,7 +1389,8 @@ export class AddOrdersComponent implements OnInit {
       let result = await this.validatePOs('')
       if (result.status) {
         $('#confirmErr').show();
-        $('#confirmErr').text(result.msg)
+        $('#confirmErr').text(result.msg);
+        this.submitDisabled = false;
         return
       }
     }
@@ -2362,9 +2363,10 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  updateOrder() {
+  async updateOrder() {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
+    this.submitDisabled = true;
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2415,10 +2417,6 @@ export class AddOrdersComponent implements OnInit {
         });
       });
     }
-    this.orderData["loc"] = selectedLoc;
-    this.orderData.cusPOs = this.cusPOs;
-    console.log('this', this.orderData.cusPOs)
-
 
     if (!flag) {
       this.toastr.error(
@@ -2427,6 +2425,19 @@ export class AddOrdersComponent implements OnInit {
       return false;
     }
 
+    if (this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
+      let result = await this.validatePOs('')
+      if (result.status) {
+        $('#confirmErr').show();
+        $('#confirmErr').text(result.msg);
+        this.submitDisabled = false;
+        return
+      }
+    }
+
+    this.orderData["loc"] = selectedLoc;
+    this.orderData.cusPOs = this.cusPOs;
+
     // create form data instance
     const formData = new FormData();
 
@@ -2434,7 +2445,7 @@ export class AddOrdersComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
-    this.submitDisabled = true;
+
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
