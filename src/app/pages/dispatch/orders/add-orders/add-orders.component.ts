@@ -299,7 +299,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -311,7 +311,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -1384,6 +1384,16 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+
+    if (this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
+      let result = await this.validatePOs('')
+      if (result.status) {
+        $('#confirmErr').show();
+        $('#confirmErr').text(result.msg)
+        return
+      }
+    }
+
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
       const element = this.orderData.shippersReceiversInfo[i];
       for (let j = 0; j < element.shippers.length; j++) {
@@ -1550,17 +1560,17 @@ export class AddOrdersComponent implements OnInit {
       (parseFloat(this.freightFee) || 0) +
       (parseFloat(this.fuelSurcharge) || 0);
 
-    this.subTotal = sum;
+    this.subTotal = sum.toFixed(2);
 
-    let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
-    let discountUnit = this.orderData.discount["unit"];
-    if (discountUnit === "percentage") {
-      this.discount = (this.subTotal * discountAmount) / 100;
-    } else {
-      this.discount = discountAmount;
-    }
+    // let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
+    // let discountUnit = this.orderData.discount["unit"];
+    // if (discountUnit === "percentage") {
+    //   this.discount = (this.subTotal * discountAmount) / 100;
+    // } else {
+    //   this.discount = discountAmount;
+    // }
 
-    this.totalAmount = this.subTotal.toFixed(0);
+    this.totalAmount = this.subTotal;
 
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
@@ -1597,10 +1607,16 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
       this.shippersReceivers[parentIndex].shippers.update = false;
       this.shippersReceivers[parentIndex].shippers.save = true;
+      if (this.finalShippersReceivers[parentIndex].shippers.length === 0) {
+        this.shippersReceivers[parentIndex].shippers.isShow = true
+      }
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
       this.shippersReceivers[parentIndex].receivers.update = false;
       this.shippersReceivers[parentIndex].receivers.save = true;
+      if (this.finalShippersReceivers[parentIndex].receivers.length === 0) {
+        this.shippersReceivers[parentIndex].receivers.isShow = true
+      }
     }
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
@@ -3071,14 +3087,17 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async validatePOs(i: any = '') {
-    let pos = []
-    if (i != '') {
+    let pos = [];
+    console.log('i', i);
+    if (i !== '') {
+      console.log('if');
       this.shippersReceivers[i].shippers.pickupPoint.forEach(element => {
         element.customerPO.forEach(po => {
           pos.push(po);
         });
       });
     } else {
+      console.log('else');
       pos = this.orderData.cusPOs
     }
 

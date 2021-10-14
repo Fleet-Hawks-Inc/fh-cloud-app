@@ -256,7 +256,7 @@
                       </div>
 
                       <div
-                        class="col-lg-12 mt-2 pr-4"
+                        class="col-lg-12 mt-2 pr-3"
                         *ngIf="
                           customerSelected?.length > 0 && !notOfficeAddress
                         "
@@ -4063,6 +4063,7 @@
                             <p class="text-right">
                               <span>{{
                                 orderData.charges.freightFee.amount
+                                  | number: "1.2-2"
                               }}</span>
                             </p>
                           </div>
@@ -4150,7 +4151,10 @@
                           <div class="col-lg-3">
                             <p class="text-right">
                               <span
-                                >{{ orderData.charges.fuelSurcharge.amount }}
+                                >{{
+                                  orderData.charges.fuelSurcharge.amount
+                                    | number: "1.2-2"
+                                }}
                               </span>
                             </p>
                           </div>
@@ -4250,7 +4254,7 @@
                           </div>
                           <div class="col-lg-2">
                             <p class="text-right">
-                              <span>{{ item.amount }} </span>
+                              <span>{{ item.amount | number: "1.2-2" }} </span>
                             </p>
                           </div>
                         </div>
@@ -4356,7 +4360,7 @@
 
                           <div class="col-lg-2">
                             <p class="text-right">
-                              <span>{{ item.amount }} </span>
+                              <span>{{ item.amount | number: "1.2-2" }} </span>
                             </p>
                           </div>
                         </div>

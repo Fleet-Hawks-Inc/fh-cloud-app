@@ -72,6 +72,9 @@
               <div>
                 <h4 class="m-0 font-weight-bold">
                   {{ orderMode }} - ORD{{ orderNumber }}
+                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">
+                    {{ orderStatus }}</span
+                  >
                 </h4>
               </div>
               <div class="pull-right" *ngIf="tripData">
@@ -1108,28 +1111,38 @@
                             <p class="mb-0 text-dark">
                               Freight Fee
                               <span class="pull-right"
-                                >{{ charges.freightFee.amount }}
+                                >{{
+                                  charges.freightFee.amount | number: "1.2-2"
+                                }}
                                 {{ charges.freightFee.currency }}</span
                               >
                             </p>
                             <p class="mb-0 text-dark">
                               Fuel Surcharge
                               <span class="pull-right"
-                                >{{ charges.fuelSurcharge.amount }}
+                                >{{
+                                  charges.fuelSurcharge.amount | number: "1.2-2"
+                                }}
                                 {{ charges.freightFee.currency }}</span
                               >
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Amount
                               <span class="pull-right"
-                                >{{ charges.accessorialFeeInfo.total }}
+                                >{{
+                                  charges.accessorialFeeInfo.total
+                                    | number: "1.2-2"
+                                }}
                                 {{ charges.freightFee.currency }}</span
                               >
                             </p>
                             <p class="mb-0 text-dark">
                               Accessorial Deduction Amount
                               <span class="pull-right"
-                                >{{ charges.accessorialDeductionInfo.total }}
+                                >{{
+                                  charges.accessorialDeductionInfo.total
+                                    | number: "1.2-2"
+                                }}
                                 {{ charges.freightFee.currency }}</span
                               >
                             </p>
@@ -1153,7 +1166,7 @@
                             <p class="mb-0 text-dark bordtopdas">
                               <strong>Total Charges</strong>
                               <span class="pull-right"
-                                >{{ totalCharges }}
+                                >{{ totalCharges | number: "1.2-2" }}
                                 {{ charges.freightFee.currency }}</span
                               >
                             </p>
@@ -1161,13 +1174,13 @@
                               <strong>Advance Received</strong>
                               <span class="pull-right">${{advances}}</span>
                             </p> -->
-                            <p class="mb-0 text-dark bordtopdas">
+                            <!-- <p class="mb-0 text-dark bordtopdas">
                               <strong>Balance</strong>
                               <span class="pull-right"
                                 >{{ balance }}
                                 {{ charges.freightFee.currency }}</span
                               >
-                            </p>
+                            </p> -->
                           </div>
                         </div>
                       </div>
@@ -1903,7 +1916,7 @@
                               <tr style="font-size: 12px">
                                 <td colspan="6">FEE METHOD</td>
 
-                                <td style="width: 100px" align="right">
+                                <td style="width: 150px" align="right">
                                   TOTAL
                                 </td>
                               </tr>
@@ -2233,7 +2246,7 @@
       <!-- <button (click)="emailInv()" class="btn btn-success">Email Invoice</button> -->
       <button class="btn btn-success" (click)="generate()">Print</button>
       <button
-        *ngIf="!isInvoiced"
+        *ngIf="!isInvoiced && orderStatus != 'created'"
         [disabled]="generateBtnDisabled"
         (click)="generatePDF()"
         class="btn btn-success"
