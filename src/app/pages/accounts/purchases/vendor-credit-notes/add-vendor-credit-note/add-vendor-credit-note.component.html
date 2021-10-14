@@ -32,50 +32,9 @@
                               text-lg-right
                               pt-2
                             "
-                            >Currency</label
-                          >
-
-                          <select
-                            data-plugin-selectTwo
-                            class="form-control populate"
-                          >
-                            <optgroup label="">
-                              <option value="2">CAD</option>
-                              <option value="2">USD</option>
-                            </optgroup>
-                          </select>
-                        </div>
-
-                        <div class="col-lg-5">
-                          <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
                             >Purchase Order#</label
                           >
                           <input type="text" class="form-control" />
-                        </div>
-                      </div>
-                      <div class="row pt-2">
-                        <div class="col-lg-5">
-                          <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Vendor Credit#</label
-                          >
-                          <input
-                            type="text"
-                            data-plugin-datepicker=""
-                            class="form-control"
-                            placeholder="mm/dd/yyyy"
-                          />
                         </div>
                         <div class="col-lg-5">
                           <label
@@ -94,6 +53,46 @@
                             placeholder="mm/dd/yyyy"
                           />
                         </div>
+                      </div>
+                      <div class="row pt-2">
+                        <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Currency</label
+                          >
+
+                          <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                          >
+                            <optgroup label="">
+                              <option value="2">CAD</option>
+                              <option value="2">USD</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                        <!-- <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Vendor Credit#</label
+                          >
+                          <input
+                            type="text"
+                            data-plugin-datepicker=""
+                            class="form-control"
+                            placeholder="mm/dd/yyyy"
+                          />
+                        </div> -->
                       </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
@@ -127,17 +126,19 @@
                             "
                             >Vendor</label
                           >
-                          <select
-                            data-plugin-selectTwo
-                            class="form-control populate"
+                          <ng-select
+                            [(ngModel)]="creditData.vendorID"
+                            name="vendorID"
+                            placeholder="Select Vendor"
+                            #vendorID="ngModel"
+                            required
                           >
-                            <optgroup label="Select Vendor">
-                              <option value="1">Vendor 1</option>
-                              <option value="2">Vendor 2</option>
-                              <option value="2">Vendor 3</option>
-                              <option value="2">Vendor 4</option>
-                            </optgroup>
-                          </select>
+                            <ng-option
+                              value="{{ data.contactID }}"
+                              *ngFor="let data of vendors | async"
+                              >{{ data.companyName }}
+                            </ng-option>
+                          </ng-select>
                         </div>
                         <div class="col-lg-2 mar-top-37">
                           <a
@@ -167,65 +168,187 @@
                               <th>Rate</th>
                               <th>Amount</th>
                               <th>Account</th>
+                              <th width="5%">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
+                            <tr
+                              *ngFor="
+                                let dt of creditData.crDetails;
+                                let d = index
+                              "
+                            >
                               <td>
-                                <input type="text" class="form-control" />
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  placeholder="Enter commodity/service"
+                                  [(ngModel)]="dt.commodity"
+                                  name="commodity{{ d }}"
+                                />
                               </td>
 
                               <td>
                                 <div class="row">
                                   <div class="col-lg-6">
-                                    <input type="text" class="form-control" />
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Enter commodity/service"
+                                      [(ngModel)]="dt.qty"
+                                      name="qty{{ d }}"
+                                    />
                                   </div>
                                   <div class="col-lg-6">
-                                    <select
-                                      data-plugin-selectTwo
+                                    <ng-select
                                       class="form-control populate"
+                                      placeholder="Select account"
+                                      [(ngModel)]="dt.qtyUnit"
+                                      name="qtyUnit{{ d }}"
                                     >
-                                      <optgroup label="">
-                                        <option value="2">Select</option>
-                                        <option value="2">Bag</option>
-                                        <option value="2">Bale</option>
-                                        <option value="2">Barrel</option>
-                                        <option value="2">Basket</option>
-                                        <option value="2">Bin</option>
-                                        <option value="2">Box</option>
-                                        <option value="2">Bucket</option>
-                                        <option value="2">Can</option>
-                                        <option value="2">Crate</option>
-                                        <option value="2">Bin</option>
-                                      </optgroup>
-                                    </select>
+                                      <ng-option
+                                        value="Bag"
+                                        data-select2-id="21"
+                                        >Bag</ng-option
+                                      >
+                                      <ng-option
+                                        value="Bale"
+                                        data-select2-id="285"
+                                        >Bale
+                                      </ng-option>
+                                      <ng-option
+                                        value="Barrel"
+                                        data-select2-id="286"
+                                        >Barrel
+                                      </ng-option>
+                                      <ng-option
+                                        value="Basket"
+                                        data-select2-id="287"
+                                        >Basket
+                                      </ng-option>
+                                      <ng-option
+                                        value="Bin"
+                                        data-select2-id="288"
+                                        >Bin
+                                      </ng-option>
+                                      <ng-option
+                                        value="Box"
+                                        data-select2-id="289"
+                                        >Box
+                                      </ng-option>
+                                      <ng-option
+                                        value="Bucket"
+                                        data-select2-id="290"
+                                        >Bucket
+                                      </ng-option>
+                                      <ng-option
+                                        value="Can"
+                                        data-select2-id="291"
+                                        >Can
+                                      </ng-option>
+                                      <ng-option
+                                        value="Crate"
+                                        data-select2-id="292"
+                                        >Crate
+                                      </ng-option>
+                                      <ng-option
+                                        value="Cases"
+                                        data-select2-id="293"
+                                        >Cases
+                                      </ng-option>
+                                      <ng-option
+                                        value="Pallets"
+                                        data-select2-id="294"
+                                        >Pallets
+                                      </ng-option>
+                                      <ng-option
+                                        value="Package"
+                                        data-select2-id="295"
+                                        >Package
+                                      </ng-option>
+                                    </ng-select>
                                   </div>
                                 </div>
                               </td>
                               <td>
                                 <div class="row">
                                   <div class="col-lg-6">
-                                    <input type="text" class="form-control" />
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Enter rate"
+                                      [(ngModel)]="dt.rate"
+                                      name="rate{{ d }}"
+                                    />
                                   </div>
                                   <div class="col-lg-6">
-                                    <select
-                                      data-plugin-selectTwo
+                                    <ng-select
                                       class="form-control populate"
+                                      placeholder="Select account"
+                                      [(ngModel)]="dt.rateUnit"
+                                      name="rateUnit{{ d }}"
                                     >
-                                      <optgroup label="">
-                                        <option value="2">Select</option>
-                                        <option value="2">Bag</option>
-                                        <option value="2">Bale</option>
-                                        <option value="2">Barrel</option>
-                                        <option value="2">Basket</option>
-                                        <option value="2">Bin</option>
-                                        <option value="2">Box</option>
-                                        <option value="2">Bucket</option>
-                                        <option value="2">Can</option>
-                                        <option value="2">Crate</option>
-                                        <option value="2">Bin</option>
-                                      </optgroup>
-                                    </select>
+                                      <ng-option
+                                        value="Bag"
+                                        data-select2-id="21"
+                                        >Bag</ng-option
+                                      >
+                                      <ng-option
+                                        value="Bale"
+                                        data-select2-id="285"
+                                        >Bale
+                                      </ng-option>
+                                      <ng-option
+                                        value="Barrel"
+                                        data-select2-id="286"
+                                        >Barrel
+                                      </ng-option>
+                                      <ng-option
+                                        value="Basket"
+                                        data-select2-id="287"
+                                        >Basket
+                                      </ng-option>
+                                      <ng-option
+                                        value="Bin"
+                                        data-select2-id="288"
+                                        >Bin
+                                      </ng-option>
+                                      <ng-option
+                                        value="Box"
+                                        data-select2-id="289"
+                                        >Box
+                                      </ng-option>
+                                      <ng-option
+                                        value="Bucket"
+                                        data-select2-id="290"
+                                        >Bucket
+                                      </ng-option>
+                                      <ng-option
+                                        value="Can"
+                                        data-select2-id="291"
+                                        >Can
+                                      </ng-option>
+                                      <ng-option
+                                        value="Crate"
+                                        data-select2-id="292"
+                                        >Crate
+                                      </ng-option>
+                                      <ng-option
+                                        value="Cases"
+                                        data-select2-id="293"
+                                        >Cases
+                                      </ng-option>
+                                      <ng-option
+                                        value="Pallets"
+                                        data-select2-id="294"
+                                        >Pallets
+                                      </ng-option>
+                                      <ng-option
+                                        value="Package"
+                                        data-select2-id="295"
+                                        >Package
+                                      </ng-option>
+                                    </ng-select>
                                   </div>
                                 </div>
                               </td>
@@ -237,83 +360,42 @@
                                 </div>
                               </td>
                               <td>
-                                <select
-                                  data-plugin-selectTwo
+                                <ng-select
                                   class="form-control populate"
+                                  placeholder="Select account"
+                                  [(ngModel)]="dt.accountID"
+                                  name="accountID{{ d }}"
                                 >
-                                  <optgroup label="">
-                                    <option value="2">Account 1</option>
-                                    <option value="2">Account 2</option>
-                                    <option value="2">Account 3</option>
-                                    <option value="2">Account 4</option>
-                                  </optgroup>
-                                </select>
-                                <!-- <select data-plugin-selectTwo class="form-control populate">
-                                  <optgroup label="Other Current Asset">
-                                    <option value="2">Advance Tax</option>
-                                    <option value="2">Employee Advance</option>
-                                    <option value="2">Prepaid Expenses</option>
-                                    <option value="2">TDS Receivable</option>
-                                  </optgroup>
-                                  <optgroup label="Fixed Asset">
-                                    <option value="2">Furniture & Equipment</option>
-                                  </optgroup>
-                                  <optgroup label="Other Current Liability">
-                                    <option value="2">Employee Reimbursements</option>
-                                    <option value="2">Opening Balance Adjustments</option>
-                                    <option value="2">Tax Payable</option>
-                                    <option value="2">TDS Payable</option>
-                                    <option value="2">Unearned Revenue</option>
-                                  </optgroup>
-                                  <optgroup label="Expense">
-                                    <option value="2">Adverising & Marketing</option>
-                                    <option value="2">Automobile Expense</option>
-                                    <option value="2">Bad Debt</option>
-                                    <option value="2">Bank Fees & Charges</option>
-                                    <option value="2">Contract Assets</option>
-                                    <option value="2">Credit Card Charges</option>
-                                    <option value="2">Depreciation & Amortisation</option>
-                                    <option value="2">Depereciation Expense</option>
-                                    <option value="2">fuel/Mileage Expense</option>
-                                    <option value="2">IT & Internet Expense</option>
-                                    <option value="2">Janitorial Expense</option>
-                                    <option value="2">Lodging</option>
-                                    <option value="2">Meals & Entertainment</option>
-                                    <option value="2">Merchandise</option>
-                                    <option value="2">Office Supplies</option>
-                                    <option value="2">Other Expenses</option>
-                                    <option value="2">Postage</option>
-                                    <option value="2">Printing & Stationery</option>
-                                    <option value="2">Rent Expense</option>
-                                    <option value="2">Employee Salaries</option>
-                                    <option value="2">Telephone Expense</option>
-                                    <option value="2">Transportation Expense</option>
-                                    <option value="2">Travel Expense</option>
-                                  </optgroup>
-                                  <optgroup label="Cost of Goods Sold">
-                                    <option value="2">Cost of Goods Sold</option>
-                                    <option value="2">Job Costing</option>
-                                    <option value="2">Material</option>
-                                    <option value="2">Labour</option>
-                                  </optgroup>
-                                  <optgroup label="Stock">
-                                    <option value="2">Inventory Asset</option>
-                                  </optgroup>
-                                </select> -->
+                                  <ng-option
+                                    *ngFor="let act of accounts"
+                                    value="{{ act.actID }}"
+                                    >{{ act.actNo }} -
+                                    {{ act.actName | titlecase }}</ng-option
+                                  >
+                                </ng-select>
+                              </td>
+                              <td class="text-center">
+                                <button type="button" (click)="deleteDetail(d)">
+                                  <i class="fas fa-trash"></i>
+                                </button>
                               </td>
                             </tr>
                           </tbody>
                         </table>
                       </div>
-                      <a class="btn btn-success btn-sm" href="#"
-                        ><i class="fas fa-plus"></i> Add Another Line</a
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm"
+                        (click)="addDetails()"
                       >
+                        <i class="fas fa-plus"></i> Add Another Line
+                      </button>
                       <div class="row mt-3">
                         <div class="col-lg-8">
-                          <h4 class="mt-0 text-dark font-weight-bold text-4">
+                          <!-- <h4 class="mt-0 text-dark font-weight-bold text-4">
                             Charges
-                          </h4>
-                          <div class="row mt-3">
+                          </h4> -->
+                          <!-- <div class="row mt-3">
                             <div class="col-lg-2 labelalign">
                               <label
                                 class="
@@ -447,226 +529,7 @@
                           <button type="button" class="btn btn-success btn-sm">
                             <i class="fas fa-plus"></i> Add Accessorial
                             Deduction
-                          </button>
-                          <!-- <div class="row">
-                            <div class="col-lg-8">
-                              <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Tax 1</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="GST"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pr-0 pl-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="13"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Tax 2</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="PST"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pr-0 pl-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="5"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Tax 3</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="HST"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pr-0 pl-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="0"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                              <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Discount</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="0"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-4">
-                              <div class="row mt-3">
-                                <div class="col-lg-9 bordtop pt-1">
-                                  <h5
-                                    class="
-                                      text-right
-                                      font-weight-semibold
-                                      text-4 text-dark
-                                    "
-                                  >
-                                    Sub Total
-                                  </h5>
-                                </div>
-                                <div class="col-lg-3 bordtop pt-1">
-                                  <p class="text-right">0.00</p>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-9 pt-1 bordtop text-right">
-                                  <h5
-                                    class="
-                                      text-right
-                                      font-weight-semibold
-                                      text-4 text-dark
-                                    "
-                                  >
-                                    Discount
-                                  </h5>
-                                </div>
-                                <div class="col-lg-3 bordtop pt-1">
-                                  <p class="text-right">0.00</p>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-9 bordtop pt-1">
-                                  <h5
-                                    class="
-                                      text-right
-                                      font-weight-semibold
-                                      text-4 text-dark
-                                    "
-                                  >
-                                    Taxes
-                                  </h5>
-                                </div>
-                                <div class="col-lg-3 bordtop pt-1">
-                                  <p class="text-right">0.00</p>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-lg-9 bordtop pt-1">
-                                  <h5
-                                    class="
-                                      text-right
-                                      font-weight-semibold
-                                      text-4 text-dark
-                                    "
-                                  >
-                                    Total Amount
-                                  </h5>
-                                </div>
-                                <div class="col-lg-3 bordtop pt-1">
-                                  <p class="text-right">0.00</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div> -->
+                          </button> -->
                         </div>
                         <div class="col-lg-4">
                           <div class="col-lg-12">
