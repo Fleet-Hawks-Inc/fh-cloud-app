@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
+import { ListService } from "src/app/services";
 
 @Component({
   selector: "app-add-purchase-order",
@@ -45,39 +46,58 @@ export class AddPurchaseOrderComponent implements OnInit {
         {
           name: "GST",
           tax: 0,
-          type: null,
+          type: "prcnt",
+          amount: 0,
         },
         {
           name: "PST",
           tax: 0,
-          type: null,
+          type: "prcnt",
+          amount: 0,
         },
         {
           name: "HST",
           tax: 0,
-          type: null,
+          type: "prcnt",
+          amount: 0,
         },
       ],
-      discount: {
-        type: null,
-        val: "",
-      },
     },
     total: {
       feeTotal: 0,
       dedTotal: 0,
       subTotal: 0,
-      discount: 0,
       taxes: 0,
       finalTotal: 0,
     },
   };
   quantityTypes = [];
+  vendors = [];
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private listService: ListService
+  ) {}
 
   ngOnInit() {
+    this.listService.fetchVendors();
     this.fetchPayPeriods();
+
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
+  }
+
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    });
   }
 
   fetchPayPeriods() {
@@ -86,5 +106,48 @@ export class AddPurchaseOrderComponent implements OnInit {
       .subscribe((data: any) => {
         this.quantityTypes = data;
       });
+  }
+
+  addDetail() {
+    let obj = {
+      comm: "",
+      qty: "",
+      qtyTyp: null,
+      rate: "",
+      rateTyp: null,
+      amount: 0,
+    };
+
+    this.orderData.dtail.push(obj);
+  }
+
+  delDetail(index) {
+    if (this.orderData.dtail.length > 1) {
+      this.orderData.dtail.splice(index, 1);
+    }
+  }
+
+  addAccessorialArr(type) {
+    let obj = {
+      name: "",
+      amount: 0,
+    };
+    if (type === "fee") {
+      this.orderData.charges.accFee.push(obj);
+    } else if (type === "ded") {
+      this.orderData.charges.accDed.push(obj);
+    }
+  }
+
+  dedAccessorialArr(type, index) {
+    if (type === "fee") {
+      this.orderData.charges.accFee.splice(index, 1);
+    } else if (type === "ded") {
+      this.orderData.charges.accDed.splice(index, 1);
+    }
+  }
+
+  addRecord() {
+    console.log("orderData-=-===-=-", this.orderData);
   }
 }

@@ -23,24 +23,6 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-5 mb-3">
                     <div class="row">
-                      <!-- <div class="col-lg-10">
-                      <label
-                        class="
-                          control-label
-                          font-weight-bold font-bold
-                          text-lg-right
-                          pt-2
-                        "
-                        >Purchase Order#</label
-                      >
-                      <input
-                        type="text"
-                        name="orderNo"
-                        [(ngModel)]="orderData.orderNo"
-                        class="form-control"
-                        placeholder="Enter Purchase Order#"
-                      />
-                    </div> -->
                       <div class="col-lg-10">
                         <label
                           class="control-label
@@ -71,16 +53,13 @@
                           font-weight-bold font-bold
                           text-lg-right
                           pt-2">Vendor</label>
-                        <select
-                          data-plugin-selectTwo
-                          class="form-control populate">
-                          <optgroup label="Select Vendor">
-                            <option value="1">Vendor 1</option>
-                            <option value="2">Vendor 2</option>
-                            <option value="2">Vendor 3</option>
-                            <option value="2">Vendor 4</option>
-                          </optgroup>
-                        </select>
+                        <ng-select
+                          [(ngModel)]="orderData.vendorID"
+                          name="vendorID"
+                          placeholder="Select Vendor">
+                          <ng-option value="{{ data.contactID }}" *ngFor="let
+                            data of vendors">{{ data.companyName }}</ng-option>
+                        </ng-select>
                       </div>
                       <div class="col-lg-2 mar-top-37">
                         <a
@@ -151,7 +130,7 @@
                             <th>Quantity</th>
                             <th>Rate</th>
                             <th>Amount</th>
-                            <!-- <th>Account</th> -->
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -225,12 +204,18 @@
                                 placeholder="Enter amount"
                                 />
                             </td>
+                            <td>
+                              <a href="javascript:;" (click)="delDetail(idt)">
+                                <i class="fa fa-trash"></i>
+                              </a>
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <a class="btn btn-success btn-sm" href="#"><i class="fas
-                        fa-plus"></i> Add Another Line</a>
+                    <button type="button" class="btn btn-success btn-sm"
+                      (click)="addDetail();"><i class="fas
+                        fa-plus"></i> Add Another Line</button>
                   </div>
                 </div>
               </div>
@@ -261,16 +246,27 @@
                         <h4 class="mt-0 text-dark font-weight-bold text-4">
                           Charges
                         </h4>
-                        <div
-                          class="row mt-3"
-                          *ngFor="let accAdd of orderData.charges.accFee;
-                          let aId= index">
-                          <div class="col-lg-12">
+                        <div class="row mt-3">
+                          <div class="col-lg-6">
                             <label
                               class="control-label
                               font-weight-semibold
                               text-3 text-dark">Accessorial Fee</label>
                           </div>
+                          <div class="col-lg-2"></div>
+                          <div class="col-lg-4 text-right">
+                            <label
+                              class="control-label
+                              font-weight-semibold
+                              text-3 text-dark">Fee Total: </label> {{
+                            orderData.total.feeTotal }}
+                          </div>
+                        </div>
+
+                        <div
+                          class="row mt-3"
+                          *ngFor="let accAdd of orderData.charges.accFee;
+                          let aId= index">
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-lg-10 pr-0">
@@ -297,26 +293,44 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-3">
-                            <p class="text-right">
-                              {{ orderData.total.feeTotal }}
-                            </p>
+                          <div class="col-lg-3 text-right">
+                            <button *ngIf="aId === 0" type="button"
+                              (click)="addAccessorialArr('fee')" class="btn
+                              btn-success
+                              btn-sm">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <button *ngIf="aId> 0" type="button"
+                              (click)="dedAccessorialArr('fee', aId)" class="btn
+                              btn-danger
+                              btn-sm">
+                              <i class="fas fa-minus"></i>
+                            </button>
                           </div>
                         </div>
-                        <button type="button" class="btn btn-success btn-sm">
-                          <i class="fas fa-plus"></i> Add Accessorial Fee
-                        </button>
 
                         <div
-                          class="row mt-3"
-                          *ngFor="let accDed of orderData.charges.accDed;
-                          let bId= index">
-                          <div class="col-lg-12">
+                          class="row mt-3">
+                          <div class="col-lg-6">
                             <label
                               class="control-label
                               font-weight-semibold
                               text-3 text-dark">Accessorial Deduction</label>
                           </div>
+                          <div class="col-lg-2"></div>
+                          <div class="col-lg-4 text-right">
+                            <label
+                              class="control-label
+                              font-weight-semibold
+                              text-3 text-dark">Deduction Total: </label> {{
+                            orderData.total.dedTotal }}
+                          </div>
+                        </div>
+
+                        <div
+                          class="row mt-3"
+                          *ngFor="let accDed of orderData.charges.accDed;
+                          let bId= index">
                           <div class="col-lg-6">
                             <div class="row">
                               <div class="col-lg-10 pr-0">
@@ -328,11 +342,6 @@
                                   placeholder="Enter name"
                                   />
                               </div>
-                              <!-- <div class="col-lg-2 pl-0">
-                                <a href="#addAcceModal"
-                                  class="modal-with-form btn btn-success
-                                  btn-sm"><i class="fas fa-plus"></i></a>
-                              </div> -->
                             </div>
                           </div>
                           <div class="col-lg-3">
@@ -348,15 +357,21 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-lg-3">
-                            <p class="text-right">
-                              {{ orderData.total.dedTotal }}
-                            </p>
+                          <div class="col-lg-3 text-right">
+                            <button *ngIf="bId === 0" type="button"
+                              (click)="addAccessorialArr('ded')" class="btn
+                              btn-success
+                              btn-sm">
+                              <i class="fas fa-plus"></i>
+                            </button>
+                            <button *ngIf="bId> 0" type="button"
+                              (click)="dedAccessorialArr('ded', bId)" class="btn
+                              btn-danger
+                              btn-sm">
+                              <i class="fas fa-minus"></i>
+                            </button>
                           </div>
                         </div>
-                        <button type="button" class="btn btn-success btn-sm">
-                          <i class="fas fa-plus"></i> Add Accessorial Deduction
-                        </button>
 
                         <div class="row mt-3">
                           <div class="col-lg-12 pl-3 mb-2">
@@ -366,270 +381,56 @@
                                 class="control-label
                                 font-weight-semibold
                                 labelmt
-                                text-3 text-dark"for="ZeroRated">Tax Exempt</label>
+                                text-3 text-dark" for="ZeroRated">Tax Exempt</label>
                             </div>
                           </div>
                           <div class="col-lg-12">
                             <label
                               class="control-label
                               font-weight-bold
-                              text-3 text-dark"for="inputDefault">Province/State</label>
+                              text-3 text-dark" for="inputDefault">Province/State</label>
                           </div>
                           <div class="col-lg-9">
                             <ng-select class="form-control populate">
                               <ng-option selected value="">state tax</ng-option>
                             </ng-select>
                           </div>
-
-                          <!-- <div class="col-lg-8">
-                            <label
-                              class="
-                                control-label
-                                font-weight-bold font-bold
-                                text-lg-right
-                                pt-2
-                              "
-                              >Province/State</label
-                            >
-                            <select
-                              data-plugin-selectTwo
-                              class="form-control populate"
-                            >
-                              <optgroup label="Select Vendor">
-                                <option value="1">Alberta</option>
-                                <option value="2">British Columbia</option>
-                                <option value="3">Manitoba</option>
-                                <option value="4">New Brunswick</option>
-                                <option value="5">
-                                  Newfoundland and Labrador
-                                </option>
-                                <option value="6">Northwest Territories</option>
-                                <option value="3">Nova Soctia</option>
-                                <option value="3">Nunavut</option>
-                                <option value="3">Ontario</option>
-                                <option value="3">Prince Edward Island</option>
-                                <option value="3">Quebec</option>
-                                <option value="3">Saskatchewan</option>
-                                <option value="3">Yukon</option>
-                              </optgroup>
-                            </select>
-                          </div> -->
                         </div>
 
                         <div class="row">
                           <div class="col-lg-8">
                             <!-- GST -->
-                            <div class="row mt-3">
+                            <div class="row mt-3" *ngFor="let taxD of
+                              orderData.charges.taxes; let td= index;">
                               <div class="col-lg-5 pr-0">
                                 <input
                                   type="text"
                                   disabled
                                   class="form-control"
-                                  value="GST"
+                                  [(ngModel)]="taxD.name"
+                                  name="taxName{{td}}"
                                   />
                               </div>
 
                               <div class="col-lg-5 pr-0 input-group">
                                 <input
                                   type="text"
-                                  value="5"
-                                  disabled=""
+                                  [(ngModel)]="taxD.tax"
+                                  name="taxper{{td}}"
                                   class="form-control"
                                   /><span class="input-group-append"><span
                                     class="input-group-text pt-0 pb-0">%</span></span>
                               </div>
                             </div>
 
-                            <!-- GST -->
-                            <div class="row mt-3">
-                              <div class="col-lg-5 pr-0">
-                                <input
-                                  type="text"
-                                  disabled
-                                  class="form-control"
-                                  value="PST"
-                                  />
-                              </div>
-
-                              <div class="col-lg-5 pr-0 input-group">
-                                <input
-                                  type="text"
-                                  value="15"
-                                  disabled=""
-                                  class="form-control"
-                                  /><span class="input-group-append"><span
-                                    class="input-group-text pt-0 pb-0">%</span></span>
-                              </div>
-                            </div>
-
-                            <!-- HST -->
-                            <div class="row mt-3">
-                              <div class="col-lg-5 pr-0">
-                                <input
-                                  type="text"
-                                  disabled
-                                  class="form-control"
-                                  value="HST"
-                                  />
-                              </div>
-
-                              <div class="col-lg-5 pr-0 input-group">
-                                <input
-                                  type="text"
-                                  value="7"
-                                  disabled=""
-                                  class="form-control"
-                                  /><span class="input-group-append"><span
-                                    class="input-group-text pt-0 pb-0">%</span></span>
-                              </div>
-                            </div>
-
-                            <!-- <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Tax 2</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="PST"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pr-0 pl-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="5"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div> -->
-                            <!-- <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Tax 3</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="HST"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pr-0 pl-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="0"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                               -->
-                            <!-- <div class="row mt-3">
-                                <div class="col-lg-3 labelalign">
-                                  <label
-                                    class="
-                                      control-label
-                                      font-weight-semibold
-                                      text-3 text-dark
-                                      pt-2
-                                    "
-                                    >Discount</label
-                                  >
-                                </div>
-                                <div class="col-lg-2 pr-0">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    value="0"
-                                  />
-                                </div>
-                                <div class="col-lg-2 pl-0">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">%</option>
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                               -->
                           </div>
                           <div class="col-lg-4">
-                            <div class="row mt-3">
+                            <div class="row mt-3" *ngFor="let taxD of
+                              orderData.charges.taxes; let td= index;">
                               <div class="col-lg-12 bordtop pt-1">
-                                <p class="text-right">0.00</p>
+                                <p class="text-right">{{ taxD.amount }}</p>
                               </div>
                             </div>
-                            <div class="row">
-                              <div class="col-lg-12 bordtop pt-1">
-                                <p class="text-right">0.00</p>
-                              </div>
-                            </div>
-                            <div class="row">
-                              <div class="col-lg-12 bordtop pt-1">
-                                <p class="text-right">0.00</p>
-                              </div>
-                            </div>
-                            <!-- <div class="row">
-                                <div class="col-lg-9 bordtop pt-1">
-                                  <a
-                                    href="#applyCreditModal"
-                                    class="
-                                      btn btn-success btn-sm
-                                      modal-with-form
-                                      pull-right
-                                    "
-                                  >
-                                    Apply Vendor Credit</a
-                                  >
-                                </div>
-                                <div class="col-lg-3 bordtop pt-1">
-                                  <p class="text-right">0.00</p>
-                                </div>
-                              </div> -->
                             <div class="row">
                               <div class="col-lg-9 bordtop pt-1">
                                 <h5
@@ -655,7 +456,8 @@
                     <button type="button" class="btn btn-default mr-2">
                       Cancel
                     </button>
-                    <a href="javascript:;" class="btn btn-success">Save</a>
+                    <a href="javascript:;" (click)="addRecord();" class="btn
+                      btn-success">Save</a>
                     <a
                       href="javascript:;"
                       class="modal-with-form btn btn-success ml-2">Save & Send</a>
