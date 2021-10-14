@@ -84,6 +84,14 @@ export class OrdersListComponent implements OnInit {
       name: "Order Status",
       value: "orderStatus",
     },
+    {
+      name: "Customer Confirmation",
+      value: "cusConfirmation",
+    },
+    {
+      name: "Customer PO",
+      value: "cusPO",
+    },
   ];
 
   statusData = [
