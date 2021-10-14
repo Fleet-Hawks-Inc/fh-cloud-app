@@ -1,0 +1,328 @@
+<section class="body">
+	<div class="inner-wrapper">
+	   <section role="main" class="content-body pt-0 pr-0 pl-0">
+		  <header class="page-header pr-5">
+			 <form class="form-horizontal" method="get">
+				<div class="row pr-1 mr-1" style="padding-top:10px;">
+				   <div class="col-md-2 col-lg-2 pr-0">
+					  <div class="btn-group flex-wrap" style="min-width:100%;">
+						 <button type="button" class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle line-height-18 toggleright" data-toggle="dropdown">Search by All Types<span class="caret"></span></button>
+						 <div class="dropdown-menu dutystatwd" role="menu">
+							<a class="dropdown-item text-1" href="#">Trip Number</a>
+							<a class="dropdown-item text-1" href="#">Trip Type</a>
+							<a class="dropdown-item text-1" href="#">Order Number</a>
+							<a class="dropdown-item text-1" href="#">Driver</a>
+							<a class="dropdown-item text-1" href="#">Vehicle</a>
+							<a class="dropdown-item text-1" href="#">Asset</a>
+							<a class="dropdown-item text-1" href="#">Location</a>
+							<a class="dropdown-item text-1" href="#">Trip Status</a>
+						 </div>
+					  </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2 pr-0">
+					  <div class="input-group input-group-md mb-3">
+						 <input type="text" class="form-control line-height-xs" placeholder="Search">
+					  </div>
+				   </div>
+				   <div class="col-lg-3 col-md-3 pr-0">
+					  <div class="input-daterange input-group" data-plugin-datepicker>
+						 <span class="input-group-prepend">
+						 <span class="input-group-text">
+						 <i class="fas fa-calendar-alt"></i>
+						 </span>
+						 </span>
+						 <input type="text" class="form-control line-height-xs" placeholder="yyyy/mm/dd" name="start">
+						 <span class="input-group-text border-left-0 border-right-0 rounded-0">
+						 to
+						 </span>
+						 <input type="text" class="form-control line-height-xs" placeholder="yyyy/mm/dd" name="end">
+					  </div>
+				   </div>
+				   <div class="col-md-2 col-lg-2">
+					  <button type="submit" class="btn btn-sm mr-2 btn-success line-height-18">Search</button>
+					  <button class="btn btn-sm btn-success line-height-18" type="submit">Reset</button>
+				   </div>
+				   <div class="col-md-3 col-lg-3 text-right pr-1">
+					  <div class="btn-group flex-wrap ml-2">
+						 <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+						 <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+							<a class="dropdown-item text-1" href="">CSV</a>
+							<a class="dropdown-item text-1" href="">PDF</a>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </form>
+		  </header>
+		  <div class="m-3">
+			 <div class="row text-dark">
+				<div class="col-12 mb-3">
+				   <div class="bg-white p-3">
+					  <div class="row text-dark">
+						 <div class="col-12">
+							<div>
+							   <h4 class="mt-1 mb-0 font-weight-bold">Trip Detail Report</h4>
+							</div>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+				<div class="col pr-0">
+				   <div class="card">
+					  <div class="card-body">
+						 <!-- Driver Div  -->
+						 <div >
+							<section class="reports_div">
+							   <div class="row">
+								  <div class="col-lg-12"><label class="control-label text-5 mb-3 font-weight-bold">Vehicle #5205</label> </div>
+							   </div>
+							   <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable" id="datatable-default">
+								  <thead>
+									 <tr class="back-color-gray">
+										<th >Trip#</th>
+										<th >Type</th>
+										<th >Order#</th>
+										<th >Date/Time</th>
+										<th >Pickup Location</th>
+										<th >Drop Off Location</th>
+										<th >Duration</th>
+										<th >Distance</th>
+										<th >Driver</th>
+										<th >Vehicle</th>
+										<th >Assets</th>
+										<th >Carrier</th>
+										<th >Status</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>1231</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >1 hr 32 min</td>
+										<td >160</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >2205</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>4564897</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >52 min</td>
+										<td >100</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >119856</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>54500</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >23 min</td>
+										<td >55</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >KJ54782</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>9986</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >2 hr 57 min</td>
+										<td >185</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >DFE-3250</td>
+										<td >Freight Ltd.</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>5487</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >2 hr 02 min</td>
+										<td >166</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >ACV552</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>362514</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >1 hr 11 min</td>
+										<td >117</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >3389567</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>1231</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >1 hr 32 min</td>
+										<td >160</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >2205</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>4564897</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >52 min</td>
+										<td >100</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >119856</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+								  </tbody>
+							   </table>
+							   <div class="row mt-3">
+								  <div class="col-lg-12"><label class="control-label text-5 mb-3 font-weight-bold">Vehicle #5270</label> </div>
+							   </div>
+							   <table class="table table-bordered table-responsive-lg table-striped mb-0 allAssets-datatable" id="datatable-default">
+								  <thead>
+									 <tr class="back-color-gray">
+										<th >Trip#</th>
+										<th >Type</th>
+										<th >Order#</th>
+										<th >Date/Time</th>
+										<th >Pickup Location</th>
+										<th >Drop Off Location</th>
+										<th >Duration</th>
+										<th >Distance</th>
+										<th >Driver</th>
+										<th >Vehicle</th>
+										<th >Assets</th>
+										<th >Carrier</th>
+										<th >Status</th>
+									 </tr>
+								  </thead>
+								  <tbody>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>1231</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >1 hr 32 min</td>
+										<td >160</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >2205</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>4564897</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >52 min</td>
+										<td >100</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >119856</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>54500</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >23 min</td>
+										<td >55</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >KJ54782</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>9986</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >2 hr 57 min</td>
+										<td >185</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >DFE-3250</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+									 <tr class="cursorpoint">
+										<td onclick="window.location='trip-detail.php'">5689</td>
+										<td>Regular</td>
+										<td>5487</td>
+										<td >2021/06/01 10:10 AM</td>
+										<td >Location: Regina, SK</td>
+										<td >Location: Winnipeg, YT</td>
+										<td >2 hr 02 min</td>
+										<td >166</td>
+										<td >Mike</td>
+										<td >5320</td>
+										<td >ACV552</td>
+										<td >Load Hub</td>
+										<td><span class="badge badge-dark p-1">INACTIVE</span></td>
+									 </tr>
+								  </tbody>
+							   </table>
+							</section>
+						 </div>
+					  </div>
+				   </div>
+				</div>
+			 </div>
+		  </div>
+	   </section>
+	</div>
+ </section>
