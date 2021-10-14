@@ -24,7 +24,29 @@
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
-                  <select data-plugin-selectTwo class="form-control">
+                  <ng-select [(ngModel)]="assetType" name="assetType" class="form-control populate"
+                     placeholder="Select type">
+                     <ng-option value="container">Container</ng-option>
+                     <ng-option value="double_drop">Double Drop</ng-option>
+                     <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                     <ng-option value="flat_bed">Flat bed</ng-option>
+                     <ng-option value="lowboy">Lowboy</ng-option>
+                     <ng-option value="stepDeck">StepDeck</ng-option>
+                     <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                     <ng-option value="dry_van">Dry Van</ng-option>
+                     <ng-option value="reefer">Reefer</ng-option>
+                     <ng-option value="power_only">Power Only</ng-option>
+                     <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                     <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                     <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                     <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                     <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                     <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                     <ng-option value="chassis">Chassis</ng-option>
+                     <ng-option value="tank_trailer">Tank Trailer</ng-option>
+                  </ng-select>
+                  <!-- <select data-plugin-selectTwo class="form-control" [(ngModel)]="assetType">
+
                      <optgroup label="">
                         <option value="1">Asset Type</option>
                         <option value="2">Flat Bed</option>
@@ -34,12 +56,12 @@
                         <option value="2">Lowboy</option>
                         <option value="2">Dump Trailer</option>
                      </optgroup>
-                  </select>
+                  </select> -->
                </div>
 
                <div class="col-md-2 col-lg-2">
-                  <button type="submit" (click)="searchAsset()" class="btn btn-sm btn-success mr-3">Search</button>
-                  <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="submit" (click)=" resetFilter()">Reset</button>
                </div>
 
                <div class="col-md-4 col-lg-4 text-right pr-1">
@@ -62,7 +84,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">124</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{allData.length}}</h3>
                      </div>
                   </div>
                </div>
@@ -70,7 +92,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Active Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">100</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{activeAssets}}</h3>
                      </div>
                   </div>
                </div>
@@ -78,7 +100,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Inactive Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">24</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{inActiveAssets}}</h3>
                      </div>
                   </div>
                </div>
@@ -86,7 +108,7 @@
                   <div class="card">
                      <div class="card-body bor-radius0px">
                         <section class="reports_div">
-                           <table class="table reports_small_div">
+                           <table class="row-border hover table table-bordered table-striped mb-0">
                               <thead>
                                  <tr class="back-color-gray">
                                     <th>Asset Name/Number</th>
