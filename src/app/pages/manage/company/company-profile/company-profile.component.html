@@ -257,7 +257,30 @@
           novalidate #changePasswordF="ngForm">
           <div class="row">
             <div class="col-lg-12">
-              <label class="control-label font-weight-bold text-lg-right pt-2">Password <span
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Old Password <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01" name="oldPassword"
+                  #oldPwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }"
+                  [type]="oldFieldTextType ? 'text' : 'password'" class="form-control" />
+                <div class="input-group-append">
+                  <span class="input-group-text eye">
+                    <i class="fa" [ngClass]="{
+                      'fa-eye-slash': !oldFieldTextType,
+                      'fa-eye': oldFieldTextType
+                    }" (click)="toggleOldFieldTextType()"></i>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="oldPwd.invalid && changePasswordF.submitted" class="text-danger">
+                <div *ngIf="oldPwd.errors.required">
+                  Old Password is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> New Password <span
                   class="mandfield text-2 ml-1"><sup>*</sup></span>
               </label>
               <div class="input-group">
@@ -345,6 +368,7 @@
           </div>
           <div class="row mt-3">
             <div class="col-lg-12 text-right">
+              <div *ngIf="oldPassError" class="text-danger">{{oldPassError}}</div>
               <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
               <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">Save</button>
             </div>
