@@ -722,7 +722,7 @@ export class AddOrdersComponent implements OnInit {
       });
       element.customerPO = newPosData;
     });
-    console.log('newPosData', newPosData);
+
     if (newPosData.length > 0 && newPosData != null && this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
       let result = await this.validatePOs(i)
       if (result.status) {
@@ -2426,8 +2426,8 @@ export class AddOrdersComponent implements OnInit {
     }
 
     if (this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
-      let result = await this.validatePOs('')
-      if (result.status) {
+      let result = await this.validatePOs('');
+      if (result != null && result.status) {
         $('#confirmErr').show();
         $('#confirmErr').text(result.msg);
         this.submitDisabled = false;
@@ -3086,7 +3086,6 @@ export class AddOrdersComponent implements OnInit {
       this.apiService.getData(`orders/validate/confirm?value=${this.orderData.cusConfirmation}`)
         .subscribe((result: any) => {
           if (result) {
-            console.log('result', result)
             this.isConfirmExist = true
             this.isConfirmData.orderNo = result.orderNo;
             this.isConfirmData.cusConfirmation = result.cusConfirmation;
@@ -3099,22 +3098,18 @@ export class AddOrdersComponent implements OnInit {
 
   async validatePOs(i: any = '') {
     let pos = [];
-    console.log('i', i);
+
     if (i !== '') {
-      console.log('if');
       this.shippersReceivers[i].shippers.pickupPoint.forEach(element => {
         element.customerPO.forEach(po => {
           pos.push(po);
         });
       });
     } else {
-      console.log('else');
       pos = this.orderData.cusPOs
     }
 
-    console.log('pos', pos)
     let result = await this.apiService.getData(`orders/validate/pos?value=${encodeURIComponent(JSON.stringify(pos))}&confirmNo=${this.orderData.cusConfirmation}`).toPromise();
-    console.log('result', result)
     return result
   }
 
