@@ -7,7 +7,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { FixedRightSidebarComponent } from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
-import { AddressBookComponent } from './popups/address-book/address-book.component';
 import { SharedModalsComponent } from './popups/shared-modals/shared-modals.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -96,7 +95,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MultiSidebarComponents,
     HeaderComponent,
     FixedRightSidebarComponent,
-    AddressBookComponent,
     AddServiceProgramComponent,
     SharedModalsComponent,
     AllCarriersComponent,
