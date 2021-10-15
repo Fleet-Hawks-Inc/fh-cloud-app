@@ -84,7 +84,7 @@
     "ngx-toastr": "11.3.3",
     "number-to-words": "1.2.4",
     "path": "0.12.7",
-    "pdfjs-dist": "2.5.207",
+    "pdfjs-dist": "2.10.377",
     "pdfmake": "0.2.0",
     "randomstring": "1.1.5",
     "rxjs": "6.6.7",
