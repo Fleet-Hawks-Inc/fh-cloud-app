@@ -7,6 +7,8 @@ import { OverviewComponent } from './overview/overview.component';
 import { SummaryComponent } from './summary/summary.component';
 import { DetailreportComponent } from './detailreport/detailreport.component';
 import { CurrencyPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -26,7 +28,9 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    NgSelectModule
+    NgSelectModule,
+    FormsModule,
+    ToastrModule
   ],
   providers: [CurrencyPipe]
 })

@@ -2,64 +2,46 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pt-0 pr-0 pl-0">
       <header class="page-header pr-5">
-        <form class="form-horizontal" method="get">
-          <div class="row pr-1 mr-1" style="padding-top:10px;">
-
-            <div class="col-md-2 col-lg-2 pr-0">
-              <div class="btn-group flex-wrap" style="min-width:100%;">
-                <button type="button"
-                  class="mb-1 mr-1 btn btn-default btn-md dropdown-toggle line-height-18 toggleright"
-                  data-toggle="dropdown">Search by Category<span class="caret"></span></button>
-                <div class="dropdown-menu dutystatwd" role="menu">
-                  <a class="dropdown-item text-1" href="#">Order Number</a>
-                  <a class="dropdown-item text-1" href="#">Customer</a>
-                  <a class="dropdown-item text-1" href="#">Order Type</a>
-                  <a class="dropdown-item text-1" href="#">Location</a>
-                  <a class="dropdown-item text-1" href="#">Order Status</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-md-2 col-lg-2 pr-0">
-              <div class="input-group input-group-md mb-3">
-                <input type="text" class="form-control line-height-xs" placeholder="Search">
-              </div>
-            </div>
-
-            <div class="col-lg-3 col-md-3 pr-0">
-              <span class="input-group-prepend">
-                <span class="input-group-text">
-                  <i class="fas fa-calendar-alt"></i>
-                </span>
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          <div class="col-lg-5 col-md-5 pr-0 d-flex">
+            <span class="">
+              <span class="input-group-text">
+                <i class="fas fa-calendar-alt"></i>
               </span>
-              <ng-select class="col-lg-4">
-                <ng-option *ngFor="let month of months" [value]="month">{{month}}</ng-option>
-              </ng-select>
-              <ng-select class="col-lg-4">
-                <ng-option *ngFor="let year of years" [value]="year">{{year}}</ng-option>
-              </ng-select>
+            </span>
+            <div class="col-md-5 col-lg-5 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <ng-select [(ngModel)]="selectedMonth" class="col ">
+                  <ng-option *ngFor=" let month of months" [value]="month">{{month}}</ng-option>
+                </ng-select>
+              </div>
             </div>
 
-
-
-
-            <div class="col-md-2 col-lg-2">
-              <button type="submit" class="btn btn-sm mr-2 btn-success line-height-18">Search</button>
-              <button class="btn btn-sm btn-success line-height-18" type="submit">Reset</button>
-            </div>
-            <div class="col-md-3 col-lg-3 text-right pr-1">
-
-              <div class="btn-group flex-wrap ml-2">
-                <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
-                  aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
-                <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                  <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
-                </div>
+            <div class="col-md-6 col-lg-6 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <ng-select class="col " [(ngModel)]="selectedYear">
+                  <ng-option *ngFor="let year of years" [value]="year">{{year}}</ng-option>
+                </ng-select>
               </div>
             </div>
           </div>
-        </form>
+          <div class="col-md-2 col-lg-2">
+            <button class="btn btn-sm mr-2 btn-success " (click)="search()">Search</button>
+            <button class="btn btn-sm btn-success" (click)="reset()">Reset</button>
+          </div>
+          <div class="col-md-5 col-lg-5 text-right pr-1">
+
+            <div class="btn-group flex-wrap ml-2">
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </header>
       <div class="m-3">
         <div class="row text-dark">
@@ -140,6 +122,7 @@
                         <th>Date</th>
                         <th>Customer</th>
                         <th>Confirmation#</th>
+                        <th>Customer PO#</th>
                         <th>Pickup Location</th>
                         <th>Drop Off Location</th>
                         <th>Miles</th>
@@ -149,8 +132,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngIf="records.length==0">
-                        No Records Found
+                      <tr class="text-center" *ngIf="records.length===0">
+                        <td colspan="11">
+                          {{dataMessage}}
+                        </td>
+
                       </tr>
                       <tr *ngFor="let order of records" class="cursorpoint">
                         <td>{{order.orderNumber}}</td>
@@ -158,7 +144,11 @@
                         <td>{{order.createdDate}} {{order.createdTime}}</td>
                         <td>{{customers[order.customerID]}}</td>
                         <td>{{order.cusConfirmation}}</td>
-
+                        <td>
+                          <span *ngIf="order.cusPOs.length>0">
+                            <span *ngFor="let po of order.cusPOs">{{po}}<br /></span>
+                          </span>
+                        </td>
                         <td>
                           <div *ngFor="let item of order.shippersReceiversInfo">
                             <div *ngFor="let shipper of item.shippers">
@@ -169,7 +159,14 @@
                                 {{pickup.address.stateName}}&nbsp;{{pickup.address.countryCode}}&nbsp;
                                 {{pickup.address.zipCode}}<br />
 
-                                <span>{{pickup.dateAndTime}}</span>
+                                <span>{{pickup.dateAndTime}}</span><br />
+
+                                <span *ngIf="pickup.commodity.length>0">
+                                  <span *ngFor="let commodity of pickup.commodity">
+                                    PU#: {{commodity.pu}} <br />
+                                  </span>
+                                </span>
+
                               </p>
 
 
@@ -185,8 +182,14 @@
                                 {{drop.address.address}}&nbsp;{{drop.address.cityName}} &nbsp;
                                 {{drop.address.stateName}}&nbsp;{{drop.address.countryCode}}&nbsp;
                                 {{drop.address.zipCode}}<br />
-                                <span>{{drop.dateAndTime}}</span>
+                                <span>{{drop.dateAndTime}}</span> <br />
+                                <span *ngIf="drop.commodity.length>0">
+                                  <span *ngFor="let commodity of drop.commodity">
+                                    DEL#: {{commodity.del}} <br />
+                                  </span>
+                                </span>
                               </p>
+
 
                             </div>
                           </div>

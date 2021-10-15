@@ -3,7 +3,7 @@ import { ApiService } from 'src/app/services'
 import Constant from 'src/app/pages/fleet/constants'
 import { CurrencyPipe } from '@angular/common'
 import * as moment from 'moment'
-
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-detailreport',
@@ -12,7 +12,7 @@ import * as moment from 'moment'
 })
 export class DetailreportComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private currencyPipe: CurrencyPipe) { }
+  constructor(private apiService: ApiService, private currencyPipe: CurrencyPipe, private toastr: ToastrService) { }
   totalOrdersCount = 0
   dispatchedCount = 0
   delieverdCount = 0
@@ -26,12 +26,39 @@ export class DetailreportComponent implements OnInit {
   loaded = false
   months = []
   years = []
+  selectedMonth = ''
+  selectedYear = ''
   ngOnInit() {
     this.months = moment.months()
     this.years.push(moment().year())
     this.years.push(moment().subtract(1, 'year').year())
     this.fetchCustomers();
     this.fetchDetailReport();
+    this.fetchOrderReport();
+  }
+  async search() {
+    if (this.selectedYear && this.selectedMonth) {
+      this.lastItemSK = 'end';
+      this.records = []
+      this.dataMessage = Constant.FETCHING_DATA
+      const result = await this.apiService.getData(`orders/report/search?month=${this.selectedMonth}&year=${this.selectedYear}`).toPromise();
+      if (result.Items.length > 0) {
+        this.records = result.Items
+      }
+      else {
+        this.dataMessage = Constant.NO_RECORDS_FOUND
+      }
+
+
+    }
+    else {
+      this.toastr.error("Year and Month required")
+    }
+  }
+  reset() {
+    this.selectedMonth = ''
+    this.selectedYear = ''
+    this.lastItemSK = '';
     this.fetchOrderReport();
   }
   async fetchOrderReport(refresh?: boolean) {
@@ -41,13 +68,15 @@ export class DetailreportComponent implements OnInit {
     }
     if (this.lastItemSK !== 'end') {
       const result = await this.apiService.getData(`orders/report/paging?lastKey=${this.lastItemSK}`).toPromise();
-      console.log(result)
+      this.dataMessage = Constant.FETCHING_DATA
+
 
       if (result.Items.length === 0) {
 
         this.dataMessage = Constant.NO_RECORDS_FOUND
       }
       if (result.Items.length > 0) {
+
         if (result.LastEvaluatedKey !== undefined) {
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].orderSK);
         }
@@ -98,13 +127,19 @@ export class DetailreportComponent implements OnInit {
       obj["DateTime"] = element.createdDate + element.createdTime
       obj["Cutomer"] = this.customers[element.customerID]
       obj["Confirmation#"] = element.cusConfirmation
+      obj["Customer PO#"] = element.cusPOs.length > 0 ? element.cusPOs.join(' ') : ' '
       element.shippersReceiversInfo.forEach(item => {
         item.shippers.forEach(shipper => {
           obj["Pickup"] = this.customers[shipper.shipperID]
           shipper.pickupPoint.forEach(pickup => {
             obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
               pickup.address.stateName + " " + pickup.address.countryCode
-              + " " + pickup.address.zipCode
+              + " " + pickup.address.zipCode + " "
+            if (pickup.commodity.length > 0) {
+              pickup.commodity.forEach(element => {
+                obj["Pickup"] += "PU# " + element.pu
+              });
+            }
           });
         });
 
@@ -113,7 +148,13 @@ export class DetailreportComponent implements OnInit {
           receiver.dropPoint.forEach(drop => {
             obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
               drop.address.stateName + " " + drop.address.countryCode
-              + " " + drop.address.zipCode
+              + " " + drop.address.zipCode + " "
+            if (drop.commodity.length > 0) {
+              drop.commodity.forEach(element => {
+                obj["DropOff"] += "DEL# " + element.del
+
+              });
+            }
           });
         });
       });
