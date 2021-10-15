@@ -114,61 +114,83 @@ export class DetailreportComponent implements OnInit {
       if (element.orderStatus == "tonu") this.tonuCount++
 
     });
+
     // this.records = result.Items
     // console.log(this.records)
   }
   generateCSV() {
-    let dataObject = []
-    let csvArray = []
-    this.records.forEach(element => {
-      let obj = {}
-      obj["Order#"] = element.orderNumber
-      obj["Type"] = element.orderMode
-      obj["DateTime"] = element.createdDate + element.createdTime
-      obj["Cutomer"] = this.customers[element.customerID]
-      obj["Confirmation#"] = element.cusConfirmation
-      obj["Customer PO#"] = element.cusPOs.length > 0 ? element.cusPOs.join(' ') : ' '
-      element.shippersReceiversInfo.forEach(item => {
-        item.shippers.forEach(shipper => {
-          obj["Pickup"] = this.customers[shipper.shipperID]
-          shipper.pickupPoint.forEach(pickup => {
-            obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
-              pickup.address.stateName + " " + pickup.address.countryCode
-              + " " + pickup.address.zipCode + " "
-            if (pickup.commodity.length > 0) {
-              pickup.commodity.forEach(element => {
-                obj["Pickup"] += "PU# " + element.pu
-              });
-            }
+    if (this.records.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.records.forEach(element => {
+        let obj = {}
+        obj["Order#"] = element.orderNumber
+        obj["Type"] = element.orderMode
+        obj["DateTime"] = element.createdDate + " " + element.createdTime
+        obj["Cutomer"] = this.customers[element.customerID]
+        obj["Confirmation#"] = element.cusConfirmation
+        obj["Customer PO#"] = element.cusPOs.length > 0 ? element.cusPOs.join(' ') : ' '
+        element.shippersReceiversInfo.forEach(item => {
+          item.shippers.forEach(shipper => {
+            obj["Pickup"] = this.customers[shipper.shipperID]
+            shipper.pickupPoint.forEach(pickup => {
+              obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
+                pickup.address.stateName + " " + pickup.address.countryCode
+                + " " + pickup.address.zipCode + " "
+              if (pickup.commodity.length > 0) {
+                pickup.commodity.forEach(element => {
+                  obj["Pickup"] += "PU# " + element.pu
+                });
+              }
+            });
+          });
+
+          item.receivers.forEach(receiver => {
+            obj["DropOff"] = this.customers[receiver.receiverID]
+            receiver.dropPoint.forEach(drop => {
+              obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
+                drop.address.stateName + " " + drop.address.countryCode
+                + " " + drop.address.zipCode + " "
+              if (drop.commodity.length > 0) {
+                drop.commodity.forEach(element => {
+                  obj["DropOff"] += "DEL# " + element.del
+
+                });
+              }
+            });
           });
         });
-
-        item.receivers.forEach(receiver => {
-          obj["DropOff"] = this.customers[receiver.receiverID]
-          receiver.dropPoint.forEach(drop => {
-            obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
-              drop.address.stateName + " " + drop.address.countryCode
-              + " " + drop.address.zipCode + " "
-            if (drop.commodity.length > 0) {
-              drop.commodity.forEach(element => {
-                obj["DropOff"] += "DEL# " + element.del
-
-              });
-            }
-          });
-        });
+        obj["Miles"] = element.milesInfo.totalMiles
+        obj["Amount"] = element.charges.freightFee.currency + ' ' + element.totalAmount
+        obj["Status"] = element.orderStatus
+        dataObject.push(obj)
       });
-      obj["Miles"] = element.milesInfo.totalMiles
-      obj["Amount"] = this.currencyPipe.transform(element.totalAmount, element.charges.freightFee.currency)
-      obj["Status"] = element.orderStatus
-      dataObject.push(obj)
-    });
-    let headers = Object.keys(dataObject[0]).join(',')
-    csvArray.push(headers)
-    dataObject.forEach(element => {
-      csvArray.push(Object.values(element).join(','))
-    });
-    console.log(csvArray);
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += ' \n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += ' \n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
+
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
+
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Order-Report.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
   }
 
 }
