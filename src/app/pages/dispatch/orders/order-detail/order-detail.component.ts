@@ -217,6 +217,7 @@ export class OrderDetailComponent implements OnInit {
       .subscribe(async (result: any) => {
         this.newOrderData = result;
         result = result.Items[0];
+
         if (result.stateTaxID != undefined) {
           if (result.stateTaxID != '') {
             this.apiService.getData('stateTaxes/' + result.stateTaxID).subscribe((result) => {
@@ -316,7 +317,7 @@ export class OrderDetailComponent implements OnInit {
         let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
         let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-        let totalAmount = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
+        let totalAmount = parseFloat(freightFee) + parseFloat(fuelSurcharge) + parseFloat(accessorialFeeInfo) - parseFloat(accessorialDeductionInfo);
         this.taxableAmount = (totalAmount * parseInt(this.taxesTotal)) / 100;
         if (!this.zeroRated) {
           this.totalCharges = totalAmount + this.taxableAmount;

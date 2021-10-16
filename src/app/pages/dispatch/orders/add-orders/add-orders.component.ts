@@ -299,7 +299,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -311,7 +311,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -722,7 +722,7 @@ export class AddOrdersComponent implements OnInit {
       });
       element.customerPO = newPosData;
     });
-    console.log('newPosData', newPosData);
+
     if (newPosData.length > 0 && newPosData != null && this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
       let result = await this.validatePOs(i)
       if (result.status) {
@@ -1384,6 +1384,17 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+
+    if (this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
+      let result = await this.validatePOs('')
+      if (result.status) {
+        $('#confirmErr').show();
+        $('#confirmErr').text(result.msg);
+        this.submitDisabled = false;
+        return
+      }
+    }
+
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
       const element = this.orderData.shippersReceiversInfo[i];
       for (let j = 0; j < element.shippers.length; j++) {
@@ -1550,17 +1561,17 @@ export class AddOrdersComponent implements OnInit {
       (parseFloat(this.freightFee) || 0) +
       (parseFloat(this.fuelSurcharge) || 0);
 
-    this.subTotal = sum;
+    this.subTotal = sum.toFixed(2);
 
-    let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
-    let discountUnit = this.orderData.discount["unit"];
-    if (discountUnit === "percentage") {
-      this.discount = (this.subTotal * discountAmount) / 100;
-    } else {
-      this.discount = discountAmount;
-    }
+    // let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
+    // let discountUnit = this.orderData.discount["unit"];
+    // if (discountUnit === "percentage") {
+    //   this.discount = (this.subTotal * discountAmount) / 100;
+    // } else {
+    //   this.discount = discountAmount;
+    // }
 
-    this.totalAmount = this.subTotal.toFixed(0);
+    this.totalAmount = this.subTotal;
 
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
@@ -1597,10 +1608,16 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
       this.shippersReceivers[parentIndex].shippers.update = false;
       this.shippersReceivers[parentIndex].shippers.save = true;
+      if (this.finalShippersReceivers[parentIndex].shippers.length === 0) {
+        this.shippersReceivers[parentIndex].shippers.isShow = true
+      }
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
       this.shippersReceivers[parentIndex].receivers.update = false;
       this.shippersReceivers[parentIndex].receivers.save = true;
+      if (this.finalShippersReceivers[parentIndex].receivers.length === 0) {
+        this.shippersReceivers[parentIndex].receivers.isShow = true
+      }
     }
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
@@ -2346,9 +2363,10 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  updateOrder() {
+  async updateOrder() {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
+    this.submitDisabled = true;
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2399,10 +2417,6 @@ export class AddOrdersComponent implements OnInit {
         });
       });
     }
-    this.orderData["loc"] = selectedLoc;
-    this.orderData.cusPOs = this.cusPOs;
-    console.log('this', this.orderData.cusPOs)
-
 
     if (!flag) {
       this.toastr.error(
@@ -2411,6 +2425,19 @@ export class AddOrdersComponent implements OnInit {
       return false;
     }
 
+    if (this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
+      let result = await this.validatePOs('');
+      if (result != null && result.status) {
+        $('#confirmErr').show();
+        $('#confirmErr').text(result.msg);
+        this.submitDisabled = false;
+        return
+      }
+    }
+
+    this.orderData["loc"] = selectedLoc;
+    this.orderData.cusPOs = this.cusPOs;
+
     // create form data instance
     const formData = new FormData();
 
@@ -2418,7 +2445,7 @@ export class AddOrdersComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
-    this.submitDisabled = true;
+
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
@@ -3059,7 +3086,6 @@ export class AddOrdersComponent implements OnInit {
       this.apiService.getData(`orders/validate/confirm?value=${this.orderData.cusConfirmation}`)
         .subscribe((result: any) => {
           if (result) {
-            console.log('result', result)
             this.isConfirmExist = true
             this.isConfirmData.orderNo = result.orderNo;
             this.isConfirmData.cusConfirmation = result.cusConfirmation;
@@ -3071,8 +3097,9 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async validatePOs(i: any = '') {
-    let pos = []
-    if (i != '') {
+    let pos = [];
+
+    if (i !== '') {
       this.shippersReceivers[i].shippers.pickupPoint.forEach(element => {
         element.customerPO.forEach(po => {
           pos.push(po);
@@ -3082,9 +3109,7 @@ export class AddOrdersComponent implements OnInit {
       pos = this.orderData.cusPOs
     }
 
-    console.log('pos', pos)
     let result = await this.apiService.getData(`orders/validate/pos?value=${encodeURIComponent(JSON.stringify(pos))}&confirmNo=${this.orderData.cusConfirmation}`).toPromise();
-    console.log('result', result)
     return result
   }
 
