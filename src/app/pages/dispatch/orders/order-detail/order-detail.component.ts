@@ -95,6 +95,7 @@ export class OrderDetailComponent implements OnInit {
   customerfax = '';
   customerPo = '';
   reference = '';
+  cusConfirmation = '';
   // creation = '';
   createdDate = '';
   createdTime = '';
@@ -189,6 +190,10 @@ export class OrderDetailComponent implements OnInit {
   }
 
   hideEdit: boolean = false;
+  tripData: {
+    tripNo: '',
+    tripID: ''
+  };
 
   constructor(private apiService: ApiService, private accountService: AccountService, private modalService: NgbModal, private domSanitizer: DomSanitizer, private route: ActivatedRoute, private toastr: ToastrService) {
     this.today = new Date();
@@ -212,12 +217,17 @@ export class OrderDetailComponent implements OnInit {
       .subscribe(async (result: any) => {
         this.newOrderData = result;
         result = result.Items[0];
+
         if (result.stateTaxID != undefined) {
           if (result.stateTaxID != '') {
             this.apiService.getData('stateTaxes/' + result.stateTaxID).subscribe((result) => {
               this.stateCode = result.Items[0].stateCode;
             });
           }
+        }
+
+        if (result.tripData) {
+          this.tripData = result.tripData;
         }
 
         this.zeroRated = result.zeroRated;
@@ -227,9 +237,10 @@ export class OrderDetailComponent implements OnInit {
           this.hideEdit = true;
         }
         this.orderStatus = result.orderStatus;
-        await this.fetchCustomersByID();
         this.cusAddressID = result.cusAddressID;
+        await this.fetchCustomersByID();
         this.reference = result.reference;
+        this.cusConfirmation = result.cusConfirmation;
         this.createdDate = result.createdDate;
         this.createdTime = result.timeCreated;
         if (result.additionalContact != null && result.additionalContact.label != undefined) {
@@ -306,7 +317,7 @@ export class OrderDetailComponent implements OnInit {
         let accessorialFeeInfo = isNaN(this.charges.accessorialFeeInfo.total) ? 0 : this.charges.accessorialFeeInfo.total;
         let accessorialDeductionInfo = isNaN(this.charges.accessorialDeductionInfo.total) ? 0 : this.charges.accessorialDeductionInfo.total;
 
-        let totalAmount = parseInt(freightFee) + parseInt(fuelSurcharge) + parseInt(accessorialFeeInfo) - parseInt(accessorialDeductionInfo);
+        let totalAmount = parseFloat(freightFee) + parseFloat(fuelSurcharge) + parseFloat(accessorialFeeInfo) - parseFloat(accessorialDeductionInfo);
         this.taxableAmount = (totalAmount * parseInt(this.taxesTotal)) / 100;
         if (!this.zeroRated) {
           this.totalCharges = totalAmount + this.taxableAmount;
@@ -478,8 +489,6 @@ export class OrderDetailComponent implements OnInit {
           if (elem.addressID === this.cusAddressID) {
             this.showInvBtn = true;
             return elem;
-          } else {
-            this.showInvBtn = false;
           }
         });
         newCusAddress = newCusAddress[0];
@@ -526,23 +535,19 @@ export class OrderDetailComponent implements OnInit {
     this.isShow = true;
     this.previewRef.close();
     var data = document.getElementById('print_wrap');
-    const doc = new jsPDF()
-    autoTable(doc, { html: '#my-table' })
-    doc.save('table.pdf')
+    html2pdf(data, {
+      margin: 0.15,
+      filename: 'invoice.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true
+      },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
 
-    // html2pdf(data, {
-    //   margin: 0.15,
-    //   filename: 'invoice.pdf',
-    //   image: { type: 'jpeg', quality: 0.98 },
-    //   html2canvas: {
-    //     dpi: 300,
-    //     letterRendering: true,
-    //     allowTaint: true,
-    //     useCORS: true
-    //   },
-    //   jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
-
-    // });
+    });
 
 
     $('#previewInvoiceModal').modal('hide');
@@ -550,6 +555,7 @@ export class OrderDetailComponent implements OnInit {
 
   async generatePDF() {
     this.isShow = true;
+
     var data = document.getElementById('print_wrap');
     html2pdf(data, {
       margin: 0.15,
@@ -567,7 +573,7 @@ export class OrderDetailComponent implements OnInit {
     await this.saveInvoice();
     await this.invoiceGenerated();
     await this.fetchOrder();
-
+    this.previewRef.close();
   }
 
   pageRendered(event) {

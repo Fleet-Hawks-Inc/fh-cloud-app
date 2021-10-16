@@ -1,19 +1,30 @@
 <section class="body">
-    <div class="inner-wrapper">
-        <section role="main" class="content-body pt-0 pl-1 pr-0">
-            <header class="page-header pr19 pl11">
-                <div class="row" style="padding-top:9px;">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pl-1 pr-0">
+      <header class="page-header pr19 pl11">
+        <div class="row" style="padding-top: 9px">
+          <div class="col-md-4 col-lg-4 text-dark">
+            <span class="font-weight-bold text-4"
+              >Trip #{{ tripData.tripNo }}
+            </span>
+            <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{
+              tripStatus
+            }}</span>
+          </div>
 
-                    <div class="col-md-4 col-lg-4 text-dark">
-                        <span class="font-weight-bold text-4">Trip #{{ tripData.tripNo }} </span> <span
-                            class="badge p-1 badge-dark mt-2 mb-0 text-uppercase">{{ tripStatus }}</span>
-                    </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <button (click)="openTripInfo()" class="btn btn-sm btn-success">
+              Trip Info.
+            </button>
 
-                    <div class="col-md-8 col-lg-8 text-right pr-1">
-                        <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit"
-                            class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i> Edit Trip</a>
-                        <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
-                        <!-- <div class="btn-group flex-wrap mr-2">
+            <a
+              routerLink="/dispatch/trips/edit-trip/{{ tripID }}"
+              *ngIf="showEdit"
+              class="btn btn-default btn-sm mr-2"
+              ><i class="fas fa-pencil-alt"></i> Edit Trip</a
+            >
+            <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
+            <!-- <div class="btn-group flex-wrap mr-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false">Send to Manifest<span class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
@@ -25,7 +36,7 @@
                             </div>
                         </div> -->
 
-                        <!-- <div class="btn-group flex-wrap mr-2">
+            <!-- <div class="btn-group flex-wrap mr-2">
                         <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                aria-expanded="false">Actions<span class="caret"></span></button>
@@ -35,553 +46,811 @@
                             </div>
                          </div> -->
 
-                        <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm"><i
-                                class="fas fa-list"></i>
-                            All Trips </a>
-                    </div>
-                </div>
-            </header>
+            <a
+              href="javascript:;"
+              routerLink="/dispatch/trips/trip-list"
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> All Trips
+            </a>
+          </div>
+        </div>
+      </header>
 
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row">
-                                <div class="col-xl-8 col-12">
-                                    <div class="row">
-                                        <div class="col-xl-6 col-6">
-                                            <div class="safetytile p-4 border">
-                                                <div class="driverbar w100">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{
-                                                        tripData.tripNo }}</span>
-                                                    <h2
-                                                        class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        Trip#
-                                                    </h2>
-                                                </div>
-                                                <div class="w100 pull-left">
-                                                    <hr class="solid mt-3 mb-3">
-                                                </div>
-                                                <div class="driverbar w100">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{
-                                                        orderNumbers }}</span>
-                                                    <h2
-                                                        class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        Order#</h2>
-                                                </div>
-                                                <div class="w100 pull-left">
-                                                    <hr class="solid mt-3 mb-3">
-                                                </div>
-                                                <div class="driverbar">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{
-                                                        routeName }}</span>
-                                                    <h2
-                                                        class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        Permanent
-                                                        Route</h2>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-6 col-6 pr-0">
-                                            <div class="safetytile p-4 border">
-                                                <div class="driverbar w100">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{
-                                                        (tripData.bol != '' && tripData.bol != undefined) ? tripData.bol
-                                                        : '-' }}</span>
-                                                    <h2
-                                                        class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        BOL/POD#
-                                                    </h2>
-                                                </div>
-                                                <div class="w100 pull-left">
-                                                    <hr class="solid mt-3 mb-3">
-                                                </div>
-                                                <div class="driverbar w100">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark">{{
-                                                        tripData.dateCreated | date:'yyyy/MM/dd' }}</span>
-                                                    <h2
-                                                        class="pull-left line-height-xl mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        Trip Date
-                                                    </h2>
-                                                </div>
-                                                <div class="w100 pull-left">
-                                                    <hr class="solid mt-3 mb-3">
-                                                </div>
-                                                <div class="driverbar">
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark"
-                                                        *ngIf="tripData.reeferTemperature != '' && tripData.reeferTemperature != undefined">{{
-                                                        tripData.reeferTemperature }}<sup>o</sup> {{
-                                                        tripData.reeferTemperatureUnit }}</span>
-                                                    <span class="pull-right pt-1 text-5 font-weight-bold text-dark"
-                                                        *ngIf="tripData.reeferTemperature == '' || tripData.reeferTemperature == undefined">
-                                                        - </span>
-                                                    <h2
-                                                        class="pull-left line-height-lg mb-0 mt-0 text-4 font-weight-semibold text-dark">
-                                                        Reefer
-                                                        Temperature</h2>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-
-
-                                <div class="col-xl-4 col-12 mb-3 pl-0 pr-0">
-                                    <div class="col-xl-12 col-12 mb-3">
-                                        <div class="vehicle-common-box maindisbox w100 pull-left">
-                                            <div class="widgetload">
-                                                <div class="widgettbload">
-                                                    <span class="pull-right text-3 mt-2 text-dark">
-
-                                                    </span>
-
-                                                    <h2
-                                                        class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
-                                                        <i class="fas fa-box"></i>
-                                                        Attachments
-                                                    </h2>
-                                                </div>
-
-                                                <div class="widgetlinfo pb-1">
-                                                    <div class="row">
-                                                        <div class="col-lg-5"> <label
-                                                                class="control-label font-weight-semibold">Upload
-                                                                BOL/POD</label></div>
-                                                        <div class="col-lg-7">
-                                                            <input type="file" id="bolUpload"
-                                                                class="p-0 form-control border-0 mb-2"
-                                                                (change)="selectDocuments($event)" multiple>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row" style="max-height: 110px; overflow: scroll;">
-                                                        <div class="col-12">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <th>Sr.</th>
-                                                                    <th>Name</th>
-                                                                    <th>Icon/Thumbnail</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr *ngIf="uploadedDocSrc.length == 0;">
-                                                                        <td colspan="4"> <span>No document found</span>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr *ngFor="let doc of uploadedDocSrc;let d= index">
-                                                                        <td>{{d+1}}</td>
-                                                                        <td>{{doc.displayName}}</td>
-                                                                        <td> <a class="image-popup-no-margins"
-                                                                                href="{{doc.docPath}}" target="_blank">
-                                                                                <img class="img_thumbnail"
-                                                                                    src="{{doc.imgPath}}">
-                                                                            </a></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                        </div>
-                                                    </div>
-                                                    <!-- <div class="flex">
-                                                    <div class="col-md-3 " *ngFor="let docs of uploadedDocSrc">
-                                                        <a class="image-popup-no-margins" href="{{docs.docPath}}" target="_blank">
-                                                            <img class="thumbnail" src="{{docs.imgPath}}"
-                                                                >
-                                                        </a>
-                                                    </div>
-                                                </div> -->
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-xl-9 col-12">
+                  <div class="row">
+                    <div class="col-xl-6 col-6">
+                      <div class="safetytile p-4 border">
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ tripData.tripNo }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Trip#
+                          </h2>
                         </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-3 mb-3" />
+                        </div>
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ orderNumbers }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Order#
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-3 mb-3" />
+                        </div>
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{ routeName }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Permanent Route
+                          </h2>
+                        </div>
+                      </div>
                     </div>
+
+                    <div class="col-xl-6 col-6 pr-0">
+                      <div class="safetytile p-4 border">
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{
+                              tripData.bol != "" && tripData.bol != undefined
+                                ? tripData.bol
+                                : "-"
+                            }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            BOL/POD#
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-3 mb-3" />
+                        </div>
+                        <div class="driverbar w100">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            >{{
+                              tripData.dateCreated | date: "yyyy/MM/dd"
+                            }}</span
+                          >
+                          <h2
+                            class="
+                              pull-left
+                              line-height-xl
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Trip Date
+                          </h2>
+                        </div>
+                        <div class="w100 pull-left">
+                          <hr class="solid mt-3 mb-3" />
+                        </div>
+                        <div class="driverbar">
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            *ngIf="
+                              tripData.reeferTemperature != '' &&
+                              tripData.reeferTemperature != undefined
+                            "
+                            >{{ tripData.reeferTemperature }}<sup>o</sup>
+                            {{ tripData.reeferTemperatureUnit }}</span
+                          >
+                          <span
+                            class="
+                              pull-right
+                              pt-1
+                              text-5
+                              font-weight-bold
+                              text-dark
+                            "
+                            *ngIf="
+                              tripData.reeferTemperature == '' ||
+                              tripData.reeferTemperature == undefined
+                            "
+                          >
+                            -
+                          </span>
+                          <h2
+                            class="
+                              pull-left
+                              line-height-lg
+                              mb-0
+                              mt-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            Reefer Temperature
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row">
+                <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
+                  <div class="col-xl-12 col-12 mb-3">
+                    <div class="vehicle-common-box maindisbox w100 pull-left">
+                      <div class="widgetload">
+                        <div class="widgettbload">
+                          <span class="pull-right text-3 mt-2 text-dark">
+                          </span>
 
-                                <div class="col-xl-12 col-12">
-                                    <div class="vehicle-common-box pull-left w100 h-100">
-                                        <div class="widgettbload">
-                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                                    class="fas fa-route"></i> Trip Route</h2>
-                                        </div>
+                          <h2
+                            class="
+                              pull-left
+                              mt-0
+                              mb-0
+                              text-4
+                              font-weight-semibold
+                              text-dark
+                            "
+                          >
+                            <i class="fas fa-box"></i>
+                            Attachments
+                          </h2>
+                        </div>
 
-                                        <div class="widgetload">
+                        <div class="widgetlinfo pb-1">
+                          <div class="row">
+                            <div class="col-lg-5">
+                              <label class="control-label font-weight-semibold"
+                                >Upload BOL/POD</label
+                              >
+                            </div>
+                            <div class="col-lg-7">
+                              <input
+                                type="file"
+                                id="bolUpload"
+                                class="p-0 form-control border-0 mb-2"
+                                (change)="selectDocuments($event)"
+                                multiple
+                              />
+                            </div>
+                          </div>
 
-                                            <div class="widgetlinfo">
-                                                <table class="table table-sm table-bordered table-striped"
-                                                    id="locationTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Type</th>
-                                                            <th>Date</th>
-                                                            <!-- <th>Time</th> -->
-                                                            <th>Pickup Time</th>
-                                                            <th>Drop Off Time</th>
-                                                            <!-- <th>Actual Pickup Time</th>
+                          <div class="flex">
+                            <div
+                              class="col-md-3"
+                              *ngFor="let docs of uploadedDocSrc"
+                            >
+                              <a
+                                class="image-popup-no-margins"
+                                href="{{ docs.docPath }}"
+                                target="_blank"
+                              >
+                                <img
+                                  class="thumbnail"
+                                  src="{{ docs.imgPath }}"
+                                />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                        -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-xl-12 col-12">
+                  <div class="vehicle-common-box pull-left w100 h-100">
+                    <div class="widgettbload">
+                      <h2
+                        class="
+                          pull-left
+                          mt-0
+                          mb-0
+                          text-4
+                          font-weight-semibold
+                          text-dark
+                        "
+                      >
+                        <i class="fas fa-route"></i> Trip Route
+                      </h2>
+                    </div>
+
+                    <div class="widgetload">
+                      <div class="widgetlinfo">
+                        <table
+                          class="table table-sm table-bordered table-striped"
+                          id="locationTable"
+                        >
+                          <thead>
+                            <tr>
+                              <th>Type</th>
+                              <th>Date</th>
+                              <!-- <th>Time</th> -->
+                              <th>Pickup Time</th>
+                              <th>Drop Off Time</th>
+                              <!-- <th>Actual Pickup Time</th>
                                                     <th>Actual Drop Off Time</th> -->
-                                                            <!-- <th>Departure Date/Time</th> -->
-                                                            <th>Name</th>
-                                                            <th>Location</th>
-                                                            <th>Loaded/ Empty</th>
-                                                            <th>Miles</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Asset</th>
-                                                            <th>Driver</th>
-                                                            <th>Co-Driver</th>
-                                                            <th>Carrier</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let trip of trips">
-                                                            <td>{{ trip.type }}</td>
-                                                            <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
-                                                            <!-- <td>{{ trip.time }}</td> -->
-                                                            <td>{{ trip.pickupTime }}</td>
-                                                            <td>{{ trip.dropTime }}</td>
-                                                            <!-- <td>{{ trip.actualPickupTime }}</td>
+                              <!-- <th>Departure Date/Time</th> -->
+                              <th>Name</th>
+                              <th>Location</th>
+                              <th>Loaded/ Empty</th>
+                              <th>Miles</th>
+                              <th>Vehicle</th>
+                              <th>Asset</th>
+                              <th>Driver</th>
+                              <th>Co-Driver</th>
+                              <th>Carrier</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let trip of trips">
+                              <td>{{ trip.type }}</td>
+                              <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                              <!-- <td>{{ trip.time }}</td> -->
+                              <td>{{ trip.pickupTime }}</td>
+                              <td>{{ trip.dropTime }}</td>
+                              <!-- <td>{{ trip.actualPickupTime }}</td>
                                                     <td>{{ trip.actualDropTime }}</td> -->
-                                                            <!-- <td>6/6/2020 10:00 AM</td> -->
-                                                            <td>{{ trip.name }}</td>
-                                                            <td>{{ trip.locationName }}</td>
-                                                            <td>
-                                                                <span class="badge badge-dark p-1 text-uppercase"
-                                                                    title="" data-original-title="Empty Miles"
-                                                                    *ngIf="trip.mileType != ''">{{
-                                                                    trip.mileType }}</span>
-                                                            </td>
-                                                            <td>{{ trip.miles }}</td>
-                                                            <td>{{ vehiclesObject[trip.vehicleID] }}</td>
-                                                            <td>
-                                                                <span *ngFor="let asst of trip.assetID">
-                                                                    {{ assetsObject[asst] }}
-                                                                    <br>
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ driversObject[trip.driverID] }}
-                                                                <span
-                                                                    *ngIf="trip.driverStatus && trip.driverStatus=='REJECTED'"
-                                                                    class="badge badge-danger">{{trip.driverStatus}}</span>
-                                                                <span
-                                                                    *ngIf="trip.driverStatus && trip.driverStatus=='ACCEPTED'"
-                                                                    class="badge badge-success">{{trip.driverStatus}}</span>
-                                                                <span
-                                                                    *ngIf="trip.driverStatus && trip.driverStatus=='ASSIGNED'"
-                                                                    class="badge bg-blue">{{trip.driverStatus}}</span>
-                                                            </td>
-                                                            <td>{{ driversObject[trip.coDriverID] }}
-                                                                <span
-                                                                    *ngIf="trip.coDriverStatus && trip.coDriverStatus=='REJECTED'"
-                                                                    class="badge badge-danger">{{trip.coDriverStatus}}</span>
-                                                                <span
-                                                                    *ngIf="trip.coDriverStatus && trip.coDriverStatus=='ACCEPTED'"
-                                                                    class="badge badge-success">{{trip.coDriverStatus}}</span>
-                                                                <span
-                                                                    *ngIf="trip.coDriverStatus && trip.coDriverStatus=='ASSIGNED'"
-                                                                    class="badge bg-blue">{{trip.coDriverStatus}}</span>
-                                                            </td>
-                                                            <td>{{ carriersObject[trip.carrierID] }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                              <!-- <td>6/6/2020 10:00 AM</td> -->
+                              <td>{{ trip.name }}</td>
+                              <td>{{ trip.locationName }}</td>
+                              <td>
+                                <span
+                                  class="badge badge-dark p-1 text-uppercase"
+                                  title=""
+                                  data-original-title="Empty Miles"
+                                  *ngIf="trip.mileType != ''"
+                                  >{{ trip.mileType }}</span
+                                >
+                              </td>
+                              <td>{{ trip.miles }}</td>
+                              <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                              <td>
+                                <span *ngFor="let asst of trip.assetID">
+                                  {{ assetsObject[asst] }}
+                                  <br />
+                                </span>
+                              </td>
+                              <td>
+                                {{ driversObject[trip.driverID] }}
+                                <span
+                                  *ngIf="
+                                    trip.driverStatus &&
+                                    trip.driverStatus == 'REJECTED'
+                                  "
+                                  class="badge badge-danger"
+                                  >{{ trip.driverStatus }}</span
+                                >
+                                <span
+                                  *ngIf="
+                                    trip.driverStatus &&
+                                    trip.driverStatus == 'ACCEPTED'
+                                  "
+                                  class="badge badge-success"
+                                  >{{ trip.driverStatus }}</span
+                                >
+                                <span
+                                  *ngIf="
+                                    trip.driverStatus &&
+                                    trip.driverStatus == 'ASSIGNED'
+                                  "
+                                  class="badge bg-blue"
+                                  >{{ trip.driverStatus }}</span
+                                >
+                              </td>
+                              <td>
+                                {{ driversObject[trip.coDriverID] }}
+                                <span
+                                  *ngIf="
+                                    trip.coDriverStatus &&
+                                    trip.coDriverStatus == 'REJECTED'
+                                  "
+                                  class="badge badge-danger"
+                                  >{{ trip.coDriverStatus }}</span
+                                >
+                                <span
+                                  *ngIf="
+                                    trip.coDriverStatus &&
+                                    trip.coDriverStatus == 'ACCEPTED'
+                                  "
+                                  class="badge badge-success"
+                                  >{{ trip.coDriverStatus }}</span
+                                >
+                                <span
+                                  *ngIf="
+                                    trip.coDriverStatus &&
+                                    trip.coDriverStatus == 'ASSIGNED'
+                                  "
+                                  class="badge bg-blue"
+                                  >{{ trip.coDriverStatus }}</span
+                                >
+                              </td>
+                              <td>{{ carriersObject[trip.carrierID] }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                <div class="row mb-3" *ngIf="splitArr.length > 0">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row" *ngFor="let data of splitArr;  let o=index;">
-                                <div class="col-xl-12 col-12">
-                                    <div class="vehicle-common-box pull-left w100 h-100">
-                                        <div class="widgettbload">
-                                            <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                                    class="fas fa-route"></i> Sub Trip - {{ tripData.tripNo }} ({{ o+1
-                                                }}) </h2>
-                                        </div>
+        <div class="row mb-3" *ngIf="splitArr.length > 0">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div
+                class="form-group row"
+                *ngFor="let data of splitArr; let o = index"
+              >
+                <div class="col-xl-12 col-12">
+                  <div class="vehicle-common-box pull-left w100 h-100">
+                    <div class="widgettbload">
+                      <h2
+                        class="
+                          pull-left
+                          mt-0
+                          mb-0
+                          text-4
+                          font-weight-semibold
+                          text-dark
+                        "
+                      >
+                        <i class="fas fa-route"></i> Sub Trip -
+                        {{ tripData.tripNo }} ({{ o + 1 }})
+                      </h2>
+                    </div>
 
-                                        <div class="widgetload">
-                                            <div class="widgetlinfo">
-                                                <table class="table table-sm table-bordered table-striped"
-                                                    id="locationTable">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Type</th>
-                                                            <th>Date</th>
-                                                            <!-- <th>Time</th> -->
-                                                            <th>Pickup Time</th>
-                                                            <th>Drop Off Time</th>
-                                                            <!-- <th>Actual Pickup Time</th>
+                    <div class="widgetload">
+                      <div class="widgetlinfo">
+                        <table
+                          class="table table-sm table-bordered table-striped"
+                          id="locationTable"
+                        >
+                          <thead>
+                            <tr>
+                              <th>Type</th>
+                              <th>Date</th>
+                              <!-- <th>Time</th> -->
+                              <th>Pickup Time</th>
+                              <th>Drop Off Time</th>
+                              <!-- <th>Actual Pickup Time</th>
                                                             <th>Actual Drop Off Time</th> -->
-                                                            <!-- <th>Departure Date/Time</th> -->
-                                                            <th>Name</th>
-                                                            <th>Location</th>
-                                                            <th>Loaded/ Empty</th>
-                                                            <th>Miles</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Asset</th>
-                                                            <th>Driver</th>
-                                                            <th>Co-Driver</th>
-                                                            <th>Carrier</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr *ngFor="let trip of data">
-                                                            <td>{{ trip.type }}</td>
-                                                            <td>{{ trip.date | date:"yyyy/MM/dd" }}</td>
-                                                            <!-- <td>{{ trip.time }}</td> -->
-                                                            <td>{{ trip.pickupTime }}</td>
-                                                            <td>{{ trip.dropTime }}</td>
-                                                            <!-- <td>{{ trip.actualPickupTime }}</td>
+                              <!-- <th>Departure Date/Time</th> -->
+                              <th>Name</th>
+                              <th>Location</th>
+                              <th>Loaded/ Empty</th>
+                              <th>Miles</th>
+                              <th>Vehicle</th>
+                              <th>Asset</th>
+                              <th>Driver</th>
+                              <th>Co-Driver</th>
+                              <th>Carrier</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let trip of data">
+                              <td>{{ trip.type }}</td>
+                              <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                              <!-- <td>{{ trip.time }}</td> -->
+                              <td>{{ trip.pickupTime }}</td>
+                              <td>{{ trip.dropTime }}</td>
+                              <!-- <td>{{ trip.actualPickupTime }}</td>
                                                             <td>{{ trip.actualDropTime }}</td> -->
-                                                            <!-- <td>6/6/2020 10:00 AM</td> -->
-                                                            <td>{{ trip.name }}</td>
-                                                            <td>{{ trip.locationName }}</td>
-                                                            <td>
-                                                                <span class="badge badge-dark p-1 text-uppercase"
-                                                                    title="" data-original-title="Empty Miles"
-                                                                    *ngIf="trip.mileType != ''">{{
-                                                                    trip.mileType }}</span>
-                                                            </td>
-                                                            <td>{{ trip.miles }}</td>
-                                                            <td>{{ vehiclesObject[trip.vehicleID] }}</td>
-                                                            <td>
-                                                                <span *ngFor="let asst of trip.assetID">
-                                                                    {{ assetsObject[asst] }}
-                                                                    <br>
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ driversObject[trip.driverID] }}</td>
-                                                            <td>{{ driversObject[trip.coDriverID] }}</td>
-                                                            <td>{{ carriersObject[trip.carrierID] }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                              <!-- <td>6/6/2020 10:00 AM</td> -->
+                              <td>{{ trip.name }}</td>
+                              <td>{{ trip.locationName }}</td>
+                              <td>
+                                <span
+                                  class="badge badge-dark p-1 text-uppercase"
+                                  title=""
+                                  data-original-title="Empty Miles"
+                                  *ngIf="trip.mileType != ''"
+                                  >{{ trip.mileType }}</span
+                                >
+                              </td>
+                              <td>{{ trip.miles }}</td>
+                              <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                              <td>
+                                <span *ngFor="let asst of trip.assetID">
+                                  {{ assetsObject[asst] }}
+                                  <br />
+                                </span>
+                              </td>
+                              <td>{{ driversObject[trip.driverID] }}</td>
+                              <td>{{ driversObject[trip.coDriverID] }}</td>
+                              <td>{{ carriersObject[trip.carrierID] }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <h3 class="font-weight-bold mt-0">Trip Information</h3>
+                  <div class="row mt-3 justify-content-center pl-5 pr-5">
+                    <div class="w100 pl-3">
+                      <div class="tripbarn"></div>
+                    </div>
+                  </div>
+
+                  <div class="tripinfoscroll">
+                    <div
+                      class="
+                        row
+                        d-flex
+                        flex-row flex-nowrap
+                        justify-content-between
+                        pl-3
+                        pr-3
+                      "
+                    >
+                      <div class="text-center" *ngFor="let trip of trips">
+                        <div
+                          class="tripcirclen"
+                          data-toggle="tooltip"
+                          title="{{ trip.locationName }}"
+                        ></div>
+                        <div
+                          class="tripcontentn"
+                          data-toggle="tooltip"
+                          title="{{ trip.locationName }}"
+                        >
+                          <p
+                            class="
+                              font-weight-bold
+                              text-dark text-2
+                              line-height-xs
+                            "
+                          >
+                            {{ trip.type }} <br />{{
+                              trip.date | date: "yyyy/MM/dd"
+                            }}
+                            -
+                            {{
+                              trip.type == "Pickup"
+                                ? trip.pickupTime
+                                : trip.dropTime
+                            }}
+                          </p>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <mat-accordion>
+              <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <label class="control-label text-lg-right text-5"
+                      >Map View</label
+                    >
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
                 <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <h3 class="font-weight-bold mt-0">Trip Information</h3>
-                                    <div class="row mt-3 justify-content-center pl-5 pr-5">
-                                        <div class="w100 pl-3">
-                                            <div class="tripbarn"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="tripinfoscroll">
-                                        <div class="row d-flex flex-row flex-nowrap justify-content-between pl-3 pr-3">
-                                            <div class="text-center" *ngFor="let trip of trips">
-                                                <div class="tripcirclen" data-toggle="tooltip"
-                                                    title="{{ trip.locationName }}"></div>
-                                                <div class="tripcontentn" data-toggle="tooltip"
-                                                    title="{{ trip.locationName }}">
-                                                    <p class="font-weight-bold text-dark text-2 line-height-xs">{{
-                                                        trip.type}}
-                                                        <br>{{ trip.date | date: "yyyy/MM/dd" }} - {{ (trip.type ==
-                                                        'Pickup') ? trip.pickupTime : trip.dropTime }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                  <div class="col-lg-12">
+                    <div class="bg-white p-3 text-dark">
+                      <div class="form-group row">
+                        <div class="col-lg-12">
+                          <div class="mapclass vehiclemain" id="map_view">
+                            <div
+                              id="map"
+                              style="height: calc(100vh - 150px)"
+                            ></div>
+                          </div>
                         </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
-                <div class="row mb-3">
-                    <div class="col-12">
-                        <mat-accordion>
-                            <mat-expansion-panel hideToggle>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title>
-                                        <label class="control-label text-lg-right text-5">Map View</label>
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <div class="row mb-3">
-                                    <div class="col-lg-12">
-                                        <div class="bg-white p-3 text-dark">
-                                            <div class="form-group row">
-                                                <div class="col-lg-12">
-                                                    <div class="mapclass vehiclemain" id="map_view">
-                                                        <div id="map" style="height: calc(100vh - 150px);"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </mat-expansion-panel>
-                        </mat-accordion>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-6">
+                  <div class="boxshadow1">
+                    <div class="widgetload">
+                      <div class="widgettbload">
+                        <h2
+                          class="
+                            pull-left
+                            mt-0
+                            mb-0
+                            text-4
+                            font-weight-semibold
+                            text-dark
+                          "
+                        >
+                          <i class="fas fa-user"></i> Trip Log
+                        </h2>
+                      </div>
                     </div>
+                    <div
+                      class="timeline timeline-simple changelog"
+                      style="max-height: 497px; overflow-x: auto; width: 100%"
+                    >
+                      <div class="tm-body text-dark" *ngIf="tripLog.length > 0">
+                        <ol class="tm-items">
+                          <li *ngFor="let data of tripLog">
+                            <div class="tm-box">
+                              <span class="release-date"
+                                >{{ data.createdDate }} -
+                                {{ data.createdTime }}</span
+                              >
+                              <ul class="list-unstyled">
+                                <li>
+                                  {{ data.userFirstName | titlecase }}
+                                  {{ data.userLastName | titlecase }}
+                                  {{ data.eventParams.message }}
+                                  {{ data.eventParams.type }}
+                                  <b class="text-success">{{
+                                    data.entityNumber
+                                  }}</b>
+                                </li>
+                              </ul>
+                            </div>
+                          </li>
+                        </ol>
+                      </div>
+                      <div
+                        class="mt-3 mb-3 text-center"
+                        *ngIf="tripLog.length == 0"
+                      >
+                        {{ noOrdersMsg }}
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-lg-12">
-                        <div class="bg-white p-3 text-dark">
-                            <div class="form-group row">
-                                <div class=" col-6">
-                                    <div class="boxshadow1">
-                                        <div class="widgetload">
-                                            <div class="widgettbload">
-                                                <h2 class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark"><i
-                                                        class="fas fa-user"></i> Trip Log</h2>
-                                            </div>
-                                        </div>
-                                        <div class="timeline timeline-simple changelog"
-                                            style="max-height: 497px;overflow-x: auto;width: 100%;">
-                                            <div class="tm-body text-dark" *ngIf="tripLog.length > 0">
-                                                <ol class="tm-items">
-                                                    <li *ngFor="let data of tripLog">
-                                                        <div class="tm-box">
-                                                            <span class="release-date">{{data.createdDate}} -
-                                                                {{data.createdTime}}</span>
-                                                            <ul class="list-unstyled">
-                                                                <li> {{ data.userFirstName | titlecase }} {{
-                                                                    data.userLastName | titlecase }} {{
-                                                                    data.eventParams.message }} {{ data.eventParams.type
-                                                                    }} <b class="text-success">{{ data.entityNumber
-                                                                        }}</b>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ol>
-                                            </div>
-                                            <div class="mt-3 mb-3 text-center" *ngIf="tripLog.length == 0">
-                                                {{ noOrdersMsg }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="vehicle-common-box w100 pull-left mb-3">
-                                        <div class="widgetload">
-                                            <div class="widgettbload">
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <h2
-                                                            class="pull-left mt-0 mb-0 text-4 font-weight-semibold text-dark">
-                                                            <i class="fas fa-dollar-sign"></i> Expenses
-                                                        </h2>
-                                                    </div>
-                                                    <div class="col-lg-4 text-right mt-2">
-                                                        <a routerLink="/accounts/expense/add"
-                                                            class="btn btn-success btn-xs" style="color:white;"><i
-                                                                class="fas fa-plus"></i> Add Expense </a>
-                                                        <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
+                <div class="col-6">
+                  <div class="vehicle-common-box w100 pull-left mb-3">
+                    <div class="widgetload">
+                      <div class="widgettbload">
+                        <div class="row">
+                          <div class="col-lg-8">
+                            <h2
+                              class="
+                                pull-left
+                                mt-0
+                                mb-0
+                                text-4
+                                font-weight-semibold
+                                text-dark
+                              "
+                            >
+                              <i class="fas fa-dollar-sign"></i> Expenses
+                            </h2>
+                          </div>
+                          <div class="col-lg-4 text-right mt-2">
+                            <a
+                              routerLink="/accounts/expense/add"
+                              class="btn btn-success btn-xs"
+                              style="color: white"
+                              ><i class="fas fa-plus"></i> Add Expense
+                            </a>
+                            <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
                                                     <a href="javascript:;" class="btn btn-xs btn-dark ml-3"> Other
                                                         Expenses</a> -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="widgetlinfo" style="max-height: 190px;overflow-x: auto;">
-                                            <table class="table table-responsive-md table-bordered table-sm mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Expense Date</th>
-                                                        <th>Expense Name</th>
-                                                        <th>Expense Type</th>
-                                                        <th>Expense Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngIf="expenses.length === 0" class="text-center">
-                                                        <td colspan="4">{{ noOrdersMsg }}</td>
-                                                    </tr>
-                                                    <tr *ngFor="let expense of expenses">
-                                                        <td>{{expense.txnDate | date: 'yyyy/MM/dd'}}</td>
-                                                        <td> {{categories[expense.categoryID]}}</td>
-                                                        <td> Other Expense</td>
-                                                        <td>{{expense.amount}} {{expense.currency}}</td>
-                                                    </tr>
-                                                </tbody>
-                                                <tfoot *ngIf="expenses.length > 0">
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="font-weight-bold">Total Amount</td>
-                                                        <td class="font-weight-bold">{{totalExp}}</td>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="widgetlinfo"
+                      style="max-height: 190px; overflow-x: auto"
+                    >
+                      <table
+                        class="
+                          table table-responsive-md table-bordered table-sm
+                          mb-0
+                        "
+                      >
+                        <thead>
+                          <tr>
+                            <th>Expense Date</th>
+                            <th>Expense Name</th>
+                            <th>Expense Type</th>
+                            <th>Expense Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="expenses.length === 0" class="text-center">
+                            <td colspan="4">{{ noOrdersMsg }}</td>
+                          </tr>
+                          <tr *ngFor="let expense of expenses">
+                            <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
+                            <td>{{ categories[expense.categoryID] }}</td>
+                            <td>Other Expense</td>
+                            <td>{{ expense.amount }} {{ expense.currency }}</td>
+                          </tr>
+                        </tbody>
+                        <tfoot *ngIf="expenses.length > 0">
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td class="font-weight-bold">Total Amount</td>
+                            <td class="font-weight-bold">{{ totalExp }}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                      <div class="disbtmpart w100"></div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table
+                        class="
+                          table table-responsive-sm table-bordered table-sm
+                          mb-0
+                        "
+                      >
+                        <thead>
+                          <tr class="back-color-gray">
+                            <th colspan="4">
+                              <h3 class="my-1 text-5"><b>Planned</b></h3>
+                            </th>
 
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                            <div class="disbtmpart w100">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <table class="table table-responsive-sm table-bordered table-sm mb-0">
-                                                <thead>
-                                                    <tr class="back-color-gray">
-                                                        <th colspan="4">
-                                                            <h3 class="my-1 text-5"><b>Planned</b></h3>
-                                                        </th>
-
-                                                        <!-- <th colspan="2">
+                            <!-- <th colspan="2">
                                                         <h3 class="my-1 text-5"><b>Notifications</b></h3>
                                                     </th> -->
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <span class="line-height-xl text-4 font-weight-bold"><i
-                                                                    class="fa fa-route"></i> {{plannedMiles | number :
-                                                                '1.2-2'}} miles
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="line-height-xl"> <i
-                                                                    class="fa fa-calendar-alt"></i>
-                                                                {{ stops }} Stop(s)
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="line-height-xl">
-                                                                <i class="fa fa-map-marker-alt"></i> Pick-up
-                                                                {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span
-                                                                    *ngIf="trips.length > 0">{{ trips[0].pickupTime }}
-                                                                </span>
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="line-height-xl">
-                                                                <i class="fa fa-map-marker-alt"></i> Delivery
-                                                                {{ tripData.dateCreated | date:'yyyy/MM/dd' }} <span
-                                                                    *ngIf="trips.length > 0">{{ lastDelivery }} </span>
-                                                            </span>
-                                                        </td>
-                                                        <!-- <td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <span
+                                class="line-height-xl text-4 font-weight-bold"
+                                ><i class="fa fa-route"></i>
+                                {{ plannedMiles | number: "1.2-2" }} miles
+                              </span>
+                            </td>
+                            <td>
+                              <span class="line-height-xl">
+                                <i class="fa fa-calendar-alt"></i>
+                                {{ stops }} Stop(s)
+                              </span>
+                            </td>
+                            <td>
+                              <span class="line-height-xl">
+                                <i class="fa fa-map-marker-alt"></i> Pick-up
+                                {{ tripData.dateCreated | date: "yyyy/MM/dd" }}
+                                <span *ngIf="trips.length > 0"
+                                  >{{ trips[0].pickupTime }}
+                                </span>
+                              </span>
+                            </td>
+                            <td>
+                              <span class="line-height-xl">
+                                <i class="fa fa-map-marker-alt"></i> Delivery
+                                {{ tripData.dateCreated | date: "yyyy/MM/dd" }}
+                                <span *ngIf="trips.length > 0"
+                                  >{{ lastDelivery }}
+                                </span>
+                              </span>
+                            </td>
+                            <!-- <td>
                                                         <span
                                                             class="line-height-xl font-weight-semibold mb-0 mt-0 text-3 text-dark">Notify
                                                             Dispatcher
@@ -597,8 +866,8 @@
                                                         <span *ngIf="!tripData.notifications">No</span>
 
                                                     </td> -->
-                                                    </tr>
-                                                    <!-- <tr>
+                          </tr>
+                          <!-- <tr>
                                                     
 
                                                     <td>
@@ -617,7 +886,7 @@
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
                                                 </tr> -->
-                                                    <!-- <tr>
+                          <!-- <tr>
                                                     
 
                                                     <td>
@@ -636,7 +905,7 @@
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
                                                 </tr> -->
-                                                    <!-- <tr>
+                          <!-- <tr>
                                                     
 
                                                     <td>
@@ -678,87 +947,728 @@
                                                         <span *ngIf="!tripData.notifications">No</span>
                                                     </td>
                                                 </tr> -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </tbody>
+                      </table>
                     </div>
+                  </div>
                 </div>
-
-            </section>
-
-
-
-        </section>
-    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
 </section>
 
 <!-- split popoup -->
 <div class="modal fade" id="splitpopup">
-    <div class="modal-dialog" role="document" style="max-width: 600px;">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Split</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+  <div class="modal-dialog" role="document" style="max-width: 600px">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Split</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-lg-3 col-md-12">
+              <div class="radio">
+                <label
+                  ><input
+                    type="radio"
+                    name="split-stop"
+                    value="split_stop"
+                    id="stop"
+                    onclick="show_stop_dropdown()"
+                    checked="checked"
+                  />
+                  Stop</label
+                >
+              </div>
             </div>
-            <form>
-                <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-lg-3 col-md-12">
-                            <div class="radio">
-                                <label><input type="radio" name="split-stop" value="split_stop" id="stop"
-                                        onclick="show_stop_dropdown()" checked="checked">
-                                    Stop</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-3 col-md-12">
-                            <div class="radio">
-                                <label><input type="radio" name="split-stop" value="split_yard" id="yard"
-                                        onclick="show_yard_dropdown()">
-                                    Location</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-6 col-md-12" id="split_stop_dropdown">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stops</label>
-                            <select class="form-control">
-                                <option value="2" data-select2-id="260">Fleet trucking | 7050 Weston Row</option>
-                                <option value="2">Truck AtoZ | 1818 Weston Row</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown" style="display: none;">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Location</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-lg-6 col-md-12">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop Arrival Date
-                            </label>
-                            <input type="date" data-plugin-datepicker="" class="form-control" placeholder="3/4/2020">
-                        </div>
-                        <div class="form-group col-lg-6 col-md-12">
-                            <label class="control-label font-weight-semibold labelmt text-3 text-dark">Stop
-                                Departure Date</label>
-                            <input type="date" data-plugin-datepicker="" class="form-control" placeholder="select date">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row">
-                        <div class="col-md-12 text-right">
-                            <button class="btn btn-success modal-confirm">Split</button>
-                            <button class="btn btn-default modal-dismiss">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <div class="form-group col-lg-3 col-md-12">
+              <div class="radio">
+                <label
+                  ><input
+                    type="radio"
+                    name="split-stop"
+                    value="split_yard"
+                    id="yard"
+                    onclick="show_yard_dropdown()"
+                  />
+                  Location</label
+                >
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-6 col-md-12" id="split_stop_dropdown">
+              <label
+                class="
+                  control-label
+                  font-weight-semibold
+                  labelmt
+                  text-3 text-dark
+                "
+                >Stops</label
+              >
+              <select class="form-control">
+                <option value="2" data-select2-id="260">
+                  Fleet trucking | 7050 Weston Row
+                </option>
+                <option value="2">Truck AtoZ | 1818 Weston Row</option>
+              </select>
+            </div>
+            <div
+              class="form-group col-lg-6 col-md-12"
+              id="split_yard_dropdown"
+              style="display: none"
+            >
+              <label
+                class="
+                  control-label
+                  font-weight-semibold
+                  labelmt
+                  text-3 text-dark
+                "
+                >Location</label
+              >
+              <input type="text" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-6 col-md-12">
+              <label
+                class="
+                  control-label
+                  font-weight-semibold
+                  labelmt
+                  text-3 text-dark
+                "
+                >Stop Arrival Date
+              </label>
+              <input
+                type="date"
+                data-plugin-datepicker=""
+                class="form-control"
+                placeholder="3/4/2020"
+              />
+            </div>
+            <div class="form-group col-lg-6 col-md-12">
+              <label
+                class="
+                  control-label
+                  font-weight-semibold
+                  labelmt
+                  text-3 text-dark
+                "
+                >Stop Departure Date</label
+              >
+              <input
+                type="date"
+                data-plugin-datepicker=""
+                class="form-control"
+                placeholder="select date"
+              />
+            </div>
+          </div>
         </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-md-12 text-right">
+              <button class="btn btn-success modal-confirm">Split</button>
+              <button class="btn btn-default modal-dismiss">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 <!-- split popup end -->
+
+<ng-template #tripInfoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Trip Information</h5>
+    <button
+      type="button"
+      (click)="modal.dismiss()"
+      class="close"
+      data-dismiss="modal"
+      aria-label="Close"
+    >
+      <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table
+      width="100%"
+      style="color: #000; font-weight: 600"
+      border="0"
+      align="center"
+      cellpadding="0"
+      cellspacing="0"
+    >
+      <tbody>
+        <tr>
+          <td width="50%">
+            <h1 style="font-size: 26px; font-weight: 600">
+              Driver Information Sheet
+            </h1>
+          </td>
+
+          <td width="50%" align="right" valign="middle">
+            <img src="./../../../../../assets/img/logo.png" />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+        </tr>
+        <tr>
+          <td width="50%" valign="top">
+            <h2 style="font-size: 20px; font-weight: 600">
+              Customer: Mark Daniel
+            </h2>
+            <p style="font-size: 13px; color: #000">
+              62 Administration Rd. Concord, Ontario, CA L4K 2R7<br />
+              <strong>Phone:</strong> 1-809-387-1904<br />
+              <strong>Email:</strong> admin@wclntrans.ca
+            </p>
+          </td>
+          <td width="50%" valign="top">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+        </tr>
+        <tr>
+          <td colspan="2" valign="top">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td>
+                    <h2 style="font-size: 20px; font-weight: 600">
+                      Order# 5400
+                    </h2>
+                  </td>
+                  <td>
+                    <h2 style="font-size: 20px; font-weight: 600">
+                      Trip# 24689
+                    </h2>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td width="50%">
+                    <h2 style="font-size: 20px; font-weight: 600">Notes</h2>
+                  </td>
+                  <td>
+                    <h2 style="font-size: 20px; font-weight: 600">
+                      Trip Type: FTL
+                    </h2>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <table
+                      width="100%"
+                      style="
+                        border: 1px solid #adadad;
+                        font-size: 13px;
+                        margin-bottom: 10px;
+                      "
+                      cellpadding="0"
+                      cellspacing="0"
+                      bordercolor="#adadad"
+                    >
+                      <tbody>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            width="25%"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="font-weight: 600; color: #000">
+                              Vehicle#
+                            </p>
+                          </td>
+                          <td
+                            width="25%"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p>5428</p>
+                          </td>
+                          <td
+                            width="25%"
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="font-weight: 600; color: #000">Asset#</p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">24589</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="font-weight: 600; color: #000">
+                              Order Date
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">2021/08/17</p>
+                          </td>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="font-weight: 600; color: #000">
+                              Ship Date
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">2021/08/19</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="font-weight: 600; color: #000">
+                              Start Odometer (km)
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">13770</p>
+                          </td>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              End Odometer (km)
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">15425</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              Distance
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">1655</p>
+                          </td>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              Commodity
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">Clothes</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              Quantity
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">110 Box</p>
+                          </td>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">Weight</p>
+                          </td>
+                          <td
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">4500 kg</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              Reference
+                            </p>
+                          </td>
+                          <td
+                            colspan="3"
+                            style="
+                              border-bottom: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">
+                              Handle with care please. Thanks
+                            </p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            bgcolor="#f3f3f3"
+                            style="
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000; font-weight: 600">
+                              Driver 1
+                            </p>
+                          </td>
+                          <td
+                            style="
+                              border-right: 1px solid #adadad;
+                              padding-left: 10px;
+                            "
+                          >
+                            <p style="color: #000">Aiden Markram</p>
+                          </td>
+                          <td bgcolor="#f3f3f3" style="padding-left: 10px">
+                            <p
+                              style="color: #000; font-weight: 600; color: #000"
+                            >
+                              Driver 2
+                            </p>
+                          </td>
+                          <td style="padding-left: 10px">
+                            <p style="color: #000">Deepak</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <h2 style="font-size: 20px; font-weight: 600">Shipment 1</h2>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table
+              width="100%"
+              border="0"
+              style="
+                border: 1px solid #adadad;
+                font-size: 13px;
+                margin-bottom: 10px;
+              "
+              cellspacing="0"
+              cellpadding="0"
+            >
+              <tbody>
+                <tr bgcolor="#f3f3f3">
+                  <td
+                    width="52%"
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      border-right: 1px solid #adadad;
+                      padding-left: 10px;
+                    "
+                  >
+                    <p style="font-weight: 600; color: #000">Shipper</p>
+                  </td>
+                  <td
+                    width="24%"
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      border-right: 1px solid #adadad;
+                      padding-left: 10px;
+                    "
+                  >
+                    <p style="font-weight: 600; color: #000">Date</p>
+                  </td>
+                  <td
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      text-align: right;
+                      padding-right: 10px;
+                    "
+                  >
+                    <p style="font-weight: 600; color: #000">Time</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="border-right: 1px solid #adadad; padding-left: 10px"
+                  >
+                    <p style="color: #000">
+                      <strong>Altoba Freight Inc</strong><br />
+                      180 Ryan St, Winnipeg, MB, R2R 0P1
+                    </p>
+                  </td>
+                  <td
+                    style="border-right: 1px solid #adadad; padding-left: 10px"
+                  >
+                    <p style="color: #000">2021/08/20</p>
+                  </td>
+                  <td style="text-align: right; padding-right: 10px">
+                    <p style="color: #000">08:45 PM</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table
+              width="100%"
+              border="0"
+              style="
+                border: 1px solid #adadad;
+                font-size: 13px;
+                margin-bottom: 10px;
+              "
+              cellspacing="0"
+              cellpadding="0"
+            >
+              <tbody>
+                <tr bgcolor="#f3f3f3">
+                  <td
+                    width="52%"
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      border-right: 1px solid #adadad;
+                      padding-left: 10px;
+                    "
+                  >
+                    <p style="font-weight: 600; color: #000">Receiver</p>
+                  </td>
+                  <td
+                    width="24%"
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      border-right: 1px solid #adadad;
+                      padding-left: 10px;
+                    "
+                  >
+                    <p style="color: #000">Date</p>
+                  </td>
+                  <td
+                    style="
+                      border-bottom: 1px solid #adadad;
+                      text-align: right;
+                      padding-right: 10px;
+                    "
+                  >
+                    <p style="font-weight: 600; color: #000">Time</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td
+                    style="border-right: 1px solid #adadad; padding-left: 10px"
+                  >
+                    <p style="color: #000">
+                      <strong>Sterling Yarn Ltd</strong><br />
+                      92 Highway 39, Estevan, SK S4A 2A7, Canada
+                    </p>
+                  </td>
+                  <td
+                    style="border-right: 1px solid #adadad; padding-left: 10px"
+                  >
+                    <p style="color: #000">2021/08/20</p>
+                  </td>
+                  <td style="text-align: right; padding-right: 10px">
+                    <p style="color: #000">08:45 PM</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellspacing="0" cellpadding="0">
+              <tbody>
+                <tr>
+                  <td width="10%">
+                    <p style="font-size: 13px; color: #000">
+                      <strong>Accepted By: </strong>
+                    </p>
+                  </td>
+                  <td width="23%" style="border-bottom: solid 1px #999">
+                    &nbsp;
+                  </td>
+                  <td width="10%" style="font-size: 13px">
+                    <strong>Date:</strong>
+                  </td>
+                  <td width="23%" style="border-bottom: solid 1px #999">
+                    &nbsp;
+                  </td>
+                  <td width="10%">
+                    <p style="font-size: 13px; color: #000">
+                      <strong>Signature</strong>
+                    </p>
+                  </td>
+                  <td style="border-bottom: solid 1px #999">&nbsp;</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table border="0" align="center" cellpadding="0" cellspacing="0">
+              <tbody>
+                <tr>
+                  <td align="center">
+                    <h2 style="font-size: 13px">Powered By</h2>
+                    <img
+                      src="./../../../../../assets/img/logo.png"
+                      width="207"
+                      height="28"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>

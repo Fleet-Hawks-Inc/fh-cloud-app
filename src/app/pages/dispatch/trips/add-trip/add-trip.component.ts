@@ -266,7 +266,7 @@ export class AddTripComponent implements OnInit {
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
-      await this.fetchTripDetail();
+      this.fetchTripDetail();
     }
 
     $(document).ready(() => {
@@ -1639,6 +1639,7 @@ export class AddTripComponent implements OnInit {
         this.tripData["mapFrom"] = result.mapFrom;
         this.tripData["settlmnt"] = result.settlmnt;
         this.dateCreated = result.dateCreated;
+        this.tripData['oldOrdr'] = result.orderId;
         this.orderNo = "";
 
         if (result.mapFrom == "order") {

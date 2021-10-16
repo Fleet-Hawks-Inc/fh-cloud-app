@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../../../services';
-import { Router, ActivatedRoute } from '@angular/router';
-import { formatDate } from '@angular/common';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { NgbCalendar, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from "@angular/core";
+import { ApiService } from "../../../../services";
+import { Router, ActivatedRoute } from "@angular/router";
+import { formatDate } from "@angular/common";
+import { map } from "rxjs/operators";
+import { from } from "rxjs";
+import { HttpClient } from "@angular/common/http";
+import { ToastrService } from "ngx-toastr";
+import { NgxSpinnerService } from "ngx-spinner";
+import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
-import { Location } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ListService } from '../../../../services/list.service';
-import * as moment from 'moment';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
-
+import { Location } from "@angular/common";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ListService } from "../../../../services/list.service";
+import * as moment from "moment";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 @Component({
-  selector: 'app-add-assets',
-  templateUrl: './add-assets.component.html',
-  styleUrls: ['./add-assets.component.css'],
+  selector: "app-add-assets",
+  templateUrl: "./add-assets.component.html",
+  styleUrls: ["./add-assets.component.css"],
 })
 export class AddAssetsComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
@@ -30,99 +29,99 @@ export class AddAssetsComponent implements OnInit {
   pageTitle: string;
   errors = {};
   form;
-  quantumSelected = '';
+  quantumSelected = "";
   pDocs = [];
   lDocs = [];
   assetsData = {
     isTemp: false,
-    inspectionFormID: '',
-    assetIdentification: '',
+    inspectionFormID: "",
+    assetIdentification: "",
     groupID: null,
-    VIN: '',
-    startDate: moment().format('YYYY-MM-DD'),
+    VIN: "",
+    startDate: moment().format("YYYY-MM-DD"),
     assetType: null,
-    currentStatus: 'active',
-    createdDate: '',
-    createdTime: '',
+    currentStatus: "active",
+    createdDate: "",
+    createdTime: "",
     assetDetails: {
       year: null,
       manufacturer: null,
       model: null,
       length: 0,
       lengthUnit: null,
-      height: '',
+      height: "",
       heightUnit: null,
-      axle: '',
-      GVWR: '',
+      axle: "",
+      GVWR: "",
       GVWR_Unit: null,
-      GAWR: '',
+      GAWR: "",
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
-      rentCompany: '',
+      rentCompany: "",
       licenceCountryCode: null,
       licenceStateCode: null,
-      licencePlateNumber: '',
-      annualSafetyDate: '',
+      licencePlateNumber: "",
+      annualSafetyDate: "",
       annualSafetyReminder: true,
-      remarks: '',
+      remarks: "",
     },
     insuranceDetails: {
       dateOfIssue: null,
-      premiumAmount: '',
+      premiumAmount: "",
       premiumCurrency: null,
       dateOfExpiry: null,
-      reminderBefore: '',
-      reminderBeforeUnit: '',
-      vendor: null
+      reminderBefore: "",
+      reminderBeforeUnit: "",
+      vendor: null,
     },
     purchase: {
       purchaseVendorID: null,
       warrantyExpirationDate: null,
       warrantyExpirationDateReminder: false,
-      purchasePrice: '',
+      purchasePrice: "",
       purchasePriceCurrency: null,
-      warrantyExpirationMeter: '',
+      warrantyExpirationMeter: "",
       purchaseDate: null,
-      purchaseComments: '',
-      purchaseOdometer: '',
-      gstInc: true
+      purchaseComments: "",
+      purchaseOdometer: "",
+      gstInc: true,
     },
     loan: {
       loanVendorID: null,
-      amountOfLoan: '',
+      amountOfLoan: "",
       amountOfLoanCurrency: null,
-      aspiration: '',
-      annualPercentageRate: '',
+      aspiration: "",
+      annualPercentageRate: "",
       gstInc: true,
-      downPayment: '',
+      downPayment: "",
       downPaymentCurrency: null,
       dateOfLoan: null,
-      monthlyPayment: '',
+      monthlyPayment: "",
       monthlyPaymentCurrency: null,
-      firstPaymentDate: '',
-      numberOfPayments: '',
+      firstPaymentDate: "",
+      numberOfPayments: "",
       loadEndDate: null,
-      accountNumber: '',
-      generateExpenses: '',
-      notes: '',
+      accountNumber: "",
+      generateExpenses: "",
+      notes: "",
       loanDueDate: null,
       lReminder: true,
     },
     crossBorderDetails: {
-      ACI_ID: '',
-      ACE_ID: ''
+      ACI_ID: "",
+      ACE_ID: "",
     },
     uploadedPhotos: [],
-    uploadedDocs: []
+    uploadedDocs: [],
   };
 
   allAssets = [];
   groupData = {
-    groupName: '',
-    groupType: 'assets',
-    description: '',
-    groupMembers: []
+    groupName: "",
+    groupType: "assets",
+    description: "",
+    groupMembers: [],
   };
 
   vendors: any = [];
@@ -132,27 +131,27 @@ export class AddAssetsComponent implements OnInit {
 
   isRequired: boolean = true;
 
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
-  Error = '';
-  Success = '';
-  imageError = '';
-  fileName = '';
+  Error = "";
+  Success = "";
+  imageError = "";
+  fileName = "";
   carrierID: any;
   states = [];
   uploadedPhotos = [];
   uploadedDocs = [];
-  existPDocs = []
+  existPDocs = [];
   existLDocs = [];
   purchaseDocs = [];
   loanDocs = [];
   existingPhotos = [];
   existingDocs = [];
-  assetsImages = []
+  assetsImages = [];
   assetsDocs = [];
   inspectionForms = [];
-  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl('');
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
 
   years = [];
   ownOperators: any = [];
@@ -165,12 +164,20 @@ export class AddAssetsComponent implements OnInit {
 
   isEdit: boolean = false;
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute,
-    private router: Router, private ngbCalendar: NgbCalendar, private dateAdapter: NgbDateAdapter<string>,
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private ngbCalendar: NgbCalendar,
+    private dateAdapter: NgbDateAdapter<string>,
     private location: Location,
-    private toastr: ToastrService, private listService: ListService, private spinner: NgxSpinnerService, private domSanitizer: DomSanitizer,
+    private toastr: ToastrService,
+    private listService: ListService,
+    private spinner: NgxSpinnerService,
+    private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService) {
+    private countryStateCity: CountryStateCityService
+  ) {
     this.selectedFileNames = new Map<any, any>();
   }
 
@@ -187,10 +194,10 @@ export class AddAssetsComponent implements OnInit {
     this.fetchInspectionForms();
     this.assetID = this.route.snapshot.params[`assetID`];
     if (this.assetID) {
-      this.pageTitle = 'Edit Asset';
+      this.pageTitle = "Edit Asset";
       this.fetchAssetByID();
     } else {
-      this.pageTitle = 'Add Asset';
+      this.pageTitle = "Add Asset";
     }
 
     let vendorList = new Array<any>();
@@ -216,7 +223,9 @@ export class AddAssetsComponent implements OnInit {
             this.assetsData.insuranceDetails.vendor = null;
           }
 
-          if (element2.contactID === this.assetsData.purchase.purchaseVendorID) {
+          if (
+            element2.contactID === this.assetsData.purchase.purchaseVendorID
+          ) {
             this.assetsData.purchase.purchaseVendorID = null;
           }
 
@@ -224,8 +233,8 @@ export class AddAssetsComponent implements OnInit {
             this.assetsData.loan.loanVendorID = null;
           }
         }
-      })
-    })
+      });
+    });
   }
 
   private getValidOperators(operatorsList: any[]) {
@@ -237,47 +246,46 @@ export class AddAssetsComponent implements OnInit {
           ids.push(element2.contactID);
         }
 
-        if (element2.isDeleted === 1 && this.assetsData.assetDetails.ownerOperator === element2.contactID) {
+        if (
+          element2.isDeleted === 1 &&
+          this.assetsData.assetDetails.ownerOperator === element2.contactID
+        ) {
           this.assetsData.assetDetails.ownerOperator = null;
         }
-      })
-    })
+      });
+    });
   }
 
   fetchManufacturers() {
-    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
-      data.forEach(element => {
-        this.manufacturers.push(Object.keys(element)[0].toUpperCase())
+    this.httpClient
+      .get("assets/jsonFiles/assets/trailer.json")
+      .subscribe((data: any) => {
+        data.forEach((element) => {
+          this.manufacturers.push(Object.keys(element)[0].toUpperCase());
+        });
       });
-
-    });
   }
 
   fetchModels() {
-
     this.models = [];
-    let manufacturer: any = '';
+    let manufacturer: any = "";
 
     if (this.assetsData.assetDetails.manufacturer !== null) {
       manufacturer = this.assetsData.assetDetails.manufacturer.toLowerCase();
-
     }
-    this.httpClient.get('assets/jsonFiles/assets/trailer.json').subscribe((data: any) => {
-      data.forEach(element => {
-
-        let output = [];
-        if (element[manufacturer]) {
-          element[manufacturer].forEach(element => {
-            output.push(element.toUpperCase());
-
-          });
-          this.models = output;
-
-        }
+    this.httpClient
+      .get("assets/jsonFiles/assets/trailer.json")
+      .subscribe((data: any) => {
+        data.forEach((element) => {
+          let output = [];
+          if (element[manufacturer]) {
+            element[manufacturer].forEach((element) => {
+              output.push(element.toUpperCase());
+            });
+            this.models = output;
+          }
+        });
       });
-
-    });
-
   }
   getYears() {
     var max = new Date().getFullYear(),
@@ -293,8 +301,8 @@ export class AddAssetsComponent implements OnInit {
     this.location.back(); // <-- go back to previous location on cancel
   }
   resetModel() {
-    this.assetsData.assetDetails.model = '';
-    $('#assetSelect').val('');
+    this.assetsData.assetDetails.model = "";
+    $("#assetSelect").val("");
   }
 
   async getInspectionForms() {
@@ -302,7 +310,7 @@ export class AddAssetsComponent implements OnInit {
   }
   fetchInspectionForms() {
     this.apiService
-      .getData('inspectionForms/type/asset')
+      .getData("inspectionForms/type/asset")
       .subscribe((result: any) => {
         this.inspectionForms = result.Items;
       });
@@ -311,7 +319,7 @@ export class AddAssetsComponent implements OnInit {
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 
-    localStorage.setItem('isOpen', 'true');
+    localStorage.setItem("isOpen", "true");
     this.listService.changeButton(false);
   }
   refreshVendorData() {
@@ -320,24 +328,28 @@ export class AddAssetsComponent implements OnInit {
   refreshOpData() {
     this.listService.fetchOwnerOperators();
   }
- 
+
   scrollError() {
     let errorList;
     setTimeout(() => {
-      errorList = document.getElementsByClassName('error').length;
+      errorList = document.getElementsByClassName("error").length;
       if (errorList > 0) {
-        let topPosition: any = $('.error').parent('div').offset().top;
-        window.scrollTo({ top: topPosition - 200, left: 0, behavior: 'smooth' });
+        let topPosition: any = $(".error").parent("div").offset().top;
+        window.scrollTo({
+          top: topPosition - 200,
+          left: 0,
+          behavior: "smooth",
+        });
       }
     }, 1500);
   }
 
   changeComp(value) {
     if (!this.assetID) {
-      if (value === 'interchange') {
+      if (value === "interchange") {
         this.isRequired = false;
-        this.assetsData.assetDetails.annualSafetyDate = '';
-        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.annualSafetyDate = "";
+        this.assetsData.VIN = "";
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
         this.assetsData.assetDetails.licenceStateCode = null;
@@ -345,17 +357,17 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     } else {
-      if (value === 'interchange') {
+      if (value === "interchange") {
         this.isRequired = false;
         this.isEdit = false;
-        this.assetsData.assetDetails.annualSafetyDate = '';
-        this.assetsData.VIN = '';
+        this.assetsData.assetDetails.annualSafetyDate = "";
+        this.assetsData.VIN = "";
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
         this.assetsData.assetDetails.licenceStateCode = null;
       } else if (this.isEdit) {
         this.isRequired = true;
-        this.assetsData.VIN = '';
+        this.assetsData.VIN = "";
         this.assetsData.assetDetails.year = null;
         this.assetsData.assetDetails.licenceCountryCode = null;
         this.assetsData.assetDetails.licenceStateCode = null;
@@ -363,7 +375,6 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     }
-
   }
 
   /*
@@ -384,8 +395,12 @@ export class AddAssetsComponent implements OnInit {
       currentStatus: this.assetsData.currentStatus,
       assetDetails: {
         year: this.assetsData.assetDetails.year,
-        manufacturer: this.assetsData.assetDetails.manufacturer ? this.assetsData.assetDetails.manufacturer : '',
-        model: this.assetsData.assetDetails.model ? this.assetsData.assetDetails.model : '',
+        manufacturer: this.assetsData.assetDetails.manufacturer
+          ? this.assetsData.assetDetails.manufacturer
+          : "",
+        model: this.assetsData.assetDetails.model
+          ? this.assetsData.assetDetails.model
+          : "",
         length: this.assetsData.assetDetails.length,
         lengthUnit: this.assetsData.assetDetails.lengthUnit,
         height: this.assetsData.assetDetails.height,
@@ -403,7 +418,7 @@ export class AddAssetsComponent implements OnInit {
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
-        remarks: this.assetsData.assetDetails.remarks
+        remarks: this.assetsData.assetDetails.remarks,
       },
       insuranceDetails: {
         dateOfIssue: this.assetsData.insuranceDetails.dateOfIssue,
@@ -412,19 +427,21 @@ export class AddAssetsComponent implements OnInit {
         dateOfExpiry: this.assetsData.insuranceDetails.dateOfExpiry,
         reminderBefore: this.assetsData.insuranceDetails.reminderBefore,
         reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
-        vendor: this.assetsData.insuranceDetails.vendor
+        vendor: this.assetsData.insuranceDetails.vendor,
       },
       purchase: {
         purchaseVendorID: this.assetsData.purchase.purchaseVendorID,
         warrantyExpirationDate: this.assetsData.purchase.warrantyExpirationDate,
-        warrantyExpirationDateReminder: this.assetsData.purchase.warrantyExpirationDateReminder,
+        warrantyExpirationDateReminder:
+          this.assetsData.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.assetsData.purchase.purchasePrice,
         purchasePriceCurrency: this.assetsData.purchase.purchasePriceCurrency,
-        warrantyExpirationMeter: this.assetsData.purchase.warrantyExpirationMeter,
+        warrantyExpirationMeter:
+          this.assetsData.purchase.warrantyExpirationMeter,
         purchaseDate: this.assetsData.purchase.purchaseDate,
         purchaseComments: this.assetsData.purchase.purchaseComments,
         purchaseOdometer: this.assetsData.purchase.purchaseOdometer,
-        gstInc: this.assetsData.purchase.gstInc
+        gstInc: this.assetsData.purchase.gstInc,
       },
       loan: {
         loanVendorID: this.assetsData.loan.loanVendorID,
@@ -446,46 +463,58 @@ export class AddAssetsComponent implements OnInit {
       },
       crossBorderDetails: {
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
-        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
+        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID,
       },
       uploadedPhotos: this.uploadedPhotos,
-      uploadedDocs: this.uploadedDocs
+      uploadedDocs: this.uploadedDocs,
     };
-    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    data.assetDetails.year =
+      data.assetDetails.ownerShip === "interchange"
+        ? new Date().getFullYear().toString()
+        : data.assetDetails.year;
     let currentDate = new Date();
-    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
-    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
-    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
-    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
+    let formattedDate = formatDate(currentDate, "yyyy-MM-dd", "en");
+    data.assetDetails.annualSafetyDate =
+      data.assetDetails.ownerShip === "interchange"
+        ? formattedDate.toString()
+        : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder =
+      data.assetDetails.ownerShip === "interchange"
+        ? data.assetDetails.annualSafetyReminder === false
+        : data.assetDetails.annualSafetyReminder;
+    data.VIN =
+      data.assetDetails.ownerShip === "interchange"
+        ? new Date().getTime().toString()
+        : data.VIN;
 
     // create form data instance
     const formData = new FormData();
 
     // append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
 
     // append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
 
     // append purchase docs if any
     for (let k = 0; k < this.purchaseDocs.length; k++) {
-      formData.append('purchaseDocs', this.purchaseDocs[k]);
+      formData.append("purchaseDocs", this.purchaseDocs[k]);
     }
 
     // append loan docs if any
     for (let l = 0; l < this.loanDocs.length; l++) {
-      formData.append('loanDocs', this.loanDocs[l]);
+      formData.append("loanDocs", this.loanDocs[l]);
     }
 
     // append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
 
-    this.apiService.postData('assets', formData, true).subscribe({
-      complete: () => { },
+    this.apiService.postData("assets", formData, true).subscribe({
+      complete: () => {},
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
@@ -503,47 +532,53 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toastr.success('Asset added successfully.');
+        this.toastr.success("Asset added successfully.");
         this.cancel();
       },
     });
   }
 
   throwErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
-        if (v === 'assetIdentification' || v === 'VIN') {
-          $('[name="' + v + '"]')
-            .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
-            .addClass('error');
-        }
-      });
+    from(Object.keys(this.errors)).subscribe((v) => {
+      if (v === "assetIdentification" || v === "VIN") {
+        $('[name="' + v + '"]')
+          .after(
+            '<label id="' +
+              v +
+              '-error" class="error" for="' +
+              v +
+              '">' +
+              this.errors[v] +
+              "</label>"
+          )
+          .addClass("error");
+      }
+    });
   }
 
   hideErrors() {
-    from(Object.keys(this.errors))
-      .subscribe((v) => {
-        $('[name="' + v + '"]')
-          .removeClass('error')
-          .next()
-          .remove('label')
-      });
+    from(Object.keys(this.errors)).subscribe((v) => {
+      $('[name="' + v + '"]')
+        .removeClass("error")
+        .next()
+        .remove("label");
+    });
     this.errors = {};
   }
 
   /*
    * Fetch Asset details before updating
-  */
+   */
   fetchAssetByID() {
     this.spinner.show(); // loader init
     this.apiService
-      .getData('assets/' + this.assetID)
+      .getData("assets/" + this.assetID)
       .subscribe(async (result: any) => {
         this.editDisabled = true;
         result = result.Items[0];
@@ -557,25 +592,30 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.startDate = result.startDate;
         this.assetsData.assetType = result.assetType;
         this.assetsData.assetDetails.year = result.assetDetails.year;
-        this.assetsData.assetDetails.manufacturer = result.assetDetails.manufacturer;
+        this.assetsData.assetDetails.manufacturer =
+          result.assetDetails.manufacturer;
         this.assetsData.assetDetails.model = result.assetDetails.model;
         this.assetsData.assetDetails.length = result.assetDetails.length;
-        this.assetsData.assetDetails.lengthUnit = result.assetDetails.lengthUnit;
-        this.assetsData.assetDetails.height = result.assetDetails.height,
-          this.assetsData.assetDetails.heightUnit = result.assetDetails.heightUnit,
-          this.assetsData.assetDetails.axle = result.assetDetails.axle;
+        this.assetsData.assetDetails.lengthUnit =
+          result.assetDetails.lengthUnit;
+        (this.assetsData.assetDetails.height = result.assetDetails.height),
+          (this.assetsData.assetDetails.heightUnit =
+            result.assetDetails.heightUnit),
+          (this.assetsData.assetDetails.axle = result.assetDetails.axle);
         this.assetsData.assetDetails.GVWR = result.assetDetails.GVWR;
         this.assetsData.assetDetails.GVWR_Unit = result.assetDetails.GVWR_Unit;
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
         this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
         this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
-        if (result.assetDetails.ownerShip === 'ownerOperator') {
-          this.assetsData.assetDetails.ownerOperator = result.assetDetails.ownerOperator;
+        if (result.assetDetails.ownerShip === "ownerOperator") {
+          this.assetsData.assetDetails.ownerOperator =
+            result.assetDetails.ownerOperator;
         }
-        if (result.assetDetails.ownerShip === 'rented') {
-          this.assetsData.assetDetails.rentCompany = result.assetDetails.rentCompany;
+        if (result.assetDetails.ownerShip === "rented") {
+          this.assetsData.assetDetails.rentCompany =
+            result.assetDetails.rentCompany;
         }
-        if (result.assetDetails.ownerShip === 'interchange') {
+        if (result.assetDetails.ownerShip === "interchange") {
           this.isRequired = false;
           this.isEdit = true;
         } else {
@@ -583,41 +623,62 @@ export class AddAssetsComponent implements OnInit {
         }
 
         this.assetsData.currentStatus = result.currentStatus;
-        this.assetsData.assetDetails.licenceCountryCode = result.assetDetails.licenceCountryCode;
+        this.assetsData.assetDetails.licenceCountryCode =
+          result.assetDetails.licenceCountryCode;
         await this.getStates(result.assetDetails.licenceCountryCode);
-        this.assetsData.assetDetails.licenceStateCode = result.assetDetails.licenceStateCode;
-        this.assetsData.assetDetails.licencePlateNumber = result.assetDetails.licencePlateNumber;
-        this.assetsData.assetDetails.annualSafetyDate = result.assetDetails.annualSafetyDate;
-        this.assetsData.assetDetails.annualSafetyReminder = result.assetDetails.annualSafetyReminder;
+        this.assetsData.assetDetails.licenceStateCode =
+          result.assetDetails.licenceStateCode;
+        this.assetsData.assetDetails.licencePlateNumber =
+          result.assetDetails.licencePlateNumber;
+        this.assetsData.assetDetails.annualSafetyDate =
+          result.assetDetails.annualSafetyDate;
+        this.assetsData.assetDetails.annualSafetyReminder =
+          result.assetDetails.annualSafetyReminder;
         this.assetsData.assetDetails.remarks = result.assetDetails.remarks;
-        this.assetsData.insuranceDetails.dateOfIssue = result.insuranceDetails.dateOfIssue;
-        this.assetsData.insuranceDetails.premiumAmount = result.insuranceDetails.premiumAmount;
-        this.assetsData.insuranceDetails.premiumCurrency = result.insuranceDetails.premiumCurrency;
-        this.assetsData.insuranceDetails.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
-        this.assetsData.insuranceDetails.dateOfIssue = result.insuranceDetails.dateOfIssue;
-        this.assetsData.insuranceDetails.reminderBefore = result.insuranceDetails.reminderBefore;
-        this.assetsData.insuranceDetails.reminderBeforeUnit = result.insuranceDetails.reminderBeforeUnit;
-        this.assetsData.insuranceDetails.vendor = result.insuranceDetails.vendor;
+        this.assetsData.insuranceDetails.dateOfIssue =
+          result.insuranceDetails.dateOfIssue;
+        this.assetsData.insuranceDetails.premiumAmount =
+          result.insuranceDetails.premiumAmount;
+        this.assetsData.insuranceDetails.premiumCurrency =
+          result.insuranceDetails.premiumCurrency;
+        this.assetsData.insuranceDetails.dateOfExpiry =
+          result.insuranceDetails.dateOfExpiry;
+        this.assetsData.insuranceDetails.dateOfIssue =
+          result.insuranceDetails.dateOfIssue;
+        this.assetsData.insuranceDetails.reminderBefore =
+          result.insuranceDetails.reminderBefore;
+        this.assetsData.insuranceDetails.reminderBeforeUnit =
+          result.insuranceDetails.reminderBeforeUnit;
+        this.assetsData.insuranceDetails.vendor =
+          result.insuranceDetails.vendor;
 
-
-        this.assetsData.purchase.purchaseVendorID = result.purchase.purchaseVendorID;
-        this.assetsData.purchase.warrantyExpirationDate = result.purchase.warrantyExpirationDate;
+        this.assetsData.purchase.purchaseVendorID =
+          result.purchase.purchaseVendorID;
+        this.assetsData.purchase.warrantyExpirationDate =
+          result.purchase.warrantyExpirationDate;
         this.assetsData.purchase.purchasePrice = result.purchase.purchasePrice;
-        this.assetsData.purchase.purchasePriceCurrency = result.purchase.purchasePriceCurrency;
-        this.assetsData.purchase.warrantyExpirationMeter = result.purchase.warrantyExpirationMeter;
+        this.assetsData.purchase.purchasePriceCurrency =
+          result.purchase.purchasePriceCurrency;
+        this.assetsData.purchase.warrantyExpirationMeter =
+          result.purchase.warrantyExpirationMeter;
         this.assetsData.purchase.purchaseDate = result.purchase.purchaseDate;
-        this.assetsData.purchase.purchaseComments = result.purchase.purchaseComments;
-        this.assetsData.purchase.purchaseOdometer = result.purchase.purchaseOdometer;
+        this.assetsData.purchase.purchaseComments =
+          result.purchase.purchaseComments;
+        this.assetsData.purchase.purchaseOdometer =
+          result.purchase.purchaseOdometer;
         this.assetsData.purchase.gstInc = result.purchase.gstInc;
-
 
         this.assetsData.loan.loanVendorID = result.loan.loanVendorID;
         this.assetsData.loan.amountOfLoan = result.loan.amountOfLoan;
-        this.assetsData.loan.amountOfLoanCurrency = result.loan.amountOfLoanCurrency;
-        this.assetsData.loan.annualPercentageRate = result.loan.annualPercentageRate;
+        this.assetsData.loan.amountOfLoanCurrency =
+          result.loan.amountOfLoanCurrency;
+        this.assetsData.loan.annualPercentageRate =
+          result.loan.annualPercentageRate;
         this.assetsData.loan.downPayment = result.loan.downPayment;
-        this.assetsData.loan.downPaymentCurrency = result.loan.downPaymentCurrency;
-        this.assetsData.loan.monthlyPaymentCurrency = result.loan.monthlyPaymentCurrency;
+        this.assetsData.loan.downPaymentCurrency =
+          result.loan.downPaymentCurrency;
+        this.assetsData.loan.monthlyPaymentCurrency =
+          result.loan.monthlyPaymentCurrency;
         this.assetsData.loan.dateOfLoan = result.loan.dateOfLoan;
         this.assetsData.loan.monthlyPayment = result.loan.monthlyPayment;
         this.assetsData.loan.numberOfPayments = result.loan.numberOfPayments;
@@ -628,39 +689,58 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.loan.gstInc = result.loan.gstInc;
         this.assetsData.loan.notes = result.loan.notes;
 
-        this.assetsData.crossBorderDetails.ACE_ID = result.crossBorderDetails.ACE_ID;
-        this.assetsData.crossBorderDetails.ACI_ID = result.crossBorderDetails.ACI_ID;
+        this.assetsData.crossBorderDetails.ACE_ID =
+          result.crossBorderDetails.ACE_ID;
+        this.assetsData.crossBorderDetails.ACI_ID =
+          result.crossBorderDetails.ACI_ID;
         this.existingPhotos = result.uploadedPhotos;
         this.existingDocs = result.uploadedDocs;
         this.existPDocs = result.purchaseDocs;
         this.existLDocs = result.loanDocs;
 
-        if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+        if (
+          result.uploadedPhotos !== undefined &&
+          result.uploadedPhotos.length > 0
+        ) {
           this.assetsImages = result.uploadedPhotos.map((x: any) => ({
             path: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
           }));
         }
 
-        if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-          this.assetsDocs = result.uploadedDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+        if (
+          result.uploadedDocs !== undefined &&
+          result.uploadedDocs.length > 0
+        ) {
+          this.assetsDocs = result.uploadedDocs.map((x) => ({
+            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            name: x,
+          }));
         }
 
         if (result.loanDocs !== undefined && result.loanDocs.length > 0) {
-          this.lDocs = result.loanDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+          this.lDocs = result.loanDocs.map((x) => ({
+            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            name: x,
+          }));
         }
 
-        if (result.purchaseDocs !== undefined && result.purchaseDocs.length > 0) {
-          this.pDocs = result.purchaseDocs.map(x => ({ path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x }));
+        if (
+          result.purchaseDocs !== undefined &&
+          result.purchaseDocs.length > 0
+        ) {
+          this.pDocs = result.purchaseDocs.map((x) => ({
+            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            name: x,
+          }));
         }
 
         this.spinner.hide(); // loader hide
       });
-
   }
   /*
    * Update asset
-  */
+   */
   onUpdateAsset() {
     this.hasError = false;
     this.hasSuccess = false;
@@ -699,7 +779,7 @@ export class AddAssetsComponent implements OnInit {
         licencePlateNumber: this.assetsData.assetDetails.licencePlateNumber,
         annualSafetyDate: this.assetsData.assetDetails.annualSafetyDate,
         annualSafetyReminder: this.assetsData.assetDetails.annualSafetyReminder,
-        remarks: this.assetsData.assetDetails.remarks
+        remarks: this.assetsData.assetDetails.remarks,
       },
       insuranceDetails: {
         dateOfIssue: this.assetsData.insuranceDetails.dateOfIssue,
@@ -708,19 +788,21 @@ export class AddAssetsComponent implements OnInit {
         dateOfExpiry: this.assetsData.insuranceDetails.dateOfExpiry,
         reminderBefore: this.assetsData.insuranceDetails.reminderBefore,
         reminderBeforeUnit: this.assetsData.insuranceDetails.reminderBeforeUnit,
-        vendor: this.assetsData.insuranceDetails.vendor
+        vendor: this.assetsData.insuranceDetails.vendor,
       },
       purchase: {
         purchaseVendorID: this.assetsData.purchase.purchaseVendorID,
         warrantyExpirationDate: this.assetsData.purchase.warrantyExpirationDate,
-        warrantyExpirationDateReminder: this.assetsData.purchase.warrantyExpirationDateReminder,
+        warrantyExpirationDateReminder:
+          this.assetsData.purchase.warrantyExpirationDateReminder,
         purchasePrice: this.assetsData.purchase.purchasePrice,
         purchasePriceCurrency: this.assetsData.purchase.purchasePriceCurrency,
-        warrantyExpirationMeter: this.assetsData.purchase.warrantyExpirationMeter,
+        warrantyExpirationMeter:
+          this.assetsData.purchase.warrantyExpirationMeter,
         purchaseDate: this.assetsData.purchase.purchaseDate,
         purchaseComments: this.assetsData.purchase.purchaseComments,
         purchaseOdometer: this.assetsData.purchase.purchaseOdometer,
-        gstInc: this.assetsData.purchase.gstInc
+        gstInc: this.assetsData.purchase.gstInc,
       },
       loan: {
         loanVendorID: this.assetsData.loan.loanVendorID,
@@ -742,46 +824,58 @@ export class AddAssetsComponent implements OnInit {
       },
       crossBorderDetails: {
         ACE_ID: this.assetsData.crossBorderDetails.ACE_ID,
-        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID
+        ACI_ID: this.assetsData.crossBorderDetails.ACI_ID,
       },
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs,
       purchaseDocs: this.existPDocs,
-      loanDocs: this.existLDocs
+      loanDocs: this.existLDocs,
     };
-    data.assetDetails.year = data.assetDetails.ownerShip === 'interchange' ? new Date().getFullYear().toString() : data.assetDetails.year;
+    data.assetDetails.year =
+      data.assetDetails.ownerShip === "interchange"
+        ? new Date().getFullYear().toString()
+        : data.assetDetails.year;
     let currentDate = new Date();
-    let formattedDate = formatDate(currentDate, 'yyyy-MM-dd', 'en');
-    data.assetDetails.annualSafetyDate = data.assetDetails.ownerShip === 'interchange' ? formattedDate.toString() : data.assetDetails.annualSafetyDate;
-    data.assetDetails.annualSafetyReminder = data.assetDetails.ownerShip === 'interchange' ? data.assetDetails.annualSafetyReminder === false : data.assetDetails.annualSafetyReminder;
-    data.VIN = data.assetDetails.ownerShip === 'interchange' ? new Date().getTime().toString() : data.VIN;
+    let formattedDate = formatDate(currentDate, "yyyy-MM-dd", "en");
+    data.assetDetails.annualSafetyDate =
+      data.assetDetails.ownerShip === "interchange"
+        ? formattedDate.toString()
+        : data.assetDetails.annualSafetyDate;
+    data.assetDetails.annualSafetyReminder =
+      data.assetDetails.ownerShip === "interchange"
+        ? data.assetDetails.annualSafetyReminder === false
+        : data.assetDetails.annualSafetyReminder;
+    data.VIN =
+      data.assetDetails.ownerShip === "interchange"
+        ? new Date().getTime().toString()
+        : data.VIN;
 
     // create form data instance
     const formData = new FormData();
 
     //append photos if any
     for (let i = 0; i < this.uploadedPhotos.length; i++) {
-      formData.append('uploadedPhotos', this.uploadedPhotos[i]);
+      formData.append("uploadedPhotos", this.uploadedPhotos[i]);
     }
 
     //append docs if any
     for (let j = 0; j < this.uploadedDocs.length; j++) {
-      formData.append('uploadedDocs', this.uploadedDocs[j]);
+      formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
     // append purchase docs if any
     for (let k = 0; k < this.purchaseDocs.length; k++) {
-      formData.append('purchaseDocs', this.purchaseDocs[k]);
+      formData.append("purchaseDocs", this.purchaseDocs[k]);
     }
 
     // append loan docs if any
     for (let l = 0; l < this.loanDocs.length; l++) {
-      formData.append('loanDocs', this.loanDocs[l]);
+      formData.append("loanDocs", this.loanDocs[l]);
     }
     //append other fields
-    formData.append('data', JSON.stringify(data));
+    formData.append("data", JSON.stringify(data));
 
-    this.apiService.putData('assets/', formData, true).subscribe({
-      complete: () => { },
+    this.apiService.putData("assets/", formData, true).subscribe({
+      complete: () => {},
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -798,51 +892,47 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.hasSuccess = true;
-        this.toastr.success('Asset updated successfully.');
+        this.toastr.success("Asset updated successfully.");
         this.cancel();
-        this.Success = '';
+        this.Success = "";
       },
     });
   }
 
-
   selectDocuments(event, obj) {
     let files = [...event.target.files];
 
-    if (obj === 'uploadedDocs') {
+    if (obj === "uploadedDocs") {
       this.uploadedDocs = [];
       for (let i = 0; i < files.length; i++) {
-        this.uploadedDocs.push(files[i])
+        this.uploadedDocs.push(files[i]);
       }
-    } else if (obj === 'purchase') {
+    } else if (obj === "purchase") {
       for (let i = 0; i < files.length; i++) {
-        this.purchaseDocs.push(files[i])
+        this.purchaseDocs.push(files[i]);
       }
-    } else if (obj === 'loan') {
+    } else if (obj === "loan") {
       for (let i = 0; i < files.length; i++) {
-        this.loanDocs.push(files[i])
+        this.loanDocs.push(files[i]);
       }
     } else {
       this.uploadedPhotos = [];
       for (let i = 0; i < files.length; i++) {
-        this.uploadedPhotos.push(files[i])
+        this.uploadedPhotos.push(files[i]);
       }
     }
-
   }
-
-
 
   // Changing gvwr/gawr values
   gwr(value, el) {
-    if (el === 'GVWR_Unit') {
+    if (el === "GVWR_Unit") {
       this.assetsData.assetDetails[`GAWR_Unit`] = value;
     } else {
       this.assetsData.assetDetails[`GVWR_Unit`] = value;
@@ -850,32 +940,37 @@ export class AddAssetsComponent implements OnInit {
   }
 
   fetchGroups() {
-    this.apiService.getData(`groups/getGroup/${this.groupData.groupType}`).subscribe((result: any) => {
-      this.groups = result.Items;
-    });
+    this.apiService
+      .getData(`groups/getGroup/${this.groupData.groupType}`)
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
   }
 
   getGroups() {
     this.fetchGroups();
   }
 
-
   fetchAssets() {
-    this.apiService.getData('assets')
-      .subscribe((result: any) => {
-        this.allAssets = result.Items;
+    this.apiService.getData("assets").subscribe((result: any) => {
+      // this.allAssets = result.Items;
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.allAssets.push(element);
+        }
       });
+    });
   }
 
   addGroup() {
     this.groupSubmitDisabled = true;
-    this.apiService.postData('groups', this.groupData).subscribe({
-      complete: () => { },
+    this.apiService.postData("groups", this.groupData).subscribe({
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
           )
@@ -887,7 +982,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -895,26 +990,30 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.fetchGroups();
-        this.toastr.success('Group added successfully.');
-        $('#addGroupModal').modal('hide');
-        this.groupData[`groupName`] = '';
+        this.toastr.success("Group added successfully.");
+        $("#addGroupModal").modal("hide");
+        this.groupData[`groupName`] = "";
         this.groupData[`groupMembers`] = [];
-        this.groupData[`description`] = '';
+        this.groupData[`description`] = "";
       },
     });
   }
 
   async getStates(countryCode) {
     this.assetsData.assetDetails.licenceStateCode = null;
-    this.states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
+    this.states = await this.countryStateCity.GetStatesByCountryCode([
+      countryCode,
+    ]);
   }
 
   setPDFSrc(val) {
     let pieces = val.split(/[\s.]+/);
     let ext = pieces[pieces.length - 1];
-    this.pdfSrc = '';
-    if (ext == 'doc' || ext == 'docx' || ext == 'xlsx') {
-      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl('https://docs.google.com/viewer?url=' + val + '&embedded=true');
+    this.pdfSrc = "";
+    if (ext == "doc" || ext == "docx" || ext == "xlsx") {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        "https://docs.google.com/viewer?url=" + val + "&embedded=true"
+      );
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
@@ -936,51 +1035,54 @@ export class AddAssetsComponent implements OnInit {
   //   this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => { });
   // }
 
-  deleteDocument(type: string, name: string) { // delete from aws
-    this.apiService.deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`).subscribe((result: any) => {
-      if (type == 'doc') {
-        this.assetsDocs = [];
-        this.uploadedDocs = result.Attributes.uploadedDocs;
-        this.existingDocs = result.Attributes.uploadedDocs;
-        result.Attributes.uploadedDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.assetsDocs.push(obj);
-        })
-      } else if (type == 'loan') {
-        this.lDocs = [];
-        this.uploadedDocs = result.Attributes.loanDocs;
-        this.existingDocs = result.Attributes.loanDocs;
-        result.Attributes.loanDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.lDocs.push(obj);
-        })
-      } else {
-        this.pDocs = [];
-        this.uploadedDocs = result.Attributes.purchaseDocs;
-        this.existingDocs = result.Attributes.purchaseDocs;
-        result.Attributes.purchaseDocs.map((x) => {
-          let obj = {
-            name: x,
-            path: `${this.Asseturl}/${result.carrierID}/${x}`
-          }
-          this.pDocs.push(obj);
-        })
-      }
-    });
+  deleteDocument(type: string, name: string) {
+    // delete from aws
+    this.apiService
+      .deleteData(`assets/uploadDelete/${this.assetID}/${type}/${name}`)
+      .subscribe((result: any) => {
+        if (type == "doc") {
+          this.assetsDocs = [];
+          this.uploadedDocs = result.Attributes.uploadedDocs;
+          this.existingDocs = result.Attributes.uploadedDocs;
+          result.Attributes.uploadedDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.assetsDocs.push(obj);
+          });
+        } else if (type == "loan") {
+          this.lDocs = [];
+          this.uploadedDocs = result.Attributes.loanDocs;
+          this.existingDocs = result.Attributes.loanDocs;
+          result.Attributes.loanDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.lDocs.push(obj);
+          });
+        } else {
+          this.pDocs = [];
+          this.uploadedDocs = result.Attributes.purchaseDocs;
+          this.existingDocs = result.Attributes.purchaseDocs;
+          result.Attributes.purchaseDocs.map((x) => {
+            let obj = {
+              name: x,
+              path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            };
+            this.pDocs.push(obj);
+          });
+        }
+      });
   }
 
   clearAssetGroup() {
     this.groupData = {
-      groupName: '',
-      groupType: 'assets',
-      description: '',
-      groupMembers: []
+      groupName: "",
+      groupType: "assets",
+      description: "",
+      groupMembers: [],
     };
   }
 }

@@ -1,168 +1,167 @@
 <ul class="nav nav-main mr-0 bg-white">
 
 
-    <li class="nav-parent">
-      <a class="nav-link" href="#">
-        <i class="fas fa-truck" aria-hidden="true"></i>
-      <span>Fleet</span>
-      </a>
-      <ul class="nav nav-children">
-         <li>
-            <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','drivers']">
-            Drivers
-            </a>
-         </li>
-         <li>
-            <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','vehicles','overview']">
-            Vehicles
-            </a>
-         </li>
-         <li>
-          <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','asset','overview']">
-            Assets
-            </a>
-            </li>
-         <li>
-          <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','fuel','overview']">
-            Fuel
-            </a>
-         </li>
-         <li>
-          <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','reminders','overview']">
-          Reminders
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','issues','overview']">
-        Issues
-        </a>
-        </li>
-        <li>
-          <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','maintenance','overview']">
-          Maintenance
-          </a>
-      </li>
-      <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','fleet','inventory','overview']">
-        Inventory
-        </a>
-    </li>
-      <li>
-        <a class="nav-link" routerLink="/manage/reports/fleet/geofence/overview">
-      Geofencing
-          </a>
-      </li>
-      </ul>
-   </li>
-  
-  
-   <li class="nav-parent">
+  <!-- <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fas fa-route" aria-hidden="true"></i>
-    <span>Routing & Dispatch</span>
+      <i class="fas fa-truck" aria-hidden="true"></i>
+      <span>Fleet</span>
     </a>
     <ul class="nav nav-children">
-       <li>
-          <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','orders','overview']">
-          Orders
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','trips','overview']">
-          Trips
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','routes-report','overviewroutes']">
-          Routes
-          </a>
-          </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','planner-report','detail']">
-          Planner
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','crossborder','overview']">
-        Cross Border
+      <li>
+        <a class="nav-link" [routerLink]="['/reports','fleet','drivers']">
+          Drivers
         </a>
-     </li>
-     <li>
-      <a class="nav-link" [routerLink]="['/manage', 'reports','dispatch','documents','summary']">
-      Documents
-      </a>
       </li>
-      
-    
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','vehicles','overview']">
+          Vehicles
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports','fleet','asset','overview']">
+          Assets
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','fuel','overview']">
+          Fuel
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','reminders','overview']">
+          Reminders
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','issues','overview']">
+          Issues
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','maintenance','overview']">
+          Maintenance
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'fleet','inventory','overview']">
+          Inventory
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" routerLink="/reports/fleet/geofence/overview">
+          Geofencing
+        </a>
+      </li>
     </ul>
-  </li>
-  
-  
+  </li> -->
+
+
   <li class="nav-parent">
     <a class="nav-link" href="#">
-      <i class="fas fa-file-alt" aria-hidden="true"></i>
-    <span>Compliance</span>
+      <i class="fas fa-route" aria-hidden="true"></i>
+      <span>Routing & Dispatch</span>
     </a>
     <ul class="nav nav-children">
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','compliance','logs','overview']">
-          Logs
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','compliance','isreports','overview']">
-          Inspection Summary
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','compliance','iftareports','overview']">
-          IFTA Reports
-          </a>
-          </li>
-    
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','orders','overview']">
+          Orders
+        </a>
+      </li>
+      <!-- <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','trips','overview']">
+          Trips
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','routes-report','overviewroutes']">
+          Routes
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','planner-report','detail']">
+          Planner
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','crossborder','overview']">
+          Cross Border
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'dispatch','documents','summary']">
+          Documents
+        </a>
+      </li> -->
+
+
     </ul>
   </li>
-  
-  
-  
-  
+
+
+  <!-- <li class="nav-parent">
+    <a class="nav-link" href="#">
+      <i class="fas fa-file-alt" aria-hidden="true"></i>
+      <span>Compliance</span>
+    </a>
+    <ul class="nav nav-children">
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'compliance','logs','overview']">
+          Logs
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'compliance','isreports','overview']">
+          Inspection Summary
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'compliance','iftareports','overview']">
+          IFTA Reports
+        </a>
+      </li>
+
+    </ul>
+  </li>
+
+
+
+
   <li class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-hospital" aria-hidden="true"></i>
-    <span>Safety</span>
+      <span>Safety</span>
     </a>
     <ul class="nav nav-children">
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','safety','safetyoverview','overview']">
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'safety','safetyoverview','overview']">
           Safety Overview
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','safety','criticalevents','overview']">
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'safety','criticalevents','overview']">
           Critical Events
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','safety','incidents','overview']">
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'safety','incidents','overview']">
           Incidents
-          </a>
-          </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','safety','hosviolations','overview']">
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'safety','hosviolations','overview']">
           HOS Violations
-          </a>
-       </li>
-       <li>
-        <a class="nav-link" [routerLink]="['/manage', 'reports','safety','scorecard','overview']">
-        Driver Scorecard
-        </a>  
-     </li>
-      
-    
-    </ul>
-  </li>
-  
-  
-  
-  </ul>
-  
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'safety','scorecard','overview']">
+          Driver Scorecard
+        </a>
+      </li> -->
+
+
+  <!-- </ul>
+</li> -->
+
+
+
+</ul>
