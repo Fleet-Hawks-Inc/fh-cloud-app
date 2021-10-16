@@ -39,7 +39,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     };
   }
 
-  toModel(date: NgbDateStruct): string { // from internal model -> your mode
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
     let month: any = "";
     let day: any = "";
     if (date) {
@@ -88,7 +89,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 const routes: Routes = [
   { path: "orders/list", component: PurchaseOrdersListComponent },
   { path: "orders/add", component: AddPurchaseOrderComponent },
-  { path: "orders/detail", component: PurchaseOrderDetailComponent },
+  { path: "orders/edit/:purchaseID", component: AddPurchaseOrderComponent },
+  {
+    path: "orders/detail/:purchaseID",
+    component: PurchaseOrderDetailComponent,
+  },
   { path: "vendor-payments/list", component: VendorPaymentsListComponent },
   { path: "vendor-payments/add", component: AddVendorPaymentComponent },
   { path: "vendor-payments/detail", component: VendorPaymentDetailComponent },

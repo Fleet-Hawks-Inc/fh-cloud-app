@@ -80,8 +80,8 @@
                           Reference#</label>
                         <input
                           type="text"
-                          name="orderNo"
-                          [(ngModel)]="orderData.orderNo"
+                          name="refNo"
+                          [(ngModel)]="orderData.refNo"
                           class="form-control"
                           placeholder="Enter Reference#"
                           />
@@ -135,12 +135,12 @@
                         </thead>
                         <tbody>
                           <tr
-                            *ngFor="let detail of orderData.dtail;
+                            *ngFor="let detail of orderData.detail;
                             let idt= index">
                             <td>
                               <input
                                 type="text"
-                                name="comm{{ idt }}"
+                                name="comm{{idt}}"
                                 [(ngModel)]="detail.comm"
                                 class="form-control"
                                 placeholder="Enter commodity"
@@ -152,18 +152,20 @@
                                 <div class="col-lg-6 pr-0 mr-2">
                                   <input
                                     type="text"
-                                    name="qty{{ idt }}"
+                                    name="qty{{idt}}"
                                     [(ngModel)]="detail.qty"
                                     class="form-control"
                                     placeholder="Enter quantity"
+                                    (input)="calcDetailAmount(idt)"
                                     />
                                 </div>
                                 <div class="col-lg-5 pl-0">
                                   <ng-select
                                     [(ngModel)]="detail.qtyTyp"
-                                    name="quanType"
+                                    name="quanType{{idt}}"
                                     placeholder="Select type"
-                                    #quanType="ngModel">
+                                    #quanType="ngModel"
+                                    (change)="setQuanType($event,idt)">
                                     <ng-option
                                       *ngFor="let qtype of quantityTypes"
                                       value="{{ qtype.value }}">{{ qtype.name }}</ng-option>
@@ -173,21 +175,27 @@
                             </td>
                             <td>
                               <div class="row">
-                                <div class="col-lg-6 pr-0 mr-2">
+                                <div class="col-lg-5 pr-0 mr-2">
                                   <input
                                     type="text"
-                                    name="rate{{ idt }}"
+                                    name="rate{{idt}}"
                                     [(ngModel)]="detail.rate"
                                     class="form-control"
                                     placeholder="Enter rate"
+                                    (input)="calcDetailAmount(idt)"
                                     />
                                 </div>
+                                <div class="col-lg-1 pr-0 pl-0">
+                                  <label>per</label>
+                                </div>
+
                                 <div class="col-lg-5 pl-0">
                                   <ng-select
                                     [(ngModel)]="detail.rateTyp"
-                                    name="rateTyp"
+                                    name="rateTyp{{idt}}"
                                     placeholder="Select type"
-                                    #rateTyp="ngModel">
+                                    #rateTyp="ngModel"
+                                    (change)="setQuanType($event,idt)">
                                     <ng-option
                                       *ngFor="let qtype of quantityTypes"
                                       value="{{ qtype.value }}">{{ qtype.name }}</ng-option>
@@ -202,6 +210,7 @@
                                 [(ngModel)]="detail.amount"
                                 class="form-control"
                                 placeholder="Enter amount"
+                                readonly
                                 />
                             </td>
                             <td>
@@ -289,6 +298,7 @@
                                   [(ngModel)]="accAdd.amount"
                                   class="form-control"
                                   placeholder="Enter amount"
+                                  (input)="accessorialFeeTotal()"
                                   />
                               </div>
                             </div>
@@ -353,6 +363,7 @@
                                   [(ngModel)]="accDed.amount"
                                   class="form-control"
                                   placeholder="Enter amount"
+                                  (input)="accessorialDedTotal()"
                                   />
                               </div>
                             </div>
@@ -418,6 +429,7 @@
                                   [(ngModel)]="taxD.tax"
                                   name="taxper{{td}}"
                                   class="form-control"
+                                  (input)="taxcalculation(td)"
                                   /><span class="input-group-append"><span
                                     class="input-group-text pt-0 pb-0">%</span></span>
                               </div>
@@ -441,7 +453,8 @@
                                 </h5>
                               </div>
                               <div class="col-lg-3 bordtop pt-1">
-                                <p class="text-right">0.00</p>
+                                <p class="text-right">{{
+                                  orderData.total.finalTotal }}</p>
                               </div>
                             </div>
                           </div>
@@ -456,11 +469,14 @@
                     <button type="button" class="btn btn-default mr-2">
                       Cancel
                     </button>
-                    <a href="javascript:;" (click)="addRecord();" class="btn
-                      btn-success">Save</a>
-                    <a
-                      href="javascript:;"
-                      class="modal-with-form btn btn-success ml-2">Save & Send</a>
+                    <button type="submit" *ngIf="!purchaseID"
+                      (click)="addRecord();" class="btn
+                      btn-success mr-2">Save</button>
+                    <button type="submit" *ngIf="purchaseID"
+                      (click)="updateRecord();" class="btn
+                      btn-success mr-2">Save</button>
+                    <button type="button" class="btn btn-success mr-2">Save &
+                      Send</button>
                   </div>
                 </div>
               </div>
