@@ -1,11 +1,11 @@
-import {Injectable, NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
-import {NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {DeviceModule} from './devices/devices.module';
+import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DeviceModule } from './devices/devices.module';
 import {
   AddUserComponent,
   UserDetailsComponent,
@@ -15,7 +15,7 @@ import {
 } from './index';
 
 import { ManagemainComponent } from './managemain/managemain.component';
-import { AllReportsComponent } from './all-reports/all-reports.component';
+
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
 
@@ -30,9 +30,9 @@ const COMPONENTS = [
 ];
 
 
-  /**
- * This Service handles how the date is represented in scripts i.e. ngModel.
- */
+/**
+* This Service handles how the date is represented in scripts i.e. ngModel.
+*/
 @Injectable()
 export class CustomAdapter extends NgbDateAdapter<string> {
 
@@ -45,7 +45,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     return {
       year: + parseInt(parts[0]),
       month: + parseInt(parts[1]),
-      day: + parseInt(parts[2]) }
+      day: + parseInt(parts[2])
+    }
   }
 
   toModel(date: NgbDateStruct): string // from internal model -> your mode
@@ -67,9 +68,9 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     if (value) {
       let date = value.split(this.DELIMITER);
       return {
-        day : parseInt(date[0], 10),
-        month : parseInt(date[1], 10),
-        year : parseInt(date[2], 10)
+        day: parseInt(date[0], 10),
+        month: parseInt(date[1], 10),
+        year: parseInt(date[2], 10)
       };
     }
     return null;
@@ -83,15 +84,15 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   declarations: [
     ...COMPONENTS,
     ManagemainComponent,
-    AllReportsComponent,
-    
+
+
     AlertsListComponent,
-    
+
     AddAlertsComponent,
 
   ],
-  providers: [ {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}],
+  providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
+  { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }],
   imports: [
     CommonModule,
     FormsModule,
@@ -100,6 +101,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     SharedModule,
     NgbModule,
     DeviceModule
-  ],exports: [...COMPONENTS],
+  ], exports: [...COMPONENTS],
 })
 export class ManageModule { }
