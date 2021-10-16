@@ -10,24 +10,31 @@ import { ApiService } from 'src/app/services';
 })
 
 export class SremindersComponent implements OnInit {
-  entityID = '';
+  searchServiceTask = null;
+  status = "";
+  entityID = "";
+  type = "null";
   allData = [];
   allDatta = [];
-  pageLength="10";
+  pageLength = "10";
   vehicleList = {};
   vehicleTask = {};
   OverdueService = 0;
   due = 0;
-  totalRecords="10";
+  totalRecords = "10";
   suggestedVehicles = [];
   searchValues = "";
-  carrierID="";
+  carrierID = "";
   currentStatus = "null";
-  lastEvaluatedKey="";
+  lastEvaluatedKey = "";
   carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
-
+  serviceTask = [];
+  tasksData = [];
+  taskName: string;
+  serviceTasks = [];
+  tasksList = "";
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -36,6 +43,9 @@ export class SremindersComponent implements OnInit {
     this.tasksfunction();
     this.fetchVehiclesdata();
     this.fetchvehicleSList();
+    this.fetchTasksList();
+    // this. fetchServiceTaks()
+
 
 
   }
@@ -43,75 +53,106 @@ export class SremindersComponent implements OnInit {
   //   this.apiService.getData('vehicles/fetch/records?vehicle='+this.carrierID+'&status='+this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
   //     .subscribe((result: any) => {
   //       if(result.Items.length == 0) {
-        
+
   //       }
   //     }
   //     )}
-  fetchVehiclesdata(){
-    this.apiService.getData(`reminders/fetch/report/list?name=${this.entityID}&type=service`).subscribe((result:any) =>{
-        console.log('this.data',result)
-        this.allData = result.Items;
+  fetchVehiclesdata() {
+    this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&type=service&serviceTask=${this.searchServiceTask}`).subscribe((result: any) => {
+      
+      console.log('this.data', result)
+      this.allData = result.Items;
     });
   }
-  srchVeh(){
-    if (this.entityID !== '' || this.entityID!= null){
- 
+  srchVeh() {
+    if (this.entityID !== '' || this.searchServiceTask !== '') {
+
+      // if (this.entityID !== ''){
       this.entityID = this.entityID;
-      this.allData =[];
-    
+      this.allData = [];
+
       this.fetchVehiclesdata();
     }
-    else{
+    else {
+      return false;
+    }
+  }
+
+  resetData() {
+    if (this.entityID !== '' || this.searchServiceTask !== null) {
+      this.entityID = '';
+      this.searchServiceTask = null;
+      this.allData = [];
+
+      this.fetchVehiclesdata();
+    } else {
       return false;
     }
   }
   
-  newfunction() {
-    this.apiService.getData("reminders").subscribe((result: any) => {
-      this.allData = result.Items;
-      console.log("this.allData", this.allData);
-    })
-  }
- 
-  // linkfunction() {
-  //   this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-  //     console.log("this.allData", result)
-  //     this.vehicleList = result;
-  //     if(this.vehicleList == '') {
-  //       this.vehicleList = this.srchVeh;
-  //     }
-  //     this.vehicleList = [];
-  //     this.suggestedVehicles = [];
-  //     this.fetchVehiclesdata();
-  //     // this.initDataTable();
-  //   }
-  //   )}
-
-  fetchvehicleSList() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehiclesList = result;
-      console.log("vehicleList" , result)
-    });
-  }
-    
-  tasksfunction() {
-    this.apiService.getData("tasks/get/list").subscribe((result: any) => {
-      console.log("this.allData", result)
-      this.taskfunction = result;
 
 
-      for (let i = 0; i < this.allData.length; i++) {
-        if (this.allData[i].status === 'overdue') {
-          this.OverdueService += 1;
-        }
-        else {
-          this.due += 1;
-        }
 
+
+newfunction() {
+  this.apiService.getData("reminders").subscribe((result: any) => {
+    this.allData = result.Items;
+    console.log("this.allData", this.allData);
+  })
+}
+
+// linkfunction() {
+//   this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
+//     console.log("this.allData", result)
+//     this.vehicleList = result;
+//     if(this.vehicleList == '') {
+//       this.vehicleList = this.srchVeh;
+//     }
+//     this.vehicleList = [];
+//     this.suggestedVehicles = [];
+//     this.fetchVehiclesdata();
+//     // this.initDataTable();
+//   }
+//   )}
+
+fetchvehicleSList() {
+  this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
+    this.vehiclesList = result;
+    console.log("vehicleList", result)
+  });
+}
+// fetchServiceTaks() {
+//   let test = [];
+//   this.apiService.getData('tasks').subscribe((result: any) => {
+//     test = result.Items;
+
+//   });
+// }
+
+fetchTasksList() {
+  this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
+    this.tasksData = result;
+    console.log("tasksData", result)
+  });
+}
+
+tasksfunction() {
+  this.apiService.getData("tasks/get/list").subscribe((result: any) => {
+    console.log("this.allData", result)
+    this.taskfunction = result;
+
+    for (let i = 0; i < this.allData.length; i++) {
+      if (this.allData[i].status === 'overdue') {
+        this.OverdueService += 1;
       }
-      console.log("OverdueService", this.OverdueService)
-    })
-  }
+      else {
+        this.due += 1;
+      }
+
+    }
+    console.log("OverdueService", this.OverdueService)
+  })
+}
   // searchfunction() {
   //   console.log("hello", this.srchVeh)
   //   if (this.searchValues != '') {
@@ -120,7 +161,6 @@ export class SremindersComponent implements OnInit {
 
   //   }
   // }
+
 }
-
-
 

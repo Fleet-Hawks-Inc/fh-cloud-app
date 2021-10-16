@@ -10,37 +10,40 @@
                       /> -->
                   <!-- <input [(ngModel)]="entityID" placeholder="Miles to repeat service task"
                      name="srchVeh" type="text" class="form-control"> -->
-                   
-                     <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;" placeholder="Search By vehicle">
-                        <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}</ng-option>
-                    </ng-select>
+
+                  <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
+                     placeholder="Search By vehicle">
+                     <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option>
+                  </ng-select>
                </div>
                <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="taskID" name="taskID" style="width: 100% !important;" placeholder="Search task">
-                     <optgroup label="Select Service Task">
-                         <ng-option *ngFor="let task of tasksfunction" [value]="task.taskID">{{task.taskName}}
-                         </ng-option>
+                  <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
+                     placeholder="Search task">
+                   
+                        <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}} 
+                        </ng-option>
                      </optgroup>
-                 </ng-select>
+                  </ng-select>
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="">
-                           <option value="1">Select Reminders Status</option>
-                           <option value="2">All</option>
-                           <option value="2">Overdue</option>
-                           <option value="2">Due Soon</option>
+                     <ng-select [(ngModel)]="serviceTask" name="serviceTask" style="width: 100%;"
+                        placeholder="Select Reminder Status">
+                        <optgroup label="Select Reminder Status">
+                           <ng-option value="all">ALL</ng-option>
+                           <ng-option value="overdue">OVERDUE</ng-option>
+                           <ng-option value="dueSoon">DUE SOON</ng-option>
                         </optgroup>
-                     </select>
+                     </ng-select>
                   </div>
                </div>
 
 
                <div class="col-md-2 col-lg-2">
                   <button type="button" (click)="srchVeh()" class="btn btn-sm btn-success mr-3">Search</button>
-                  <button class="btn btn-sm btn-success" type="button">Reset</button>
+                  <button class="btn btn-sm btn-success" type="button" (click)="resetData()">Reset</button>
                </div>
 
                <div class="col-md-4 col-lg-4 text-right pr-1">
@@ -113,38 +116,10 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <!-- <tr>
-									 <td >421543</td>
-									 <td ><span  class="font-weight-bold" title="Service Task">Rotate Tires</span></td>
-									 <td ><span class="text-danger font-weight-bold font-size-12">Overdue</span></td>
-									 <td >2021/06/06</td>
-									 <td>jeet@iload.com</td>
-                            <td>Active</td>
-									
-								  </tr> -->
-                                 <!-- <tr>
-									 
-									 <td>32548</td>
-									 <td><span  class="font-weight-bold" title="Service Task">Oil Change</span></td>
-									 <td><span class="text-warning font-weight-bold font-size-12">Due Soon</span></td>
-									 <td >2021/06/06</td>
-                            <td>roshan@trucks.ca</td>
-									 <td>Active</td>
-									 
-								  </tr>
-								  <tr>
-									 
-									 <td>954810</td>
-									 <td><span class="font-weight-bold" title="Service Task">Tires Replacement</span></td>
-									 <td><span class="text-danger font-weight-bold font-size-12">Overdue</span></td>
-									 <td >2021/06/06</td>
-                            <td>marr@truckingcanada.ca</td>
-									 <td>Inactive</td>
-									 
-								  </tr> -->
+                                 
                                  <tr *ngFor="let item of allData">
                                     <td>{{vehiclesList[item.entityID]}}</td>
-                                    <td>{{tasksfunction[item.tasks.taskID]}}</td>
+                                    <td>{{tasksData[item.tasks.taskID]}}</td>
                                     <td>{{item.createdDate}}</td>
                                     <td>{{item.subscribers}}</td>
                                     <td>{{item.status}} </td>
