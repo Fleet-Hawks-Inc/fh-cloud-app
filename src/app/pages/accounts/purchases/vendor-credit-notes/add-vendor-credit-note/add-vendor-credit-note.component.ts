@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AccountService, ListService } from 'src/app/services';
 
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-add-vendor-credit-note',
   templateUrl: './add-vendor-credit-note.component.html',
@@ -30,10 +35,27 @@ export class AddVendorCreditNoteComponent implements OnInit {
   accounts: any = [];
   vendors: any = [];
 
-  constructor(private listService: ListService,
+  errors = {};
+  response: any = '';
+  hasError = false;
+  hasSuccess = false;
+  Error = '';
+  pageTitle = 'Add';
+
+  notesID: any;
+
+  constructor(private listService: ListService, private route: ActivatedRoute, private toaster: ToastrService, private location: Location,
     private accountService: AccountService) { }
 
   ngOnInit() {
+    this.notesID = this.route.snapshot.params[`invID`];
+    if (this.notesID) {
+      this.pageTitle = 'Edit';
+      // await this.fetchInvoice();
+    } else {
+      this.pageTitle = 'Add';
+    }
+
     this.fetchAccounts();
     this.listService.fetchVendors();
     this.vendors = this.listService.vendorList;
@@ -62,6 +84,44 @@ export class AddVendorCreditNoteComponent implements OnInit {
 
   deleteDetail(d: number) {
     this.creditData.crDetails.splice(d, 1);
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+
+  addNotes() {
+    console.log("data", this.creditData)
+
+    this.accountService.postData(`vendor-credits`, this.creditData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              //this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              // this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        // this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice Added Successfully.');
+        this.cancel();
+      },
+    });
   }
 
 }

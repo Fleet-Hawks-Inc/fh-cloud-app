@@ -4,7 +4,7 @@
       <header class="page-header">
         <div class="row pr-5" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Add Vendor Credit
+            {{ pageTitle }} Vendor Credit
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
             <a
@@ -34,7 +34,13 @@
                             "
                             >Purchase Order#</label
                           >
-                          <input type="text" class="form-control" />
+                          <input
+                            [(ngModel)]="creditData.purOrder"
+                            name="purOrder"
+                            placeholder="Select purchase order"
+                            type="text"
+                            class="form-control"
+                          />
                         </div>
                         <div class="col-lg-5">
                           <label
@@ -48,9 +54,14 @@
                           >
                           <input
                             type="text"
-                            data-plugin-datepicker=""
+                            [(ngModel)]="creditData.vCrDate"
+                            name="vCrDate"
+                            (click)="vCreDate.toggle()"
+                            ngbDatepicker
+                            #vCreDate="ngbDatepicker"
                             class="form-control"
                             placeholder="mm/dd/yyyy"
+                            readonly
                           />
                         </div>
                       </div>
@@ -65,16 +76,14 @@
                             "
                             >Currency</label
                           >
-
-                          <select
-                            data-plugin-selectTwo
-                            class="form-control populate"
+                          <ng-select
+                            [(ngModel)]="creditData.currency"
+                            name="currency"
+                            placeholder="Select Vendor"
                           >
-                            <optgroup label="">
-                              <option value="2">CAD</option>
-                              <option value="2">USD</option>
-                            </optgroup>
-                          </select>
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
+                          </ng-select>
                         </div>
                         <!-- <div class="col-lg-5">
                           <label
@@ -110,6 +119,8 @@
                           >
                           <input
                             type="text"
+                            [(ngModel)]="creditData.crRef"
+                            name="crRef"
                             class="form-control"
                             placeholder="Enter Unique Reference Number"
                           />
@@ -544,6 +555,8 @@
                             <textarea
                               class="form-control heighta"
                               rows="6"
+                              [(ngModel)]="creditData.remarks"
+                              name="remarks"
                             ></textarea>
                           </div>
                         </div>
@@ -559,9 +572,14 @@
                       >
                         Cancel
                       </button>
-                      <a href="all-vendor-credits.php" class="btn btn-success"
-                        >Save</a
+                      <button
+                        class="btn btn-success"
+                        type="button"
+                        *ngIf="!invID"
+                        (click)="addNotes()"
                       >
+                        Save
+                      </button>
                     </div>
                   </div>
                 </form>
