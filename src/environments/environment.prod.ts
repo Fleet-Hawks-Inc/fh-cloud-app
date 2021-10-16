@@ -7,7 +7,7 @@ export const environment = {
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,
-  isReportsEnabled: false,
+  isReportsEnabled: true,
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
 
@@ -30,10 +30,10 @@ export const environment = {
     USER_POOL_ID: 'ca-central-1_F0KoWWGIh',
     REGION: 'ca-central-1',
     APP_CLIENT_ID: '1khgs3lefjv2qld1dgts0dno68'
-  }, 
+  },
   HOSTNAME: 'myhome.anterbox.com',
-  PORT : 9001,
-  MQTTPATH : '/',
+  PORT: 9001,
+  MQTTPATH: '/',
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
