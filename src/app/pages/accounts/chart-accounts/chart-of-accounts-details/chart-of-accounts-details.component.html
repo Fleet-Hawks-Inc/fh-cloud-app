@@ -70,16 +70,17 @@
                       <div class="text-center p-4 cmaindiv detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actDateCAD | date:'yyyy/MM/dd'}}</p>
-                        <p class="mb-0">CAD Account Date</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{accountsClassObjects[account.actClassID] | titlecase}}</p>
+                        <p class="mb-0">Account Class</p>
                       </div>
                     </div>
                     <div class="col">
                       <div class="text-center p-4 cmaindiv detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actDateUSD | date:'yyyy/MM/dd'}}</p>
-                        <p class="mb-0">USD Account Date</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actDate | date:'yyyy/MM/dd'}}</p>
+                        <p class="mb-0">Account Date</p>
                       </div>
                     </div>
                   </div>
@@ -109,12 +110,12 @@
                   <!-- Nav tabs -->
                   <ul class="nav nav-tabs top-tabs" id="top-tabs" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" id="CAD-tab" data-toggle="tab" href="#CAD"
-                        type="button" role="tab" aria-controls="CAD" aria-selected="true">CAD Transactions</a>
+                      <a class="nav-link active" id="CAD-tab" data-toggle="tab" href="#CAD" type="button" role="tab"
+                        aria-controls="CAD" aria-selected="true">CAD Transactions</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="USD-tab" data-toggle="tab" href="#USD" type="button"
-                        role="tab" aria-controls="USD" aria-selected="false">USD Transactions</a>
+                      <a class="nav-link" id="USD-tab" data-toggle="tab" href="#USD" type="button" role="tab"
+                        aria-controls="USD" aria-selected="false">USD Transactions</a>
                     </li>
                   </ul>
                   <!-- Tab panes -->

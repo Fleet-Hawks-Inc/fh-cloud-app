@@ -59,6 +59,7 @@
                           <th class="text-2">Account Name</th>
                           <th class="text-2">Account Number</th>
                           <th class="text-2">Account Type</th>
+                          <th class="text-2">Account Class</th>
                           <th class="text-2">Description</th>
                           <th class="text-2">Opening Balance CAD</th>
                           <th class="text-2">Opening Balance USD</th>
@@ -68,7 +69,7 @@
                       </thead>
                       <tbody>
                         <tr *ngIf="accounts.length === 0" class="text-center">
-                          <td colspan="7">{{ dataMessage }}</td>
+                          <td colspan="8">{{ dataMessage }}</td>
                         </tr>
                         <!-- <tr *ngFor="let ac of accounts | async"> -->
                         <tr *ngFor="let ac of accounts">
@@ -80,6 +81,8 @@
                           </td>
                           <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
                             {{ac.actType | titlecase}} </td>
+                          <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
+                            {{accountsClassObjects[ac.actClassID] | titlecase}} </td>
                           <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
                             {{ac.actDesc}}</td>
                           <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
@@ -152,7 +155,22 @@
             </div>
           </div>
           <div class="row mt-2">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
+              <label class="control-label font-weight-bold pt-2">Main Account Type<span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+              <ng-select class="form-control populate" placeholder="Select main account type" [(ngModel)]="mainactType"
+                name="mainactType" #mainaccountType="ngModel" required>
+                <ng-option value="ASSET">ASSET</ng-option>
+                <ng-option value="LIABILITY">LIABILITY</ng-option>
+                <ng-option value="EQUITY">EQUITY</ng-option>
+                <ng-option value="REVENUE">REVENUE</ng-option>
+              </ng-select>
+              <div *ngIf="mainaccountType.invalid && (mainaccountType.dirty || mainaccountType.touched)"
+                class="text-danger">
+                <div *ngIf="mainaccountType.errors.required"> Main Account type is required. </div>
+              </div>
+            </div>
+            <div class="col-lg-3">
               <label class="control-label font-weight-bold pt-2">Account Type<span
                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
               <ng-select class="form-control populate" placeholder="Select account type" [(ngModel)]="actType"
@@ -172,22 +190,10 @@
                 <div class="col-lg-10">
                   <label class="control-label font-weight-bold pt-2">Account Class<span
                       class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                  <ng-select class="form-control populate" placeholder="Select account class" [(ngModel)]="actClass"
-                    name="actClass" #accountClass="ngModel" required>
-                    <ng-option *ngFor="let acClass of acClasses" value="{acClass.acClassID}">{{acClass.acClassName}}
+                  <ng-select class="form-control populate text-capitalize" placeholder="Select account class"
+                    [(ngModel)]="actClassID" name="actClassID" #accountClass="ngModel" required>
+                    <ng-option *ngFor="let acClass of acClasses" value="{{acClass.acClassID}}">{{acClass.acClassName}}
                     </ng-option>
-                    <!-- <ng-option value="current assets">Current Assets</ng-option>
-                    <ng-option value="bank">Bank</ng-option>
-                    <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
-                    <ng-option value="direct expenses">Direct Expenses</ng-option>
-                    <ng-option value="equity">Equity</ng-option>
-                    <ng-option value="fixed assets">Fixed Assets</ng-option>
-                    <ng-option value="future assets">Future Assets</ng-option>
-                    <ng-option value="future liability">Future Liability</ng-option>
-                    <ng-option value="other income">Other Income</ng-option>
-                    <ng-option value="overheads">Overheads</ng-option>
-                    <ng-option value="sales">Sales</ng-option>
-                    <ng-option value="current liability">Current Liability</ng-option> -->
                   </ng-select>
                   <div *ngIf="accountClass.invalid && (accountClass.dirty || accountClass.touched)" class="text-danger">
                     <div *ngIf="accountClass.errors.required"> Account class is required. </div>
@@ -212,7 +218,7 @@
                   class="mandfield text-2 ml-1"><sup>*</sup></span></label>
             </div>
             <div class="col-lg-3 mt-2">
-              <input [(ngModel)]="actDateCAD" name="actDateCAD" type="text" placeholder="yyyy/mm/dd"
+              <input [(ngModel)]="actDate" name="actDate" type="text" placeholder="yyyy/mm/dd"
                 (click)="custexp1.toggle()" ngbDatepicker #custexp1="ngbDatepicker" class="form-control pt-2"
                 autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #accountDateCAD="ngModel"
                 [required]="!transLogCAD" [disabled]="transLogCAD">

@@ -32,18 +32,19 @@ export class ChartOfAccountsComponent implements OnInit {
   receivedActID = '';
   fetchedID = null;
   actName = null;
+  actClassID = null;
   actType = null;
+  mainactType = null;
   actNo: number;
   actDesc: '';
   actDash = false;
   opnBalCAD = 0;
   opnBalTypeCAD = 'debit';
-  actDateCAD: '';
+  actDate: '';
   closingAmtCAD: number;
   transactionLogCAD = [];
   opnBalUSD = 0;
   opnBalTypeUSD = 'debit';
-  actDateUSD: '';
   closingAmtUSD: number;
   transactionLogUSD = [];
   transLogCAD = false;
@@ -63,19 +64,29 @@ export class ChartOfAccountsComponent implements OnInit {
   loaded = false;
   actNoError = false;
   actNameError = false;
+  accountsClassObjects = {};
   constructor(private accountService: AccountService, private toaster: ToastrService, private listService: ListService) { }
 
   ngOnInit() {
     this.checkPredefinedAccounts();
     this.fetchAccounts();
     this.getAcClasses();
+    this.fetchAccountClassByIDs();
   }
+
   preAccounts() {
     this.addPredefined = true;
-    this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
-      this.toaster.success('Predefined  Accounts Created.');
-      this.fetchAccounts();
-    });
+    const res = this.accountService.getData('chartAc/addpredefinedClass').toPromise();
+    if (res) {
+      setTimeout(() => {
+        this.accountService.getData('chartAc/predefinedAccounts').subscribe((result) => {
+          this.fetchAccounts();
+          this.fetchAccountClassByIDs();
+          this.getAcClasses();
+          this.toaster.success('Predefined  Accounts Created.');
+        });
+      }, 1500);
+    }
   }
   deleteAccount(actID: string) {
     // this.accountService.deleteData(`chartAc/${this.carrierID}/${actID}`).subscribe((res) => {
@@ -93,13 +104,12 @@ export class ChartOfAccountsComponent implements OnInit {
     this.internalActID = '';
     this.opnBalCAD = null;
     this.opnBalTypeCAD = 'debit';
-    this.actDateCAD = '';
+    this.actDate = '';
     this.closingAmtCAD = null;
     this.transactionLogCAD = [];
     this.transLogCAD = false;
     this.opnBalUSD = null;
     this.opnBalTypeUSD = 'debit';
-    this.actDateUSD = '';
     this.closingAmtUSD = null;
     this.transactionLogUSD = [];
     this.transLogUSD = false;
@@ -112,6 +122,11 @@ export class ChartOfAccountsComponent implements OnInit {
     } else {
       this.opnBalTypeUSD = value;
     }
+  }
+  fetchAccountClassByIDs() {
+    this.accountService.getData('chartAc/get/accountClass/list/all').subscribe((result: any) => {
+      this.accountsClassObjects = result;
+    });
   }
   searchAccounts() {
     if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
@@ -184,7 +199,7 @@ export class ChartOfAccountsComponent implements OnInit {
   }
   checkPredefinedAccounts() {
     this.accountService.getData(`chartAc/get/internalID/list/all`).subscribe((res) => {
-      if (res.ACT0 !== undefined && res.ACT66 !== undefined) {
+      if (res.ACT0 !== undefined && res.ACT251 !== undefined) {
         this.deactivatePredefined = true;
       } else {
         this.deactivatePredefined = false;
@@ -193,24 +208,27 @@ export class ChartOfAccountsComponent implements OnInit {
     });
   }
   validateAcNumber(actNo) {
-    this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
-      console.log('res', res);
-      if (res === true) {
-        this.actNoError = true;
-      } else {
-        this.actNoError = false;
-      }
-    });
+    if (actNo !== null && actNo !== '') {
+      this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
+        if (res === true) {
+          this.actNoError = true;
+        } else {
+          this.actNoError = false;
+        }
+      });
+    }
   }
   validateAcName(actName) {
-    actName = actName.replace(/\s+/g, ' ').trim(); // trim the double or more spaces if in between words
-    this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
-      if (res === true) {
-        this.actNameError = true;
-      } else {
-        this.actNameError = false;
-      }
-    });
+    if (actName !== null && actName !== '') {
+      actName = actName.replace(/\s+/g, ' ').trim(); // trim the double or more spaces if in between words
+      this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
+        if (res === true) {
+          this.actNameError = true;
+        } else {
+          this.actNameError = false;
+        }
+      });
+    }
   }
   addAccount() {
     this.submitDisabled = true;
@@ -218,16 +236,17 @@ export class ChartOfAccountsComponent implements OnInit {
       actName: this.actName,
       actType: this.actType,
       actNo: this.actNo,
+      actClassID: this.actClassID,
+      mainactType: this.mainactType,
       actDesc: this.actDesc,
       actDash: this.actDash,
       opnBalCAD: this.opnBalCAD,
       opnBalTypeCAD: this.opnBalTypeCAD,
-      actDateCAD: this.actDateCAD,
+      actDate: this.actDate,
       transactionLogCAD: [],
       closingAmtCAD: 0,
       opnBalUSD: this.opnBalUSD,
       opnBalTypeUSD: this.opnBalTypeUSD,
-      actDateUSD: this.actDateUSD,
       transactionLogUSD: [],
       closingAmtUSD: 0,
       internalActID: '',
@@ -264,17 +283,18 @@ export class ChartOfAccountsComponent implements OnInit {
         $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
+        this.mainactType = '';
         this.actNo = null;
+        this.actClassID = '';
         this.actDesc = '';
         this.actDash = false;
         this.opnBalCAD = null;
         this.opnBalTypeCAD = 'debit';
-        this.actDateCAD = '';
+        this.actDate = '';
         this.closingAmtCAD = null;
         this.transactionLogCAD = [];
         this.opnBalUSD = null;
         this.opnBalTypeUSD = 'debit';
-        this.actDateUSD = '';
         this.closingAmtUSD = null;
         this.transactionLogUSD = [];
         this.internalActID = '';
@@ -293,38 +313,42 @@ export class ChartOfAccountsComponent implements OnInit {
     } else {
       this.actName = '';
       this.actType = '';
+      this.mainactType = '';
+      this.actClassID = '';
       this.actNo = null;
       this.actDesc = '';
       this.actDash = false;
       this.internalActID = '';
       this.opnBalCAD = null;
       this.opnBalTypeCAD = 'debit';
-      this.actDateCAD = '';
+      this.actDate = '';
       this.closingAmtCAD = null;
       this.opnBalUSD = null;
       this.opnBalTypeUSD = 'debit';
-      this.actDateUSD = '';
       this.closingAmtUSD = null;
 
     }
   }
   fetchAccount(ID: any) {
+    this.getAcClasses();
     this.fetchedID = ID;
     this.accountService.getData(`chartAc/account/${ID}`).subscribe((res) => {
+      console.log('res', res);
       this.actName = res.actName;
       this.actType = res.actType;
+      this.mainactType = res.mainactType;
+      this.actClassID = res.actClassID;
       this.actNo = res.actNo;
       this.actDesc = res.actDesc;
       this.actDash = res.actDash;
       this.internalActID = res.internalActID;
       this.opnBalCAD = res.opnBalCAD;
       this.opnBalTypeCAD = res.opnBalTypeCAD;
-      this.actDateCAD = res.actDateCAD;
+      this.actDate = res.actDate;
       this.closingAmtCAD = res.closingAmtCAD;
       this.transactionLogCAD = res.transactionLogCAD;
       this.opnBalUSD = res.opnBalUSD;
       this.opnBalTypeUSD = res.opnBalTypeUSD;
-      this.actDateUSD = res.actDateUSD;
       this.closingAmtUSD = res.closingAmtUSD;
       this.transactionLogUSD = res.transactionLogUSD;
       if (this.transactionLogCAD.length > 0) {
@@ -343,17 +367,18 @@ export class ChartOfAccountsComponent implements OnInit {
       actID: ID,
       actName: this.actName,
       actType: this.actType,
+      mainactType: this.mainactType,
+      actClassID: this.actClassID,
       actNo: this.actNo,
       actDesc: this.actDesc,
       actDash: this.actDash,
       opnBalCAD: this.opnBalCAD,
       opnBalTypeCAD: this.opnBalTypeCAD,
-      actDateCAD: this.actDateCAD,
+      actDate: this.actDate,
       transactionLogCAD: this.transactionLogCAD,
       closingAmtCAD: this.closingAmtCAD,
       opnBalUSD: this.opnBalUSD,
       opnBalTypeUSD: this.opnBalTypeUSD,
-      actDateUSD: this.actDateUSD,
       transactionLogUSD: this.transactionLogUSD,
       closingAmtUSD: this.closingAmtUSD,
       internalActID: this.internalActID,
@@ -390,19 +415,20 @@ export class ChartOfAccountsComponent implements OnInit {
         $('#addAccountModal').modal('hide');
         this.actName = '';
         this.actType = '';
+        this.mainactType = '';
+        this.actClassID = '';
         this.actNo = null;
         this.internalActID = '';
         this.actDash = false;
         this.actDesc = '';
         this.opnBalCAD = null;
         this.opnBalTypeCAD = 'debit';
-        this.actDateCAD = '';
+        this.actDate = '';
         this.closingAmtCAD = null;
         this.transactionLogCAD = [];
         this.transLogCAD = false;
         this.opnBalUSD = null;
         this.opnBalTypeUSD = 'debit';
-        this.actDateUSD = '';
         this.closingAmtUSD = null;
         this.transactionLogUSD = [];
         this.transLogUSD = false;
