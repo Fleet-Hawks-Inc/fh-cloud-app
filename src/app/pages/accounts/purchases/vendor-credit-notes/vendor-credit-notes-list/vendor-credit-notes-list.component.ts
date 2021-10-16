@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountService } from 'src/app/services';
 
 @Component({
   selector: 'app-vendor-credit-notes-list',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VendorCreditNotesListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private accountService: AccountService) { }
 
   ngOnInit() {
+    this.getCredits();
   }
 
+  getCredits() {
+    this.accountService.getData(`vendor-credits`).subscribe(res => {
+      console.log('res', res)
+    });
+  }
 }

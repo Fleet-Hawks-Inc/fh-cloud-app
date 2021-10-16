@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { AccountService, ListService } from 'src/app/services';
 
 import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-add-vendor-credit-note',
   templateUrl: './add-vendor-credit-note.component.html',
@@ -43,9 +44,10 @@ export class AddVendorCreditNoteComponent implements OnInit {
   pageTitle = 'Add';
 
   notesID: any;
+  units = [];
 
   constructor(private listService: ListService, private route: ActivatedRoute, private toaster: ToastrService, private location: Location,
-    private accountService: AccountService) { }
+    private accountService: AccountService, private httpClient: HttpClient) { }
 
   ngOnInit() {
     this.notesID = this.route.snapshot.params[`invID`];
@@ -57,11 +59,18 @@ export class AddVendorCreditNoteComponent implements OnInit {
     }
 
     this.fetchAccounts();
+    this.fetchQuantityUnits();
     this.listService.fetchVendors();
     this.vendors = this.listService.vendorList;
   }
 
-
+  fetchQuantityUnits() {
+    this.httpClient
+      .get("assets/jsonFiles/quantityUnits.json")
+      .subscribe((data: any) => {
+        this.units = data;
+      });
+  }
 
 
   fetchAccounts() {

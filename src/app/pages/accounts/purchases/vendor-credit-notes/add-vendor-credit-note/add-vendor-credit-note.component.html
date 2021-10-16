@@ -218,65 +218,10 @@
                                       name="qtyUnit{{ d }}"
                                     >
                                       <ng-option
-                                        value="Bag"
-                                        data-select2-id="21"
-                                        >Bag</ng-option
+                                        *ngFor="let unit of units"
+                                        value="{{ unit.value }}"
+                                        >{{ unit.name }}</ng-option
                                       >
-                                      <ng-option
-                                        value="Bale"
-                                        data-select2-id="285"
-                                        >Bale
-                                      </ng-option>
-                                      <ng-option
-                                        value="Barrel"
-                                        data-select2-id="286"
-                                        >Barrel
-                                      </ng-option>
-                                      <ng-option
-                                        value="Basket"
-                                        data-select2-id="287"
-                                        >Basket
-                                      </ng-option>
-                                      <ng-option
-                                        value="Bin"
-                                        data-select2-id="288"
-                                        >Bin
-                                      </ng-option>
-                                      <ng-option
-                                        value="Box"
-                                        data-select2-id="289"
-                                        >Box
-                                      </ng-option>
-                                      <ng-option
-                                        value="Bucket"
-                                        data-select2-id="290"
-                                        >Bucket
-                                      </ng-option>
-                                      <ng-option
-                                        value="Can"
-                                        data-select2-id="291"
-                                        >Can
-                                      </ng-option>
-                                      <ng-option
-                                        value="Crate"
-                                        data-select2-id="292"
-                                        >Crate
-                                      </ng-option>
-                                      <ng-option
-                                        value="Cases"
-                                        data-select2-id="293"
-                                        >Cases
-                                      </ng-option>
-                                      <ng-option
-                                        value="Pallets"
-                                        data-select2-id="294"
-                                        >Pallets
-                                      </ng-option>
-                                      <ng-option
-                                        value="Package"
-                                        data-select2-id="295"
-                                        >Package
-                                      </ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
@@ -300,65 +245,10 @@
                                       name="rateUnit{{ d }}"
                                     >
                                       <ng-option
-                                        value="Bag"
-                                        data-select2-id="21"
-                                        >Bag</ng-option
+                                        *ngFor="let unit of units"
+                                        value="{{ unit.value }}"
+                                        >{{ unit.name }}</ng-option
                                       >
-                                      <ng-option
-                                        value="Bale"
-                                        data-select2-id="285"
-                                        >Bale
-                                      </ng-option>
-                                      <ng-option
-                                        value="Barrel"
-                                        data-select2-id="286"
-                                        >Barrel
-                                      </ng-option>
-                                      <ng-option
-                                        value="Basket"
-                                        data-select2-id="287"
-                                        >Basket
-                                      </ng-option>
-                                      <ng-option
-                                        value="Bin"
-                                        data-select2-id="288"
-                                        >Bin
-                                      </ng-option>
-                                      <ng-option
-                                        value="Box"
-                                        data-select2-id="289"
-                                        >Box
-                                      </ng-option>
-                                      <ng-option
-                                        value="Bucket"
-                                        data-select2-id="290"
-                                        >Bucket
-                                      </ng-option>
-                                      <ng-option
-                                        value="Can"
-                                        data-select2-id="291"
-                                        >Can
-                                      </ng-option>
-                                      <ng-option
-                                        value="Crate"
-                                        data-select2-id="292"
-                                        >Crate
-                                      </ng-option>
-                                      <ng-option
-                                        value="Cases"
-                                        data-select2-id="293"
-                                        >Cases
-                                      </ng-option>
-                                      <ng-option
-                                        value="Pallets"
-                                        data-select2-id="294"
-                                        >Pallets
-                                      </ng-option>
-                                      <ng-option
-                                        value="Package"
-                                        data-select2-id="295"
-                                        >Package
-                                      </ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
