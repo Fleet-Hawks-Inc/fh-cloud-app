@@ -6,7 +6,7 @@
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Purchase
                      Order# - {{ orderData.orderNo }} <span class="badge
-                        badge-dark p-1">{{ orderData.status }}</span></h4>
+                        badge-dark p-1 text-uppercase">{{ orderData.status }}</span></h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
                   <a routerLink="/accounts/purchases/orders/list" class="btn
@@ -38,7 +38,8 @@
                                     <i class="fa fa-user text-7"></i>
                                     <br>
                                     <p class="mb-0 text-5 font-weight-bold
-                                       text-dark">{{ vendorName }}</p>
+                                       text-dark text-capitalize">{{ vendorName
+                                       }}</p>
                                     <p class="mb-0">VENDOR</p>
                                  </div>
                               </div>
@@ -49,6 +50,7 @@
                                     <br>
                                     <p class="mb-0 text-5 font-weight-bold
                                        text-dark">{{ orderData.total.finalTotal
+                                       | number : '1.2-2'
                                        }} {{ orderData.currency }}</p>
                                     <p class="mb-0">AMOUNT</p>
                                  </div>
@@ -78,7 +80,8 @@
                                        <tr>
                                           <td class="back-color-gray
                                              font-weight-bold">Reference#</td>
-                                          <td>{{ orderData.refNo }}</td>
+                                          <td>{{ orderData.refNo ?
+                                             orderData.refNo : '-' }}</td>
                                        </tr>
                                        <!-- <tr>
                                     <td class="back-color-gray font-weight-bold">Payment Terms</td>
@@ -87,12 +90,14 @@
                                        <tr>
                                           <td class="back-color-gray
                                              font-weight-bold">Remarks</td>
-                                          <td>{{ orderData.charges.remarks }}</td>
+                                          <td>{{ orderData.charges.remarks ?
+                                             orderData.charges.remarks : '-' }}</td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray
                                              font-weight-bold">Total Amount</td>
-                                          <td>{{ orderData.total.finalTotal }}
+                                          <td>{{ orderData.total.finalTotal |
+                                             number : '1.2-2' }}
                                              {{ orderData.currency }}</td>
                                        </tr>
                                     </tbody>
@@ -137,6 +142,7 @@
                                                 orderData.charges.accFee; let
                                                 j=index">
                                                 {{ data.name }}: {{ data.amount
+                                                | number : '1.2-2'
                                                 }}
                                                 <span *ngIf="j
                                                 <orderData.charges.accFee.length-1">,</span>
@@ -151,6 +157,7 @@
                                                 orderData.charges.accDed; let
                                                 j=index">
                                                 {{ data.name }}: {{ data.amount
+                                                | number : '1.2-2'
                                                 }}
                                                 <span *ngIf="j
                                                 <orderData.charges.accDed.length-1">,</span>
@@ -181,11 +188,13 @@
                                           j=index">
                                           <td>{{ data.comm }}</td>
                                           <td>{{ data.qty }} {{ data.qtyTyp }}</td>
-                                          <td>{{ data.rate }} {{
+                                          <td>{{ data.rate | number : '1.2-2' }}
+                                             {{
                                              orderData.currency }} / {{
                                              data.rateTyp
                                              }}</td>
-                                          <td>{{ data.amount }} {{
+                                          <td>{{ data.amount | number : '1.2-2'
+                                             }} {{
                                              orderData.currency }}</td>
                                        </tr>
                                     </tbody>

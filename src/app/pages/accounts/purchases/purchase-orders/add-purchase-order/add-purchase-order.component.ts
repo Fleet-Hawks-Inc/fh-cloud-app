@@ -105,7 +105,7 @@ export class AddPurchaseOrderComponent implements OnInit {
       this.fetchDetails();
     }
     this.listService.fetchVendors();
-    this.fetchPayPeriods();
+    this.fetchQuantityTypes();
 
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
@@ -124,7 +124,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     });
   }
 
-  fetchPayPeriods() {
+  fetchQuantityTypes() {
     this.httpClient
       .get("assets/jsonFiles/quantityTypes.json")
       .subscribe((data: any) => {
@@ -141,8 +141,17 @@ export class AddPurchaseOrderComponent implements OnInit {
       rateTyp: null,
       amount: 0,
     };
-
-    this.orderData.detail.push(obj);
+    const lastAdded = this.orderData.detail[this.orderData.detail.length - 1];
+    if (
+      lastAdded.comm !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyTyp !== "" &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateTyp !== "" &&
+      lastAdded.amount !== 0
+    ) {
+      this.orderData.detail.push(obj);
+    }
   }
 
   delDetail(index) {
@@ -158,9 +167,17 @@ export class AddPurchaseOrderComponent implements OnInit {
       amount: 0,
     };
     if (type === "fee") {
-      this.orderData.charges.accFee.push(obj);
+      const lastAdded =
+        this.orderData.charges.accFee[this.orderData.charges.accFee.length - 1];
+      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
+        this.orderData.charges.accFee.push(obj);
+      }
     } else if (type === "ded") {
-      this.orderData.charges.accDed.push(obj);
+      const lastAdded =
+        this.orderData.charges.accDed[this.orderData.charges.accDed.length - 1];
+      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
+        this.orderData.charges.accDed.push(obj);
+      }
     }
   }
 
@@ -219,12 +236,19 @@ export class AddPurchaseOrderComponent implements OnInit {
   }
 
   calcDetailAmount(index: number) {
+    if (!this.orderData.detail[index].rate) {
+      this.orderData.detail[index].rate = "0";
+    }
+    if (!this.orderData.detail[index].qty) {
+      this.orderData.detail[index].qty = "0";
+    }
     if (this.orderData.detail[index].qty && this.orderData.detail[index].rate) {
       this.orderData.detail[index].amount =
         Number(this.orderData.detail[index].qty) *
         Number(this.orderData.detail[index].rate);
     }
     this.detailsTotal();
+    this.allTax();
   }
 
   setQuanType(val: string, index: number) {

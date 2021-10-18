@@ -10,6 +10,7 @@ import {
 import { Injectable } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AddPurchaseOrderComponent } from "./purchase-orders/add-purchase-order/add-purchase-order.component";
 import { PurchaseOrdersListComponent } from "./purchase-orders/purchase-orders-list/purchase-orders-list.component";
@@ -128,6 +129,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    InfiniteScrollModule,
   ],
 })
 export class PurchasesModule {}
