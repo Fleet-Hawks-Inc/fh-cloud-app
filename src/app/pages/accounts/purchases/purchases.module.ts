@@ -97,8 +97,9 @@ const routes: Routes = [
     component: VendorCreditNotesListComponent,
   },
   { path: "vendor-credit-notes/add", component: AddVendorCreditNoteComponent },
+  { path: "vendor-credit-notes/edit/:creditID", component: AddVendorCreditNoteComponent },
   {
-    path: "vendor-credit-notes/detail",
+    path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
   },
 ];
@@ -125,4 +126,4 @@ const routes: Routes = [
     NgSelectModule,
   ],
 })
-export class PurchasesModule {}
+export class PurchasesModule { }
