@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { AccountService, ApiService } from '../../../../services';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services/here-map.service';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
@@ -15,9 +17,12 @@ import Constants from 'src/app/pages/fleet/constants';
   styleUrls: ['./trip-detail.component.css']
 })
 export class TripDetailComponent implements OnInit {
+  @ViewChild("tripInfoModal", { static: true })
+  tripInfoModal: TemplateRef<any>;
+
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
-  constructor(private apiService: ApiService, private route: ActivatedRoute,
+  constructor(private apiService: ApiService, private modalService: NgbModal, private route: ActivatedRoute,
     private accountService: AccountService,
     private toastr: ToastrService, private spinner: NgxSpinnerService, private hereMap: HereMapService) {
     this.selectedFileNames = new Map<any, any>();
@@ -82,6 +87,7 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  tripStatus = '';
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -96,11 +102,11 @@ export class TripDetailComponent implements OnInit {
     this.fetchExpenses();
     this.fetchExpenseCategories();
     this.fetchTripDocuments();
-    
+
     // this.initSpeedChart();
     // this.initTemperatureChart();
   }
-  async fetchDriverStatus(driverID:any){
+  async fetchDriverStatus(driverID: any) {
 
     let result = await this.apiService.getData(`drivers/status/${this.tripID}/${driverID}`).toPromise();
 
@@ -117,18 +123,24 @@ export class TripDetailComponent implements OnInit {
           if (el.docType == "Bill of Lading" || el.docType == "Proof of Delivery") {
             if (el.uploadedDocs.length > 0) {
               el.uploadedDocs.forEach(element => {
-                let name = element.split('.');
-                let ext = name[name.length - 1];
+                let name = element.storedName;
+                let ext = (element.storedName).split('.')[1];
                 let obj = {}
                 if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
                   obj = {
-                    imgPath: `${this.Asseturl}/${el.carrierID}/${element}`,
-                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                    imgPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext
                   }
                 } else {
                   obj = {
                     imgPath: 'assets/img/icon-pdf.png',
-                    docPath: `${this.Asseturl}/${el.carrierID}/${element}`
+                    docPath: `${this.Asseturl}/${el.carrierID}/${element.storedName}`,
+                    displayName: element.displayName,
+                    name: name,
+                    ext: ext
                   }
                 }
                 this.uploadedDocSrc.push(obj);
@@ -193,13 +205,18 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       })
   }
-   fetchTripDetail() {
+  fetchTripDetail() {
     this.spinner.show();
     this.tripID = this.route.snapshot.params['tripID'];
     let locations = [];
     this.apiService.getData('trips/' + this.tripID).
       subscribe(async (result: any) => {
         result = result.Items[0];
+        if (result.settlmnt) {
+          this.tripStatus = 'Settled';
+        } else {
+          this.tripStatus = result.tripStatus;
+        }
 
         if (result.tripStatus === 'delivered' || result.tripStatus === 'cancelled' || result.tripStatus === 'tonu') {
           this.showEdit = false;
@@ -225,22 +242,30 @@ export class TripDetailComponent implements OnInit {
         if (result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
-
-            let name = element.split('.');
-            let ext = name[name.length - 1];
+            let name = element.storedName;
+            let ext = (element.storedName).split('.')[1];
             let obj = {
               imgPath: '',
-              docPath: ''
+              docPath: '',
+              displayName: '',
+              name: '',
+              ext: ''
             }
             if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
               obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+                imgPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext
               }
             } else {
               obj = {
                 imgPath: 'assets/img/icon-pdf.png',
-                docPath: `${this.Asseturl}/${result.carrierID}/${element}`
+                docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
+                displayName: element.displayName,
+                name: name,
+                ext: ext
               }
             }
             this.uploadedDocSrc.push(obj);
@@ -260,9 +285,9 @@ export class TripDetailComponent implements OnInit {
             date: element.date,
             driverName: "",
             driverID: element.driverID,
-            driverStatus:element.driverID? await this.fetchDriverStatus(element.driverID):'',
+            driverStatus: element.driverID ? await this.fetchDriverStatus(element.driverID) : '',
             coDriverID: element.coDriverID,
-            coDriverStatus:element.coDriverID? await this.fetchDriverStatus(element.coDriverID):'',
+            coDriverStatus: element.coDriverID ? await this.fetchDriverStatus(element.coDriverID) : '',
             driverUsername: element.driverUsername,
             locationName: element.location,
             mileType: element.mileType,
@@ -529,21 +554,30 @@ export class TripDetailComponent implements OnInit {
               const element = res[k];
               // this.uploadedDocSrc.push(`${this.Asseturl}/${this.tripData.carrierID}/${element}`);
 
-              let name = element.split('.');
-              let ext = name[name.length - 1];
+              let name = element.storedName;
+              let ext = (element.storedName).split('.')[1];
               let obj = {
                 imgPath: '',
-                docPath: ''
+                docPath: '',
+                displayName: '',
+                name: '',
+                ext: ''
               }
               if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
                 obj = {
-                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`,
-                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                  imgPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  displayName: element.displayName,
+                  name: name,
+                  ext: ext
                 }
               } else {
                 obj = {
                   imgPath: 'assets/img/icon-pdf.png',
-                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element}`
+                  docPath: `${this.Asseturl}/${this.tripData.carrierID}/${element.storedName}`,
+                  displayName: element.displayName,
+                  name: name,
+                  ext: ext
                 }
               }
               this.uploadedDocSrc.push(obj);
@@ -581,5 +615,15 @@ export class TripDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.driversObject = result;
       });
+  }
+
+
+  openTripInfo() {
+    let ngbModalOptions: NgbModalOptions = {
+      backdrop: "static",
+      keyboard: false,
+      windowClass: "trip--info__main",
+    };
+    this.modalService.open(this.tripInfoModal, ngbModalOptions)
   }
 }

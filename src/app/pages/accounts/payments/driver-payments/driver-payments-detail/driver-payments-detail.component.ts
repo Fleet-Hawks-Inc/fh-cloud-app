@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import Constants from 'src/app/pages/fleet/constants';
-import { AccountService, ApiService, ListService } from 'src/app/services';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import Constants from "src/app/pages/fleet/constants";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
-  selector: 'app-driver-payments-detail',
-  templateUrl: './driver-payments-detail.component.html',
-  styleUrls: ['./driver-payments-detail.component.css']
+  selector: "app-driver-payments-detail",
+  templateUrl: "./driver-payments-detail.component.html",
+  styleUrls: ["./driver-payments-detail.component.css"],
 })
 export class DriverPaymentsDetailComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
@@ -15,10 +15,11 @@ export class DriverPaymentsDetailComponent implements OnInit {
   settlements = [];
   paymentID;
   paymentData = {
+    currency: "CAD",
     paymentTo: null,
     entityId: null,
-    paymentNo: '',
-    txnDate: '',
+    paymentNo: "",
+    txnDate: "",
     fromDate: null,
     toDate: null,
     settlementIds: [],
@@ -33,14 +34,14 @@ export class DriverPaymentsDetailComponent implements OnInit {
     taxdata: {
       payPeriod: null,
       stateCode: null,
-      federalCode: 'claim_code_1',
+      federalCode: "claim_code_1",
       provincialCode: null,
       cpp: 0,
       ei: 0,
       federalTax: 0,
       provincialTax: 0,
       emplCPP: 0,
-      emplEI: 0
+      emplEI: 0,
     },
     taxes: <any>0,
     advance: <any>0,
@@ -49,7 +50,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     settlData: [],
     advData: [],
     transactionLog: [],
-    paymentEnity: ''
+    paymentEnity: "",
   };
   accounts = [];
   accountsObjects = {};
@@ -83,34 +84,45 @@ export class DriverPaymentsDetailComponent implements OnInit {
 
   fetchContactsList() {
     this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-        this.contacts = result;
+      this.contacts = result;
     });
   }
 
   async fetchPaymentDetail() {
-    let result:any = await this.accountService.getData(`driver-payments/detail/${this.paymentID}`).toPromise();
+    let result: any = await this.accountService
+      .getData(`driver-payments/detail/${this.paymentID}`)
+      .toPromise();
     this.downloadDisabled = false;
     this.paymentData = result[0];
-    if(this.paymentData.payMode) {
-      this.paymentData.payMode = this.paymentData.payMode.replace("_"," ");
+    if (this.paymentData.payMode) {
+      this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
     } else {
-      this.paymentData.payMode = '';
+      this.paymentData.payMode = "";
     }
-    this.paymentData.paymentEnity = this.paymentData.paymentTo.replace("_", " ");
+    this.paymentData.paymentEnity = this.paymentData.paymentTo.replace(
+      "_",
+      " "
+    );
   }
 
   fetchSettlement() {
-    this.accountService.getData(`settlement/get/list`).subscribe((result: any) => {
-      this.settlements = result;
-    });
+    this.accountService
+      .getData(`settlement/get/list`)
+      .subscribe((result: any) => {
+        this.settlements = result;
+      });
   }
 
   async fetchAccountsByIDs() {
-    this.accountsObjects = await this.accountService.getData('chartAc/get/list/all').toPromise();
+    this.accountsObjects = await this.accountService
+      .getData("chartAc/get/list/all")
+      .toPromise();
   }
 
   async fetchAccountsByInternalIDs() {
-    this.accountsIntObjects = await this.accountService.getData('chartAc/get/internalID/list/all').toPromise();
+    this.accountsIntObjects = await this.accountService
+      .getData("chartAc/get/internalID/list/all")
+      .toPromise();
   }
 
   downloadPaymentPdf() {
@@ -118,13 +130,13 @@ export class DriverPaymentsDetailComponent implements OnInit {
     let obj = {
       showModal: this.showModal,
       data: this.paymentData,
-    }
+    };
     this.listService.triggerDownloadPaymentPdf(obj);
     this.downloadDisabled = true;
 
     setTimeout(() => {
       this.downloadDisabled = false;
-    }, 15000)
+    }, 15000);
   }
 
   showCheque() {
@@ -135,8 +147,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       chequeAmount: this.paymentData.finalAmount,
       type: this.paymentData.paymentTo,
       chequeNo: this.paymentData.payModeNo,
-      currency: 'CAD',
-      formType: (this.paymentID) ? 'edit' : 'add',
+      currency: "CAD",
+      formType: this.paymentID ? "edit" : "add",
       showModal: this.showModal,
       fromDate: this.paymentData.fromDate,
       toDate: this.paymentData.toDate,
@@ -148,8 +160,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
       finalAmount: this.paymentData.finalAmount,
       advance: this.paymentData.advance,
       txnDate: this.paymentData.txnDate,
-      page: 'detail'
-    }
+      page: "detail",
+    };
     this.listService.openPaymentChequeModal(obj);
   }
 }

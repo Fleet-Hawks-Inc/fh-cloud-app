@@ -177,7 +177,7 @@ export class NewAddressBookComponent implements OnInit {
     this.searchLocation();
     this.fetchCountries();
 
-    this.listService.addressList.subscribe((res: any) => {
+    this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
 
         let ngbModalOptions: NgbModalOptions = {
@@ -274,6 +274,10 @@ export class NewAddressBookComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
+  }
+
   /*
    * Get all countries from api
    */
@@ -281,7 +285,7 @@ export class NewAddressBookComponent implements OnInit {
     this.countries = await this.countryStateCity.GetAllCountries();
   }
 
-  async getStates(countryCode, type, index = '', data: any) {
+  async getStates(countryCode, type, index: any = '', data: any) {
     let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     let countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
     if (type === 'unit') {
@@ -293,7 +297,7 @@ export class NewAddressBookComponent implements OnInit {
     }
   }
 
-  async getCities(stateCode, type = '', index = '', data) {
+  async getCities(stateCode, type = '', index: any = '', data) {
     let countryCode = '';
     if (type == 'unit') {
       countryCode = this.unitData.adrs[index].cCode;
@@ -1020,8 +1024,6 @@ export class NewAddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
-      delete element.states;
-      delete element.cities;
       if (element.manual === true) {
         let data = {
           address1: element.add1,
@@ -1031,11 +1033,10 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         let result = await this.newGeoCode(data);
-
         if (result == null) {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return false;
         }
@@ -1043,14 +1044,17 @@ export class NewAddressBookComponent implements OnInit {
           element.geoCords = result;
         }
       } else {
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         if (element.isSuggest != true && element.userLoc != '') {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return;
         }
       }
+      delete element.states;
+      delete element.cities;
     }
+
     await this.checkCarrierBank(this.unitData);
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
@@ -1154,9 +1158,6 @@ export class NewAddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
-      delete element.states;
-      delete element.cities;
-
       if (element.manual === true) {
         let data = {
           address1: element.add1,
@@ -1166,23 +1167,26 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         let result = await this.newGeoCode(data);
 
         if (result == null) {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           return false;
         }
         if (result != undefined || result != null) {
           element.geoCords = result;
         }
       } else {
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         if (element.isSuggest != true && element.userLoc != '') {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           return;
         }
       }
+      delete element.states;
+      delete element.cities;
+
     }
 
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
@@ -1376,6 +1380,8 @@ export class NewAddressBookComponent implements OnInit {
       for (let index = 0; index < this.unitData.adrs.length; index++) {
         const element = this.unitData.adrs[index];
         if (element.manual) {
+          this.getStates(element.cCode, 'unit', index, '');
+          this.getCities(element.sCode, 'unit', index, '');
           element.isSuggest = false;
         } else {
           element.isSuggest = true;

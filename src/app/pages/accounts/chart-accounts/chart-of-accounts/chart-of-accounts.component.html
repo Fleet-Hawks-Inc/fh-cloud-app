@@ -12,18 +12,11 @@
           <div class="col-lg-2 col-md-2 pr-0">
             <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"
               [(ngModel)]="filter.actType" name="actType">
-              <ng-option value="current assets">Current Assets</ng-option>
-              <ng-option value="bank">Bank</ng-option>
-              <ng-option value="credit card / loan">Credit Card/Loan</ng-option>
-              <ng-option value="direct expenses">Direct Expenses</ng-option>
-              <ng-option value="equity">Equity</ng-option>
-              <ng-option value="fixed assets">Fixed Assets</ng-option>
-              <ng-option value="future assets">Future Assets</ng-option>
-              <ng-option value="future liability">Future Liability</ng-option>
-              <ng-option value="other income">Other Income</ng-option>
-              <ng-option value="overheads">Overheads</ng-option>
-              <ng-option value="sales">Sales</ng-option>
-              <ng-option value="current liability">Current Liability</ng-option>
+              <ng-option value="H">Group Heading - H</ng-option>
+              <ng-option value="A">Subgroup Account - A</ng-option>
+              <ng-option value="S">Subgroup Total - S</ng-option>
+              <ng-option value="G">Group Account - G</ng-option>
+              <ng-option value="T">Group Total - T</ng-option>
             </ng-select>
           </div>
           <div class="col-md-2 col-lg-2">
@@ -61,8 +54,8 @@
                           <th class="text-2">Account Type</th>
                           <th class="text-2">Account Class</th>
                           <th class="text-2">Description</th>
-                          <th class="text-2">Opening Balance CAD</th>
-                          <th class="text-2">Opening Balance USD</th>
+                          <!-- <th class="text-2">Opening Balance CAD</th>
+                          <th class="text-2">Opening Balance USD</th> -->
                           <!-- <th class="text-2">Closing Balance</th> -->
                           <th class="text-2">Action</th>
                         </tr>
@@ -85,10 +78,10 @@
                             {{accountsClassObjects[ac.actClassID] | titlecase}} </td>
                           <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
                             {{ac.actDesc}}</td>
-                          <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
+                          <!-- <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
                             {{ac.opnBalCAD  | number : '1.2-2' }}&nbsp;CAD</td>
                           <td class="cursorpoint" routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">
-                            {{ac.opnBalUSD  | number : '1.2-2' }}&nbsp;USD</td>
+                            {{ac.opnBalUSD  | number : '1.2-2' }}&nbsp;USD</td> -->
                           <!-- <td routerLink="/accounts/chart-accounts/detail/{{ac.actID}}">{{ac.closingAmt}}&nbsp;{{ac.opnBalCurrency}}</td> -->
                           <td>
                             <div class="btn-group flex-wrap">

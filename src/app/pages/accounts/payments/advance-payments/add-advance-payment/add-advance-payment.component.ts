@@ -84,7 +84,6 @@ export class AddAdvancePaymentComponent implements OnInit {
             this.drivers.push(element);
           }
         });
-        console.log("this.drivers", this.drivers);
       });
   }
   refreshAccount() {
