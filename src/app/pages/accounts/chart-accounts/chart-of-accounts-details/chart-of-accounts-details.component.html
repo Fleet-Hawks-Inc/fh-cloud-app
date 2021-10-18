@@ -62,7 +62,12 @@
                       <div class="text-center p-4 cmaindiv detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">{{account.actType | titlecase}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          <span *ngIf="account.actType === 'H'">Group Heading - H</span>
+                          <span *ngIf="account.actType === 'A'">Subgroup Account - A</span>
+                          <span *ngIf="account.actType === 'S'">Subgroup Total - S</span>
+                          <span *ngIf="account.actType === 'G'">Group Account - G</span>
+                          <span *ngIf="account.actType === 'T'">Group Total - T</span></p>
                         <p class="mb-0">Account Type</p>
                       </div>
                     </div>
@@ -70,8 +75,8 @@
                       <div class="text-center p-4 cmaindiv detailbox">
                         <i class="far fa-calendar-alt text-7"></i>
                         <br>
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{accountsClassObjects[account.actClassID] | titlecase}}</p>
+                        <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
+                          {{accountsClassObjects[account.actClassID] }}</p>
                         <p class="mb-0">Account Class</p>
                       </div>
                     </div>

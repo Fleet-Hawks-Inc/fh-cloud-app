@@ -158,7 +158,7 @@ export class ChartOfAccountsComponent implements OnInit {
       let type = null;
       if (this.filter.actType !== null || this.filter.actName !== null) {
         if (this.filter.actType !== null && this.filter.actType !== '') {
-          type = this.filter.actType.toLowerCase();
+          type = this.filter.actType;
         }
         if (this.filter.actName !== null && this.filter.actName !== '') {
           name = this.filter.actName.toLowerCase();
@@ -333,7 +333,6 @@ export class ChartOfAccountsComponent implements OnInit {
     this.getAcClasses();
     this.fetchedID = ID;
     this.accountService.getData(`chartAc/account/${ID}`).subscribe((res) => {
-      console.log('res', res);
       this.actName = res.actName;
       this.actType = res.actType;
       this.mainactType = res.mainactType;
