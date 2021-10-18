@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { timeStamp } from 'console';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
-import { environment } from '../../../../../../../environments/environment';
+import { environment } from '../../../../../../environments/environment';
 
 @Component({
   selector: 'app-summary',
@@ -21,22 +21,25 @@ export class SummaryComponent implements OnInit {
   assetEndPoint = this.pageLength;
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
-
+  lastItemSK = '';
+  records = [];
+  loaded = false;
 
   constructor(private apiService: ApiService) {
 
   }
-
   ngOnInit() {
     this.fetchAssetList();
     // this.listCounting()
     this.fetchAssetsCount();
+    // this.fetchAssetReport();
   }
+
 
   fetchAssetList() {
     this.apiService.getData('assets').subscribe((result: any) => {
-      this.allData = result.Items;
-      for (let i = 0; i < this.allData.length; i++) {
+      // this.allData = result.Items;
+      for (let i = 0; i < result.Items.length; i++) {
         if (this.allData[i].currentStatus === "active") {
           this.activeAssets += 1
         }
@@ -48,13 +51,33 @@ export class SummaryComponent implements OnInit {
   }
   fetchAssetsCount() {
     // this.apiService.getData(`assets/fetch/assetList?name=${this.assetIdentification}` + '&assetType=' + this.assetType).subscribe((result: any) => {
-    this.apiService.getData(`assets/fetch/assetList?name=${this.assetIdentification}&assetType=${this.assetType}`).subscribe((result: any) => {
+    this.apiService.getData(`assets/fetch/assetList?name=${this.assetIdentification}&assetType=${this.assetType}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
       console.log('this.data', result)
-      this.allData = result.Items;
+      // this.allData = result.Items;
+      this.dataMessage = Constants.FETCHING_DATA
+      if (result.Items.length === 0) {
+
+        this.dataMessage = Constants.NO_RECORDS_FOUND
+      }
+      if (result.Items.length > 0) {
+
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+        }
+        else {
+          this.lastItemSK = 'end'
+        }
+        // this.records = this.records.concat(result.Items)
+
+        this.loaded = true;
+      }
+
       result[`Items`].map((v: any) => {
         v.assetType = v.assetType.replace("_", " ")
+        this.allData.push(v)
       })
     });
+
   }
   searchFilter() {
     if (this.assetIdentification !== '' || this.assetType != null) {
@@ -78,5 +101,29 @@ export class SummaryComponent implements OnInit {
       return false;
     }
   }
+  // async fetchAssetReport() {
+  //   if (this.lastItemSK !== 'end') {
+  //     const result = await this.apiService.getData(`assets/fetch/records?lastKey=${this.lastItemSK}`).toPromise();
+  //     this.dataMessage = Constants.FETCHING_DATA
+
+
+  //     if (result.Items.length === 0) {
+
+  //       this.dataMessage = Constants.NO_RECORDS_FOUND
+  //     }
+  //     if (result.Items.length > 0) {
+
+  //       if (result.LastEvaluatedKey !== undefined) {
+  //         this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+  //       }
+  //       else {
+  //         this.lastItemSK = 'end'
+  //       }
+  //       this.records = this.records.concat(result.Items)
+
+  //       this.loaded = true;
+  //     }
+  //   }
+  // }
 }
 
