@@ -10,6 +10,7 @@ import {
 import { Injectable } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AddPurchaseOrderComponent } from "./purchase-orders/add-purchase-order/add-purchase-order.component";
 import { PurchaseOrdersListComponent } from "./purchase-orders/purchase-orders-list/purchase-orders-list.component";
@@ -39,7 +40,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     };
   }
 
-  toModel(date: NgbDateStruct): string { // from internal model -> your mode
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
     let month: any = "";
     let day: any = "";
     if (date) {
@@ -88,7 +90,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 const routes: Routes = [
   { path: "orders/list", component: PurchaseOrdersListComponent },
   { path: "orders/add", component: AddPurchaseOrderComponent },
-  { path: "orders/detail", component: PurchaseOrderDetailComponent },
+  { path: "orders/edit/:purchaseID", component: AddPurchaseOrderComponent },
+  {
+    path: "orders/detail/:purchaseID",
+    component: PurchaseOrderDetailComponent,
+  },
   { path: "vendor-payments/list", component: VendorPaymentsListComponent },
   { path: "vendor-payments/add", component: AddVendorPaymentComponent },
   { path: "vendor-payments/detail", component: VendorPaymentDetailComponent },
@@ -123,6 +129,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    InfiniteScrollModule,
   ],
 })
 export class PurchasesModule {}
