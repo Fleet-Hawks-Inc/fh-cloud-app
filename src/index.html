@@ -1,123 +1,124 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fleethawks Dashboard</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <meta name="description" content="Dashboard" />
+    <meta name="author" content="FH" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-<head>
-  <meta charset="utf-8">
-  <title>Fleethawks Dashboard</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"> 
-  <meta name="description" content="Dashboard">
-  <meta name="author" content="FH">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet"
-    type="text/css">
+    <!-- Vendor CSS -->
 
-  <!-- Vendor CSS -->
-  <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="assets/vendor/animate/animate.css" />
+    <link rel="stylesheet" href="assets/vendor/font-awesome/css/all.min.css" />
+    <!-- Specific Page Vendor CSS -->
+    <link rel="stylesheet" href="assets/vendor/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" href="assets/vendor/jquery-ui/jquery-ui.theme.css" />
+    <link
+      rel="stylesheet"
+      href="assets/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css"
+    />
 
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> -->
+    <link
+      rel="stylesheet"
+      href="assets/vendor/bootstrap/css/bootstrap.min.css"
+    />
 
-  <link rel="stylesheet" href="assets/vendor/animate/animate.css">
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="assets/css/theme.css" />
 
-  <link rel="stylesheet" href="assets/vendor/font-awesome/css/all.min.css" />
-  <!-- <link rel="stylesheet" href="assets/vendor/magnific-popup/magnific-popup.css" /> -->
+    <!-- Skin CSS -->
+    <link rel="stylesheet" href="assets/css/skins/default.css" />
 
-  <!-- <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI&libraries=&v=weekly"
-  defer
-></script> -->
-  <!-- Specific Page Vendor CSS -->
-  <link rel="stylesheet" href="assets/vendor/jquery-ui/jquery-ui.css" />
-  <link rel="stylesheet" href="assets/vendor/jquery-ui/jquery-ui.theme.css" />
-  <link rel="stylesheet" href="assets/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css" />
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css" />
 
-  <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/custom1.css" />
+    <link rel="stylesheet" href="assets/css/custom2.css" />
+    <link rel="stylesheet" href="assets/css/login.css" />
 
-  <!-- <link rel="stylesheet" href="assets/vendor/morris/morris.css" /> -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://js.api.here.com/v3/3.1/mapsjs-ui.css?dp-version=1533195059"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    />
 
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css"
+    />
 
-  <!-- Theme CSS -->
-  <link rel="stylesheet" href="assets/css/theme.css" />
+    <script src="assets/js/har.js"></script>
 
-  <!-- Skin CSS -->
-  <link rel="stylesheet" href="assets/css/skins/default.css" />
+    <script
+      type="module"
+      src="https://js.api.here.com/v3/3.1/mapsjs.bundle.js"
+    ></script>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+    <script src="assets/js/leaflet-providers.js"></script>
+    <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
+    <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
 
-  <!-- Theme Custom CSS -->
-  <link rel="stylesheet" href="assets/css/custom.css">
+    <!--- Pdf Automation includes -->
+    <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="https://unpkg.com/tesseract.js@v2.0.0-alpha.10/dist/tesseract.min.js"></script>
+    <!------------------------------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcS3c9KO0qxLidg-rHSBddrVs4Tc2Gu_M"></script>
 
-  <link rel="stylesheet" href="assets/css/custom1.css">
-  <link rel="stylesheet" href="assets/css/custom2.css">
-  <link rel="stylesheet" href="assets/css/login.css">
+    <script>
+      if (global === undefined) {
+        var global = window;
+      }
+    </script>
+    <base href="/" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      nonce="nounce_fleethawks"
+      src="https://desk.zoho.com/portal/api/web/inapp/506382000001153060?orgId=715755334"
+      defer
+    ></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-8MZVZ0GRXW"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css?dp-version=1533195059" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
+      gtag("config", "G-8MZVZ0GRXW");
+    </script>
+  </head>
 
-  <link rel="stylesheet" href="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.css" />
-
-  <!-- <script src="assets/vendor/modernizr/modernizr.min.js"></script> -->
-  <!-- Vendor -->
-  <!-- <script src="assets/vendor/jquery/jquery.js"></script> -->
-  <!-- <script src="assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script> -->
-
-  <!-- <script src="assets/vendor/popper/umd/popper.min.js"></script>
-  <script src="assets/vendor/bootstrap/js/bootstrap.js"></script> -->
-  <!-- <script src="assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-  <script src="assets/vendor/common/common.js"></script> -->
-  <!-- <script src="assets/vendor/nanoscroller/nanoscroller.js"></script> -->
-  <!-- <script src="assets/vendor/magnific-popup/jquery.magnific-popup.js"></script>
-  <script src="assets/vendor/jquery-placeholder/jquery.placeholder.js"></script> -->
-
-  <!-- Theme Base, Components and Settings -->
-  <!-- <script src="assets/js/theme.js"></script> -->
-
-  <!-- Theme Custom -->
-  <!-- <script src="assets/js/custom.js"></script> -->
-  
-  <script src="assets/js/har.js"></script>
-  
-  <script type="module" src="https://js.api.here.com/v3/3.1/mapsjs.bundle.js"></script>
-  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
-  <script src="assets/js/leaflet-providers.js"></script>
-  <script src="https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.min.js"></script>
-  <script src="https://unpkg.com/leaflet-geosearch@3.0.0/dist/geosearch.umd.js"></script>
-
-  <!--- Pdf Automation includes -->
-  <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
-  <script src='https://unpkg.com/tesseract.js@v2.0.0-alpha.10/dist/tesseract.min.js'></script>
-  <!------------------------------->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-
-  <!-- Theme Initialization Files -->
-  <!-- <script src="assets/js/theme.init.js"></script> -->
-  <!-- Examples -->
-  <!-- <script src="assets/js/examples/examples.dashboard.js"></script> -->
-
-  <script>
-    if (global === undefined) {
-      var global = window
-    }
-
-  </script>
-  <base href="/">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <script type="text/javascript" nonce="nounce_fleethawks" src="https://desk.zoho.com/portal/api/web/inapp/506382000001153060?orgId=715755334" defer></script>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8MZVZ0GRXW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8MZVZ0GRXW');
-</script>
-</head>
-
-<body>
-  <app-root></app-root>
-</body>
-
+  <body>
+    <app-root></app-root>
+  </body>
 </html>

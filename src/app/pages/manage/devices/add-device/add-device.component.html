@@ -1,50 +1,85 @@
 <section class="body">
-
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pt-0">
       <header class="page-header">
-        <div class="row pr-5 " style="padding-top:10px;">
+        <div class="row pr-5" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
             New Device
           </div>
-          <div class="col-md-8  col-lg-8 text-right">
-            <a routerLink="/manage/devices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> Devices
-              List</a>
+          <div class="col-md-8 col-lg-8 text-right">
+            <a routerLink="/manage/devices/list" class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> Devices List</a
+            >
           </div>
         </div>
       </header>
       <div class="row">
         <div class="col">
           <div class="card-body text-dark">
-            <form class="form-horizontal form-bordered" method="get" #deviceForm="ngForm" >
-              <div class=" row">
+            <form
+              class="form-horizontal form-bordered"
+              method="get"
+              #deviceForm="ngForm"
+            >
+              <div class="row">
                 <div class="col-lg-12">
                   <label
-                    class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Devices
-                    Details</label>
+                    class="
+                      control-label
+                      font-weight-bold font-bold
+                      text-lg-right text-dark text-4
+                      font-weight-bold
+                      pt-2
+                    "
+                    >Devices Details</label
+                  >
                 </div>
 
                 <div class="col-lg-5 offset-lg-1">
                   <div class="row">
                     <div class="col-lg-10">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Attached With</label>
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        >Attached With</label
+                      >
                       <div class="row">
                         <div class="col-lg-3">
                           <div class="radio">
-                            <label class="btn btn-outline btn-fleet mr-2"
-                              [ngClass]="{'active': attachedWith=='Vehicle'}" style="width:110px;">
-                              <input type="radio" hidden name="attachedDeviceRadio" id="attachedToVehicle"
-                                (click)="deviceAttachedVehicle()">
+                            <label
+                              class="btn btn-outline btn-fleet mr-2"
+                              [ngClass]="{ active: attachedWith == 'Vehicle' }"
+                              style="width: 110px"
+                            >
+                              <input
+                                type="radio"
+                                hidden
+                                name="attachedDeviceRadio"
+                                id="attachedToVehicle"
+                                (click)="deviceAttachedVehicle()"
+                              />
                               Vehicle
                             </label>
                           </div>
                         </div>
                         <div class="col-lg-3">
                           <div class="radio">
-                            <label class="btn btn-outline btn-fleet mr-2" [ngClass]="{'active': attachedWith=='Asset'}"
-                              style="width:110px;">
-                              <input hidden type="radio" name="attachedDeviceRadio" id="attachedToAsset"
-                                (click)="deviceAttachedAsset()">
+                            <label
+                              class="btn btn-outline btn-fleet mr-2"
+                              [ngClass]="{ active: attachedWith == 'Asset' }"
+                              style="width: 110px"
+                            >
+                              <input
+                                hidden
+                                type="radio"
+                                name="attachedDeviceRadio"
+                                id="attachedToAsset"
+                                (click)="deviceAttachedAsset()"
+                              />
                               Asset
                             </label>
                           </div>
@@ -52,57 +87,119 @@
                       </div>
                     </div>
                   </div>
-                  <div id="attachedVehicleDiv" *ngIf="attachedWith=='Vehicle'">
+                  <div
+                    id="attachedVehicleDiv"
+                    *ngIf="attachedWith == 'Vehicle'"
+                  >
                     <div class="row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vehicle<span class="mandfield text-2 ml-1">*</span></label>
-                        
-                        <ng-select [disabled]="editMode" name="vehicle" [(ngModel)]="device.vehicle.vehicleID"  class="form-control populate">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Vehicle<span class="mandfield text-2 ml-1"
+                            >*</span
+                          ></label
+                        >
 
-                          <ng-option *ngFor="let vehicle of vehicles" [value]="vehicle.vehicleID">
-                            {{vehicle.vehicleIdentification}}</ng-option>
-
+                        <ng-select
+                          [disabled]="editMode"
+                          name="vehicle"
+                          [(ngModel)]="device.vehicle.vehicleID"
+                          class="form-control populate"
+                        >
+                          <ng-option
+                            *ngFor="let vehicle of vehicles"
+                            [value]="vehicle.vehicleID"
+                          >
+                            {{ vehicle.vehicleIdentification }}</ng-option
+                          >
                         </ng-select>
-
-                        
                       </div>
                     </div>
                   </div>
-                  <div id="attachedAssetDiv" *ngIf="attachedWith=='Asset'">
+                  <div id="attachedAssetDiv" *ngIf="attachedWith == 'Asset'">
                     <div class="row">
                       <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Asset<span class="mandfield text-2 ml-1">*</span></label>
-                        <ng-select [disabled]="editMode" required name="asset" [(ngModel)]="device.asset.assetID" class="form-control populate">
-
-                          <ng-option *ngFor="let asset of assets" [value]="asset.assetID">{{asset.assetIdentification}}
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Asset<span class="mandfield text-2 ml-1"
+                            >*</span
+                          ></label
+                        >
+                        <ng-select
+                          [disabled]="editMode"
+                          required
+                          name="asset"
+                          [(ngModel)]="device.asset.assetID"
+                          class="form-control populate"
+                        >
+                          <ng-option
+                            *ngFor="let asset of assets"
+                            [value]="asset.assetID"
+                            >{{ asset.assetIdentification }}
                           </ng-option>
-
                         </ng-select>
                       </div>
                     </div>
                   </div>
                   <div class="row pt-2">
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2"
-                        for="inputDefault">Device Type<span class="mandfield text-2 ml-1">*</span></label>
-                      <ng-select [disabled]="editMode" required name="deviceType" [(ngModel)]="device.deviceType" class="form-control populate">
-
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        for="inputDefault"
+                        >Device Type<span class="mandfield text-2 ml-1"
+                          >*</span
+                        ></label
+                      >
+                      <ng-select
+                        [disabled]="editMode"
+                        (change)="deviceTypeSelected($event)"
+                        required
+                        name="deviceType"
+                        [(ngModel)]="device.deviceType"
+                        class="form-control populate"
+                      >
                         <ng-option value="Tracker">Solar Tracker</ng-option>
                         <ng-option value="Tracker">Wired Tracker</ng-option>
                         <ng-option value="DashCam">Dash Camera</ng-option>
                         <ng-option value="ELD">ELD</ng-option>
-                        
-
                       </ng-select>
                     </div>
                     <div class="col-lg-5">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2"
-                        for="inputDefault">Status<span class="mandfield text-2 ml-1">*</span></label>
-                      <ng-select required name="status" [(ngModel)]="device.deviceStatus" class="form-control populate">
-
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        for="inputDefault"
+                        >Status<span class="mandfield text-2 ml-1"
+                          >*</span
+                        ></label
+                      >
+                      <ng-select
+                        required
+                        name="status"
+                        [(ngModel)]="device.deviceStatus"
+                        class="form-control populate"
+                      >
                         <ng-option value="Active">Active</ng-option>
                         <ng-option value="Inactive">Inactive</ng-option>
-
                       </ng-select>
                     </div>
                   </div>
@@ -111,51 +208,114 @@
                 <div class="col-lg-5">
                   <div class="row pt-2">
                     <div class="col-lg-10">
-                      <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Device ID
-                        (Serial#)<span class="mandfield text-2 ml-1">*</span></label>
-                      <input [disabled]="editMode" type="text" required #deviceSerialNo="ngModel" class="form-control" name="deviceSerialNo"
-                        [(ngModel)]="device.deviceSerialNo">
-                      <div *ngIf="deviceForm.submitted && deviceSerialNo.invalid && (deviceSerialNo.dirty || deviceSerialNo.touched)" class="alert">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        >{{ deviceIDText
+                        }}<span class="mandfield text-2 ml-1">*</span></label
+                      >
+                      <input
+                        [disabled]="editMode"
+                        type="text"
+                        required
+                        #deviceSerialNo="ngModel"
+                        class="form-control"
+                        name="deviceSerialNo"
+                        [(ngModel)]="device.deviceSerialNo"
+                      />
 
+                      <div
+                        *ngIf="
+                          deviceForm.submitted &&
+                          deviceSerialNo.invalid &&
+                          (deviceSerialNo.dirty || deviceSerialNo.touched)
+                        "
+                        class="alert"
+                      >
                         <div *ngIf="deviceSerialNo.errors.required">
                           Name is required.
                         </div>
-                        
-
                       </div>
                     </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-10">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        >Device Name<span class="mandfield text-2 ml-1"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        required
+                        type="text"
+                        [(ngModel)]="device.deviceName"
+                        class="form-control"
+                        name="deviceName"
+                      />
                     </div>
-                    <div class="row">
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Device Name<span class="mandfield text-2 ml-1">*</span></label>
-                        <input required type="text" [(ngModel)]="device.deviceName" class="form-control" name="deviceName">
-                      </div>
+                  </div>
+                  <div class="row pt-2">
+                    <div class="col-lg-10">
+                      <label
+                        class="
+                          control-label
+                          font-weight-bold font-bold
+                          text-lg-right
+                          pt-2
+                        "
+                        >Description</label
+                      >
+                      <textarea
+                        name="description"
+                        class="form-control"
+                        rows="4"
+                        [(ngModel)]="device.description"
+                      ></textarea>
                     </div>
-                    <div class="row pt-2">
-                      <div class="col-lg-10">
-                        <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Description</label>
-                        <textarea name="description" class="form-control" rows="4"
-                          [(ngModel)]="device.description"></textarea>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
+              </div>
 
-                <div class="form-group row pt-3">
-                  <div class="col-lg-10 text-right">
-                    <a routerLink="/manage/devices/list" class="btn btn-default mr-3" id="">Cancel</a>
+              <div class="form-group row pt-3">
+                <div class="col-lg-10 text-right">
+                  <a
+                    routerLink="/manage/devices/list"
+                    class="btn btn-default mr-3"
+                    id=""
+                    >Cancel</a
+                  >
 
-
-                    <ng-template [ngIf]="deviceID" [ngIfElse]="elseBlock">
-                      <button (click)="updateAndSubmit()" class="btn btn-success" id="nextBtn">Update</button>
-
-                    </ng-template>
-                    <ng-template #elseBlock>
-                      <button (click)="submit()"  [disabled]="!deviceForm.form.valid"  class="btn btn-success" id="nextBtn">Save</button>
-                    </ng-template>
-                  </div>
+                  <ng-template [ngIf]="deviceID" [ngIfElse]="elseBlock">
+                    <button
+                      (click)="updateAndSubmit()"
+                      class="btn btn-success"
+                      id="nextBtn"
+                    >
+                      Update
+                    </button>
+                  </ng-template>
+                  <ng-template #elseBlock>
+                    <button
+                      (click)="submit()"
+                      [disabled]="!deviceForm.form.valid"
+                      class="btn btn-success"
+                      id="nextBtn"
+                    >
+                      Save
+                    </button>
+                  </ng-template>
                 </div>
+              </div>
             </form>
           </div>
         </div>

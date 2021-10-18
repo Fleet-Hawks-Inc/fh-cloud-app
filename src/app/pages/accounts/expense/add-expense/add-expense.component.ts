@@ -36,6 +36,7 @@ export class AddExpenseComponent implements OnInit {
     unitID: null,
     tripID: null,
     stlStatus: null,
+    settlmnt: false,
     vendorID: null,
     countryCode: null,
     countryName: '',
@@ -124,7 +125,7 @@ export class AddExpenseComponent implements OnInit {
   async ngOnInit() {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     if (this.expenseID != undefined) {
-      this.fetchExpenseByID();
+      await this.fetchExpenseByID();
       this.pageTitle = 'Edit Other Expense';
     }
     this.fetchTrips();
@@ -133,16 +134,88 @@ export class AddExpenseComponent implements OnInit {
     this.fetchStateTaxes();
     //  this.fetchInvoices();
     this.listService.fetchChartAccounts();
-    //  this.listService.fetchCustomers();
     this.listService.fetchAssets();
     this.listService.fetchVehicles();
     this.listService.fetchVendors();
     this.expenseAccounts = this.listService.accountsList;
     this.paidThroughAccounts = this.listService.accountsList;
-    //  this.customers = this.listService.customersList;
-    this.vehicles = this.listService.vehicleList;
-    this.assets = this.listService.assetsList;
-    this.vendors = this.listService.vendorList;
+
+    let vehicleList = new Array<any>();
+    this.getValidVehicles(vehicleList);
+    this.vehicles = vehicleList;
+
+    let assetList = new Array<any>();
+    this.getValidAssets(assetList);
+    this.assets = assetList;
+
+    let vendorList = new Array<any>();
+    this.getValidvendors(vendorList);
+    this.vendors = vendorList;
+  }
+
+  private getValidVehicles(vehicleList: any[]) {
+    let ids = [];
+    this.listService.vehicleList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 1 &&
+          element2.vehicleID === this.expenseData.unitID
+        ) {
+          this.expenseData.unitID = null;
+        }
+        if (
+          element2.vehicleIdentification &&
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.vehicleID)
+        ) {
+          vehicleList.push(element2);
+          ids.push(element2.vehicleID);
+        }
+      });
+    });
+  }
+
+  private getValidAssets(assetList: any[]) {
+    let ids = [];
+    this.listService.assetsList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.isDeleted === 1 &&
+          element2.assetID === this.expenseData.unitID
+        ) {
+          this.expenseData.unitID = null;
+        }
+        if (
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.assetID)
+        ) {
+          assetList.push(element2);
+          ids.push(element2.assetID);
+        }
+      });
+    })
+  }
+
+  private getValidvendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (
+          element2.isDeleted === 1 &&
+          element2.contactID === this.expenseData.vendorID
+        ) {
+          this.expenseData.vendorID = null;
+        }
+        if (
+          element2.isDeleted === 0 &&
+          !ids.includes(element2.contactID)
+        ) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    })
   }
 
   resetUnitVal() {
@@ -181,7 +254,15 @@ export class AddExpenseComponent implements OnInit {
   }
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
-      this.trips = result.Items;
+      // this.trips = result.Items;
+      result.Items.forEach((element) => {
+        if(element.isDeleted === 0) {
+          this.trips.push(element);
+        }
+        if(element.isDeleted === 1 && element.tripID === this.expenseData.tripID) {
+          this.expenseData.tripID = null;
+        }
+      });
     });
   }
   fetchStateTaxes() {
@@ -214,7 +295,6 @@ export class AddExpenseComponent implements OnInit {
     this.hasSuccess = false;
 
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-    this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 
@@ -225,7 +305,6 @@ export class AddExpenseComponent implements OnInit {
 
     //append other fields
     formData.append('data', JSON.stringify(this.expenseData));
-
     this.accountService.postData('expense', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -257,30 +336,28 @@ export class AddExpenseComponent implements OnInit {
     });
   }
 
-  fetchExpenseByID() {
-    this.accountService.getData(`expense/detail/${this.expenseID}`)
-      .subscribe(async (result: any) => {
-        if (result[0] != undefined) {
-          this.expenseData = result[0];
+  async fetchExpenseByID() {
+    let result:any = await this.accountService.getData(`expense/detail/${this.expenseID}`).toPromise();
+    if (result[0] != undefined) {
+      this.expenseData = result[0];
 
-          this.expenseData.transactionLog = result[0].transactionLog;
-          this.expenseData.taxAmount = result[0].taxAmount;
-          this.existingDocs = result[0].documents;
-          this.carrierID = result[0].carrierID;
-          this.states = await this.countryStateCity.GetStatesByCountryCode([result[0].countryCode]);
-          this.cities = await this.countryStateCity.GetCitiesByStateCodes(result[0].countryCode, result[0].stateCode);
+      this.expenseData.transactionLog = result[0].transactionLog;
+      this.expenseData.taxAmount = result[0].taxAmount;
+      this.existingDocs = result[0].documents;
+      this.carrierID = result[0].carrierID;
+      this.states = await this.countryStateCity.GetStatesByCountryCode([result[0].countryCode]);
+      this.cities = await this.countryStateCity.GetCitiesByStateCodes(result[0].countryCode, result[0].stateCode);
 
-          if (result[0].documents != undefined && result[0].documents.length > 0) {
-            result[0].documents.map((x) => {
-              let obj = {
-                name: x,
-                path: `${this.Asseturl}/${this.carrierID}/${x}`
-              }
-              this.documentSlides.push(obj);
-            })
+      if (result[0].documents != undefined && result[0].documents.length > 0) {
+        result[0].documents.map((x) => {
+          let obj = {
+            name: x,
+            path: `${this.Asseturl}/${this.carrierID}/${x}`
           }
-        }
-      })
+          this.documentSlides.push(obj);
+        })
+      }
+    }
   }
 
   setPDFSrc(val) {
@@ -300,7 +377,7 @@ export class AddExpenseComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.expenseData.amount = parseFloat(this.expenseData.amount);
-    this.expenseData.stlStatus = this.expenseData.tripID;
+    // this.expenseData.stlStatus = this.expenseData.tripID;
     // create form data instance
     const formData = new FormData();
 

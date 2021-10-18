@@ -73,18 +73,17 @@ export class VehicleRenewAddComponent implements OnInit {
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
-  ngOnInit() {
+
+  async ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchServiceTasks();
-    this.fetchVehicles();
-    // this.fetchUsers();
-    // this.fetchGroups();
     if (this.reminderID) {
       this.pageTitle = 'Edit Vehicle Renewal Reminder';
-      this.fetchReminderByID();
+      await this.fetchReminderByID();
     } else {
       this.pageTitle = 'Add Vehicle Renewal Reminder';
     }
+    await this.fetchVehicles();
   }
 
   fetchServiceTasks() {
@@ -94,9 +93,16 @@ export class VehicleRenewAddComponent implements OnInit {
       this.serviceTasks = test.filter((s: any) => s.taskType === constants.TASK_VEHICLE);
     });
   }
-  fetchVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.vehicles = result.Items;
+
+  async fetchVehicles() {
+    let result:any = await this.apiService.getData('vehicles').toPromise();
+    result.Items.forEach(element => {
+      if(element.isDeleted === 0) {
+        this.vehicles.push(element);
+      }
+      if(element.isDeleted === 1 && this.reminderData.entityID === element.vehicleID) {
+        this.entityID = null;
+      }
     });
   }
 
@@ -120,8 +126,8 @@ export class VehicleRenewAddComponent implements OnInit {
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
 
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : null;
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : null;
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -166,23 +172,20 @@ export class VehicleRenewAddComponent implements OnInit {
     });
   }
 
-  fetchReminderByID() {
-    this.apiService
-      .getData('reminders/detail/' + this.reminderID)
-      .subscribe((result: any) => {
-        result = result.Items[0];
-        this.reminderData[`createdDate`] = result.createdDate; 
-        this.reminderData[`createdTime`] = result.createdTime; 
-        this.reminderData[`timeCreated`] = result.timeCreated;
-        this.reminderData[`reminderID`] = this.reminderID;
-        this.reminderData.tasks.dueDate = result.tasks.dueDate;
-        this.taskID = result.tasks.taskID;
-        this.reminderData.tasks.time = result.tasks.time;
-        this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
-        this.entityID = result.entityID;
-        this.reminderData.subscribers =result.subscribers;
-      });
-
+  async fetchReminderByID() {
+    let result:any = await this.apiService.getData('reminders/detail/' + this.reminderID).toPromise();
+    result = result.Items[0];
+    this.reminderData[`createdDate`] = result.createdDate; 
+    this.reminderData[`createdTime`] = result.createdTime; 
+    this.reminderData[`timeCreated`] = result.timeCreated;
+    this.reminderData[`reminderID`] = this.reminderID;
+    this.reminderData.tasks.dueDate = result.tasks.dueDate;
+    this.taskID = result.tasks.taskID;
+    this.reminderData.tasks.time = result.tasks.time;
+    this.reminderData.tasks.timeUnit = result.tasks.timeUnit;
+    this.entityID = result.entityID;
+    this.reminderData[`entityID`] = this.entityID;
+    this.reminderData.subscribers =result.subscribers;
   }
 
   throwErrors() {
@@ -231,8 +234,8 @@ export class VehicleRenewAddComponent implements OnInit {
     }
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : '';
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : '';
+    this.reminderData.entityID = (this.entityID != null)? this.entityID : null;
+    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : null;
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {

@@ -41,7 +41,10 @@
               "node_modules/jstree/dist/themes/default/style.min.css",
               "node_modules/slick-carousel/slick/slick.scss",
               "node_modules/slick-carousel/slick/slick-theme.scss",
-              "node_modules/select2/dist/css/select2.min.css"
+              "node_modules/select2/dist/css/select2.min.css",
+              "node_modules/@swimlane/ngx-datatable/index.css",              
+              "node_modules/@swimlane/ngx-datatable/themes/material.css",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css"
             ],
             "scripts": [
               "src/assets/vendor/jquery/jquery.js",

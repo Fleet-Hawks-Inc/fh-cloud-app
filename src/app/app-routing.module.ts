@@ -33,44 +33,49 @@ const routes: Routes = [
   {
     path: 'Dashboard',
     component: DashboardComponent,
-    canActivate: [AuthService,CheckProfileServiceService],
+    canActivate: [AuthService, CheckProfileServiceService],
   },
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,
-    canActivate: [CheckProfileServiceService,AuthService],
+    canActivate: [CheckProfileServiceService, AuthService],
   },
   {
     path: 'fleet',
     loadChildren: () => import('./pages/fleet/fleet.module').then((m) => m.FleetModule),
     data: { preload: true },
-    canActivate: [AuthService, CheckUserService,CheckProfileServiceService],
+    canActivate: [AuthService, CheckUserService, CheckProfileServiceService],
   },
   {
     path: 'compliance',
     loadChildren: () => import('./pages/compliance/compliance.module').then((m) => m.ComplianceModule),
     data: { preload: false },
-    canActivate: [AuthService,CheckProfileServiceService]
+    canActivate: [AuthService, CheckProfileServiceService]
   },
   {
     path: 'dispatch',
     loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false },
-    canActivate: [AuthService,CheckProfileServiceService]
+    canActivate: [AuthService, CheckProfileServiceService]
   },
   {
     path: 'accounts',
     loadChildren: () => import('./pages/accounts/accounts.module').then((m) => m.AccountsModule), data: { preload: false },
-    canActivate: [AuthService,CheckProfileServiceService]
+    canActivate: [AuthService, CheckProfileServiceService]
   },
   {
     path: 'safety',
     loadChildren: () => import('./pages/safety/safety.module').then((m) => m.SafetyModule), data: { preload: false },
-    canActivate: [AuthService,CheckProfileServiceService]
+    canActivate: [AuthService, CheckProfileServiceService]
   },
   {
     path: 'manage',
     loadChildren: () => import('./pages/manage/manage.module').then((m) => m.ManageModule), data: { preload: false },
-    canActivate: [AuthService,CheckProfileServiceService]
+    canActivate: [AuthService, CheckProfileServiceService]
+  },
+  {
+    path: 'reports',
+    loadChildren: () => import('./pages/reports/manage-reports.module').then((m) => m.ManageReportsModule),
+    canActivate: [AuthService, CheckProfileServiceService]
   },
   {
     path: "404",
@@ -82,13 +87,13 @@ const routes: Routes = [
   }
 ];
 @NgModule({
-  imports: [ HttpClientModule , RouterModule.forRoot(routes, {
+  imports: [HttpClientModule, RouterModule.forRoot(routes, {
     preloadingStrategy: PreLoadStrategy,
     useHash: true,
     relativeLinkResolution: 'legacy',
     initialNavigation: 'enabled',
-    
-}), CommonModule, ChartsModule],
+
+  }), CommonModule, ChartsModule],
   exports: [RouterModule],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }, unsavedChangesGuard, NgbModalConfig, NgbModal],
 
