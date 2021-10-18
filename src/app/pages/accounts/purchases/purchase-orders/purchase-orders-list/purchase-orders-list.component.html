@@ -1,128 +1,192 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pr-0 pl-0 pt-0">
-      <header class="page-header pr19 pl7">
-          <form class="form-horizontal" method="get">
-
-             <div class="row" style="padding-top:10px;">
-                <div class="col-md-2 col-lg-2 pr-0">
-                   <div class="input-group input-group-md mb-3">
-                    <input type="text" class="form-control" placeholder="Search">
-                   </div>
-                </div>
-
-                <div class="col-lg-3 col-md-3 pr-0">
-                   <div class="input-daterange input-group" data-plugin-datepicker>
-                      <span class="input-group-prepend">
-                         <span class="input-group-text">
-                            <i class="fas fa-calendar-alt"></i>
-                         </span>
-                      </span>
-                      <input type="text" class="form-control" name="start">
-                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                         to
-                      </span>
-                      <input type="text" class="form-control" name="end">
-                   </div>
-                   </div>
-
-                <div class="col-md-1 col-lg-1">
-                          <button type="submit" class="btn btn-sm btn-success">Search</button>
-                         </div>
-                <div class="col-md-6 col-lg-6 text-right pr-1">
-                   <a routerLink="/accounts/purchases/orders/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i class="fas fa-plus"></i> Add Purchase Order </a>
-                </div>
-             </div>
-             </form>
-          </header>
-
-
-          <section class="m-2">
-            <div class="row mb-3">
-              <div class="col-lg-12">
-                <div class="bg-white p-3 text-dark">
-                  <div class="form-group row">
-                     <div class="col-lg-12">
-                        <table class="table table-bordered table-striped mb-0 simple-table">
-                           <thead>
-                              <tr class="bgcol2">
-                              <th class="text-2">Date</th>
-                                 <th class="text-2">Purchase Order#</th>
-                                 <th class="text-2">Reference#</th>
-                                 <th class="text-2">Vendor</th>
-                                 <th class="text-2">Delivery Date</th>
-                                 <th class="text-2">Amount</th>
-                                 <th class="text-2">Status</th>
-                                 <th class="text-2">Action</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/25/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">56767</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">PO5688</td>
-     
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">Vendor 1</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/30/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">4,000 CAD</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail"><span class="badge badge-dark p-1">ISSUED</span></td>
-                                 <td><div class="btn-group flex-wrap">
-                                       <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                       <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item text-1" href="#">Edit</a>
-                                          <a class="dropdown-item text-1" href="#">Delete</a>
-                                       </div>
-                                    </div></td>
-                              </tr>
-                              <tr>
-                              <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/25/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">8979</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">PO5688</td>
-     
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">Vendor 2</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/30/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail"> 56,00 CAD</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail"><span class="badge badge-dark p-1">CLOSED</span></td>
-                                 <td><div class="btn-group flex-wrap">
-                                       <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                       <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item text-1" href="#">Edit</a>
-                                          <a class="dropdown-item text-1" href="#">Delete</a>
-                                       </div>
-                                    </div></td>
-                              </tr>
-                              <tr>
-                              <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/25/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">8787</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">PO5688</td>
-     
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">Vendor 3</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">09/30/2020</td>
-                                     <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail">4,000 CAD</td>
-                                 <td class="cursor:pointer;" routerLink="/accounts/purchases/orders/detail"><span class="badge badge-dark p-1">PARTIALLY PAID</span></td>
-                                 <td><div class="btn-group flex-wrap">
-                                       <button type="button" class="mb-1 mt-1 mr-1 btn" data-toggle="dropdown"><i class="fas fa-ellipsis-v"></i></button>
-                                       <div class="dropdown-menu" role="menu">
-                                          <a class="dropdown-item text-1" href="#">Edit</a>
-                                          <a class="dropdown-item text-1" href="#">Delete</a>
-                                       </div>
-                                    </div></td>
-                              </tr>
-                           </tbody>
-                        </table>
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pr-0 pl-0 pt-0">
+         <header class="page-header pr19 pl7">
+            <form class="form-horizontal" method="get">
+               <div class="row" style="padding-top:10px;">
+                  <div class="col-md-2 col-lg-2 pr-0">
+                     <div class="input-group input-group-md mb-3">
+                        <input type="text" class="form-control"
+                           name="amountSearch" [(ngModel)]="filter.amount"
+                           placeholder="Search by amount">
                      </div>
-                    
                   </div>
-                </div>
-              </div>
+
+                  <div class="col-lg-3 col-md-3 pr-0">
+                     <div class="input-daterange input-group"
+                        data-plugin-datepicker>
+                        <span class="input-group-prepend">
+                           <span class="input-group-text">
+                              <i class="fas fa-calendar-alt"></i>
+                           </span>
+                        </span>
+                        <input
+                           [(ngModel)]="filter.startDate"
+                           name="startDate"
+                           type="text"
+                           placeholder="yyyy/mm/dd"
+                           (click)="startDate.toggle()"
+                           ngbDatepicker
+                           #startDate="ngbDatepicker"
+                           class="form-control"
+                           autocomplete="off"
+                           [minDate]="dateMinLimit"
+                           [maxDate]="futureDatesLimit"
+                           readonly
+                           />
+                        <span class="input-group-text border-left-0
+                           border-right-0 rounded-0">
+                           to
+                        </span>
+                        <input
+                           [(ngModel)]="filter.endDate"
+                           name="endDate"
+                           type="text"
+                           placeholder="yyyy/mm/dd"
+                           (click)="endDate.toggle()"
+                           ngbDatepicker
+                           #endDate="ngbDatepicker"
+                           class="form-control"
+                           autocomplete="off"
+                           [minDate]="dateMinLimit"
+                           [maxDate]="futureDatesLimit"
+                           readonly
+                           />
+                     </div>
+                  </div>
+
+                  <div class="col-md-2 col-lg-2">
+                     <button type="button" [disabled]="disableSearch"
+                        (click)="searchFilter();" class="btn
+                        btn-sm btn-success">Search</button>
+
+                     <button type="button" class="btn btn-sm btn-success ml-2"
+                        [disabled]="disableSearch" (click)="resetFilter()">Reset</button>
+                  </div>
+                  <div class="col-md-5 col-lg-5 text-right pr-1">
+                     <a routerLink="/accounts/purchases/orders/add" class="btn
+                        btn-success btn-sm ml-2" style="color:white;"><i
+                           class="fas fa-plus"></i> Add Purchase Order </a>
+                  </div>
+               </div>
+            </form>
+         </header>
+
+         <section class="m-2">
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div infiniteScroll
+                        [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5"
+                        (scrolled)="onScroll()">
+
+
+                        <div class="form-group row">
+                           <div class="col-lg-12">
+                              <table class="table table-bordered table-striped
+                                 mb-0
+                                 simple-table">
+                                 <thead>
+                                    <tr class="bgcol2">
+                                       <th class="text-2">Date</th>
+                                       <th class="text-2">Purchase Order#</th>
+                                       <th class="text-2">Reference#</th>
+                                       <th class="text-2">Vendor</th>
+                                       <th class="text-2">Amount</th>
+                                       <th class="text-2">Status</th>
+                                       <th class="text-2">Bill Status</th>
+                                       <th class="text-2">Action</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr class="text-center"
+                                       *ngIf="payOrders.length
+                                       === 0">
+                                       <td colspan="8">
+                                          {{ dataMessage }}
+                                       </td>
+                                    </tr>
+                                    <tr *ngFor="let data of payOrders; let
+                                       i=index;">
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">{{
+                                          data.txnDate | date:"yyyy/MM/dd" }}
+                                       </td>
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">{{
+                                          data.orderNo }}
+                                       </td>
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">{{
+                                          (data.refNo) ? data.refNo : '-' }}
+                                       </td>
+
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">{{
+                                          vendors[data.vendorID] }}
+                                       </td>
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">{{
+                                          data.total.finalTotal | number :
+                                          '1.2-2'
+                                          }} {{ data.currency
+                                          }}
+                                       </td>
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url"><span
+                                             class="badge badge-dark p-1
+                                             text-uppercase">{{
+                                             data.status }}</span>
+                                       </td>
+                                       <td class="cursorpoint"
+                                          [routerLink]="data.url">
+                                          <span *ngIf="data.billStatus"
+                                             class="badge badge-dark p-1">{{
+                                             data.billStatus }}</span>
+                                          <span *ngIf="!data.billStatus">-</span>
+                                       </td>
+                                       <td>
+                                          <div class="btn-group flex-wrap">
+                                             <button type="button" class="mb-1
+                                                mt-1
+                                                mr-1 btn"
+                                                data-toggle="dropdown"
+                                                [disabled]="data.status
+                                                !=='draft'"><i
+                                                   class="fas fa-ellipsis-v"></i>
+                                             </button>
+                                             <div class="dropdown-menu"
+                                                role="menu">
+                                                <a class="dropdown-item text-1"
+                                                   [routerLink]="data.editUrl">Edit</a>
+                                                <a class="dropdown-item"
+                                                   *ngIf="data.status ===
+                                                   'draft'"
+                                                   href="javascript:;"
+                                                   (click)="deleteOrder(data)">Delete</a>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="col-lg-12 mt-3 text-center"
+                              *ngIf="lastItemSK !== 'end' && payOrders.length
+                              !==
+                              0">
+                              <button type="button" class="btn btn-success
+                                 btn-sm text-light" (click)="onScroll()">Load
+                                 More..</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
-            
          </section>
-
-
-
-
-
-    </section>
-  </div>
+      </section>
+   </div>
 </section>
