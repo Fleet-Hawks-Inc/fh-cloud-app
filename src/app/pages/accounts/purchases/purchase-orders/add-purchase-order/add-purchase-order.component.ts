@@ -5,8 +5,8 @@ import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Location } from "@angular/common";
-import { element } from "protractor";
 import { ActivatedRoute } from "@angular/router";
+declare var $: any;
 
 @Component({
   selector: "app-add-purchase-order",
@@ -110,6 +110,9 @@ export class AddPurchaseOrderComponent implements OnInit {
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
     this.vendors = vendorList;
+    $(".modal").on("hidden.bs.modal", (e) => {
+      localStorage.setItem("isOpen", "false");
+    });
   }
 
   private getValidVendors(vendorList: any[]) {
@@ -346,5 +349,12 @@ export class AddPurchaseOrderComponent implements OnInit {
           this.cancel();
         },
       });
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
   }
 }

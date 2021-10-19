@@ -22,6 +22,9 @@ import { VendorPaymentDetailComponent } from "./vendor-payments/vendor-payment-d
 import { VendorCreditNotesListComponent } from "./vendor-credit-notes/vendor-credit-notes-list/vendor-credit-notes-list.component";
 import { VendorCreditNoteDetailComponent } from "./vendor-credit-notes/vendor-credit-note-detail/vendor-credit-note-detail.component";
 import { AddVendorCreditNoteComponent } from "./vendor-credit-notes/add-vendor-credit-note/add-vendor-credit-note.component";
+import { AddBillComponent } from "./bills/add-bill/add-bill.component";
+import { BillDetailsComponent } from "./bills/bill-details/bill-details.component";
+import { BillListComponent } from "./bills/bill-list/bill-list.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -107,6 +110,9 @@ const routes: Routes = [
     path: "vendor-credit-notes/detail",
     component: VendorCreditNoteDetailComponent,
   },
+  { path: "bills/list", component: BillListComponent },
+  { path: "bills/add", component: AddBillComponent },
+  { path: "bills/details", component: BillDetailsComponent },
 ];
 
 @NgModule({
@@ -120,6 +126,9 @@ const routes: Routes = [
     VendorCreditNotesListComponent,
     VendorCreditNoteDetailComponent,
     AddVendorCreditNoteComponent,
+    AddBillComponent,
+    BillDetailsComponent,
+    BillListComponent,
   ],
   imports: [
     CommonModule,
