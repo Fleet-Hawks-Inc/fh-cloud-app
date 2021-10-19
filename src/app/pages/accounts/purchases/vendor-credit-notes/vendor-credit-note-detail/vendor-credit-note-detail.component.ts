@@ -13,7 +13,7 @@ export class VendorCreditNoteDetailComponent implements OnInit {
   purOrder: string;
   currency: string;
   crRef: string;
-  vCrDate: string;
+  txnDate: string;
   vCrNo: string;
   vendorID: string;
   crDetails: any;
@@ -39,7 +39,7 @@ export class VendorCreditNoteDetailComponent implements OnInit {
       this.purOrder = result.purOrder;
       this.currency = result.currency;
       this.crRef = result.crRef;
-      this.vCrDate = result.vCrDate;
+      this.txnDate = result.txnDate;
       this.vCrNo = result.vCrNo;
       this.vendorID = result.vendorID;
       this.crDetails = result.crDetails;

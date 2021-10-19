@@ -31,7 +31,7 @@
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{ vCrDate ? (vCrDate | date: "yyyy/MM/dd") : "-" }}
+                          {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
                         </p>
                         <p class="mb-0">DATE</p>
                       </div>
@@ -59,7 +59,7 @@
                         <i class="fas fa-money-bill-wave text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{ totalAmt ? totalAmt : "-" }} {{ currency }}
+                          {{ totalAmt ? totalAmt : "0" }} {{ currency }}
                         </p>
                         <p class="mb-0">AMOUNT</p>
                       </div>
