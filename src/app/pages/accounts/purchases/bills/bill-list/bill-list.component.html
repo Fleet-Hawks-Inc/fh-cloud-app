@@ -110,31 +110,63 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                <tr class="text-center"
+                                                    *ngIf="payOrders.length ===
+                                                    0">
+                                                    <td colspan="10">
+                                                        {{ dataMessage }}
+                                                    </td>
+                                                </tr>
+                                                <tr *ngFor="let data of
+                                                    payOrders">
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">09/25/2020</td>
+                                                        [routerLink]="data.url">{{
+                                                        data.txnDate | date:
+                                                        "yyyy/MM/dd" }}</td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">56767</td>
+                                                        [routerLink]="data.url">{{
+                                                        data.billNo }}</td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">B-5688</td>
+                                                        [routerLink]="data.url">{{
+                                                        data.refNo }}</td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">PO-576</td>
+                                                        [routerLink]="data.url">{{
+                                                        purchaseOrders[data.purchaseID]
+                                                        }}</td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">Vendor
-                                                        1</td>
+                                                        [routerLink]="data.url">
+                                                        {{
+                                                        vendors[data.vendorID]
+                                                        }}
+                                                    </td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">09/30/2020</td>
+                                                        [routerLink]="data.url">{{
+                                                        data.dueDate | date:
+                                                        "yyyy/MM/dd" }}</td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">CAD
-                                                        4,000</td>
+                                                        [routerLink]="data.url">
+                                                        {{
+                                                        data.total.finalTotal |
+                                                        number :
+                                                        '1.2-2'
+                                                        }} {{ data.currency }}
+                                                    </td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'">CAD
-                                                        2,000</td>
+                                                        [routerLink]="data.url">
+                                                        {{ data.total.balance |
+                                                        number :
+                                                        '1.2-2' }}
+                                                        {{ data.currency }}
+                                                    </td>
                                                     <td class="cursor-pointer"
-                                                        onclick="window.location='bill-detail.php'"><span
+                                                        [routerLink]="data.url">
+                                                        <span
                                                             class="badge
-                                                            badge-dark p-1">PARTIALLY
-                                                            PAID</span></td>
+                                                            badge-dark p-1
+                                                            text-uppercase">
+                                                            {{ data.status }}
+                                                        </span>
+                                                    </td>
                                                     <td><div class="btn-group
                                                             flex-wrap">
                                                             <button
@@ -150,16 +182,13 @@
                                                                 <a
                                                                     class="dropdown-item
                                                                     text-1"
-                                                                    href="add-purchase-payment.php">Pay
-                                                                    Bill</a>
+                                                                    href="javascript:;"
+                                                                    [routerLink]="data.editUrl">Edit</a>
                                                                 <a
                                                                     class="dropdown-item
                                                                     text-1"
-                                                                    href="#">Edit</a>
-                                                                <a
-                                                                    class="dropdown-item
-                                                                    text-1"
-                                                                    href="#">Delete</a>
+                                                                    href="javascript:;"
+                                                                    (click)="deleteBill(data)">Delete</a>
                                                             </div>
                                                         </div></td>
                                                 </tr>

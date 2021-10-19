@@ -23,6 +23,7 @@ export class BillListComponent implements OnInit {
   disableSearch = true;
   lastItemSK = "";
   loaded = false;
+  purchaseOrders = {};
 
   constructor(
     private apiService: ApiService,
@@ -30,5 +31,67 @@ export class BillListComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    await this.fetchVendor();
+    await this.fetchPurchaseOrders();
+    await this.fetchPurchases();
+  }
+
+  async fetchPurchases() {
+    let filterAmount = null;
+    if (this.filter.amount) {
+      filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+    }
+    let result: any = await this.accountService
+      .getData(
+        `bills/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
+      )
+      .toPromise();
+    this.disableSearch = false;
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+
+    if (result.length > 0 && result[result.length - 1].sk !== undefined) {
+      this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+    } else {
+      this.lastItemSK = "end";
+    }
+
+    result.map((v) => {
+      v.url = `/accounts/purchases/bills/detail/${v.billID}`;
+      v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
+      this.payOrders.push(v);
+    });
+    this.loaded = true;
+  }
+
+  async fetchVendor() {
+    let result: any = await this.apiService
+      .getData(`contacts/get/list/vendor`)
+      .toPromise();
+    this.vendors = result;
+  }
+
+  async fetchPurchaseOrders() {
+    const result: any = await this.accountService
+      .getData("purchase-orders/get/list")
+      .toPromise();
+    this.purchaseOrders = result;
+  }
+
+  deleteBill(data) {
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.accountService.deleteData(`bills/delete/${data.billID}`).subscribe({
+        complete: () => {},
+        error: () => {},
+        next: (result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.payOrders = [];
+          this.fetchPurchases();
+          this.toastr.success("Bill deleted successfully");
+        },
+      });
+    }
+  }
 }
