@@ -1,16 +1,10 @@
 import { animate, style, transition, trigger } from "@angular/animations";
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { MapInfoWindow, MapMarker } from "@angular/google-maps";
+import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
-import { HereMapService } from "../../services";
-import { Subject, throwError } from "rxjs";
-import {
-  map,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-} from "rxjs/operators";
 import { ApiService } from "../../services";
+
 declare var $: any;
 declare var H: any;
 
@@ -31,151 +25,138 @@ declare var H: any;
   ],
 })
 export class MapDashboardComponent implements OnInit, AfterViewInit {
+  @ViewChild(MapInfoWindow) infoWindow: MapInfoWindow;
   environment = environment.isFeatureEnabled;
   title = "Map Dashboard";
   visible = false;
-
-  private platform: any;
-  private readonly apiKey = environment.mapConfig.apiKey;
-  public map;
+  infoDetail = "No data";
   public searchTerm = new Subject<string>();
   public searchResults: any;
   driverData: any;
-  // Mapbox Integration
-  style = "mapbox://styles/kunalfleethawks/ck86yfrzp0g3z1illpdp9hs3g";
+  // Google Maps
+  zoom: 3;
   lat = -104.618896;
   lng = 50.44521;
+  center = { lat: 48.48248695279594, lng: -99.0688673798094 };
+  markerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/location-pin.png' };
+  markerPositions = [];
+
+
   isControlAdded = false;
   frontEndData = {
     drivers: {},
   };
 
-  center = { lat: 30.900965, lng: 75.857277 };
-  marker;
+
   activeTrips = [];
   constructor(
-    private HereMap: HereMapService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
-  ngOnInit() {
-    this.platform = this.HereMap.mapSetAPI();
-    this.map = this.HereMap.mapInit();
-    this.searchLocation();
-    this.showDriverData();
-    this.fetchActiveTrips();
+  async ngOnInit() {
+    await this.getCurrentDriverLocation();
 
-    // Entire Fleet Tree initialization
-    $(function () {
-      $("#treeCheckbox").jstree({
-        core: {
-          themes: {
-            responsive: false,
-          },
-        },
-        types: {
-          default: {
-            icon: "fas fa-folder",
-          },
-          file: {
-            icon: "fas fa-file",
-          },
-        },
-        plugins: ["types", "checkbox"],
-      });
-    });
+
   }
 
-  userDestination = async (value: any) => {
-    const service = this.platform.getSearchService();
-    const result = await service.geocode({ q: value });
-    const positionFound = result.items[0].position;
-    this.map.setCenter({
-      lat: positionFound.lat,
-      lng: positionFound.lng,
-    });
-    const currentLoc = new H.map.Marker({
-      lat: positionFound.lat,
-      lng: positionFound.lng,
-    });
-    this.map.addObject(currentLoc);
-  };
+  /**
+   * Get driver location for last 24 hours
+   */
+  async getCurrentDriverLocation() {
+    this.apiService.getData('dashboard/drivers/getCurrentDriverLocation').subscribe((data) => {
+      if (data) {
+        this.markerPositions = [];
+        for (const key in data) {
+          const value = data[key]
+          const speedVal = parseInt(value.speed) / 3.6;
+          this.markerPositions.push({
+            position: { lng: parseFloat(value.lng), lat: parseFloat(value.lat) },
+            data: {
+              userId: value.userId,
+              time: new Date(value.timeCreated),
+              speed: speedVal.toFixed(2),
+              driverId: key,
+              altitude: value.altitude
+            }
+          });
+        }
+      } else {
+        // console.log('No data');
+      }
+
+
+    })
+
+  }
+
+  openInfoWindow(marker: MapMarker, data) {
+
+    this.infoDetail = this.prepareInfoTemplate(data);
+
+    this.infoWindow.open(marker);
+
+  }
+
+  prepareInfoTemplate(data: any) {
+    return `<div style='padding:1px'><b> Driver: ${data.userId}</b><br/>
+     Speed: ${data.speed} KM/H | Altitude:${data.altitude} <br/> Time : ${data.time}<br/>
+    <a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'>  View details</a> </div>`;
+  }
 
   valuechange() {
     this.visible = !this.visible;
   }
-  public searchLocation() {
-    this.searchTerm
-      .pipe(
-        map((e: any) => {
-          return e.target.value;
-        }),
-        debounceTime(400),
-        distinctUntilChanged(),
-        switchMap((term) => {
-          return this.HereMap.searchEntries(term);
-        }),
-        catchError((e) => {
-          return throwError(e);
-        })
-      )
-      .subscribe((res) => {
-        this.searchResults = res;
-        // if (target.target.id === 'sourceLocation') {
-        //   this.showSource = true;
-        // }
-      });
-  }
 
-  showDriverData() {
-    const mockData = this.getDriverData();
-    const geocoder = this.platform.getGeocodingService();
-    this.frontEndData = mockData;
 
-    mockData.drivers.forEach(async (driver) => {
-      const result = await geocoder.reverseGeocode({
-        prox: `${driver.location[0]},${driver.location[1]}`,
-        mode: "retrieveAddresses",
-        maxresults: "1",
-      });
-      const origin = location.origin;
-      const customMarker = origin + "/assets/img/cirlce-stroke.png";
-      const customIcon = new H.map.Icon(customMarker, {
-        size: { w: 25, h: 25 },
-      });
-      const markers = new H.map.Marker(
-        {
-          lat: driver.location[0],
-          lng: driver.location[1],
-        },
-        {
-          icon: customIcon,
-        }
-      );
-      // this.map.addObject(markers);
-      // const defaultLayers = this.platform.createDefaultLayers();
-      // const ui = H.ui.UI.createDefault(this.map, defaultLayers);
-      markers.setData(`<h5>${driver.driverName}</h5>
-      Load: ${driver.loadCapacity}</br>
-      Speed: ${driver.speed}<br>
-      Location: ${result.Response.View[0].Result[0].Location.Address.Label}
-      `);
-      markers.addEventListener(
-        "tap",
-        (evt) => {
-          const bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
-            // read custom data
-            content: evt.target.getData(),
-          });
+  // showDriverData() {
+  //   const mockData = this.getDriverData();
+  //   const geocoder = this.platform.getGeocodingService();
+  //   this.frontEndData = mockData;
 
-          // show info bubble
-          this.HereMap.ui.addBubble(bubble);
-        },
-        false
-      );
-    });
-    // this.HereMap.calculateRoute(['51.06739365305408,-114.08167471488684', '50.469846991997564,-104.61146016696867'])
-  }
+  //   mockData.drivers.forEach(async (driver) => {
+  //     const result = await geocoder.reverseGeocode({
+  //       prox: `${driver.location[0]},${driver.location[1]}`,
+  //       mode: "retrieveAddresses",
+  //       maxresults: "1",
+  //     });
+  //     const origin = location.origin;
+  //     const customMarker = origin + "/assets/img/cirlce-stroke.png";
+  //     const customIcon = new H.map.Icon(customMarker, {
+  //       size: { w: 25, h: 25 },
+  //     });
+  //     const markers = new H.map.Marker(
+  //       {
+  //         lat: driver.location[0],
+  //         lng: driver.location[1],
+  //       },
+  //       {
+  //         icon: customIcon,
+  //       }
+  //     );
+  //     // this.map.addObject(markers);
+  //     // const defaultLayers = this.platform.createDefaultLayers();
+  //     // const ui = H.ui.UI.createDefault(this.map, defaultLayers);
+  //     markers.setData(`<h5>${driver.driverName}</h5>
+  //     Load: ${driver.loadCapacity}</br>
+  //     Speed: ${driver.speed}<br>
+  //     Location: ${result.Response.View[0].Result[0].Location.Address.Label}
+  //     `);
+  //     markers.addEventListener(
+  //       "tap",
+  //       (evt) => {
+  //         const bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
+  //           // read custom data
+  //           content: evt.target.getData(),
+  //         });
+
+  //         // show info bubble
+
+  //       },
+  //       false
+  //     );
+  //   });
+  //   // this.HereMap.calculateRoute(['51.06739365305408,-114.08167471488684', '50.469846991997564,-104.61146016696867'])
+  // }
 
   /** MOCK DATA:  This data will be from service */
   getDriverData() {
@@ -334,26 +315,9 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     return mockData;
   }
 
-  flyToDriver(currentFeature) {
-    this.map.setCenter({
-      lat: currentFeature[0],
-      lng: currentFeature[1],
-    });
-    this.visible = false;
-    this.map.getViewModel().setLookAtData({
-      zoom: 17,
-    });
-  }
 
-  ngAfterViewInit(): void {}
 
-  fetchActiveTrips() {
-    this.apiService.getData("trips/get/active").subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.activeTrips = result.Items;
-      },
-    });
-  }
+  ngAfterViewInit(): void { }
+
+
 }
