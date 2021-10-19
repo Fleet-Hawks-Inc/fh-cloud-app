@@ -118,10 +118,14 @@
                     <thead>
                       <tr class="back-color-gray">
                         <th>Order#</th>
+                        <th>Trip#</th>
                         <th>Type</th>
                         <th>Date</th>
                         <th>Customer</th>
                         <th>Confirmation#</th>
+                        <th>Vehicles</th>
+                        <th>Assets</th>
+                        <th>Drivers</th>
                         <th>Customer PO#</th>
                         <th>Pickup Location</th>
                         <th>Drop Off Location</th>
@@ -133,43 +137,76 @@
                     </thead>
                     <tbody>
                       <tr class="text-center" *ngIf="records.length===0">
-                        <td colspan="11">
+                        <td colspan="15">
                           {{dataMessage}}
                         </td>
 
                       </tr>
-                      <tr *ngFor="let order of records" class="cursorpoint">
+                      <tr height="20px" *ngFor="let order of records" class="cursorpoint limit">
                         <td>{{order.orderNumber}}</td>
+                        <td><span *ngIf="order.tripData && order.tripData.tripNo">{{order.tripData.tripNo}}</span>
+                        </td>
                         <td>{{order.orderMode}}</td>
                         <td>{{order.createdDate}} {{order.createdTime}}</td>
                         <td>{{customers[order.customerID]}}</td>
                         <td>{{order.cusConfirmation}}</td>
+                        <td><span *ngIf="order.tripData && order.tripData.vehicleIDs">
+                            <span *ngIf="order.tripData.vehicleIDs.length>0">
+                              <span *ngFor="let vehicleID of order.tripData.vehicleIDs">
+                                {{vehicles[vehicleID]}}<br />
+                              </span>
+                            </span>
+                          </span></td>
+                        <td><span *ngIf="order.tripData && order.tripData.assetIDs">
+                            <span *ngIf="order.tripData.assetIDs.length>0">
+                              <span *ngFor="let assetID of order.tripData.assetIDs">
+                                {{assets[assetID]}}<br />
+                              </span>
+                            </span>
+                          </span></td>
                         <td>
-                          <span *ngIf="order.cusPOs.length>0">
-                            <span *ngFor="let po of order.cusPOs">{{po}}<br /></span>
+                          <span *ngIf="order.tripData && order.tripData.driverIDs">
+                            <span *ngIf="order.tripData.driverIDs.length>0">
+                              <span *ngFor="let driverID of order.tripData.driverIDs">
+                                {{drivers[driverID]}}<br />
+                              </span>
+                            </span>
                           </span>
                         </td>
                         <td>
-                          <div *ngFor="let item of order.shippersReceiversInfo">
-                            <div *ngFor="let shipper of item.shippers">
+                          <span *ngIf="order.cusPOs">
+                            <span *ngIf="order.cusPOs.length>0">
 
-                              {{customers[shipper.shipperID]}}
-                              <p *ngFor="let pickup of shipper.pickupPoint">
-                                {{pickup.address.address}}&nbsp;{{pickup.address.cityName}}&nbsp;
-                                {{pickup.address.stateName}}&nbsp;{{pickup.address.countryCode}}&nbsp;
-                                {{pickup.address.zipCode}}<br />
+                              <span *ngFor="let po of order.cusPOs">{{po}}<br /></span>
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <div *ngIf="order.shippersReceiversInfo.length>0">
+                            <div *ngFor="let item of order.shippersReceiversInfo">
+                              <div *ngIf="item.shippers.length>0">
+                                <div *ngFor="let shipper of item.shippers">
 
-                                <span>{{pickup.dateAndTime}}</span><br />
+                                  {{customers[shipper.shipperID]}}
+                                  <span *ngIf="shipper.pickupPoint">
+                                    <span *ngFor="let pickup of shipper.pickupPoint">
+                                      {{pickup.address.address}}&nbsp;{{pickup.address.cityName}}&nbsp;
+                                      {{pickup.address.stateName}}&nbsp;{{pickup.address.countryCode}}&nbsp;
+                                      {{pickup.address.zipCode}}<br />
 
-                                <span *ngIf="pickup.commodity.length>0">
-                                  <span *ngFor="let commodity of pickup.commodity">
-                                    PU#: {{commodity.pu}} <br />
+                                      <span>{{pickup.dateAndTime}}</span><br />
+
+                                      <span *ngIf="pickup.commodity.length>0">
+                                        <span *ngFor="let commodity of pickup.commodity">
+                                          PU#: {{commodity.pu}} <br />
+                                        </span>
+                                      </span>
+
+                                    </span>
                                   </span>
-                                </span>
 
-                              </p>
-
-
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -178,7 +215,7 @@
                             <div *ngFor="let receiver of item.receivers">
 
                               {{customers[receiver.receiverID]}}
-                              <p *ngFor="let drop of receiver.dropPoint">
+                              <span *ngFor="let drop of receiver.dropPoint">
                                 {{drop.address.address}}&nbsp;{{drop.address.cityName}} &nbsp;
                                 {{drop.address.stateName}}&nbsp;{{drop.address.countryCode}}&nbsp;
                                 {{drop.address.zipCode}}<br />
@@ -188,7 +225,7 @@
                                     DEL#: {{commodity.del}} <br />
                                   </span>
                                 </span>
-                              </p>
+                              </span>
 
 
                             </div>
