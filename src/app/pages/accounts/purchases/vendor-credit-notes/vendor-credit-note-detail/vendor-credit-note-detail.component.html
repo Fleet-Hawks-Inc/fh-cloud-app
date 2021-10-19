@@ -2,181 +2,212 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header pr19 pl7">
-         <div class="row" style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4">
-               <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Vendor Credit# - 1279430   <span class="badge badge-dark p-1">OPEN</span></h4>
-            </div>
-            <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a routerLink="/accounts/purchases/vendor-credit-notes/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All Vendor Credits</a>
-            </div>
-         </div>
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
+              Vendor Credit# - 1279430
+              <span class="badge badge-dark p-1">{{ status }}</span>
+            </h4>
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-1">
+            <a
+              routerLink="/accounts/purchases/vendor-credit-notes/list"
+              class="btn btn-sm btn-default"
+              ><i class="fas fa-list"></i> All Vendor Credits</a
+            >
+          </div>
+        </div>
       </header>
 
       <section class="m-2">
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-12">
-                     <div class="row">
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="far fa-calendar-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020</p>
-                              <p class="mb-0">DATE</p>
-                           </div>
-                        </div>
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="fa fa-user text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">MIT ltd</p>
-                              <p class="mb-0">VENDOR</p>
-                           </div>
-                        </div>
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cmaindiv">
+                        <i class="far fa-calendar-alt text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ vCrDate ? (vCrDate | date: "yyyy/MM/dd") : "-" }}
+                        </p>
+                        <p class="mb-0">DATE</p>
+                      </div>
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cmaindiv">
+                        <i class="fa fa-user text-7"></i>
+                        <br />
+                        <p
+                          class="
+                            mb-0
+                            text-5
+                            font-weight-bold
+                            text-dark text-capitalize
+                          "
+                        >
+                          {{ vendorID ? vendors[vendorID] : "-" }}
+                        </p>
+                        <p class="mb-0">VENDOR</p>
+                      </div>
+                    </div>
 
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="fas fa-money-bill-wave text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">4800 CAD</p>
-                              <p class="mb-0">AMOUNT</p>
-                           </div>
-                        </div>
-                     </div>
+                    <div class="col-md-4 col-lg-4">
+                      <div class="text-center p-4 cmaindiv">
+                        <i class="fas fa-money-bill-wave text-7"></i>
+                        <br />
+                        <p class="mb-0 text-5 font-weight-bold text-dark">
+                          {{ totalAmt ? totalAmt : "-" }} {{ currency }}
+                        </p>
+                        <p class="mb-0">AMOUNT</p>
+                      </div>
+                    </div>
                   </div>
-               </div>
-             </div>
-           </div>
-         </div>
-         
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                        <table class="table table-bordered table-responsive-lg">
-                              <tbody>
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Purchase Order#</td>
-                                    <td width="60%">102021</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Reference#</td>
-                                    <td>5767</td>
-                                 </tr>
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Discount</td>
-                                    <td width="60%">50 CAD</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-                  
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                           <table class="table table-bordered table-responsive-lg">
-                              <tbody>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Taxes</td>
-                                    <td width="60%">GST - 5%, PST - 10%, HST - 4%</td>
-                                 </tr>
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Additions</td>
-                                    <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Deductions</td>
-                                    <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div class="bg-white p-3 text-dark">
+              <div class="form-group row">
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Purchase Order#
+                            </td>
+                            <td width="60%">{{ purOrder ? purOrder : "-" }}</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Reference#
+                            </td>
+                            <td>{{ crRef ? crRef : "-" }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
+                </div>
 
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                        <table class="table table-bordered table-hover">
-                           <thead>
-                           <tr>
-                           <th>Commodity</th>
-                           <th>Quantity</th>
-                           <th>Rate</th>
-                           <th>Amount</th>
-                           <th>Description</th>
-                           </tr>
-                           </thead>
-                           <tbody>
-                           <tr>
-                           <td>Bats</td>
-                           <td>3</td>
-                           <td>2</td>
-                           <td>6 CAD</td>
-                           <td>Description</td>
-                           </tr>
-                           <tr>
-                           <td>Balls</td>
-                           <td>14</td>
-                           <td>2</td>
-                           <td>28 CAD</td>
-                           <td>Description</td>
-                           </tr>
-                           </tbody>
-                           </table>
-                        </div>
-                     </div>
+                <!-- <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-responsive-lg">
+                        <tbody>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Taxes
+                            </td>
+                            <td width="60%">GST - 5%, PST - 10%, HST - 4%</td>
+                          </tr>
+                          <tr>
+                            <td
+                              width="40%"
+                              class="back-color-gray font-weight-bold"
+                            >
+                              Additions
+                            </td>
+                            <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
+                          </tr>
+                          <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Deductions
+                            </td>
+                            <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                  
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                        <table class="table table-bordered table-hover">
-                           <thead>
-                           <tr>
-                              <th>Account Name</th>
-                              <th>Debit</th>
-                              <th>Credit</th>
-                           </tr>
-                           </thead>
-                           <tbody>
-                           <tr>
-                              <td>Account Name(selected in form)</td>
-                              <td>0.00</td>
-                                                         <td>1000 CAD</td>
-                           </tr>
-                           <tr>
-                              <td>Accounts Payables</td>
-                                                         <td>1000 CAD</td>
-                              <td>0.00</td>
+                </div> -->
 
-                           </tr>
-                           <tr>
-                              <td>Total</td>
-                              <td>1000 CAD</td>
-                              <td>1000 CAD</td>
-                           </tr>
-                           </tbody>
-                        </table>
-                        </div>
-                     </div>
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Commodity</th>
+                            <th>Quantity</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let item of crDetails">
+                            <td>{{ item.commodity ? item.commodity : "-" }}</td>
+                            <td>
+                              {{ item.qty ? item.qty : "-" }} {{ item.qtyUnit }}
+                            </td>
+                            <td>
+                              {{ item.rate ? item.rate : "-" }}
+                              {{ item.rateUnit }}
+                            </td>
+                            <td>{{ item.amount ? item.amount : "-" }}</td>
+                            <td>{{ item.desc ? item.desc : "-" }}</td>
+                          </tr>
+                          <tr *ngIf="crDetails?.length === 0">
+                            <td>No Data Found</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                  
-               </div>
-             </div>
-           </div>
-         </div>
-         
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <table class="table table-bordered table-hover">
+                        <thead>
+                          <tr>
+                            <th>Account Name</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Account Name(selected in form)</td>
+                            <td>0.00</td>
+                            <td>1000 CAD</td>
+                          </tr>
+                          <tr>
+                            <td>Accounts Payables</td>
+                            <td>1000 CAD</td>
+                            <td>0.00</td>
+                          </tr>
+                          <tr>
+                            <td>Total</td>
+                            <td>1000 CAD</td>
+                            <td>1000 CAD</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
-
-   </section>
+    </section>
   </div>
 </section>

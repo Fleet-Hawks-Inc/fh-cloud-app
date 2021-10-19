@@ -106,8 +106,9 @@ const routes: Routes = [
     component: VendorCreditNotesListComponent,
   },
   { path: "vendor-credit-notes/add", component: AddVendorCreditNoteComponent },
+  { path: "vendor-credit-notes/edit/:creditID", component: AddVendorCreditNoteComponent },
   {
-    path: "vendor-credit-notes/detail",
+    path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
   },
   { path: "bills/list", component: BillListComponent },
@@ -141,4 +142,4 @@ const routes: Routes = [
     InfiniteScrollModule,
   ],
 })
-export class PurchasesModule {}
+export class PurchasesModule { }
