@@ -99,7 +99,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   prepareInfoTemplate(data: any) {
     return `<div style='padding:1px'><b> Driver: ${data.userId}</b><br/>
-     Speed: ${data.speed} KM/H | Altitude:${data.altitude} <br/> Time : ${data.time}<br/>
+     Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> Time : ${data.time}<br/>
     <a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'>  View details</a> </div>`;
   }
 
