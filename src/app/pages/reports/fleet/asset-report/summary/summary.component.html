@@ -10,13 +10,6 @@
 
                <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
-                     <!-- <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="Select Group">
-                           <option value="1">All Asset</option>
-                           <option value="2">A5856BC</option>
-                        </optgroup>
-                     </select> -->
-                     <!-- <input type="text"> -->
                      <input type="text" autocomplete="off" name="assetIdentification" [(ngModel)]="assetIdentification"
                         placeholder="Search Asset" class="form-control">
 
@@ -45,23 +38,12 @@
                      <ng-option value="chassis">Chassis</ng-option>
                      <ng-option value="tank_trailer">Tank Trailer</ng-option>
                   </ng-select>
-                  <!-- <select data-plugin-selectTwo class="form-control" [(ngModel)]="assetType">
-
-                     <optgroup label="">
-                        <option value="1">Asset Type</option>
-                        <option value="2">Flat Bed</option>
-                        <option value="2">Container</option>
-                        <option value="2">Double Drop</option>
-                        <option value="2">Stepdek</option>
-                        <option value="2">Lowboy</option>
-                        <option value="2">Dump Trailer</option>
-                     </optgroup>
-                  </select> -->
                </div>
 
                <div class="col-md-2 col-lg-2">
                   <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
                   <button class="btn btn-sm btn-success" type="submit" (click)=" resetFilter()">Reset</button>
+
                </div>
 
                <div class="col-md-4 col-lg-4 text-right pr-1">
@@ -70,8 +52,7 @@
                         aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">CSV</a>
-                        <a class="dropdown-item text-1" href="">PDF</a>
+                        <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
                      </div>
                   </div>
                </div>
@@ -84,7 +65,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{allData.length}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{totalAssetsCount}}</h3>
                      </div>
                   </div>
                </div>
@@ -121,8 +102,8 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngIf="allData.length == 0">
-                                    <td>{{dataMessage}}</td>
+                                 <tr *ngIf="allData.length == 0" class="text-center">
+                                    <td colspan="15">{{dataMessage}}</td>
                                  </tr>
                                  <tr *ngFor="let item of allData">
                                     <td><span
@@ -130,7 +111,7 @@
                                     </td>
                                     <td>{{item.VIN}}</td>
                                     <td>{{item.assetType}}</td>
-                                    <td>{{item.assetDetails.manufacturer}}</td>
+                                    <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}</td>
                                     <td>-</td>
                                     <td>{{item.assetDetails.licencePlateNumber}}</td>
                                     <td><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
@@ -142,7 +123,7 @@
                      </div>
                      <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
                         <button type="button" class="btn btn-success btn-sm text-light"
-                           (click)="fetchAssetsCount() ">Load More..</button>
+                           (click)="fetchAssetsList() ">Load More..</button>
                      </div>
                   </div>
                </div>

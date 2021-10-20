@@ -3,6 +3,8 @@ import { timeStamp } from 'console';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
+import * as moment from 'moment';
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: 'app-summary',
@@ -10,81 +12,74 @@ import { environment } from '../../../../../../environments/environment';
   styleUrls: ['./summary.component.css']
 })
 export class SummaryComponent implements OnInit {
-  assetStartPoint = 1;
+
   assetType = null;
   assetID = '';
   allData = [];
   activeAssets = 0;
   inActiveAssets = 0;
-  pageLength = 10;
-  assetDraw = 0;
-  assetEndPoint = this.pageLength;
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
-  records = [];
   loaded = false;
+  totalAssetsCount = 0;
+  deletedCount = 0
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private toastr: ToastrService) {
 
   }
   ngOnInit() {
-    this.fetchAssetList();
-    // this.listCounting()
-    this.fetchAssetsCount();
+    this.fetchAssetCount();
+    this.fetchAssetsList();
     // this.fetchAssetReport();
   }
 
 
-  fetchAssetList() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      // this.allData = result.Items;
-      for (let i = 0; i < result.Items.length; i++) {
-        if (this.allData[i].currentStatus === "active") {
-          this.activeAssets += 1
-        }
-        else {
-          this.inActiveAssets += 1
-        }
-      }
+  async fetchAssetCount() {
+    const result = await this.apiService.getData('assets').toPromise()
+    this.totalAssetsCount = result.Count
+    if (this.totalAssetsCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
+    result.Items.forEach(element => {
+      if (element.isDeleted == 1) this.deletedCount++
+      if (element.currentStatus == "active") this.activeAssets++
+      if (element.currentStatus == "inactive") this.inActiveAssets++
     });
   }
-  fetchAssetsCount() {
-    // this.apiService.getData(`assets/fetch/assetList?name=${this.assetIdentification}` + '&assetType=' + this.assetType).subscribe((result: any) => {
-    this.apiService.getData(`assets/fetch/assetList?name=${this.assetIdentification}&assetType=${this.assetType}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-      console.log('this.data', result)
-      // this.allData = result.Items;
-      this.dataMessage = Constants.FETCHING_DATA
-      if (result.Items.length === 0) {
 
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
-      if (result.Items.length > 0) {
-
-        if (result.LastEvaluatedKey !== undefined) {
-          this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+  fetchAssetsList() {
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`assets/fetch/assetReport?asset=${this.assetIdentification}&assetType=${this.assetType}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+        this.dataMessage = Constants.FETCHING_DATA
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
         }
-        else {
-          this.lastItemSK = 'end'
+        if (result.Items.length > 0) {
+
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+          }
+          else {
+            this.lastItemSK = 'end';
+          }
+          result[`Items`].map((v: any) => {
+            v.assetType = v.assetType.replace("_", " ")
+            this.allData.push(v)
+          });
+          this.loaded = true;
         }
-        // this.records = this.records.concat(result.Items)
-
-        this.loaded = true;
-      }
-
-      result[`Items`].map((v: any) => {
-        v.assetType = v.assetType.replace("_", " ")
-        this.allData.push(v)
-      })
-    });
-
+      });
+    }
   }
   searchFilter() {
     if (this.assetIdentification !== '' || this.assetType != null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
+      if (this.assetID == '') {
+        this.assetID = this.assetIdentification;
+      }
+      this.lastItemSK = '';
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAssetsCount();
+      this.fetchAssetsList();
     }
     else {
       return false;
@@ -93,37 +88,55 @@ export class SummaryComponent implements OnInit {
   resetFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = '';
+      this.lastItemSK = '';
       this.assetType = null;
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAssetsCount();
+      this.fetchAssetsList();
     } else {
       return false;
     }
   }
-  // async fetchAssetReport() {
-  //   if (this.lastItemSK !== 'end') {
-  //     const result = await this.apiService.getData(`assets/fetch/records?lastKey=${this.lastItemSK}`).toPromise();
-  //     this.dataMessage = Constants.FETCHING_DATA
+  generateCSV() {
+    if (this.allData.length > 0) {
+      let dataObject = []
+      let csvArray = []
+      this.allData.forEach(element => {
+        let obj = {}
+        obj["Asset Name/Number"] = element.assetIdentification
+        obj["VIN"] = element.VIN
+        obj["Asset Type"] = element.assetType
+        obj["Make"] = element.assetDetails.manufacturer
+        obj["License Plate Number"] = element.assetDetails.licencePlateNumber
+        obj["Status"] = element.currentStatus
+        dataObject.push(obj)
+      });
+      let headers = Object.keys(dataObject[0]).join(',')
+      headers += ' \n'
+      csvArray.push(headers)
+      dataObject.forEach(element => {
+        let obj = Object.values(element).join(',')
+        obj += ' \n'
+        csvArray.push(obj)
+      });
+      const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
 
+      const link = document.createElement('a');
+      if (link.download !== undefined) {
 
-  //     if (result.Items.length === 0) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Asset-Report.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-  //       this.dataMessage = Constants.NO_RECORDS_FOUND
-  //     }
-  //     if (result.Items.length > 0) {
-
-  //       if (result.LastEvaluatedKey !== undefined) {
-  //         this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
-  //       }
-  //       else {
-  //         this.lastItemSK = 'end'
-  //       }
-  //       this.records = this.records.concat(result.Items)
-
-  //       this.loaded = true;
-  //     }
-  //   }
-  // }
+      }
+    }
+    else {
+      this.toastr.error("No Records found")
+    }
+  }
 }
 
