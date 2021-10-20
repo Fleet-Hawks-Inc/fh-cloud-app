@@ -146,7 +146,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     private apiService: ApiService,
     private httpClient: HttpClient,
     private countryStateCity: CountryStateCityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
@@ -363,7 +363,7 @@ export class AddEmployeePaymentComponent implements OnInit {
     this.accountService
       .postData("employee-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -380,7 +380,7 @@ export class AddEmployeePaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
