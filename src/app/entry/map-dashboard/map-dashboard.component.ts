@@ -29,6 +29,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   environment = environment.isFeatureEnabled;
   title = "Map Dashboard";
   visible = false;
+  width = "100%";
+  height = "100%";
   infoDetail = "No data";
   public searchTerm = new Subject<string>();
   public searchResults: any;
