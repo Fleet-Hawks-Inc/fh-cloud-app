@@ -67,7 +67,8 @@
                                                     name="vendorID"
                                                     placeholder="Select Vendor"
                                                     #vendorID="ngModel"
-                                                    required>
+                                                    required
+                                                    (change)="changeVendor()">
                                                     <ng-option value="{{
                                                         data.contactID }}"
                                                         *ngFor="let
@@ -255,8 +256,7 @@
                                             font-weight-bold
                                             font-weight-bold
                                             text-lg-right
-                                            text-5">Advance
-                                            Payments</label>
+                                            text-5">Vendor Credits</label>
                                     </div>
                                     <div class="col-lg-11">
                                         <table
@@ -270,12 +270,12 @@
                                                     class="bgcol2">
                                                     <th></th>
                                                     <th
-                                                        class="text-2">Payment#</th>
+                                                        class="text-2">Credit#</th>
                                                     <th
                                                         class="text-2">Payment
                                                         Date</th>
                                                     <th
-                                                        class="text-2">Account#</th>
+                                                        class="text-2">Reference#</th>
                                                     <th
                                                         class="text-2">Amount</th>
                                                     <th
@@ -292,7 +292,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr
-                                                    *ngIf="advancePayments.length
+                                                    *ngIf="vendorCredits.length
                                                     === 0"
                                                     class="text-center">
                                                     <td
@@ -302,7 +302,7 @@
                                                 </tr>
                                                 <tr *ngFor="let
                                                     data of
-                                                    advancePayments;
+                                                    vendorCredits;
                                                     let
                                                     i=index">
                                                     <td>
@@ -310,10 +310,10 @@
                                                             type="checkbox"
                                                             name="stl{{i}}"
                                                             [(ngModel)]="data.selected"
-                                                            (change)="selectedAdvancepayments()">
+                                                            (change)="selectedCredits()">
                                                     </td>
                                                     <td>{{
-                                                        data.paymentNo
+                                                        data.vCrNo
                                                         }}</td>
                                                     <td>{{
                                                         data.txnDate
@@ -321,15 +321,17 @@
                                                         date:"yyyy/MM/dd"
                                                         }}</td>
                                                     <td>{{
-                                                        accList[data.accountID]
+                                                        data.crRef
                                                         }}</td>
                                                     <td>{{
-                                                        data.pendingPayment
+                                                        data.totalAmt | number :
+                                                        '1.2-2'
                                                         }} {{
                                                         data.currency
                                                         }}</td>
                                                     <td>{{
-                                                        data.prevPaidAmount
+                                                        data.prevPaidAmount |
+                                                        number : '1.2-2'
                                                         }}</td>
                                                     <td><span
                                                             class="badge
@@ -353,8 +355,8 @@
                                                             type="text"
                                                             class="form-control"
                                                             [(ngModel)]="data.paidAmount"
-                                                            (input)="paymentCalculation();
-                                                            checkInput('advAmount')"
+                                                            (input)="calculateFinalTotal();
+                                                            checkInput()"
                                                             name="advPaidAmount{{i}}"
                                                             [disabled]="data.paidStatus">
                                                         <label
@@ -383,7 +385,7 @@
                                             text-lg-right text-5">Bill
                                             Details</label>
                                     </div>
-                                    <div class="col-lg-10">
+                                    <div class="col-lg-11">
                                         <div class="row pt-2">
                                             <table class="table table-bordered">
                                                 <thead>
@@ -400,6 +402,10 @@
                                                         <th>Amount<span
                                                                 class="mandfield
                                                                 text-2 ml-1"><sup>*</sup></span></th>
+                                                        <th>Account<span
+                                                                class="mandfield
+                                                                text-2 ml-1"><sup>*</sup></span></th>
+                                                        <th>Description</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -560,6 +566,39 @@
                                                                 placeholder="Enter
                                                                 amount"
                                                                 readonly
+                                                                />
+                                                        </td>
+                                                        <td>
+                                                            <ng-select
+                                                                [(ngModel)]="detail.accountID"
+                                                                name="accountID{{idt}}"
+                                                                placeholder="Select
+                                                                account">
+                                                                <ng-option
+                                                                    *ngFor="let
+                                                                    act of
+                                                                    accounts"
+                                                                    value="{{
+                                                                    act.actID
+                                                                    }}">{{
+                                                                    act.actNo }}
+                                                                    -
+                                                                    {{
+                                                                    act.actName
+                                                                    | titlecase
+                                                                    }}
+                                                                </ng-option>
+                                                            </ng-select>
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                name="description{{
+                                                                idt }}"
+                                                                [(ngModel)]="detail.description"
+                                                                class="form-control"
+                                                                placeholder="Enter
+                                                                description"
                                                                 />
                                                         </td>
                                                         <td>
@@ -889,15 +928,15 @@
                                                             <div
                                                                 class="col-lg-9
                                                                 bordtop
-                                                                pt-1"> <a
-                                                                    href="#applyCreditModal"
-                                                                    class="btn
-                                                                    btn-success
-                                                                    btn-sm
-                                                                    modal-with-form
-                                                                    pull-right">
+                                                                pt-1">
+                                                                <h5
+                                                                    class="text-right
+                                                                    font-weight-semibold
+                                                                    text-4
+                                                                    text-dark">
                                                                     Vendor
-                                                                    Credit</a>
+                                                                    Credit
+                                                                </h5>
                                                             </div>
                                                             <div
                                                                 class="col-lg-3

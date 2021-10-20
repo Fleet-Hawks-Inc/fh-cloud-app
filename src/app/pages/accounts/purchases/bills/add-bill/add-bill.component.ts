@@ -6,6 +6,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Location } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
+import Constants from "src/app/pages/fleet/constants";
 declare var $: any;
 
 @Component({
@@ -14,6 +15,7 @@ declare var $: any;
   styleUrls: ["./add-bill.component.css"],
 })
 export class AddBillComponent implements OnInit {
+  dataMessage: string = Constants.NO_RECORDS_FOUND;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -31,6 +33,8 @@ export class AddBillComponent implements OnInit {
         rate: "",
         rateTyp: null,
         amount: 0,
+        accountID: null,
+        description: "",
       },
     ],
     charges: {
@@ -82,6 +86,8 @@ export class AddBillComponent implements OnInit {
     dueDate: null,
     paymentTerm: null,
     purchaseID: null,
+    creditIds: [],
+    creditData: [],
   };
   quantityTypes = [];
   vendors = [];
@@ -117,7 +123,8 @@ export class AddBillComponent implements OnInit {
     },
   ];
   billID = "";
-  advancePayments = [];
+  vendorCredits = [];
+  accounts = [];
 
   constructor(
     private listService: ListService,
@@ -140,8 +147,15 @@ export class AddBillComponent implements OnInit {
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
     this.vendors = vendorList;
-    this.fetchPurchaseOrders();
+    // this.fetchPurchaseOrders();
     this.fetchQuantityTypes();
+    this.fetchAccounts();
+  }
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
   }
 
   openModal(unit: string) {
@@ -164,7 +178,7 @@ export class AddBillComponent implements OnInit {
 
   async fetchPurchaseOrders() {
     const result: any = await this.accountService
-      .getData("purchase-orders/get/all")
+      .getData(`purchase-orders/vendor/${this.orderData.vendorID}`)
       .toPromise();
     this.purchaseOrders = result;
   }
@@ -185,15 +199,18 @@ export class AddBillComponent implements OnInit {
       rate: "",
       rateTyp: null,
       amount: 0,
+      accountID: null,
+      description: "",
     };
     const lastAdded = this.orderData.detail[this.orderData.detail.length - 1];
     if (
       lastAdded.comm !== "" &&
       lastAdded.qty !== "" &&
-      lastAdded.qtyTyp !== "" &&
+      lastAdded.qtyTyp !== null &&
       lastAdded.rate !== "" &&
-      lastAdded.rateTyp !== "" &&
-      lastAdded.amount !== 0
+      lastAdded.rateTyp !== null &&
+      lastAdded.amount !== 0 &&
+      lastAdded.accountID !== null
     ) {
       this.orderData.detail.push(obj);
     }
@@ -273,7 +290,8 @@ export class AddBillComponent implements OnInit {
 
     this.allTax();
     this.orderData.total.finalTotal =
-      Number(this.orderData.total.subTotal) +
+      Number(this.orderData.total.subTotal) -
+      this.orderData.total.vendorCredit +
       Number(this.orderData.total.taxes);
   }
 
@@ -323,42 +341,49 @@ export class AddBillComponent implements OnInit {
 
     this.orderData.detail = result[0].detail;
     this.orderData.charges = result[0].charges;
-    this.orderData.total = result[0].total;
+    this.orderData.total.dedTotal = result[0].total.dedTotal;
+    this.orderData.total.detailTotal = result[0].total.detailTotal;
+    this.orderData.total.feeTotal = result[0].total.feeTotal;
+    this.orderData.total.finalTotal = result[0].total.finalTotal;
+    this.orderData.total.subTotal = result[0].total.subTotal;
+    this.orderData.total.taxes = result[0].total.taxes;
     this.orderData.refNo = result[0].refNo;
     this.orderData.currency = result[0].currency;
     this.orderData.vendorID = result[0].vendorID;
+    this.calculateFinalTotal();
   }
 
   addRecord() {
     this.submitDisabled = true;
-    this.accountService.postData("bills", this.orderData).subscribe({
-      complete: () => {},
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, "This Field");
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => {},
-          });
-      },
-      next: (res) => {
-        this.submitDisabled = false;
-        this.response = res;
-        this.toaster.success("Bill added successfully.");
-        this.cancel();
-      },
-    });
+    console.log("this.orderData", this.orderData);
+    // this.accountService.postData("bills", this.orderData).subscribe({
+    //   complete: () => {},
+    //   error: (err: any) => {
+    //     from(err.error)
+    //       .pipe(
+    //         map((val: any) => {
+    //           val.message = val.message.replace(/".*"/, "This Field");
+    //           this.errors[val.context.key] = val.message;
+    //         })
+    //       )
+    //       .subscribe({
+    //         complete: () => {
+    //           this.submitDisabled = false;
+    //           // this.throwErrors();
+    //         },
+    //         error: () => {
+    //           this.submitDisabled = false;
+    //         },
+    //         next: () => {},
+    //       });
+    //   },
+    //   next: (res) => {
+    //     this.submitDisabled = false;
+    //     this.response = res;
+    //     this.toaster.success("Bill added successfully.");
+    //     this.cancel();
+    //   },
+    // });
   }
 
   cancel() {
@@ -369,7 +394,17 @@ export class AddBillComponent implements OnInit {
     let result: any = await this.accountService
       .getData(`bills/details/${this.billID}`)
       .toPromise();
-    this.orderData = result[0];
+    this.orderData.detail = result[0].detail;
+    this.orderData.charges.accDed = result[0].accDed;
+    this.orderData.charges.accFee = result[0].accFee;
+    this.orderData.charges.remarks = result[0].remarks;
+    this.orderData.charges.taxes = result[0].taxes;
+    this.orderData.total.dedTotal = result[0].total.dedTotal;
+    this.orderData.total.detailTotal = result[0].total.detailTotal;
+    this.orderData.total.feeTotal = result[0].total.feeTotal;
+    this.orderData.total.finalTotal = result[0].total.finalTotal;
+    this.orderData.total.subTotal = result[0].total.subTotal;
+    this.orderData.total.taxes = result[0].total.taxes;
   }
 
   updateRecord() {
@@ -404,5 +439,124 @@ export class AddBillComponent implements OnInit {
           this.cancel();
         },
       });
+  }
+
+  async fetchVendorCredits() {
+    this.dataMessage = Constants.FETCHING_DATA;
+    let result: any = await this.accountService
+      .getData(`vendor-credits/specific/${this.orderData.vendorID}`)
+      .toPromise();
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+    result.map((v) => {
+      v.prevPaidAmount = Number(v.totalAmt) - Number(v.balance);
+      v.paidStatus = false;
+      v.fullPayment = false;
+      v.paidAmount = 0;
+    });
+    this.vendorCredits = result;
+  }
+
+  changeVendor() {
+    this.vendorCredits = [];
+    this.purchaseOrders = [];
+    this.fetchPurchaseOrders();
+    this.fetchVendorCredits();
+  }
+
+  assignFullPayment(index, data) {
+    if (data.fullPayment) {
+      this.vendorCredits[index].paidAmount = data.balance;
+      this.vendorCredits[index].paidStatus = true;
+    } else {
+      this.vendorCredits[index].paidAmount = 0;
+      this.vendorCredits[index].paidStatus = false;
+    }
+    this.selectedCredits();
+    this.calculateFinalTotal();
+  }
+
+  selectedCredits() {
+    this.orderData.creditIds = [];
+    this.orderData.creditData = [];
+    for (const element of this.vendorCredits) {
+      if (element.selected) {
+        if (!this.orderData.creditIds.includes(element.creditID)) {
+          let obj = {
+            creditID: element.creditID,
+            status: element.status,
+            paidAmount:
+              element.status === "not_deducted"
+                ? element.paidAmount
+                : Number(element.totalAmt) - Number(element.balance),
+            totalAmount:
+              element.status === "not_deducted"
+                ? element.amount
+                : element.balance,
+            pendingAmount: element.balance,
+          };
+          this.orderData.creditIds.push(element.creditID);
+          this.orderData.creditData.push(obj);
+        }
+      }
+    }
+    console.log("this.orderData.creditIds", this.orderData.creditIds);
+    console.log("this.orderData.creditData", this.orderData.creditData);
+    this.creditCalculation();
+    this.calculateFinalTotal();
+  }
+
+  creditCalculation() {
+    let selectCount = 0;
+    this.orderData.total.vendorCredit = 0;
+    for (const element of this.vendorCredits) {
+      if (element.selected) {
+        if (Number(element.paidAmount > 0)) {
+          selectCount += 1;
+        }
+        console.log("element90", element);
+        this.orderData.total.vendorCredit += Number(element.paidAmount);
+        this.orderData.creditData.map((v) => {
+          if (element.creditID === v.creditID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount =
+              Number(element.balance) - Number(element.paidAmount);
+            if (Number(element.paidAmount) === Number(element.balance)) {
+              v.status = "deducted";
+            } else if (Number(element.paidAmount) < Number(element.balance)) {
+              v.status = "partially_deducted";
+            } else {
+              v.status = "not_deducted";
+            }
+
+            // v.paidAmount = v.paidAmount.toFixed(2);
+          }
+        });
+      }
+    }
+    console.log("this.orderData.creditData kk", this.orderData.creditData);
+  }
+
+  checkInput() {
+    // if (type == "tax") {
+    //   if (Number(this.paymentData.taxes) > Number(this.paymentData.subTotal)) {
+    //     this.taxErr = "Tax amount should be less than sub total";
+    //     this.submitDisabled = true;
+    //   } else {
+    //     this.taxErr = "";
+    //     this.submitDisabled = false;
+    //   }
+    // } else if (type == "advance") {
+    //   if (
+    //     Number(this.paymentData.advance) > Number(this.paymentData.subTotal)
+    //   ) {
+    //     this.advErr = "Advance amount should be less than sub total";
+    //     this.submitDisabled = true;
+    //   } else {
+    //     this.advErr = "";
+    //     this.submitDisabled = false;
+    //   }
+    // }
   }
 }
