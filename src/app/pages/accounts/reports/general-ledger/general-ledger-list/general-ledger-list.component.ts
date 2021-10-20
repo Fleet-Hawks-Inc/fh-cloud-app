@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../../../../services';
 import Constants from '../../../../fleet/constants';
-import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-general-ledger-list',
   templateUrl: './general-ledger-list.component.html',
@@ -20,9 +19,31 @@ export class GeneralLedgerListComponent implements OnInit {
     actName: null,
   };
   constructor(private accountService: AccountService,
-    private toaster: ToastrService,) { }
+  ) { }
 
   ngOnInit() {
+    this.fetchAccounts();
+  }
+
+  searchAccounts() {
+    if (this.filter.actType !== '' || this.filter.actType !== null || this.filter.actName !== null || this.filter.actName !== '') {
+      this.disableSearch = true;
+      this.accounts = [];
+      this.lastItemSK = '';
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchAccounts();
+    }
+  }
+
+  resetFilter() {
+    this.disableSearch = true;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      actType: null,
+      actName: null,
+    };
+    this.lastItemSK = '';
+    this.accounts = [];
     this.fetchAccounts();
   }
   async fetchAccounts(refresh?: boolean) {
@@ -55,7 +76,6 @@ export class GeneralLedgerListComponent implements OnInit {
               v.last = v.actName.substring(v.actName.indexOf(' ') + 1, v.actName.length);
               this.accounts.push(v);
             });
-            console.log('this.accounts', this.accounts);
             if (this.accounts[this.accounts.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(this.accounts[this.accounts.length - 1].sk);
             } else {
@@ -65,5 +85,12 @@ export class GeneralLedgerListComponent implements OnInit {
           }
         });
     }
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchAccounts();
+    }
+    this.loaded = false;
   }
 }
