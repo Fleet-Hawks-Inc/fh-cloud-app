@@ -446,7 +446,7 @@ export class AddDriverComponent
     });
   }
   fetchDrivers() {
-    this.apiService.getData("drivers").subscribe((res: any) => {
+    this.apiService.getData('drivers').subscribe((res: any) => {
       this.allDrivers = res.Items;
     });
   }

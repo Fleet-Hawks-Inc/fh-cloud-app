@@ -253,6 +253,8 @@ export class DriverListComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`)
       .subscribe((result: any) => {
+      
+      
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -292,6 +294,8 @@ export class DriverListComponent implements OnInit {
         this.spinner.hide();
       }, err => {
         this.spinner.hide();
+        
+        
       });
   }
   fetchAddress(drivers: any) {
@@ -314,16 +318,19 @@ export class DriverListComponent implements OnInit {
     }
   }
   searchFilter() {
-    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== null) {
+    if (this.driverName !== '' || this.dutyStatus !== '' || this.driverType !== null)
+     {
       this.driverName = this.driverName.toLowerCase();
-      if (this.driverID == '') {
+      if (this.driverID == '') 
+      {
         this.driverID = this.driverName;
       }
       this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedDrivers = [];
       this.fetchDriversCount();
-    } else {
+    } else
+    {
       return false;
     }
   }

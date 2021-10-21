@@ -255,7 +255,8 @@ export class DispatchOverviewComponent implements OnInit {
     this.spinner.show();
     this.apiService.getData('trips').
       subscribe((result: any) => {
-        for (let i = 0; i < result.Items.length; i++) {
+        for (let i = 0; i < result.Items.length; i++) 
+        {
           const element = result.Items[i];
           if (element.dateCreated !== '' && element.dateCreated !== undefined && element.isDeleted === 0) {
             let tripDate = element.dateCreated.split('-');
@@ -283,14 +284,19 @@ export class DispatchOverviewComponent implements OnInit {
             } else if (tripMonth == '11') {
               this.tripsMonths.nov += 1;
             } else if (tripMonth == '12') {
-              if (element.tripStatus === 'confirmed') {
+            
+              if (element.tripStatus === 'confirmed') 
+              {
                 var todayDate = new Date();
                 var tomorrowDate = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
                 let pickDate = element.dateCreated.split("-");
                 var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
-                if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                if (todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) 
+                {
                   this.todaysPickCount = this.todaysPickCount + 1;
-                } else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) {
+                } 
+                else if (tomorrowDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)) 
+                {
                   this.tomorrowsPickCount = this.tomorrowsPickCount + 1;
                 }
               }
