@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import * as _ from 'lodash';
 import { AccountService } from '../../../../../services';
 import Constants from '../../../../fleet/constants';
 @Component({
@@ -81,6 +82,8 @@ export class GeneralLedgerListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
+            const newArray = _.sortBy(this.accounts, ['actNo']); // sort by account number
+            this.accounts = newArray;
             this.loaded = true;
           }
         });
