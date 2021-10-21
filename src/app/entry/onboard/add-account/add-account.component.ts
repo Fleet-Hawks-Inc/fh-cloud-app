@@ -402,9 +402,16 @@ export class AddAccountComponent implements OnInit {
       this.addressDetails[index].defaultYard = false;
     }
   }
+
   predefinedAccounts() {
-    this.accountService.getData('chartAc/predefinedAccounts').subscribe((res: any) => {
-    });
+    const res = this.accountService.getData('chartAc/addpredefinedClass').toPromise();
+    if (res) {
+      setTimeout(() => {
+        this.accountService.getData('chartAc/predefinedAccounts').subscribe((result) => {
+          this.toaster.success('Predefined  Accounts Created.');
+        });
+      }, 1500);
+    }
   }
   async onAddCarrier() {
     this.hasError = false;

@@ -2,99 +2,122 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pr-0 pl-0 pt-0">
       <header class="page-header pr19 pl7">
-        <div class="row">
-        <div class="col-lg-12">
-          <h4 class="font-weight-bold text-dark">General Ledger Report</h4>
+        <div class="row" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2 pr-0">
+            <div class="input-group input-group-md mb-3">
+              <input type="text" class="form-control" placeholder="Search by account name" [(ngModel)]="filter.actName"
+                name="actName"> </div>
+          </div>
+          <div class="col-lg-2 col-md-2 pr-0">
+            <ng-select class="form-control pull-left form-control-sm mb-0" placeholder="Search by account type"
+              [(ngModel)]="filter.actType" name="actType">
+              <ng-option value="H">Group Heading - H</ng-option>
+              <ng-option value="A">Subgroup Account - A</ng-option>
+              <ng-option value="S">Subgroup Total - S</ng-option>
+              <ng-option value="G">Group Account - G</ng-option>
+              <ng-option value="T">Group Total - T</ng-option>
+            </ng-select>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <button type="button" class="btn btn-sm btn-success" [disabled]="disableSearch"
+              (click)="searchAccounts()">Search</button>
+            <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="disableSearch"
+              (click)="resetFilter()">Reset</button>
+          </div>
+          <div class="col-md-6 col-lg-6 text-right pr-1">
+          </div>
         </div>
-      </div>
       </header>
 
-     
-     <section class="m-2">
-      <div class="row mb-3">
-       <div class="col-lg-12">
-        <div class="bg-white p-3 text-dark">
-         <div class="form-group row">
-            <div class="col-lg-12">
-              <table class="table table-bordered table-hover table-striped simple-table">
-                <thead>
-                  <tr class="bgcol2">
-                    <th class="text-2">Account Number</th>
-                    <th class="text-2">Account Name</th>
-                    <th class="text-2">Account Type</th>
-                    <th class="text-2">Opening Balance</th>
-                    <th class="text-2">Total Debits</th>
-                    <th class="text-2">Total Credits</th>
-                    <th class="text-2">Closing Balance</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="cursor:pointer;" routerLink="/accounts/reports/general-ledger/detail">
 
-                    <td>1100</td>
-                    <td>Accounts Receivable</td>
-                    <td>Assets</td>
-                    <td>190.00 Dr</td>
-                    <td></td>
-                    <td></td>
-                    <td>190.00 Dr</td>
-                  </tr>
-                  <tr style="cursor:pointer;" routerLink="/accounts/reports/general-ledger/detail">
-
-                    <td>1000</td>
-                    <td>Cash On Hand</td>
-                    <td>Bank</td>
-                    <td>0.00 Cr</td>
-                    <td>700.00</td>
-                    <td>223.00</td>
-                    <td>447.00 Dr</td>
-                  </tr>
-                  <tr style="cursor:pointer;" routerLink="/accounts/reports/general-ledger/detail">
-
-                    <td>1050</td>
-                    <td>Chequing</td>
-                    <td>Bank</td>
-                    <td>0.00 Cr</td>
-                    <td>123.00</td>
-                    <td></td>
-                    <td>123.00 Dr</td>
-                  </tr>
-                  <tr style="cursor:pointer;" routerLink="/accounts/reports/general-ledger/detail">
-
-                    <td>1300</td>
-                    <td>Prepaid Expenses</td>
-                    <td>Assets</td>
-                    <td>0.00Cr</td>
-                    <td>300.00</td>
-                    <td>250.00</td>
-                    <td>50.00 Dr</td>
-                  </tr>
-                  <tr style="cursor:pointer;" routerLink="/accounts/reports/general-ledger/detail">
-
-                    <td>5000</td>
-                    <td>Cost of Goods Sold</td>
-                    <td>Expenses</td>
-                    <td>0.00 Cr</td>
-                    <td>100.00</td>
-                    <td></td>
-                    <td>100.00 Dr</td>
-                  </tr>
-
-
-                </tbody>
-              </table>
+      <section class="m-2">
+        <div class="row mb-3">
+          <div class="col-lg-12">
+            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+              (scrolled)="onScroll()">
+              <div class="bg-white p-3 text-dark">
+                <div class="form-group row">
+                  <div class="col-lg-12">
+                    <table class="table table-bordered table-hover table-striped mb-0 simple-table">
+                      <thead>
+                        <tr class="bgcol2">
+                          <th class="text-2">Account Name</th>
+                          <th class="text-2">Account Number</th>
+                          <th class="text-2">Account Type</th>
+                          <th class="text-2">Opening Balance CAD</th>
+                          <th class="text-2">Opening Balance USD</th>
+                          <th class="text-2">Total Debit CAD</th>
+                          <th class="text-2">Total Credit CAD</th>
+                          <th class="text-2">Total Debit USD</th>
+                          <th class="text-2">Total Credit USD</th>
+                          <th class="text-2">Closing Balance CAD</th>
+                          <th class="text-2">Closing Balance USD</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="accounts.length === 0" class="text-center">
+                          <td colspan="12">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let ac of accounts">
+                          <td class="cursorpoint">
+                            <span *ngIf="ac.first === 'cpp' || ac.first === 'ei'">{{ac.first | uppercase}}</span>
+                            <span
+                              *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'">{{ac.first | titlecase}}</span>&nbsp;{{ac.last | titlecase}}
+                          </td>
+                          <td class="cursorpoint">{{ac.actNo}}
+                          </td>
+                          <td class="cursorpoint">
+                            <span *ngIf="ac.actType === 'H'">Group Heading - H</span>
+                            <span *ngIf="ac.actType === 'A'">Subgroup Account - A</span>
+                            <span *ngIf="ac.actType === 'S'">Subgroup Total - S</span>
+                            <span *ngIf="ac.actType === 'G'">Group Account - G</span>
+                            <span *ngIf="ac.actType === 'T'">Group Total - T</span>
+                          </td>                        
+                          <td class="cursorpoint">
+                            {{ac.opnBalCAD  | number : '1.2-2' }}&nbsp;
+                            <span *ngIf="ac.opnBalTypeCAD === 'credit'">Cr</span>
+                            <span *ngIf="ac.opnBalTypeCAD === 'debit'">Dr</span></td>
+                          <td class="cursorpoint">
+                            {{ac.opnBalUSD  | number : '1.2-2' }}&nbsp;
+                            <span *ngIf="ac.opnBalTypeUSD === 'credit'">Cr</span>
+                            <span *ngIf="ac.opnBalTypeUSD === 'debit'">Dr</span></td>
+                          <td class="cursorpoint">
+                            <span *ngIf="ac.totalDebitCAD">{{ac.totalDebitCAD  | number : '1.2-2' }}</span>
+                          </td>
+                          <td class="cursorpoint">
+                            <span *ngIf="ac.totalCreditCAD">{{ac.totalCreditCAD  | number : '1.2-2' }}</span>
+                          </td>
+                          <td class="cursorpoint">
+                            <span *ngIf="ac.totalDebitUSD">{{ac.totalDebitUSD  | number : '1.2-2' }}</span>                      
+                          </td>
+                          <td class="cursorpoint">
+                         
+                            <span *ngIf="ac.totalCreditUSD">{{ac.totalCreditUSD  | number : '1.2-2' }}</span>
+                          </td>
+                          <td>
+                            <span *ngIf="ac.closingAmtCAD !== 0">
+                              {{ac.closingAmtCAD}}&nbsp;{{ac.closingAmtTypeCAD}}
+                            </span>
+                          </td>
+                          <td>
+                            <span
+                              *ngIf="ac.closingAmtUSD !== 0">{{ac.closingAmtUSD}}&nbsp;{{ac.closingAmtTypeUSD}}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && accounts.length !== 0">
+                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                      More..</button>
+                  </div>
+                </div>
+              </div>
             </div>
-         </div>
+
+          </div>
         </div>
-       </div>
-      </div>
-      
-  
-      
-   </section>
-
-
-     
+      </section>
     </section>
   </div>
-</section>>
+</section>
