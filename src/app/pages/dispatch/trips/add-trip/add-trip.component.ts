@@ -7,6 +7,7 @@ import { from, Subject, throwError } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
+import Fuse from 'fuse.js'
 import {
   debounceTime,
   distinctUntilChanged,
@@ -33,6 +34,7 @@ export class AddTripComponent implements OnInit {
   @ViewChild("assignConfirmationModal", { static: true })
   assignConfirmationModal: TemplateRef<any>;
 
+  activeTab = ""
   newCoords = [];
   public searchResults: any;
   public searchResults1: any;
@@ -229,11 +231,24 @@ export class AddTripComponent implements OnInit {
     assetIdentification: "",
     isTemp: true,
   };
+  orderSearch = ''
+  orderRecords = []
+  fuse: any;
+  fuseResults: any[] = [];
+
 
   tripModalRef: any;
   manualAssetRef: any;
   assignConfirmModal: any;
+  options = {
 
+    keys: [
+      "orderNumber",
+      "customer",
+      "pickupLocations",
+      "deliveryLocations"
+    ]
+  };
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -247,6 +262,7 @@ export class AddTripComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    // this.orderFTLInit()
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
@@ -272,6 +288,23 @@ export class AddTripComponent implements OnInit {
     $(document).ready(() => {
       // this.form = $('#form_').validate();
     });
+  }
+
+  orderFTLInit() {
+    this.orderSearch = ''
+    this.activeTab = "FTL"
+    this.ftlOrders = this.ftlOrders.sort((a, b) => a.orderNumber - b.orderNumber)
+    this.ltlOrders = this.ltlOrders.sort((a, b) => a.orderNumber - b.orderNumber)
+    this.orderRecords = this.ftlOrders
+  }
+
+
+  searchOrders(evt: KeyboardEvent): void {
+
+    this.fuse = new Fuse(this.orderRecords, this.options);
+    const target = evt.target as HTMLInputElement;
+    this.fuseResults = this.fuse.search(target.value);
+    // console.log("Result", this.fuseResults)
   }
 
   async fetchDriverStatus(driverID: any) {
@@ -519,6 +552,7 @@ export class AddTripComponent implements OnInit {
   }
 
   showMOdal() {
+    this.orderFTLInit();
     $("#orderModal").modal("show");
   }
 
@@ -1433,6 +1467,18 @@ export class AddTripComponent implements OnInit {
   }
 
   changeOrderTab(tabType) {
+    this.orderSearch = ''
+    this.fuseResults = []
+    if (tabType == "LTL") {
+      this.orderRecords = this.ltlOrders
+
+      this.activeTab = "LTL";
+    }
+    else if (tabType = "FTL") {
+      this.orderRecords = this.ftlOrders
+      this.activeTab = "FTL"
+    }
+
     // this.tripData.orderType = tabType;
   }
 
@@ -1457,6 +1503,7 @@ export class AddTripComponent implements OnInit {
 
       i.pickupLocations = "";
       i.deliveryLocations = "";
+      i.customer = this.customersObjects[i.customerID]
       if (i.shippersReceiversInfo) {
         let ind = 1;
         let ind2 = 1;
