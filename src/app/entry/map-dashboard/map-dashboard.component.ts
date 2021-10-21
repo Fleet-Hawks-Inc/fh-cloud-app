@@ -29,6 +29,8 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   environment = environment.isFeatureEnabled;
   title = "Map Dashboard";
   visible = false;
+  width = "100%";
+  height = "100%";
   infoDetail = "No data";
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -76,7 +78,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
               time: new Date(value.timeCreated),
               speed: speedVal.toFixed(2),
               driverId: key,
-              altitude: value.altitude
+              altitude: parseInt(value.altitude).toFixed(2)
             }
           });
         }
@@ -99,7 +101,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   prepareInfoTemplate(data: any) {
     return `<div style='padding:1px'><b> Driver: ${data.userId}</b><br/>
-     Speed: ${data.speed} KM/H | Altitude:${data.altitude} <br/> Time : ${data.time}<br/>
+     Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> Time : ${data.time}<br/>
     <a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'>  View details</a> </div>`;
   }
 
