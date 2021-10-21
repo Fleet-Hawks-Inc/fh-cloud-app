@@ -59,7 +59,7 @@
                           <td colspan="12">{{ dataMessage }}</td>
                         </tr>
                         <tr *ngFor="let ac of accounts">
-                          <td class="cursorpoint">
+                          <td class="cursorpoint" routerLink="/accounts/reports/general-ledger/detail/{{ac.actID}}">
                             <span *ngIf="ac.first === 'cpp' || ac.first === 'ei'">{{ac.first | uppercase}}</span>
                             <span
                               *ngIf="ac.first !== 'cpp' && ac.first !== 'ei'">{{ac.first | titlecase}}</span>&nbsp;{{ac.last | titlecase}}
@@ -72,7 +72,7 @@
                             <span *ngIf="ac.actType === 'S'">Subgroup Total - S</span>
                             <span *ngIf="ac.actType === 'G'">Group Account - G</span>
                             <span *ngIf="ac.actType === 'T'">Group Total - T</span>
-                          </td>                        
+                          </td>
                           <td class="cursorpoint">
                             {{ac.opnBalCAD  | number : '1.2-2' }}&nbsp;
                             <span *ngIf="ac.opnBalTypeCAD === 'credit'">Cr</span>
@@ -88,10 +88,10 @@
                             <span *ngIf="ac.totalCreditCAD">{{ac.totalCreditCAD  | number : '1.2-2' }}</span>
                           </td>
                           <td class="cursorpoint">
-                            <span *ngIf="ac.totalDebitUSD">{{ac.totalDebitUSD  | number : '1.2-2' }}</span>                      
+                            <span *ngIf="ac.totalDebitUSD">{{ac.totalDebitUSD  | number : '1.2-2' }}</span>
                           </td>
                           <td class="cursorpoint">
-                         
+
                             <span *ngIf="ac.totalCreditUSD">{{ac.totalCreditUSD  | number : '1.2-2' }}</span>
                           </td>
                           <td>
