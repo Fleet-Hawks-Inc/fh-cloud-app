@@ -17,7 +17,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
   submitDisabled = false;
   total = 0;
   creditData: any = {
-    vCrDate: moment().format('YYYY-MM-DD'),
+    txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
     crRef: '',
     purOrder: '',
@@ -170,7 +170,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
       this.creditData.purOrder = result.purOrder;
       this.creditData.currency = result.currency;
       this.creditData.crRef = result.crRef;
-      this.creditData.vCrDate = result.vCrDate;
+      this.creditData.txnDate = result.txnDate;
       this.creditData.vCrNo = result.vCrNo;
       this.creditData.vendorID = result.vendorID;
       this.creditData.crDetails = result.crDetails;

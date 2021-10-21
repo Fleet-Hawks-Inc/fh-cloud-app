@@ -19,7 +19,7 @@ export class DetailreportComponent implements OnInit {
   deletedCount = 0
   canceledCount = 0
   tonuCount = 0
-  records = []
+  records: any = []
   dataMessage = ''
   customers = {}
   lastItemSK = ''
@@ -28,21 +28,57 @@ export class DetailreportComponent implements OnInit {
   years = []
   selectedMonth = ''
   selectedYear = ''
+  vehicles = {}
+  assets = {}
+  drivers = {}
   ngOnInit() {
     this.months = moment.months()
     this.years.push(moment().year())
     this.years.push(moment().subtract(1, 'year').year())
     this.fetchCustomers();
+    this.fetchVehicles();
+    this.fetchAssets();
+    this.fetchDrivers();
     this.fetchDetailReport();
     this.fetchOrderReport();
   }
+
+  async fetchVehicles() {
+    const result = await this.apiService.getData('vehicles/get/list').toPromise();
+    this.vehicles = result
+
+  }
+  async fetchAssets() {
+    const result = await this.apiService.getData('assets/get/list').toPromise();
+    this.assets = result
+  }
+  async fetchDrivers() {
+    const result = await this.apiService.getData('drivers/get/list').toPromise()
+    this.drivers = result
+  }
   async search() {
+    this.totalOrdersCount = 0
+    this.deletedCount = 0
+    this.delieverdCount = 0
+    this.dispatchedCount = 0
+    this.canceledCount = 0
+    this.tonuCount = 0
     if (this.selectedYear && this.selectedMonth) {
       this.lastItemSK = 'end';
       this.records = []
       this.dataMessage = Constant.FETCHING_DATA
       const result = await this.apiService.getData(`orders/report/search?month=${this.selectedMonth}&year=${this.selectedYear}`).toPromise();
       if (result.Items.length > 0) {
+        this.totalOrdersCount = result.Count
+        result.Items.forEach(element => {
+
+          if (element.isDeleted == 1) this.deletedCount++
+          if (element.orderStatus == "delivered") this.delieverdCount++
+          if (element.orderStatus == "dispatched") this.dispatchedCount++
+          if (element.orderStatus == "canceled") this.canceledCount++
+          if (element.orderStatus == "tonu") this.tonuCount++
+
+        });
         this.records = result.Items
       }
       else {
@@ -60,6 +96,7 @@ export class DetailreportComponent implements OnInit {
     this.selectedYear = ''
     this.lastItemSK = '';
     this.records = []
+    this.fetchDetailReport();
     this.fetchOrderReport();
   }
   async fetchOrderReport(refresh?: boolean) {
@@ -86,6 +123,7 @@ export class DetailreportComponent implements OnInit {
         }
         this.records = this.records.concat(result.Items)
 
+
         this.loaded = true;
       }
     }
@@ -104,6 +142,11 @@ export class DetailreportComponent implements OnInit {
   }
 
   async fetchDetailReport() {
+    this.totalOrdersCount = 0;
+    this.delieverdCount = 0;
+    this.dispatchedCount = 0;
+    this.canceledCount = 0
+    this.tonuCount = 0
     const result = await this.apiService.getData('orders/report/detail').toPromise()
     this.totalOrdersCount = result.Count
     if (this.totalOrdersCount == 0) this.dataMessage = Constant.NO_RECORDS_FOUND
@@ -126,39 +169,68 @@ export class DetailreportComponent implements OnInit {
       this.records.forEach(element => {
         let obj = {}
         obj["Order#"] = element.orderNumber
+        obj["Trip#"] = element.tripData && element.tripData.tripNo ? element.tripData.tripNo : ''
         obj["Type"] = element.orderMode
         obj["DateTime"] = element.createdDate + " " + element.createdTime
         obj["Cutomer"] = this.customers[element.customerID]
         obj["Confirmation#"] = element.cusConfirmation
-        obj["Customer PO#"] = element.cusPOs.length > 0 ? element.cusPOs.join(' ') : ' '
+        obj["Customer PO#"] = element.cusPOs && element.cusPOs.length > 0 ? element.cusPOs.join('/') : ' '
+        obj["Drivers"] = ''
+        obj["Vehicles"] = ''
+        obj["Assets"] = ''
+        if (element.tripData && element.tripData.driverIDs && element.tripData.driverIDs.length > 0) {
+
+          element.tripData.driverIDs.forEach(element => {
+
+            obj["Drivers"] += this.drivers[element] + ";"
+          });
+        }
+        if (element.tripData && element.tripData.vehicleIDs && element.tripData.vehicleIDs.length > 0) {
+
+          element.tripData.vehicleIDs.forEach(element => {
+            obj["Vehicles"] += this.vehicles[element] + ";"
+          });
+        }
+        if (element.tripData && element.tripData.assetIDs && element.tripData.assetIDs.length > 0) {
+
+          element.tripData.assetIDs.forEach(element => {
+            obj["Assets"] += this.assets[element] + ";"
+          });
+        }
         element.shippersReceiversInfo.forEach(item => {
           item.shippers.forEach(shipper => {
             obj["Pickup"] = this.customers[shipper.shipperID]
-            shipper.pickupPoint.forEach(pickup => {
-              obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
-                pickup.address.stateName + " " + pickup.address.countryCode
-                + " " + pickup.address.zipCode + " "
-              if (pickup.commodity.length > 0) {
-                pickup.commodity.forEach(element => {
-                  obj["Pickup"] += "PU# " + element.pu
-                });
-              }
-            });
+            if (shipper.pickupPoint.length > 0) {
+              shipper.pickupPoint.forEach(pickup => {
+                pickup.address.address = pickup.address.address.split(',').join(' ')
+                obj["Pickup"] += " " + pickup.address.address + " " + pickup.address.cityName + " " +
+                  pickup.address.stateName + " " + pickup.address.countryCode
+                  + " " + pickup.address.zipCode + " "
+                if (pickup.commodity.length > 0) {
+                  pickup.commodity.forEach(element => {
+                    obj["Pickup"] += "PU# " + element.pu
+                  });
+                }
+              });
+            }
           });
 
           item.receivers.forEach(receiver => {
             obj["DropOff"] = this.customers[receiver.receiverID]
-            receiver.dropPoint.forEach(drop => {
-              obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
-                drop.address.stateName + " " + drop.address.countryCode
-                + " " + drop.address.zipCode + " "
-              if (drop.commodity.length > 0) {
-                drop.commodity.forEach(element => {
-                  obj["DropOff"] += "DEL# " + element.del
+            if (receiver.dropPoint.length > 0) {
+              receiver.dropPoint.forEach(drop => {
+                drop.address.address = drop.address.address.split(',').join(' ')
+                obj["DropOff"] += " " + drop.address.address + " " + drop.address.cityName + " " +
+                  drop.address.stateName + " " + drop.address.countryCode
+                  + " " + drop.address.zipCode + " "
+                if (drop.commodity.length > 0) {
+                  drop.commodity.forEach(element => {
+                    obj["DropOff"] += "DEL# " + element.del
 
-                });
-              }
-            });
+                  });
+                }
+              });
+            }
           });
         });
         obj["Miles"] = element.milesInfo.totalMiles
