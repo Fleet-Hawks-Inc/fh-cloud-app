@@ -17,18 +17,18 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     first: '',
     last: '',
     actName: '',
+    actClassID: '',
     actType: '',
     actNo: 0,
     actDesc: '',
     actDash: false,
     opnBalCAD: 0,
     opnBalTypeCAD: 'debit',
-    actDateCAD: '',
+    actDate: '',
     closingAmtCAD: 0,
     transactionLogCAD: [],
     opnBalUSD: 0,
     opnBalTypeUSD: 'debit',
-    actDateUSD: '',
     closingAmtUSD: 0,
     transactionLogUSD: [],
   };
@@ -37,6 +37,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
+  accountsClassObjects = {};
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   filter = {
     startDate: null,
@@ -44,16 +45,22 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   };
   merged = {};
   constructor(private accountService: AccountService,
-              private toaster: ToastrService,
-              private route: ActivatedRoute,
-              private apiService: ApiService) { }
+    private toaster: ToastrService,
+    private route: ActivatedRoute,
+    private apiService: ApiService) { }
 
   ngOnInit() {
     this.getEntityList();
     this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       this.fetchAccount();
+      this.fetchAccountClassByIDs();
     }
+  }
+  fetchAccountClassByIDs() {
+    this.accountService.getData('chartAc/get/accountClass/list/all').subscribe((result: any) => {
+      this.accountsClassObjects = result;
+    });
   }
   getEntityList() {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
@@ -63,10 +70,10 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
           this.drivers = result1;
           if (result1) {
             this.accountService.getData(`income/categories/list`)
-            .subscribe((res: any) => {
-              this.categories = res;
-              this.merged = {...this.customersObject, ...this.drivers, ...this.categories};
-            });
+              .subscribe((res: any) => {
+                this.categories = res;
+                this.merged = { ...this.customersObject, ...this.drivers, ...this.categories };
+              });
           }
         });
       }
@@ -75,7 +82,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   fetchAccount() {
     this.accountService.getData(`chartAc/account/${this.actID}`).subscribe((res) => {
       this.account = res;
-
       this.account[`first`] = this.account.actName.substring(0, this.account.actName.indexOf(' '));
       this.account[`last`] = this.account.actName.substring(this.account.actName.indexOf(' ') + 1, this.account.actName.length);
       for (const element of this.account.transactionLogCAD) {
@@ -140,16 +146,16 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
           actName: '',
           actType: '',
           actNo: 0,
+          actClassID: '',
           actDash: false,
           actDesc: '',
           opnBalCAD: 0,
           opnBalTypeCAD: 'debit',
-          actDateCAD: '',
+          actDate: '',
           closingAmtCAD: 0,
           transactionLogCAD: [],
           opnBalUSD: 0,
           opnBalTypeUSD: 'debit',
-          actDateUSD: '',
           closingAmtUSD: 0,
           transactionLogUSD: [],
         };
