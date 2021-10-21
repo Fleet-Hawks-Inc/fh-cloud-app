@@ -451,7 +451,7 @@ export class VehicleListComponent implements OnInit {
     this.vehiclePrev = true;
     this.vehicleDraw += 1;
     this.initDataTable();
-    // this.getStartandEndVal();
+   
   }
 
   // prev button func
@@ -461,7 +461,7 @@ export class VehicleListComponent implements OnInit {
     this.vehicleDraw -= 1;
     this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
     this.initDataTable();
-    // this.getStartandEndVal();
+    
   }
 
   resetCountResult() {
