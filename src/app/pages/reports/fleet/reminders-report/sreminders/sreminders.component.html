@@ -20,16 +20,15 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Search task">
-                   
-                        <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}} 
-                        </ng-option>
-                     </optgroup>
+                     <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
+                     </ng-option>
+                     <!-- </optgroup> -->
                   </ng-select>
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
-                     <ng-select [(ngModel)]="serviceTask" name="serviceTask" style="width: 100%;"
+                     <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
                         placeholder="Select Reminder Status">
                         <optgroup label="Select Reminder Status">
                            <ng-option value="all">ALL</ng-option>
@@ -52,8 +51,7 @@
                         aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">CSV</a>
-                        <a class="dropdown-item text-1" href="">PDF</a>
+                        <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
                      </div>
                   </div>
                </div>
@@ -102,39 +100,61 @@
                </div>
                <div class="col">
                   <div class="card">
-                     <div class="card-body bor-radius0px">
-                        <section class="reports_div">
-                           <table class="table reports_small_div">
-                              <thead>
-                                 <tr class="back-color-gray">
-                                    <th>Vehicle</th>
-                                    <th>Service Task</th>
-                                    <th>Next Due</th>
-                                    <th>Subscribers</th>
-                                    <th>Renewal Status</th>
+                     <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                           [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                           <div class="card-body bor-radius0px">
+                              <section class="reports_div">
+                                 <table class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                       <tr class="back-color-gray">
+                                          <th>Vehicle</th>
+                                          <th>Service Task</th>
+                                          <th>Next Due</th>
+                                          <th>Subscribers</th>
+                                          <th>Renewal Status</th>
 
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 
-                                 <tr *ngFor="let item of allData">
-                                    <td>{{vehiclesList[item.entityID]}}</td>
-                                    <td>{{tasksData[item.tasks.taskID]}}</td>
-                                    <td>{{item.createdDate}}</td>
-                                    <td>{{item.subscribers}}</td>
-                                    <td>{{item.status}} </td>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngIf="allData.length == 0" class="text-center">
+                                          <td colspan="6">{{dataMessage}}</td>
+                                       </tr>
+                                       <tr *ngFor="let item of allData">
+                                          <td>{{vehiclesList[item.entityID]}}</td>
+                                          <td>{{tasksData[item.tasks.taskID]}}</td>
+                                          <td>{{item.createdDate}}</td>
+                                          <td>{{item.subscribers}}</td>
+                                          <!-- <td>{{item.status}} </td> -->
+                                          <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                                *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
+                                             <span class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                                *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
+                                             <span class="font-weight-bold"
+                                                title="Service Task">{{tasksData[item.tasks.taskID]}}</span>
+                                             <br>
+                                             <span class="font-size-12">
+                                                <span *ngIf="item.tasks.remindByUnit == 'time'">Every
+                                                   {{item.tasks.time}}
+                                                   {{item.tasks.timeUnit}}(s) </span>
+                                                <span *ngIf="item.tasks.remindByUnit == 'odometer'">Every
+                                                   {{item.tasks.odometer}} miles</span>
+                                             </span>
+                                          </td>
+                                       </tr>
 
-
-                                 </tr>
-
-                              </tbody>
-                           </table>
-                        </section>
+                                    </tbody>
+                                 </table>
+                              </section>
+                           </div>
+                           <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                              <button type="button" class="btn btn-success btn-sm text-light"
+                                 (click)="fetchVehiclesdata()">Load
+                                 More..</button>
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
+
             </div>
-         </div>
-      </section>
-   </div>
-</section>

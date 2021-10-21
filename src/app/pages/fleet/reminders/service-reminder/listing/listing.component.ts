@@ -53,7 +53,7 @@ export class ListingComponent implements OnInit {
   servicePrevEvauatedKeys = [''];
   serviceStartPoint = 1;
   serviceEndPoint = this.pageLength;
-  allVehicles:any = [];
+  allVehicles: any = [];
   users = [];
 
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
@@ -113,18 +113,18 @@ export class ListingComponent implements OnInit {
         type: eventData.type
       }
       this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
-          this.remindersData = [];
-          this.serviceDraw = 0;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastEvaluatedKey = '';
-          this.getRemindersCount();
-          this.toastr.success('Service Reminder Deleted Successfully!');
-        });
+        this.remindersData = [];
+        this.serviceDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.getRemindersCount();
+        this.toastr.success('Service Reminder Deleted Successfully!');
+      });
     }
   }
 
   getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask+'&status='+this.filterStatus + '&reminderType=service').subscribe({
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -141,7 +141,7 @@ export class ListingComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask+'&status='+this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
 
         if (result.Items.length == 0) {
@@ -157,7 +157,7 @@ export class ListingComponent implements OnInit {
         }
 
         if (result[`LastEvaluatedKey`] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
 
           this.serviceNext = false;
           // for prev button
@@ -172,7 +172,7 @@ export class ListingComponent implements OnInit {
           this.serviceEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.serviceEndPoint) {
+        if (this.totalRecords < this.serviceEndPoint) {
           this.serviceEndPoint = this.totalRecords;
         }
 
