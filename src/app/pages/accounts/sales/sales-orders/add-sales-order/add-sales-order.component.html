@@ -1,1 +1,1088 @@
-<p>add-sales-order works!</p>
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pl-0 pr-0 pt-0">
+      <header class="page-header">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+            {{ pageTitle }} Sales Order
+          </div>
+          <div class="col-md-8 col-lg-8 text-right pr-4">
+            <a
+              routerLink="/accounts/sales/orders/list"
+              class="btn btn-default btn-sm"
+              ><i class="fas fa-list"></i> All Sales Orders</a
+            >
+          </div>
+        </div>
+      </header>
+      <section class="card mt-0 mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col pr-0">
+                    <div class="card-body text-dark">
+                      <form
+                        class="form-horizontal form-bordered"
+                        method="post"
+                        #saleForm="ngForm"
+                        id="saleForm"
+                      >
+                        <div class="row">
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <!--
+                                        <div class="col-lg-5">
+                                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Sales Order#</label>
+                                          <input type="text" class="form-control">
+                                        </div>
+                                        -->
+                              <div class="col-lg-10">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Sales Order Date</label
+                                >
+                                <input
+                                  type="text"
+                                  [(ngModel)]="salesData.txnDate"
+                                  name="txnDate"
+                                  class="form-control"
+                                  (click)="tDate.toggle()"
+                                  ngbDatepicker
+                                  #tDate="ngbDatepicker"
+                                  #sOrderDate="ngModel"
+                                  required
+                                />
+                                <div
+                                  *ngIf="
+                                    sOrderDate.invalid &&
+                                    (sOrderDate.dirty || sOrderDate.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="sOrderDate.errors.required">
+                                    Sales Order Date is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row pt-2">
+                              <div class="col-lg-10">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Customer</label
+                                >
+
+                                <ng-select
+                                  [clearable]="false"
+                                  (change)="selectedCustomer($event)"
+                                  [(ngModel)]="salesData.cusInfo.customerID"
+                                  name="customerID"
+                                  class="form-control text-capitalize"
+                                  placeholder="Select customer"
+                                  #cusID="ngModel"
+                                  required
+                                >
+                                  <ng-option
+                                    *ngFor="let customer of customers"
+                                    value="{{ customer.contactID }}"
+                                  >
+                                    {{ customer.companyName }}
+                                  </ng-option>
+                                </ng-select>
+                                <div
+                                  *ngIf="
+                                    cusID.invalid &&
+                                    (cusID.dirty || cusID.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="cusID.errors.required">
+                                    Customer is required.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-2 mar-top-37 p-0">
+                                <a
+                                  class="btn btn-success btn-sm text-light"
+                                  (click)="openModal('form')"
+                                  ><i class="fas fa-plus"></i>
+                                </a>
+                                <a
+                                  data-toggle="modal"
+                                  (click)="fetchCustomer()"
+                                  href="javascript:;"
+                                  class="
+                                    modal-with-form
+                                    btn btn-sm btn-success
+                                    ml-2
+                                  "
+                                >
+                                  <em class="fas fa-sync"></em>
+                                </a>
+                              </div>
+                              <div class="col-lg-10 mt-2">
+                                <div
+                                  *ngIf="notOfficeAddress"
+                                  class="rounded p-2 mt-2"
+                                  style="background-color: #e1e2e3"
+                                >
+                                  There is no address of this customer
+                                </div>
+
+                                <div
+                                  class="col-lg-12 mt-0 p-0"
+                                  *ngIf="
+                                    customerSelected?.length > 0 &&
+                                    !notOfficeAddress
+                                  "
+                                >
+                                  <div
+                                    class=""
+                                    *ngIf="salesData.cusInfo.customerID"
+                                    style="border: 0.4px solid #e1e2e3"
+                                  >
+                                    <div class="row pl-3 pr-3">
+                                      <div
+                                        class="col-12"
+                                        style="background-color: #e1e2e3"
+                                      >
+                                        <h5 class="font-weight-bold">
+                                          Details
+                                        </h5>
+                                      </div>
+                                    </div>
+                                    <div class="row pl-3 pr-3">
+                                      <div class="col-lg-12 pr-0">
+                                        <div
+                                          style="
+                                            max-height: 200px;
+                                            overflow-y: auto;
+                                            overflow-x: hidden;
+                                          "
+                                          *ngFor="let item of customerSelected"
+                                        >
+                                          <div class="row">
+                                            <div class="col-lg-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >Email:</span
+                                                >
+                                                {{
+                                                  item.workEmail
+                                                    ? item.workEmail
+                                                    : "-"
+                                                }}</label
+                                              >
+                                            </div>
+                                            <div class="col-lg-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >Phone:</span
+                                                >
+                                                {{
+                                                  item.workPhone
+                                                    ? item.workPhone
+                                                    : "-"
+                                                }}</label
+                                              >
+                                            </div>
+                                          </div>
+
+                                          <div
+                                            class="
+                                              row
+                                              border-top
+                                              mb-1
+                                              pt-2
+                                              pb-2
+                                              position-relative
+                                            "
+                                            [ngClass]="{
+                                              'pl-4': item.adrs.length > 1
+                                            }"
+                                            *ngFor="
+                                              let address of item.adrs;
+                                              let i = index
+                                            "
+                                          >
+                                            <div class="col-12">
+                                              <label
+                                                class="control-label"
+                                                *ngIf="address.manual"
+                                                ><span class="font-weight-bold"
+                                                  >Address:</span
+                                                >
+                                                {{ address.add1 | titlecase }}
+                                                {{
+                                                  address.add2 | titlecase
+                                                }}</label
+                                              >
+                                              <label
+                                                class="control-label"
+                                                *ngIf="!address.manual"
+                                                ><span class="font-weight-bold"
+                                                  >Address:</span
+                                                >
+                                                {{
+                                                  address.userLoc | titlecase
+                                                }}</label
+                                              >
+                                            </div>
+
+                                            <div class="col-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >City:</span
+                                                >
+                                                {{
+                                                  address.ctyName | titlecase
+                                                }}</label
+                                              >
+                                            </div>
+                                            <div class="col-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >Province/State:</span
+                                                >
+                                                {{
+                                                  address.sName | titlecase
+                                                }}</label
+                                              >
+                                            </div>
+                                            <div class="col-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >Country:</span
+                                                >
+                                                {{
+                                                  address.cName | titlecase
+                                                }}</label
+                                              >
+                                            </div>
+                                            <div class="col-6">
+                                              <label class="control-label"
+                                                ><span class="font-weight-bold"
+                                                  >Type:</span
+                                                >
+                                                {{
+                                                  address.aType | titlecase
+                                                }}</label
+                                              >
+                                            </div>
+
+                                            <input
+                                              *ngIf="item.adrs?.length > 1"
+                                              class="address-icon"
+                                              type="radio"
+                                              name="select"
+                                              (change)="
+                                                getAddressID(
+                                                  $event.target.checked,
+                                                  i,
+                                                  address.addressID
+                                                )
+                                              "
+                                              [value]="address.addressID"
+                                              [checked]="address.isChecked"
+                                            />
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-5 offset-lg-1">
+                            <div class="row">
+                              <div class="col-lg-10">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                >
+                                  Reference#</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  [(ngModel)]="salesData.sRef"
+                                  name="sRef"
+                                  placeholder="Enter Unique Reference Number"
+                                  #ref="ngModel"
+                                  required
+                                />
+                                <div
+                                  *ngIf="
+                                    ref.invalid && (ref.dirty || ref.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="ref.errors.required">
+                                    Reference# is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row pt-2">
+                              <div class="col-lg-5">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Shipment Date</label
+                                >
+                                <input
+                                  type="text"
+                                  [(ngModel)]="salesData.shipDate"
+                                  name="shipDate"
+                                  class="form-control"
+                                  (click)="sDate.toggle()"
+                                  ngbDatepicker
+                                  #sDate="ngbDatepicker"
+                                  class="form-control"
+                                  #shipD="ngModel"
+                                  required
+                                />
+                                <div
+                                  *ngIf="
+                                    shipD.invalid &&
+                                    (shipD.dirty || shipD.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="shipD.errors.required">
+                                    Shipment Date is required.
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-lg-5">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                >
+                                  Salesperson</label
+                                >
+                                <input
+                                  type="text"
+                                  disabled
+                                  [(ngModel)]="salesData.salePerson"
+                                  name="salePerson"
+                                  class="form-control"
+                                />
+                              </div>
+
+                              <div class="col-lg-10">
+                                <label
+                                  class="
+                                    control-label
+                                    font-weight-bold font-bold
+                                    text-lg-right
+                                    pt-2
+                                  "
+                                  >Payment Currency</label
+                                >
+                                <ng-select
+                                  [clearable]="false"
+                                  [(ngModel)]="salesData.currency"
+                                  name="currency"
+                                  placeholder="Select currency"
+                                  #payCur="ngModel"
+                                  required
+                                >
+                                  <ng-option value="CAD">CAD</ng-option>
+                                  <ng-option value="USD">USD</ng-option>
+                                </ng-select>
+                                <div
+                                  *ngIf="
+                                    payCur.invalid &&
+                                    (payCur.dirty || payCur.touched)
+                                  "
+                                  class="text-danger"
+                                >
+                                  <div *ngIf="payCur.errors.required">
+                                    Payment Currency is required.
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!--
+                                     <div class="row pt-2">
+                                       <div class="col-lg-10">
+                                         <label class="control-label font-weight-bold font-bold text-lg-right pt-2"> Delivery Method</label>
+                                         <input type="text" class="form-control" >
+                                       </div>
+                                     </div>
+                                     -->
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-12">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <h4>Sales Order Details</h4>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-10 offset-lg-1">
+                            <div class="row pt-2">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th class="border" style="width: 250px">
+                                      Commodity
+                                    </th>
+                                    <th class="border" style="width: 250px">
+                                      Description
+                                    </th>
+                                    <th class="border" style="width: 250px">
+                                      Quantity
+                                    </th>
+                                    <th class="border" style="width: 250px">
+                                      Rate
+                                    </th>
+                                    <th class="border" style="width: 180px">
+                                      Amount
+                                    </th>
+                                    <th class="border" style="width: 300px">
+                                      Account
+                                    </th>
+                                    <th class="border" width="5%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr
+                                    *ngFor="
+                                      let dt of salesData.sOrderDetails;
+                                      let d = index
+                                    "
+                                  >
+                                    <td class="border">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Enter commodity"
+                                        [(ngModel)]="dt.commodity"
+                                        name="commodity{{ d }}"
+                                      />
+                                    </td>
+                                    <td class="border">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Description"
+                                        [(ngModel)]="dt.desc"
+                                        name="desc{{ d }}"
+                                      />
+                                    </td>
+                                    <td class="border">
+                                      <div class="row">
+                                        <div class="col-lg-6 pr-1">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Enter commodity/service"
+                                            [(ngModel)]="dt.qty"
+                                            (change)="calculateAmount(d)"
+                                            name="qty{{ d }}"
+                                          />
+                                        </div>
+                                        <div class="col-lg-6 pl-1">
+                                          <ng-select
+                                            [clearable]="false"
+                                            class="form-control populate"
+                                            placeholder="unit type"
+                                            [(ngModel)]="dt.qtyUnit"
+                                            (change)="changeUnit($event, d)"
+                                            name="qtyUnit{{ d }}"
+                                          >
+                                            <ng-option
+                                              *ngFor="let unit of units"
+                                              value="{{ unit.value }}"
+                                              >{{ unit.name }}</ng-option
+                                            >
+                                          </ng-select>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td class="border">
+                                      <div class="row">
+                                        <div class="col-lg-6 pr-1">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Enter rate"
+                                            [(ngModel)]="dt.rate"
+                                            name="rate{{ d }}"
+                                            (change)="calculateAmount(d)"
+                                          />
+                                        </div>
+                                        <div class="col-lg-6 pl-1">
+                                          <ng-select
+                                            [clearable]="false"
+                                            class="form-control populate"
+                                            placeholder="unit type"
+                                            [(ngModel)]="dt.rateUnit"
+                                            (change)="changeUnit($event, d)"
+                                            name="rateUnit{{ d }}"
+                                          >
+                                            <ng-option
+                                              *ngFor="let unit of units"
+                                              value="{{ unit.value }}"
+                                              >{{ unit.name }}</ng-option
+                                            >
+                                          </ng-select>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td class="border">
+                                      <div class="row">
+                                        <div class="col-lg-12">
+                                          <input
+                                            type="text"
+                                            disabled
+                                            placeholder="Enter Amount"
+                                            [(ngModel)]="dt.amount"
+                                            name="amount{{ d }}"
+                                            class="form-control"
+                                          />
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td class="border">
+                                      <ng-select
+                                        class="form-control populate"
+                                        placeholder="Select account"
+                                        [(ngModel)]="dt.accountID"
+                                        name="accountID{{ d }}"
+                                      >
+                                        <ng-option
+                                          *ngFor="let act of accounts"
+                                          value="{{ act.actID }}"
+                                          >{{ act.actNo }} -
+                                          {{
+                                            act.actName | titlecase
+                                          }}</ng-option
+                                        >
+                                      </ng-select>
+                                    </td>
+                                    <td class="text-center border">
+                                      <button
+                                        [disabled]="
+                                          salesData.sOrderDetails.length === 1
+                                        "
+                                        type="button"
+                                        (click)="deleteDetail(d)"
+                                        class="btn btn-success btn-sm"
+                                      >
+                                        <i class="fas fa-minus"></i>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="border-0" colspan="4">
+                                      <a
+                                        class="btn btn-success btn-sm"
+                                        (click)="addDetails()"
+                                        href="javascript:;"
+                                        ><i class="fas fa-plus"></i> Add Another
+                                        Line</a
+                                      >
+                                    </td>
+                                    <td class="border-0">
+                                      <span class="font-weight-semibold mr-1"
+                                        >Total:
+                                      </span>
+                                      <span class="pull-right">
+                                        {{
+                                          salesData.total.detailTotal
+                                            ? (salesData.total.detailTotal
+                                              | number: "1.2-2")
+                                            : 0.0
+                                        }}
+                                        {{
+                                          salesData.currency
+                                            ? salesData.currency
+                                            : ""
+                                        }}
+                                      </span>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <div class="col-lg-12">
+                            <div class="bg-white p-3 text-dark">
+                              <div class="form-group row adddriverpl pt-3">
+                                <div class="col-lg-11">
+                                  <div class="row mt-3">
+                                    <div class="col-lg-5">
+                                      <div class="col-lg-12 pl-0">
+                                        <label
+                                          class="
+                                            control-label
+                                            font-weight-bold
+                                            text-4 text-dark
+                                          "
+                                          >Remarks</label
+                                        >
+                                        <textarea
+                                          class="form-control h-auto"
+                                          name="remarks"
+                                          [(ngModel)]="
+                                            salesData.charges.remarks
+                                          "
+                                          rows="14"
+                                        ></textarea>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-lg-5 offset-lg-2">
+                                      <h4
+                                        class="
+                                          mt-0
+                                          text-dark
+                                          font-weight-bold
+                                          text-4
+                                          d-inline
+                                        "
+                                      >
+                                        Charges
+                                      </h4>
+
+                                      <div class="row mt-3">
+                                        <div class="col-lg-6">
+                                          <label
+                                            class="
+                                              control-label
+                                              font-weight-semibold
+                                              text-3 text-dark
+                                            "
+                                            >Accessorial Fee</label
+                                          >
+                                        </div>
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-4 text-right">
+                                          <label
+                                            class="
+                                              control-label
+                                              font-weight-semibold
+                                              text-3 text-dark
+                                            "
+                                            >Fee Total:
+                                          </label>
+                                          {{
+                                            salesData.total.feeTotal
+                                              | number: "1.2-2"
+                                          }}
+                                        </div>
+                                      </div>
+
+                                      <div
+                                        class="row mt-3"
+                                        *ngFor="
+                                          let accAdd of salesData.charges
+                                            .accFee;
+                                          let aId = index
+                                        "
+                                      >
+                                        <div class="col-lg-6">
+                                          <div class="row">
+                                            <div class="col-lg-10 pr-0">
+                                              <input
+                                                type="text"
+                                                name="addCH{{ aId }}"
+                                                [(ngModel)]="accAdd.name"
+                                                class="form-control"
+                                                placeholder="Enter name"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                          <div class="row">
+                                            <div class="col-lg-12 pr-0">
+                                              <input
+                                                type="text"
+                                                name="addamount{{ aId }}"
+                                                [(ngModel)]="accAdd.amount"
+                                                class="form-control"
+                                                placeholder="Enter amount"
+                                                (input)="accessorialFeeTotal()"
+                                                pattern="^[0-9]\d*(\.\d+)?$"
+                                                #accFeeam="ngModel"
+                                              />
+
+                                              <div
+                                                *ngIf="accFeeam.errors?.pattern"
+                                                class="text-danger"
+                                              >
+                                                Please enter valid amount
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-3 text-right">
+                                          <button
+                                            *ngIf="aId === 0"
+                                            type="button"
+                                            (click)="addAccessorialArr('fee')"
+                                            class="btn btn-success btn-sm"
+                                          >
+                                            <i class="fas fa-plus"></i>
+                                          </button>
+                                          <button
+                                            *ngIf="aId > 0"
+                                            type="button"
+                                            (click)="
+                                              dedAccessorialArr('fee', aId)
+                                            "
+                                            class="btn btn-danger btn-sm"
+                                          >
+                                            <i class="fas fa-minus"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+
+                                      <div class="row mt-3">
+                                        <div class="col-lg-6">
+                                          <label
+                                            class="
+                                              control-label
+                                              font-weight-semibold
+                                              text-3 text-dark
+                                            "
+                                            >Accessorial Deduction</label
+                                          >
+                                        </div>
+                                        <div class="col-lg-2"></div>
+                                        <div class="col-lg-4 text-right">
+                                          <label
+                                            class="
+                                              control-label
+                                              font-weight-semibold
+                                              text-3 text-dark
+                                            "
+                                            >Deduction Total:
+                                          </label>
+                                          {{
+                                            salesData.total.dedTotal
+                                              | number: "1.2-2"
+                                          }}
+                                        </div>
+                                      </div>
+
+                                      <div
+                                        class="row mt-3"
+                                        *ngFor="
+                                          let accDed of salesData.charges
+                                            .accDed;
+                                          let bId = index
+                                        "
+                                      >
+                                        <div class="col-lg-6">
+                                          <div class="row">
+                                            <div class="col-lg-10 pr-0">
+                                              <input
+                                                type="text"
+                                                name="dedCH{{ bId }}"
+                                                [(ngModel)]="accDed.name"
+                                                class="form-control"
+                                                placeholder="Enter name"
+                                              />
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                          <div class="row">
+                                            <div class="col-lg-12 pr-0">
+                                              <input
+                                                type="text"
+                                                name="dedamount{{ bId }}"
+                                                [(ngModel)]="accDed.amount"
+                                                class="form-control"
+                                                placeholder="Enter amount"
+                                                (input)="accessorialDedTotal()"
+                                                #dedam="ngModel"
+                                                pattern="^[0-9]\d*(\.\d+)?$"
+                                              />
+
+                                              <div
+                                                *ngIf="dedam.errors?.pattern"
+                                              >
+                                                Please enter valid amount
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-3 text-right">
+                                          <button
+                                            *ngIf="bId === 0"
+                                            type="button"
+                                            (click)="addAccessorialArr('ded')"
+                                            class="btn btn-success btn-sm"
+                                          >
+                                            <i class="fas fa-plus"></i>
+                                          </button>
+                                          <button
+                                            *ngIf="bId > 0"
+                                            type="button"
+                                            (click)="
+                                              dedAccessorialArr('ded', bId)
+                                            "
+                                            class="btn btn-danger btn-sm"
+                                          >
+                                            <i class="fas fa-minus"></i>
+                                          </button>
+                                        </div>
+                                      </div>
+                                      <div class="row mt-3 align-items-center">
+                                        <div class="col-lg-5 pl-3 mb-2">
+                                          <div
+                                            class="
+                                              checkbox-custom checkbox-default
+                                            "
+                                          >
+                                            <input
+                                              [(ngModel)]="salesData.taxExempt"
+                                              name="taxExempt"
+                                              type="checkbox"
+                                              id="ZeroRated"
+                                            />
+                                            <label
+                                              class="
+                                                control-label
+                                                font-weight-semibold
+                                                labelmt
+                                                text-3 text-dark
+                                              "
+                                              for="ZeroRated"
+                                              >Tax Exempt</label
+                                            >
+                                          </div>
+                                        </div>
+                                        <div
+                                          class="col-lg-7 pl-3 mb-0 text-right"
+                                        >
+                                          <span
+                                            class="font-weight-semibold mr-5"
+                                            >Sub Total:
+                                          </span>
+                                          {{
+                                            salesData.total.subTotal
+                                              ? (salesData.total.subTotal
+                                                | number: "1.2-2")
+                                              : 0.0
+                                          }}
+                                        </div>
+                                      </div>
+                                      <div
+                                        class="row mt-3"
+                                        *ngIf="!salesData.taxExempt"
+                                      >
+                                        <div class="col-lg-12">
+                                          <label
+                                            class="
+                                              control-label
+                                              font-weight-bold
+                                              text-3 text-dark
+                                            "
+                                            for="inputDefault"
+                                            >Province/State</label
+                                          >
+                                        </div>
+                                        <div class="col-lg-9">
+                                          <ng-select
+                                            [(ngModel)]="salesData.stateTaxID"
+                                            name="stateTaxID"
+                                            (change)="stateSelectChange()"
+                                            class="form-control populate"
+                                            [clearable]="false"
+                                          >
+                                            <ng-option
+                                              *ngFor="
+                                                let stateTax of stateTaxes
+                                              "
+                                              selected
+                                              value="{{ stateTax.stateTaxID }}"
+                                            >
+                                              {{
+                                                stateTax.stateName
+                                              }}</ng-option
+                                            >
+                                          </ng-select>
+                                        </div>
+                                      </div>
+
+                                      <div
+                                        class="row"
+                                        *ngIf="!salesData.taxExempt"
+                                      >
+                                        <div class="col-lg-8">
+                                          <!-- GST -->
+                                          <div
+                                            class="row mt-3"
+                                            *ngFor="
+                                              let taxD of salesData.charges
+                                                .taxes;
+                                              let td = index
+                                            "
+                                          >
+                                            <div class="col-lg-5 pr-0">
+                                              <input
+                                                type="text"
+                                                disabled
+                                                class="form-control"
+                                                [(ngModel)]="taxD.name"
+                                                name="taxName{{ td }}"
+                                              />
+                                            </div>
+
+                                            <div
+                                              class="col-lg-5 pr-0 input-group"
+                                            >
+                                              <input
+                                                type="text"
+                                                [(ngModel)]="taxD.tax"
+                                                name="taxper{{ td }}"
+                                                class="form-control"
+                                                (input)="taxcalculation(td)"
+                                              /><span class="input-group-append"
+                                                ><span
+                                                  class="
+                                                    input-group-text
+                                                    pt-0
+                                                    pb-0
+                                                  "
+                                                  >%</span
+                                                ></span
+                                              >
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                          <div
+                                            class="row mt-3 bordtop"
+                                            *ngFor="
+                                              let taxD of salesData.charges
+                                                .taxes;
+                                              let td = index
+                                            "
+                                          >
+                                            <div class="col-lg-12 pt-1">
+                                              <p class="text-right mb-0">
+                                                {{
+                                                  taxD.amount
+                                                    ? (taxD.amount
+                                                      | number: "1.2-2")
+                                                    : 0.0
+                                                }}
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="row align-items-center">
+                                        <div class="col-lg-12 pt-1 text-right">
+                                          <span
+                                            class="
+                                              text-right
+                                              h5
+                                              font-weight-semibold
+                                              text-4 text-dark
+                                              mr-5
+                                            "
+                                          >
+                                            Total Amount
+                                          </span>
+                                          <span class="text-right m-0">
+                                            {{
+                                              salesData.total.finalTotal
+                                                | number: "1.2-2"
+                                            }}
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group row mt-4">
+                          <div class="col-lg-11 text-right">
+                            <button
+                              type="button"
+                              class="btn btn-default mr-2"
+                              onclick="goBack()"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              href="javascript:;"
+                              (click)="addSale()"
+                              [disabled]="
+                                !saleForm.form.valid || submitDisabled
+                              "
+                              *ngIf="!saleID"
+                              class="btn btn-success"
+                            >
+                              Save
+                            </button>
+                            <button
+                              href="javascript:;"
+                              *ngIf="saleID"
+                              [disabled]="
+                                !saleForm.form.valid || submitDisabled
+                              "
+                              (click)="updateSale()"
+                              class="btn btn-success"
+                            >
+                              Update
+                            </button>
+                            <!-- <a
+                              href="#templateSelectionModal"
+                              class="modal-with-form btn btn-success"
+                              >Save &amp; Send</a
+                            > -->
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+  </div>
+</section>

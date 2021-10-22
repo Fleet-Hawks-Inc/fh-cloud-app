@@ -3773,3 +3773,121 @@ input:checked + .sliderbtn:before {
 }
 
 */
+
+/* New Own Icon */
+
+@font-face {
+  font-family: "icomoon";
+  src: url("fonts/icomoon.eot?f1fzfv");
+  src: url("fonts/icomoon.eot?f1fzfv#iefix") format("embedded-opentype"),
+    url("fonts/icomoon.ttf?f1fzfv") format("truetype"),
+    url("fonts/icomoon.woff?f1fzfv") format("woff"),
+    url("fonts/icomoon.svg?f1fzfv#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-icon-driver:before {
+  content: "\e90c";
+}
+.icon-icon-efleet:before {
+  content: "\e90d";
+}
+.icon-icon-cevent:before {
+  content: "\e90e";
+}
+.icon-icon-dispatch:before {
+  content: "\e90f";
+}
+.icon-icon-order:before {
+  content: "\e910";
+}
+.icon-icon-tran:before {
+  content: "\e911";
+}
+.icon-icon-vehicle .path1:before {
+  content: "\e900";
+  color: rgb(128, 128, 128);
+  opacity: 0.751;
+}
+.icon-icon-vehicle .path2:before {
+  content: "\e901";
+  margin-left: -1em;
+  color: rgb(43, 43, 43);
+  opacity: 0.659;
+}
+.icon-icon-vehicle .path3:before {
+  content: "\e902";
+  margin-left: -1em;
+  color: rgb(19, 19, 19);
+}
+.icon-icon-vehicle .path4:before {
+  content: "\e903";
+  margin-left: -1em;
+  color: rgb(58, 58, 58);
+  opacity: 0.545;
+}
+.icon-icon-vehicle .path5:before {
+  content: "\e904";
+  margin-left: -1em;
+  color: rgb(96, 96, 96);
+  opacity: 0.536;
+}
+.icon-icon-vehicle .path6:before {
+  content: "\e905";
+  margin-left: -1em;
+  color: rgb(24, 24, 24);
+  opacity: 0.742;
+}
+.icon-icon-vehicle .path7:before {
+  content: "\e906";
+  margin-left: -1em;
+  color: rgb(98, 98, 98);
+  opacity: 0.459;
+}
+.icon-icon-asset .path1:before {
+  content: "\e907";
+  color: rgb(34, 34, 34);
+  opacity: 0.686;
+}
+.icon-icon-asset .path2:before {
+  content: "\e908";
+  margin-left: -1em;
+  color: rgb(0, 0, 0);
+  opacity: 0.927;
+}
+.icon-icon-asset .path3:before {
+  content: "\e909";
+  margin-left: -1em;
+  color: rgb(76, 76, 76);
+  opacity: 0.212;
+}
+.icon-icon-asset .path4:before {
+  content: "\e90a";
+  margin-left: -1em;
+  color: rgb(26, 26, 26);
+  opacity: 0.397;
+}
+.icon-icon-asset .path5:before {
+  content: "\e90b";
+  margin-left: -1em;
+  color: rgb(92, 92, 92);
+  opacity: 0.431;
+}

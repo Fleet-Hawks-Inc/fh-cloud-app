@@ -1848,15 +1848,14 @@ export class AddOrdersComponent implements OnInit {
 
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
-
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
-      let newPosData = [];
-      data.pickupPoint.forEach((element) => {
-        element.customerPO.forEach((po: any) => {
-          newPosData.push({ label: po });
-        });
-        element.customerPO = newPosData;
-      });
+      // let newPosData = [];
+      // data.pickupPoint.forEach((element) => {
+      //   element.customerPO.forEach((po: any) => {
+      //     newPosData.push({ label: po });
+      //   });
+      //   element.customerPO = newPosData;
+      // });
       this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
       for (
         let index = 0;
@@ -1952,7 +1951,7 @@ export class AddOrdersComponent implements OnInit {
         element.customerPO.forEach((po: any) => {
           newPosData.push(po.label);
         });
-        element.customerPO = newPosData;
+        element.newCustomerPO = newPosData;
       });
       if (newPosData.length > 0 && newPosData != null && this.orderData.cusConfirmation != null && this.orderData.cusConfirmation != '') {
         let result = await this.validatePOs(i)
