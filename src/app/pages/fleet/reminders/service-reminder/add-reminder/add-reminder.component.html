@@ -156,9 +156,8 @@
                               </div>
                               <div class="col-lg-6">
                                 <ng-select [(ngModel)]="reminderData.tasks.timeUnit" name="tasks.timeUnit"
-                                  placeholder="Select Duration" #timeZone="ngModel" [required]="
-                                    reminderData.tasks.remindByUnit == 'time'
-                                  ">
+                                  placeholder="Select Duration" #timeZone="ngModel"
+                                  [required]="reminderData.tasks.remindByUnit == 'time'">
                                   <ng-option value="day">Day(s)</ng-option>
                                   <ng-option value="week">Week(s)</ng-option>
                                   <ng-option value="month">Month(s)</ng-option>

@@ -31,7 +31,7 @@ export class AddReminderComponent implements OnInit {
       time: '1',
       timeUnit: 'month'
     },
-    status:'',
+    status: '',
     subscribers: '',
     lastServiceDate: '',
     lastServiceOdometer: 0,
@@ -81,8 +81,8 @@ export class AddReminderComponent implements OnInit {
     // this.demoFunction();
     this.trydemofunction();
     this.doworkfunction();
-    
-    
+
+
     this.sendEmailNotification();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
@@ -104,23 +104,23 @@ export class AddReminderComponent implements OnInit {
   }
 
   async fetchVehicles() {
-    let result:any = await this.apiService.getData('vehicles/list/minor').toPromise();
+    let result: any = await this.apiService.getData('vehicles/list/minor').toPromise();
     result.Items.forEach(element => {
-      if(element.isDeleted === 0) {
+      if (element.isDeleted === 0) {
         this.vehicles.push(element);
       }
-      if(element.isDeleted === 1 && this.reminderData.entityID === element.vehicleID) {
+      if (element.isDeleted === 1 && this.reminderData.entityID === element.vehicleID) {
         this.entityID = null;
       }
     });
   }
 
   async fetchReminderByID() {
-    let result:any = await this.apiService.getData('reminders/detail/' + this.reminderID).toPromise();
+    let result: any = await this.apiService.getData('reminders/detail/' + this.reminderID).toPromise();
     result = result.Items[0];
     this.reminderData[`reminderID`] = this.reminderID;
-    this.reminderData[`createdDate`] = result.createdDate; 
-    this.reminderData[`createdTime`] = result.createdTime; 
+    this.reminderData[`createdDate`] = result.createdDate;
+    this.reminderData[`createdTime`] = result.createdTime;
     this.reminderData[`timeCreated`] = result.timeCreated;
     this.reminderData[`status`] = result.status;
     this.reminderData.type = result.type;
@@ -133,7 +133,7 @@ export class AddReminderComponent implements OnInit {
     this.reminderData.lastServiceDate = result.lastServiceDate;
     this.reminderData.lastServiceOdometer = result.lastServiceOdometer;
     this.reminderData.subscribers = result.subscribers;
-  } 
+  }
 
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
@@ -167,8 +167,8 @@ export class AddReminderComponent implements OnInit {
     }
     this.reminderData.tasks.remindByDays = this.numberOfDays;
 
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : null;
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : null;
+    this.reminderData.entityID = (this.entityID != null) ? this.entityID : null;
+    this.reminderData.tasks.taskID = (this.taskID != null) ? this.taskID : null;
     this.apiService.postData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -204,21 +204,21 @@ export class AddReminderComponent implements OnInit {
   //     console.log("hiii" , result);
   //   })
   // }
-  sendEmailNotification(){
-      this.apiService.getData("/reminders/sreminders").subscribe((result:any)=>{
-        console.log("hii",result)
-      })
-      
-    }
-  trydemofunction(){
-    this.apiService.getData("reminders/data/demmo").subscribe((result: any) =>{
+  sendEmailNotification() {
+    this.apiService.getData("/reminders/sreminders").subscribe((result: any) => {
+      console.log("hii", result)
+    })
+
+  }
+  trydemofunction() {
+    this.apiService.getData("reminders/data/demmo").subscribe((result: any) => {
       console.log("tryyy new", result);
 
     })
   }
-  doworkfunction(){
-    this.apiService.getData("reminders/id/work").subscribe((result:any)=>{
-      console.log("new",result)
+  doworkfunction() {
+    this.apiService.getData("reminders/id/work").subscribe((result: any) => {
+      console.log("new", result)
     })
   }
 
@@ -271,8 +271,8 @@ export class AddReminderComponent implements OnInit {
     }
 
     this.reminderData.tasks.remindByDays = this.numberOfDays;
-    this.reminderData.entityID = (this.entityID != null)? this.entityID : null;
-    this.reminderData.tasks.taskID = (this.taskID != null)? this.taskID : null;
+    this.reminderData.entityID = (this.entityID != null) ? this.entityID : null;
+    this.reminderData.tasks.taskID = (this.taskID != null) ? this.taskID : null;
     this.apiService.putData('reminders', this.reminderData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -290,7 +290,7 @@ export class AddReminderComponent implements OnInit {
             },
             error: () => {
               this.submitDisabled = false;
-             },
+            },
             next: () => { },
           });
       },
@@ -333,7 +333,7 @@ export class AddReminderComponent implements OnInit {
     });
   }
 
-  refreshTaskData(){
+  refreshTaskData() {
     this.fetchServiceTaks();
   }
 }
