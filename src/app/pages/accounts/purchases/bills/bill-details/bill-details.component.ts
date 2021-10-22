@@ -10,6 +10,7 @@ import { ApiService } from "src/app/services/api.service";
 })
 export class BillDetailsComponent implements OnInit {
   orderData = {
+    billNo: "",
     txnDate: null,
     refNo: "",
     currency: "CAD",
