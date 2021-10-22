@@ -1,5 +1,6 @@
 import { Injectable, NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common';
+import { SharedModule } from './../../../shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { GeneralLedgerDetailComponent } from './general-ledger/general-ledger-detail/general-ledger-detail.component';
 import { GeneralLedgerListComponent } from './general-ledger/general-ledger-list/general-ledger-list.component';
@@ -67,7 +68,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 const routes: Routes = [
   { path: 'general-ledger/list', component: GeneralLedgerListComponent },
-  { path: 'general-ledger/detail', component: GeneralLedgerDetailComponent },
+  { path: 'general-ledger/detail/:actID', component: GeneralLedgerDetailComponent },
   { path: 'balance-sheet', component: BalanceSheetComponent },
   { path: 'profit-loss-report', component: ProfitLossReportComponent },
   { path: 'trial-balance', component: TrialBalanceComponent },
@@ -91,7 +92,8 @@ const routes: Routes = [
     InfiniteScrollModule,
     NgSelectModule,
     NgbModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule,
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
