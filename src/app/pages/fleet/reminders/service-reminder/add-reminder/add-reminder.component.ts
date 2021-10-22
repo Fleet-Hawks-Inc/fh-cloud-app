@@ -79,9 +79,6 @@ export class AddReminderComponent implements OnInit {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchServiceTaks();
     // this.demoFunction();
-    this.trydemofunction();
-    this.doworkfunction();
-
 
     this.sendEmailNotification();
     if (this.reminderID) {
@@ -210,17 +207,7 @@ export class AddReminderComponent implements OnInit {
     })
 
   }
-  trydemofunction() {
-    this.apiService.getData("reminders/data/demmo").subscribe((result: any) => {
-      console.log("tryyy new", result);
 
-    })
-  }
-  doworkfunction() {
-    this.apiService.getData("reminders/id/work").subscribe((result: any) => {
-      console.log("new", result)
-    })
-  }
 
   throwErrors() {
     from(Object.keys(this.errors))
