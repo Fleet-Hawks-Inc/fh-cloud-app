@@ -20,10 +20,8 @@ export class SremindersComponent implements OnInit {
   lastItemSK = "";
   type = "null";
   allData = [];
-  allDatta = [];
   pageLength = "10";
   vehicleList = {};
-  vehicleTask = {};
   OverdueService = 0;
   due = 0;
   totalRecords = "10";
@@ -35,11 +33,7 @@ export class SremindersComponent implements OnInit {
   carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
-  serviceTask = [];
   tasksData = [];
-  taskName: string;
-  serviceTasks = [];
-  tasksList = "";
   loaded = false
   totalCount = 0;
   deletedCount = 0;
@@ -51,7 +45,7 @@ export class SremindersComponent implements OnInit {
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    // this.newfunction();
+
     // this.linkfunction();
     this.tasksfunction();
     this.fetchVehiclesdata();
@@ -66,7 +60,7 @@ export class SremindersComponent implements OnInit {
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-  // &type=service
+
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
@@ -130,16 +124,6 @@ export class SremindersComponent implements OnInit {
     }
   }
 
-
-
-
-  // newfunction() {
-  //   this.apiService.getData("reminders").subscribe((result: any) => {
-  //     this.allData = result.Items;
-  //     console.log("this.allData", this.allData);
-
-  //   })
-  // }
   async fetchReminderCount() {
     const result = await this.apiService.getData('reminders').toPromise()
     this.totalCount = result.Count
@@ -171,16 +155,6 @@ export class SremindersComponent implements OnInit {
       console.log("this.allData", result)
       this.taskfunction = result;
 
-      // for (let i = 0; i < this.allData.length; i++) {
-      //   if (this.allData[i].status === 'overdue') {
-      //     this.OverdueService += 1;
-      //   }
-      //   else {
-      //     this.due += 1;
-      //   }
-
-      // }
-      // console.log("OverdueService", this.OverdueService)
     })
   }
 
