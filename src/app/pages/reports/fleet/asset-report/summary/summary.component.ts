@@ -21,9 +21,9 @@ export class SummaryComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
   loaded = false;
-  total = {};
-  active = {};
-  inactive = {};
+  total: {};
+  active: {};
+  inactive: {};
 
   constructor(private apiService: ApiService, private toastr: ToastrService) {
 
