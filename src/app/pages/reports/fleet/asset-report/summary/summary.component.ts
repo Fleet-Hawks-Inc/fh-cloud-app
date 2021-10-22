@@ -16,14 +16,16 @@ export class SummaryComponent implements OnInit {
   assetType = null;
   assetID = '';
   allData = [];
-  assetsCount = {};
+  assetsCount = {
+    total: '',
+    active: '',
+    inactive: '',
+  };
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
   loaded = false;
-  total = '';
-  active = '';
-  inactive = '';
+
 
   constructor(private apiService: ApiService, private toastr: ToastrService) {
 
