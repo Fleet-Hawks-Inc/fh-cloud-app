@@ -16,14 +16,11 @@ export class SummaryComponent implements OnInit {
   assetType = null;
   assetID = '';
   allData = [];
-  activeAssets = 0;
-  inActiveAssets = 0;
+  assetsCount = {};
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
   loaded = false;
-  totalAssetsCount = 0;
-  deletedCount = 0
 
   constructor(private apiService: ApiService, private toastr: ToastrService) {
 
@@ -31,19 +28,19 @@ export class SummaryComponent implements OnInit {
   ngOnInit() {
     this.fetchAssetCount();
     this.fetchAssetsList();
-    // this.fetchAssetReport();
   }
 
 
-  async fetchAssetCount() {
-    const result = await this.apiService.getData('assets').toPromise()
-    this.totalAssetsCount = result.Count
-    if (this.totalAssetsCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
-    result.Items.forEach(element => {
-      if (element.isDeleted == 1) this.deletedCount++
-      if (element.currentStatus == "active") this.activeAssets++
-      if (element.currentStatus == "inactive") this.inActiveAssets++
-    });
+  fetchAssetCount() {
+    this.apiService.getData('assets/fetch/assetCount').subscribe((result: any) => {
+      this.assetsCount = result;
+    })
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fetchAssetsList();
+    }
+    this.loaded = false;
   }
 
   fetchAssetsList() {
@@ -97,6 +94,7 @@ export class SummaryComponent implements OnInit {
       return false;
     }
   }
+
   generateCSV() {
     if (this.allData.length > 0) {
       let dataObject = []
@@ -120,10 +118,8 @@ export class SummaryComponent implements OnInit {
         csvArray.push(obj)
       });
       const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8;' });
-
       const link = document.createElement('a');
       if (link.download !== undefined) {
-
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
         link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Asset-Report.csv`);
@@ -131,7 +127,6 @@ export class SummaryComponent implements OnInit {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
       }
     }
     else {
@@ -139,4 +134,3 @@ export class SummaryComponent implements OnInit {
     }
   }
 }
-

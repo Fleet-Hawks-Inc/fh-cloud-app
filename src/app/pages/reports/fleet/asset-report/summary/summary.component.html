@@ -65,7 +65,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{totalAssetsCount}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.total}}</h3>
                      </div>
                   </div>
                </div>
@@ -73,7 +73,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Active Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{activeAssets}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.active}}</h3>
                      </div>
                   </div>
                </div>
@@ -81,49 +81,57 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Inactive Assets</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{inActiveAssets}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.inactive}}</h3>
                      </div>
                   </div>
                </div>
                <div class="col">
                   <div class="card">
-                     <div class="card-body bor-radius0px">
-                        <section class="reports_div">
-                           <table class="row-border hover table table-bordered table-striped mb-0">
-                              <thead>
-                                 <tr class="back-color-gray">
-                                    <th>Asset Name/Number</th>
-                                    <th>VIN</th>
-                                    <th>Asset Type</th>
-                                    <th>Make</th>
-                                    <th>Last Location</th>
-                                    <th>License Plate Number</th>
-                                    <th>Status</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr *ngIf="allData.length == 0" class="text-center">
-                                    <td colspan="15">{{dataMessage}}</td>
-                                 </tr>
-                                 <tr *ngFor="let item of allData">
-                                    <td><span
-                                          class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
-                                    </td>
-                                    <td>{{item.VIN}}</td>
-                                    <td>{{item.assetType}}</td>
-                                    <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}</td>
-                                    <td>-</td>
-                                    <td>{{item.assetDetails.licencePlateNumber}}</td>
-                                    <td><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
-                                    </td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </section>
-                     </div>
-                     <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                        <button type="button" class="btn btn-success btn-sm text-light"
-                           (click)="fetchAssetsList() ">Load More..</button>
+                     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                        <div class="card-body bor-radius0px">
+
+                           <section class="reports_div">
+                              <table class="row-border hover table table-bordered table-striped mb-0">
+                                 <thead>
+                                    <tr class="back-color-gray">
+                                       <th>Asset Name/Number</th>
+                                       <th>VIN</th>
+                                       <th>Asset Type</th>
+                                       <th>Make</th>
+                                       <th>Last Location</th>
+                                       <th>License Plate Number</th>
+                                       <th>Status</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <tr *ngIf="allData.length == 0" class="text-center">
+                                       <td colspan="15">{{dataMessage}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of allData">
+                                       <td><span
+                                             class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
+                                       </td>
+                                       <td>{{item.VIN}}</td>
+                                       <td>{{item.assetType}}</td>
+                                       <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}
+                                       </td>
+                                       <td>-</td>
+                                       <td>{{item.assetDetails.licencePlateNumber}}</td>
+                                       <td><span
+                                             class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </section>
+                        </div>
+
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                           <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                              More..</button>
+
+                        </div>
                      </div>
                   </div>
                </div>
