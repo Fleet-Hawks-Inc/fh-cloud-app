@@ -16,7 +16,7 @@ import { DetailComponent } from './detail/detail.component';
 import { UtilizationComponent } from './utilization/utilization.component';
 import { InspectionComponent } from './inspection/inspection.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
@@ -97,7 +97,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

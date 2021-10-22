@@ -42,7 +42,6 @@ export class SummaryComponent implements OnInit {
             }
 
             this.vehicles = result.Items;
-            console.log('vehicle', this.vehicles);
         })
     }
     async getVehiclePage(refresh?: boolean) {
