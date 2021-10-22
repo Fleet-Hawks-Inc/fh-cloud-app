@@ -1,150 +1,159 @@
 <section class="body">
-    <div class="inner-wrapper">
+   <div class="inner-wrapper">
       <section role="main" class="content-body pt-0 pr-0 pl-1">
          <header class="page-header pr19 pl11">
             <div class="row" style="padding-top:10px;">
 
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search by Vehicle" type="text">
-                  </div>
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search by task" type="text">
-                  </div>
-                  
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                                          <optgroup label="">
-                                             <option value="1">Select Reminders Status</option>
-                                             <option value="2">All</option>
-                                             <option value="2">Overdue</option>
-                                             <option value="2">Due Soon</option>
-                                          </optgroup>
-                                       </select>
-                     </div>
-                  </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <!-- <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="VEH" placeholder="Search by Vehicle"
+                     ([ngModel])="srchVeh" 
+                      /> -->
+                  <!-- <input [(ngModel)]="entityID" placeholder="Miles to repeat service task"
+                     name="srchVeh" type="text" class="form-control"> -->
 
+                  <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
+                     placeholder="Search By vehicle">
+                     <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option>
+                  </ng-select>
+               </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
+                     placeholder="Search task">
+                     <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
+                     </ng-option>
+                     <!-- </optgroup> -->
+                  </ng-select>
+               </div>
 
-                  <div class="col-md-2 col-lg-2">
-                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
-					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
-                  </div>
-
-                  <div class="col-md-4 col-lg-4 text-right pr-1">
-                     <div class="btn-group flex-wrap ml-2">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                           <a class="dropdown-item text-1" href="">CSV</a>
-                           <a class="dropdown-item text-1" href="">PDF</a>
-                        </div>
-                     </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%;"
+                        placeholder="Select Reminder Status">
+                        <optgroup label="Select Reminder Status">
+                           <ng-option value="all">ALL</ng-option>
+                           <ng-option value="overdue">OVERDUE</ng-option>
+                           <ng-option value="dueSoon">DUE SOON</ng-option>
+                        </optgroup>
+                     </ng-select>
                   </div>
                </div>
-            </header>
 
-            <div class="m-2">
-               <div class="row text-dark">
-                  <div class="col-12 mb-3">
-                     <div class="bg-white p-3">
-					         <div class="row text-dark">
-							<div class="col-12">
-								<div>
-								   <h4 class="mt-1 mb-0 font-weight-bold">Service Reminders Report</h4>
-								</div>
-							</div>
-							
-						</div>
-                     </div>
-                  </div>
 
-                  <div class="col-4 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4" >Total Service Reminders</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold" >{{allData.length}} </h3>
-                           <!-- <td ng-repeat = "item.entityID"></td> -->
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-4 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4">Total Overdue Service</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">{{OverdueService}}</h3>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-4 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4">Total Due Soon</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">{{due}}</h3>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="card">
-                        <div class="card-body bor-radius0px">
-                           <section class="reports_div">
-                              <table class="table reports_small_div">
-                                 <thead>
-								  <tr class="back-color-gray">
-									 <th>Vehicle</th>
-									 <th>Service Task</th>
-									 <th>Next Due</th>
-									 <th>Subscribers</th>
-                            <th>Renewal Status</th>
-									 
-								  </tr>
-							   </thead>
-							   <tbody>
-								  <!-- <tr>
-									 <td >421543</td>
-									 <td ><span  class="font-weight-bold" title="Service Task">Rotate Tires</span></td>
-									 <td ><span class="text-danger font-weight-bold font-size-12">Overdue</span></td>
-									 <td >2021/06/06</td>
-									 <td>jeet@iload.com</td>
-                            <td>Active</td>
-									
-								  </tr> -->
-								  <!-- <tr>
-									 
-									 <td>32548</td>
-									 <td><span  class="font-weight-bold" title="Service Task">Oil Change</span></td>
-									 <td><span class="text-warning font-weight-bold font-size-12">Due Soon</span></td>
-									 <td >2021/06/06</td>
-                            <td>roshan@trucks.ca</td>
-									 <td>Active</td>
-									 
-								  </tr>
-								  <tr>
-									 
-									 <td>954810</td>
-									 <td><span class="font-weight-bold" title="Service Task">Tires Replacement</span></td>
-									 <td><span class="text-danger font-weight-bold font-size-12">Overdue</span></td>
-									 <td >2021/06/06</td>
-                            <td>marr@truckingcanada.ca</td>
-									 <td>Inactive</td>
-									 
-								  </tr> -->
-                          <tr *ngFor = "let item of allData">
-                             <td>{{vehicleList[item.entityID]}}</td>
-                             <td>{{tasksfunction[item.tasks.taskID]}}</td>
-                             <td>{{item.createdDate}}</td>
-                             <td>{{item.subscribers}}</td>
-                             <td>{{item.status}} </td>
-                       
-                     
-                          </tr>
-								 
-							   </tbody>
-                              </table>
-                           </section>
-                        </div>
+               <div class="col-md-2 col-lg-2">
+                  <button type="button" (click)="srchVeh()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="button" (click)="resetData()">Reset</button>
+               </div>
+
+               <div class="col-md-4 col-lg-4 text-right pr-1">
+                  <div class="btn-group flex-wrap ml-2">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
                      </div>
                   </div>
                </div>
             </div>
-         </section>
-    </div>
-</section>
+         </header>
+
+         <div class="m-2">
+            <div class="row text-dark">
+               <div class="col-12 mb-3">
+                  <div class="bg-white p-3">
+                     <div class="row text-dark">
+                        <div class="col-12">
+                           <div>
+                              <h4 class="mt-1 mb-0 font-weight-bold">Service Reminders Report</h4>
+                           </div>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+
+               <div class="col-4 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Total Service Reminders</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{allData.length}} </h3>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Total Overdue Service</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{OverdueService}}</h3>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-4 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Total Due Soon</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{due}}</h3>
+                     </div>
+                  </div>
+               </div>
+               <div class="col">
+                  <div class="card">
+                     <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                           [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                           <div class="card-body bor-radius0px">
+                              <section class="reports_div">
+                                 <table class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                       <tr class="back-color-gray">
+                                          <th>Vehicle</th>
+                                          <th>Service Task</th>
+                                          <th>Next Due</th>
+                                          <th>Subscribers</th>
+                                          <th>Renewal Status</th>
+
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngIf="allData.length == 0" class="text-center">
+                                          <td colspan="6">{{dataMessage}}</td>
+                                       </tr>
+                                       <tr *ngFor="let item of allData">
+                                          <td>{{vehiclesList[item.entityID]}}</td>
+                                          <td>{{tasksData[item.tasks.taskID]}}</td>
+                                          <td>{{item.createdDate}}</td>
+                                          <td>{{item.subscribers}}</td>
+                                          <!-- <td>{{item.status}} </td> -->
+                                          <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
+                                                *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
+                                             <span class="text-danger font-weight-bold font-size-12 text-uppercase"
+                                                *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
+                                             <span class="font-weight-bold"
+                                                title="Service Task">{{tasksData[item.tasks.taskID]}}</span>
+                                             <br>
+                                             <span class="font-size-12">
+                                                <span *ngIf="item.tasks.remindByUnit == 'time'">Every
+                                                   {{item.tasks.time}}
+                                                   {{item.tasks.timeUnit}}(s) </span>
+                                                <span *ngIf="item.tasks.remindByUnit == 'odometer'">Every
+                                                   {{item.tasks.odometer}} miles</span>
+                                             </span>
+                                          </td>
+                                       </tr>
+
+                                    </tbody>
+                                 </table>
+                              </section>
+                           </div>
+                           <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                              <button type="button" class="btn btn-success btn-sm text-light"
+                                 (click)="fetchVehiclesdata()">Load
+                                 More..</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
