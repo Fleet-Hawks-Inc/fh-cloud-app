@@ -1,12 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { ListService, AccountService } from "src/app/services";
+import { ListService, AccountService, ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Location } from "@angular/common";
 import { ActivatedRoute } from "@angular/router";
+import { v4 as uuidv4 } from "uuid";
 import Constants from "src/app/pages/fleet/constants";
+import * as moment from "moment";
 declare var $: any;
 
 @Component({
@@ -35,6 +37,7 @@ export class AddBillComponent implements OnInit {
         amount: 0,
         accountID: null,
         description: "",
+        rowID: "",
       },
     ],
     charges: {
@@ -83,11 +86,13 @@ export class AddBillComponent implements OnInit {
     },
     status: "open",
     billType: null,
-    dueDate: null,
+    dueDate: moment().format("YYYY-MM-DD"),
     paymentTerm: null,
     purchaseID: null,
     creditIds: [],
     creditData: [],
+    exempt: false,
+    stateID: null,
   };
   quantityTypes = [];
   vendors = [];
@@ -125,6 +130,9 @@ export class AddBillComponent implements OnInit {
   billID = "";
   vendorCredits = [];
   accounts = [];
+  editDisabled = false;
+  stateTaxes = [];
+  productDisabled = false;
 
   constructor(
     private listService: ListService,
@@ -132,14 +140,12 @@ export class AddBillComponent implements OnInit {
     private httpClient: HttpClient,
     private toaster: ToastrService,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private apiService: ApiService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.billID = this.route.snapshot.params["billID"];
-    if (this.billID) {
-      this.fetchDetails();
-    }
     $(".modal").on("hidden.bs.modal", (e) => {
       localStorage.setItem("isOpen", "false");
     });
@@ -147,9 +153,14 @@ export class AddBillComponent implements OnInit {
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
     this.vendors = vendorList;
-    // this.fetchPurchaseOrders();
     this.fetchQuantityTypes();
     this.fetchAccounts();
+    this.fetchStateTaxes();
+    if (this.billID) {
+      this.editDisabled = true;
+      await this.fetchDetails();
+      await this.fetchAllPurchaseOrders();
+    }
   }
 
   fetchAccounts() {
@@ -183,6 +194,13 @@ export class AddBillComponent implements OnInit {
     this.purchaseOrders = result;
   }
 
+  async fetchAllPurchaseOrders() {
+    const result: any = await this.accountService
+      .getData(`purchase-orders/vendor/all/${this.orderData.vendorID}`)
+      .toPromise();
+    this.purchaseOrders = result;
+  }
+
   fetchQuantityTypes() {
     this.httpClient
       .get("assets/jsonFiles/quantityTypes.json")
@@ -201,6 +219,7 @@ export class AddBillComponent implements OnInit {
       amount: 0,
       accountID: null,
       description: "",
+      rowID: uuidv4(),
     };
     const lastAdded = this.orderData.detail[this.orderData.detail.length - 1];
     if (
@@ -291,7 +310,7 @@ export class AddBillComponent implements OnInit {
     this.allTax();
     this.orderData.total.finalTotal =
       Number(this.orderData.total.subTotal) -
-      this.orderData.total.vendorCredit +
+      Number(this.orderData.total.vendorCredit) +
       Number(this.orderData.total.taxes);
   }
 
@@ -354,36 +373,61 @@ export class AddBillComponent implements OnInit {
   }
 
   addRecord() {
+    for (let i = 0; i < this.orderData.detail.length; i++) {
+      const element = this.orderData.detail[i];
+      if (
+        element.comm === "" ||
+        element.qty === "" ||
+        element.qtyTyp === null ||
+        element.rate === "" ||
+        element.rateTyp === null ||
+        element.amount <= 0 ||
+        element.accountID === null
+      ) {
+        this.toaster.error("Please enter valid bill details");
+        return false;
+      }
+    }
+
+    if (this.orderData.total.subTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
+    if (this.orderData.total.finalTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
     this.submitDisabled = true;
-    console.log("this.orderData", this.orderData);
-    // this.accountService.postData("bills", this.orderData).subscribe({
-    //   complete: () => {},
-    //   error: (err: any) => {
-    //     from(err.error)
-    //       .pipe(
-    //         map((val: any) => {
-    //           val.message = val.message.replace(/".*"/, "This Field");
-    //           this.errors[val.context.key] = val.message;
-    //         })
-    //       )
-    //       .subscribe({
-    //         complete: () => {
-    //           this.submitDisabled = false;
-    //           // this.throwErrors();
-    //         },
-    //         error: () => {
-    //           this.submitDisabled = false;
-    //         },
-    //         next: () => {},
-    //       });
-    //   },
-    //   next: (res) => {
-    //     this.submitDisabled = false;
-    //     this.response = res;
-    //     this.toaster.success("Bill added successfully.");
-    //     this.cancel();
-    //   },
-    // });
+    this.accountService.postData("bills", this.orderData).subscribe({
+      complete: () => {},
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, "This Field");
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => {},
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success("Bill added successfully.");
+        this.cancel();
+      },
+    });
   }
 
   cancel() {
@@ -394,17 +438,7 @@ export class AddBillComponent implements OnInit {
     let result: any = await this.accountService
       .getData(`bills/details/${this.billID}`)
       .toPromise();
-    this.orderData.detail = result[0].detail;
-    this.orderData.charges.accDed = result[0].accDed;
-    this.orderData.charges.accFee = result[0].accFee;
-    this.orderData.charges.remarks = result[0].remarks;
-    this.orderData.charges.taxes = result[0].taxes;
-    this.orderData.total.dedTotal = result[0].total.dedTotal;
-    this.orderData.total.detailTotal = result[0].total.detailTotal;
-    this.orderData.total.feeTotal = result[0].total.feeTotal;
-    this.orderData.total.finalTotal = result[0].total.finalTotal;
-    this.orderData.total.subTotal = result[0].total.subTotal;
-    this.orderData.total.taxes = result[0].total.taxes;
+    this.orderData = result[0];
   }
 
   updateRecord() {
@@ -454,6 +488,7 @@ export class AddBillComponent implements OnInit {
       v.paidStatus = false;
       v.fullPayment = false;
       v.paidAmount = 0;
+      v.newStatus = v.status.replace("_", " ");
     });
     this.vendorCredits = result;
   }
@@ -501,8 +536,6 @@ export class AddBillComponent implements OnInit {
         }
       }
     }
-    console.log("this.orderData.creditIds", this.orderData.creditIds);
-    console.log("this.orderData.creditData", this.orderData.creditData);
     this.creditCalculation();
     this.calculateFinalTotal();
   }
@@ -515,7 +548,6 @@ export class AddBillComponent implements OnInit {
         if (Number(element.paidAmount > 0)) {
           selectCount += 1;
         }
-        console.log("element90", element);
         this.orderData.total.vendorCredit += Number(element.paidAmount);
         this.orderData.creditData.map((v) => {
           if (element.creditID === v.creditID) {
@@ -529,34 +561,59 @@ export class AddBillComponent implements OnInit {
             } else {
               v.status = "not_deducted";
             }
-
-            // v.paidAmount = v.paidAmount.toFixed(2);
           }
         });
       }
     }
-    console.log("this.orderData.creditData kk", this.orderData.creditData);
   }
 
-  checkInput() {
-    // if (type == "tax") {
-    //   if (Number(this.paymentData.taxes) > Number(this.paymentData.subTotal)) {
-    //     this.taxErr = "Tax amount should be less than sub total";
-    //     this.submitDisabled = true;
-    //   } else {
-    //     this.taxErr = "";
-    //     this.submitDisabled = false;
-    //   }
-    // } else if (type == "advance") {
-    //   if (
-    //     Number(this.paymentData.advance) > Number(this.paymentData.subTotal)
-    //   ) {
-    //     this.advErr = "Advance amount should be less than sub total";
-    //     this.submitDisabled = true;
-    //   } else {
-    //     this.advErr = "";
-    //     this.submitDisabled = false;
-    //   }
-    // }
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData("stateTaxes").toPromise();
+    this.stateTaxes = result.Items;
+  }
+
+  async taxExempt() {
+    this.orderData.charges.taxes.map((v) => {
+      v.tax = 0;
+    });
+    this.orderData.stateID = null;
+    this.allTax();
+    this.taxTotal();
+  }
+
+  async selecteProvince(stateID) {
+    let taxObj = {
+      GST: "",
+      HST: "",
+      PST: "",
+      stateCode: "",
+      stateName: "",
+      stateTaxID: "",
+    };
+    this.stateTaxes.map((v) => {
+      if (v.stateTaxID === stateID) {
+        taxObj = v;
+      }
+    });
+
+    this.orderData.charges.taxes.map((v) => {
+      if (v.name === "GST") {
+        v.tax = Number(taxObj.GST);
+      } else if (v.name === "HST") {
+        v.tax = Number(taxObj.HST);
+      } else if (v.name === "PST") {
+        v.tax = Number(taxObj.PST);
+      }
+    });
+    this.allTax();
+    this.taxTotal();
+  }
+
+  async typeChange(type) {
+    if (type === "product") {
+      this.productDisabled = true;
+    } else {
+      this.productDisabled = false;
+    }
   }
 }

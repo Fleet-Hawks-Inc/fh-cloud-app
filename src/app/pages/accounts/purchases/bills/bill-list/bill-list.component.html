@@ -106,7 +106,7 @@
                                                     <th class="text-2">Amount</th>
                                                     <th class="text-2">Balance</th>
                                                     <th class="text-2">Status</th>
-                                                    <th class="text-2">Action</th>
+                                                    <!-- <th class="text-2">Action</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -119,31 +119,34 @@
                                                 </tr>
                                                 <tr *ngFor="let data of
                                                     payOrders">
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">{{
                                                         data.txnDate | date:
                                                         "yyyy/MM/dd" }}</td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">{{
                                                         data.billNo }}</td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">{{
-                                                        data.refNo }}</td>
-                                                    <td class="cursor-pointer"
+                                                        data.refNo ? data.refNo
+                                                        : '-' }}</td>
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">{{
+                                                        data.purchaseID ?
                                                         purchaseOrders[data.purchaseID]
+                                                        : '-'
                                                         }}</td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">
                                                         {{
                                                         vendors[data.vendorID]
                                                         }}
                                                     </td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">{{
                                                         data.dueDate | date:
                                                         "yyyy/MM/dd" }}</td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">
                                                         {{
                                                         data.total.finalTotal |
@@ -151,14 +154,14 @@
                                                         '1.2-2'
                                                         }} {{ data.currency }}
                                                     </td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">
                                                         {{ data.total.balance |
                                                         number :
                                                         '1.2-2' }}
                                                         {{ data.currency }}
                                                     </td>
-                                                    <td class="cursor-pointer"
+                                                    <td class="cursorpoint"
                                                         [routerLink]="data.url">
                                                         <span
                                                             class="badge
@@ -167,7 +170,8 @@
                                                             {{ data.status }}
                                                         </span>
                                                     </td>
-                                                    <td><div class="btn-group
+                                                    <!-- <td>
+                                                        <div class="btn-group
                                                             flex-wrap">
                                                             <button
                                                                 type="button"
@@ -190,7 +194,8 @@
                                                                     href="javascript:;"
                                                                     (click)="deleteBill(data)">Delete</a>
                                                             </div>
-                                                        </div></td>
+                                                        </div>
+                                                    </td> -->
                                                 </tr>
                                             </tbody>
                                         </table>

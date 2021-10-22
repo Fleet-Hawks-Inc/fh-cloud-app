@@ -117,7 +117,7 @@ const routes: Routes = [
   { path: "bills/list", component: BillListComponent },
   { path: "bills/add", component: AddBillComponent },
   { path: "bills/edit/:billID", component: AddBillComponent },
-  { path: "bills/details", component: BillDetailsComponent },
+  { path: "bills/details/:billID", component: BillDetailsComponent },
 ];
 
 @NgModule({

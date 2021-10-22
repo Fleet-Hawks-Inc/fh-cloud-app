@@ -50,6 +50,16 @@
                                                     #jDate="ngModel"
                                                     required readonly
                                                     />
+
+                                                <div *ngIf="jDate.invalid &&
+                                                    (jDate.dirty ||
+                                                    jDate.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="jDate.errors.required">
+                                                        Bill date is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-2">
@@ -68,7 +78,8 @@
                                                     placeholder="Select Vendor"
                                                     #vendorID="ngModel"
                                                     required
-                                                    (change)="changeVendor()">
+                                                    (change)="changeVendor()"
+                                                    [disabled]="editDisabled">
                                                     <ng-option value="{{
                                                         data.contactID }}"
                                                         *ngFor="let
@@ -114,10 +125,22 @@
                                                     placeholder="Select Bill
                                                     Type"
                                                     #billType="ngModel"
-                                                    required>
+                                                    required
+                                                    [disabled]="editDisabled"
+                                                    (change)="typeChange($event)">
                                                     <ng-option value="product">Product</ng-option>
                                                     <ng-option value="service">Service</ng-option>
                                                 </ng-select>
+
+                                                <div *ngIf="billType.invalid &&
+                                                    (billType.dirty ||
+                                                    billType.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="billType.errors.required">
+                                                        Bill type is required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-2"
@@ -135,13 +158,26 @@
                                                     Order"
                                                     #purchaseID="ngModel"
                                                     required
-                                                    (change)="fetchPurchaseDetails()">
+                                                    (change)="fetchPurchaseDetails()"
+                                                    [disabled]="editDisabled">
                                                     <ng-option value="{{
                                                         data.purchaseID }}"
                                                         *ngFor="let data of
                                                         purchaseOrders;">{{
                                                         data.orderNo }}</ng-option>
                                                 </ng-select>
+
+                                                <div *ngIf="purchaseID.invalid
+                                                    &&
+                                                    (purchaseID.dirty ||
+                                                    purchaseID.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="purchaseID.errors.required">
+                                                        Purchase order is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-2">
@@ -192,17 +228,33 @@
                                                     placeholder="Select
                                                     currency"
                                                     #curr="ngModel"
-                                                    required>
+                                                    required
+                                                    [disabled]="editDisabled">
                                                     <ng-option value="CAD">CAD</ng-option>
                                                     <ng-option value="USD">USD</ng-option>
                                                 </ng-select>
+
+                                                <div *ngIf="curr.invalid
+                                                    &&
+                                                    (curr.dirty ||
+                                                    curr.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="curr.errors.required">
+                                                        Currency order is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row pt-2">
                                             <div class="col-lg-5">
                                                 <label class="control-label
                                                     font-weight-bold font-bold
-                                                    text-lg-right pt-2">Due Date</label>
+                                                    text-lg-right pt-2">Due Date
+                                                    <span class="mandfield
+                                                        text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <input
                                                     [(ngModel)]="orderData.dueDate"
                                                     name="dueDate"
@@ -218,12 +270,26 @@
                                                     #dueDatem="ngModel"
                                                     required readonly
                                                     />
+                                                <div *ngIf="dueDatem.invalid
+                                                    &&
+                                                    (dueDatem.dirty ||
+                                                    dueDatem.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="dueDatem.errors.required">
+                                                        Due date is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="col-lg-5">
                                                 <label class="control-label
                                                     font-weight-bold font-bold
                                                     text-lg-right pt-2">Payment
-                                                    Terms</label>
+                                                    Terms
+                                                    <span class="mandfield
+                                                        text-2 ml-1"><sup>*</sup></span>
+                                                </label>
                                                 <ng-select
                                                     [(ngModel)]="orderData.paymentTerm"
                                                     name="paymentTerm"
@@ -237,6 +303,18 @@
                                                         paymentTerms">{{
                                                         data.name }}</ng-option>
                                                 </ng-select>
+
+                                                <div *ngIf="paymentTerm.invalid
+                                                    &&
+                                                    (paymentTerm.dirty ||
+                                                    paymentTerm.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="paymentTerm.errors.required">
+                                                        Payment terms is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -245,7 +323,7 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
+                    <div class="row mb-3" *ngIf="!editDisabled">
                         <div class="col-lg-12">
                             <div class="bg-white p-3 text-dark">
                                 <div class="form-group row
@@ -278,6 +356,9 @@
                                                         class="text-2">Reference#</th>
                                                     <th
                                                         class="text-2">Amount</th>
+                                                    <th
+                                                        class="text-2">Pending
+                                                        Amount</th>
                                                     <th
                                                         class="text-2">Paid
                                                         Amount</th>
@@ -330,6 +411,12 @@
                                                         data.currency
                                                         }}</td>
                                                     <td>{{
+                                                        data.balance | number :
+                                                        '1.2-2'
+                                                        }} {{
+                                                        data.currency
+                                                        }}</td>
+                                                    <td>{{
                                                         data.prevPaidAmount |
                                                         number : '1.2-2'
                                                         }}</td>
@@ -338,7 +425,7 @@
                                                             badge-dark
                                                             p-1
                                                             text-uppercase">{{
-                                                            data.status
+                                                            data.newStatus
                                                             }}</span>
                                                     </td>
                                                     <td
@@ -355,8 +442,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             [(ngModel)]="data.paidAmount"
-                                                            (input)="calculateFinalTotal();
-                                                            checkInput()"
+                                                            (input)="calculateFinalTotal();"
                                                             name="advPaidAmount{{i}}"
                                                             [disabled]="data.paidStatus">
                                                         <label
@@ -406,7 +492,8 @@
                                                                 class="mandfield
                                                                 text-2 ml-1"><sup>*</sup></span></th>
                                                         <th>Description</th>
-                                                        <th>Action</th>
+                                                        <th
+                                                            *ngIf="!productDisabled">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -422,6 +509,7 @@
                                                                 class="form-control"
                                                                 placeholder="Enter
                                                                 commodity"
+                                                                [readonly]="productDisabled"
                                                                 />
                                                         </td>
 
@@ -440,6 +528,7 @@
                                                                         (input)="calcDetailAmount(idt)"
                                                                         pattern="^[1-9]\d*(\.\d+)?$"
                                                                         #qtyy="ngModel"
+                                                                        [readonly]="productDisabled"
                                                                         />
                                                                     <div
                                                                         *ngIf="qtyy.invalid
@@ -472,7 +561,8 @@
                                                                         placeholder="Select
                                                                         type"
                                                                         #quanType="ngModel"
-                                                                        (change)="setQuanType($event,idt)">
+                                                                        (change)="setQuanType($event,idt)"
+                                                                        [readonly]="productDisabled">
                                                                         <ng-option
                                                                             *ngFor="let
                                                                             qtype
@@ -502,6 +592,7 @@
                                                                         (input)="calcDetailAmount(idt)"
                                                                         pattern="^[1-9]\d*(\.\d+)?$"
                                                                         #rateQ="ngModel"
+                                                                        [readonly]="productDisabled"
                                                                         />
 
                                                                     <div
@@ -541,7 +632,8 @@
                                                                         placeholder="Select
                                                                         type"
                                                                         #rateTyp="ngModel"
-                                                                        (change)="setQuanType($event,idt)">
+                                                                        (change)="setQuanType($event,idt)"
+                                                                        [readonly]="productDisabled">
                                                                         <ng-option
                                                                             *ngFor="let
                                                                             qtype
@@ -601,7 +693,8 @@
                                                                 description"
                                                                 />
                                                         </td>
-                                                        <td>
+                                                        <td
+                                                            *ngIf="!productDisabled">
                                                             <a
                                                                 href="javascript:;"
                                                                 (click)="delDetail(idt)">
@@ -613,7 +706,8 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <button type="button" class="btn
+                                        <button *ngIf="!productDisabled"
+                                            type="button" class="btn
                                             btn-success btn-sm"
                                             (click)="addDetail();"><i class="fas
                                                 fa-plus"></i> Add Another Line</button>
@@ -812,7 +906,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3
-                                                        text-right">
+                                                        text-right"
+                                                        *ngIf="!productDisabled">
                                                         <button *ngIf="bId ===
                                                             0" type="button"
                                                             (click)="addAccessorialArr('ded')"
@@ -843,6 +938,9 @@
                                                             <input
                                                                 type="checkbox"
                                                                 id="ZeroRated"
+                                                                name="exempt"
+                                                                [(ngModel)]="orderData.exempt"
+                                                                (change)="taxExempt()"
                                                                 />
                                                             <label
                                                                 class="control-label
@@ -861,19 +959,34 @@
                                                             text-3 text-dark"
                                                             for="inputDefault">Province/State</label>
                                                     </div>
-                                                    <div class="col-lg-9">
+                                                    <div class="col-lg-9"
+                                                        *ngIf="!orderData.exempt">
                                                         <ng-select
                                                             class="form-control
-                                                            populate">
-                                                            <ng-option selected
-                                                                value="">state
-                                                                tax</ng-option>
+                                                            populate"
+                                                            name="stateID"
+                                                            [(ngModel)]="orderData.stateID"
+                                                            placeholder="Select
+                                                            state"
+                                                            (change)="selecteProvince($event)">
+                                                            <ng-option
+                                                                *ngFor="let data
+                                                                of stateTaxes"
+                                                                value="{{
+                                                                data.stateTaxID
+                                                                }}">{{
+                                                                data.stateName
+                                                                }}</ng-option>
                                                         </ng-select>
                                                     </div>
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-lg-8">
+                                                    <div class="col-lg-8"
+                                                        *ngIf="orderData.exempt">
+                                                    </div>
+                                                    <div class="col-lg-8"
+                                                        *ngIf="!orderData.exempt">
                                                         <!-- GST -->
                                                         <div class="row mt-3"
                                                             *ngFor="let taxD of
@@ -910,18 +1023,50 @@
                                                     </div>
 
                                                     <div class="col-lg-4">
-                                                        <div class="row mt-3"
-                                                            *ngFor="let taxD of
-                                                            orderData.charges.taxes;
-                                                            let td= index;">
+                                                        <div
+                                                            *ngIf="!orderData.exempt">
+                                                            <div class="row
+                                                                mt-3"
+                                                                *ngFor="let taxD
+                                                                of
+                                                                orderData.charges.taxes;
+                                                                let td= index;">
+                                                                <div
+                                                                    class="col-lg-12
+                                                                    bordtop
+                                                                    pt-1">
+                                                                    <p
+                                                                        class="text-right">{{
+                                                                        taxD.amount
+                                                                        | number
+                                                                        :
+                                                                        '1.2-2'}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row mt-3">
                                                             <div
-                                                                class="col-lg-12
-                                                                bordtop pt-1">
+                                                                class="col-lg-9
+                                                                bordtop
+                                                                pt-1">
+                                                                <h5
+                                                                    class="text-right
+                                                                    font-weight-semibold
+                                                                    text-4
+                                                                    text-dark">
+                                                                    Sub Total
+                                                                </h5>
+                                                            </div>
+                                                            <div
+                                                                class="col-lg-3
+                                                                bordtop
+                                                                pt-1">
                                                                 <p
                                                                     class="text-right">{{
-                                                                    taxD.amount
+                                                                    orderData.total.subTotal
                                                                     | number :
-                                                                    '1.2-2'}}</p>
+                                                                    '1.2-2' }}</p>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-3">

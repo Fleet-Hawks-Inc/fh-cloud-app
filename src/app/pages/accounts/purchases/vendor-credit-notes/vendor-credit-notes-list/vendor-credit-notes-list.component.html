@@ -9,12 +9,10 @@
                 [clearable]="false"
                 [(ngModel)]="filterData.vendorID"
                 name="vendorID"
-                placeholder="Search By vendor"
-              >
+                placeholder="Search By vendor">
                 <ng-option
                   *ngFor="let item of vendors | keyvalue"
-                  value="{{ item.key }}"
-                >
+                  value="{{ item.key }}">
                   {{ item.value }}
                 </ng-option>
               </ng-select>
@@ -38,10 +36,9 @@
                 class="form-control"
                 placeholder="mm/dd/yyyy"
                 readonly
-              />
+                />
               <span
-                class="input-group-text border-left-0 border-right-0 rounded-0"
-              >
+                class="input-group-text border-left-0 border-right-0 rounded-0">
                 to
               </span>
               <input
@@ -54,7 +51,7 @@
                 class="form-control"
                 placeholder="mm/dd/yyyy"
                 readonly
-              />
+                />
             </div>
           </div>
 
@@ -63,16 +60,14 @@
               type="submit"
               [disabled]="isSearch"
               (click)="searchCredits()"
-              class="btn btn-sm btn-success"
-            >
+              class="btn btn-sm btn-success">
               Search
             </button>
             <button
               type="button"
               class="btn btn-sm btn-success ml-3"
               [disabled]="isSearch"
-              (click)="resetFilter()"
-            >
+              (click)="resetFilter()">
               Reset
             </button>
           </div>
@@ -81,8 +76,7 @@
             <a
               routerLink="/accounts/purchases/vendor-credit-notes/add"
               class="btn btn-success btn-sm ml-2"
-              style="color: white"
-              ><i class="fas fa-plus"></i> Add Vendor Credit
+              style="color: white"><i class="fas fa-plus"></i> Add Vendor Credit
             </a>
           </div>
         </div>
@@ -96,19 +90,15 @@
               [infiniteScrollDistance]="1"
               [infiniteScrollUpDistance]="1"
               [infiniteScrollThrottle]="5"
-              (scrolled)="onScroll()"
-            >
+              (scrolled)="onScroll()">
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row">
                   <div class="col-lg-12">
                     <table
-                      class="
-                        table table-bordered table-striped
-                        mb-0
-                        simple-table
-                        text-capitalize
-                      "
-                    >
+                      class="table table-bordered table-striped
+                      mb-0
+                      simple-table
+                      text-capitalize">
                       <thead>
                         <tr class="bgcol2">
                           <th class="text-2">Date</th>
@@ -130,75 +120,69 @@
                         <tr *ngFor="let item of allCredits">
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             {{
-                              item.txnDate
-                                ? (item.txnDate | date: "yyyy/MM/dd")
-                                : "-"
+                            item.txnDate
+                            ? (item.txnDate | date: "yyyy/MM/dd")
+                            : "-"
                             }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             {{ item.vCrNo }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             {{ item.crRef }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             {{ item.purOrder }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             {{ item.vendorID ? vendors[item.vendorID] : "-" }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
-                            {{ item.currency }}
+                            item.creditID
+                            }}">
+
                             {{
-                              item.totalAmt
-                                ? (item.totalAmt | number: "1.2-2")
-                                : 0
+                            item.totalAmt
+                            ? (item.totalAmt | number: "1.2-2")
+                            : 0
                             }}
+                            {{ item.currency }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
-                            {{ item.currency }}
+                            item.creditID
+                            }}">
+
                             {{
-                              item.totalAmt
-                                ? (item.totalAmt | number: "1.2-2")
-                                : 0
+                            item.totalAmt
+                            ? (item.totalAmt | number: "1.2-2")
+                            : 0
                             }}
+                            {{ item.currency }}
                           </td>
                           <td
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
-                              item.creditID
-                            }}"
-                          >
+                            item.creditID
+                            }}">
                             <span class="badge badge-dark p-1 text-uppercase">{{
                               item.status
-                            }}</span>
+                              }}</span>
                           </td>
                           <td>
                             <div class="btn-group flex-wrap">
@@ -207,33 +191,26 @@
                                 class="m-0 btn p-0"
                                 data-toggle="dropdown"
                                 aria-expanded="false"
-                              >
+                                [disabled]="item.payLinked">
                                 <i class="fas fa-ellipsis-v"></i>
                               </button>
                               <div
                                 class="dropdown-menu"
                                 role="menu"
                                 x-placement="bottom-start"
-                                style="
-                                  position: absolute;
-                                  will-change: transform;
-                                  top: 0px;
-                                  left: 0px;
-                                  transform: translate3d(0px, 42px, 0px);
-                                "
-                              >
+                                style="position: absolute;
+                                will-change: transform;
+                                top: 0px;
+                                left: 0px;
+                                transform: translate3d(0px, 42px, 0px);">
                                 <a
                                   routerLink="/accounts/purchases/vendor-credit-notes/edit/{{
-                                    item.creditID
+                                  item.creditID
                                   }}"
-                                  class="dropdown-item text-1"
-                                  >Edit</a
-                                >
+                                  class="dropdown-item text-1">Edit</a>
                                 <a
                                   (click)="deleteCredit(item.creditID)"
-                                  class="dropdown-item text-1"
-                                  >Delete</a
-                                >
+                                  class="dropdown-item text-1">Delete</a>
                               </div>
                             </div>
                           </td>
@@ -243,13 +220,11 @@
                   </div>
                   <div
                     class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastItemSK !== 'end' && allCredits.length !== 0"
-                  >
+                    *ngIf="lastItemSK !== 'end' && allCredits.length !== 0">
                     <button
                       type="button"
                       class="btn btn-success btn-sm text-light"
-                      (click)="onScroll()"
-                    >
+                      (click)="onScroll()">
                       Load More..
                     </button>
                   </div>

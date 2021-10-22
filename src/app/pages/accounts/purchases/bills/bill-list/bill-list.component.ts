@@ -33,18 +33,18 @@ export class BillListComponent implements OnInit {
 
   async ngOnInit() {
     await this.fetchVendor();
-    await this.fetchPurchaseOrders();
-    await this.fetchPurchases();
+    this.fetchPurchaseOrders();
+    this.fetchBills();
   }
 
-  async fetchPurchases() {
+  async fetchBills() {
     let filterAmount = null;
     if (this.filter.amount) {
       filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
     }
     let result: any = await this.accountService
       .getData(
-        `bills/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
+        `bills/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
       )
       .toPromise();
     this.disableSearch = false;
@@ -59,7 +59,7 @@ export class BillListComponent implements OnInit {
     }
 
     result.map((v) => {
-      v.url = `/accounts/purchases/bills/detail/${v.billID}`;
+      v.url = `/accounts/purchases/bills/details/${v.billID}`;
       v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
       this.payOrders.push(v);
     });
@@ -88,10 +88,42 @@ export class BillListComponent implements OnInit {
         next: (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA;
           this.payOrders = [];
-          this.fetchPurchases();
+          this.fetchBills();
           this.toastr.success("Bill deleted successfully");
         },
       });
     }
+  }
+
+  searchFilter() {
+    if (
+      this.filter.amount !== null ||
+      this.filter.startDate !== null ||
+      this.filter.endDate !== null
+    ) {
+      this.payOrders = [];
+      this.disableSearch = true;
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchBills();
+    }
+  }
+
+  resetFilter() {
+    this.filter = {
+      amount: null,
+      startDate: null,
+      endDate: null,
+    };
+    this.payOrders = [];
+    this.disableSearch = true;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fetchBills();
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchBills();
+    }
+    this.loaded = false;
   }
 }
