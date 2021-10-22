@@ -24,123 +24,81 @@ export class DriverSummaryComponent implements OnInit {
     searchValue = '';
     driverStatus = '';
     driverName = '';
-    driverNext = false;
-    driverPrev = true;
     lastItemSK = '';
-      disableSearch = false;
+    disableSearch = false;
     loaded = false;
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
     ngOnInit() {
-
-        //this.fetchDrivers();
         this.countDrivers();
-        this.fetchDriverReport();
+        this.fetchPagination();
     }
-
-
-
-
-
-fetchDrivers()
-{
-  this.inActiveDrivers = 0;
-  this.activeDrivers = 0;
-  this.apiService.getData(`drivers/fetch/summary/list?name=${this.driverName}&driverStatus=${this.driverStatus}`).subscribe((result: any) => 
-  {
-    for(let i=0;i<result.Items.length;i++)
-    {
-      const drivers = result.Items[i];
+    fetchDrivers() {
+        this.inActiveDrivers = 0;
+        this.activeDrivers = 0;
+        this.apiService.getData(`drivers/fetch/summary/list?name=${this.driverName}&driverStatus=${this.driverStatus}`).subscribe((result: any) => {
+            for (let i = 0; i < result.Items.length; i++) {
+                const drivers = result.Items[i];
+            }
+            this.drivers = result.Items;
+        })
     }
-     this.drivers = result.Items;
-    console.log('driver', this.drivers);
-  })
-}
-
-
-
-
-
-  async fetchDriverReport(refresh?: boolean) {
-    if (refresh === true) {
-      this.lastItemSK = '';
-        this.drivers = [];
-    }
-    if (this.lastItemSK !== 'end') {
-      const result = await this.apiService.getData(`drivers/paging/list?lastKey=${this.lastItemSK}`).toPromise();
-      this.dataMessage = Constants.FETCHING_DATA;
-      if (result.Items.length === 0) {
-                  this.disableSearch = false;
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      if (result.Items.length > 0) {
-        if (result.LastEvaluatedKey !== undefined) {
-                    this.disableSearch = false;
-          this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+    async fetchPagination(refresh?: boolean) {
+        if (refresh === true) {
+            this.lastItemSK = '';
+            this.drivers = [];
         }
-        else {
-          this.lastItemSK = 'end'
+        if (this.lastItemSK !== 'end') {
+            const result = await this.apiService.getData(`drivers/paging/list?lastKey=${this.lastItemSK}`).toPromise();
+            this.dataMessage = Constants.FETCHING_DATA;
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+            }
+            if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+                }
+                else {
+                    this.lastItemSK = 'end'
+                }
+                this.drivers = this.drivers.concat(result.Items);
+                this.loaded = true;
+            }
         }
-        this.drivers = this.drivers.concat(result.Items);
-        //this.countDrivers();
-        //this.drivers = result.Items;
-        this.loaded = true;
-      }
     }
-  }
- onScroll() {
-    if (this.loaded) {
-      this.fetchDriverReport();
+    onScroll() {
+        if (this.loaded) {
+            this.fetchPagination();
+        }
+        this.loaded = false;
     }
-    this.loaded = false;
-  }
-
-
-
-
-
-
-
     countDrivers() {
         this.apiService.getData(`drivers`).subscribe((result: any) => {
-        this.totalDriversCount = result.Count;
-        if(this.totalDriversCount == 0)
-        this.dataMessage =Constants.NO_RECORDS_FOUND;
-        result.Items.forEach(element => {
-        if(element.driverStatus == "active")
-        this.activeDrivers ++ ;
-        if(element.driverStatus == "inActive")
-        this.inActiveDrivers ++ ;
+            this.totalDriversCount = result.Count;
+            if (this.totalDriversCount == 0)
+                this.dataMessage = Constants.NO_RECORDS_FOUND;
+            result.Items.forEach(element => {
+                if (element.driverStatus == "active")
+                    this.activeDrivers++;
+                if (element.driverStatus == "inActive")
+                    this.inActiveDrivers++;
             })
         })
     }
-    
-    
-    
-    
-    
-    
     searchDriver() {
-        if (this.driverName !== '' || this.driverStatus !== '')
-        {
-            //this.driverName = this.driverName.toLowerCase();
-            //this.driverStatus = this.driverStatus;
+        if (this.driverName !== '' || this.driverStatus !== '') {
+            this.driverName = this.driverName.toLowerCase();
             this.disableSearch = true;
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
             this.countDrivers();
             this.fetchDrivers();
-            //this.fetchDriverReport();
         }
         else {
             return false;
         }
     }
-    
-    
-    
-    
     resetDriver() {
-        if (this.driverName !== '' || this.driverStatus !== ''|| this.lastItemSK !== '') {
+        if (this.driverName !== '' || this.driverStatus !== '' || this.lastItemSK !== '') {
             this.drivers = [];
             this.driverStatus = '';
             this.driverName = '';
@@ -149,16 +107,11 @@ fetchDrivers()
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchDrivers();
             this.countDrivers();
-            //this.fetchDriverReport();
         }
         else {
             return false;
         }
     }
-    
-    
-    
-    
     generateDriverCSV() {
         if (this.drivers.length > 0) {
             let dataObject = []
@@ -192,7 +145,6 @@ fetchDrivers()
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-
             }
         }
         else {
@@ -200,4 +152,3 @@ fetchDrivers()
         }
     }
 }
-

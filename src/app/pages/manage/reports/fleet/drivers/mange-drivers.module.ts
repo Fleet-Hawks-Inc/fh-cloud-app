@@ -17,7 +17,7 @@ import {Injectable} from '@angular/core';
 import { DriverDetailComponent } from './driver-detail/driver-detail.component';
 import { DriverLogsComponent } from './driver-logs/driver-logs.component';
 import { TripComponent } from './trip/trip.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 const routes: Routes = [
   { path: '', component: OverviewComponent },
   { path: 'summary', component: DriverSummaryComponent },
@@ -96,7 +96,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     {provide: NgbDateAdapter, useClass: CustomAdapter},
