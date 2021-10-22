@@ -81,7 +81,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
 
   fetchQuantityUnits() {
     this.httpClient
-      .get("assets/jsonFiles/quantityUnits.json")
+      .get("assets/jsonFiles/quantityTypes.json")
       .subscribe((data: any) => {
         this.units = data;
       });
