@@ -50,7 +50,7 @@ export class PurchaseOrdersListComponent implements OnInit {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
 
-    if (result[result.length - 1].sk !== undefined) {
+    if (result.length > 0 && result[result.length - 1].sk !== undefined) {
       this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
     } else {
       this.lastItemSK = "end";
@@ -80,6 +80,8 @@ export class PurchaseOrdersListComponent implements OnInit {
           complete: () => {},
           error: () => {},
           next: (result: any) => {
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.payOrders = [];
             this.fetchPurchases();
             this.toastr.success("Purchase order deleted successfully");
           },
