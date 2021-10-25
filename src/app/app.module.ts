@@ -45,6 +45,7 @@ import { AddAccountComponent } from './entry/onboard/add-account/add-account.com
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -87,6 +88,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelectModule,
     NgxCaptchaModule,
+    GoogleMapsModule
+
 
   ],
   providers: [HttpInterceptorProviders, PreLoadStrategy, InvokeHeaderFnService],

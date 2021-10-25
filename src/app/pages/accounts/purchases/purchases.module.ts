@@ -10,6 +10,7 @@ import {
 import { Injectable } from "@angular/core";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { AddPurchaseOrderComponent } from "./purchase-orders/add-purchase-order/add-purchase-order.component";
 import { PurchaseOrdersListComponent } from "./purchase-orders/purchase-orders-list/purchase-orders-list.component";
@@ -21,6 +22,9 @@ import { VendorPaymentDetailComponent } from "./vendor-payments/vendor-payment-d
 import { VendorCreditNotesListComponent } from "./vendor-credit-notes/vendor-credit-notes-list/vendor-credit-notes-list.component";
 import { VendorCreditNoteDetailComponent } from "./vendor-credit-notes/vendor-credit-note-detail/vendor-credit-note-detail.component";
 import { AddVendorCreditNoteComponent } from "./vendor-credit-notes/add-vendor-credit-note/add-vendor-credit-note.component";
+import { AddBillComponent } from "./bills/add-bill/add-bill.component";
+import { BillDetailsComponent } from "./bills/bill-details/bill-details.component";
+import { BillListComponent } from "./bills/bill-list/bill-list.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -39,7 +43,8 @@ export class CustomAdapter extends NgbDateAdapter<string> {
     };
   }
 
-  toModel(date: NgbDateStruct): string { // from internal model -> your mode
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
     let month: any = "";
     let day: any = "";
     if (date) {
@@ -88,7 +93,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 const routes: Routes = [
   { path: "orders/list", component: PurchaseOrdersListComponent },
   { path: "orders/add", component: AddPurchaseOrderComponent },
-  { path: "orders/detail", component: PurchaseOrderDetailComponent },
+  { path: "orders/edit/:purchaseID", component: AddPurchaseOrderComponent },
+  {
+    path: "orders/detail/:purchaseID",
+    component: PurchaseOrderDetailComponent,
+  },
   { path: "vendor-payments/list", component: VendorPaymentsListComponent },
   { path: "vendor-payments/add", component: AddVendorPaymentComponent },
   { path: "vendor-payments/detail", component: VendorPaymentDetailComponent },
@@ -98,9 +107,17 @@ const routes: Routes = [
   },
   { path: "vendor-credit-notes/add", component: AddVendorCreditNoteComponent },
   {
-    path: "vendor-credit-notes/detail",
+    path: "vendor-credit-notes/edit/:creditID",
+    component: AddVendorCreditNoteComponent,
+  },
+  {
+    path: "vendor-credit-notes/detail/:creditID",
     component: VendorCreditNoteDetailComponent,
   },
+  { path: "bills/list", component: BillListComponent },
+  { path: "bills/add", component: AddBillComponent },
+  { path: "bills/edit/:billID", component: AddBillComponent },
+  { path: "bills/details/:billID", component: BillDetailsComponent },
 ];
 
 @NgModule({
@@ -114,6 +131,9 @@ const routes: Routes = [
     VendorCreditNotesListComponent,
     VendorCreditNoteDetailComponent,
     AddVendorCreditNoteComponent,
+    AddBillComponent,
+    BillDetailsComponent,
+    BillListComponent,
   ],
   imports: [
     CommonModule,
@@ -123,6 +143,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
+    InfiniteScrollModule,
   ],
 })
 export class PurchasesModule {}
