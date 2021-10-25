@@ -740,6 +740,7 @@
   }
 }
 
+
 @media (max-width: 896px) {
   .gmainbox2 {
     float: left;
@@ -3773,7 +3774,6 @@ input:checked + .sliderbtn:before {
 }
 
 */
-
 /* New Own Icon */
 
 @font-face {
@@ -3891,3 +3891,4 @@ input:checked + .sliderbtn:before {
   color: rgb(92, 92, 92);
   opacity: 0.431;
 }
+
