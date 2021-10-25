@@ -244,7 +244,7 @@ export class AddTripComponent implements OnInit {
     private location: Location,
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -266,7 +266,7 @@ export class AddTripComponent implements OnInit {
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
-      await this.fetchTripDetail();
+      this.fetchTripDetail();
     }
 
     $(document).ready(() => {
@@ -399,6 +399,7 @@ export class AddTripComponent implements OnInit {
       if (locations.length > 1) {
         this.resetMap();
       }
+      this.getMilesTotal();
     } else {
       this.toastr.error("Please fill type and location to add trip plan.");
       return false;
@@ -494,6 +495,7 @@ export class AddTripComponent implements OnInit {
     $(".labelRow" + index).css("display", "");
     $(".editRow" + index).addClass("rowStatus");
     this.getVehicles();
+    this.getMilesTotal();
   }
 
   closeEditRow(index) {
@@ -504,8 +506,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => { },
-      error: () => { },
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -640,7 +642,7 @@ export class AddTripComponent implements OnInit {
         if (element == v.orderID) {
           current.tripData.orderType = v.orderMode;
           calculateBy = v.milesInfo.calculateBy;
-          totalMilesOrder += parseFloat(v.milesInfo.totalMiles);
+          // totalMilesOrder += parseFloat(v.milesInfo.totalMiles);
 
           if (v.shippersReceiversInfo) {
             v.shippersReceiversInfo.map((m) => {
@@ -789,7 +791,7 @@ export class AddTripComponent implements OnInit {
 
   async getMiles() {
     let savedCord = "";
-
+    this.orderMiles.totalMiles = 0;
     for (let i = 0; i < this.trips.length; i++) {
       const element = this.trips[i];
 
@@ -797,17 +799,24 @@ export class AddTripComponent implements OnInit {
         if (element.lng != undefined && element.lat != undefined) {
           let endingPoint = element.lng + "," + element.lat;
           try {
-            let newsMiles = savedCord + ";" + endingPoint;
-            this.apiService
-              .getData(
-                "trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles
-              )
-              .subscribe((result) => {
-                if (element.milesMan === false || element.milesMan === undefined) {
-                  element.miles = result;
-                }
-                this.calculateActualMiles(result);
-              });
+            if (element.milesMan === false || element.milesMan === undefined) {
+              let newsMiles = savedCord + ";" + endingPoint;
+              this.apiService
+                .getData(
+                  "trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles
+                )
+                .subscribe((result) => {
+                  if (
+                    element.milesMan === false ||
+                    element.milesMan === undefined
+                  ) {
+                    element.miles = result;
+                  }
+                  this.calculateActualMiles(result);
+                });
+            } else {
+              this.orderMiles.totalMiles += Number(element.miles);
+            }
           } catch (error) {
             this.toastr.error("No route found with these locations.");
             return false;
@@ -825,22 +834,45 @@ export class AddTripComponent implements OnInit {
     this.getStateWiseMiles();
   }
 
+  getMilesTotal() {
+    this.orderMiles.totalMiles = 0;
+    this.actualMiles = 0;
+    for (let i = 0; i < this.trips.length; i++) {
+      const element = this.trips[i];
+      if (element.milesMan) {
+        this.orderMiles.totalMiles += Number(element.miles);
+      } else {
+        this.actualMiles += Number(element.miles);
+      }
+    }
+  }
+
   async getSingleRowMiles(endingPoint, tripLength) {
     let savedCord = "";
     savedCord =
       this.trips[tripLength - 1].lng + "," + this.trips[tripLength - 1].lat;
     try {
-      let newsMiles = savedCord + ";" + endingPoint;
-      this.apiService
-        .getData("trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles)
-        .subscribe((result) => {
-          if (this.trips[tripLength].milesMan === false || this.trips[tripLength].milesMan === undefined) {
+      if (
+        this.trips[tripLength].milesMan === false ||
+        this.trips[tripLength].milesMan === undefined
+      ) {
+        let newsMiles = savedCord + ";" + endingPoint;
+        this.apiService
+          .getData(
+            "trips/calculate/pc/miles?type=mileReport&stops=" + newsMiles
+          )
+          .subscribe((result) => {
+            // if (
+            //   this.trips[tripLength].milesMan === false ||
+            //   this.trips[tripLength].milesMan === undefined
+            // ) {
             this.trips[tripLength].miles = result;
-          }
+            // }
 
-          this.calculateActualMiles(result);
-          this.getStateWiseMiles();
-        });
+            this.calculateActualMiles(result);
+            this.getStateWiseMiles();
+          });
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -1372,7 +1404,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1390,7 +1422,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1409,12 +1441,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -1639,6 +1671,7 @@ export class AddTripComponent implements OnInit {
         this.tripData["mapFrom"] = result.mapFrom;
         this.tripData["settlmnt"] = result.settlmnt;
         this.dateCreated = result.dateCreated;
+        this.tripData["oldOrdr"] = result.orderId;
         this.orderNo = "";
 
         if (result.mapFrom == "order") {
@@ -1945,7 +1978,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.putData("trips", this.tripData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1963,7 +1996,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -2080,7 +2113,7 @@ export class AddTripComponent implements OnInit {
             this.submitDisabled = true;
           }
           calcultedBy = element.milesInfo.calculateBy;
-          totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
+          // totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
           this.orderNo += element.orderNumber;
           if (i < result.length - 1) {
             this.orderNo = this.orderNo + ", ";
@@ -2180,10 +2213,10 @@ export class AddTripComponent implements OnInit {
           }
         }
         this.setOrdersDataFormat(result, "selected");
-        this.orderMiles = {
-          calculateBy: calcultedBy,
-          totalMiles: totalMilesOrder,
-        };
+        // this.orderMiles = {
+        //   calculateBy: calcultedBy,
+        //   totalMiles: totalMilesOrder,
+        // };
       });
   }
 
@@ -2518,7 +2551,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -2531,8 +2564,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {

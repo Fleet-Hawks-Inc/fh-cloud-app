@@ -2,125 +2,187 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pl-0 pr-0 pt-0">
       <header class="page-header">
-         <h2>Vendor Payment</h2>
-         <div class="right-wrapper text-right">
-            <div class="pull-right pr-2">
-               <a routerLink="/accounts/purchases/vendor-payments/list" class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i
-                  class="fas fa-list"></i> All Payments</a>
-            </div>
-         </div>
+        <h2>Purchase Payment</h2>
+        <div class="right-wrapper text-right">
+          <div class="pull-right pr-2">
+            <a
+              routerLink="/accounts/purchases/vendor-payments/list"
+              class="mb-1 mt-1 mr-1 mr-5 btn btn-default"
+              ><i class="fas fa-list"></i> All Payments</a
+            >
+          </div>
+        </div>
       </header>
       <section class="card mt-0 mb-4">
-         <div class="card-body">
-            <div class="row">
-               <div class="col pr-0">
-                  <div class="card-body text-dark">
-                     <form class="form-horizontal form-bordered" method="get">
-                        <div class="row">
-                           <div class="col-lg-5 offset-lg-1">
-                              <div class="row">
-                              <div class="col-lg-5">
+        <div class="card-body">
+          <div class="row">
+            <div class="col pr-0">
+              <div class="card-body text-dark">
+                <form class="form-horizontal form-bordered" method="get">
+                  <div class="row">
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <!-- <div class="col-lg-5">
                                     <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment#</label>
                                     <input type="text" class="form-control">
-                                 </div>
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Date </label>
-                                    <input type="date" class="form-control">
-                                 </div>
-                              </div>
-                              <div class="row pt-2">
-                                 <div class="col-lg-10">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Vendor</label>
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                       <optgroup>
-                                          <option value="Driver">Jatinder</option>
-                                          <option value="Carrier">Manjot</option>
-                                          <option value="OwnerOperator">Taranjit</option>
-                                       </optgroup>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-lg-5 offset-lg-1">
-                              <div class="row">
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Reference#</label>
-                                    <input type="text" class="form-control">
-                                 </div>
-                                 <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Currency</label>
-                                    <select data-plugin-selectTwo class="form-control populate">
-                                       <optgroup>
-                                          <option value="CAD">CAD</option>
-                                          <option value="USD">USD</option>
-                                       </optgroup>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
+                                 </div> -->
+                        <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Date
+                          </label>
+                          <input type="date" class="form-control" />
                         </div>
-                        <div class="row">
-                           <div class="col-lg-12">
-                              <h4>Purchase Orders</h4>
-                           </div>
+                        <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Vendor</label
+                          >
+                          <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                          >
+                            <optgroup>
+                              <option value="Driver">Jatinder</option>
+                              <option value="Carrier">Manjot</option>
+                              <option value="OwnerOperator">Taranjit</option>
+                            </optgroup>
+                          </select>
                         </div>
-                        <!-- Purchase Orders DIV -->
-                        <div >
-                           <div class="row">
-                              <div class="col-lg-10 offset-lg-1">
-                                 <table class="table table-bordered table-striped mb-0 simple-table">
-                                    <thead>
-                                       <tr class="bgcol2">
-                                          <th class="text-2">Date</th>
-                                          <th class="text-2">Purchase Order#</th>
-                                          <th class="text-2">Reference#</th>
-                                          <th class="text-2">Vendor</th>
-                                          <th class="text-2">Due Date</th>
-                                          <th class="text-2">Amount</th>
-                                          <th class="text-2">Balance</th>
-                                          <th class="text-2">Status</th>
-                                          <th class="text-2">Full Payment</th>
-                                          <th class="text-2">Payment</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr>
-                                          <td>09/25/2020</td>
-                                          <td>PO-576</td>
-                                          <td>56767</td>
-                                          <td>Vendor 1</td>
-                                          <td>09/30/2020</td>
-                                          <td>CAD 4,000</td>
-                                          <td>CAD 2,000</td>
-                                          <td><span class="badge badge-dark p-1">PARTIALLY PAID</span></td>
-                                          <td class="text-center"><input type="checkbox"></td>
-                                          <td><input type="text" class="form-control"></td>
-                                       </tr>
-                                       <tr>
-                                          <td>04/02/2020</td>
-                                          <td>PO-476</td>
-                                          <td>56767</td>
-                                          <td>Vendor 1</td>
-                                          <td>09/30/2020</td>
-                                          <td>CAD 4,000</td>
-                                          <td>CAD 2,000</td>
-                                          <td><span class="badge badge-dark p-1">UNPAID</span></td>
-                                          <td class="text-center"><input type="checkbox"></td>
-                                          <td><input type="text" class="form-control"></td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                              <!-- <div class="col-lg-10 offset-lg-1 text-right">
+                      </div>
+                      <!-- <div class="row pt-2">
+                                 
+                              </div> -->
+                    </div>
+                    <div class="col-lg-5 offset-lg-1">
+                      <div class="row">
+                        <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Reference#</label
+                          >
+                          <input type="text" class="form-control" />
+                        </div>
+                        <div class="col-lg-5">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Currency</label
+                          >
+                          <select
+                            data-plugin-selectTwo
+                            class="form-control populate"
+                          >
+                            <optgroup>
+                              <option value="CAD">CAD</option>
+                              <option value="USD">USD</option>
+                            </optgroup>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <h4>Purchase Orders</h4>
+                    </div>
+                  </div>
+                  <!-- Purchase Orders DIV -->
+                  <div>
+                    <div class="row">
+                      <div class="col-lg-10 offset-lg-1">
+                        <table
+                          class="
+                            table table-bordered table-striped
+                            mb-0
+                            simple-table
+                          "
+                        >
+                          <thead>
+                            <tr class="bgcol2">
+                              <th class="text-2">Date</th>
+                              <th class="text-2">Purchase Order#</th>
+                              <th class="text-2">Reference#</th>
+                              <th class="text-2">Vendor</th>
+                              <th class="text-2">Due Date</th>
+                              <th class="text-2">Amount</th>
+                              <th class="text-2">Balance</th>
+                              <th class="text-2">Status</th>
+                              <th class="text-2">Full Payment</th>
+                              <th class="text-2">Payment</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>09/25/2020</td>
+                              <td>PO-576</td>
+                              <td>56767</td>
+                              <td>Vendor 1</td>
+                              <td>09/30/2020</td>
+                              <td>CAD 4,000</td>
+                              <td>CAD 2,000</td>
+                              <td>
+                                <span class="badge badge-dark p-1"
+                                  >PARTIALLY PAID</span
+                                >
+                              </td>
+                              <td class="text-center">
+                                <input type="checkbox" />
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" />
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>04/02/2020</td>
+                              <td>PO-476</td>
+                              <td>56767</td>
+                              <td>Vendor 1</td>
+                              <td>09/30/2020</td>
+                              <td>CAD 4,000</td>
+                              <td>CAD 2,000</td>
+                              <td>
+                                <span class="badge badge-dark p-1">UNPAID</span>
+                              </td>
+                              <td class="text-center">
+                                <input type="checkbox" />
+                              </td>
+                              <td>
+                                <input type="text" class="form-control" />
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- <div class="col-lg-10 offset-lg-1 text-right">
                                  <button type="button" class="btn btn-sm btn-success">Select Bills</button>
                               </div> -->
-                           </div>
-                           <div class="row pt-2">
-                              <div class="col-lg-12">
-                                 <h4>Payment Information</h4>
-                              </div>
-                           </div>
-                           <!-- <div class="row pt-2 mt-4">
+                    </div>
+                    <div class="row pt-2">
+                      <div class="col-lg-12">
+                        <h4>Payment Information</h4>
+                      </div>
+                    </div>
+                    <!-- <div class="row pt-2 mt-4">
                               <div class="col-lg-10 offset-lg-1" id="otherCharges" >
                                   <table class="table table-bordered" id="otherChargesTable">
                                       <thead>
@@ -159,152 +221,202 @@
                                   </table>
                               </div>
                               </div> -->
-                           <div class="row pt-2">
-                              <div class="col-lg-5 offset-lg-1">
-                                 <div class="row">
-                                    <div class="col-lg-5">
-                                       <label class="control-label font-weight-bold">Select
-                                       Account</label>
-                                       <select data-plugin-selectTwo class="form-control populate">
-                                          <optgroup>
-                                             <option value="1">Account 1</option>
-                                             <option value="2">Account 2</option>
-                                             <option value="2">Account 3</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-1" style="margin-top: 32px;">
-                                       <!-- <a href="#addAccountModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Payment
-                                       Mode</label>
-                                       <select data-plugin-selectTwo class="form-control populate"
-                                          id="paymentModeListDriver"
-                                          onchange="paymentModeDriver()">
-                                          <optgroup>
-                                             <option value="select">Select</option>
-                                             <option value="Cash">Cash</option>
-                                             <option value="Cheque">Cheque</option>
-                                             <option value="EFT">EFT</option>
-                                             <option value="creditCard">Credit Card</option>
-                                             <option value="debitCard">Debit Card</option>
-                                             <option value="demandDraft">Demand Draft</option>
-                                          </optgroup>
-                                       </select>
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <!-- <label
+                    <div class="row pt-2">
+                      <div class="col-lg-5 offset-lg-1">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <label class="control-label font-weight-bold"
+                              >Select Account</label
+                            >
+                            <select
+                              data-plugin-selectTwo
+                              class="form-control populate"
+                            >
+                              <optgroup>
+                                <option value="1">Account 1</option>
+                                <option value="2">Account 2</option>
+                                <option value="2">Account 3</option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-1" style="margin-top: 32px">
+                            <!-- <a href="#addAccountModal" class="btn btn-sm btn-success modal-with-form"><i class="fas fa-plus"></i></a> -->
+                          </div>
+                        </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Payment Mode</label
+                            >
+                            <select
+                              data-plugin-selectTwo
+                              class="form-control populate"
+                              id="paymentModeListDriver"
+                              onchange="paymentModeDriver()"
+                            >
+                              <optgroup>
+                                <option value="select">Select</option>
+                                <option value="Cash">Cash</option>
+                                <option value="Cheque">Cheque</option>
+                                <option value="EFT">EFT</option>
+                                <option value="creditCard">Credit Card</option>
+                                <option value="debitCard">Debit Card</option>
+                                <option value="demandDraft">
+                                  Demand Draft
+                                </option>
+                              </optgroup>
+                            </select>
+                          </div>
+                          <div class="col-lg-5">
+                            <!-- <label
                                           class="control-label font-weight-bold  labelalign">Payment Date</label>
                                           <input type="date" class="form-control"> -->
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="chequeDivDriver" style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Cheque#</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Cheque
-                                       Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="cashDivDriver" style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Cash
-                                       Reference Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Cash
-                                       Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="eftDivDriver" style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">EFT
-                                       Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">EFT
-                                       Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="creditCardDivDriver"
-                                    style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Credit
-                                       Card Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Credit
-                                       Card Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="debitCardDivDriver"
-                                    style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Debit
-                                       Card Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Debit
-                                       Card Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="row pt-1" id="demandDraftDivDriver"
-                                    style="display: none;">
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Demand
-                                       Draft Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                    <div class="col-lg-5">
-                                       <label
-                                          class="control-label font-weight-bold  labelalign">Demand
-                                       Draft Date</label>
-                                       <input type="date" class="form-control">
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-lg-3 offset-lg-2">
-                                 <div class="row">
-                                    <div class="col-lg-6 text-right"><label
-                                       class="control-label font-weight-bold">
-                                       Amount</label>
-                                    </div>
-                                    <div class="col-lg-6"><input type="text" class="form-control"
-                                       value="345.67"></div>
-                                 </div>
-                                 <!-- <div class="row pt-1">
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="chequeDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Cheque#</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Cheque Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="cashDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Cash Reference Number</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Cash Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="eftDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >EFT Number</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >EFT Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="creditCardDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Credit Card Number</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Credit Card Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="debitCardDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Debit Card Number</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Debit Card Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                        <div
+                          class="row pt-1"
+                          id="demandDraftDivDriver"
+                          style="display: none"
+                        >
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Demand Draft Number</label
+                            >
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="col-lg-5">
+                            <label
+                              class="control-label font-weight-bold labelalign"
+                              >Demand Draft Date</label
+                            >
+                            <input type="date" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 offset-lg-2">
+                        <div class="row">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold">
+                              Amount</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              value="345.67"
+                            />
+                          </div>
+                        </div>
+                        <!-- <div class="row pt-1">
                                     <div class="col-lg-6 text-right"><label
                                        class="control-label font-weight-bold">Other
                                        Charges</label>
                                     </div>
                                  </div> -->
-                                 <!-- <div class="row pt-1">
+                        <!-- <div class="row pt-1">
                                     <div class="col-lg-6 text-right"><label
                                        class="control-label font-weight-bold">Add</label></div>
                                     <div class="col-lg-6"><input type="text" class="form-control"
@@ -317,43 +429,71 @@
                                     <div class="col-lg-6"><input type="text" class="form-control"
                                        value="345.67"></div>
                                  </div> -->
-                                 <div class="row pt-1">
-                                    <div class="col-lg-6 text-right"><label
-                                       class="control-label font-weight-bold">Advance</label>
-                                    </div>
-                                    <div class="col-lg-6"><input type="text" class="form-control"
-                                       value="0.00"></div>
-                                 </div>
-                                 <div class="row pt-1">
-                                    <div class="col-lg-6 text-right"><label
-                                       class="control-label font-weight-bold">Vendor Credit</label>
-                                    </div>
-                                    <div class="col-lg-6"><input type="text" class="form-control"
-                                       value="0.00"></div>
-                                 </div>
-                                 <div class="row pt-1">
-                                    <div class="col-lg-6 text-right"><label
-                                       class="control-label font-weight-bold">Net
-                                       Payable</label>
-                                    </div>
-                                    <div class="col-lg-6"><input type="text" class="form-control"
-                                       value="345.67"></div>
-                                 </div>
-                              </div>
-                           </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Advance</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              value="0.00"
+                            />
+                          </div>
                         </div>
-                        <div class="form-group row mt-4">
-                           <div class="col-lg-11 text-right">
-                              <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                              <a href="vendor-payment.php" class="btn btn-success">Save</a>
-                           </div>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Vendor Credit</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              value="0.00"
+                            />
+                          </div>
                         </div>
-                     </form>
+                        <div class="row pt-1">
+                          <div class="col-lg-6 text-right">
+                            <label class="control-label font-weight-bold"
+                              >Net Payable</label
+                            >
+                          </div>
+                          <div class="col-lg-6">
+                            <input
+                              type="text"
+                              class="form-control"
+                              value="345.67"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-               </div>
+                  <div class="form-group row mt-4">
+                    <div class="col-lg-11 text-right">
+                      <button
+                        type="button"
+                        class="btn btn-default"
+                        onclick="goBack()"
+                      >
+                        Cancel
+                      </button>
+                      <a href="vendor-payment.php" class="btn btn-success"
+                        >Save</a
+                      >
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
-         </div>
+          </div>
+        </div>
       </section>
-   </section>
+    </section>
   </div>
 </section>
