@@ -1,0 +1,346 @@
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0 pl-0">
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-lg-5 col-md-5 pr-0 d-flex">
+            <span class="">
+              <span class="input-group-text">
+                <i class="fas fa-calendar-alt"></i>
+              </span>
+            </span>
+            <div class="col-md-5 col-lg-5 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <ng-select [(ngModel)]="selectedMonth" class="col">
+                  <ng-option *ngFor="let month of months" [value]="month">{{
+                    month
+                  }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <ng-select class="col" [(ngModel)]="selectedYear">
+                  <ng-option *ngFor="let year of years" [value]="year">{{
+                    year
+                  }}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+            <button class="btn btn-sm mr-2 btn-success" (click)="search()">
+              Search
+            </button>
+            <button class="btn btn-sm btn-success" (click)="reset()">
+              Reset
+            </button>
+          </div>
+
+          <div class="col-md-5 col-lg-5 text-right pr-1">
+            <div class="btn-group flex-wrap ml-2">
+              <button
+                type="button"
+                class="btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="fas fa-upload"></i> Export<span class="caret"></span>
+              </button>
+              <div
+                class="dropdown-menu"
+                role="menu"
+                x-placement="bottom-start"
+                style="
+                  position: absolute;
+                  will-change: transform;
+                  top: 0px;
+                  left: 0px;
+                  transform: translate3d(0px, 38px, 0px);
+                "
+              >
+                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="m-2">
+        <div class="row text-dark">
+          <div class="col-12 mb-3">
+            <div class="bg-white p-3">
+              <div class="row text-dark">
+                <div class="col-12">
+                  <div>
+                    <h4 class="mt-1 mb-0 font-weight-bold">
+                      Order Detail Report
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">All Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">
+                  {{ totalOrdersCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Dispatched Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">
+                  {{ dispatchedCount }}
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Delivered Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{ delieverdCount }}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Canceled Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{ canceledCount }}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">tonu Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{ tonuCount }}</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Deleted Orders</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{ deletedCount }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 pr-0 pl-0">
+          <div class="card">
+            <div class="card-body bor-radius0px">
+              <!-- Driver Div  -->
+
+              <section class="reports_div">
+                <div class="row">
+                  <table
+                    class="
+                      table table-bordered table-responsive-lg table-striped
+                      mb-0
+                    "
+                    id="datatable-default"
+                  >
+                    <thead>
+                      <tr class="back-color-gray">
+                        <th>Order#</th>
+                        <th>Trip#</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Customer</th>
+                        <th>Confirmation#</th>
+                        <th>Vehicles</th>
+                        <th>Assets</th>
+                        <th>Drivers</th>
+                        <th>Customer PO#</th>
+                        <th>Pickup Location</th>
+                        <th>Drop Off Location</th>
+                        <th>Miles</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center" *ngIf="records.length === 0">
+                        <td colspan="15">
+                          {{ dataMessage }}
+                        </td>
+                      </tr>
+                      <tr
+                        height="20px"
+                        *ngFor="let order of records"
+                        class="cursorpoint limit"
+                      >
+                        <td>{{ order.orderNumber }}</td>
+                        <td>
+                          <span
+                            *ngIf="order.tripData && order.tripData.tripNo"
+                            >{{ order.tripData.tripNo }}</span
+                          >
+                        </td>
+                        <td>{{ order.orderMode }}</td>
+                        <td>{{ order.createdDate }} {{ order.createdTime }}</td>
+                        <td>{{ customers[order.customerID] }}</td>
+                        <td>{{ order.cusConfirmation }}</td>
+                        <td>
+                          <span
+                            *ngIf="order.tripData && order.tripData.vehicleIDs"
+                          >
+                            <span *ngIf="order.tripData.vehicleIDs.length > 0">
+                              <span
+                                *ngFor="
+                                  let vehicleID of order.tripData.vehicleIDs
+                                "
+                              >
+                                {{ vehicles[vehicleID] }}<br />
+                              </span>
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            *ngIf="order.tripData && order.tripData.assetIDs"
+                          >
+                            <span *ngIf="order.tripData.assetIDs.length > 0">
+                              <span
+                                *ngFor="let assetID of order.tripData.assetIDs"
+                              >
+                                {{ assets[assetID] }}<br />
+                              </span>
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            *ngIf="order.tripData && order.tripData.driverIDs"
+                          >
+                            <span *ngIf="order.tripData.driverIDs.length > 0">
+                              <span
+                                *ngFor="
+                                  let driverID of order.tripData.driverIDs
+                                "
+                              >
+                                {{ drivers[driverID] }}<br />
+                              </span>
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <span *ngIf="order.cusPOs">
+                            <span *ngIf="order.cusPOs.length > 0">
+                              <span *ngFor="let po of order.cusPOs"
+                                >{{ po }}<br
+                              /></span>
+                            </span>
+                          </span>
+                        </td>
+                        <td>
+                          <div *ngIf="order.shippersReceiversInfo.length > 0">
+                            <div
+                              *ngFor="let item of order.shippersReceiversInfo"
+                            >
+                              <div *ngIf="item.shippers.length > 0">
+                                <div *ngFor="let shipper of item.shippers">
+                                  {{ customers[shipper.shipperID] }}
+                                  <span *ngIf="shipper.pickupPoint">
+                                    <span
+                                      *ngFor="let pickup of shipper.pickupPoint"
+                                    >
+                                      {{ pickup.address.address }}&nbsp;{{
+                                        pickup.address.cityName
+                                      }}&nbsp;
+                                      {{ pickup.address.stateName }}&nbsp;{{
+                                        pickup.address.countryCode
+                                      }}&nbsp; {{ pickup.address.zipCode
+                                      }}<br />
+
+                                      <span>{{ pickup.dateAndTime }}</span
+                                      ><br />
+
+                                      <span *ngIf="pickup.commodity.length > 0">
+                                        <span
+                                          *ngFor="
+                                            let commodity of pickup.commodity
+                                          "
+                                        >
+                                          PU#: {{ commodity.pu }} <br />
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div *ngFor="let item of order.shippersReceiversInfo">
+                            <div *ngFor="let receiver of item.receivers">
+                              {{ customers[receiver.receiverID] }}
+                              <span *ngFor="let drop of receiver.dropPoint">
+                                {{ drop.address.address }}&nbsp;{{
+                                  drop.address.cityName
+                                }}
+                                &nbsp; {{ drop.address.stateName }}&nbsp;{{
+                                  drop.address.countryCode
+                                }}&nbsp; {{ drop.address.zipCode }}<br />
+                                <span>{{ drop.dateAndTime }}</span> <br />
+                                <span *ngIf="drop.commodity.length > 0">
+                                  <span
+                                    *ngFor="let commodity of drop.commodity"
+                                  >
+                                    DEL#: {{ commodity.del }} <br />
+                                  </span>
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td>
+                          {{ order.milesInfo.totalMiles }}
+                        </td>
+                        <td>
+                          {{
+                            order.totalAmount
+                              | currency: order.charges.freightFee.currency
+                          }}
+                        </td>
+                        <td>
+                          <span class="badge badge-dark p-1">{{
+                            order.orderStatus
+                          }}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div
+                  class="col-lg-12 mt-3 text-center"
+                  *ngIf="lastItemSK !== 'end' && records.length !== 0"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-success btn-sm text-light"
+                    (click)="onScroll()"
+                  >
+                    Load More..
+                  </button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { ApiService } from '../../../../services';
 import { passwordStrength } from 'check-password-strength';
-import {ToastrService} from 'ngx-toastr'
+import { ToastrService } from 'ngx-toastr'
+import { Auth } from 'aws-amplify'
 declare var $: any;
 @Component({
   selector: 'app-company-profile',
@@ -42,18 +42,20 @@ export class CompanyProfileComponent implements OnInit {
       },
       manual: false,
     }]
-    
+
   };
   fieldTextType: boolean;
   cpwdfieldTextType: boolean;
-  submitDisabled=false
-  public pwdData={
-    newPassword:'',
-    confirmPassword:''
+  oldFieldTextType: boolean;
+  submitDisabled = false;
+  public pwdData = {
+    oldPassword: '',
+    newPassword: '',
+    confirmPassword: ''
   }
-  errors={};
-  response:any='';
-  hasSuccess=false;
+  errors = {};
+  response: any = '';
+  hasSuccess = false;
   passwordValidation = {
     upperCase: false,
     lowerCase: false,
@@ -61,9 +63,11 @@ export class CompanyProfileComponent implements OnInit {
     specialCharacters: false,
     length: false
   };
+  oldPassError = ''
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService,
-    private countryStateCity: CountryStateCityService, private toastr: ToastrService
+  constructor(private route: ActivatedRoute,
+    private apiService: ApiService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -93,61 +97,70 @@ export class CompanyProfileComponent implements OnInit {
   pwdModalClose() {
     $('#changePasswordModal').modal('hide');
     this.pwdData = {
+      oldPassword: '',
       newPassword: '',
       confirmPassword: '',
     };
   }
   onChangePassword() {
-    let username=this.apiService.getCarrierUserName()
+    let username = this.apiService.getCarrierUserName();
     this.submitDisabled = true;
     this.hideErrors();
     const data = {
       userName: username,
-      password: this.pwdData.newPassword
+      oldPassword: this.pwdData.oldPassword,
+      newPassword: this.pwdData.newPassword
     };
-    this.apiService.postData('drivers/password', data).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.label] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              this.throwErrors();
-              this.submitDisabled = false;
+    try {
+      Auth.currentAuthenticatedUser()
+        .then(user => {
+          return Auth.changePassword(user, data.oldPassword, data.newPassword);
+        })
+        .then(data => {
+          if (data == 'SUCCESS') {
+            this.response = data;
+            this.hasSuccess = true;
+            this.submitDisabled = false;
+            this.toastr.success('Password updated successfully');
+            this.pwdModalClose();
+            this.pwdData = {
+              oldPassword: '',
+              newPassword: '',
+              confirmPassword: '',
+            }
+          }
+        })
+        .catch(err => {
+          if (err._type = "NotAuthorizedException") {
+            this.submitDisabled = false
+            this.errors[err.code] = err.message
+            this.throwErrors();
+            this.oldPassError = "Incorrect Password";
+          }
+          else {
+            this.submitDisabled = false
+            this.errors[err.code] = err.message
+            this.throwErrors();
+            this.oldPassError = err.message;
+          }
+        })
+    } catch (error) {
+      this.errors["error"] = error
+      this.throwErrors();
 
-            },
-            error: () => {
-              this.submitDisabled = false;
-            },
-            next: () => { },
-          });
-      },
-      next: (res) => {
-        this.response = res;
-        this.hasSuccess = true;
-        this.submitDisabled = false;
-        this.toastr.success('Password updated successfully');
-       this.pwdModalClose();
-        this.pwdData = {
-          newPassword: '',
-          confirmPassword: '',
-        };
-      },
-    });
+    }
   }
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
+  }
+  toggleOldFieldTextType() {
+    this.oldFieldTextType = !this.oldFieldTextType
   }
   togglecpwdfieldTextType() {
     this.cpwdfieldTextType = !this.cpwdfieldTextType;
   }
   validatePassword(password) {
-    let passwordVerify = passwordStrength(password)
+    let passwordVerify = passwordStrength(password);
     if (passwordVerify.contains.includes('lowercase')) {
       this.passwordValidation.lowerCase = true;
     } else {
@@ -170,7 +183,7 @@ export class CompanyProfileComponent implements OnInit {
       this.passwordValidation.number = false;
     }
     if (passwordVerify.length >= 8) {
-      this.passwordValidation.length = true
+      this.passwordValidation.length = true;
     } else {
       this.passwordValidation.length = false;
     }
@@ -188,34 +201,18 @@ export class CompanyProfileComponent implements OnInit {
     this.apiService.getData(`carriers/${this.companyID}`)
       .subscribe((result: any) => {
         this.carriers = result.Items[0];
-        //console.log(Object.keys(this.carriers.referral.name).length)
-        // console.log("name" in this.carriers.referral)
-        //console.log(this.carriers.haswOwnProperty('referral'))
-        if (!this.carriers.referral && this.carriers.findingWay == 'Referral') {
-          this.carriers.referral = {}
+        if (!this.carriers.referral && this.carriers.findingWay === 'Referral') {
+          this.carriers.referral = {};
         }
         if (result.Items.length > 0) {
           this.showData = true;
         }
-        this.fetchAddress(this.carriers.addressDetails);
-        this.logoSrc = 'assets/img/logo.png';
-        // below code is commented as fleet hawks logo will be used for now not company logo
-        // if (this.carriers.uploadedLogo !== '' || this.carriers.uploadedLogo !== undefined) {
-        //   this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
-        // } else {
-        //   this.logoSrc = 'assets/img/logo.png';
-        // }
+        if (this.carriers.uploadedLogo === '' || this.carriers.uploadedLogo === undefined) {
+          this.logoSrc = 'assets/img/logo.png';
+        } else {
+          this.logoSrc = `${this.Asseturl}/${this.carriers.carrierID}/${this.carriers.uploadedLogo}`;
+        }
       });
   }
 
-  fetchAddress(address: any) {
-    for (let a = 0; a < address.length; a++) {
-      address.map(async (e: any) => {
-        if (e.manual) {
-          e.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(e.countryCode);
-          e.stateName = await this.countryStateCity.GetStateNameFromCode(e.stateCode, e.countryCode);
-        }
-      });
-    }
-  }
 }

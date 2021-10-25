@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {SharedServiceService} from '../../services/shared-service.service';
-import {Auth} from 'aws-amplify';
-import {Router} from '@angular/router';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { SharedServiceService } from '../../services/shared-service.service';
+import { Auth } from 'aws-amplify';
+import { Router } from '@angular/router';
 import { ApiService, ListService } from 'src/app/services';
 import { InvokeHeaderFnService } from 'src/app/services/invoke-header-fn.service';
 import { environment } from '../../../environments/environment';
@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   smallName: string;
   carrierBusiness;
   currentUserName = '';
-  disabled : boolean = false;
+  disabled: boolean = false;
   nickName = '';
   logoSrc: any = 'assets/img/logo.png';
   unitData = {
@@ -76,10 +76,10 @@ export class HeaderComponent implements OnInit {
   };
   updateButton = false;
   constructor(private sharedService: SharedServiceService, private apiService: ApiService, private listService: ListService,
-              public router: Router, private headerFnService: InvokeHeaderFnService) {
+    public router: Router, private headerFnService: InvokeHeaderFnService) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem('active-header');
-      if(activeTab != undefined && activeTab != ''){
+      if (activeTab != undefined && activeTab != '') {
         val = activeTab;
       }
       this.navSelected = val;
@@ -91,9 +91,9 @@ export class HeaderComponent implements OnInit {
     this.fetchCarrier();
     if (this.headerFnService.subsVar === undefined) {
       this.headerFnService.subsVar = this.headerFnService.
-      invokeHeaderComponentFunction.subscribe((name: string) => {
-        this.upateCurrentUser();
-      });
+        invokeHeaderComponentFunction.subscribe((name: string) => {
+          this.upateCurrentUser();
+        });
     }
   }
 
@@ -102,10 +102,10 @@ export class HeaderComponent implements OnInit {
     this.navClicked.emit(nav);
     this.sharedService.activeParentNav.next(nav);
   }
-fetchCarrier() {
-  this.apiService.getData('carriers/getCarrier')
+  fetchCarrier() {
+    this.apiService.getData('carriers/getCarrier')
       .subscribe((result: any) => {
-        if(result.Items.length > 0){
+        if (result.Items.length > 0) {
           this.carriers = result.Items[0];
           this.currentCarrierID = this.carriers.carrierID;
           this.logoSrc = 'assets/img/logo.png';
@@ -116,11 +116,12 @@ fetchCarrier() {
           // }
         }
       });
-}
+  }
 
   async Logout() {
     try {
       await Auth.signOut();
+      this.listService.triggerModal('');
       localStorage.removeItem('LoggedIn');
       localStorage.removeItem('user');
       localStorage.removeItem('active-header');
@@ -136,7 +137,7 @@ fetchCarrier() {
       // localStorage.removeItem('jwt');
       this.router.navigate(['/Login']);
     } catch (error) {
-        console.log('error signing out: ', error);
+      console.log('error signing out: ', error);
     }
 
   }
@@ -153,51 +154,51 @@ fetchCarrier() {
     this.currentUserName = localStorage.getItem('currentUserName');
     this.nickName = localStorage.getItem('nickName');
   }
-upateCurrentUser() {
-  this.currentUserName = localStorage.getItem('currentUserName');
-  this.nickName = localStorage.getItem('nickName');
-}
+  upateCurrentUser() {
+    this.currentUserName = localStorage.getItem('currentUserName');
+    this.nickName = localStorage.getItem('nickName');
+  }
 
-openModal(unit: string) {
-  this.listService.triggerModal(unit);
-  this.updateButton = false;
-  this.unitData = {
-    cName: '',
-    dba: '',
-    workPhone: '',
-    workEmail: '',
-    eTypes: [],
-    adrs: [{
-      aType: null,
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+    this.updateButton = false;
+    this.unitData = {
       cName: '',
-      sName: '',
-      ctyName: null,
-      zip: '',
-      add1: '',
-      add2: '',
-      geoCords: {
-        lat: '',
-        lng: ''
-      },
-      userLoc: '',
-      manual: false,
-      cCode: null,
-      sCode: null,
-      houseNo: '',
-      street: '',
-      states: [],
-      cities: []
-    }],
-    addlCnt: [{
-      flName: '',
-      fName: '',
-      lName: '',
-      phone: '',
-      des: '',
-      email: '',
-      fax: ''
-    }],
-    data: []
-  };
-}
+      dba: '',
+      workPhone: '',
+      workEmail: '',
+      eTypes: [],
+      adrs: [{
+        aType: null,
+        cName: '',
+        sName: '',
+        ctyName: null,
+        zip: '',
+        add1: '',
+        add2: '',
+        geoCords: {
+          lat: '',
+          lng: ''
+        },
+        userLoc: '',
+        manual: false,
+        cCode: null,
+        sCode: null,
+        houseNo: '',
+        street: '',
+        states: [],
+        cities: []
+      }],
+      addlCnt: [{
+        flName: '',
+        fName: '',
+        lName: '',
+        phone: '',
+        des: '',
+        email: '',
+        fax: ''
+      }],
+      data: []
+    };
+  }
 }

@@ -2,227 +2,247 @@
   <div class="inner-wrapper">
 
 
-  <section role="main" class="content-body">
-    <header class="page-header pr-5">
-      <div class="row pr-1 mr-1" style="padding-top:10px;">
-        <div class="col-md-2 col-lg-2">
-          <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
+    <section role="main" class="content-body">
+      <header class="page-header pr-5">
+        <div class="row pr-1 mr-1" style="padding-top:10px;">
+          <div class="col-md-2 col-lg-2">
+            <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Company Profile</h4>
+          </div>
+          <div class="col-md-10 col-lg-10 text-right pr-1">
+            <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#changePasswordModal"
+              href="javascript:;">Change Password</a>
+            <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"
+              *ngIf="carriers.carrierID != '' || carriers.carrierID != undefined"><i class="fas fa-plus"></i> Edit
+              Company
+              Detail</a>
+          </div>
         </div>
-        <div class="col-md-10 col-lg-10 text-right pr-1">
-          <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
-              data-target="#changePasswordModal" href="javascript:;">Change Password</a>
-          <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm" *ngIf="carriers.carrierID != '' || carriers.carrierID != undefined"><i class="fas fa-plus"></i> Edit Company
-            Detail</a>
-        </div>
-      </div>
-    </header>
-    <div class="routing-overview__wrapper m-3">
-      <div class="row">
-        <div class="col-lg-12 pr-1 pl-2">
-          <div class="bg-white">
-            <div class="row p-3">
-              <div class="col-2">
-               <img [src]="logoSrc" class="img-fluid mt-1">
-               <!-- <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc" class="img-fluid"></span> -->
-              </div>
-              <div class="col-10 text-dark">
-                <h1 class="font-weight-semibold text-7 text-capitalize mt-0">{{carriers.carrierName}}</h1>
-              </div>
+      </header>
+      <div class="routing-overview__wrapper m-3">
+        <div class="row">
+          <div class="col-lg-12 pr-1 pl-2">
+            <div class="bg-white">
+              <div class="row p-3">
+                <div class="col-2">
+                  <span *ngIf="carriers.uploadedLogo != '' || carriers.uploadedLogo != undefined"><img [src]="logoSrc"
+                      class="img-fluid"></span>
+                </div>
+                <div class="col-10 text-dark">
+                  <h1 class="font-weight-semibold text-7 text-capitalize mt-0">{{carriers.carrierName}}</h1>
+                </div>
 
-              <div class="col-lg-12 mt-3">
-                <h2 class="font-weight-normal text-dark text-5 mt-2 mb-1">Basic Detail</h2>
-                <table class="table table-bordered table-responsive-lg">
-                  <tbody>
-                    <tr>
-                      <td width="20%" class="back-color-gray">Name</td>
-                      <td width="30%">{{carriers.firstName | titlecase}} &nbsp; {{carriers.lastName | titlecase}}</td>
-                      <td width="20%" class="back-color-gray">Phone</td>
-                      <td width="30%">{{carriers.phone}}</td>
-                    </tr>
+                <div class="col-lg-12 mt-3">
+                  <h2 class="font-weight-normal text-dark text-5 mt-2 mb-1">Basic Detail</h2>
+                  <table class="table table-bordered table-responsive-lg">
+                    <tbody>
+                      <tr>
+                        <td width="20%" class="back-color-gray">Name</td>
+                        <td width="30%">{{carriers.firstName | titlecase}} &nbsp; {{carriers.lastName | titlecase}}</td>
+                        <td width="20%" class="back-color-gray">Phone</td>
+                        <td width="30%">{{carriers.phone}}</td>
+                      </tr>
 
-                    <tr>
-                      <td class="back-color-gray">Username</td>
-                      <td>{{carriers.userName}}</td>
-                      <td class="back-color-gray">Email</td>
-                      <td>{{carriers.email}}</td>
-                    </tr>
-                    <tr>
+                      <tr>
+                        <td class="back-color-gray">Username</td>
+                        <td>{{carriers.userName}}</td>
+                        <td class="back-color-gray">Email</td>
+                        <td>{{carriers.email}}</td>
+                      </tr>
+                      <tr>
 
-                      <td class="back-color-gray">How did you find us?</td>
-                      <td>{{carriers.findingWay ? carriers.findingWay : '-'}}</td>
+                        <td class="back-color-gray">How did you find us?</td>
+                        <td>{{carriers.findingWay ? carriers.findingWay : '-'}}</td>
                         <td class="back-color-gray">Fax</td>
-                      <td>{{carriers.fax ? carriers.fax : '-'}}</td>
-                    </tr>
-                    <tr *ngIf="carriers.findingWay=='Referral'">
-                      
-                      <td class="back-color-gray">Referral Name</td>
-                      <td >{{carriers.referral.name ? carriers.referral.name : '-'}}</td>
-                      <td class="back-color-gray">Referral Company</td>
-                      <td>{{carriers.referral.company ? carriers.referral.company : '-'}}</td>
-                    </tr>
-                    <tr *ngIf="carriers.findingWay=='Referral'">
+                        <td>{{carriers.fax ? carriers.fax : '-'}}</td>
+                      </tr>
+                      <tr *ngIf="carriers.findingWay=='Referral'">
 
-                      <td class="back-color-gray">Referral Email</td>
-                      <td>{{carriers.referral.email ? carriers.referral.email : '-'}}</td>
+                        <td class="back-color-gray">Referral Name</td>
+                        <td>{{carriers.referral.name ? carriers.referral.name : '-'}}</td>
+                        <td class="back-color-gray">Referral Company</td>
+                        <td>{{carriers.referral.company ? carriers.referral.company : '-'}}</td>
+                      </tr>
+                      <tr *ngIf="carriers.findingWay=='Referral'">
+
+                        <td class="back-color-gray">Referral Email</td>
+                        <td>{{carriers.referral.email ? carriers.referral.email : '-'}}</td>
                         <td class="back-color-gray">Referral Phone</td>
-                      <td>{{carriers.referral.phone ? carriers.referral.phone : '-'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                        <td>{{carriers.referral.phone ? carriers.referral.phone : '-'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-              <div class="col-lg-12">
-                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Business Detail</h2>
-                <table class="table table-bordered table-responsive-lg">
-                  <tbody>
-                    <tr class="text-capitalize">
-                      <td width="20%" class="back-color-gray">Registered Company Name</td>
-                      <td width="30%">{{carriers.carrierName}}</td>
-                      <td width="20%" class="back-color-gray">DBA Name</td>
-                      <td width="30%">{{carriers.DBAName ? carriers.DBAName : '-' }}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Number of Fleets</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span></td>
-                      <td class="back-color-gray">EIN</td>
-                      <td>{{carriers.EIN ? carriers.EIN : '-'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Vehicle(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span></td>
-                      <td class="back-color-gray">Liability Insurance#</td>
-                      <td>{{carriers.liabilityInsurance ? carriers.liabilityInsurance : '-'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Asset(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span></td>
-                      <td class="back-color-gray">Cargo Insurance#</td>
-                      <td>{{carriers.cargoInsurance ? carriers.cargoInsurance : '-'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Reefer(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span></td>
-                      <td class="back-color-gray">CCC</td>
-                      <td>{{carriers.CCC ? carriers.CCC : '-'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Dry Van(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span></td>
-                      <td class="back-color-gray">SCAC</td>
-                      <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Flatbed(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span></td>
-                      <td class="back-color-gray">Business Country</td>
-                      <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
-                        <span *ngIf="carriers.bizCountry == 'US'">United States of America</span>
-                        <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span></td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray">Curtainside(s)</td>
-                      <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide ? carriers.fleets.curtainSide : '-'}}</span></td>
-                      <td class="back-color-gray">CSA</td>
-                      <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span></td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray" >PIP</td>
-                      <td ><span *ngIf="carriers.PIP == false">NO</span><span *ngIf="carriers.PIP == true">YES</span></td>
-                      <td class="back-color-gray" >CTPAT</td>
-                      <td ><span *ngIf="carriers.CTPAT == false">NO</span><span *ngIf="carriers.CTPAT == true">YES</span></td>
-                    </tr>
-                    <tr>
-                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#</td>
-                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.DOT}}</td>
-                      <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
-                      <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="col-lg-12">
-                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
-                <table class="table table-bordered table-responsive-lg" *ngFor="let address of carriers.addressDetails">
-                  <tbody>
-                    <tr class="text-capitalize">
-                      <td width="20%" class="back-color-gray">Address Type</td>
-                      <td width="30%">{{address.addressType ? address.addressType : '-'}} <span *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span></td>
-                      <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%">{{address.address ? address.address : '-'}}</td>
-                    </tr>
-                    <tr class="text-capitalize">
-                      <td class="back-color-gray">Country</td>
-                      <td>{{address.countryName ? address.countryName : '-'}}</td>
-                      <td class="back-color-gray">Province/State</td>
-                      <td>{{address.stateName ? address.stateName : '-'}}</td>
-                    </tr>
-                    <tr  class="text-capitalize">
-                      <td class="back-color-gray">City</td>
-                      <td>{{address.cityName ? address.cityName : '-'}}</td>
-                      <td class="back-color-gray">Zip Code</td>
-                      <td>{{address.zipCode ? address.zipCode : '-'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <div class="col-lg-12">
+                  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Business Detail</h2>
+                  <table class="table table-bordered table-responsive-lg">
+                    <tbody>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Registered Company Name</td>
+                        <td width="30%">{{carriers.carrierName}}</td>
+                        <td width="20%" class="back-color-gray">DBA Name</td>
+                        <td width="30%">{{carriers.DBAName ? carriers.DBAName : '-' }}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Number of Fleets</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.totalFleets}}</span></td>
+                        <td class="back-color-gray">EIN</td>
+                        <td>{{carriers.EIN ? carriers.EIN : '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Vehicle(s)</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trucks}}</span></td>
+                        <td class="back-color-gray">Liability Insurance#</td>
+                        <td>{{carriers.liabilityInsurance ? carriers.liabilityInsurance : '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Asset(s)</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.trailers}}</span></td>
+                        <td class="back-color-gray">Cargo Insurance#</td>
+                        <td>{{carriers.cargoInsurance ? carriers.cargoInsurance : '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Reefer(s)</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.reefers}}</span></td>
+                        <td class="back-color-gray">CCC</td>
+                        <td>{{carriers.CCC ? carriers.CCC : '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Dry Van(s)</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.dryVans}}</span></td>
+                        <td class="back-color-gray">SCAC</td>
+                        <td>{{carriers.SCAC ? carriers.SCAC : '-'}}</td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Flatbed(s)</td>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.flatbed}}</span></td>
+                        <td class="back-color-gray">Business Country</td>
+                        <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
+                          <span *ngIf="carriers.bizCountry == 'US'">United States of America</span>
+                          <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span></td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">Curtainside(s)</td>
+                        <td><span
+                            *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide ? carriers.fleets.curtainSide : '-'}}</span>
+                        </td>
+                        <td class="back-color-gray">CSA</td>
+                        <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray">PIP</td>
+                        <td><span *ngIf="carriers.PIP == false">NO</span><span *ngIf="carriers.PIP == true">YES</span>
+                        </td>
+                        <td class="back-color-gray">CTPAT</td>
+                        <td><span *ngIf="carriers.CTPAT == false">NO</span><span
+                            *ngIf="carriers.CTPAT == true">YES</span></td>
+                      </tr>
+                      <tr>
+                        <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">DOT#</td>
+                        <td *ngIf="carriers.bizCountry == 'US'">{{carriers.DOT}}</td>
+                        <td class="back-color-gray" *ngIf="carriers.bizCountry == 'US'">MC#</td>
+                        <td *ngIf="carriers.bizCountry == 'US'">{{carriers.MC}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-lg-12">
+                  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Address</h2>
+                  <table class="table table-bordered table-responsive-lg"
+                    *ngFor="let address of carriers.addressDetails">
+                    <tbody>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Address Type</td>
+                        <td width="30%">{{address.addressType ? address.addressType : '-'}} <span
+                            *ngIf="address.defaultYard" class="font-weight-semibold">(Default)</span></td>
+                        <td width="20%" class="back-color-gray">Address</td>
+                        <td width="30%">{{address.address ? address.address : '-'}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Country</td>
+                        <td>{{address.countryName ? address.countryName : '-'}}</td>
+                        <td class="back-color-gray">Province/State</td>
+                        <td>{{address.stateName ? address.stateName : '-'}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">City</td>
+                        <td>{{address.cityName ? address.cityName : '-'}}</td>
+                        <td class="back-color-gray">Zip Code</td>
+                        <td>{{address.zipCode ? address.zipCode : '-'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
 
-              <div class="col-lg-12">
-                <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
-                <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks" >
-                  <tbody>
-                    <tr class="text-capitalize">
-                      <td width="20%" class="back-color-gray">Bank Name</td>
-                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName  : '-'}}</span></td>
-                      <td width="20%" class="back-color-gray">Routing#</td>
-                      <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ? bank.routingNumber : '-'}}</span></td>
-                    </tr>
-                    <tr class="text-capitalize">
-                      <td class="back-color-gray">Account#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber ?  bank.accountNumber : '-'}}</span></td>
-                      <td class="back-color-gray">Transit#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber : '-'}}</span></td>
-                    </tr>
-                    <tr class="text-capitalize">
-                      <td class="back-color-gray">Institution#</td>
-                      <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber : '-'}}</span></td>
-                    </tr>
-                  </tbody>
-                  <tbody *ngFor="let address of bank.addressDetails">
-                    <tr>  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Address</h2></tr>
-                    <tr class="text-capitalize">
-                      <td width="20%" class="back-color-gray">Address Type</td>
-                      <td width="30%">{{address.addressType ? address.addressType : '-'}}</td>
-                      <td width="20%" class="back-color-gray">Address</td>
-                      <td width="30%">{{address.address  ? address.address :'-'}}</td>
-                    </tr>
-                    <tr class="text-capitalize">
-                      <td class="back-color-gray">Country</td>
-                      <td>{{address.countryName ? address.countryName : '-'}}</td>
-                      <td class="back-color-gray">Province/State</td>
-                      <td>{{address.stateName ? address.stateName : '-'}}</td>
-                    </tr>
-                    <tr class="text-capitalize">
-                      <td class="back-color-gray">City</td>
-                      <td>{{address.cityName ? address.cityName : '-'}}</td>
-                      <td class="back-color-gray">Zip Code</td>
-                      <td>{{address.zipCode ? address.zipCode : '-'}}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div class="col-lg-12">
+                  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
+                  <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
+                    <tbody>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Bank Name</td>
+                        <td width="30%"><span
+                            *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName  : '-'}}</span></td>
+                        <td width="20%" class="back-color-gray">Routing#</td>
+                        <td width="30%"><span
+                            *ngIf="carriers.banks != undefined">{{bank.routingNumber ? bank.routingNumber : '-'}}</span>
+                        </td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Account#</td>
+                        <td><span
+                            *ngIf="carriers.banks != undefined">{{bank.accountNumber ?  bank.accountNumber : '-'}}</span>
+                        </td>
+                        <td class="back-color-gray">Transit#</td>
+                        <td><span
+                            *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber : '-'}}</span>
+                        </td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Institution#</td>
+                        <td><span
+                            *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber : '-'}}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody *ngFor="let address of bank.addressDetails">
+                      <tr>
+                        <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Address</h2>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Address Type</td>
+                        <td width="30%">{{address.addressType ? address.addressType : '-'}}</td>
+                        <td width="20%" class="back-color-gray">Address</td>
+                        <td width="30%">{{address.address  ? address.address :'-'}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Country</td>
+                        <td>{{address.countryName ? address.countryName : '-'}}</td>
+                        <td class="back-color-gray">Province/State</td>
+                        <td>{{address.stateName ? address.stateName : '-'}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">City</td>
+                        <td>{{address.cityName ? address.cityName : '-'}}</td>
+                        <td class="back-color-gray">Zip Code</td>
+                        <td>{{address.zipCode ? address.zipCode : '-'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
   </div>
 </section>
 
 
-<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
-  aria-labelledby="changePasswordModal" aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModal"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 500px;">
     <div class="modal-content">
       <div class="modal-header">
@@ -232,30 +252,53 @@
         </button>
       </div>
       <div class="modal-body text-dark" style="max-height: 500px;overflow: scroll;">
-        <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize" name="changePasswordForm"  [mustMatch]="['password', 'confirmPassword']"
-        (ngSubmit)="changePasswordF.form.valid && onChangePassword()" novalidate #changePasswordF="ngForm"  >
-        <div class="row">
-          <div class="col-lg-12">
-            <label class="control-label font-weight-bold text-lg-right pt-2">Password <span
-                class="mandfield text-2 ml-1"><sup>*</sup></span>
-            </label>
-            <div class="input-group">
-              <input  id="pd"  [(ngModel)]="pwdData.newPassword"  placeholder="eg.  $John@01"
-                (change)="onChangeHideErrors('password')" name="password"
-                 #pwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }"
-                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"  [type]="fieldTextType ? 'text' : 'password'"
-                  (input) ="validatePassword($event.target.value)" class="form-control"
-                />
+        <form id="changePasswordForm" class="form-horizontal form-bordered text-capitalize" name="changePasswordForm"
+          [mustMatch]="['password', 'confirmPassword']" (ngSubmit)="changePasswordF.form.valid && onChangePassword()"
+          novalidate #changePasswordF="ngForm">
+          <div class="row">
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> Old Password <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input id="pd" [(ngModel)]="pwdData.oldPassword" placeholder="eg.  $John@01" name="oldPassword"
+                  #oldPwd="ngModel" required [ngClass]="{ 'error' : changePasswordF.submitted && oldPwd.invalid }"
+                  [type]="oldFieldTextType ? 'text' : 'password'" class="form-control" />
+                <div class="input-group-append">
+                  <span class="input-group-text eye">
+                    <i class="fa" [ngClass]="{
+                      'fa-eye-slash': !oldFieldTextType,
+                      'fa-eye': oldFieldTextType
+                    }" (click)="toggleOldFieldTextType()"></i>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="oldPwd.invalid && changePasswordF.submitted" class="text-danger">
+                <div *ngIf="oldPwd.errors.required">
+                  Old Password is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2"> New Password <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
+              <div class="input-group">
+                <input id="pd" [(ngModel)]="pwdData.newPassword" placeholder="eg.  $John@01"
+                  (change)="onChangeHideErrors('password')" name="password" #pwd="ngModel" required
+                  [ngClass]="{ 'error' : changePasswordF.submitted && pwd.invalid }"
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\.\-]).{8,20}$"
+                  [type]="fieldTextType ? 'text' : 'password'" (input)="validatePassword($event.target.value)"
+                  class="form-control" />
                 <div class="input-group-append">
                   <span class="input-group-text eye">
                     <i class="fa" [ngClass]="{
                       'fa-eye-slash': !fieldTextType,
                       'fa-eye': fieldTextType
-                    }"
-                    (click)="toggleFieldTextType()"></i>
+                    }" (click)="toggleFieldTextType()"></i>
                   </span>
-               </div>
-            </div>
+                </div>
+              </div>
               <div *ngIf="pwd.invalid && changePasswordF.submitted" class="text-danger">
                 <div *ngIf="pwd.errors.required">
                   Password is required.
@@ -263,69 +306,76 @@
                 <div *ngIf="pwd.errors.pattern">
                   <div class="row">
                     <div class="col-lg-12">
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8 characters minimum</p>
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span> atleast 1 number
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                          [ngClass]="[passwordValidation.length ? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.length ? 'fas fa-check' : 'fas fa-times']"> </i></span> 8
+                        characters minimum</p>
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                          [ngClass]="[passwordValidation.number ? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.number ? 'fas fa-check' : 'fas fa-times']"> </i></span>
+                        atleast 1 number
                       </p>
                     </div>
                     <div class="col-lg-12">
-                      <p class="text-dark pt-2 mb-0"> <span class="pr-1" [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
-                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1  uppercase</p>
+                      <p class="text-dark pt-2 mb-0"> <span class="pr-1"
+                          [ngClass]="[passwordValidation.upperCase? 'green1': 'red1']">
+                          <i [ngClass]="[passwordValidation.upperCase? 'fas fa-check': 'fas fa-times']"> </i></span>
+                        atleast 1 uppercase</p>
 
                       <p class="text-dark pt-2 mb-0"> <span class="pr-1"
                           [ngClass]="[passwordValidation.lowerCase ? 'green1': 'red1']"> <i
-                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span> atleast 1 lowercase</p>
+                            [ngClass]="[passwordValidation.lowerCase ? 'fas fa-check': 'fas fa-times']"> </i></span>
+                        atleast 1 lowercase</p>
 
                     </div>
                     <div class="col-lg-12">
                       <p class="text-dark pt-2 mb-0"><span class="pr-1"
                           [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
-                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
+                            [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span>
+                        atleast 1 special character(!@#$%^&*.-)</p>
 
                     </div>
                   </div>
                 </div>
               </div>
-          </div>
-          <div class="col-lg-12">
-            <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
-                class="mandfield text-2 ml-1"><sup>*</sup></span>
-            </label>
+            </div>
+            <div class="col-lg-12">
+              <label class="control-label font-weight-bold text-lg-right pt-2">Confirm Password <span
+                  class="mandfield text-2 ml-1"><sup>*</sup></span>
+              </label>
               <div class="input-group">
-                <input  id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword"
-                (change)="onChangeHideErrors('confirmPassword')"  #cpwd="ngModel" required
-                 [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }"
-                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password" class="form-control"
-                  />
-                  <div class="input-group-append">
-                    <span class="input-group-text eye">
-                      <i class="fa" [ngClass]="{
+                <input id="cnf" [(ngModel)]="pwdData.confirmPassword" name="confirmPassword"
+                  (change)="onChangeHideErrors('confirmPassword')" #cpwd="ngModel" required
+                  [ngClass]="{ 'error' : changePasswordF.submitted && cpwd.invalid }"
+                  [type]="cpwdfieldTextType ? 'text' : 'password'" placeholder="Confirm password"
+                  class="form-control" />
+                <div class="input-group-append">
+                  <span class="input-group-text eye">
+                    <i class="fa" [ngClass]="{
                         'fa-eye-slash': !cpwdfieldTextType,
                         'fa-eye': cpwdfieldTextType
-                      }"
-                      (click)="togglecpwdfieldTextType()"></i>
-                    </span>
-                 </div>
+                      }" (click)="togglecpwdfieldTextType()"></i>
+                  </span>
+                </div>
               </div>
-            <div *ngIf="cpwd.invalid && changePasswordF.submitted" class="text-danger">
-              <div *ngIf="cpwd.errors.required">
-                Confirm password is required.
+              <div *ngIf="cpwd.invalid && changePasswordF.submitted" class="text-danger">
+                <div *ngIf="cpwd.errors.required">
+                  Confirm password is required.
+                </div>
+                <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
               </div>
-              <div *ngIf="cpwd.errors.mustMatch">Passwords must match</div>
             </div>
           </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-lg-12 text-right">
-            <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
-            <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">Save</button>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right">
+              <div *ngIf="oldPassError" class="text-danger">{{oldPassError}}</div>
+              <button type="button" class="cus-btn-padd btn btn-default mr-2" (click)="pwdModalClose()">Cancel</button>
+              <button type="submit" class="cus-btn-padd btn btn-success" [disabled]="submitDisabled">Save</button>
+            </div>
           </div>
-        </div>
         </form>
 
       </div>
     </div>
   </div>
 </div>
-

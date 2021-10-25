@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HereMapService } from '../../../../services';
-import { ApiService } from '../../../../services';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { ColumnMode, SelectionType } from '@swimlane/ngx-datatable';
+import * as moment from 'moment';
+
 import { NgxSpinnerService } from 'ngx-spinner';
-import { map } from 'rxjs/operators';
-import { from } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
-import { environment } from '../../../../../environments/environment';
-
-import * as _ from 'lodash';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import Constants from 'src/app/pages/manage/constants';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { environment } from '../../../../../environments/environment';
+import { ApiService } from '../../../../services';
+
+
 declare var $: any;
 
 @Component({
@@ -21,6 +22,11 @@ declare var $: any;
   styleUrls: ['./asset-detail.component.css']
 })
 export class AssetDetailComponent implements OnInit {
+  // google maps config 
+  center: google.maps.LatLngLiteral = { lat: 24, lng: 12 };
+  zoom = 10;
+  ColumnMode = ColumnMode;
+
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   platform: any;
@@ -178,17 +184,31 @@ export class AssetDetailComponent implements OnInit {
     }
   ];
 
+
+  /**
+   * Get location of the devices attached to asset variable declarations
+   */
+  rows = [];
+  cols: any;
+  loadingIndicator = true;
+  reorderable = false;
+  swapColumns = false;
+  markerOptions: google.maps.MarkerOptions = { draggable: false };
+  markerPositions: google.maps.LatLngLiteral[] = [];
+  SelectionType = SelectionType;
+  selected = [];
+  noDevices = false;
+
   manufacturersObjects: any = {};
   modelsObjects: any = {};
 
-  constructor(public hereMap: HereMapService, private toastr: ToastrService,
+  constructor(private toastr: ToastrService,
     private domSanitizer: DomSanitizer, private apiService: ApiService,
     private route: ActivatedRoute, private spinner: NgxSpinnerService,
     private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
-    this.hereMap.mapSetAPI();
-    this.hereMap.mapInit(); // Initialize map
+
     this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
     this.fetchDeviceInfo();
@@ -196,6 +216,8 @@ export class AssetDetailComponent implements OnInit {
     // this.fetchModalsByIDs();
     this.fetchGroups();
     this.fetchContactsByIDs();
+
+
   }
 
   fetchManufacturesByIDs() {
@@ -347,6 +369,9 @@ export class AssetDetailComponent implements OnInit {
           }
           this.spinner.hide(); // loader hide
         }
+
+        // Load devices information 
+        this.getDeviceEventsFor24Hours(this.assetIdentification);
       }, (err) => { });
   }
 
@@ -535,5 +560,64 @@ export class AssetDetailComponent implements OnInit {
     } else {
       this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
     }
+  }
+
+  //Google Maps methods
+
+  /**
+   * Move to center
+   * @param event mouse event
+   */
+  moveMap(event: google.maps.MapMouseEvent) {
+    this.center = (event.latLng.toJSON());
+  }
+
+
+
+  /**
+   * Get Devices data if attached for last 24 hours
+   */
+  async getDeviceEventsFor24Hours(assetIdentification: string) {
+
+    this.apiService.getData(`assetTrackers/getLast24HoursData/${assetIdentification}`).subscribe((data) => {
+
+      if (data && data.length > 0) {
+        for (const item of data) {
+          const stillUtc = moment.utc(item.time).toDate();
+          const localTime = moment(stillUtc).local().format('YYYY-MM-DD HH:mm:ss');
+          item.time = localTime;
+        }
+        this.rows = data;
+        this.loadingIndicator = false;
+        const cords = data[0].cords.split(',');
+        console.log(cords);
+
+        this.center = { lng: parseFloat(cords[0]), lat: parseFloat(cords[1]) };
+        this.markerPositions.push({ lng: parseFloat(cords[0]), lat: parseFloat(cords[1]) });
+      } else {
+        this.noDevices = true;
+      }
+
+    });
+  }
+
+  /** when row is clicked updated map */
+  onLocationRowSelected({ selected }) {
+    console.log('Select Event', selected, this.selected);
+    for (const sel of this.selected) {
+      console.log(sel.cords);
+      this.updatePosition(sel.cords);
+    }
+  }
+
+  /**Updates marker position on map */
+  updatePosition(cordsInput: any) {
+    const cords = cordsInput.split(',');
+    console.log(cords);
+    this.center = { lng: parseFloat(cords[0]), lat: parseFloat(cords[1]) };
+    this.markerPositions = [];
+    this.markerPositions.push({ lng: parseFloat(cords[0]), lat: parseFloat(cords[1]) });
+
+
   }
 }
