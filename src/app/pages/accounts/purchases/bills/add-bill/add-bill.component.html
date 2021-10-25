@@ -187,7 +187,10 @@
                                                     text-lg-right pt-2">Upload
                                                     Document</label>
                                                 <input type="file"
-                                                    class="form-control p-0">
+                                                    multiple
+                                                    name="uplImg"
+                                                    class="form-control p-0"
+                                                    (change)="selectDocuments($event)">
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +232,9 @@
                                                     currency"
                                                     #curr="ngModel"
                                                     required
-                                                    [disabled]="editDisabled">
+                                                    [clearable]="false"
+                                                    [disabled]="editDisabled"
+                                                    (change)="changeVendor()">
                                                     <ng-option value="CAD">CAD</ng-option>
                                                     <ng-option value="USD">USD</ng-option>
                                                 </ng-select>
