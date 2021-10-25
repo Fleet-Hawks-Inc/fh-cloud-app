@@ -6,8 +6,14 @@ export const environment = {
   production: false,
   isFeatureEnabled: true,
 
-  //BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
-  // BaseUrl: 'http://3.109.71.166:8080/api/v1/',
+
+  BaseUrl: 'http://localhost:3000/api/v1/',
+  AccountServiceUrl: 'http://localhost:4002/api/v1/',
+  // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
+  // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
+  // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
+
 
   AccountServiceUrl: "http://localhost:4002/api/v1/",
 
