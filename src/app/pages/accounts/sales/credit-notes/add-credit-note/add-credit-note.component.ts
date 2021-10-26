@@ -73,6 +73,11 @@ export class AddCreditNoteComponent implements OnInit {
     this.fetchCustomers();
   }
 
+  changeUnit(value: string, i: any) {
+    this.creditData.crDetails[i].qtyUnit = value;
+    this.creditData.crDetails[i].rateUnit = value;
+  }
+
   fetchCustomers() {
     this.apiService
       .getData(`contacts/get/list`)
