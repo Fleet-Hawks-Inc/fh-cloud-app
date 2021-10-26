@@ -49,7 +49,7 @@ export class SalesOrderListComponent implements OnInit {
 
 
   deleteSale(id: string) {
-    if (confirm('Are you sure you want to delete this order?') === true) {
+    if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.deleteData(`sales-orders/delete/${id}`).subscribe(res => {
         if (res) {
           this.toaster.success('Order deleted successfully!')

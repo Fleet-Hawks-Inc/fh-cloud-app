@@ -1103,9 +1103,9 @@
       <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body px-4">
     <table
-      width="90%"
+      width="100%"
       border="0"
       align="center"
       cellpadding="0"
@@ -1117,7 +1117,7 @@
             <h1 style="font-size: 26px">Driver Information Sheet</h1>
           </td>
           <td width="50%" align="right" valign="middle">
-            <img src="img/logo.png" />
+            <img src="../../../../../assets/img/logo.png" />
           </td>
         </tr>
         <tr>
@@ -1212,6 +1212,116 @@
                     <p style="font-weight: 600">Email</p>
                   </td>
                   <td style="padding-left: 10px"><p>admin@wclntrans.ca</p></td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table
+              class="table table-sm table-bordered table-striped"
+              id="locationTable"
+            >
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>Date</th>
+                  <!-- <th>Time</th> -->
+                  <th>Pickup Time</th>
+                  <th>Drop Off Time</th>
+                  <!-- <th>Actual Pickup Time</th>
+                                                    <th>Actual Drop Off Time</th> -->
+                  <!-- <th>Departure Date/Time</th> -->
+                  <th>Name</th>
+                  <th>Location</th>
+                  <th>Loaded/ Empty</th>
+                  <th>Miles</th>
+                  <th>Vehicle</th>
+                  <th>Asset</th>
+                  <th>Driver</th>
+                  <th>Co-Driver</th>
+                  <th>Carrier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let trip of trips">
+                  <td>{{ trip.type }}</td>
+                  <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
+                  <!-- <td>{{ trip.time }}</td> -->
+                  <td>{{ trip.pickupTime }}</td>
+                  <td>{{ trip.dropTime }}</td>
+                  <!-- <td>{{ trip.actualPickupTime }}</td>
+                                                    <td>{{ trip.actualDropTime }}</td> -->
+                  <!-- <td>6/6/2020 10:00 AM</td> -->
+                  <td>{{ trip.name }}</td>
+                  <td>{{ trip.locationName }}</td>
+                  <td>
+                    <span
+                      class="badge badge-dark p-1 text-uppercase"
+                      title=""
+                      data-original-title="Empty Miles"
+                      *ngIf="trip.mileType != ''"
+                      >{{ trip.mileType }}</span
+                    >
+                  </td>
+                  <td>{{ trip.miles }}</td>
+                  <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                  <td>
+                    <span *ngFor="let asst of trip.assetID">
+                      {{ assetsObject[asst] }}
+                      <br />
+                    </span>
+                  </td>
+                  <td>
+                    {{ driversObject[trip.driverID] }}
+                    <span
+                      *ngIf="
+                        trip.driverStatus && trip.driverStatus == 'REJECTED'
+                      "
+                      class="badge badge-danger"
+                      >{{ trip.driverStatus }}</span
+                    >
+                    <span
+                      *ngIf="
+                        trip.driverStatus && trip.driverStatus == 'ACCEPTED'
+                      "
+                      class="badge badge-success"
+                      >{{ trip.driverStatus }}</span
+                    >
+                    <span
+                      *ngIf="
+                        trip.driverStatus && trip.driverStatus == 'ASSIGNED'
+                      "
+                      class="badge bg-blue"
+                      >{{ trip.driverStatus }}</span
+                    >
+                  </td>
+                  <td>
+                    {{ driversObject[trip.coDriverID] }}
+                    <span
+                      *ngIf="
+                        trip.coDriverStatus && trip.coDriverStatus == 'REJECTED'
+                      "
+                      class="badge badge-danger"
+                      >{{ trip.coDriverStatus }}</span
+                    >
+                    <span
+                      *ngIf="
+                        trip.coDriverStatus && trip.coDriverStatus == 'ACCEPTED'
+                      "
+                      class="badge badge-success"
+                      >{{ trip.coDriverStatus }}</span
+                    >
+                    <span
+                      *ngIf="
+                        trip.coDriverStatus && trip.coDriverStatus == 'ASSIGNED'
+                      "
+                      class="badge bg-blue"
+                      >{{ trip.coDriverStatus }}</span
+                    >
+                  </td>
+                  <td>{{ carriersObject[trip.carrierID] }}</td>
                 </tr>
               </tbody>
             </table>
@@ -1796,7 +1906,11 @@
                 <tr>
                   <td align="center">
                     <h2 style="font-size: 13px">Powered By</h2>
-                    <img src="img/logo-2.png" width="207" height="28" />
+                    <img
+                      src="../../../../../assets/img/logo.png"
+                      width="207"
+                      height="28"
+                    />
                   </td>
                 </tr>
               </tbody>
