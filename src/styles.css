@@ -3,29 +3,39 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~@fullcalendar/core/main.css";
 @import "~@fullcalendar/daygrid/main.css";
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.css';
+@import '~@swimlane/ngx-datatable/themes/material.css';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+/*$ngx-datatable-selected-active-background: gray;*/
 
-$ngx-datatable-selected-active-background: gray;
 .nav-active {
   background-color: #eaeaea;
 }
+
 .sidebar-left {
   height: 100%;
 }
+
 .H_ib_content {
   min-width: 12em;
 }
+
 html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
 }
+
 .H_logo {
   right: 10px;
   position: absolute;
   bottom: 20px;
 }
+
 .ng-option-label {
   word-break: break-word;
   white-space: normal;
@@ -38,6 +48,7 @@ body {
 .ng-select.custom {
   height: 31px !important;
 }
+
 .ng-select.custom .ng-select-container {
   min-height: 31px !important;
 }
