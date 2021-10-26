@@ -423,14 +423,9 @@ export class AddBillComponent implements OnInit {
       formData.append("uploadedDocs", this.uploadedDocs[i]);
     }
 
-    this.orderData["uploaded_docs"] = formData;
-    console.log("this.orderData", this.orderData);
-
-    //append other fields
-    // formData.append('data', JSON.stringify(this.incomeData));
-
+    // append other fields
+    formData.append("data", JSON.stringify(this.orderData));
     this.submitDisabled = true;
-    // this.accountService.postData("bills", this.orderData).subscribe({
 
     this.accountService.postData("bills", formData, true).subscribe({
       complete: () => {},
