@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import Constants from '../../../fleet/constants';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as _ from 'lodash';
 declare var $: any;
 @Component({
   selector: 'app-chart-of-accounts',
@@ -183,6 +184,8 @@ export class ChartOfAccountsComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
+            const newArray = _.sortBy(this.accounts, ['actNo']); // sort by account number
+            this.accounts = newArray;
             this.loaded = true;
           }
         });

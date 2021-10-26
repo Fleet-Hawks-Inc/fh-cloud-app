@@ -1,5 +1,4 @@
 <ul class="nav nav-main mr-0 bg-white">
-
   <!-- <li routerLinkActive="nav-active">
      <a class="nav-link" [routerLink]="['/dispatch', 'quotes']">
      <i class="fas fa-truck-loading" aria-hidden="true"></i>
@@ -8,34 +7,40 @@
   </li> -->
   <li routerLinkActive="nav-active">
     <a class="nav-link" [routerLink]="['/dispatch', 'overview']">
-    <i class="fas fa-file-alt" aria-hidden="true"></i>
-    <span>Overview</span>
+      <!-- <i class="fas fa-file-alt" aria-hidden="true"></i> -->
+      <i class="icon-icon-dispatch"></i>
+      <span>Overview</span>
     </a>
- </li>
-  <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch', 'orders']">
-     <i class="fas fa-truck-loading" aria-hidden="true"></i>
-     <span>Orders</span>
-     </a>
   </li>
   <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch','trips','trip-list']">
-     <i class="fas fa-road" aria-hidden="true"></i>
-     <span>Trips</span>
-     </a>
+    <a class="nav-link" [routerLink]="['/dispatch', 'orders']">
+      <!-- <i class="fas fa-truck-loading" aria-hidden="true"></i> -->
+      <i class="icon-icon-order"></i>
+      <span>Orders</span>
+    </a>
+  </li>
+  <li routerLinkActive="nav-active">
+    <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list']">
+      <i class="fas fa-road" aria-hidden="true"></i>
+      <span>Trips</span>
+    </a>
   </li>
 
   <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'list']">
-     <i class="fas fa-route" aria-hidden="true"></i>
-     <span>Routes</span>
-     </a>
+    <a class="nav-link" [routerLink]="['/dispatch', 'routes', 'list']">
+      <i class="fas fa-route" aria-hidden="true"></i>
+      <span>Routes</span>
+    </a>
   </li>
   <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch', 'planner', 'calendar-view']">
-     <i class="far fa-file-alt" aria-hidden="true"></i>
-     <span> Planner</span>
-     </a>
+    <a
+      class="nav-link"
+      [routerLink]="['/dispatch', 'planner', 'calendar-view']"
+    >
+      <!-- <i class="far fa-file-alt" aria-hidden="true"></i> -->
+      <i class="far fa-calendar-alt"></i>
+      <span> Planner</span>
+    </a>
   </li>
 
   <!-- <li routerLinkActive="nav-active">
@@ -51,17 +56,16 @@
      </a>
   </li> -->
 
-
   <li routerLinkActive="nav-active">
-     <a class="nav-link" [routerLink]="['/dispatch', 'documents', 'company-documents']">
-     <i class="far fa-folder" aria-hidden="true"></i>
-     <span>Documents</span>
-     </a>
+    <a
+      class="nav-link"
+      [routerLink]="['/dispatch', 'documents', 'company-documents']"
+    >
+      <!-- <i class="far fa-folder" aria-hidden="true"></i> -->
+      <i class="fas fa-folder-open"></i>
+      <span>Documents</span>
+    </a>
   </li>
-
-
-
-
 </ul>
 <!-- <ul class="nav nav-main">
 
@@ -175,4 +179,3 @@
     </li>
 
  </ul> -->
-

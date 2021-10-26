@@ -1,12 +1,13 @@
 import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
-import { ListService, AccountService } from "src/app/services";
+import { ListService, AccountService, ApiService } from "src/app/services";
 import { ToastrService } from "ngx-toastr";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Location } from "@angular/common";
-import { element } from "protractor";
 import { ActivatedRoute } from "@angular/router";
+import { v4 as uuidv4 } from "uuid";
+declare var $: any;
 
 @Component({
   selector: "app-add-purchase-order",
@@ -31,6 +32,8 @@ export class AddPurchaseOrderComponent implements OnInit {
         rate: "",
         rateTyp: null,
         amount: 0,
+        rowID: uuidv4(),
+        status: "pending",
       },
     ],
     charges: {
@@ -78,6 +81,8 @@ export class AddPurchaseOrderComponent implements OnInit {
     },
     status: "draft",
     billStatus: "",
+    stateID: null,
+    exempt: false,
   };
   quantityTypes = [];
   vendors = [];
@@ -89,6 +94,7 @@ export class AddPurchaseOrderComponent implements OnInit {
   Error: string = "";
   Success: string = "";
   purchaseID;
+  stateTaxes = [];
 
   constructor(
     private httpClient: HttpClient,
@@ -96,7 +102,8 @@ export class AddPurchaseOrderComponent implements OnInit {
     private accountService: AccountService,
     private toaster: ToastrService,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private apiService: ApiService
   ) {}
 
   ngOnInit() {
@@ -106,10 +113,13 @@ export class AddPurchaseOrderComponent implements OnInit {
     }
     this.listService.fetchVendors();
     this.fetchQuantityTypes();
-
+    this.fetchStateTaxes();
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
     this.vendors = vendorList;
+    $(".modal").on("hidden.bs.modal", (e) => {
+      localStorage.setItem("isOpen", "false");
+    });
   }
 
   private getValidVendors(vendorList: any[]) {
@@ -140,6 +150,8 @@ export class AddPurchaseOrderComponent implements OnInit {
       rate: "",
       rateTyp: null,
       amount: 0,
+      rowID: uuidv4(),
+      status: "pending",
     };
     const lastAdded = this.orderData.detail[this.orderData.detail.length - 1];
     if (
@@ -192,6 +204,31 @@ export class AddPurchaseOrderComponent implements OnInit {
   }
 
   addRecord() {
+    for (let i = 0; i < this.orderData.detail.length; i++) {
+      const element = this.orderData.detail[i];
+      if (
+        element.comm === "" ||
+        element.qty === "" ||
+        element.qtyTyp === null ||
+        element.rate === "" ||
+        element.rateTyp === null ||
+        element.amount <= 0
+      ) {
+        this.toaster.error("Please enter valid bill details");
+        return false;
+      }
+    }
+
+    if (this.orderData.total.subTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
+    if (this.orderData.total.finalTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
     this.submitDisabled = true;
     this.accountService.postData("purchase-orders", this.orderData).subscribe({
       complete: () => {},
@@ -315,6 +352,31 @@ export class AddPurchaseOrderComponent implements OnInit {
   }
 
   updateRecord() {
+    for (let i = 0; i < this.orderData.detail.length; i++) {
+      const element = this.orderData.detail[i];
+      if (
+        element.comm === "" ||
+        element.qty === "" ||
+        element.qtyTyp === null ||
+        element.rate === "" ||
+        element.rateTyp === null ||
+        element.amount <= 0
+      ) {
+        this.toaster.error("Please enter valid bill details");
+        return false;
+      }
+    }
+
+    if (this.orderData.total.subTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
+    if (this.orderData.total.finalTotal <= 0) {
+      this.toaster.error("Amount should be greater than 0");
+      return false;
+    }
+
     this.submitDisabled = true;
     this.accountService
       .putData(`purchase-orders/update/${this.purchaseID}`, this.orderData)
@@ -346,5 +408,54 @@ export class AddPurchaseOrderComponent implements OnInit {
           this.cancel();
         },
       });
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData("stateTaxes").toPromise();
+    this.stateTaxes = result.Items;
+  }
+
+  async taxExempt() {
+    this.orderData.charges.taxes.map((v) => {
+      v.tax = 0;
+    });
+    this.orderData.stateID = null;
+    this.allTax();
+    this.taxTotal();
+  }
+
+  async selecteProvince(stateID) {
+    let taxObj = {
+      GST: "",
+      HST: "",
+      PST: "",
+      stateCode: "",
+      stateName: "",
+      stateTaxID: "",
+    };
+    this.stateTaxes.map((v) => {
+      if (v.stateTaxID === stateID) {
+        taxObj = v;
+      }
+    });
+
+    this.orderData.charges.taxes.map((v) => {
+      if (v.name === "GST") {
+        v.tax = Number(taxObj.GST);
+      } else if (v.name === "HST") {
+        v.tax = Number(taxObj.HST);
+      } else if (v.name === "PST") {
+        v.tax = Number(taxObj.PST);
+      }
+    });
+    this.allTax();
+    this.taxTotal();
   }
 }

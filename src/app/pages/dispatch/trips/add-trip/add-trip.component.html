@@ -1135,7 +1135,9 @@
                                 <td class="sorting_1">
                                   <input type="radio" name="ftlOrderIds" value="{{
                                                                         order.orderNumber
-                                                                        }}" [checked]="order.selected" id="{{
+                                                                        }}"
+                                                                        [checked]="order.selected"
+                                                                        id="{{
                                                                         order.orderID
                                                                         }}" (change)="selectOrderIDS('ftl')">
                                 </td>
@@ -1181,22 +1183,29 @@
                                                 </thead>
                                                 <tbody class="ui-sortable">
                                                     <tr *ngIf="ltlOrders.length
-                                                        == 0" class="text-center">
+                                                        == 0"
+                                                        class="text-center">
                                                         <td colspan="7">No
                                                             records found</td>
                                                     </tr>
-                                                    <tr class="ui-sortable-handle" *ngFor="let order of
+                                                    <tr
+                                                        class="ui-sortable-handle"
+                                                        *ngFor="let order of
                                                         ltlOrders">
                                                         <td>
                                                             
                                                             <input type="checkbox" value="{{
                                                                 order.orderNumber
-                                                                }}" name="ltlOrderIds" id="{{
+                                                                }}"
+                                                                name="ltlOrderIds"
+                                                                id="{{
                                                                 order.orderID
-                                                                }}" [checked]="order.selected"
+                                                                }}"
+                                                                [checked]="order.selected"
                                                                 (change)="selectOrderIDS('ltl')">
                                                         </td>
-                                                        <td class="loadid"><a href="javascript:;">{{
+                                                        <td class="loadid"><a
+                                                                href="javascript:;">{{
                                                                 order.orderNumber
                                                                 }}</a></td>
 
@@ -1205,10 +1214,12 @@
                                                             }}</td>
 
                                                         <td>
-                                                            <div [innerHTML]="order.pickupLocations"></div>
+                                                            <div
+                                                                [innerHTML]="order.pickupLocations"></div>
                                                         </td>
                                                         <td>
-                                                            <div [innerHTML]="order.deliveryLocations"></div>
+                                                            <div
+                                                                [innerHTML]="order.deliveryLocations"></div>
                                                         </td>
                                                         <td> {{
                                                             order.totalAmount }}

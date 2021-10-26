@@ -12,6 +12,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
   customersObject: any = {};
   drivers: any = {};
   categories: any = {};
+  empList: any = {};
   actID = '';
   account = {
     first: '',
@@ -72,7 +73,13 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
             this.accountService.getData(`income/categories/list`)
               .subscribe((res: any) => {
                 this.categories = res;
-                this.merged = { ...this.customersObject, ...this.drivers, ...this.categories };
+                if (res) {
+                  this.apiService.getData('contacts/get/emp/list').subscribe((empList) => {
+                    this.empList = empList;
+                    this.merged = { ...this.customersObject, ...this.drivers, ...this.categories, ...this.empList };
+                  });
+                }
+
               });
           }
         });
