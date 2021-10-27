@@ -104,6 +104,7 @@ export class BillListComponent implements OnInit {
       this.filter.endDate !== null
     ) {
       this.payOrders = [];
+      this.lastItemSK = "";
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchBills();
@@ -117,6 +118,7 @@ export class BillListComponent implements OnInit {
       endDate: null,
     };
     this.payOrders = [];
+    this.lastItemSK = "";
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.fetchBills();
