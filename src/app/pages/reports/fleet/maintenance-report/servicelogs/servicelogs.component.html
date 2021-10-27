@@ -17,42 +17,23 @@
 
                <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="">
-                           <option value="1">Search By Asset</option>
-                           <option value="2">47782</option>
-                           <option value="1">231580</option>
-                           <option value="2">54899</option>
-                           <option value="1">54780</option>
-                           <option value="2">415263</option>
-                           <option value="1">85961</option>
-                           <option value="2">731900</option>
-                        </optgroup>
-                     </select>
+                     <ng-select [(ngModel)]="assetID" name="assetID" style="width: 100%;" placeholder="Search by asset">
+
+                        <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{data.key}}">{{data.value}}
+                        </ng-option>
+                     </ng-select>
+
                   </div>
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
-                     <select data-plugin-selectTwo class="form-control populate">
-                        <optgroup label="Select Type">
-                           <option value="1">Search By Task</option>
-                           <option value="2">AC & Heater</option>
-                           <option value="2">Axles</option>
-                           <option value="1">Battery</option>
-                           <option value="2">Brakes</option>
-                           <option value="2">Engine</option>
-                           <option value="1">Filters</option>
-                           <option value="2">Lease Expiry</option>
-                           <option value="2">Licence Expiry</option>
-                           <option value="1">Lights & Electrical</option>
-                           <option value="2">Oil Change</option>
-                           <option value="2">Other</option>
-                           <option value="1">Registration Expiry</option>
-                           <option value="2">Spark Plugs</option>
-                           <option value="2">Tires</option>
-                        </optgroup>
-                     </select>
+                     <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by task">
+                        <!-- <ng-option *ngFor="let data of tasks | keyvalue" value="{{data.key}}">{{data.value}}</ng-option> -->
+                        <ng-option *ngFor="let item of tasks;" value="{{item.taskID}}">
+                           <div title="{{item.taskName}}">{{item.taskName}}</div>
+                        </ng-option>
+                     </ng-select>
                   </div>
                </div>
 
@@ -64,20 +45,23 @@
                            <i class="fas fa-calendar-alt"></i>
                         </span>
                      </span>
-                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control"
-                        name="start">
+                     <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                        (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                        autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                      <span class="input-group-text border-left-0 border-right-0 rounded-0">
                         to
                      </span>
-                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control"
-                        name="end">
+                     <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd" (click)="to.toggle()"
+                        ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                        [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
                   </div>
                </div>
 
                <div class="col-md-2 col-lg-2">
                   <button type="submit" (click)="searchFilter()"
                      class="btn btn-sm mr-3 btn-success line-height-18">Search</button>
-                  <button class="btn btn-sm btn-success line-height-18" type="button">Reset</button>
+                  <button class="btn btn-sm btn-success line-height-18" type="button"
+                     (click)=" resetFilter()">Reset</button>
                </div>
 
 
@@ -87,8 +71,8 @@
                         aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">CSV</a>
-                        <a class="dropdown-item text-1" href="">PDF</a>
+                        <a class="dropdown-item text-1" href="" (click)="generateCSV()">CSV</a>
+
                      </div>
                   </div>
                </div>
