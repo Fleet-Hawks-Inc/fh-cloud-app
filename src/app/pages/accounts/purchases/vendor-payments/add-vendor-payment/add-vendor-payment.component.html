@@ -7,9 +7,8 @@
           <div class="pull-right pr-2">
             <a
               routerLink="/accounts/purchases/vendor-payments/list"
-              class="mb-1 mt-1 mr-1 mr-5 btn btn-default"
-              ><i class="fas fa-list"></i> All Payments</a
-            >
+              class="mb-1 mt-1 mr-1 mr-5 btn btn-default"><i class="fas
+                fa-list"></i> All Payments</a>
           </div>
         </div>
       </header>
@@ -22,36 +21,48 @@
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
-                        <!-- <div class="col-lg-5">
-                                    <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment#</label>
-                                    <input type="text" class="form-control">
-                                 </div> -->
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Payment Date
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Payment Date
                           </label>
-                          <input type="date" class="form-control" />
+                          <input
+                            [(ngModel)]="paymentData.txnDate"
+                            name="txnDate"
+                            type="text"
+                            placeholder="yyyy/mm/dd"
+                            (click)="custexp.toggle()"
+                            ngbDatepicker
+                            #custexp="ngbDatepicker"
+                            class="form-control"
+                            autocomplete="off"
+                            [minDate]="dateMinLimit"
+                            [maxDate]="futureDatesLimit"
+                            #jDate="ngModel"
+                            required readonly
+                            />
+
+                          <div *ngIf="jDate.invalid &&
+                            (jDate.dirty ||
+                            jDate.touched)"
+                            class="text-danger">
+                            <div
+                              *ngIf="jDate.errors.required">
+                              Payment date is required.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Vendor</label
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Vendor</label>
                           <select
                             data-plugin-selectTwo
-                            class="form-control populate"
-                          >
+                            class="form-control populate">
                             <optgroup>
                               <option value="Driver">Jatinder</option>
                               <option value="Carrier">Manjot</option>
@@ -68,30 +79,21 @@
                       <div class="row">
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Reference#</label
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Reference#</label>
                           <input type="text" class="form-control" />
                         </div>
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Payment Currency</label
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Payment Currency</label>
                           <select
                             data-plugin-selectTwo
-                            class="form-control populate"
-                          >
+                            class="form-control populate">
                             <optgroup>
                               <option value="CAD">CAD</option>
                               <option value="USD">USD</option>
@@ -111,12 +113,9 @@
                     <div class="row">
                       <div class="col-lg-10 offset-lg-1">
                         <table
-                          class="
-                            table table-bordered table-striped
-                            mb-0
-                            simple-table
-                          "
-                        >
+                          class="table table-bordered table-striped
+                          mb-0
+                          simple-table">
                           <thead>
                             <tr class="bgcol2">
                               <th class="text-2">Date</th>
@@ -141,9 +140,8 @@
                               <td>CAD 4,000</td>
                               <td>CAD 2,000</td>
                               <td>
-                                <span class="badge badge-dark p-1"
-                                  >PARTIALLY PAID</span
-                                >
+                                <span class="badge badge-dark p-1">PARTIALLY
+                                  PAID</span>
                               </td>
                               <td class="text-center">
                                 <input type="checkbox" />
@@ -225,13 +223,11 @@
                       <div class="col-lg-5 offset-lg-1">
                         <div class="row">
                           <div class="col-lg-5">
-                            <label class="control-label font-weight-bold"
-                              >Select Account</label
-                            >
+                            <label class="control-label font-weight-bold">Select
+                              Account</label>
                             <select
                               data-plugin-selectTwo
-                              class="form-control populate"
-                            >
+                              class="form-control populate">
                               <optgroup>
                                 <option value="1">Account 1</option>
                                 <option value="2">Account 2</option>
@@ -246,15 +242,13 @@
                         <div class="row pt-1">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Payment Mode</label
-                            >
+                              class="control-label font-weight-bold labelalign">Payment
+                              Mode</label>
                             <select
                               data-plugin-selectTwo
                               class="form-control populate"
                               id="paymentModeListDriver"
-                              onchange="paymentModeDriver()"
-                            >
+                              onchange="paymentModeDriver()">
                               <optgroup>
                                 <option value="select">Select</option>
                                 <option value="Cash">Cash</option>
@@ -277,120 +271,101 @@
                         <div
                           class="row pt-1"
                           id="chequeDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Cheque#</label
-                            >
+                              class="control-label font-weight-bold labelalign">Cheque#</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Cheque Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">Cheque
+                              Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
                         <div
                           class="row pt-1"
                           id="cashDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Cash Reference Number</label
-                            >
+                              class="control-label font-weight-bold labelalign">Cash
+                              Reference Number</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Cash Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">Cash
+                              Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
                         <div
                           class="row pt-1"
                           id="eftDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >EFT Number</label
-                            >
+                              class="control-label font-weight-bold labelalign">EFT
+                              Number</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >EFT Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">EFT
+                              Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
                         <div
                           class="row pt-1"
                           id="creditCardDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Credit Card Number</label
-                            >
+                              class="control-label font-weight-bold labelalign">Credit
+                              Card Number</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Credit Card Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">Credit
+                              Card Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
                         <div
                           class="row pt-1"
                           id="debitCardDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Debit Card Number</label
-                            >
+                              class="control-label font-weight-bold labelalign">Debit
+                              Card Number</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Debit Card Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">Debit
+                              Card Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
                         <div
                           class="row pt-1"
                           id="demandDraftDivDriver"
-                          style="display: none"
-                        >
+                          style="display: none">
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Demand Draft Number</label
-                            >
+                              class="control-label font-weight-bold labelalign">Demand
+                              Draft Number</label>
                             <input type="text" class="form-control" />
                           </div>
                           <div class="col-lg-5">
                             <label
-                              class="control-label font-weight-bold labelalign"
-                              >Demand Draft Date</label
-                            >
+                              class="control-label font-weight-bold labelalign">Demand
+                              Draft Date</label>
                             <input type="date" class="form-control" />
                           </div>
                         </div>
@@ -399,15 +374,14 @@
                         <div class="row">
                           <div class="col-lg-6 text-right">
                             <label class="control-label font-weight-bold">
-                              Amount</label
-                            >
+                              Amount</label>
                           </div>
                           <div class="col-lg-6">
                             <input
                               type="text"
                               class="form-control"
                               value="345.67"
-                            />
+                              />
                           </div>
                         </div>
                         <!-- <div class="row pt-1">
@@ -431,44 +405,40 @@
                                  </div> -->
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold"
-                              >Advance</label
-                            >
+                            <label class="control-label font-weight-bold">Advance</label>
                           </div>
                           <div class="col-lg-6">
                             <input
                               type="text"
                               class="form-control"
                               value="0.00"
-                            />
+                              />
                           </div>
                         </div>
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold"
-                              >Vendor Credit</label
-                            >
+                            <label class="control-label font-weight-bold">Vendor
+                              Credit</label>
                           </div>
                           <div class="col-lg-6">
                             <input
                               type="text"
                               class="form-control"
                               value="0.00"
-                            />
+                              />
                           </div>
                         </div>
                         <div class="row pt-1">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold"
-                              >Net Payable</label
-                            >
+                            <label class="control-label font-weight-bold">Net
+                              Payable</label>
                           </div>
                           <div class="col-lg-6">
                             <input
                               type="text"
                               class="form-control"
                               value="345.67"
-                            />
+                              />
                           </div>
                         </div>
                       </div>
@@ -479,13 +449,10 @@
                       <button
                         type="button"
                         class="btn btn-default"
-                        onclick="goBack()"
-                      >
+                        onclick="goBack()">
                         Cancel
                       </button>
-                      <a href="vendor-payment.php" class="btn btn-success"
-                        >Save</a
-                      >
+                      <a href="vendor-payment.php" class="btn btn-success">Save</a>
                     </div>
                   </div>
                 </form>

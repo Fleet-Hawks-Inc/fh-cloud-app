@@ -26,7 +26,7 @@ export class VehicleListComponent implements OnInit {
   vehicleIdentification = '';
   allOptions: any = {};
   groupsList: any = {};
-  vehicleModelList: any = {};
+  vehicleModelList: any = {}; 
   vehicleManufacturersList: any = {};
   serviceProgramsList:any = {};
   driversList:any = {};
@@ -152,8 +152,8 @@ export class VehicleListComponent implements OnInit {
       error: () => {},
       next: (result: any) => {
         this.totalRecords = result.Count;
-
-        if(this.vehicleID != '' || this.currentStatus != null) {
+        if(this.vehicleID != '' || this.currentStatus != null) 
+        {
           this.vehicleEndPoint = this.totalRecords;
         }
 
@@ -451,7 +451,7 @@ export class VehicleListComponent implements OnInit {
     this.vehiclePrev = true;
     this.vehicleDraw += 1;
     this.initDataTable();
-    // this.getStartandEndVal();
+   
   }
 
   // prev button func
@@ -461,7 +461,7 @@ export class VehicleListComponent implements OnInit {
     this.vehicleDraw -= 1;
     this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
     this.initDataTable();
-    // this.getStartandEndVal();
+    
   }
 
   resetCountResult() {
