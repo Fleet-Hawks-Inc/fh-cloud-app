@@ -69,6 +69,10 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchOwnerOperators();
     this.fetchEmployee();
     // this.fetchVendor();
+    this.listService.fetchVendors();
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
     // this.fetchCustomer();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
@@ -123,12 +127,16 @@ export class AddAdvancePaymentComponent implements OnInit {
       });
   }
 
-  fetchVendor() {
-    this.apiService
-      .getData(`contacts/get/list/vendor`)
-      .subscribe((result: any) => {
-        this.vendors = result;
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
       });
+    });
   }
 
   fetchCustomer() {
