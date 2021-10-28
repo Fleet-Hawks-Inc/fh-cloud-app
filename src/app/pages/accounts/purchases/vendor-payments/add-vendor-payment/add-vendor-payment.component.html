@@ -66,8 +66,7 @@
                             placeholder="Select Vendor"
                             #vendorID="ngModel"
                             required
-                            (change)="fetchVendorData()"
-                            [disabled]="editDisabled">
+                            (change)="fetchVendorData()">
                             <ng-option value="{{
                               data.contactID }}"
                               *ngFor="let
@@ -117,8 +116,7 @@
                             currency"
                             #curr="ngModel"
                             required
-                            [clearable]="false"
-                            [disabled]="editDisabled">
+                            [clearable]="false">
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
