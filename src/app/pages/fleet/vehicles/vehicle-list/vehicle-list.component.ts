@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -14,8 +16,10 @@ declare var $: any;
   styleUrls: ['./vehicle-list.component.css'],
 })
 export class VehicleListComponent implements OnInit {
+  liveModalTimeout: any;
+  liveStreamVehicle: string;
   environment = environment.isFeatureEnabled;
-
+  url: any;
   dataMessage: string = Constants.FETCHING_DATA;
   title = 'Vehicle List';
   vehicles = [];
@@ -71,9 +75,13 @@ export class VehicleListComponent implements OnInit {
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService, private onboard: OnboardDefaultService) { }
+  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
+    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
+  }
+
 
   ngOnInit() {
+
     this.onboard.checkInspectionForms();
     this.fetchGroups();
     this.fetchVehiclesCount();
@@ -95,8 +103,6 @@ export class VehicleListComponent implements OnInit {
     });
 
   }
-
-
 
   getSuggestions = _.debounce(function (value) {
 
@@ -239,22 +245,37 @@ export class VehicleListComponent implements OnInit {
         }
 
         this.spinner.hide();
-        await this.getDashCamLive(this.vehicles);
+        await this.getDashCamConnection(this.vehicles);
+        await this.getDashCamStatus(this.vehicles);
       });
+  }
+
+  /**
+   * Get device status dashCam Connection
+   * @param vehicleList all the vehicles
+   */
+  async getDashCamConnection(vehicleList: any) {
+    if (vehicleList && vehicleList.length > 0) {
+      for (const data of vehicleList) {
+        if (data.deviceInfo) {
+          data['isDashCam'] = true;
+
+        }
+      }
+    }
+
   }
 
   /**
    * Get device status from DashCam
    * @param vehicleList all the vehicles
    */
-  async getDashCamLive(vehicleList: any) {
+  async getDashCamStatus(vehicleList: any) {
     if (vehicleList && vehicleList.length > 0) {
       for (const data of vehicleList) {
         if (data.deviceInfo) {
-          data['isDashCam'] = true;
           const response: any = await this.apiService.postData('vehicles/dashCam/status', { deviceId: data.deviceInfo[0].deviceSrNo.split('#')[1] }).toPromise();
           if (response && response.isOnline !== undefined) {
-            console.log('isDashOnline', response.isOnline)
             data['isDashOnline'] = response.isOnline;
           }
         }
@@ -504,5 +525,38 @@ export class VehicleListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.fetchVehiclesCount();
     this.resetCountResult();
+  }
+
+
+  /**
+   * Open Live View popup.
+   * @param content
+   */
+  async openLiveView(content, vehicle, deviceInfo) {
+
+    let deviceId = undefined;
+    if (deviceInfo && deviceInfo.length > 0) {
+      deviceId = deviceInfo[0].deviceSrNo.split('#')[1];
+
+      const response = await this.apiService.getData(`vehicles/dashCam/liveFeed/${deviceId}`).toPromise()
+      this.url = this._sanitizer.bypassSecurityTrustResourceUrl(response.feedUrl);
+
+      this.liveStreamVehicle = `(${vehicle})`
+      this.modalService.open(content, { ariaLabelledBy: 'modal-dash-cam' }).result.then((result) => {
+      }, (reason) => {
+      });
+      this.liveModalTimeout = setTimeout(() => {
+        this.modalService.dismissAll();
+      }, 60000);
+    } else {
+      this.toastr.error('Connection to DashCam failed.')
+    }
+  }
+
+  /**
+   * Clears the setTimeout if required. Currently it is not viewed
+   */
+  clearVideoTimeout() {
+    clearTimeout(this.liveModalTimeout);
   }
 }

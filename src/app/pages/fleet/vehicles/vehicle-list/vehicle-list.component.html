@@ -215,10 +215,10 @@
                                                 </td>
                                                 <td class="cursorpoint" *ngIf="hideShow.status">
                                                    
-                                                    <span class="badge  p-1 text-uppercase"  data-target="#dashCamLiveVideo" 
-                                                    *ngIf="vehicle.isDashCam" data-toggle="modal" href="javascript:;" [ngClass]="{'badge-success':vehicle.isDashOnline,'badge-primary':!vehicle.isDashOnline}">{{ vehicle.isDashOnline === true ? "Live View" : "Offline"}}</span>
-                                                    <span class="badge  p-1 text-uppercase"  data-target="#dashCamLiveVideo" 
-                                                    *ngIf="!vehicle.isDashCam" data-toggle="modal" href="javascript:;" [ngClass]="{'badge-primary':true}">NO CAM</span>
+                                                    <span class="badge  p-1 text-uppercase" (click)="openLiveView(dashCamModel,vehicle.vehicleIdentification,vehicle.deviceInfo)"
+                                                    *ngIf="vehicle.isDashCam" dhref="javascript:;"  [ngClass]="{'badge-success':vehicle.isDashOnline,'badge-primary':!vehicle.isDashOnline}">{{ vehicle.isDashOnline === true ? "Live View" : "Offline"}}</span>
+                                                    <span class="badge  p-1 text-uppercase" 
+                                                    *ngIf="!vehicle.isDashCam"  href="javascript:;" [ngClass]="{'badge-primary':true}">NO CAM</span>
                                                     
                                                 </td>
                                                 <td>
@@ -583,40 +583,37 @@
                     </div>
                 </div>
             </div>
+           
         </section>
+       
     </div>
 </section>
 
 
-<!--Modal: Name-->
-<div class="modal fade" id="dashCamLiveVideo" tabindex="-1" role="dialog" aria-labelledby="dashCamLiveVideo" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-  
-      <!--Content-->
-      <div class="modal-content">
-  
-        <!--Body-->
-        <div class="modal-body mb-0 p-0">
-  
-          <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-            <iframe class="embed-responsive-item" src="http://18.223.121.29:9966/vss/apiPage/RealVideo.html?token=9d98b4e597b77183ebf9c165b168ea8e&deviceId=64002001&chs=1_2_3_4&stream=0&wnum=4&panel=1&buffer=2000
-            http://18.223.121.29:9966/vss/apiPage/RealListen.html?token=9d98b4e597b77183ebf9c165b168ea8e&deviceId=64002001&chs=1" allowfullscreen></iframe>
-            <br><br> 
-          </div>
-  
-        </div>
-  
-        <!--Footer-->
-        <div class="modal-footer justify-content-center">
-          
-  
-        </div>
-  
-      </div>
-      <!--/.Content-->
-  
-    </div>
-  </div>
-  <!--Modal: Name--> 
 
-  
+<!--Modal: Name-->
+<ng-template #dashCamModel let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{liveStreamVehicle}}</h4>
+      
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>
+        <p>To enlarge the screen double clik on window.</p>
+      
+        <div class="embed-responsive z-depth-1-half" style="height: 600px;width: 100%;">
+            <iframe id="videoIframe" height="600px" width="100%"  [src]="url"></iframe>          
+          </div><br>
+          
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+   
+    </div> -->
+    
+  </ng-template>
+
+  <!--Modal: Name--> 
