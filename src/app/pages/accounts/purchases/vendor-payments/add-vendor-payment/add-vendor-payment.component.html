@@ -17,7 +17,8 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="get"
+                  #venPayForm="ngForm">
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
@@ -26,7 +27,8 @@
                             class="control-label
                             font-weight-bold font-bold
                             text-lg-right
-                            pt-2">Payment Date
+                            pt-2">Payment Date<span class="mandfield text-2
+                              ml-1"><sup>*</sup></span>
                           </label>
                           <input
                             [(ngModel)]="paymentData.txnDate"
@@ -59,7 +61,7 @@
                             class="control-label
                             font-weight-bold font-bold
                             text-lg-right
-                            pt-2">Vendor</label>
+                            pt-2">Vendor<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select
                             [(ngModel)]="paymentData.vendorID"
                             name="vendorID"
@@ -108,7 +110,8 @@
                             class="control-label
                             font-weight-bold font-bold
                             text-lg-right
-                            pt-2">Payment Currency</label>
+                            pt-2">Payment Currency<span class="mandfield text-2
+                              ml-1"><sup>*</sup></span></label>
                           <ng-select
                             [(ngModel)]="paymentData.currency"
                             name="currency"
@@ -116,7 +119,8 @@
                             currency"
                             #curr="ngModel"
                             required
-                            [clearable]="false">
+                            [clearable]="false"
+                            (change)="fetchVendorData()">
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -155,7 +159,6 @@
                               <th class="text-2">Date</th>
                               <th class="text-2">Purchase Bill#</th>
                               <th class="text-2">Reference#</th>
-                              <!-- <th class="text-2">Vendor</th> -->
                               <th class="text-2">Due Date</th>
                               <th class="text-2">Amount</th>
                               <th class="text-2">Pending Amount </th>
@@ -181,14 +184,13 @@
                               <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
                               <td>{{ data.billNo }}</td>
                               <td>{{ data.refNo ? data.refNo : '-' }}</td>
-                              <!-- <td>Vendor 1</td> -->
                               <td>{{ data.dueDate | date:"yyyy/MM/dd" }}</td>
                               <td>
                                 {{ data.total.finalTotal | number : '1.2-2' }}
                                 {{ data.currency }}
                               </td>
                               <td>
-                                {{ data.total.balance | number : '1.2-2' }}
+                                {{ data.balance | number : '1.2-2' }}
                                 {{ data.currency }}
                               </td>
                               <td>
@@ -232,10 +234,12 @@
                           <thead>
                             <tr class="bgcol2">
                               <th class="text-2"></th>
-                              <th class="text-2">Payment#</th>
                               <th class="text-2">Date</th>
+                              <th class="text-2">Payment#</th>
+
                               <th class="text-2">Amount</th>
-                              <th class="text-2">Balance</th>
+                              <th class="text-2">Pending Amount</th>
+                              <th class="text-2">Paid Amount</th>
                               <th class="text-2">Status</th>
                               <th class="text-2">Full Payment</th>
                               <th class="text-2">Payment</th>
@@ -244,7 +248,7 @@
                           <tbody>
                             <tr *ngIf="advancePayments.length === 0"
                               class="text-center">
-                              <td colspan="8">{{ dataMessageAdv }} </td>
+                              <td colspan="9">{{ dataMessageAdv }} </td>
                             </tr>
                             <tr *ngFor="let data of advancePayments; let
                               i=index">
@@ -254,10 +258,12 @@
                                   name="selcadv{{i}}" (change)="advanceTotal();"
                                   />
                               </td>
-                              <td>{{ data.paymentNo }}</td>
                               <td>{{ data.txnDate | date: "yyyy/MM/dd" }}</td>
+                              <td>{{ data.paymentNo }}</td>
+
                               <td>{{ data.amount }} {{ data.currency }}</td>
                               <td>{{ data.pendingPayment }} {{ data.currency }}</td>
+                              <td>{{ data.prevPaidAmount }} {{ data.currency }}</td>
                               <td>
                                 <span class="badge badge-dark p-1
                                   text-uppercase"> {{ data.newStatus }}</span>
@@ -291,7 +297,7 @@
                         <div class="row">
                           <div class="col-lg-5">
                             <label class="control-label font-weight-bold">Select
-                              Account</label>
+                              Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                             <ng-select
                               [(ngModel)]="paymentData.accountID"
                               name="accountID"
@@ -319,7 +325,8 @@
                           <div class="col-lg-5">
                             <label
                               class="control-label font-weight-bold labelalign">Payment
-                              Mode</label>
+                              Mode <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <ng-select
                               [(ngModel)]="paymentData.payMode"
                               name="paymentMode"
@@ -350,7 +357,9 @@
                           <div class="col-lg-5">
                             <label
                               class="control-label font-weight-bold labelalign">{{
-                              paymentLabel }} Reference</label>
+                              paymentLabel }} Reference <span class="mandfield
+                                text-2 ml-1"><sup>*</sup></span>
+                            </label>
                             <input
                               type="text"
                               [(ngModel)]="paymentData.payModeNo"
@@ -365,7 +374,9 @@
                           <div class="col-lg-5">
                             <label
                               class="control-label font-weight-bold labelalign">{{
-                              paymentLabel }} Date</label>
+                              paymentLabel }} Date <span class="mandfield text-2
+                                ml-1"><sup>*</sup></span>
+                            </label>
                             <input
                               [(ngModel)]="paymentData.payModeDate"
                               name="paymentModeDate"
@@ -465,7 +476,9 @@
                         class="btn btn-default mr-2">
                         Cancel
                       </button>
-                      <button (click)="addRecord()" type="submit" class="btn
+                      <button (click)="addRecord()"
+                        [disabled]="!venPayForm.form.valid || submitDisabled"
+                        type="submit" class="btn
                         btn-success">Save</button>
                     </div>
                   </div>
