@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Auth } from 'aws-amplify';
 import Constants from 'src/app/pages/fleet/constants';
 import { AccountService, ApiService } from 'src/app/services';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-sales-invoice',
@@ -12,10 +13,12 @@ import { AccountService, ApiService } from 'src/app/services';
 export class AddSalesInvoiceComponent implements OnInit {
   total = 0;
   saleData = {
+    txnDate: moment().format('YYYY-MM-DD'),
+    currency: 'CAD',
     customerID: null,
     sOrderNo: '',
     sRef: '',
-    currency: 'CAD',
+    dueDate: null,
     paymentTerm: null,
     salePerson: '',
     sOrderDetail: [{
@@ -29,7 +32,6 @@ export class AddSalesInvoiceComponent implements OnInit {
       accountID: null,
     }],
     charges: {
-      remarks: "",
       accFee: [
         {
           name: "",
@@ -63,6 +65,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         },
       ],
     },
+
     total: {
       detailTotal: 0,
       feeTotal: 0,
@@ -73,6 +76,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     },
     taxExempt: true,
     stateTaxID: null,
+    remarks: "",
   }
 
   paymentTerms = [
@@ -98,13 +102,15 @@ export class AddSalesInvoiceComponent implements OnInit {
     },
   ];
 
-  dataMessage = Constants.FETCHING_DATA;
+  dataMessage = Constants.NO_RECORDS_FOUND;
 
   salesOrder = [];
   accounts: any = [];
   customers = [];
   units = [];
   stateTaxes = [];
+
+  customerCredits = []
 
   currentUser: any;
 
@@ -145,7 +151,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.saleData.sOrderDetail.forEach(element => {
       total += element.amount;
     });
-    this.total = total.toFixed(2);
+    this.saleData.total.detailTotal = parseFloat(total);
   }
 
   async getCustomerOrders(ID: string) {
@@ -162,12 +168,29 @@ export class AddSalesInvoiceComponent implements OnInit {
       accountID: null,
     }];
     if (ID != undefined) {
-      let result = await this.accountService.getData(`sales-orders/specific/${ID}`).toPromise();
-      if (result.length > 0) {
-        this.salesOrder = result;
-      }
+      await this.getOrders(ID);
+      await this.getCustomerCredit(ID);
     }
 
+  }
+
+  async getOrders(ID: string) {
+    let result = await this.accountService.getData(`sales-orders/specific/${ID}`).toPromise();
+    if (result.length > 0) {
+      this.salesOrder = result;
+    }
+  }
+
+  async getCustomerCredit(ID: string) {
+    this.dataMessage = Constants.FETCHING_DATA;
+    let result = await this.accountService.getData(`customer-credits/specific/${ID}`).toPromise();
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+    if (result.length > 0) {
+      this.customerCredits = result;
+      console.log('customer-credits', result)
+    }
   }
 
   getOrderDetail(ID: string) {
@@ -340,4 +363,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     //   (parseInt(selected.PST) ? selected.PST : 0);
   }
 
+  addOrder() {
+    console.log('order data', this.saleData);
+  }
 }
