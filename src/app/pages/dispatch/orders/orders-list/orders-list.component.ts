@@ -32,6 +32,8 @@ export class OrdersListComponent implements OnInit {
   invoicedOrders = [];
   partiallyOrders = [];
 
+  isSearch: boolean = false;
+
   lastEvaluatedKey = "";
   orderFiltr = {
     searchValue: "",
@@ -221,6 +223,7 @@ export class OrdersListComponent implements OnInit {
   };
 
   fetchOrdersCount() {
+    this.isSearch = true;
     this.apiService
       .getData(
         "orders/get/filter/count?searchValue=" +
@@ -234,7 +237,7 @@ export class OrdersListComponent implements OnInit {
       )
       .subscribe({
         complete: () => { },
-        error: () => { },
+        error: () => { this.isSearch = false; },
         next: (result: any) => {
           this.totalRecords = result.Count;
 
@@ -353,14 +356,17 @@ export class OrdersListComponent implements OnInit {
           };
 
           this.spinner.hide();
+          this.isSearch = false;
         },
         (err) => {
           this.spinner.hide();
+          this.isSearch = false;
         }
       );
   }
 
   filterOrders() {
+
     if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
       this.toastr.error("Please select category");
       return false;
@@ -414,6 +420,7 @@ export class OrdersListComponent implements OnInit {
         this.tonuOrders = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
+        this.lastEvaluatedKey = '';
         this.fetchOrdersCount();
         // this.initDataTable();
       }
@@ -422,6 +429,8 @@ export class OrdersListComponent implements OnInit {
 
   resetFilter() {
     if (
+      this.orderFiltr.category !== '' ||
+      this.orderFiltr.category !== null ||
       this.orderFiltr.startDate !== "" ||
       this.orderFiltr.endDate !== "" ||
       this.orderFiltr.searchValue !== ""
@@ -447,6 +456,7 @@ export class OrdersListComponent implements OnInit {
       this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
       // this.fetchAllTypeOrderCount();
+      this.lastEvaluatedKey = '';
       this.fetchOrdersCount();
       // this.initDataTable();
       this.spinner.hide();
@@ -578,16 +588,21 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.orders = [];
-          this.confirmOrders = [];
-          this.dispatchOrders = [];
-          this.deliveredOrders = [];
-          this.cancelledOrders = [];
-          this.invoicedOrders = [];
-          this.partiallyOrders = [];
-          this.tonuOrders = [];
-          this.lastEvaluatedKey = "";
-          this.fetchAllTypeOrderCount();
+          // this.orders = [];
+          // this.confirmOrders = [];
+          // this.dispatchOrders = [];
+          // this.deliveredOrders = [];
+          // this.cancelledOrders = [];
+          // this.invoicedOrders = [];
+          // this.partiallyOrders = [];
+          // this.tonuOrders = [];
+          // this.lastEvaluatedKey = "";
+          // this.fetchAllTypeOrderCount();
+
+          let getOrder = this.orders[0].filter(elem => elem.orderID == this.newOrderID);
+
+          getOrder[0].orderStatus = 'confirmed';
+
           this.confirmRef.close();
           this.isConfirm = false;
         },
