@@ -226,42 +226,42 @@
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="row mb-2">
-                      <div class="col-lg-12">
-                        <label
-                          class="
-                            control-label
-                            font-weight-semibold
-                            text-3 text-dark
-                          "
-                          >Reefer Temperature
-                        </label>
-                      </div>
-                      <div class="col-lg-10 col-md-12">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="reeferTemperature"
-                              [(ngModel)]="tripData.reeferTemperature"
-                              placeholder="eg. 10
+                      <div class="row mb-2">
+                        <div class="col-lg-12">
+                          <label
+                            class="
+                              control-label
+                              font-weight-semibold
+                              text-3 text-dark
+                            "
+                            >Reefer Temperature
+                          </label>
+                        </div>
+                        <div class="col-lg-10 col-md-12">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="reeferTemperature"
+                                [(ngModel)]="tripData.reeferTemperature"
+                                placeholder="eg. 10
                                                             °C or °F"
-                            />
-                          </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              [(ngModel)]="tripData.reeferTemperatureUnit"
-                              name="reeferTemperatureUnit"
-                              placeholder="Select
+                              />
+                            </div>
+                            <div class="col-lg-6 pl-0">
+                              <ng-select
+                                [(ngModel)]="tripData.reeferTemperatureUnit"
+                                name="reeferTemperatureUnit"
+                                placeholder="Select
                                                             Temperature Unit"
-                              #sltReeferTemp="ngModel"
-                            >
-                              <ng-option value="C">°C</ng-option>
-                              <ng-option value="F">°F</ng-option>
-                            </ng-select>
+                                #sltReeferTemp="ngModel"
+                              >
+                                <ng-option value="C">°C</ng-option>
+                                <ng-option value="F">°F</ng-option>
+                              </ng-select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1001,7 +1001,6 @@
               </div>
             </div>
           </div>
-
           <div class="row my-2">
             <div
               class="col-lg-12"
