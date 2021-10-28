@@ -4,7 +4,6 @@ import * as moment from "moment";
 import { Location } from "@angular/common";
 import { ListService } from "src/app/services/list.service";
 import { AccountService } from "src/app/services/account.service";
-import * as e from "express";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { ToastrService } from "ngx-toastr";
@@ -137,47 +136,56 @@ export class AddVendorPaymentComponent implements OnInit {
   }
 
   async fetchVendorBills() {
-    let result: any = await this.accountService
-      .getData(`bills/vendor/all/${this.paymentData.vendorID}`)
-      .toPromise();
-    if (result.length === 0) {
+    if (this.paymentData.vendorID) {
+      let result: any = await this.accountService
+        .getData(
+          `bills/vendor/all/${this.paymentData.vendorID}?currency=${this.paymentData.currency}`
+        )
+        .toPromise();
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      result.map((v) => {
+        v.selected = false;
+        v.prevPaidAmount = Number(v.total.finalTotal) - Number(v.balance);
+        v.paidStatus = false;
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.newStatus = v.status.replace("_", " ");
+      });
+      this.bills = result;
+    } else {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
-    result.map((v) => {
-      v.selected = false;
-      v.prevPaidAmount = Number(v.total.finalTotal) - Number(v.total.balance);
-      v.paidStatus = false;
-      v.fullPayment = false;
-      v.paidAmount = 0;
-      v.newStatus = v.status.replace("_", " ");
-    });
-    this.bills = result;
   }
 
   async fetchVendorAdvance() {
-    let result: any = await this.accountService
-      .getData(
-        `advance/entity/${this.paymentData.vendorID}?from=null&to=null&curr=${this.paymentData.currency}`
-      )
-      .toPromise();
-    if (result.length === 0) {
+    if (this.paymentData.vendorID) {
+      let result: any = await this.accountService
+        .getData(
+          `advance/entity/${this.paymentData.vendorID}?from=null&to=null&curr=${this.paymentData.currency}`
+        )
+        .toPromise();
+      if (result.length === 0) {
+        this.dataMessageAdv = Constants.NO_RECORDS_FOUND;
+      }
+      result.map((v) => {
+        v.selected = false;
+        v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
+        v.paidStatus = false;
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.newStatus = v.status.replace("_", " ");
+      });
+      this.advancePayments = result;
+    } else {
       this.dataMessageAdv = Constants.NO_RECORDS_FOUND;
     }
-    result.map((v) => {
-      v.selected = false;
-      v.prevPaidAmount = Number(v.amount) - Number(v.pendingPayment);
-      v.paidStatus = false;
-      v.fullPayment = false;
-      v.paidAmount = 0;
-      v.newStatus = v.status.replace("_", " ");
-    });
-    this.advancePayments = result;
-    console.log("result adv", result);
   }
 
   assignFullPayment(index, data) {
     if (data.fullPayment) {
-      this.bills[index].paidAmount = this.bills[index].total.balance;
+      this.bills[index].paidAmount = this.bills[index].balance;
       this.bills[index].status = "deducted";
     } else {
       this.bills[index].paidAmount = 0;
@@ -209,13 +217,13 @@ export class AddVendorPaymentComponent implements OnInit {
         this.paymentData.total.subTotal += Number(element.paidAmount);
 
         let status = "";
-        if (Number(element.paidAmount) === Number(element.total.balance)) {
-          status = "deducted";
+        if (Number(element.paidAmount) === Number(element.balance)) {
+          status = "paid";
         } else if (
           Number(element.paidAmount) > 0 &&
-          Number(element.paidAmount) < Number(element.total.balance)
+          Number(element.paidAmount) < Number(element.balance)
         ) {
-          status = "partially_deducted";
+          status = "partially_paid";
         } else {
           status = "open";
         }
@@ -227,15 +235,13 @@ export class AddVendorPaymentComponent implements OnInit {
             billID: element.billID,
             status: status,
             paidAmount: element.paidAmount,
-            totalAmount: element.total.finalTotal,
-            pendingAmount:
-              Number(element.total.balance) - Number(element.paidAmount),
+            totalAmount: element.balance,
+            pendingAmount: Number(element.balance) - Number(element.paidAmount),
           };
           this.paymentData.billData.push(obj);
         }
       }
     }
-    console.log("this.paymentData.billData", this.paymentData.billData);
     this.calculateFinalTotal();
   }
 
@@ -272,7 +278,7 @@ export class AddVendorPaymentComponent implements OnInit {
             paymentID: element.paymentID,
             status: status,
             paidAmount: element.paidAmount,
-            totalAmount: element.amount,
+            totalAmount: element.pendingPayment,
             pendingAmount:
               Number(element.pendingPayment) - Number(element.paidAmount),
           };
@@ -280,13 +286,11 @@ export class AddVendorPaymentComponent implements OnInit {
         }
       }
     }
-    console.log("this.paymentData.advData", this.paymentData.advData);
     this.calculateFinalTotal();
   }
 
   addRecord() {
-    console.log("tis", this.paymentData);
-
+    this.submitDisabled = true;
     this.accountService
       .postData("purchase-payments", this.paymentData)
       .subscribe({
