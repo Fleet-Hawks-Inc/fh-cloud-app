@@ -52,9 +52,9 @@ export class ListContactRenewComponent implements OnInit {
   driversList: any = {};
   mergedList: any = {};
   constructor(private apiService: ApiService,
-              private listService: ListService,
-              private toastr: ToastrService,
-              private spinner: NgxSpinnerService) { }
+    private listService: ListService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.listService.fetchDrivers();
@@ -74,8 +74,8 @@ export class ListContactRenewComponent implements OnInit {
   }
   fetchEmployees() {
     this.apiService.getData('contacts/employee/records').subscribe((res) => {
-    console.log('result', res);
-    this.employees = res.Items;
+      console.log('result', res);
+      this.employees = res.Items;
     });
   }
   fetchEmployeeList() {
@@ -84,7 +84,7 @@ export class ListContactRenewComponent implements OnInit {
       if (res) {
         this.apiService.getData('drivers/get/list').subscribe((result) => {
           this.driversList = result;
-          this.mergedList = {...res, ...result}; // merge id lists to one
+          this.mergedList = { ...res, ...result }; // merge id lists to one
         });
       }
     });
@@ -140,7 +140,7 @@ export class ListContactRenewComponent implements OnInit {
         }
         this.getStartandEndVal();
         this.remindersData = result[`Items`];
-        console.log(' this.remindersData',  this.remindersData);
+        console.log(' this.remindersData', this.remindersData);
         if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;

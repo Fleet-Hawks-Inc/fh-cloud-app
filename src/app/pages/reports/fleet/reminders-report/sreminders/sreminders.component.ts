@@ -16,15 +16,13 @@ import { ToastrService } from "ngx-toastr";
 export class SremindersComponent implements OnInit {
   searchServiceTask = null;
   status = null;
-  entityID = "";
+  entityID = null;
   lastItemSK = "";
   type = "null";
   allData = [];
-  pageLength = "10";
+  pageLength = 10;
   vehicleList = {};
-  OverdueService = 0;
-  due = 0;
-  totalRecords = "10";
+  totalRecords = 10;
   suggestedVehicles = [];
   searchValues = "";
   carrierID = "";
@@ -35,12 +33,16 @@ export class SremindersComponent implements OnInit {
   taskfunction = [];
   tasksData = [];
   loaded = false
-  totalCount = 0;
   deletedCount = 0;
   filterStatus = null;
   dataMessage: string = Constants.FETCHING_DATA
-  Vehicles = {}
-  tasks = {}
+  Vehicles = {};
+  tasks = {};
+  Count = {
+    total: '',
+    overdue: '',
+    dueSoon: '',
+  };
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
@@ -111,12 +113,13 @@ export class SremindersComponent implements OnInit {
   }
 
   resetData() {
-    if (this.entityID !== '' || this.searchServiceTask !== null || this.filterStatus !== null) {
+    if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
       this.searchServiceTask = null;
       this.status = null;
       this.allData = [];
       this.lastItemSK = '';
+      this.filterStatus = null;
       this.dataMessage = Constants.FETCHING_DATA
       this.fetchVehiclesdata();
     } else {
@@ -124,16 +127,23 @@ export class SremindersComponent implements OnInit {
     }
   }
 
-  async fetchReminderCount() {
-    const result = await this.apiService.getData('reminders').toPromise()
-    this.totalCount = result.Count
-    if (this.totalCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
-    result.Items.forEach(element => {
-      if (element.isDeleted == 1) this.deletedCount++
-      if (element.status == "overdue") this.OverdueService++
-      if (element.status == "dueSoon") this.due++
-    });
+  fetchReminderCount() {
+    this.apiService.getData(`reminders/fetch/count?status=${this.filterStatus}&type=service`).subscribe((result: any) => {
+      this.Count = result;
+    })
   }
+
+
+  // async fetchReminderCount() {
+  //   const result = await this.apiService.getData('reminders').toPromise()
+  //   this.totalCount = result.Count
+  //   if (this.totalCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
+  //   result.Items.forEach(element => {
+  //     if (element.isDeleted == 1) this.deletedCount++
+  //     if (element.status == "overdue") this.OverdueService++
+  //     if (element.status == "dueSoon") this.due++
+  //   });
+  // }
 
 
   fetchvehicleSList() {
@@ -187,7 +197,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}serviceReminder-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicle-renewal-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
