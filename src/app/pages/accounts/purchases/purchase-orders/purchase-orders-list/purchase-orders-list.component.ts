@@ -36,33 +36,34 @@ export class PurchaseOrdersListComponent implements OnInit {
   }
 
   async fetchPurchases() {
-    let filterAmount = null;
-    if (this.filter.amount) {
-      filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
-    }
-    let result: any = await this.accountService
-      .getData(
-        `purchase-orders/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
-      )
-      .toPromise();
-    this.disableSearch = false;
-    if (result.length === 0) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND;
-    }
-
-    if (result.length > 0 && result[result.length - 1].sk !== undefined) {
-      this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-    } else {
+    if (this.lastItemSK !== "end") {
+      let filterAmount = null;
+      if (this.filter.amount) {
+        filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+      }
+      let result: any = await this.accountService
+        .getData(
+          `purchase-orders/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
+        )
+        .toPromise();
+      this.disableSearch = false;
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
       this.lastItemSK = "end";
-    }
+      if (result.length > 0 && result[result.length - 1].sk !== undefined) {
+        this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+      } else {
+        this.lastItemSK = "end";
+      }
 
-    result.map((v) => {
-      v.url = `/accounts/purchases/orders/detail/${v.purchaseID}`;
-      v.editUrl = `/accounts/purchases/orders/edit/${v.purchaseID}`;
-      this.payOrders.push(v);
-    });
-    // this.payOrders = result;
-    this.loaded = true;
+      result.map((v) => {
+        v.url = `/accounts/purchases/orders/detail/${v.purchaseID}`;
+        v.editUrl = `/accounts/purchases/orders/edit/${v.purchaseID}`;
+        this.payOrders.push(v);
+      });
+      this.loaded = true;
+    }
   }
 
   async fetchVendor() {

@@ -6,6 +6,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import Constants from '../../../constants';
 import { environment } from '../../../../../../environments/environment';
 import * as _ from 'lodash';
+import { result } from 'lodash';
 declare var $: any;
 
 @Component({
@@ -59,6 +60,7 @@ export class IssueListComponent implements OnInit {
     this.fetchUsersList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
+   
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -244,6 +246,7 @@ export class IssueListComponent implements OnInit {
     });
   }
 
+  
   fetchAllAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.allAssets = result.Items;
