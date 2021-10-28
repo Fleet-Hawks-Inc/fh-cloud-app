@@ -1,167 +1,142 @@
 <section class="body">
-    <div class="inner-wrapper">
+   <div class="inner-wrapper">
       <section role="main" class="content-body pt-0 pr-0 pl-1">
          <header class="page-header pr19 pl11">
             <div class="row" style="padding-top:10px;">
 
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Asset Summary</h4>
-                  </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Asset Summary</h4>
+               </div>
 
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <div class="input-group input-group-sm mb-3">
-                        <select data-plugin-selectTwo class="form-control populate">
-                           <optgroup label="Select Group">
-                              <option value="1">All Asset</option>
-                              <option value="2">A5856BC</option>
-                           </optgroup>
-                        </select>
-                     </div>
-                  </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="input-group input-group-sm mb-3">
+                     <input type="text" autocomplete="off" name="assetIdentification" [(ngModel)]="assetIdentification"
+                        placeholder="Search Asset" class="form-control">
 
-                  <div class="col-md-2 col-lg-2 pr-0">
-                     <select data-plugin-selectTwo class="form-control">
-                        <optgroup label="">
-                           <option value="1">Asset Type</option>
-                           <option value="2">Flat Bed</option>
-                           <option value="2">Container</option>
-                           <option value="2">Double Drop</option>
-                           <option value="2">Stepdek</option>
-                           <option value="2">Lowboy</option>
-                           <option value="2">Dump Trailer</option>
-                        </optgroup>
-                     </select>
                   </div>
+               </div>
 
-                  <div class="col-md-2 col-lg-2">
-                     <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
-					      <button class="btn btn-sm btn-success" type="submit">Reset</button>
-                  </div>
+               <div class="col-md-2 col-lg-2 pr-0">
+                  <ng-select [(ngModel)]="assetType" name="assetType" class="form-control populate"
+                     placeholder="Select type">
+                     <ng-option value="container">Container</ng-option>
+                     <ng-option value="double_drop">Double Drop</ng-option>
+                     <ng-option value="dump_trailer">Dump Trailer</ng-option>
+                     <ng-option value="flat_bed">Flat bed</ng-option>
+                     <ng-option value="lowboy">Lowboy</ng-option>
+                     <ng-option value="stepDeck">StepDeck</ng-option>
+                     <ng-option value="removable_gooseneck">Removable Gooseneck</ng-option>
+                     <ng-option value="dry_van">Dry Van</ng-option>
+                     <ng-option value="reefer">Reefer</ng-option>
+                     <ng-option value="power_only">Power Only</ng-option>
+                     <ng-option value="conestoga_trailer">Conestoga Trailer</ng-option>
+                     <ng-option value="side_kit_trailer">Side Kit Trailer</ng-option>
+                     <ng-option value="specialized_trailer">Specialized Trailer</ng-option>
+                     <ng-option value="enclosed_trailer">Enclosed Trailer</ng-option>
+                     <ng-option value="scrap_trailer">Scrap Trailer</ng-option>
+                     <ng-option value="semi_trailer">Semi Trailer</ng-option>
+                     <ng-option value="chassis">Chassis</ng-option>
+                     <ng-option value="tank_trailer">Tank Trailer</ng-option>
+                  </ng-select>
+               </div>
 
-                  <div class="col-md-4 col-lg-4 text-right pr-1">
-                     <div class="btn-group flex-wrap ml-2">
-                        <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
-                        <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                           <a class="dropdown-item text-1" href="">CSV</a>
-                           <a class="dropdown-item text-1" href="">PDF</a>
-                        </div>
+               <div class="col-md-2 col-lg-2">
+                  <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="submit" (click)=" resetFilter()">Reset</button>
+
+               </div>
+
+               <div class="col-md-4 col-lg-4 text-right pr-1">
+                  <div class="btn-group flex-wrap ml-2">
+                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                        aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+                     <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                        <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
                      </div>
                   </div>
                </div>
-            </header>
+            </div>
+         </header>
 
-            <div class="m-2">
-               <div class="row text-dark">
-                  <div class="col-3 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4">Total Assets</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">124</h3>
-                        </div>
+         <div class="m-2">
+            <div class="row text-dark">
+               <div class="col-3 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Total Assets</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.total}}</h3>
                      </div>
                   </div>
-                  <div class="col-3 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4">Active Assets</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">100</h3>
-                        </div>
+               </div>
+               <div class="col-3 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Active Assets</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.active}}</h3>
                      </div>
                   </div>
-                  <div class="col-3 mb-3">
-                     <div class="bg-white p-3">
-                        <div>
-                           <h4 class="m-0 text-4">Inactive Assets</h4>
-                           <h3 class="mt-1 mb-0 font-weight-bold">24</h3>
-                        </div>
+               </div>
+               <div class="col-3 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Inactive Assets</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.inactive}}</h3>
                      </div>
                   </div>
-                  <div class="col">
-                     <div class="card">
+               </div>
+               <div class="col">
+                  <div class="card">
+                     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                        [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                         <div class="card-body bor-radius0px">
+
                            <section class="reports_div">
-                              <table class="table reports_small_div">
+                              <table class="row-border hover table table-bordered table-striped mb-0">
                                  <thead>
                                     <tr class="back-color-gray">
-                                       <th >Asset Name/Number</th>
-									            <th >VIN</th>
-                                       <th >Asset Type</th>
-                                       
-                                       <th >Make</th>
-                                       <th >Last Location</th>
-                                       <th >License Plate Number</th>
-                                       <th >Status</th>
+                                       <th>Asset Name/Number</th>
+                                       <th>VIN</th>
+                                       <th>Asset Type</th>
+                                       <th>Make</th>
+                                       <th>Last Location</th>
+                                       <th>License Plate Number</th>
+                                       <th>Status</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <tr class="cursorpoint">
-                                       <td>Reefer</td>
-									   <td>254689563214254</td>
-                                       <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                       
-                                       <td >Freightliner</td>
-                                       <td >Mississauga</td>
-                                       <td>852963</td>
-                                       <td><span class="badge badge-dark p-1">INACTIVE</span></td>
+                                    <tr *ngIf="allData.length == 0" class="text-center">
+                                       <td colspan="15">{{dataMessage}}</td>
                                     </tr>
-                                    <tr class="cursorpoint">
-                                       <td >Drybox</td>
-									   <td>119689563214254</td>
-                                       <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                       
-                                       <td >FORD</td>
-                                       <td >Ottawa</td>
-                                       <td>1316598</td>
-                                       <td ><span class="badge badge-dark  p-1">ACTIVE</span></td>
-                                    </tr>
-                                    <tr class="cursorpoint">
-                                       <td>Curtain Side</td>
-									   <td>887419563214250</td>
-                                       <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                       
-                                       <td>GM</td>
-                                       <td>Ottawa</td>
-                                       <td>558877</td>
-                                       <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
-                                    </tr>
-                                    <tr class="cursorpoint">
-                                       <td>Reefer</td>
-									   <td>309019563214111</td>
-                                       <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                       
-                                       <td>GM</td>
-                                       <td>Perth</td>
-                                       <td>86429</td>
-                                       <td><span class="badge badge-dark p-1">INACTIVE</span></td>
-                                    </tr>
-                                    <tr class="cursorpoint">
-                                       <td>Flatbed</td>
-									   <td>446019563217899</td>
-                                       <td onclick="window.location='asset1_details-drybox-flat-curtain.php'">Test Asset</td>
-                                       
-                                       <td>Scania</td>
-                                       <td>Thunder Bay</td>
-                                       <td>709060</td>
-                                       <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
-                                    </tr>
-                                    <tr class="cursorpoint">
-                                       <td>Reefer</td>
-									   <td>79563211010</td>
-                                       <td onclick="window.location='asset1_details.php'">Test Asset</td>
-                                       
-                                       <td>Scania</td>
-                                       <td>Welland</td>
-                                       <td>1199</td>
-                                       <td><span class="badge badge-dark  p-1">ACTIVE</span></td>
+                                    <tr *ngFor="let item of allData">
+                                       <td><span
+                                             class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
+                                       </td>
+                                       <td>{{item.VIN}}</td>
+                                       <td>{{item.assetType}}</td>
+                                       <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}
+                                       </td>
+                                       <td>-</td>
+                                       <td>{{item.assetDetails.licencePlateNumber}}</td>
+                                       <td><span
+                                             class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
+                                       </td>
                                     </tr>
                                  </tbody>
                               </table>
                            </section>
                         </div>
+
+                        <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                           <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                              More..</button>
+
+                        </div>
                      </div>
                   </div>
                </div>
             </div>
-         </section>
-    </div>
+         </div>
+      </section>
+   </div>
 </section>
