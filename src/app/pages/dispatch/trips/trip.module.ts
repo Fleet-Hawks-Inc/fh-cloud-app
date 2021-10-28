@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable } from '@angular/core';
-
-import {SharedModule} from '../../../shared/shared.module';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SharedModule } from '../../../shared/shared.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import {ChartsModule} from 'ng2-charts';
+import { ChartsModule } from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { AddTripComponent } from './add-trip/add-trip.component';
 import { TripListComponent } from './trip-list/trip-list.component';
@@ -39,11 +39,11 @@ export class CustomAdapter extends NgbDateAdapter<string> {
 
   toModel(date: NgbDateStruct): string // from internal model -> your mode
   {
-    let month:any = '';
-    let day:any = '';
-    if(date) {
-      month = (date.month < 10) ? '0'+date.month : date.month;
-      day = (date.day < 10) ? '0'+date.day : date.day;
+    let month: any = '';
+    let day: any = '';
+    if (date) {
+      month = (date.month < 10) ? '0' + date.month : date.month;
+      day = (date.day < 10) ? '0' + date.day : date.day;
     }
     return date ? date.year + this.DELIMITER + month + this.DELIMITER + day : null;
   }
@@ -71,11 +71,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 
   format(date: NgbDateStruct | null): string {
-    let month:any = '';
-    let day:any = '';
-    if(date) {
-      month = (date.month < 10) ? '0'+date.month : date.month;
-      day = (date.day < 10) ? '0'+date.day : date.day;
+    let month: any = '';
+    let day: any = '';
+    if (date) {
+      month = (date.month < 10) ? '0' + date.month : date.month;
+      day = (date.day < 10) ? '0' + date.day : date.day;
     }
 
     return date ? date.year + this.DELIMITER + month + this.DELIMITER + day : '';
@@ -83,10 +83,10 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: 'trip-list', component: TripListComponent},
-  { path: 'add-trip', component: AddTripComponent},
-  { path: 'trip-details/:tripID', component: TripDetailComponent},
-  { path: 'edit-trip/:tripID', component: AddTripComponent},
+  { path: 'trip-list', component: TripListComponent },
+  { path: 'add-trip', component: AddTripComponent },
+  { path: 'trip-details/:tripID', component: TripDetailComponent },
+  { path: 'edit-trip/:tripID', component: AddTripComponent },
 ];
 @NgModule({
   declarations: [
@@ -106,10 +106,11 @@ const routes: Routes = [
     NgxSpinnerModule,
     ChartsModule,
     DragDropModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NgxDatatableModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
 })
-export class TripModule {}
+export class TripModule { }
