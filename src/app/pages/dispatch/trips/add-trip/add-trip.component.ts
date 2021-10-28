@@ -661,6 +661,12 @@ export class AddTripComponent implements OnInit {
     let calculateBy = "";
     this.orderStops = [];
 
+    if(this.activeTab=='FTL'){
+      this.allFetchedOrders=this.ftlOrders
+    }
+    else{
+      this.allFetchedOrders=this.ltlOrders
+    }
     for (let i = 0; i < this.OrderIDs.length; i++) {
       const element = this.OrderIDs[i];
 
@@ -1625,6 +1631,7 @@ export class AddTripComponent implements OnInit {
         this.ltlOrders = this.ltlOrders.concat(res)
         this.loaded = true;
         this.isLoading = false;
+        //this.allFetchedOrders=this.ltlOrders
         //await this.setOrdersDataFormat(result.Items, "all")
       }
     }
@@ -1868,6 +1875,7 @@ export class AddTripComponent implements OnInit {
         this.ftlOrders = this.ftlOrders.concat(res)
         this.loaded = true;
         this.isLoading = false;
+        //this.allFetchedOrders=this.ftlOrders
         //await this.setOrdersDataFormat(result.Items, "all")
       }
     }
