@@ -40,7 +40,7 @@ export class SremindersComponent implements OnInit {
 
 
     this.fetchReminderdata();
-    this.fetchvehicleSList();
+    this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
 
@@ -115,7 +115,7 @@ export class SremindersComponent implements OnInit {
       this.count = result;
     })
   }
-  fetchvehicleSList() {
+  fetchvehiclesList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
       console.log("vehicleList", result)
