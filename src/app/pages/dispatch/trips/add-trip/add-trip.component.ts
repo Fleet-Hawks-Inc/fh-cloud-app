@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { Component, OnInit, TemplateRef, ElementRef, ViewChild } from "@angular/core";
 import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { ApiService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -7,6 +7,9 @@ import { from, Subject, throwError } from "rxjs";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
+import Constant from 'src/app/pages/fleet/constants'
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
+
 import {
   debounceTime,
   distinctUntilChanged,
@@ -51,6 +54,7 @@ export class AddTripComponent implements OnInit {
     calculateBy: "manual",
     totalMiles: 0,
   };
+  isLoading = false;
   permanentRoutes = [];
   errors = {};
   trips = [];
@@ -89,7 +93,9 @@ export class AddTripComponent implements OnInit {
     stlLink: false,
   };
   ltlOrders = [];
-  ftlOrders = [];
+  ftlOrders = [
+
+  ];
 
   selectedAssets = [];
   form;
@@ -234,6 +240,20 @@ export class AddTripComponent implements OnInit {
   manualAssetRef: any;
   assignConfirmModal: any;
 
+  lastFtLOrderSK = ''
+  lastLtlOrderSK = ''
+  dataMessage = ''
+  loaded = false
+  readonly rowHeight = 60;
+  readonly headerHeight = 50
+  readonly pageLimit = 10;
+  selectedFTL = []
+  selectedLTL = []
+  SelectionType = SelectionType
+  ColumnMode = ColumnMode
+  orderSearch = ''
+  activeTab = ''
+  searchOrder = ''
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -243,19 +263,25 @@ export class AddTripComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private location: Location,
     private hereMap: HereMapService,
-    private countryStateCity: CountryStateCityService
-  ) {}
+    private countryStateCity: CountryStateCityService,
+    private el: ElementRef,
+    // public selectionType: SelectionType,
+    // public columnMode: ColumnMode
+  ) { }
 
   async ngOnInit() {
+
+
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
     } else {
       this.pageTitle = "Add Trip";
     }
-    this.fetchOrders();
+    //this.fetchOrders();
     this.fetchCustomerByIDs();
     this.fetchCarriers();
+    this.orderFTLInit();
     this.fetchRoutes();
     this.mapShow();
     this.fetchVehicles();
@@ -506,8 +532,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -521,6 +547,7 @@ export class AddTripComponent implements OnInit {
   }
 
   showMOdal() {
+
     $("#orderModal").modal("show");
   }
 
@@ -634,6 +661,12 @@ export class AddTripComponent implements OnInit {
     let calculateBy = "";
     this.orderStops = [];
 
+    if(this.activeTab=='FTL'){
+      this.allFetchedOrders=this.ftlOrders
+    }
+    else{
+      this.allFetchedOrders=this.ltlOrders
+    }
     for (let i = 0; i < this.OrderIDs.length; i++) {
       const element = this.OrderIDs[i];
 
@@ -1404,7 +1437,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1422,7 +1455,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1441,12 +1474,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1465,23 +1498,389 @@ export class AddTripComponent implements OnInit {
   }
 
   changeOrderTab(tabType) {
-    // this.tripData.orderType = tabType;
+    this.orderSearch = ''
+
+    if (tabType == "LTL") {
+      this.activeTab = "LTL";
+    }
+    else if (tabType = "FTL") {
+      this.activeTab = "FTL"
+    }
+  }
+  onLTLScroll(offsetY: any) {
+    const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+    if (!this.isLoading && offsetY + viewHeight + this.ftlOrders.length * this.rowHeight) {
+
+      let limit = this.pageLimit;
+      if (this.ftlOrders.length === 0) {
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        limit = Math.max(pageSize, this.pageLimit)
+      }
+      if (this.loaded) {
+        this.fetchLTLOrders();
+      }
+      this.loaded = false
+    }
+  }
+  onLTLSelect(selected: any) {
+    this.selectedFTL = []
+    this.temporaryOrderIDs = []
+    this.temporaryOrderNumber = []
+    if (this.selectedLTL.length > 0) {
+      this.selectedLTL.forEach(element => {
+        this.temporaryOrderIDs.push(element.orderID)
+        this.temporaryOrderNumber.push(element.orderNumber)
+      })
+    }
   }
 
-  async fetchOrders() {
-    this.ltlOrders = [];
-    this.ftlOrders = [];
-    let result: any = await this.apiService
-      .getData("orders/get/confirmed")
-      .toPromise();
-    let result2: any = await this.apiService
-      .getData("orders/get/brokerage")
-      .toPromise();
-    let data = result.Items;
-    let data2 = result2.Items;
-    let newData = data.concat(data2);
-    this.setOrdersDataFormat(newData, "all");
+  async fetchLTLOrders(refresh?: Boolean) {
+    this.isLoading = true;
+    if (refresh === true) {
+      this.lastLtlOrderSK = '',
+        this.ltlOrders = []
+    }
+    if (this.lastLtlOrderSK !== 'end') {
+      const result: any = await this.apiService.getData(`orders/get/type/LTL?lastKey=${this.lastLtlOrderSK}`).toPromise();
+      this.dataMessage = Constant.FETCHING_DATA
+
+      if (result.Items.length === 0) {
+        this.dataMessage = Constant.NO_RECORDS_FOUND
+      }
+
+      if (result.Items.length > 0) {
+        this.isLoading = false
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastLtlOrderSK = encodeURIComponent(result.LastEvaluatedKey.orderSK)
+        }
+        else {
+          this.lastLtlOrderSK = 'end'
+        }
+
+        let res = result.Items.map((i) => {
+          i.pickupLocations = "";
+          i.deliveryLocations = "";
+          i.customer = this.customersObjects[i.customerID]
+          if (i.shippersReceiversInfo) {
+            let ind = 1;
+            let ind2 = 1;
+            i.shippersReceiversInfo.map((j) => {
+              j.receivers.map((k) => {
+                k.dropPoint.map((dr) => {
+                  let dateTime = "";
+                  if (dr.dateAndTime != undefined && dr.dateAndTime != "") {
+                    let dmy = dr.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (dr.address.manual) {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.dropOffLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+
+                  ind++;
+                });
+              });
+            });
+
+            i.shippersReceiversInfo.map((m) => {
+              m.shippers.map((n) => {
+                n.pickupPoint.map((pk) => {
+                  let dateTime = "";
+                  if (pk.dateAndTime != undefined && pk.dateAndTime != "") {
+                    let dmy = pk.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (pk.address.manual) {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.pickupLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+                  ind2++;
+                });
+              });
+            });
+          }
+          return i
+        })
+        this.ltlOrders = this.ltlOrders.concat(res)
+        this.loaded = true;
+        this.isLoading = false;
+        //this.allFetchedOrders=this.ltlOrders
+        //await this.setOrdersDataFormat(result.Items, "all")
+      }
+    }
   }
+
+  orderFTLInit() {
+    this.orderSearch = ''
+    this.activeTab = "FTL"
+    this.lastFtLOrderSK = ''
+    this.fetchFTLOrders();
+    this.fetchLTLOrders();
+  }
+  onFTLSelect({ selected }) {
+    this.selectedLTL = []
+    this.temporaryOrderIDs = []
+    this.temporaryOrderNumber = []
+    if (this.selectedFTL.length > 0) {
+      this.selectedFTL.forEach(element => {
+        this.temporaryOrderIDs.push(element.orderID)
+        this.temporaryOrderNumber.push(element.orderNumber)
+      })
+    }
+  }
+  onFTLScroll(offsetY: any) {
+    const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+    if (!this.isLoading && offsetY + viewHeight + this.ftlOrders.length * this.rowHeight) {
+
+      let limit = this.pageLimit;
+      if (this.ftlOrders.length === 0) {
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        limit = Math.max(pageSize, this.pageLimit)
+      }
+      if (this.loaded) {
+        this.fetchFTLOrders();
+      }
+      this.loaded = false
+    }
+  }
+
+  async searchSingleOrder() {
+    if (this.searchOrder) {
+      this.dataMessage = Constant.FETCHING_DATA
+      const result = await this.apiService.getData(`orders/search/${this.activeTab}?orderNumber=${this.searchOrder}`).toPromise();
+      if (result.Items.length != 0) {
+        let res = result.Items.map((i) => {
+          i.pickupLocations = "";
+          i.deliveryLocations = "";
+          i.customer = this.customersObjects[i.customerID]
+          if (i.shippersReceiversInfo) {
+            let ind = 1;
+            let ind2 = 1;
+            i.shippersReceiversInfo.map((j) => {
+              j.receivers.map((k) => {
+                k.dropPoint.map((dr) => {
+                  let dateTime = "";
+                  if (dr.dateAndTime != undefined && dr.dateAndTime != "") {
+                    let dmy = dr.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (dr.address.manual) {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.dropOffLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+
+                  ind++;
+                });
+              });
+            });
+
+            i.shippersReceiversInfo.map((m) => {
+              m.shippers.map((n) => {
+                n.pickupPoint.map((pk) => {
+                  let dateTime = "";
+                  if (pk.dateAndTime != undefined && pk.dateAndTime != "") {
+                    let dmy = pk.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (pk.address.manual) {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.pickupLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+                  ind2++;
+                });
+              });
+            });
+          }
+          return i
+        })
+        if (this.activeTab == 'FTL') {
+          this.ftlOrders = res
+        }
+        else {
+          this.ltlOrders = res
+        }
+      }
+      else {
+        this.ftlOrders = []
+        this.ltlOrders = []
+        this.dataMessage = Constant.NO_RECORDS_FOUND
+      }
+    }
+    else {
+      this.toastr.error("Search Field Required")
+    }
+
+  }
+
+  resetOrders() {
+    this.searchOrder = ''
+    this.ftlOrders = []
+    this.ltlOrders = []
+    this.selectedFTL = []
+    this.selectedLTL = []
+    this.lastFtLOrderSK = ''
+    this.fetchFTLOrders();
+
+    this.lastLtlOrderSK = ''
+    this.fetchLTLOrders();
+
+  }
+  async fetchFTLOrders(refresh?: boolean) {
+    this.isLoading = true;
+    if (refresh === true) {
+      this.lastFtLOrderSK = '',
+        this.ftlOrders = []
+    }
+    if (this.lastFtLOrderSK !== 'end') {
+      const result: any = await this.apiService.getData(`orders/get/type/FTL?lastKey=${this.lastFtLOrderSK}`).toPromise();
+      this.dataMessage = Constant.FETCHING_DATA
+
+      if (result.Items.length === 0) {
+        this.dataMessage = Constant.NO_RECORDS_FOUND
+      }
+
+      if (result.Items.length > 0) {
+        this.isLoading = false
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastFtLOrderSK = encodeURIComponent(result.LastEvaluatedKey.orderSK)
+        }
+        else {
+          this.lastFtLOrderSK = 'end'
+        }
+
+        let res = result.Items.map((i) => {
+          i.pickupLocations = "";
+          i.deliveryLocations = "";
+          i.customer = this.customersObjects[i.customerID]
+          if (i.shippersReceiversInfo) {
+            let ind = 1;
+            let ind2 = 1;
+            i.shippersReceiversInfo.map((j) => {
+              j.receivers.map((k) => {
+                k.dropPoint.map((dr) => {
+                  let dateTime = "";
+                  if (dr.dateAndTime != undefined && dr.dateAndTime != "") {
+                    let dmy = dr.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (dr.address.manual) {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.deliveryLocations +=
+                      ind +
+                      ". " +
+                      dr.address.dropOffLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+
+                  ind++;
+                });
+              });
+            });
+
+            i.shippersReceiversInfo.map((m) => {
+              m.shippers.map((n) => {
+                n.pickupPoint.map((pk) => {
+                  let dateTime = "";
+                  if (pk.dateAndTime != undefined && pk.dateAndTime != "") {
+                    let dmy = pk.dateAndTime.split(" ");
+                    dateTime = moment(dmy[0]).format("YYYY/MM/DD") + " " + dmy[1];
+                  }
+                  if (pk.address.manual) {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.address +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  } else {
+                    i.pickupLocations +=
+                      ind2 +
+                      ". " +
+                      pk.address.pickupLocation +
+                      " <br/>" +
+                      dateTime +
+                      " <br/>";
+                  }
+                  ind2++;
+                });
+              });
+            });
+          }
+          return i
+        })
+        this.ftlOrders = this.ftlOrders.concat(res)
+        this.loaded = true;
+        this.isLoading = false;
+        //this.allFetchedOrders=this.ftlOrders
+        //await this.setOrdersDataFormat(result.Items, "all")
+      }
+    }
+  }
+
 
   setOrdersDataFormat(orders, type) {
     let data = orders.map((i) => {
@@ -1583,6 +1982,7 @@ export class AddTripComponent implements OnInit {
     if (type == "all") {
       this.allFetchedOrders = data;
     }
+
   }
 
   /*
@@ -1978,7 +2378,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.putData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1996,7 +2396,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -2551,7 +2951,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -2564,8 +2964,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {

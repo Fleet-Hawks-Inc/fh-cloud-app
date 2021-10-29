@@ -59,15 +59,7 @@
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.make"
                                         name="make" (change)="hideShowColumn()"> Make </label>
-                                    </a>
-                                    <a class="dropdown-item text-1" href="javascript:;">
-                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.model"
-                                        name="model" (change)="hideShowColumn()"> Model </label>
-                                    </a>
-                                    <a class="dropdown-item text-1" href="javascript:;">
-                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.year"
-                                        name="year" (change)="hideShowColumn()"> Year </label>
-                                    </a>
+                                    </a>                                    
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.annualSafety"
                                         name="annualSafety" (change)="hideShowColumn()"> Annual Safety Date </label>
@@ -178,6 +170,7 @@
                                                 <th class="">Team Driver Assigned</th>
                                                 <th class="col7 extra">Trip</th>
                                                 <th class="col8 ">Plate Number</th>
+                                                <th class="col8 ">DashCam</th>
                                                 <th class="col10 minWidth120">Status</th>
                                                 <th class="col11 extra">Group</th>
                                                 <th class="col14 extra">Service Program</th>
@@ -220,7 +213,15 @@
                                                 <td class="cursorpoint" *ngIf="hideShow.plateNo" [routerLink]="vehicle.url">
                                                     {{(vehicle.plateNumber) ? vehicle.plateNumber : '-'}}
                                                 </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.status" [routerLink]="vehicle.url">
+                                                <td class="cursorpoint" *ngIf="hideShow.status">
+                                                   
+                                                    <span class="badge  p-1 text-uppercase" (click)="openLiveView(dashCamModel,vehicle.vehicleIdentification,vehicle.deviceInfo)"
+                                                    *ngIf="vehicle.isDashCam" dhref="javascript:;"  [ngClass]="{'badge-success':vehicle.isDashOnline,'badge-primary':!vehicle.isDashOnline}">{{ vehicle.isDashOnline === true ? "Live View" : "Offline"}}</span>
+                                                    <span class="badge  p-1 text-uppercase" 
+                                                    *ngIf="!vehicle.isDashCam"  href="javascript:;" [ngClass]="{'badge-primary':true}">NO CAM</span>
+                                                    
+                                                </td>
+                                                <td>
                                                     <span class="badge badge-dark p-1 text-uppercase">{{vehicle.currentStatus}}</span>
                                                 </td>
                                                 <td class="cursorpoint" *ngIf="hideShow.group" [routerLink]="vehicle.url">
@@ -268,7 +269,7 @@
                                 </div>
                                 <div class="row mt-3 dtPaginate" *ngIf="vehicles.length > 0">
                                     <div class="col-6">
-                                        Showing {{ vehicleStartPoint }} to {{ vehicleEndPoint }} of {{ totalRecords }} enteries
+                                        Showing {{ vehicleStartPoint }} to {{ vehicleEndPoint }} of {{ totalRecords }} entries.
                                     </div>
                                     <div class="col-6 text-right">
                                         <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="vehiclePrev">Prev</button>
@@ -582,6 +583,37 @@
                     </div>
                 </div>
             </div>
+           
         </section>
+       
     </div>
 </section>
+
+
+
+<!--Modal: Name-->
+<ng-template #dashCamModel let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{liveStreamVehicle}}</h4>
+      
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>
+        <p>To enlarge the screen double clik on window.</p>
+      
+        <div class="embed-responsive z-depth-1-half" style="height: 600px;width: 100%;">
+            <iframe id="videoIframe" height="600px" width="100%"  [src]="url"></iframe>          
+          </div><br>
+          
+    </div>
+    <!-- <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
+   
+    </div> -->
+    
+  </ng-template>
+
+  <!--Modal: Name--> 

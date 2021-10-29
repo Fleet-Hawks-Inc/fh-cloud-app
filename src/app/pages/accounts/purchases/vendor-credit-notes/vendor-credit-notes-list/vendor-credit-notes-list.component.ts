@@ -28,7 +28,7 @@ export class VendorCreditNotesListComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // this.getCredits();
@@ -51,7 +51,7 @@ export class VendorCreditNotesListComponent implements OnInit {
   }
 
   deleteCredit(creditID: string) {
-    if (confirm("Are you sure you want to void?") === true) {
+    if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
         .deleteData(`vendor-credits/delete/${creditID}`)
         .subscribe((res) => {
