@@ -5,12 +5,6 @@
             <div class="row" style="padding-top:10px;">
 
                <div class="col-md-2 col-lg-2 pr-0">
-                  <!-- <input class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="VEH" placeholder="Search by Vehicle"
-                     ([ngModel])="srchVeh" 
-                      /> -->
-                  <!-- <input [(ngModel)]="entityID" placeholder="Miles to repeat service task"
-                     name="srchVeh" type="text" class="form-control"> -->
-
                   <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
                      placeholder="Search By vehicle">
                      <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
@@ -22,7 +16,6 @@
                      placeholder="Search task">
                      <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
                      </ng-option>
-                     <!-- </optgroup> -->
                   </ng-select>
                </div>
 
@@ -77,7 +70,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Service Reminders</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.total}} </h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.total}} </h3>
                      </div>
                   </div>
                </div>
@@ -85,7 +78,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Overdue Service</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.overdue}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.overdue}}</h3>
                      </div>
                   </div>
                </div>
@@ -93,7 +86,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Due Soon</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.dueSoon}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.dueSoon}}</h3>
                      </div>
                   </div>
                </div>
@@ -124,14 +117,10 @@
                                           <td>{{tasksData[item.tasks.taskID]}}</td>
                                           <td>{{item.createdDate}}</td>
                                           <td>{{item.subscribers}}</td>
-                                          <!-- <td>{{item.status}} </td> -->
                                           <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
                                                 *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                              <span class="text-danger font-weight-bold font-size-12 text-uppercase"
                                                 *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-                                             <!-- <span class="font-weight-bold"
-                                                title="Service Task">{{tasksData[item.tasks.taskID]}}</span>
-                                             <br> -->
                                              <span class="font-size-12">
                                                 <span *ngIf="item.tasks.remindByUnit == 'time'">Every
                                                    {{item.tasks.time}}

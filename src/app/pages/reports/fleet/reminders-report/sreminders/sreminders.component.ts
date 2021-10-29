@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// import { Constants } from '@aws-amplify/core';
 import { result } from 'lodash';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
@@ -21,24 +20,15 @@ export class SremindersComponent implements OnInit {
   type = "null";
   allData = [];
   pageLength = 10;
-  vehicleList = {};
-  totalRecords = 10;
-  suggestedVehicles = [];
-  searchValues = "";
-  carrierID = "";
-  currentStatus = "null";
   lastEvaluatedKey = "";
   carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
   tasksData = [];
   loaded = false
-  deletedCount = 0;
   filterStatus = null;
   dataMessage: string = Constants.FETCHING_DATA
-  Vehicles = {};
-  tasks = {};
-  Count = {
+  count = {
     total: '',
     overdue: '',
     dueSoon: '',
@@ -48,12 +38,10 @@ export class SremindersComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.linkfunction();
-    this.tasksfunction();
-    this.fetchVehiclesdata();
+
+    this.fetchReminderdata();
     this.fetchvehicleSList();
     this.fetchTasksList();
-    // this. fetchServiceTaks()
     this.fetchReminderCount();
 
 
@@ -63,12 +51,10 @@ export class SremindersComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  fetchVehiclesdata() {
+  fetchReminderdata() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
-        console.log('this.data', result)
-        // this.allData = result.Items;
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
 
@@ -94,24 +80,22 @@ export class SremindersComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-      this.fetchVehiclesdata();
+      this.fetchReminderdata();
     }
     this.loaded = false;
   }
   srchVeh() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
 
-      // if (this.entityID !== ''){
-      // this.entityID = this.entityID;
+
       this.allData = [];
       this.lastItemSK = '';
-      this.fetchVehiclesdata();
+      this.fetchReminderdata();
     }
     else {
       return false;
     }
   }
-
   resetData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.entityID = null;
@@ -121,53 +105,28 @@ export class SremindersComponent implements OnInit {
       this.lastItemSK = '';
       this.filterStatus = null;
       this.dataMessage = Constants.FETCHING_DATA
-      this.fetchVehiclesdata();
+      this.fetchReminderdata();
     } else {
       return false;
     }
   }
-
   fetchReminderCount() {
-    this.apiService.getData(`reminders/fetch/count?status=${this.filterStatus}&type=service`).subscribe((result: any) => {
-      this.Count = result;
+    this.apiService.getData(`reminders/fetch/count?type=service`).subscribe((result: any) => {
+      this.count = result;
     })
   }
-
-
-  // async fetchReminderCount() {
-  //   const result = await this.apiService.getData('reminders').toPromise()
-  //   this.totalCount = result.Count
-  //   if (this.totalCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
-  //   result.Items.forEach(element => {
-  //     if (element.isDeleted == 1) this.deletedCount++
-  //     if (element.status == "overdue") this.OverdueService++
-  //     if (element.status == "dueSoon") this.due++
-  //   });
-  // }
-
-
   fetchvehicleSList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
       console.log("vehicleList", result)
     });
   }
-
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
       console.log("tasksData", result)
     });
   }
-
-  tasksfunction() {
-    this.apiService.getData("tasks/get/list").subscribe((result: any) => {
-      console.log("this.allData", result)
-      this.taskfunction = result;
-
-    })
-  }
-
   generateCSV() {
     if (this.allData.length > 0) {
       let dataObject = []
@@ -197,7 +156,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}vehicle-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}vehicle-renewal-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

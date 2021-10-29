@@ -14,35 +14,29 @@ import * as moment from 'moment'
 })
 export class VehicleRenewalsComponent implements OnInit {
   vehiclesList = {};
-  contactData = {};
   tasksData = [];
-  taskfunction = [];
   allData = [];
   entityID = null;
-  email = [];
   loaded = false
   lastItemSK = "";
   filterStatus = null;
   searchServiceTask = null;
-  totalCount = 10;
-  deletedCount = 0;
-  OverdueService = 0;
-  due = 0;
-  totalRecords = 10;
   status = null;
-
+  Count = {
+    total: '',
+    overdue: '',
+    dueSoon: '',
+  }
   dataMessage: string = Constants.FETCHING_DATA
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-
     this.fetchvehicleSList();
     this.fetchTasksList();
     this.fetchallData();
     this.fetchReminderCount();
     this.fetchVehiclesdata();
-
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -50,16 +44,17 @@ export class VehicleRenewalsComponent implements OnInit {
 
   fetchallData() {
     this.apiService.getData("reminders").subscribe((result: any) => {
-      // this.allData = result.Items;
       console.log('this.data', result)
     });
+  }
+  fetchReminderCount() {
+    this.apiService.getData(`reminders/fetch/count?status=${this.filterStatus}&type=service`).subscribe((result: any) => {
+      this.Count = result;
+    })
   }
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end')
       this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-
-        console.log('this.data', result)
-        // this.allData = result.Items;
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
 
@@ -77,13 +72,8 @@ export class VehicleRenewalsComponent implements OnInit {
 
           this.loaded = true;
         }
-
-
       });
   }
-
-
-
   fetchvehicleSList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
@@ -96,16 +86,6 @@ export class VehicleRenewalsComponent implements OnInit {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
       console.log("tasksData", result)
-    });
-  }
-  async fetchReminderCount() {
-    const result = await this.apiService.getData('reminders').toPromise()
-    this.totalCount = result.Count
-    if (this.totalCount == 0) this.dataMessage = Constants.NO_RECORDS_FOUND
-    result.Items.forEach(element => {
-      if (element.isDeleted == 1) this.deletedCount++
-      if (element.status == "overdue") this.OverdueService++
-      if (element.status == "dueSoon") this.due++
     });
   }
   srchVeh() {
@@ -147,8 +127,9 @@ export class VehicleRenewalsComponent implements OnInit {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["vehicle Renewal Type"] = this.tasksData[element.tasks.taskID]
-        obj["Next Due"] = element.createdDate
+        obj["Due Date"] = element.createdDate
         obj["Subscribers"] = element.subscribers
+        obj["Send Reminder"] = element.tasks.remindByUnit
         obj["Renewal Status"] = element.status
         dataObject.push(obj)
       });
@@ -167,7 +148,7 @@ export class VehicleRenewalsComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}serviceReminder-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}serviceReminder-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

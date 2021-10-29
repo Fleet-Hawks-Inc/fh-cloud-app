@@ -8,15 +8,15 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="firstName" name="firstName" style="width: 100% !important;"
                      placeholder="Search By vehicle">
-                     <ng-option *ngFor="let data of findData | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <ng-option *ngFor="let data of empData | keyvalue" value="{{ data.key }}"> {{ data.value }}
                      </ng-option>
                   </ng-select>
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="reminderID" name="reminderID" style="width: 100% !important;"
+                  <ng-select [(ngModel)]="employeeID" name="employeeID" style="width: 100% !important;"
                      placeholder="Search By vehicle">
-                     <ng-option *ngFor="let data of reminderID | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <ng-option *ngFor="let data of empData | keyvalue" value="{{ data.key }}"> {{ data.value }}
                      </ng-option>
                   </ng-select>
                </div>
@@ -104,18 +104,17 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngIf="findData.length == 0" class="text-center">
+                                 <tr *ngIf="empData.length == 0" class="text-center">
                                     <td colspan="6">{{dataMessage}}</td>
                                  </tr>
-                                 <tr *ngFor="let item of findData">
+                                 <tr *ngFor="let item of empData">
 
                                     <td>{{item.firstName}}</td>
-                                    <td>{{item.reminderID}}</td>
-                                    <td>{{Users[item.tasks.taskID]}}</td>
-                                    <td>{{item.tasks.timeUnit}}</td>
-                                    <td><span class="font-size-12">{{item.tasks.dueDate |
-                                          date:"yyyy/MM/dd"}}</span></td>
-                                    <td>{{item.subscribers}}</td>
+                                    <td>{{item.employeeID}}</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>--</td>
+                                    <td>{{item.workEmail}}</td>
 
                               </tbody>
                            </table>
