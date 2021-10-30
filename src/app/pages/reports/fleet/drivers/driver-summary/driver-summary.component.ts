@@ -73,7 +73,7 @@ export class DriverSummaryComponent implements OnInit {
     searchDriver() {
         if (this.driverName !== '' || this.driverStatus !== null) {
             this.driverName = this.driverName.toLowerCase();
-            this.disableSearch = true;
+            //this.disableSearch = true;
             this.drivers = [];
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
@@ -85,8 +85,10 @@ export class DriverSummaryComponent implements OnInit {
             return false;
         }
     }
+    
+    
     getSuggestions = _.debounce(function (value) {
-
+        this.driverID = "";
         value = value.toLowerCase();
         if (value != '') {
             this.apiService
@@ -103,6 +105,8 @@ export class DriverSummaryComponent implements OnInit {
         this.driverID = driverName;
         this.suggestedDrivers = [];
     }
+    
+
     resetDriver() {
         if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
             this.driverName = '';
@@ -123,7 +127,7 @@ export class DriverSummaryComponent implements OnInit {
             let csvArray = []
             this.drivers.forEach(element => {
                 let obj = {}
-                obj["Name"] = element.firstName + "  " + element.lastName
+                obj["Name"] = element.firstName + "  " + element.middleName + " " + element.lastName
                 obj["Email"] = element.email
                 obj["driverType"] = element.driverType
                 obj["Date of Birth"] = element.DOB
