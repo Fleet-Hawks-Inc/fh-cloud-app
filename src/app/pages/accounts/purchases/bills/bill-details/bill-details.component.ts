@@ -128,6 +128,7 @@ export class BillDetailsComponent implements OnInit {
       });
     }
     this.orderData.paymentTerm = this.orderData.paymentTerm.replace("_", " ");
+    this.orderData.status = this.orderData.status.replace("_", " ");
   }
 
   async purchaseOrderDetail() {

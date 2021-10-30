@@ -29,10 +29,12 @@ export class VendorPaymentDetailComponent implements OnInit {
       advTotal: 0,
       finalTotal: 0,
     },
+    transactionLog: [],
   };
   vendorName = "";
   paymentID;
   bills = {};
+  accountsObjects = [];
 
   constructor(
     private apiService: ApiService,
@@ -45,6 +47,7 @@ export class VendorPaymentDetailComponent implements OnInit {
     await this.fetchPayments();
     this.fetchVendor();
     this.fetchBills();
+    this.fetchAccountsByIDs();
   }
 
   async fetchPayments() {
@@ -69,5 +72,13 @@ export class VendorPaymentDetailComponent implements OnInit {
       .getData(`bills/get/list`)
       .toPromise();
     this.bills = result;
+  }
+
+  fetchAccountsByIDs() {
+    this.accountService
+      .getData("chartAc/get/all/list")
+      .subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
   }
 }

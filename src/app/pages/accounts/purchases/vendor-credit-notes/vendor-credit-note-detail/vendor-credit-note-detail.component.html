@@ -5,16 +5,15 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
-              Vendor Credit# - 1279430
-              <span class="badge badge-dark p-1">{{ status }}</span>
+              Vendor Credit# - {{ vCrNo }}
+              <span class="badge badge-dark p-1 text-uppercase">{{ status }}</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a
               routerLink="/accounts/purchases/vendor-credit-notes/list"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> All Vendor Credits</a
-            >
+              class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
+              Vendor Credits</a>
           </div>
         </div>
       </header>
@@ -41,13 +40,10 @@
                         <i class="fa fa-user text-7"></i>
                         <br />
                         <p
-                          class="
-                            mb-0
-                            text-5
-                            font-weight-bold
-                            text-dark text-capitalize
-                          "
-                        >
+                          class="mb-0
+                          text-5
+                          font-weight-bold
+                          text-dark text-capitalize">
                           {{ vendorID ? vendors[vendorID] : "-" }}
                         </p>
                         <p class="mb-0">VENDOR</p>
@@ -83,8 +79,7 @@
                           <tr>
                             <td
                               width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                              class="back-color-gray font-weight-bold">
                               Purchase Order#
                             </td>
                             <td width="60%">{{ purOrder ? purOrder : "-" }}</td>
@@ -100,42 +95,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="col-lg-6">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
-                        <tbody>
-                          <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Taxes
-                            </td>
-                            <td width="60%">GST - 5%, PST - 10%, HST - 4%</td>
-                          </tr>
-                          <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Additions
-                            </td>
-                            <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Deductions
-                            </td>
-                            <td width="60%">Fee 1- 12 CAD, Fee 2- 16 CAD</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div> -->
-
                 <div class="col-lg-6">
                   <div class="row">
                     <div class="col-lg-12">
@@ -183,20 +142,39 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Account Name(selected in form)</td>
-                            <td>0.00</td>
-                            <td>1000 CAD</td>
+                          <tr
+                            *ngIf="transactionLog.length
+                            === 0" class="text-center">
+                            <td colspan="3">
+                              {{ dataMessage }}
+                            </td>
                           </tr>
-                          <tr>
-                            <td>Accounts Payables</td>
-                            <td>1000 CAD</td>
-                            <td>0.00</td>
-                          </tr>
-                          <tr>
-                            <td>Total</td>
-                            <td>1000 CAD</td>
-                            <td>1000 CAD</td>
+                          <tr *ngFor="let data of transactionLog">
+                            <td class="text-capitalize">{{
+                              accountsObjects[data.accountID]
+                              }}</td>
+                            <td>
+                              <span *ngIf="data.trxType ===
+                                'debit'">
+                                {{ data.amount | number :
+                                '1.2-2' }}
+                              </span>
+                              <span *ngIf="data.trxType !=
+                                'debit'">
+                                0.00
+                              </span>
+                            </td>
+                            <td>
+                              <span *ngIf="data.trxType ===
+                                'credit'">
+                                {{ data.amount | number :
+                                '1.2-2' }}
+                              </span>
+                              <span *ngIf="data.trxType !=
+                                'credit'">
+                                0.00
+                              </span>
+                            </td>
                           </tr>
                         </tbody>
                       </table>

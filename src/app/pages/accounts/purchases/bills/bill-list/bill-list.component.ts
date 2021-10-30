@@ -62,6 +62,7 @@ export class BillListComponent implements OnInit {
       result.map((v) => {
         v.url = `/accounts/purchases/bills/details/${v.billID}`;
         v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
+        v.status = v.status.replace("_", " ");
         this.payOrders.push(v);
       });
       this.loaded = true;
