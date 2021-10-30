@@ -39,7 +39,7 @@ export class SremindersComponent implements OnInit {
   ngOnInit() {
 
 
-    this.fetchReminderdata();
+    this.fetchReminderList();
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
@@ -51,7 +51,7 @@ export class SremindersComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  fetchReminderdata() {
+  fetchReminderList() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
@@ -80,7 +80,7 @@ export class SremindersComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-      this.fetchReminderdata();
+      this.fetchReminderList();
     }
     this.loaded = false;
   }
@@ -88,7 +88,7 @@ export class SremindersComponent implements OnInit {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.allData = [];
       this.lastItemSK = '';
-      this.fetchReminderdata();
+      this.fetchReminderList();
     }
     else {
       return false;
@@ -103,7 +103,7 @@ export class SremindersComponent implements OnInit {
       this.lastItemSK = '';
       this.filterStatus = null;
       this.dataMessage = Constants.FETCHING_DATA
-      this.fetchReminderdata();
+      this.fetchReminderList();
     } else {
       return false;
     }
@@ -116,13 +116,13 @@ export class SremindersComponent implements OnInit {
   fetchvehiclesList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
-      console.log("vehicleList", result)
+      // console.log("vehicleList", result)
     });
   }
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
-      console.log("tasksData", result)
+      // console.log("tasksData", result)
     });
   }
   generateCSV() {
