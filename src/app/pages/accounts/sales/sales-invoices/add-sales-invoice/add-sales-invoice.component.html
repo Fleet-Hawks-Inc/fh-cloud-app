@@ -105,19 +105,27 @@
                             (change)="getCustomerOrders($event)"
                           >
                             <ng-option
-                              *ngFor="let customer of customers | keyvalue"
-                              value="{{ customer.key }}"
+                              *ngFor="let customer of customers"
+                              value="{{ customer.contactID }}"
                             >
-                              {{ customer.value }}
+                              {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
                         </div>
-                        <div class="col-lg-2 mar-top-37">
+                        <div class="col-2 mar-top-37 p-0">
                           <a
-                            href="#addCustomerModal"
-                            class="btn btn-sm btn-success modal-with-form"
-                            ><i class="fas fa-plus"></i
-                          ></a>
+                            class="btn btn-success btn-sm text-light"
+                            (click)="openModal('form')"
+                            ><i class="fas fa-plus"></i>
+                          </a>
+                          <a
+                            data-toggle="modal"
+                            (click)="fetchCustomer()"
+                            href="javascript:;"
+                            class="modal-with-form btn btn-sm btn-success ml-2"
+                          >
+                            <em class="fas fa-sync"></em>
+                          </a>
                         </div>
                         <div class="col-lg-10">
                           <label
@@ -507,7 +515,7 @@
                           <tbody>
                             <tr
                               *ngFor="
-                                let dt of saleData.sOrderDetail;
+                                let dt of saleData.sOrderDetails;
                                 let d = index
                               "
                             >
@@ -621,7 +629,7 @@
                               <td class="border text-center">
                                 <button
                                   [disabled]="
-                                    saleData.sOrderDetail.length === 1
+                                    saleData.sOrderDetails.length === 1
                                   "
                                   type="button"
                                   (click)="deleteDetail(d)"
