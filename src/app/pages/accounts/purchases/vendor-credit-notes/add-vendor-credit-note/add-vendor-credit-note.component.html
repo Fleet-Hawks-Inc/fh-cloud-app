@@ -9,9 +9,8 @@
           <div class="col-md-8 col-lg-8 text-right pr-4">
             <a
               routerLink="/accounts/purchases/vendor-credit-notes/list"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Vendor Credits</a
-            >
+              class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+              Vendor Credits</a>
           </div>
         </div>
       </header>
@@ -24,57 +23,76 @@
                   class="form-horizontal form-bordered"
                   method="post"
                   #creditForm="ngForm"
-                  id="creditForm"
-                >
+                  id="creditForm">
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
+                      <div class="row pt-2">
+                        <div class="col-lg-10">
+                          <label
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Vendor
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select
+                            [(ngModel)]="creditData.vendorID"
+                            name="vendorID"
+                            placeholder="Select Vendor"
+                            #vendorID="ngModel"
+                            required
+                            (change)="fetchPurchaseOrders()">
+                            <ng-option
+                              value="{{ data.contactID }}"
+                              *ngFor="let data of vendors">{{
+                              data.companyName }}
+                            </ng-option>
+                          </ng-select>
+                          <div
+                            *ngIf="vendorID.invalid &&
+                            (vendorID.dirty || vendorID.touched)"
+                            class="text-danger">
+                            <div *ngIf="vendorID.errors.required">
+                              Vendor is required.
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class="row">
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Purchase Order#
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <input
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Purchase Order#
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select
                             [(ngModel)]="creditData.purOrder"
                             name="purOrder"
-                            placeholder="Select purchase order"
-                            type="text"
-                            class="form-control"
+                            placeholder="Select Purchase Order#"
                             #pOrder="ngModel"
-                            required
-                          />
+                            required>
+                            <ng-option
+                              value="{{ data.purchaseID }}"
+                              *ngFor="let data of purchaseOrders">{{
+                              data.orderNo }}
+                            </ng-option>
+                          </ng-select>
                           <div
-                            *ngIf="
-                              pOrder.invalid && (pOrder.dirty || pOrder.touched)
-                            "
-                            class="text-danger"
-                          >
+                            *ngIf="pOrder.invalid && (pOrder.dirty ||
+                            pOrder.touched)" class="text-danger">
                             <div *ngIf="pOrder.errors.required">
-                              Purchase Number is required.
+                              Purchase order# is required.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Vendor Credit Date
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Vendor Credit Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input
                             type="text"
                             [(ngModel)]="creditData.txnDate"
@@ -87,88 +105,27 @@
                             readonly
                             #cDate="ngModel"
                             required
-                          />
+                            />
                           <div
-                            *ngIf="
-                              cDate.invalid && (cDate.dirty || cDate.touched)
-                            "
-                            class="text-danger"
-                          >
+                            *ngIf="cDate.invalid && (cDate.dirty ||
+                            cDate.touched)" class="text-danger">
                             <div *ngIf="cDate.errors.required">
                               Vendor Credit Date is required.
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div class="row pt-2">
-                        <div class="col-lg-5">
-                          <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Currency
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <ng-select
-                            [clearable]="false"
-                            [(ngModel)]="creditData.currency"
-                            name="currency"
-                            placeholder="Select Vendor"
-                            #cur="ngModel"
-                            required
-                          >
-                            <ng-option value="CAD">CAD</ng-option>
-                            <ng-option value="USD">USD</ng-option>
-                          </ng-select>
-                          <div
-                            *ngIf="cur.invalid && (cur.dirty || cur.touched)"
-                            class="text-danger"
-                          >
-                            <div *ngIf="cur.errors.required">
-                              Vendor Credit Date is required.
-                            </div>
-                          </div>
-                        </div>
-                        <!-- <div class="col-lg-5">
-                          <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Vendor Credit#</label
-                          >
-                          <input
-                            type="text"
-                            data-plugin-datepicker=""
-                            class="form-control"
-                            placeholder="mm/dd/yyyy"
-                          />
-                        </div> -->
-                      </div>
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-10">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">
                             Reference#
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input
                             type="text"
                             [(ngModel)]="creditData.crRef"
@@ -177,13 +134,12 @@
                             #ref="ngModel"
                             required
                             placeholder="Enter Unique Reference Number"
-                          />
+                            />
                           <div
                             *ngIf="ref.invalid && (ref.dirty || ref.touched)"
-                            class="text-danger"
-                          >
+                            class="text-danger">
                             <div *ngIf="ref.errors.required">
-                              Vendor Credit Date is required.
+                              Reference# is required.
                             </div>
                           </div>
                         </div>
@@ -191,57 +147,28 @@
                       <div class="row pt-2">
                         <div class="col-lg-10">
                           <label
-                            class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
-                            "
-                            >Vendor
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
+                            class="control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2">Currency
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select
-                            [(ngModel)]="creditData.vendorID"
-                            name="vendorID"
+                            [clearable]="false"
+                            [(ngModel)]="creditData.currency"
+                            name="currency"
                             placeholder="Select Vendor"
-                            #vendorID="ngModel"
-                            required
-                          >
-                            <ng-option
-                              value="{{ data.contactID }}"
-                              *ngFor="let data of vendors | async"
-                              >{{ data.companyName }}
-                            </ng-option>
+                            #cur="ngModel"
+                            required>
+                            <ng-option value="CAD">CAD</ng-option>
+                            <ng-option value="USD">USD</ng-option>
                           </ng-select>
                           <div
-                            *ngIf="
-                              vendorID.invalid &&
-                              (vendorID.dirty || vendorID.touched)
-                            "
-                            class="text-danger"
-                          >
-                            <div *ngIf="vendorID.errors.required">
+                            *ngIf="cur.invalid && (cur.dirty || cur.touched)"
+                            class="text-danger">
+                            <div *ngIf="cur.errors.required">
                               Vendor Credit Date is required.
                             </div>
                           </div>
-                        </div>
-                        <div class="col-lg-2 mar-top-37 pl-1">
-                          <a
-                            href="javascript:;"
-                            (click)="openModal('form')"
-                            class="btn btn-sm btn-success modal-with-form mr-1"
-                            ><i class="fas fa-plus"></i
-                          ></a>
-                          <a
-                            href="javascript:;"
-                            (click)="refreshVendorData()"
-                            data-toggle="tooltip"
-                            title="Refresh vendor data"
-                            class="btn btn-success btn-sm modal-with-form"
-                            ><i class="fas fa-sync"></i
-                          ></a>
                         </div>
                       </div>
                     </div>
@@ -260,22 +187,24 @@
                           <table class="table table-bordered">
                             <thead>
                               <tr>
-                                <th style="width: 250px">Commodity</th>
+                                <th style="width: 250px">Commodity <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
                                 <th style="width: 250px">Description</th>
-                                <th style="width: 250px">Quantity</th>
-                                <th style="width: 250px">Rate</th>
-                                <th style="width: 180px">Amount</th>
-                                <th style="width: 300px">Account</th>
+                                <th style="width: 250px">Quantity <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                                <th style="width: 250px">Rate <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                                <th style="width: 180px">Amount <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
+                                <th style="width: 300px">Account <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></th>
                                 <th width="5%">Action</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr
-                                *ngFor="
-                                  let dt of creditData.crDetails;
-                                  let d = index
-                                "
-                              >
+                                *ngFor="let dt of creditData.crDetails;
+                                let d= index">
                                 <td>
                                   <input
                                     type="text"
@@ -283,7 +212,7 @@
                                     placeholder="Enter commodity"
                                     [(ngModel)]="dt.commodity"
                                     name="commodity{{ d }}"
-                                  />
+                                    />
                                 </td>
                                 <td>
                                   <input
@@ -292,7 +221,7 @@
                                     placeholder="Description"
                                     [(ngModel)]="dt.desc"
                                     name="desc{{ d }}"
-                                  />
+                                    />
                                 </td>
                                 <td>
                                   <div class="row">
@@ -304,7 +233,7 @@
                                         [(ngModel)]="dt.qty"
                                         (change)="calculateAmount(d)"
                                         name="qty{{ d }}"
-                                      />
+                                        />
                                     </div>
                                     <div class="col-lg-6 pl-1">
                                       <ng-select
@@ -313,13 +242,11 @@
                                         placeholder="unit type"
                                         [(ngModel)]="dt.qtyUnit"
                                         (change)="changeUnit($event, d)"
-                                        name="qtyUnit{{ d }}"
-                                      >
+                                        name="qtyUnit{{ d }}">
                                         <ng-option
                                           *ngFor="let unit of units"
-                                          value="{{ unit.value }}"
-                                          >{{ unit.name }}</ng-option
-                                        >
+                                          value="{{ unit.value }}">{{ unit.name
+                                          }}</ng-option>
                                       </ng-select>
                                     </div>
                                   </div>
@@ -334,7 +261,7 @@
                                         [(ngModel)]="dt.rate"
                                         name="rate{{ d }}"
                                         (change)="calculateAmount(d)"
-                                      />
+                                        />
                                     </div>
                                     <div class="col-lg-6 pl-1">
                                       <ng-select
@@ -343,13 +270,11 @@
                                         placeholder="unit type"
                                         [(ngModel)]="dt.rateUnit"
                                         (change)="changeUnit($event, d)"
-                                        name="rateUnit{{ d }}"
-                                      >
+                                        name="rateUnit{{ d }}">
                                         <ng-option
                                           *ngFor="let unit of units"
-                                          value="{{ unit.value }}"
-                                          >{{ unit.name }}</ng-option
-                                        >
+                                          value="{{ unit.value }}">{{ unit.name
+                                          }}</ng-option>
                                       </ng-select>
                                     </div>
                                   </div>
@@ -364,7 +289,7 @@
                                         [(ngModel)]="dt.amount"
                                         name="amount{{ d }}"
                                         class="form-control"
-                                      />
+                                        />
                                     </div>
                                   </div>
                                 </td>
@@ -373,25 +298,19 @@
                                     class="form-control populate"
                                     placeholder="Select account"
                                     [(ngModel)]="dt.accountID"
-                                    name="accountID{{ d }}"
-                                  >
+                                    name="accountID{{ d }}">
                                     <ng-option
                                       *ngFor="let act of accounts"
-                                      value="{{ act.actID }}"
-                                      >{{ act.actNo }} -
-                                      {{ act.actName | titlecase }}</ng-option
-                                    >
+                                      value="{{ act.actID }}">{{ act.actNo }} -
+                                      {{ act.actName | titlecase }}</ng-option>
                                   </ng-select>
                                 </td>
                                 <td class="text-center">
                                   <button
-                                    [disabled]="
-                                      creditData.crDetails.length === 1
-                                    "
-                                    type="button"
+                                    [disabled]="creditData.crDetails.length ===
+                                    1" type="button"
                                     (click)="deleteDetail(d)"
-                                    class="btn btn-success btn-sm"
-                                  >
+                                    class="btn btn-success btn-sm">
                                     <i class="fas fa-minus"></i>
                                   </button>
                                 </td>
@@ -404,175 +323,32 @@
                         <button
                           type="button"
                           class="btn btn-success btn-sm"
-                          (click)="addDetails()"
-                        >
+                          (click)="addDetails()">
                           <i class="fas fa-plus"></i> Add Another Line
                         </button>
                         <div>
                           <span>Total Amount</span>
                           <span class="h6 font-semi-bold ml-3">{{
                             total | number: "1.2-2"
-                          }}</span>
+                            }}</span>
                           {{ creditData.currency }}
                         </div>
                       </div>
                       <div class="row mt-3">
                         <div class="col-lg-8">
-                          <!-- <h4 class="mt-0 text-dark font-weight-bold text-4">
-                            Charges
-                          </h4> -->
-                          <!-- <div class="row mt-3">
-                            <div class="col-lg-2 labelalign">
-                              <label
-                                class="
-                                  control-label
-                                  font-weight-semibold
-                                  text-3 text-dark
-                                "
-                                >Accessorial Fee</label
-                              >
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="row">
-                                <div class="col-lg-10">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                                <div class="col-lg-2">
-                                  <a
-                                    href="#addAcceModal"
-                                    class="
-                                      modal-with-form
-                                      btn btn-success btn-sm
-                                    "
-                                    ><i class="fas fa-plus"></i
-                                  ></a>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="row">
-                                <div class="col-lg-6">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="0.00"
-                                  />
-                                </div>
-                                <div class="col-lg-6">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-4">
-                              <p class="text-right">0.00</p>
-                            </div>
-                          </div>
-                          <button type="button" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus"></i> Add Accessorial Fee
-                          </button>
-                          <div class="row mt-3">
-                            <div class="col-lg-2 labelalign">
-                              <label
-                                class="
-                                  control-label
-                                  font-weight-semibold
-                                  text-3 text-dark
-                                "
-                                >Accessorial Deduction</label
-                              >
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="row">
-                                <div class="col-lg-10">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                      <option value="2">Fee 1</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                                <div class="col-lg-2">
-                                  <a
-                                    href="#addAcceModal"
-                                    class="
-                                      modal-with-form
-                                      btn btn-success btn-sm
-                                    "
-                                    ><i class="fas fa-plus"></i
-                                  ></a>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="row">
-                                <div class="col-lg-6">
-                                  <input
-                                    type="text"
-                                    class="form-control"
-                                    placeholder="0.00"
-                                  />
-                                </div>
-                                <div class="col-lg-6">
-                                  <select
-                                    data-plugin-selectTwo
-                                    class="form-control populate"
-                                  >
-                                    <optgroup label="">
-                                      <option value="2">CAD</option>
-                                      <option value="2">USD</option>
-                                    </optgroup>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-lg-4">
-                              <p class="text-right">0.00</p>
-                            </div>
-                          </div>
-                          <button type="button" class="btn btn-success btn-sm">
-                            <i class="fas fa-plus"></i> Add Accessorial
-                            Deduction
-                          </button> -->
+
                         </div>
                         <div class="col-lg-4">
                           <div class="col-lg-12">
                             <label
-                              class="
-                                control-label
-                                font-weight-bold
-                                text-4 text-dark
-                              "
-                              >Remarks</label
-                            >
+                              class="control-label
+                              font-weight-bold
+                              text-4 text-dark">Remarks</label>
                             <textarea
                               class="form-control heighta"
                               rows="6"
                               [(ngModel)]="creditData.remarks"
-                              name="remarks"
-                            ></textarea>
+                              name="remarks"></textarea>
                           </div>
                         </div>
                       </div>
@@ -583,8 +359,7 @@
                       <button
                         type="button"
                         class="btn btn-default mr-3"
-                        onclick="goBack()"
-                      >
+                        routerLink="/accounts/purchases/vendor-credit-notes/list">
                         Cancel
                       </button>
                       <button
@@ -592,8 +367,7 @@
                         type="button"
                         [disabled]="!creditForm.form.valid || submitDisabled"
                         *ngIf="!creditID"
-                        (click)="addNotes()"
-                      >
+                        (click)="addNotes()">
                         Save
                       </button>
                       <button
@@ -601,8 +375,7 @@
                         type="button"
                         [disabled]="submitDisabled"
                         *ngIf="creditID"
-                        (click)="updateNotes()"
-                      >
+                        (click)="updateNotes()">
                         Update
                       </button>
                     </div>

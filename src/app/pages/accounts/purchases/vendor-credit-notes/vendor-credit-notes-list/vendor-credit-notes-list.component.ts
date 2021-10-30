@@ -21,6 +21,7 @@ export class VendorCreditNotesListComponent implements OnInit {
     endDate: "",
     lastItemSK: "",
   };
+  purchaseOrders = [];
 
   loaded = false;
 
@@ -28,12 +29,13 @@ export class VendorCreditNotesListComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // this.getCredits();
     this.fetchVendors();
     this.fetchCredits();
+    this.fetchPurchaseOrders();
   }
 
   getCredits() {
@@ -146,5 +148,12 @@ export class VendorCreditNotesListComponent implements OnInit {
     this.lastItemSK = "";
     this.allCredits = [];
     this.fetchCredits();
+  }
+
+  async fetchPurchaseOrders() {
+    let result: any = await this.accountService
+      .getData(`purchase-orders/get/list`)
+      .toPromise();
+    this.purchaseOrders = result;
   }
 }

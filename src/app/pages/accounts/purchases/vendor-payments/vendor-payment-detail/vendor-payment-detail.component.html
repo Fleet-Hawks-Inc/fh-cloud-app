@@ -173,20 +173,40 @@
                                           </tr>
                                        </thead>
                                        <tbody>
-                                          <tr>
-                                             <td>Accounts Payable</td>
-                                             <td>1000 CAD</td>
-                                             <td>0.00</td>
+                                          <tr
+                                             *ngIf="paymentData.transactionLog.length
+                                             === 0" class="text-center">
+                                             <td colspan="3">
+                                                {{ dataMessage }}
+                                             </td>
                                           </tr>
-                                          <tr>
-                                             <td>Petty Cash</td>
-                                             <td>0.00</td>
-                                             <td>1000 CAD</td>
-                                          </tr>
-                                          <tr>
-                                             <td>Total</td>
-                                             <td>1000 CAD</td>
-                                             <td>1000 CAD</td>
+                                          <tr *ngFor="let data of
+                                             paymentData.transactionLog">
+                                             <td class="text-capitalize">{{
+                                                accountsObjects[data.accountID]
+                                                }}</td>
+                                             <td>
+                                                <span *ngIf="data.trxType ===
+                                                   'debit'">
+                                                   {{ data.amount | number :
+                                                   '1.2-2' }}
+                                                </span>
+                                                <span *ngIf="data.trxType !=
+                                                   'debit'">
+                                                   0.00
+                                                </span>
+                                             </td>
+                                             <td>
+                                                <span *ngIf="data.trxType ===
+                                                   'credit'">
+                                                   {{ data.amount | number :
+                                                   '1.2-2' }}
+                                                </span>
+                                                <span *ngIf="data.trxType !=
+                                                   'credit'">
+                                                   0.00
+                                                </span>
+                                             </td>
                                           </tr>
                                        </tbody>
                                     </table>
