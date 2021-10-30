@@ -22,7 +22,7 @@ export class VehicleRenewalsComponent implements OnInit {
   filterStatus = null;
   searchServiceTask = null;
   status = null;
-  Count = {
+  count = {
     total: '',
     overdue: '',
     dueSoon: '',
@@ -49,7 +49,7 @@ export class VehicleRenewalsComponent implements OnInit {
   }
   fetchReminderCount() {
     this.apiService.getData(`reminders/fetch/count?status=${this.filterStatus}&type=service`).subscribe((result: any) => {
-      this.Count = result;
+      this.count = result;
     })
   }
   fetchVehiclesdata() {
@@ -88,7 +88,7 @@ export class VehicleRenewalsComponent implements OnInit {
       console.log("tasksData", result)
     });
   }
-  srchVeh() {
+  searchData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
       this.allData = [];
       this.lastItemSK = '';
@@ -127,9 +127,9 @@ export class VehicleRenewalsComponent implements OnInit {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["vehicle Renewal Type"] = this.tasksData[element.tasks.taskID]
-        obj["Due Date"] = element.createdDate
+        obj["Due Date"] = element.nextServiceDate
         obj["Subscribers"] = element.subscribers
-        obj["Send Reminder"] = element.tasks.remindByUnit
+        obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Renewal Status"] = element.status
         dataObject.push(obj)
       });

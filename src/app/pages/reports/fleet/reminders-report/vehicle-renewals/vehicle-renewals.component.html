@@ -31,7 +31,7 @@
                   </div>
                </div>
                <div class="col-md-2 col-lg-2">
-                  <button type="button" (click)="srchVeh()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button type="button" (click)="searchData()" class="btn btn-sm btn-success mr-3">Search</button>
                   <button class="btn btn-sm btn-success" type="button" (click)="resetData()">Reset</button>
                </div>
 
@@ -67,7 +67,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Service Reminders</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.total}} </h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.total}} </h3>
                      </div>
                   </div>
                </div>
@@ -75,7 +75,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Overdue Service</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.overdue}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.overdue}}</h3>
                      </div>
                   </div>
                </div>
@@ -83,7 +83,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Due Soon</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{Count.dueSoon}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.dueSoon}}</h3>
                      </div>
                   </div>
                </div>
@@ -112,7 +112,7 @@
                                        <tr *ngFor="let item of allData">
                                           <td>{{vehiclesList[item.entityID]}}</td>
                                           <td>{{tasksData[item.tasks.taskID]}}</td>
-                                          <td>{{item.nextServiceDate}}</td>
+                                          <td>{{item.nextServiceDate | date:'yyyy/MM/dd'}}</td>
                                           <td>{{item.subscribers}}</td>
                                           <td *ngIf="item.tasks.remindByUnit == 'time'">Every
                                              {{item.tasks.time}}

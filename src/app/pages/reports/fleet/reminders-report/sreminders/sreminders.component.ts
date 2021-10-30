@@ -84,10 +84,8 @@ export class SremindersComponent implements OnInit {
     }
     this.loaded = false;
   }
-  srchVeh() {
+  searchData() {
     if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
-
-
       this.allData = [];
       this.lastItemSK = '';
       this.fetchReminderdata();
