@@ -71,6 +71,7 @@
                             ><sup>*</sup></span
                           >
                         </label>
+
                         <input
                           type="text"
                           class="form-control"
@@ -138,8 +139,7 @@
                         >
                         <div class="btn-group-toggle">
                           <label
-                            class="btn
-                                                        btn-outline
+                            class="btn btn-outline
                                                         btn-yesno mr-2 {{
                               mapOrderActive
                             }} mb-2"
@@ -147,8 +147,7 @@
                             >Order Number</label
                           >
                           <label
-                            class="btn
-                                                        btn-outline
+                            class="btn btn-outline
                                                         btn-yesno mr-2 mb-2 {{
                               mapRouteActive
                             }}"
@@ -227,42 +226,42 @@
                           </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div class="row mb-2">
-                      <div class="col-lg-12">
-                        <label
-                          class="
-                            control-label
-                            font-weight-semibold
-                            text-3 text-dark
-                          "
-                          >Reefer Temperature
-                        </label>
-                      </div>
-                      <div class="col-lg-10 col-md-12">
-                        <div class="row">
-                          <div class="col-lg-6">
-                            <input
-                              type="number"
-                              class="form-control"
-                              name="reeferTemperature"
-                              [(ngModel)]="tripData.reeferTemperature"
-                              placeholder="eg. 10
+                      <div class="row mb-2">
+                        <div class="col-lg-12">
+                          <label
+                            class="
+                              control-label
+                              font-weight-semibold
+                              text-3 text-dark
+                            "
+                            >Reefer Temperature
+                          </label>
+                        </div>
+                        <div class="col-lg-10 col-md-12">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="reeferTemperature"
+                                [(ngModel)]="tripData.reeferTemperature"
+                                placeholder="eg. 10
                                                             °C or °F"
-                            />
-                          </div>
-                          <div class="col-lg-6 pl-0">
-                            <ng-select
-                              [(ngModel)]="tripData.reeferTemperatureUnit"
-                              name="reeferTemperatureUnit"
-                              placeholder="Select
+                              />
+                            </div>
+                            <div class="col-lg-6 pl-0">
+                              <ng-select
+                                [(ngModel)]="tripData.reeferTemperatureUnit"
+                                name="reeferTemperatureUnit"
+                                placeholder="Select
                                                             Temperature Unit"
-                              #sltReeferTemp="ngModel"
-                            >
-                              <ng-option value="C">°C</ng-option>
-                              <ng-option value="F">°F</ng-option>
-                            </ng-select>
+                                #sltReeferTemp="ngModel"
+                              >
+                                <ng-option value="C">°C</ng-option>
+                                <ng-option value="F">°F</ng-option>
+                              </ng-select>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -346,7 +345,7 @@
                                 data-placement="top"
                                 data-toggle="tooltip"
                                 title="Manual
-                                                                Miles"
+                                                            Miles"
                               ></i>
                             </th>
                             <th width="7%">Loaded/ Empty</th>
@@ -1002,7 +1001,6 @@
               </div>
             </div>
           </div>
-
           <div class="row my-2">
             <div
               class="col-lg-12"
@@ -1164,13 +1162,21 @@
                           >
                             Miles
                           </p>
-                          <p class="mb-0 text-4 font-weight-semibold text-dark">
-                            Manual Miles:
+                          <p
+                            class="mb-0 text-4 font-weight-semibold text-dark"
+                            *ngIf="
+                              orderMiles.calculateBy != '' &&
+                              orderMiles.calculateBy != null &&
+                              orderMiles.calculateBy != undefined &&
+                              mapOrderActive == 'active'
+                            "
+                          >
+                            {{ orderMiles.calculateBy }}:
                             {{ orderMiles.totalMiles | number: "1.2-2" }}
                           </p>
 
                           <p class="mb-0 text-4 font-weight-semibold text-dark">
-                            PC Miles:
+                            Actual Miles(Pc Miler):
                             <span
                               class="mb-0 text-4 font-weight-semibold text-dark"
                               >{{ actualMiles | number: "1.2-2" }}
@@ -1445,7 +1451,6 @@
                   class="nav-link pl-5 pr-5 active"
                   id="loadFTL-tab"
                   data-toggle="tab"
-                  href="#loadFTL"
                   role="tab"
                   aria-controls="loadFTL"
                   aria-selected="true"
@@ -1458,13 +1463,37 @@
                   class="nav-link pl-5 pr-5"
                   id="loadLTL-tab"
                   data-toggle="tab"
-                  href="#loadLTL"
                   role="tab"
                   aria-controls="loadLTL"
                   aria-selected="false"
                   (click)="changeOrderTab('LTL')"
                   >LTL</a
                 >
+              </li>
+              <li class="ml-auto">
+                <div class="d-flex flex-gap">
+                  <input
+                    class="form-control"
+                    type="search"
+                    name="search"
+                    placeholder="search order Number"
+                    [(ngModel)]="searchOrder"
+                  />
+                  <button
+                    class="btn btn-sm btn-success"
+                    type="submit"
+                    (click)="searchSingleOrder()"
+                  >
+                    Search
+                  </button>
+                  <button
+                    class="btn btn-sm btn-success mr-3"
+                    type="reset"
+                    (click)="resetOrders()"
+                  >
+                    Reset
+                  </button>
+                </div>
               </li>
             </ul>
           </div>
@@ -1473,140 +1502,203 @@
               <section class="card">
                 <div class="card-body" style="display: block">
                   <div class="tab-content p-0" id="myTabContent">
-                    <div
-                      class="tab-pane show active"
-                      id="loadFTL"
-                      role="tabpanel"
-                      aria-labelledby="loadFTL-tab"
-                    >
-                      <div class="tripvet-scroll-y addtrip-odnuscrollbar">
+                    <div *ngIf="activeTab == 'FTL'">
+                      <ngx-datatable
+                        class="bootstrap"
+                        [rows]="ftlOrders"
+                        [rowHeight]="rowHeight"
+                        [scrollbarV]="true"
+                        [columnMode]="ColumnMode.force"
+                        [loadingIndicator]="isLoading"
+                        [messages]="{ emptyMessage: dataMessage }"
+                        (scroll)="onFTLScroll($event.offsetY)"
+                        [selected]="selectedFTL"
+                        [selectionType]="SelectionType.single"
+                        (select)="onFTLSelect($event)"
+                        [columns]="[
+                          { name: 'Order#', prop: 'orderNumber' },
+                          { name: 'Customer', prop: 'customer' },
+                          {
+                            name: 'Pickup',
+                            prop: 'pickupLocations',
+                            width: '300',
+                            sortable: false
+                          },
+                          {
+                            name: 'Delievery',
+                            prop: 'deliveryLocations',
+                            width: '300',
+                            sortable: false
+                          },
+                          { name: 'Amount', prop: 'totalAmount' }
+                        ]"
+                        [headerHeight]="headerHeight"
+                      >
+                      </ngx-datatable>
+                    </div>
+                    <div *ngIf="activeTab == 'LTL'">
+                      <ngx-datatable
+                        class="bootstrap"
+                        [rows]="ltlOrders"
+                        [rowHeight]="rowHeight"
+                        [scrollbarV]="true"
+                        [columnMode]="ColumnMode.force"
+                        [loadingIndicator]="isLoading"
+                        [messages]="{ emptyMessage: dataMessage }"
+                        (scroll)="onLTLScroll($event.offsetY)"
+                        [selected]="selectedLTL"
+                        [selectionType]="SelectionType.multiClick"
+                        (select)="onLTLSelect($event)"
+                        [columns]="[
+                          { name: 'Order#', prop: 'orderNumber' },
+                          { name: 'Customer', prop: 'customer' },
+                          {
+                            name: 'Pickup',
+                            prop: 'pickupLocations',
+                            width: '300',
+                            sortable: false
+                          },
+                          {
+                            name: 'Delievery',
+                            prop: 'deliveryLocations',
+                            width: '300',
+                            sortable: false
+                          },
+                          { name: 'Amount', prop: 'totalAmount' }
+                        ]"
+                        [headerHeight]="headerHeight"
+                      >
+                      </ngx-datatable>
+                    </div>
+                    <!-- <div class="tab-pane show active" id="loadFTL" role="tabpanel"
+                      aria-labelledby="loadFTL-tab">
+                      <div class="tripvet-scroll-y
+                                                addtrip-odnuscrollbar">
                         <div class="table-responsive">
-                          <table
-                            class="
-                              table table-bordered table-striped
-                              mb-0
-                              dataTable
-                              no-footer
-                            "
-                          >
+                          <table class="table
+                                                        table-bordered
+                                                        table-striped mb-0
+                                                        dataTable no-footer">
                             <thead>
                               <tr class="" role="row">
                                 <th></th>
                                 <th class="text-2">Order#</th>
                                 <th class="text-2">Customer</th>
-                                <th class="text-2">Pickup Location</th>
-                                <th class="text-2">Drop Off Location</th>
-                                <th class="text-2">Total Amount</th>
+                                <th class="text-2">Pickup
+                                  Location</th>
+                                <th class="text-2">Drop
+                                  Off Location</th>
+                                <th class="text-2">Total
+                                  Amount</th>
                               </tr>
                             </thead>
                             <tbody class="ui-sortable">
-                              <tr
-                                *ngIf="ftlOrders.length == 0"
-                                class="text-center"
-                              >
-                                <td colspan="7">No records found</td>
+                              <tr *ngIf="ftlOrders.length
+                                                                == 0" class="text-center">
+                                <td colspan="7">No
+                                  records
+                                  found</td>
                               </tr>
-                              <tr
-                                class="ui-sortable-handle odd"
-                                role="row"
-                                *ngFor="let order of ftlOrders"
-                              >
+                              <tr class="ui-sortable-handle
+                                                                odd" role="row" *ngFor="let
+                                                                order of
+                                                                ftlOrders">
                                 <td class="sorting_1">
-                                  <input
-                                    type="radio"
-                                    name="ftlOrderIds"
-                                    value="{{ order.orderNumber }}"
-                                    [checked]="order.selected"
-                                    id="{{ order.orderID }}"
-                                    (change)="selectOrderIDS('ftl')"
-                                  />
+                                  <input type="radio" name="ftlOrderIds" value="{{
+                                                                        order.orderNumber
+                                                                        }}"
+                                                                        [checked]="order.selected"
+                                                                        id="{{
+                                                                        order.orderID
+                                                                        }}" (change)="selectOrderIDS('ftl')">
                                 </td>
 
-                                <td class="loadid">
-                                  <a href="javascript:;">{{
-                                    order.orderNumber
-                                  }}</a>
+                                <td class="loadid"><a href="javascript:;">{{
+                                                                        order.orderNumber
+                                                                        }}</a></td>
+                                <td>{{
+                                                                    customersObjects[order.customerID]
+                                                                    }}</td>
+                                <td>
+                                  <div [innerHTML]="order.pickupLocations"></div>
                                 </td>
                                 <td>
-                                  {{ customersObjects[order.customerID] }}
+                                  <div [innerHTML]="order.deliveryLocations"></div>
                                 </td>
-                                <td>
-                                  <div
-                                    [innerHTML]="order.pickupLocations"
-                                  ></div>
-                                </td>
-                                <td>
-                                  <div
-                                    [innerHTML]="order.deliveryLocations"
-                                  ></div>
-                                </td>
-                                <td>{{ order.totalAmount }} CAD</td>
+                                <td> {{
+                                                                    order.totalAmount
+                                                                    }} CAD</td>
                               </tr>
                             </tbody>
                           </table>
                         </div>
                       </div>
-                    </div>
-                    <div
-                      class="tab-pane fade"
-                      id="loadLTL"
-                      role="tabpanel"
-                      aria-labelledby="loadLTL-tab"
-                    >
-                      <table
-                        class="
-                          table table-bordered table-striped
-                          mb-0
-                          dataTable
-                          no-footer
-                        "
-                      >
-                        <thead>
-                          <tr class="">
-                            <th></th>
-                            <th class="text-2">Order#</th>
-                            <th class="text-2">Customer</th>
-                            <th class="text-2">Pickup Location</th>
-                            <th class="text-2">Drop Off Location</th>
-                            <th class="text-2">Total Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody class="ui-sortable">
-                          <tr *ngIf="ltlOrders.length == 0" class="text-center">
-                            <td colspan="7">No records found</td>
-                          </tr>
-                          <tr
-                            class="ui-sortable-handle"
-                            *ngFor="let order of ltlOrders"
-                          >
-                            <td>
-                              <!-- <input type="checkbox"> -->
-                              <input
-                                type="checkbox"
-                                value="{{ order.orderNumber }}"
-                                name="ltlOrderIds"
-                                id="{{ order.orderID }}"
-                                [checked]="order.selected"
-                                (change)="selectOrderIDS('ltl')"
-                              />
-                            </td>
-                            <td class="loadid">
-                              <a href="javascript:;">{{ order.orderNumber }}</a>
-                            </td>
+                  </div> -->
+                    <!-- <div class="tab-pane fade" id="loadLTL" role="tabpanel"
+                                            aria-labelledby="loadLTL-tab">
+                                            <table class="table table-bordered
+                                                table-striped mb-0 dataTable
+                                                no-footer">
+                                                <thead>
+                                                    <tr class="">
+                                                        <th></th>
+                                                        <th class="text-2">Order#</th>
+                                                        <th class="text-2">Customer</th>
+                                                        <th class="text-2">Pickup
+                                                            Location</th>
+                                                        <th class="text-2">Drop
+                                                            Off Location</th>
+                                                        <th class="text-2">Total
+                                                            Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="ui-sortable">
+                                                    <tr *ngIf="ltlOrders.length
+                                                        == 0"
+                                                        class="text-center">
+                                                        <td colspan="7">No
+                                                            records found</td>
+                                                    </tr>
+                                                    <tr
+                                                        class="ui-sortable-handle"
+                                                        *ngFor="let order of
+                                                        ltlOrders">
+                                                        <td>
+                                                            
+                                                            <input type="checkbox" value="{{
+                                                                order.orderNumber
+                                                                }}"
+                                                                name="ltlOrderIds"
+                                                                id="{{
+                                                                order.orderID
+                                                                }}"
+                                                                [checked]="order.selected"
+                                                                (change)="selectOrderIDS('ltl')">
+                                                        </td>
+                                                        <td class="loadid"><a
+                                                                href="javascript:;">{{
+                                                                order.orderNumber
+                                                                }}</a></td>
 
-                            <td>{{ customersObjects[order.customerID] }}</td>
+                                                        <td>{{
+                                                            customersObjects[order.customerID]
+                                                            }}</td>
 
-                            <td>
-                              <div [innerHTML]="order.pickupLocations"></div>
-                            </td>
-                            <td>
-                              <div [innerHTML]="order.deliveryLocations"></div>
-                            </td>
-                            <td>{{ order.totalAmount }} CAD</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                                                        <td>
+                                                            <div
+                                                                [innerHTML]="order.pickupLocations"></div>
+                                                        </td>
+                                                        <td>
+                                                            <div
+                                                                [innerHTML]="order.deliveryLocations"></div>
+                                                        </td>
+                                                        <td> {{
+                                                            order.totalAmount }}
+                                                            CAD</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div> -->
                   </div>
                 </div>
               </section>
@@ -1752,7 +1844,7 @@
                             (click)="vehicleChange(vehicle, 'click')"
                           >
                             <div class="">
-                              <p class="mb-0 text-4 font-weight-bold text-dark">
+                              <p class="mb-1 text-4 font-weight-bold text-dark">
                                 <i
                                   class="fas fa-truck-moving"
                                   data-toggle="tooltip"
@@ -1792,7 +1884,7 @@
                             (click)="assetsChange(asset, 'click')"
                           >
                             <div class="">
-                              <p class="mb-0 text-4 font-weight-bold text-dark">
+                              <p class="mb-1 text-4 font-weight-bold text-dark">
                                 {{ asset.assetIdentification }}
                               </p>
                               <!-- <span class="driverstatus"><i class="fas fa-map-marker-alt"></i>
@@ -1816,7 +1908,7 @@
                             (click)="driverChange(driver, 'driver', 'click')"
                           >
                             <div class="">
-                              <p class="mb-0 text-4 font-weight-bold text-dark">
+                              <p class="mb-1 text-4 font-weight-bold text-dark">
                                 {{ driver.fullName }}
                               </p>
                               <!-- <span class="driverstatus"> Crescent Road Vancouver, BC V6T
@@ -2234,8 +2326,7 @@
               name="assetIdentification"
               maxlength="20"
               class="form-control"
-              placeholder="eg.
-                            Box asset"
+              placeholder="eg. Box asset"
               #assetName="ngModel"
               required
               [ngClass]="{ error: ManualAssetF.submitted && assetName.invalid }"
