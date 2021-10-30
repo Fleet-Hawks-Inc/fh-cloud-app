@@ -1,71 +1,95 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AccountService, ListService } from 'src/app/services';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import * as moment from "moment";
+import { ToastrService } from "ngx-toastr";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { AccountService, ListService } from "src/app/services";
 
-import { Location } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { Location } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 @Component({
-  selector: 'app-add-vendor-credit-note',
-  templateUrl: './add-vendor-credit-note.component.html',
-  styleUrls: ['./add-vendor-credit-note.component.css']
+  selector: "app-add-vendor-credit-note",
+  templateUrl: "./add-vendor-credit-note.component.html",
+  styleUrls: ["./add-vendor-credit-note.component.css"],
 })
 export class AddVendorCreditNoteComponent implements OnInit {
   submitDisabled = false;
   total = 0;
   creditData: any = {
-    txnDate: moment().format('YYYY-MM-DD'),
-    currency: 'CAD',
-    crRef: '',
-    purOrder: '',
+    txnDate: moment().format("YYYY-MM-DD"),
+    currency: "CAD",
+    crRef: "",
+    purOrder: null,
     vendorID: null,
-    crDetails: [{
-      commodity: '',
-      desc: '',
-      qty: 0,
-      qtyUnit: null,
-      rate: 0,
-      rateUnit: null,
-      amount: 0,
-      accountID: null,
-    }],
-    remarks: '',
+    crDetails: [
+      {
+        commodity: "",
+        desc: "",
+        qty: 0,
+        qtyUnit: null,
+        rate: 0,
+        rateUnit: null,
+        amount: 0,
+        accountID: null,
+      },
+    ],
+    remarks: "",
     totalAmt: 0,
-    transactionLog: []
-  }
+    transactionLog: [],
+  };
 
   accounts: any = [];
   vendors: any = [];
 
   errors = {};
-  response: any = '';
+  response: any = "";
   hasError = false;
   hasSuccess = false;
-  Error = '';
-  pageTitle = 'Add';
+  Error = "";
+  pageTitle = "Add";
 
   creditID: any;
   units = [];
+  purchaseOrders = [];
 
-  constructor(private listService: ListService, private route: ActivatedRoute, private toaster: ToastrService, private location: Location,
-    private accountService: AccountService, private httpClient: HttpClient) { }
+  constructor(
+    private listService: ListService,
+    private route: ActivatedRoute,
+    private toaster: ToastrService,
+    private location: Location,
+    private accountService: AccountService,
+    private httpClient: HttpClient
+  ) {}
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];
     if (this.creditID) {
-      this.pageTitle = 'Edit';
+      this.pageTitle = "Edit";
       this.fetchCredit();
     } else {
-      this.pageTitle = 'Add';
+      this.pageTitle = "Add";
     }
 
     this.fetchAccounts();
     this.fetchQuantityUnits();
+
     this.listService.fetchVendors();
-    this.vendors = this.listService.vendorList;
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
+  }
+
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    });
   }
 
   refreshVendorData() {
@@ -87,7 +111,6 @@ export class AddVendorCreditNoteComponent implements OnInit {
       });
   }
 
-
   fetchAccounts() {
     this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
       this.accounts = res;
@@ -99,16 +122,26 @@ export class AddVendorCreditNoteComponent implements OnInit {
     this.creditData.crDetails[i].rateUnit = value;
   }
   addDetails() {
-    this.creditData.crDetails.push({
-      commodity: '',
-      desc: '',
-      qty: 0,
-      qtyUnit: null,
-      rate: 0,
-      rateUnit: null,
-      amount: 0,
-      accountID: null,
-    });
+    const lastInd = this.creditData.crDetails.length - 1;
+    if (
+      this.creditData.crDetails[lastInd].commodity !== "" &&
+      this.creditData.crDetails[lastInd].qty > 0 &&
+      this.creditData.crDetails[lastInd].qtyUnit != null &&
+      this.creditData.crDetails[lastInd].rateUnit != null &&
+      this.creditData.crDetails[lastInd].rate > 0 &&
+      this.creditData.crDetails[lastInd].accountID != null
+    ) {
+      this.creditData.crDetails.push({
+        commodity: "",
+        desc: "",
+        qty: 0,
+        qtyUnit: null,
+        rate: 0,
+        rateUnit: null,
+        amount: 0,
+        accountID: null,
+      });
+    }
   }
 
   deleteDetail(d: number) {
@@ -118,8 +151,9 @@ export class AddVendorCreditNoteComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.creditData.crDetails[i].amount = this.creditData.crDetails[i].qty * this.creditData.crDetails[i].rate;
-    this.creditData.crDetails.forEach(element => {
+    this.creditData.crDetails[i].amount =
+      this.creditData.crDetails[i].qty * this.creditData.crDetails[i].rate;
+    this.creditData.crDetails.forEach((element) => {
       total += element.amount;
     });
     this.total = total.toFixed(2);
@@ -130,16 +164,31 @@ export class AddVendorCreditNoteComponent implements OnInit {
   }
 
   addNotes() {
+    for (let i = 0; i < this.creditData.crDetails.length; i++) {
+      const element = this.creditData.crDetails[i];
+      if (
+        element.commodity === "" ||
+        element.qty <= 0 ||
+        element.qtyUnit === null ||
+        element.rateUnit == null ||
+        element.rate <= 0 ||
+        element.accountID === null
+      ) {
+        this.toaster.error("Please enter valid credit details");
+        return false;
+      }
+    }
+
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
     this.accountService.postData(`vendor-credits`, this.creditData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
           )
@@ -151,68 +200,79 @@ export class AddVendorCreditNoteComponent implements OnInit {
             error: () => {
               // this.submitDisabled = false;
             },
-            next: () => {
-            },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Credit note added successfully.');
+        this.toaster.success("Credit note added successfully.");
         this.cancel();
       },
     });
   }
 
   fetchCredit() {
-    this.accountService.getData(`vendor-credits/detail/${this.creditID}`).subscribe(res => {
-      let result = res[0];
-      this.creditData.purOrder = result.purOrder;
-      this.creditData.currency = result.currency;
-      this.creditData.crRef = result.crRef;
-      this.creditData.txnDate = result.txnDate;
-      this.creditData.vCrNo = result.vCrNo;
-      this.creditData.vendorID = result.vendorID;
-      this.creditData.crDetails = result.crDetails;
-      this.creditData.remarks = result.remarks;
-      this.total = result.totalAmt;
-    });
+    this.accountService
+      .getData(`vendor-credits/detail/${this.creditID}`)
+      .subscribe((res) => {
+        let result = res[0];
+        this.creditData.purOrder = result.purOrder;
+        this.creditData.currency = result.currency;
+        this.creditData.crRef = result.crRef;
+        this.creditData.txnDate = result.txnDate;
+        this.creditData.vCrNo = result.vCrNo;
+        this.creditData.vendorID = result.vendorID;
+        this.creditData.crDetails = result.crDetails;
+        this.creditData.remarks = result.remarks;
+        this.total = result.totalAmt;
+        this.fetchPurchaseOrders();
+      });
   }
-
 
   updateNotes() {
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
-    this.accountService.putData(`vendor-credits/update/${this.creditID}`, this.creditData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        this.submitDisabled = false;
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              //this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              // this.submitDisabled = false;
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        // this.submitDisabled = false;
-        this.response = res;
-        this.toaster.success('Credit note updated successfully.');
-        this.cancel();
-      },
-    });
+    this.accountService
+      .putData(`vendor-credits/update/${this.creditID}`, this.creditData)
+      .subscribe({
+        complete: () => {},
+        error: (err: any) => {
+          this.submitDisabled = false;
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                //this.submitDisabled = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                // this.submitDisabled = false;
+              },
+              next: () => {},
+            });
+        },
+        next: (res) => {
+          // this.submitDisabled = false;
+          this.response = res;
+          this.toaster.success("Credit note updated successfully.");
+          this.cancel();
+        },
+      });
   }
 
+  async fetchPurchaseOrders() {
+    this.purchaseOrders = [];
+    if (this.creditData.vendorID) {
+      let result: any = await this.accountService
+        .getData(`purchase-orders/vendor/all/${this.creditData.vendorID}`)
+        .toPromise();
+      this.purchaseOrders = result;
+    }
+  }
 }

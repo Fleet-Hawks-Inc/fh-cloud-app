@@ -8,7 +8,6 @@ import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { Location } from "@angular/common";
-import { indexOf } from "lodash";
 @Component({
   selector: "app-add-settlement",
   templateUrl: "./add-settlement.component.html",
@@ -1173,7 +1172,6 @@ export class AddSettlementComponent implements OnInit {
       });
     }
     this.submitDisabled = true;
-    // console.log("this.settlementData", this.settlementData);
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -2048,7 +2046,7 @@ export class AddSettlementComponent implements OnInit {
         )
         .toPromise();
       this.fuelEnteries = result;
-      this.fuelEnteries.map((elem) => {
+      this.fuelEnteries.map(async (elem) => {
         elem.fuelID = elem.data.fuelID;
         elem.fuelDate = elem.data.date;
         elem.unitNumber = this.vehicles[elem.unitID];
@@ -2057,11 +2055,31 @@ export class AddSettlementComponent implements OnInit {
         elem.fuelCardNumber = elem.data.cardNo;
         elem.unitOfMeasure = elem.data.uom;
         elem.subTotal = elem.data.amt;
+        elem.total = elem.data.amt;
         elem.billingCurrency = elem.data.currency;
         elem.add = false;
         elem.deduction = false;
         elem.addDisabled = false;
         elem.subDisabled = false;
+        elem.type = elem.data.type;
+        elem.convert = false;
+        elem.convertRate = 0;
+        elem.currency = this.settlementData.currency;
+        if (this.settlementData.currency !== elem.billingCurrency) {
+          elem.convert = true;
+          let convertedValue: any = await this.currencyConverter(
+            elem.billingCurrency,
+            elem.total,
+            elem.fuelDate
+          );
+          elem.subTotal = convertedValue.result;
+          elem.convertRate = convertedValue.rate;
+        }
+      });
+      this.fuelEnteries.sort(function compare(a, b) {
+        let dateA: any = new Date(a.fuelDate);
+        let dateB: any = new Date(b.fuelDate);
+        return dateA - dateB;
       });
     } else {
       this.fuelEnteries = [];
@@ -2083,8 +2101,12 @@ export class AddSettlementComponent implements OnInit {
           this.settlementData.fuelIds.push(element.fuelID);
           let obj = {
             fuelID: element.fuelID,
+            actAmount: element.total,
             amount: Number(element.subTotal),
             action: "add",
+            convert: element.convert,
+            convertRate: element.convertRate,
+            baseCurr: element.billingCurrency,
           };
           this.settlementData.fuelData.push(obj);
         }
@@ -2132,13 +2154,28 @@ export class AddSettlementComponent implements OnInit {
         k.unitOfMeasure = k.data.uom;
         k.subTotal = k.data.amt;
         k.billingCurrency = k.data.currency;
+        k.type = k.data.type;
         this.settlementData.fuelData.map((v) => {
           if (v.fuelID === k.fuelID) {
             k.action = v.action === "add" ? "Added" : "Deducted";
+            if (v.convert) {
+              k.convert = v.convert;
+              k.total = v.actAmount;
+              k.convertRate = v.convertRate;
+              k.currency = this.settlementData.currency;
+              k.subTotal = v.amount;
+            } else {
+              k.convert = false;
+            }
           }
         });
       });
       this.selectedFuelEnteries = result;
+      this.selectedFuelEnteries.sort(function compare(a, b) {
+        let dateA: any = new Date(a.fuelDate);
+        let dateB: any = new Date(b.fuelDate);
+        return dateA - dateB;
+      });
     }
   }
 
@@ -2322,5 +2359,13 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.expIds.push(k);
       }
     });
+  }
+
+  async currencyConverter(curr, amount, date) {
+    return await this.accountService
+      .getData(
+        `settlement/currency/convert/${curr}/${this.settlementData.currency}/${amount}/${date}`
+      )
+      .toPromise();
   }
 }

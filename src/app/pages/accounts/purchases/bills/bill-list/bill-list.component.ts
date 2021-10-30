@@ -62,6 +62,7 @@ export class BillListComponent implements OnInit {
       result.map((v) => {
         v.url = `/accounts/purchases/bills/details/${v.billID}`;
         v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
+        v.status = v.status.replace("_", " ");
         this.payOrders.push(v);
       });
       this.loaded = true;
@@ -104,6 +105,7 @@ export class BillListComponent implements OnInit {
       this.filter.endDate !== null
     ) {
       this.payOrders = [];
+      this.lastItemSK = "";
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchBills();
@@ -117,6 +119,7 @@ export class BillListComponent implements OnInit {
       endDate: null,
     };
     this.payOrders = [];
+    this.lastItemSK = "";
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.fetchBills();

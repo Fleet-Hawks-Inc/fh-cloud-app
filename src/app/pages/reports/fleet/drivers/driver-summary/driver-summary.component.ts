@@ -4,9 +4,11 @@ import { ApiService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
 import { result } from 'lodash';
+import { timeStamp } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
 import * as moment from 'moment'
+import * as _ from "lodash";
 @Component({
     selector: 'app-driver-summary',
     templateUrl: './driver-summary.component.html',
@@ -15,32 +17,24 @@ import * as moment from 'moment'
 export class DriverSummaryComponent implements OnInit {
     dataMessage: string = Constants.FETCHING_DATA;
     drivers: any = [];
-    activeDrivers = 0;
-    inActiveDrivers = 0;
-    totalDriversCount = 0;
     driverID = '';
     firstName = '';
+    driversCount = {
+        total: '',
+        active: '',
+        inactive: '',
+    };
     lastName = '';
-    searchValue = '';
-    driverStatus = '';
+    driverStatus = null;
     driverName = '';
     lastItemSK = '';
+    suggestedDrivers = [];
     disableSearch = false;
     loaded = false;
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
     ngOnInit() {
-        this.countDrivers();
+        this.fetchDriversCount();
         this.fetchPagination();
-    }
-    fetchDrivers() {
-        this.inActiveDrivers = 0;
-        this.activeDrivers = 0;
-        this.apiService.getData(`drivers/fetch/summary/list?name=${this.driverName}&driverStatus=${this.driverStatus}`).subscribe((result: any) => {
-            for (let i = 0; i < result.Items.length; i++) {
-                const drivers = result.Items[i];
-            }
-            this.drivers = result.Items;
-        })
     }
     async fetchPagination(refresh?: boolean) {
         if (refresh === true) {
@@ -48,11 +42,11 @@ export class DriverSummaryComponent implements OnInit {
             this.drivers = [];
         }
         if (this.lastItemSK !== 'end') {
-            const result = await this.apiService.getData(`drivers/paging/list?lastKey=${this.lastItemSK}`).toPromise();
-            this.dataMessage = Constants.FETCHING_DATA;
+            const result = await this.apiService.getData(`drivers/paging/list?name=${this.driverName}&driverStatus=${this.driverStatus}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.dataMessage = Constants.NO_RECORDS_FOUND
             }
+            this.suggestedDrivers = [];
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
@@ -71,42 +65,59 @@ export class DriverSummaryComponent implements OnInit {
         }
         this.loaded = false;
     }
-    countDrivers() {
-        this.apiService.getData(`drivers`).subscribe((result: any) => {
-            this.totalDriversCount = result.Count;
-            if (this.totalDriversCount == 0)
-                this.dataMessage = Constants.NO_RECORDS_FOUND;
-            result.Items.forEach(element => {
-                if (element.driverStatus == "active")
-                    this.activeDrivers++;
-                if (element.driverStatus == "inActive")
-                    this.inActiveDrivers++;
-            })
+    fetchDriversCount() {
+        this.apiService.getData('drivers/fetch/driverCount').subscribe((result: any) => {
+            this.driversCount = result;
         })
     }
     searchDriver() {
-        if (this.driverName !== '' || this.driverStatus !== '') {
+        if (this.driverName !== '' || this.driverStatus !== null) {
             this.driverName = this.driverName.toLowerCase();
-            this.disableSearch = true;
+            //this.disableSearch = true;
             this.drivers = [];
+            this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
-            this.countDrivers();
-            this.fetchDrivers();
+            this.suggestedDrivers = [];
+            this.fetchPagination();
+            console.log(result);
         }
         else {
             return false;
         }
     }
+    
+   
+    getSuggestions = _.debounce(function (value) {
+        this.driverID = "";
+        value = value.toLowerCase();
+        if (value != '') {
+            this.apiService
+                .getData(`drivers/get/suggestions/${value}`)
+                .subscribe((result) => {
+                    this.suggestedDrivers = result;
+                });
+        } else {
+            this.suggestedDrivers = []
+        }
+    }, 800);
+    
+
+    setDriver(driverID, driverName) {
+        this.driverName = driverName;
+        this.driverID = driverName;
+        this.suggestedDrivers = [];
+    }
+    
+
     resetDriver() {
-        if (this.driverName !== '' || this.driverStatus !== '' || this.lastItemSK !== '') {
-            this.drivers = [];
-            this.driverStatus = '';
+        if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
             this.driverName = '';
+            this.driverStatus = null;
             this.lastItemSK = '';
-            this.disableSearch = true;
+            this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
-            this.fetchDrivers();
-            this.countDrivers();
+            this.suggestedDrivers = [];
+            this.fetchPagination();
         }
         else {
             return false;
@@ -118,11 +129,11 @@ export class DriverSummaryComponent implements OnInit {
             let csvArray = []
             this.drivers.forEach(element => {
                 let obj = {}
-                obj["Name"] = element.firstName
+                obj["Name"] = element.firstName + "  " + element.middleName + " " + element.lastName
                 obj["Email"] = element.email
                 obj["driverType"] = element.driverType
-                obj["Date of Birth"] = element.DOB + " " + element.DOB
-                obj["Gender"] = element.gender
+                obj["Date of Birth"] = element.DOB
+                obj["Gender"] = element.gender === "M" ? 'Male' : 'Female'
                 obj["CDL#"] = element.CDL_Number
                 obj["Phone"] = element.phone
                 obj["Status"] = element.driverStatus
