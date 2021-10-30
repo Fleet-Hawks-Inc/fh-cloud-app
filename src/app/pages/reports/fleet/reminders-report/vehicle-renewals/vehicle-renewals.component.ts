@@ -44,7 +44,7 @@ export class VehicleRenewalsComponent implements OnInit {
 
   fetchallData() {
     this.apiService.getData("reminders").subscribe((result: any) => {
-      console.log('this.data', result)
+      // console.log('this.data', result)
     });
   }
   fetchReminderCount() {
@@ -77,7 +77,7 @@ export class VehicleRenewalsComponent implements OnInit {
   fetchvehicleSList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
-      console.log("vehiclesList", result)
+      // console.log("vehiclesList", result)
     });
 
   }
@@ -85,7 +85,7 @@ export class VehicleRenewalsComponent implements OnInit {
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
-      console.log("tasksData", result)
+      // console.log("tasksData", result)
     });
   }
   searchData() {
