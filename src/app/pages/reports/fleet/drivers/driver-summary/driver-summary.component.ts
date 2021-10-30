@@ -86,7 +86,7 @@ export class DriverSummaryComponent implements OnInit {
         }
     }
     
-    
+   
     getSuggestions = _.debounce(function (value) {
         this.driverID = "";
         value = value.toLowerCase();
@@ -100,6 +100,8 @@ export class DriverSummaryComponent implements OnInit {
             this.suggestedDrivers = []
         }
     }, 800);
+    
+
     setDriver(driverID, driverName) {
         this.driverName = driverName;
         this.driverID = driverName;
