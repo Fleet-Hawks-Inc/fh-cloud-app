@@ -1,15 +1,496 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-
+import { Auth } from 'aws-amplify';
+import Constants from 'src/app/pages/fleet/constants';
+import { AccountService, ApiService, ListService } from 'src/app/services';
+import * as moment from 'moment';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-sales-invoice',
   templateUrl: './add-sales-invoice.component.html',
   styleUrls: ['./add-sales-invoice.component.css']
 })
 export class AddSalesInvoiceComponent implements OnInit {
+  total = 0;
+  submitDisabled = false;
+  response: any = '';
+  errors = {};
 
-  constructor() { }
+  saleData = {
+    txnDate: moment().format('YYYY-MM-DD'),
+    currency: 'CAD',
+    customerID: null,
+    sOrderNo: '',
+    sRef: '',
+    dueDate: null,
+    paymentTerm: null,
+    salePerson: '',
+    sOrderDetails: [{
+      commodity: '',
+      desc: '',
+      qty: 0,
+      qtyUnit: null,
+      rate: 0,
+      rateUnit: null,
+      amount: 0,
+      accountID: null,
+    }],
+    charges: {
+      accFee: [
+        {
+          name: "",
+          amount: 0,
+        },
+      ],
+      accDed: [
+        {
+          name: "",
+          amount: 0,
+        },
+      ],
+      taxes: [
+        {
+          name: "GST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "PST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+        {
+          name: "HST",
+          tax: 0,
+          type: "prcnt",
+          amount: 0,
+        },
+      ],
+    },
 
-  ngOnInit() {
+    total: {
+      detailTotal: 0,
+      feeTotal: 0,
+      dedTotal: 0,
+      subTotal: 0,
+      taxes: 0,
+      finalTotal: 0,
+    },
+    taxExempt: true,
+    stateTaxID: null,
+    remarks: "",
+    creditIds: [],
+    creditData: [],
   }
 
+  paymentTerms = [
+    {
+      value: "15_days",
+      name: "15 Days",
+    },
+    {
+      value: "30_days",
+      name: "30 Days",
+    },
+    {
+      value: "45_days",
+      name: "45 Days",
+    },
+    {
+      value: "due_on_receipt",
+      name: "Due on receipt",
+    },
+    {
+      value: "due_end_of_month",
+      name: "Due end of the month",
+    },
+  ];
+
+  dataMessage = Constants.NO_RECORDS_FOUND;
+
+  salesOrder = [];
+  accounts: any = [];
+  customers = [];
+  units = [];
+  stateTaxes = [];
+
+  customerCredits = []
+
+  currentUser: any;
+  saleID: string;
+  pageTitle: string = 'Add';
+
+  constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,) { }
+
+  ngOnInit() {
+    this.saleID = this.route.snapshot.params[`saleID`];
+    if (this.saleID) {
+      this.pageTitle = 'Edit';
+      this.fetchSaleInvoice();
+    } else {
+      this.pageTitle = 'Add';
+    }
+    // this.fetchCustomers();
+    this.fetchAccounts();
+    this.fetchQuantityUnits();
+    this.getCurrentUser();
+    this.fetchStateTaxes();
+    this.listService.fetchCustomers();
+
+    let customerList = new Array<any>();
+    this.getValidCustomers(customerList);
+    this.customers = customerList;
+  }
+
+  private getValidCustomers(customerList: any[]) {
+    let ids = [];
+    this.listService.customersList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          customerList.push(element2);
+          ids.push(element2.contactID);
+        }
+      });
+    });
+  }
+
+  fetchQuantityUnits() {
+    this.httpClient
+      .get("assets/jsonFiles/quantityTypes.json")
+      .subscribe((data: any) => {
+        this.units = data;
+      });
+  }
+
+  fetchCustomer() {
+    this.listService.fetchCustomers();
+  }
+
+  openModal(unit: string) {
+    this.listService.triggerModal(unit);
+
+    localStorage.setItem("isOpen", "true");
+    this.listService.changeButton(false);
+  }
+
+  // fetchCustomers() {
+  //   this.apiService
+  //     .getData(`contacts/get/list`)
+  //     .subscribe((result: any) => {
+  //       this.customers = result;
+  //     });
+  // }
+
+  changeUnit(value: string, i: any) {
+    this.saleData.sOrderDetails[i].qtyUnit = value;
+    this.saleData.sOrderDetails[i].rateUnit = value;
+  }
+
+  async calculateAmount(i: number) {
+    let total: any = 0;
+    this.saleData.sOrderDetails[i].amount = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
+    this.saleData.sOrderDetails.forEach(element => {
+      total += element.amount;
+    });
+    this.saleData.total.detailTotal = parseFloat(total);
+  }
+
+  async getCustomerOrders(ID: string) {
+    this.saleData.sOrderNo = '';
+    this.salesOrder = [];
+    this.saleData.sOrderDetails = [{
+      commodity: '',
+      desc: '',
+      qty: 0,
+      qtyUnit: null,
+      rate: 0,
+      rateUnit: null,
+      amount: 0,
+      accountID: null,
+    }];
+    if (ID != undefined) {
+      this.getCustomerCredit(ID);
+      this.getOrders(ID);
+    }
+
+  }
+
+  async getOrders(ID: string) {
+    let result = await this.accountService.getData(`sales-orders/specific/${ID}`).toPromise();
+    if (result.length > 0) {
+      this.salesOrder = result;
+    }
+  }
+
+  assignFullPayment(index, data) {
+    if (data.fullPayment) {
+      this.customerCredits[index].paidAmount = data.balance.toFixed(2);
+      this.customerCredits[index].paidStatus = true;
+    } else {
+      this.customerCredits[index].paidAmount = 0;
+      this.customerCredits[index].paidStatus = false;
+    }
+  }
+
+  async getCustomerCredit(ID: string) {
+    this.dataMessage = Constants.FETCHING_DATA;
+    let result = await this.accountService.getData(`customer-credits/specific/${ID}`).toPromise();
+    if (result.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+    if (result.length > 0) {
+      this.customerCredits = result;
+    }
+  }
+
+  async getOrderDetail(ID: string) {
+    let getSaleOrder = this.salesOrder.find(elem => elem.saleID === ID);
+    this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails]
+    await this.calculateAmount(null);
+  }
+
+
+  fetchAccounts() {
+    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
+      this.accounts = res;
+    });
+  }
+
+  addDetails() {
+    this.saleData.sOrderDetails.push({
+      commodity: '',
+      desc: '',
+      qty: 0,
+      qtyUnit: null,
+      rate: 0,
+      rateUnit: null,
+      amount: 0,
+      accountID: null,
+    });
+  }
+
+  deleteDetail(d: number) {
+    this.total -= this.saleData.sOrderDetails[d].amount;
+    this.saleData.sOrderDetails.splice(d, 1);
+  }
+
+  addAccessorialArr(type) {
+    let obj = {
+      name: "",
+      amount: 0,
+    };
+    if (type === "fee") {
+      const lastAdded =
+        this.saleData.charges.accFee[this.saleData.charges.accFee.length - 1];
+      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
+        this.saleData.charges.accFee.push(obj);
+      }
+    } else if (type === "ded") {
+      const lastAdded =
+        this.saleData.charges.accDed[this.saleData.charges.accDed.length - 1];
+      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
+        this.saleData.charges.accDed.push(obj);
+      }
+    }
+  }
+
+  dedAccessorialArr(type, index) {
+    if (type === "fee") {
+      this.saleData.charges.accFee.splice(index, 1);
+      this.accessorialFeeTotal();
+    } else if (type === "ded") {
+      this.saleData.charges.accDed.splice(index, 1);
+      this.accessorialDedTotal();
+      this.calculateFinalTotal();
+    }
+
+  }
+
+  accessorialFeeTotal() {
+    this.saleData.total.feeTotal = 0;
+    this.saleData.charges.accFee.forEach((element) => {
+      this.saleData.total.feeTotal += Number(element.amount);
+    });
+    this.calculateFinalTotal();
+  }
+
+  accessorialDedTotal() {
+    this.saleData.total.dedTotal = 0;
+    this.saleData.charges.accDed.forEach((element) => {
+      this.saleData.total.dedTotal += Number(element.amount);
+    });
+    this.calculateFinalTotal();
+  }
+
+  calculateFinalTotal() {
+    this.saleData.total.subTotal =
+      Number(this.saleData.total.detailTotal) +
+      Number(this.saleData.total.feeTotal) -
+      Number(this.saleData.total.dedTotal);
+
+    this.allTax();
+    this.saleData.total.finalTotal =
+      Number(this.saleData.total.subTotal) +
+      Number(this.saleData.total.taxes);
+  }
+
+  taxcalculation(index) {
+    this.saleData.charges.taxes[index].amount =
+      (this.saleData.charges.taxes[index].tax *
+        this.saleData.total.subTotal) /
+      100;
+
+    this.taxTotal();
+  }
+
+  allTax() {
+    let countTax = 0;
+    this.saleData.charges.taxes.forEach((element) => {
+      element.amount = (element.tax * this.saleData.total.subTotal) / 100;
+      countTax += element.amount;
+    });
+    this.saleData.total.taxes = countTax
+  }
+
+  taxTotal() {
+    this.saleData.total.taxes = 0;
+    this.saleData.charges.taxes.forEach((element) => {
+      this.saleData.total.taxes += Number(element.amount);
+    });
+    this.calculateFinalTotal();
+  }
+
+  async fetchStateTaxes() {
+    let result = await this.apiService.getData("stateTaxes").toPromise();
+    this.stateTaxes = result.Items;
+  }
+
+  taxExempt(value: boolean) {
+    if (value === true) {
+      this.saleData.total.finalTotal = this.saleData.total.subTotal;
+    }
+    this.calculateFinalTotal();
+  }
+
+  getCurrentUser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.saleData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+  };
+
+  async stateSelectChange() {
+    let selected: any = this.stateTaxes.find(
+      (o) => o.stateTaxID == this.saleData.stateTaxID
+    );
+
+    this.saleData.charges.taxes = [];
+
+    this.saleData.charges.taxes = [
+      {
+        name: "GST",
+        tax: selected.GST ? selected.GST : 0,
+        type: '',
+        amount: 0,
+      },
+      {
+        name: "HST",
+        tax: selected.HST ? selected.HST : 0,
+        type: '',
+        amount: 0,
+      },
+      {
+        name: "PST",
+        tax: selected.PST ? selected.PST : 0,
+        type: '',
+        amount: 0,
+      },
+    ];
+    this.calculateFinalTotal();
+
+    // this.tax =
+    //   (parseInt(selected.GST) ? selected.GST : 0) +
+    //   (parseInt(selected.HST) ? selected.HST : 0) +
+    //   (parseInt(selected.PST) ? selected.PST : 0);
+  }
+
+
+  selectedCredits() {
+    this.saleData.creditIds = [];
+    this.saleData.creditData = [];
+    for (const element of this.customerCredits) {
+      if (element.selected) {
+        if (!this.saleData.creditIds.includes(element.creditID)) {
+          let obj = {
+            creditID: element.creditID,
+            status: element.status,
+            paidAmount:
+              element.status === "not_deducted"
+                ? element.paidAmount
+                : Number(element.totalAmt) - Number(element.balance),
+            totalAmount:
+              element.status === "not_deducted"
+                ? element.amount
+                : element.balance,
+            pendingAmount: element.balance,
+          };
+          this.saleData.creditIds.push(element.creditID);
+          this.saleData.creditData.push(obj);
+        }
+      }
+    }
+    // this.creditCalculation();
+    this.calculateFinalTotal();
+  }
+
+
+  addOrder() {
+    this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        this.submitDisabled = false;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              // this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice added successfully.');
+        this.cancel();
+      },
+    });
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
+  }
+
+
+  async fetchSaleInvoice() {
+    this.accountService.getData(`sales-invoice/detail/${this.saleID}`).subscribe(res => {
+      this.saleData = res[0];
+      this.getCustomerOrders(this.saleData.customerID);
+      // this.getOrderDetail(this.saleData.sOrderNo)
+    });
+  }
 }
