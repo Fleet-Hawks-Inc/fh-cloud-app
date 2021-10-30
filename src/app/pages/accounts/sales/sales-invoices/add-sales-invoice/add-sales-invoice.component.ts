@@ -77,6 +77,8 @@ export class AddSalesInvoiceComponent implements OnInit {
     taxExempt: true,
     stateTaxID: null,
     remarks: "",
+    creditIds: [],
+    creditData: [],
   }
 
   paymentTerms = [
@@ -168,8 +170,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       accountID: null,
     }];
     if (ID != undefined) {
-      await this.getOrders(ID);
-      await this.getCustomerCredit(ID);
+      this.getCustomerCredit(ID);
+      this.getOrders(ID);
     }
 
   }
@@ -178,6 +180,17 @@ export class AddSalesInvoiceComponent implements OnInit {
     let result = await this.accountService.getData(`sales-orders/specific/${ID}`).toPromise();
     if (result.length > 0) {
       this.salesOrder = result;
+    }
+    this.calculateAmount(null);
+  }
+
+  assignFullPayment(index, data) {
+    if (data.fullPayment) {
+      this.customerCredits[index].paidAmount = data.balance.toFixed(2);
+      this.customerCredits[index].paidStatus = true;
+    } else {
+      this.customerCredits[index].paidAmount = 0;
+      this.customerCredits[index].paidStatus = false;
     }
   }
 
@@ -362,6 +375,37 @@ export class AddSalesInvoiceComponent implements OnInit {
     //   (parseInt(selected.HST) ? selected.HST : 0) +
     //   (parseInt(selected.PST) ? selected.PST : 0);
   }
+
+
+  selectedCredits() {
+    this.saleData.creditIds = [];
+    this.saleData.creditData = [];
+    for (const element of this.customerCredits) {
+      if (element.selected) {
+        if (!this.saleData.creditIds.includes(element.creditID)) {
+          let obj = {
+            creditID: element.creditID,
+            status: element.status,
+            paidAmount:
+              element.status === "not_deducted"
+                ? element.paidAmount
+                : Number(element.totalAmt) - Number(element.balance),
+            totalAmount:
+              element.status === "not_deducted"
+                ? element.amount
+                : element.balance,
+            pendingAmount: element.balance,
+          };
+          this.saleData.creditIds.push(element.creditID);
+          this.saleData.creditData.push(obj);
+        }
+        console.log('dd*******', this.saleData.creditData);
+      }
+    }
+    // this.creditCalculation();
+    this.calculateFinalTotal();
+  }
+
 
   addOrder() {
     console.log('order data', this.saleData);
