@@ -133,6 +133,7 @@ export class AddBillComponent implements OnInit {
   editDisabled = false;
   stateTaxes = [];
   productDisabled = false;
+  uploadedDocs = [];
 
   constructor(
     private listService: ListService,
@@ -188,10 +189,14 @@ export class AddBillComponent implements OnInit {
   }
 
   async fetchPurchaseOrders() {
-    const result: any = await this.accountService
-      .getData(`purchase-orders/vendor/${this.orderData.vendorID}`)
-      .toPromise();
-    this.purchaseOrders = result;
+    if (this.orderData.vendorID) {
+      const result: any = await this.accountService
+        .getData(
+          `purchase-orders/vendor/${this.orderData.vendorID}?currency=${this.orderData.currency}`
+        )
+        .toPromise();
+      this.purchaseOrders = result;
+    }
   }
 
   async fetchAllPurchaseOrders() {
@@ -354,6 +359,8 @@ export class AddBillComponent implements OnInit {
   }
 
   async fetchPurchaseDetails() {
+    this.vendorCredits = [];
+    this.fetchVendorCredits();
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.orderData.purchaseID}`)
       .toPromise();
@@ -370,6 +377,17 @@ export class AddBillComponent implements OnInit {
     this.orderData.currency = result[0].currency;
     this.orderData.vendorID = result[0].vendorID;
     this.calculateFinalTotal();
+  }
+
+  /*
+   * Selecting files before uploading
+   */
+  selectDocuments(event) {
+    let files = [...event.target.files];
+
+    for (let i = 0; i < files.length; i++) {
+      this.uploadedDocs.push(files[i]);
+    }
   }
 
   addRecord() {
@@ -399,8 +417,19 @@ export class AddBillComponent implements OnInit {
       return false;
     }
 
+    // create form data instance
+    const formData = new FormData();
+
+    //append photos if any
+    for (let i = 0; i < this.uploadedDocs.length; i++) {
+      formData.append("uploadedDocs", this.uploadedDocs[i]);
+    }
+
+    // append other fields
+    formData.append("data", JSON.stringify(this.orderData));
     this.submitDisabled = true;
-    this.accountService.postData("bills", this.orderData).subscribe({
+
+    this.accountService.postData("bills", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
@@ -476,28 +505,33 @@ export class AddBillComponent implements OnInit {
   }
 
   async fetchVendorCredits() {
-    this.dataMessage = Constants.FETCHING_DATA;
-    let result: any = await this.accountService
-      .getData(`vendor-credits/specific/${this.orderData.vendorID}`)
-      .toPromise();
-    if (result.length === 0) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    if (this.orderData.vendorID) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      let result: any = await this.accountService
+        .getData(
+          `vendor-credits/specific/${this.orderData.vendorID}?currency=${this.orderData.currency}&order=${this.orderData.purchaseID}`
+        )
+        .toPromise();
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      result.map((v) => {
+        v.prevPaidAmount = Number(v.totalAmt) - Number(v.balance);
+        v.paidStatus = false;
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.newStatus = v.status.replace("_", " ");
+      });
+      this.vendorCredits = result;
     }
-    result.map((v) => {
-      v.prevPaidAmount = Number(v.totalAmt) - Number(v.balance);
-      v.paidStatus = false;
-      v.fullPayment = false;
-      v.paidAmount = 0;
-      v.newStatus = v.status.replace("_", " ");
-    });
-    this.vendorCredits = result;
   }
 
   changeVendor() {
+    this.orderData.total.vendorCredit = 0;
+    this.orderData.total.subTotal = 0;
     this.vendorCredits = [];
     this.purchaseOrders = [];
     this.fetchPurchaseOrders();
-    this.fetchVendorCredits();
   }
 
   assignFullPayment(index, data) {
@@ -541,13 +575,9 @@ export class AddBillComponent implements OnInit {
   }
 
   creditCalculation() {
-    let selectCount = 0;
     this.orderData.total.vendorCredit = 0;
     for (const element of this.vendorCredits) {
       if (element.selected) {
-        if (Number(element.paidAmount > 0)) {
-          selectCount += 1;
-        }
         this.orderData.total.vendorCredit += Number(element.paidAmount);
         this.orderData.creditData.map((v) => {
           if (element.creditID === v.creditID) {
@@ -610,6 +640,7 @@ export class AddBillComponent implements OnInit {
   }
 
   async typeChange(type) {
+    this.orderData.purchaseID = null;
     if (type === "product") {
       this.productDisabled = true;
     } else {

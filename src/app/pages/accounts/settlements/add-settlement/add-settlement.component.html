@@ -1388,7 +1388,8 @@
                                                             <th>Date</th>
                                                             <th>Vehicle</th>
                                                             <th>Location</th>
-                                                            <th>Fuel Card No.</th>
+                                                            <th>Card No.</th>
+                                                            <th>Type</th>
                                                             <th>Quantity</th>
                                                             <th>Amount</th>
                                                             <th>Action</th>
@@ -1426,16 +1427,37 @@
                                                                 }}, {{
                                                                 data.locationCountry
                                                                 }}</td>
-                                                            <td>{{
-                                                                data.fuelCardNumber}}</td>
+                                                            <td>
+                                                                {{
+                                                                data.fuelCardNumber
+                                                                }}
+                                                            </td>
+                                                            <td>{{ data.type }}</td>
                                                             <td>{{ data.quantity
                                                                 }} {{
                                                                 data.unitOfMeasure
                                                                 }}</td>
-                                                            <td>{{ data.subTotal
-                                                                }} {{
-                                                                data.billingCurrency
-                                                                }}</td>
+                                                            <td>
+                                                                {{ data.subTotal
+                                                                | number :
+                                                                '1.2-2'
+                                                                }}
+                                                                {{ data.currency
+                                                                }}
+                                                                <span
+                                                                    *ngIf="data.convert">
+                                                                    ({{data.total
+                                                                    | number :
+                                                                    '1.2-2' }}
+                                                                    {{data.billingCurrency}},
+                                                                    1
+                                                                    {{data.billingCurrency}}
+                                                                    =
+                                                                    {{data.convertRate
+                                                                    | number :
+                                                                    '1.2-2' }})
+                                                                </span>
+                                                            </td>
                                                             <td>{{ data.action
                                                                 }}</td>
                                                         </tr>
@@ -1460,7 +1482,8 @@
                                                             <th>Date</th>
                                                             <th>Vehicle</th>
                                                             <th>Location</th>
-                                                            <th>Fuel Card No.</th>
+                                                            <th>Card No.</th>
+                                                            <th>Type</th>
                                                             <th>Quantity</th>
                                                             <th>Amount</th>
                                                             <th>Add</th>
@@ -1490,14 +1513,32 @@
                                                                 }}</td>
                                                             <td>{{
                                                                 data.fuelCardNumber}}</td>
+                                                            <td>{{ data.type }}</td>
                                                             <td>{{ data.quantity
                                                                 }} {{
                                                                 data.unitOfMeasure
                                                                 }}</td>
-                                                            <td>{{ data.subTotal
-                                                                }} {{
-                                                                data.billingCurrency
-                                                                }}</td>
+                                                            <td>
+                                                                {{ data.subTotal
+                                                                | number :
+                                                                '1.2-2'
+                                                                }}
+                                                                {{ data.currency
+                                                                }}
+                                                                <span
+                                                                    *ngIf="data.convert">
+                                                                    ({{data.total
+                                                                    | number :
+                                                                    '1.2-2' }}
+                                                                    {{data.billingCurrency}},
+                                                                    1
+                                                                    {{data.billingCurrency}}
+                                                                    =
+                                                                    {{data.convertRate
+                                                                    | number :
+                                                                    '1.2-2' }})
+                                                                </span>
+                                                            </td>
                                                             <td>
                                                                 <input
                                                                     type="checkbox"

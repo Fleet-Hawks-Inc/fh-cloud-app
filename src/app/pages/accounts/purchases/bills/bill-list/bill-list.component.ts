@@ -38,32 +38,35 @@ export class BillListComponent implements OnInit {
   }
 
   async fetchBills() {
-    let filterAmount = null;
-    if (this.filter.amount) {
-      filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
-    }
-    let result: any = await this.accountService
-      .getData(
-        `bills/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
-      )
-      .toPromise();
-    this.disableSearch = false;
-    if (result.length === 0) {
-      this.dataMessage = Constants.NO_RECORDS_FOUND;
-    }
-
-    if (result.length > 0 && result[result.length - 1].sk !== undefined) {
-      this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-    } else {
+    if (this.lastItemSK !== "end") {
+      let filterAmount = null;
+      if (this.filter.amount) {
+        filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+      }
+      let result: any = await this.accountService
+        .getData(
+          `bills/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        )
+        .toPromise();
+      this.disableSearch = false;
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
       this.lastItemSK = "end";
-    }
+      if (result.length > 0 && result[result.length - 1].sk !== undefined) {
+        this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
+      } else {
+        this.lastItemSK = "end";
+      }
 
-    result.map((v) => {
-      v.url = `/accounts/purchases/bills/details/${v.billID}`;
-      v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
-      this.payOrders.push(v);
-    });
-    this.loaded = true;
+      result.map((v) => {
+        v.url = `/accounts/purchases/bills/details/${v.billID}`;
+        v.editUrl = `/accounts/purchases/bills/edit/${v.billID}`;
+        v.status = v.status.replace("_", " ");
+        this.payOrders.push(v);
+      });
+      this.loaded = true;
+    }
   }
 
   async fetchVendor() {
@@ -102,6 +105,7 @@ export class BillListComponent implements OnInit {
       this.filter.endDate !== null
     ) {
       this.payOrders = [];
+      this.lastItemSK = "";
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchBills();
@@ -115,6 +119,7 @@ export class BillListComponent implements OnInit {
       endDate: null,
     };
     this.payOrders = [];
+    this.lastItemSK = "";
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.fetchBills();

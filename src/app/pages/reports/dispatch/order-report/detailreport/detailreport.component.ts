@@ -19,7 +19,9 @@ export class DetailreportComponent implements OnInit {
   deletedCount = 0
   canceledCount = 0
   tonuCount = 0
+
   records: any = []
+
   dataMessage = ''
   customers = {}
   lastItemSK = ''
@@ -28,14 +30,17 @@ export class DetailreportComponent implements OnInit {
   years = []
   selectedMonth = ''
   selectedYear = ''
+
   vehicles = {}
   assets = {}
   drivers = {}
+
   ngOnInit() {
     this.months = moment.months()
     this.years.push(moment().year())
     this.years.push(moment().subtract(1, 'year').year())
     this.fetchCustomers();
+
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
@@ -63,12 +68,14 @@ export class DetailreportComponent implements OnInit {
     this.dispatchedCount = 0
     this.canceledCount = 0
     this.tonuCount = 0
+
     if (this.selectedYear && this.selectedMonth) {
       this.lastItemSK = 'end';
       this.records = []
       this.dataMessage = Constant.FETCHING_DATA
       const result = await this.apiService.getData(`orders/report/search?month=${this.selectedMonth}&year=${this.selectedYear}`).toPromise();
       if (result.Items.length > 0) {
+
         this.totalOrdersCount = result.Count
         result.Items.forEach(element => {
 
@@ -79,6 +86,7 @@ export class DetailreportComponent implements OnInit {
           if (element.orderStatus == "tonu") this.tonuCount++
 
         });
+
         this.records = result.Items
       }
       else {
@@ -96,7 +104,9 @@ export class DetailreportComponent implements OnInit {
     this.selectedYear = ''
     this.lastItemSK = '';
     this.records = []
+
     this.fetchDetailReport();
+
     this.fetchOrderReport();
   }
   async fetchOrderReport(refresh?: boolean) {
@@ -121,9 +131,7 @@ export class DetailreportComponent implements OnInit {
         else {
           this.lastItemSK = 'end'
         }
-        this.records = this.records.concat(result.Items)
-
-
+        this.records = this.records.concat(result.Items);
         this.loaded = true;
       }
     }
@@ -142,11 +150,13 @@ export class DetailreportComponent implements OnInit {
   }
 
   async fetchDetailReport() {
+
     this.totalOrdersCount = 0;
     this.delieverdCount = 0;
     this.dispatchedCount = 0;
     this.canceledCount = 0
     this.tonuCount = 0
+
     const result = await this.apiService.getData('orders/report/detail').toPromise()
     this.totalOrdersCount = result.Count
     if (this.totalOrdersCount == 0) this.dataMessage = Constant.NO_RECORDS_FOUND
@@ -169,11 +179,13 @@ export class DetailreportComponent implements OnInit {
       this.records.forEach(element => {
         let obj = {}
         obj["Order#"] = element.orderNumber
+
         obj["Trip#"] = element.tripData && element.tripData.tripNo ? element.tripData.tripNo : ''
+
         obj["Type"] = element.orderMode
         obj["DateTime"] = element.createdDate + " " + element.createdTime
         obj["Cutomer"] = this.customers[element.customerID]
-        obj["Confirmation#"] = element.cusConfirmation
+        obj["Confirmation#"] = element.cusConfirmation;
         obj["Customer PO#"] = element.cusPOs && element.cusPOs.length > 0 ? element.cusPOs.join('/') : ' '
         obj["Drivers"] = ''
         obj["Vehicles"] = ''
@@ -213,6 +225,7 @@ export class DetailreportComponent implements OnInit {
                 }
               });
             }
+
           });
 
           item.receivers.forEach(receiver => {
@@ -231,6 +244,7 @@ export class DetailreportComponent implements OnInit {
                 }
               });
             }
+
           });
         });
         obj["Miles"] = element.milesInfo.totalMiles
