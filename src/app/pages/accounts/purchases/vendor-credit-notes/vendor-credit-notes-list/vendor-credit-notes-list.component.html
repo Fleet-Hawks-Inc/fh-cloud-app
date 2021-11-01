@@ -118,7 +118,7 @@
                         </tr>
 
                         <tr *ngFor="let item of allCredits">
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -128,31 +128,31 @@
                             : "-"
                             }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vCrNo }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.crRef }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ purchaseOrders[item.purOrder] }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vendorID ? vendors[item.vendorID] : "-" }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -164,7 +164,7 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -176,7 +176,7 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -184,7 +184,7 @@
                               item.status
                               }}</span>
                           </td>
-                          <td>
+                          <td class="cursorpoint">
                             <div class="btn-group flex-wrap">
                               <button
                                 type="button"

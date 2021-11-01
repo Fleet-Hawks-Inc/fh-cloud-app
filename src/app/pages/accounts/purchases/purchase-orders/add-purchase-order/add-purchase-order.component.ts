@@ -255,7 +255,7 @@ export class AddPurchaseOrderComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Purchase order added successfully.");
-        this.cancel();
+        // this.cancel();
       },
     });
   }
