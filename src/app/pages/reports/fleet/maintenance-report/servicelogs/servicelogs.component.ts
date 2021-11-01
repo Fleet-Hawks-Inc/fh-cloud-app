@@ -26,7 +26,10 @@ export class ServicelogsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   dataMessage: string = Constants.FETCHING_DATA;
+  // dataMessage: string = Constants.FETCHING_DATA;
+  lastItemSK = '';
   asset: any;
+  loaded = false;
   // taskname = ''
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
@@ -61,10 +64,30 @@ export class ServicelogsComponent implements OnInit {
             v.entityStatus = 'Sold';
           }
         })
+        // this.dataMessage = Constants.FETCHING_DATA;
+        // if (result.Items.length === 0) {
+        //   this.dataMessage = Constants.NO_RECORDS_FOUND
+        // }
+        // // this.suggestedAssets = [];
+        // if (result.Items.length > 0) {
 
+        //   if (result.LastEvaluatedKey !== undefined) {
+        //     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+        //   }
+        //   else {
+        //     this.lastItemSK = 'end';
+        //   }
+        //   this.allData = this.allData.concat(result.Items)
+        //   this.loaded = true;
+        // }
       })
   }
-
+  // onScroll() {
+  //   if (this.loaded) {
+  //     this.fetchServicelogs();
+  //   }
+  //   this.loaded = false;
+  // }
 
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
@@ -91,7 +114,7 @@ export class ServicelogsComponent implements OnInit {
     this.apiService.getData('assets/get/list')
       .subscribe((result: any) => {
         this.assetsObject = result;
-        console.log('this assetsObject', this.assetsObject)
+        // console.log('this assetsObject', this.assetsObject)
       });
   }
   searchFilter() {
@@ -125,12 +148,18 @@ export class ServicelogsComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.allData.forEach(element => {
+        let taskName = '';
+        for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
+          const element2 = element.allServiceTasks.serviceTaskList[i];
+          taskName += element2.taskName;
+          // console.log('taskName x', taskName)
+        }
         let obj = {}
         obj["Unit Type"] = element.unitType
         obj["Vehicle/Asset"] = element.unitName
         obj["Odometer"] = element.odometer
         obj["Vendor"] = this.vendorsObject[element.vendorID]
-        obj["Service"] = element.taskname
+        obj["Service"] = taskName
         obj["Service Date"] = element.completionDate
         obj["Status"] = element.entityStatus
         obj["Service Cost"] = element.allServiceTasks.subTotal + "." + "00" + " " + element.allServiceTasks.currency
