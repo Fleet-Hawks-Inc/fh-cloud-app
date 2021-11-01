@@ -35,60 +35,54 @@ export class ServicelogsComponent implements OnInit {
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchServicelogs();
+    this.fetchSlogsList();
     this.fetchAllVendorsIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
     this.fetchTasks();
-
-
   }
-  fetchServicelogs() {
-    this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}`)
-      .subscribe((result: any) => {
-        this.allData = result.Items;
-        console.log('this.allData', this.allData)
-        this.dataMessage = Constants.FETCHING_DATA
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND
-        }
-        result['Items'].map((v: any) => {
-          v.entityStatus = 'Active';
-          if (v.currentStatus === 'outOfService') {
-            v.entityStatus = 'Out of service';
-          } else if (v.currentStatus === 'active') {
-            v.entityStatus = 'Active';
-          } else if (v.currentStatus === 'inActive') {
-            v.entityStatus = 'In-active';
-          } else if (v.currentStatus === 'sold') {
-            v.entityStatus = 'Sold';
+  onScroll() {
+    if (this.loaded) {
+      this.fetchSlogsList();
+    }
+    this.loaded = false;
+  }
+  fetchSlogsList() {
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
+        .subscribe((result: any) => {
+          // this.allData = result.Items;
+          this.dataMessage = Constants.FETCHING_DATA
+          if (result.Items.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
+          if (result.Items.length > 0) {
+
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+            }
+            else {
+              this.lastItemSK = 'end';
+            }
+            this.allData = this.allData.concat(result.Items)
+            this.loaded = true;
+          }
+          result['Items'].map((v: any) => {
+            v.entityStatus = 'Active';
+            if (v.currentStatus === 'outOfService') {
+              v.entityStatus = 'Out of service';
+            } else if (v.currentStatus === 'active') {
+              v.entityStatus = 'Active';
+            } else if (v.currentStatus === 'inActive') {
+              v.entityStatus = 'In-active';
+            } else if (v.currentStatus === 'sold') {
+              v.entityStatus = 'Sold';
+            }
+          })
+
         })
-        // this.dataMessage = Constants.FETCHING_DATA;
-        // if (result.Items.length === 0) {
-        //   this.dataMessage = Constants.NO_RECORDS_FOUND
-        // }
-        // // this.suggestedAssets = [];
-        // if (result.Items.length > 0) {
-
-        //   if (result.LastEvaluatedKey !== undefined) {
-        //     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
-        //   }
-        //   else {
-        //     this.lastItemSK = 'end';
-        //   }
-        //   this.allData = this.allData.concat(result.Items)
-        //   this.loaded = true;
-        // }
-      })
+    }
   }
-  // onScroll() {
-  //   if (this.loaded) {
-  //     this.fetchServicelogs();
-  //   }
-  //   this.loaded = false;
-  // }
-
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
@@ -120,8 +114,9 @@ export class ServicelogsComponent implements OnInit {
   searchFilter() {
     if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
       this.dataMessage = Constants.FETCHING_DATA
+      this.lastItemSK = '';
       this.allData = []
-      this.fetchServicelogs()
+      this.fetchSlogsList()
     }
     else {
       return false;
@@ -135,8 +130,9 @@ export class ServicelogsComponent implements OnInit {
       this.start = null;
       this.end = null;
       this.dataMessage = Constants.FETCHING_DATA
+      this.lastItemSK = '';
       this.allData = []
-      this.fetchServicelogs()
+      this.fetchSlogsList()
     }
     else {
       return false;
@@ -152,7 +148,7 @@ export class ServicelogsComponent implements OnInit {
         for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
           const element2 = element.allServiceTasks.serviceTaskList[i];
           taskName += element2.taskName;
-          // console.log('taskName x', taskName)
+          console.log('taskName x', taskName)
         }
         let obj = {}
         obj["Unit Type"] = element.unitType
@@ -160,7 +156,7 @@ export class ServicelogsComponent implements OnInit {
         obj["Odometer"] = element.odometer
         obj["Vendor"] = this.vendorsObject[element.vendorID]
         obj["Service"] = taskName
-        obj["Service Date"] = element.completionDate
+        obj["Service Date"] = moment(element.completionDate).format("YYYY/MM/DD")
         obj["Status"] = element.entityStatus
         obj["Service Cost"] = element.allServiceTasks.subTotal + "." + "00" + " " + element.allServiceTasks.currency
         dataObject.push(obj)

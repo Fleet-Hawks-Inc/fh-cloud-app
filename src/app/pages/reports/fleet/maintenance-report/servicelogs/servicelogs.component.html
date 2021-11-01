@@ -109,59 +109,59 @@
                   </table>
                </div>
             </div> -->
-            <!-- <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
-               (scrolled)="onScroll()"> -->
-            <section class="reports_div bg-white">
+            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+               (scrolled)="onScroll()">
+               <section class="reports_div bg-white">
 
-               <table class="row-border hover table table-bordered table-striped mb-0">
-                  <thead>
-                     <tr class="back-color-gray">
-                        <th>Unit Type</th>
-                        <th>Vehicle/Asset</th>
-                        <th>Odometer</th>
-                        <th>Vendor</th>
-                        <th>Service Task</th>
-                        <th>Service Date</th>
-                        <th>Status</th>
-                        <th>Service Cost</th>
+                  <table class="row-border hover table table-bordered table-striped mb-0">
+                     <thead>
+                        <tr class="back-color-gray">
+                           <th>Unit Type</th>
+                           <th>Vehicle/Asset</th>
+                           <th>Odometer</th>
+                           <th>Vendor</th>
+                           <th>Service Task</th>
+                           <th>Service Date</th>
+                           <th>Status</th>
+                           <th>Service Cost</th>
 
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr *ngIf="allData.length == 0" class="text-center">
-                        <td colspan="15">{{dataMessage}}</td>
-                     </tr>
-                     <tr *ngFor="let item of allData">
-                        <td>{{item.unitType}}</td>
-                        <td>{{item. unitName}}</td>
-                        <td>{{item.odometer}}</td>
-                        <td>{{vendorsObject[item.vendorID]}}</td>
-                        <td><span title="Service Task"
-                              *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last">
-                              {{task.taskName? task.taskName : '-'}} </span>
-                           <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
-                           </span>
-                        </td>
-                        <td>{{item.completionDate | date:
-                           'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID" class="font-size-12">{{item.odometer}}
-                              miles</span>
-                        </td>
-                        <td><span class="text-success" [ngClass]="{'text-danger': item.currentStatus == 'sold',
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr *ngIf="allData.length == 0" class="text-center">
+                           <td colspan="15">{{dataMessage}}</td>
+                        </tr>
+                        <tr *ngFor="let item of allData">
+                           <td>{{item.unitType}}</td>
+                           <td>{{item. unitName}}</td>
+                           <td>{{item.odometer ? item.odometer : '-'}}</td>
+                           <td>{{vendorsObject[item.vendorID]}}</td>
+                           <td><span title="Service Task"
+                                 *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last">
+                                 {{task.taskName? task.taskName : '-'}} </span>
+                              <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
+                              </span>
+                           </td>
+                           <td>{{item.completionDate | date:
+                              'yyyy/MM/dd'}}<br><span *ngIf="item?.vehicleID" class="font-size-12">{{item.odometer}}
+                                 miles</span>
+                           </td>
+                           <td><span class="text-success" [ngClass]="{'text-danger': item.currentStatus == 'sold',
                            'text-muted' : item.currentStatus === 'outOfService'}">
-                              {{item.entityStatus}}</span>
-                        </td>
-                        <td>{{ (item.allServiceTasks.subTotal).toFixed(2)}} {{item.allServiceTasks.currency}}</td>
+                                 {{item.entityStatus}}</span>
+                           </td>
+                           <td>{{ (item.allServiceTasks.subTotal).toFixed(2)}} {{item.allServiceTasks.currency}}</td>
 
-                     </tr>
+                        </tr>
 
-                  </tbody>
-               </table>
-            </section>
-            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-               <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
-                  More..</button>
+                     </tbody>
+                  </table>
+               </section>
+               <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                  <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                     More..</button>
+               </div>
             </div>
-            <!-- </div> -->
          </div>
 
       </section>
