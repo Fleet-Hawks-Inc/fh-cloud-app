@@ -6,16 +6,22 @@
 
 
                <div class="col-md-2 col-lg-2 pr-0">
-                  <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched"
-                     name="driverName" placeholder="Search by contact" type="text">
+                  <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
+                     placeholder="Search By vehicle">
+                     <ng-option *ngFor="let data of empName | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option>
+                  </ng-select>
                </div>
 
                <div class="col-md-2 col-lg-2 pr-0">
-                  <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched"
-                     name="driverName" placeholder="Search by renewal type" type="text">
+                  <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
+                     placeholder="Search By vehicle">
+                     <ng-option *ngFor="let data of tasks | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option>
+                  </ng-select>
                </div>
 
-               <div class="col-md-2 col-lg-2 pr-0">
+               <!-- <div class="col-md-2 col-lg-2 pr-0">
                   <div class="input-group input-group-sm mb-3">
                      <select data-plugin-selectTwo class="form-control populate">
                         <optgroup label="">
@@ -26,21 +32,20 @@
                         </optgroup>
                      </select>
                   </div>
-               </div>
+               </div> -->
 
                <div class="col-md-2 col-lg-2">
-                  <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
-                  <button class="btn btn-sm btn-success" type="submit">Reset</button>
+                  <button type="button" (click)="searchData()" class="btn btn-sm btn-success mr-3">Search</button>
+                  <button class="btn btn-sm btn-success" type="button" (click)="resetData()">Reset</button>
                </div>
 
-               <div class="col-md-4 col-lg-4 text-right pr-1">
+               <div class="col-md-6 col-lg-6 text-right pr-1">
                   <div class="btn-group flex-wrap ml-2">
                      <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                         aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
                      <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">CSV</a>
-                        <a class="dropdown-item text-1" href="">PDF</a>
+                        <a class="dropdown-item text-1" href="" (click)=" generateCSV()">CSV</a>
                      </div>
                   </div>
                </div>
@@ -66,7 +71,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Contacts</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">67</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.total}}</h3>
                      </div>
                   </div>
                </div>
@@ -74,7 +79,7 @@
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Contact Renewal</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">6</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.taskID}}</h3>
                      </div>
                   </div>
                </div>
@@ -87,7 +92,6 @@
                               <thead>
                                  <tr class="back-color-gray">
                                     <th>Contact</th>
-                                    <th>Employee ID</th>
                                     <th>Contact Renewal Type</th>
                                     <th>Send Reminder</th>
                                     <th>Expiration Date</th>
@@ -99,17 +103,18 @@
                                     <td colspan="6">{{dataMessage}}</td>
                                  </tr>
                                  <tr *ngFor="let item of empData">
-                                    <td>{{item.firstName}}</td>
-                                    <td>{{item.employeeID}}</td>
-                                    <td>--</td>
-                                    <td>--</td>
-                                    <td>{{item.dueDate}}</td>
-                                    <td>{{item.workEmail}}</td>
+                                    <td>{{empName[item.entityID]}}</td>
+                                    <td>{{tasks[item.tasks.taskID]}}</td>
+                                    <td>{{item.tasks.time}}
+                                       {{item.tasks.timeUnit}}(s)</td>
+                                    <td>{{item.tasks.dueDate | date:'yyyy/MM/dd'}}</td>
+                                    <td>{{item.subscribers}}</td>
                               </tbody>
                            </table>
                         </section>
                      </div>
                   </div>
+
                </div>
             </div>
          </div>
