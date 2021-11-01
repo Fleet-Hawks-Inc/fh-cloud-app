@@ -32,6 +32,8 @@ export class AddSalesReceiptsComponent implements OnInit {
     invoiceIds: [],
     invoiceData: []
   }
+
+  editDisabled = false;
   customers = [];
   customerInvoices = [];
 
