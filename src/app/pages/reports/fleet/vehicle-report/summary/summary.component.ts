@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {  Router } from '@angular/router';
+import { timeStamp } from 'console';
 import { ApiService } from 'src/app/services';
 import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
 import { result } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import * as _ from 'lodash';
 @Component({
     selector: 'app-summary',
     templateUrl: './summary.component.html',
@@ -15,6 +18,7 @@ export class SummaryComponent implements OnInit {
     dataMessage: string = Constants.FETCHING_DATA;
     vehicles: any = [];
     vehicleIdentification = '';
+    suggestedVehicles = [];
     vehicleManufacturersList: any = {};
     vehicleModelList: any = {};
     modelID: any = {};
@@ -23,96 +27,103 @@ export class SummaryComponent implements OnInit {
     vehicleType: any = {};
     inActiveVehiclesCount = 0;
     activeVehiclesCount = 0;
-    currentStatus = '';
+    currentStatus = null;
     totalVehicleCount = 0;
     lastItemSK = '';
     loaded = false;
+    vehiclesCount = {
+    total: '',
+    active: '',
+    inactive: '',
+  };
+    vehicleID: any;
 
-    constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService) { }
+    constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
     ngOnInit() {
         this.getVehiclePage();
-        this.totalVehicle();
-    }
-    fetchVehiclesReport() {
-        this.activeVehiclesCount = 0;
-        this.inActiveVehiclesCount = 0;
-        this.apiService.getData(`vehicles/fetch/summary/list?name=${this.vehicleIdentification}&currentStatus=${this.currentStatus}`).subscribe((result: any) => {
-            for (let i = 0; i < result.Items.length; i++) {
-                const vehicles = result.Items[i];
-            }
-
-            this.vehicles = result.Items;
-        })
+        this.fetchVehiclesCount();
     }
     async getVehiclePage(refresh?: boolean) {
         if (refresh === true) {
-            this.lastItemSK = '',
+            this.lastItemSK = '';
                 this.vehicles = []
         }
         if (this.lastItemSK !== 'end') {
-            const result = await this.apiService.getData(`vehicles/report/summary?lastKey=${this.lastItemSK}`).toPromise();
-            this.dataMessage = Constants.FETCHING_DATA;
+            const result = await this.apiService.getData(`vehicles/fetch/summary/list?name=${this.vehicleIdentification}&currentStatus=${this.currentStatus}&lastKey=${this.lastItemSK}`).toPromise();
+           
             if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND;
+                this.dataMessage = Constants.NO_RECORDS_FOUND
             }
+            this.suggestedVehicles = [];
             if (result.Items.length > 0) {
 
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
                 }
                 else {
-                    this.lastItemSK = 'end'
+                    this.lastItemSK = 'end';
                 }
                 this.vehicles = this.vehicles.concat(result.Items);
                 this.loaded = true;
             }
         }
     }
+    fetchVehiclesCount() {
+    this.apiService.getData('vehicles/fetch/vehicleCount').subscribe((result: any) => {
+      this.vehiclesCount = result;
+    })
+  }
     onScroll() {
         if (this.loaded) {
             this.getVehiclePage();
         }
         this.loaded = false;
     }
-    totalVehicle() {
-        this.apiService.getData(`vehicles`).subscribe((result: any) => {
-            if (this.totalVehicleCount == 0)
-                this.dataMessage = Constants.NO_RECORDS_FOUND;
-            result.Items.forEach(element => {
-                if (element.currentStatus == "active")
-                    this.activeVehiclesCount++;
-                if (element.currentStatus == "inActive")
-                    this.inActiveVehiclesCount++;
-                this.totalVehicleCount = result.Count;
-            })
-        })
+    getSuggestions = _.debounce(function (value) {
+
+    value = value.toLowerCase();
+    if(value != '') {
+      this.apiService
+      .getData(`vehicles/suggestion/${value}`)
+      .subscribe((result) => {
+        this.suggestedVehicles = result;
+      });
+    } else {
+      this.suggestedVehicles = []
     }
+  }, 800);
+  
+  setVehicle(vehicleID, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleID = vehicleIdentification;
+    this.suggestedVehicles = [];
+  }
     searchVehicle() {
-        if (this.vehicleIdentification !== '' || this.currentStatus !== '') {
+        if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
             this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
             this.currentStatus = this.currentStatus;
             this.vehicles = [];
+            this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
-            this.fetchVehiclesReport();
-            this.totalVehicle();
+            this.suggestedVehicles = [];
+            this.getVehiclePage();
         } else {
             return false;
         }
     }
     resetVehicle() {
-        if (this.vehicleIdentification !== '' || this.currentStatus !== '' || this.lastItemSK) {
-            this.vehicleIdentification = '';
-            this.currentStatus = '';
-            this.vehicles = [];
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.fetchVehiclesReport();
-            this.totalVehicle();
-            this.getVehiclePage();
-        }
-        else {
-            return false;
-        }
+       if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
+      this.currentStatus = null;
+      this.vehicles = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.suggestedVehicles = [];
+      this.getVehiclePage();
+    } else {
+      return false;
     }
+  }
     generateVehicleCSV() {
         if (this.vehicles.length > 0) {
             let dataObject = []
@@ -120,11 +131,13 @@ export class SummaryComponent implements OnInit {
             this.vehicles.forEach(element => {
                 let obj = {}
                 obj["Vehicle Name"] = element.vehicleIdentification
-                obj["VIN"] = element.vehicleID
+                obj["VIN#"] = element.VIN
                 obj["Year"] = element.year
                 obj["Make"] = element.manufacturerID
                 obj["Model"] = element.modelID
                 obj["Plate#"] = element.plateNumber
+                obj["Last Drive Time"] = element.vehicle
+                obj["Ownership"] = element.ownership
                 obj["Status"] = element.currentStatus
                 dataObject.push(obj)
             });

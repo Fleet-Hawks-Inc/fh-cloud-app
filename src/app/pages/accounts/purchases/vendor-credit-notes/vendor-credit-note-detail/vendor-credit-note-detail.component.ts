@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AccountService, ApiService } from 'src/app/services';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import Constants from "src/app/pages/fleet/constants";
+import { AccountService, ApiService } from "src/app/services";
 
 @Component({
-  selector: 'app-vendor-credit-note-detail',
-  templateUrl: './vendor-credit-note-detail.component.html',
-  styleUrls: ['./vendor-credit-note-detail.component.css']
+  selector: "app-vendor-credit-note-detail",
+  templateUrl: "./vendor-credit-note-detail.component.html",
+  styleUrls: ["./vendor-credit-note-detail.component.css"],
 })
 export class VendorCreditNoteDetailComponent implements OnInit {
-
+  dataMessage: string = Constants.NO_RECORDS_FOUND;
   creditID: any;
   purOrder: string;
   currency: string;
@@ -20,10 +21,16 @@ export class VendorCreditNoteDetailComponent implements OnInit {
   remarks: string;
   totalAmt: any;
   status: string;
+  transactionLog = [];
+  accountsObjects = [];
 
   vendors = [];
 
-  constructor(public accountService: AccountService, public apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(
+    public accountService: AccountService,
+    public apiService: ApiService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];
@@ -31,29 +38,41 @@ export class VendorCreditNoteDetailComponent implements OnInit {
       this.fetchCredit();
     }
     this.fetchVendors();
+    this.fetchAccountsByIDs();
   }
 
   fetchCredit() {
-    this.accountService.getData(`vendor-credits/detail/${this.creditID}`).subscribe(res => {
-      let result = res[0];
-      this.purOrder = result.purOrder;
-      this.currency = result.currency;
-      this.crRef = result.crRef;
-      this.txnDate = result.txnDate;
-      this.vCrNo = result.vCrNo;
-      this.vendorID = result.vendorID;
-      this.crDetails = result.crDetails;
-      this.remarks = result.remarks;
-      this.status = result.status;
-      this.totalAmt = result.totalAmt;
-    });
+    this.accountService
+      .getData(`vendor-credits/detail/${this.creditID}`)
+      .subscribe((res) => {
+        let result = res[0];
+        this.purOrder = result.purOrder;
+        this.currency = result.currency;
+        this.crRef = result.crRef;
+        this.txnDate = result.txnDate;
+        this.vCrNo = result.vCrNo;
+        this.vendorID = result.vendorID;
+        this.crDetails = result.crDetails;
+        this.remarks = result.remarks;
+        this.status = result.status;
+        this.totalAmt = result.totalAmt;
+        this.transactionLog = result.transactionLog;
+      });
   }
 
   fetchVendors() {
-    this.apiService.getData(`contacts/get/list/vendor`)
+    this.apiService
+      .getData(`contacts/get/list/vendor`)
       .subscribe((result: any) => {
         this.vendors = result;
-      })
+      });
   }
 
+  fetchAccountsByIDs() {
+    this.accountService
+      .getData("chartAc/get/all/list")
+      .subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
+  }
 }
