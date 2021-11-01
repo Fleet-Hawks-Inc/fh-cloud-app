@@ -51,7 +51,7 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold pt-2">Deposited To</label>
                           <ng-select class="form-control populate" placeholder="Select account"
-                            [(ngModel)]="paymentData.accountID" name="accountID{{ d }}">
+                            [(ngModel)]="paymentData.accountID" name="accountID">
                             <ng-option value="{{ data.actID }}" *ngFor="let data
                             of accounts | async">{{ data.actNo }} -
                               {{ data.actName | titlecase}}</ng-option>
@@ -134,9 +134,8 @@
                                   text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
                             placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
-                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off"
-                            [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" #modeDate="ngModel" required
-                            [disabled]="editDisabled">
+                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" #modeDate="ngModel"
+                            required [disabled]="editDisabled">
                           <div *ngIf="modeDate.invalid
                               && (modeDate.dirty ||
                               modeDate.touched)" class="text-danger">
