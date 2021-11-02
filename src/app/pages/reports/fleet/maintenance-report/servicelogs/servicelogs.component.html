@@ -138,7 +138,10 @@
                            <td>{{vendorsObject[item.vendorID]}}</td>
                            <td><span title="Service Task"
                                  *ngFor="let task of item.allServiceTasks.serviceTaskList;let j = index; let $last = last">
-                                 {{task.taskName? task.taskName : '-'}} </span>
+                                 {{task.taskName? task.taskName : '-'}}
+                                 <span *ngIf="!$last" class="list-format">,
+                                 </span>
+                              </span>
                               <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
                               </span>
                            </td>

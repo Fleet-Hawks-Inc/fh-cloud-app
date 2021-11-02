@@ -18,8 +18,8 @@ export class ServicelogsComponent implements OnInit {
   taskID = null;
   vehiclesObject: any = {};
   assetsObject: any = {};
-  // startDate: '';
-  // endDate: '';
+  startDate: '';
+  endDate: '';
   start = null;
   end = null;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
@@ -69,10 +69,13 @@ export class ServicelogsComponent implements OnInit {
           }
           result['Items'].map((v: any) => {
             v.entityStatus = 'Active';
+            // v.entityStatus = 'outOfService', 'Active;
             if (v.currentStatus === 'outOfService') {
               v.entityStatus = 'Out of service';
             } else if (v.currentStatus === 'active') {
               v.entityStatus = 'Active';
+            } else if (v.currentStatus === 'inactive') {
+              v.entityStatus = 'In-active';
             } else if (v.currentStatus === 'inActive') {
               v.entityStatus = 'In-active';
             } else if (v.currentStatus === 'sold') {
@@ -113,15 +116,30 @@ export class ServicelogsComponent implements OnInit {
   }
   searchFilter() {
     if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-      this.dataMessage = Constants.FETCHING_DATA
-      this.lastItemSK = '';
-      this.allData = []
-      this.fetchSlogsList()
+      if (this.start != null && this.end == null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start == null && this.end != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start > this.end) {
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else {
+        this.dataMessage = Constants.FETCHING_DATA
+        this.lastItemSK = '';
+        this.allData = []
+        this.fetchSlogsList()
+      }
     }
     else {
       return false;
     }
   }
+
+
+
   resetFilter() {
     if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
       this.vehicleID = null;
