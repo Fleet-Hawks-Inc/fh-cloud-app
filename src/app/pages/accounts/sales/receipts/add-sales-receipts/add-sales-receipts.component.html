@@ -15,20 +15,22 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="post" #saleForm="ngForm" id="saleForm">
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
 
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Date
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Date <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span>
                           </label>
                           <input type="text" [(ngModel)]="paymentData.txnDate" name="txnDate" class="form-control"
-                            (click)="tDate.toggle()" ngbDatepicker #tDate="ngbDatepicker" #sOrderDate="ngModel"
+                            (click)="tDate.toggle()" readonly ngbDatepicker #tDate="ngbDatepicker" #sOrderDate="ngModel"
                             required>
                         </div>
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment Currency
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                           </label>
                           <ng-select [clearable]="false" [(ngModel)]="paymentData.currency" name="currency"
                             placeholder="Select currency" #payCur="ngModel" required>
@@ -39,7 +41,8 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer </label>
+                          <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Customer <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span> </label>
                           <ng-select [clearable]="false" [(ngModel)]="paymentData.customerID" name="customerID"
                             class="form-control text-capitalize" placeholder="Select customer" #cusID="ngModel" required
                             (change)="getCustomerInvoices($event)">
@@ -47,11 +50,19 @@
                               {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
+                          <div *ngIf="
+                          cusID.invalid && (cusID.dirty || cusID.touched)
+                            " class="text-danger">
+                            <div *ngIf="cusID.errors.required">
+                              Customer is required.
+                            </div>
+                          </div>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold pt-2">Deposited To</label>
+                          <label class="control-label font-weight-bold pt-2">Deposited To <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select class="form-control populate" placeholder="Select account"
-                            [(ngModel)]="paymentData.accountID" name="accountID">
+                            [(ngModel)]="paymentData.accountID" name="accountID" #deposit="ngModel" required>
                             <ng-option value="{{ data.actID }}" *ngFor="let data
                             of accounts | async">{{ data.actNo }} -
                               {{ data.actName | titlecase}}</ng-option>
@@ -74,11 +85,11 @@
                         <div class="col-lg-5">
                           <label class="control-label font-weight-bold font-bold text-lg-right pt-2">Payment
                             Reference#</label>
-                          <input type="text" [(ngModel)]="paymentData.payRef" name="payRef" class="form-control"
-                            #payRef="ngModel" required>
+                          <input type="text" [(ngModel)]="paymentData.payRef" name="payRef" class="form-control">
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold  labelalign pt-2">Payment Mode</label>
+                          <label class="control-label font-weight-bold  labelalign pt-2">Payment Mode <span
+                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <ng-select [(ngModel)]="paymentData.payMode" name="payMode" placeholder="Select
                                 Payment Mode" (change)="changePaymentMode($event)" #payMode="ngModel" required
                             [disabled]="editDisabled">
@@ -223,8 +234,11 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button type="button" class="btn btn-default" onclick="goBack()">Cancel</button>
-                      <button (click)="addReceipt()" class="btn btn-success">Save</button>
+                      <button type="button" class="btn btn-default mr-2"
+                        routerLink="/accounts/sales/receipts/list">Cancel</button>
+                      <button [disabled]="
+                      !saleForm.form.valid || submitDisabled" (click)="addReceipt()"
+                        class="btn btn-success">Save</button>
                     </div>
                   </div>
                 </form>
