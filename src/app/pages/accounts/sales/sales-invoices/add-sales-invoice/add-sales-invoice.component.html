@@ -7,11 +7,8 @@
             Add Sales Invoice
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
-            <a
-              routerLink="/accounts/sales/invoices/list"
-              class="btn btn-default btn-sm"
-              ><i class="fas fa-list"></i> All Sales Invoices</a
-            >
+            <a routerLink="/accounts/sales/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+              Sales Invoices</a>
           </div>
         </div>
       </header>
@@ -20,140 +17,79 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="get">
+                <form class="form-horizontal form-bordered" method="post" #saleForm="ngForm" id="saleForm">
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Sales Invoice Date
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <input
-                            type="text"
-                            [(ngModel)]="saleData.txnDate"
-                            name="txnDate"
-                            class="form-control"
-                            (click)="tDate.toggle()"
-                            ngbDatepicker
-                            #tDate="ngbDatepicker"
-                            #sOrderDate="ngModel"
-                            required
-                          />
+                            ">Sales Invoice Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="saleData.txnDate" name="txnDate" class="form-control"
+                            (click)="tDate.toggle()" ngbDatepicker #tDate="ngbDatepicker" #sOrderDate="ngModel"
+                            required />
                         </div>
                         <div class="col-lg-5">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Payment Currency</label
-                          >
-                          <ng-select
-                            [clearable]="false"
-                            [(ngModel)]="saleData.currency"
-                            name="currency"
-                            placeholder="Select currency"
-                            #payCur="ngModel"
-                            required
-                          >
+                            ">Payment Currency</label>
+                          <ng-select [clearable]="false" [(ngModel)]="saleData.currency" name="currency"
+                            placeholder="Select currency" #payCur="ngModel" required>
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
-                          <div
-                            *ngIf="
+                          <div *ngIf="
                               payCur.invalid && (payCur.dirty || payCur.touched)
-                            "
-                            class="text-danger"
-                          >
+                            " class="text-danger">
                             <div *ngIf="payCur.errors.required">
                               Payment Currency is required.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-10">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Customer
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <ng-select
-                            [clearable]="false"
-                            [(ngModel)]="saleData.customerID"
-                            name="customerID"
-                            class="form-control text-capitalize"
-                            placeholder="Select customer"
-                            #cusID="ngModel"
-                            required
-                            (change)="getCustomerOrders($event)"
-                          >
-                            <ng-option
-                              *ngFor="let customer of customers"
-                              value="{{ customer.contactID }}"
-                            >
+                            ">Customer
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [clearable]="false" [(ngModel)]="saleData.customerID" name="customerID"
+                            class="form-control text-capitalize" placeholder="Select customer" #cusID="ngModel" required
+                            (change)="getCustomerOrders($event)">
+                            <ng-option *ngFor="let customer of customers" value="{{ customer.contactID }}">
                               {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
                         </div>
                         <div class="col-2 mar-top-37 p-0">
-                          <a
-                            class="btn btn-success btn-sm text-light"
-                            (click)="openModal('form')"
-                            ><i class="fas fa-plus"></i>
+                          <a class="btn btn-success btn-sm text-light" (click)="openModal('form')"><i
+                              class="fas fa-plus"></i>
                           </a>
-                          <a
-                            data-toggle="modal"
-                            (click)="fetchCustomer()"
-                            href="javascript:;"
-                            class="modal-with-form btn btn-sm btn-success ml-2"
-                          >
+                          <a data-toggle="modal" (click)="fetchCustomer()" href="javascript:;"
+                            class="modal-with-form btn btn-sm btn-success ml-2">
                             <em class="fas fa-sync"></em>
                           </a>
                         </div>
                         <div class="col-lg-10">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Sales Order#
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <ng-select
-                            [clearable]="false"
-                            [(ngModel)]="saleData.sOrderNo"
-                            name="sOrderNo"
-                            class="form-control text-capitalize"
-                            placeholder="Select sale order"
-                            #sONo="ngModel"
-                            required
-                            (change)="getOrderDetail($event)"
-                          >
-                            <ng-option
-                              *ngFor="let item of salesOrder"
-                              value="{{ item.saleID }}"
-                            >
+                            ">Sales Order#
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [clearable]="false" [(ngModel)]="saleData.sOrderNo" name="sOrderNo"
+                            class="form-control text-capitalize" placeholder="Select sale order" #sONo="ngModel"
+                            required (change)="getOrderDetail($event)">
+                            <ng-option *ngFor="let item of salesOrder" value="{{ item.saleID }}">
                               {{ item.sOrNo }}
                             </ng-option>
                           </ng-select>
@@ -251,89 +187,49 @@
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-10">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                          >
+                            ">
                             Reference#
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <input
-                            type="text"
-                            [(ngModel)]="saleData.sRef"
-                            name="sRef"
-                            class="form-control"
-                            placeholder="Enter Unique Reference Number"
-                          />
+                          </label>
+                          <input type="text" [(ngModel)]="saleData.sRef" name="sRef" class="form-control"
+                            placeholder="Enter Unique Reference Number" />
                         </div>
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-5">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Due Date
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <input
-                            type="text"
-                            [(ngModel)]="saleData.dueDate"
-                            name="dueDate"
-                            class="form-control"
-                            (click)="dDate.toggle()"
-                            ngbDatepicker
-                            #dDate="ngbDatepicker"
-                            #sOrderDate="ngModel"
-                            required
-                          />
+                            ">Due Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
+                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
+                            required />
                         </div>
                         <div class="col-lg-5">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                            >Payment Terms
-                            <span class="mandfield text-2 ml-1"
-                              ><sup>*</sup></span
-                            ></label
-                          >
-                          <ng-select
-                            [(ngModel)]="saleData.paymentTerm"
-                            name="paymentTerm"
-                            placeholder="Select Payment
-                              Terms"
-                            #paymentTerm="ngModel"
-                            required
-                          >
-                            <ng-option
-                              value="{{ data.value }}"
-                              *ngFor="let data of paymentTerms"
-                              >{{ data.name }}</ng-option
-                            >
+                            ">Payment Terms
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <ng-select [(ngModel)]="saleData.paymentTerm" name="paymentTerm" placeholder="Select Payment
+                              Terms" #paymentTerm="ngModel" required>
+                            <ng-option value="{{ data.value }}" *ngFor="let data of paymentTerms">{{ data.name }}
+                            </ng-option>
                           </ng-select>
 
-                          <div
-                            *ngIf="
+                          <div *ngIf="
                               paymentTerm.invalid &&
                               (paymentTerm.dirty || paymentTerm.touched)
-                            "
-                            class="text-danger"
-                          >
+                            " class="text-danger">
                             <div *ngIf="paymentTerm.errors.required">
                               Payment terms is required.
                             </div>
@@ -342,24 +238,15 @@
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
-                          <label
-                            class="
+                          <label class="
                               control-label
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            "
-                          >
-                            Salesperson</label
-                          >
-                          <input
-                            type="text"
-                            [(ngModel)]="saleData.salePerson"
-                            name="salePerson"
-                            disabled
-                            placeholder="Select sale Person"
-                            class="form-control"
-                          />
+                            ">
+                            Salesperson</label>
+                          <input type="text" [(ngModel)]="saleData.salePerson" name="salePerson" disabled
+                            placeholder="Select sale Person" class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -370,25 +257,20 @@
                       <div class="bg-white p-3 text-dark">
                         <div class="form-group row adddriverpl pt-3">
                           <div class="col-lg-10">
-                            <label
-                              class="
+                            <label class="
                                 control-label
                                 font-weight-bold font-weight-bold
                                 text-lg-right text-5
-                              "
-                              >Customer Credits</label
-                            >
+                              ">Customer Credits</label>
                           </div>
                           <div class="col-lg-11">
-                            <table
-                              class="
+                            <table class="
                                 table
                                 table-bordered
                                 table-responsive-lg
                                 table-striped
                                 simple-table
-                              "
-                            >
+                              ">
                               <thead>
                                 <tr class="bgcol2">
                                   <th></th>
@@ -404,25 +286,16 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr
-                                  *ngIf="customerCredits.length === 0"
-                                  class="text-center"
-                                >
+                                <tr *ngIf="customerCredits.length === 0" class="text-center">
                                   <td colspan="10">{{ dataMessage }}</td>
                                 </tr>
-                                <tr
-                                  *ngFor="
+                                <tr *ngFor="
                                     let data of customerCredits;
                                     let i = index
-                                  "
-                                >
+                                  ">
                                   <td>
-                                    <input
-                                      type="checkbox"
-                                      name="stl{{ i }}"
-                                      [(ngModel)]="data.selected"
-                                      (change)="selectedCredits()"
-                                    />
+                                    <input type="checkbox" name="stl{{ i }}" [(ngModel)]="data.selected"
+                                      (change)="selectedCredits()" />
                                   </td>
                                   <td>{{ data.cCrNo }}</td>
                                   <td>
@@ -438,35 +311,24 @@
                                     {{ data.currency }}
                                   </td>
                                   <td>
-                                    -<!-- {{ data.prevPaidAmount | number: "1.2-2" }} -->
+                                    -
+                                    <!-- {{ data.prevPaidAmount | number: "1.2-2" }} -->
                                   </td>
                                   <td>
-                                    <span
-                                      class="
+                                    <span class="
                                         badge badge-dark
                                         p-1
                                         text-uppercase
-                                      "
-                                      >{{ data.status }}</span
-                                    >
+                                      ">{{ data.status }}</span>
                                   </td>
                                   <td class="text-center">
-                                    <input
-                                      type="checkbox"
-                                      [(ngModel)]="data.fullPayment"
-                                      name="advfinal{{ i }}"
-                                      (change)="assignFullPayment(i, data)"
-                                    />
+                                    <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{ i }}"
+                                      (change)="assignFullPayment(i, data)" />
                                   </td>
                                   <td>
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      [(ngModel)]="data.paidAmount"
-                                      (input)="calculateFinalTotal()"
-                                      name="advPaidAmount{{ i }}"
-                                      [disabled]="data.paidStatus"
-                                    />
+                                    <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
+                                      (input)="calculateFinalTotal()" name="advPaidAmount{{ i }}"
+                                      [disabled]="data.paidStatus" />
                                     <label id="stlErr{{ i }}" class="error">
                                       <!-- {{data.errText}} -->
                                     </label>
@@ -494,75 +356,52 @@
                           <thead>
                             <tr>
                               <th class="border" style="width: 250px">
-                                Commodity
+                                Commodity <span class="mandfield
+                                text-2 ml-1"><sup>*</sup></span>
                               </th>
                               <th class="border" style="width: 250px">
                                 Description
                               </th>
                               <th class="border" style="width: 250px">
-                                Quantity
+                                Quantity <span class="mandfield
+                                text-2 ml-1"><sup>*</sup></span>
                               </th>
                               <th class="border" style="width: 250px">Rate</th>
                               <th class="border" style="width: 180px">
-                                Amount
+                                Amount <span class="mandfield
+                                text-2 ml-1"><sup>*</sup></span>
                               </th>
                               <th class="border" style="width: 300px">
-                                Account
+                                Account <span class="mandfield
+                                text-2 ml-1"><sup>*</sup></span>
                               </th>
                               <th class="border" width="5%">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr
-                              *ngFor="
+                            <tr *ngFor="
                                 let dt of saleData.sOrderDetails;
                                 let d = index
-                              "
-                            >
+                              ">
                               <td class="border">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Enter commodity"
-                                  [(ngModel)]="dt.commodity"
-                                  name="commodity{{ d }}"
-                                />
+                                <input type="text" class="form-control" placeholder="Enter commodity"
+                                  [(ngModel)]="dt.commodity" name="commodity{{ d }}" />
                               </td>
                               <td class="border">
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  placeholder="Description"
-                                  [(ngModel)]="dt.desc"
-                                  name="desc{{ d }}"
-                                />
+                                <input type="text" class="form-control" placeholder="Description" [(ngModel)]="dt.desc"
+                                  name="desc{{ d }}" />
                               </td>
                               <td class="border">
                                 <div class="row">
                                   <div class="col-lg-6 pr-1">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Enter commodity/service"
-                                      [(ngModel)]="dt.qty"
-                                      (change)="calculateAmount(d)"
-                                      name="qty{{ d }}"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Enter commodity/service"
+                                      [(ngModel)]="dt.qty" (change)="calculateAmount(d)" name="qty{{ d }}" />
                                   </div>
                                   <div class="col-lg-6 pl-1">
-                                    <ng-select
-                                      [clearable]="false"
-                                      class="form-control populate"
-                                      placeholder="unit type"
-                                      [(ngModel)]="dt.qtyUnit"
-                                      (change)="changeUnit($event, d)"
-                                      name="qtyUnit{{ d }}"
-                                    >
-                                      <ng-option
-                                        *ngFor="let unit of units"
-                                        value="{{ unit.value }}"
-                                        >{{ unit.name }}</ng-option
-                                      >
+                                    <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
+                                      [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event, d)" name="qtyUnit{{ d }}">
+                                      <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name }}
+                                      </ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
@@ -570,29 +409,14 @@
                               <td class="border">
                                 <div class="row">
                                   <div class="col-lg-6 pr-1">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="Enter rate"
-                                      [(ngModel)]="dt.rate"
-                                      name="rate{{ d }}"
-                                      (change)="calculateAmount(d)"
-                                    />
+                                    <input type="text" class="form-control" placeholder="Enter rate"
+                                      [(ngModel)]="dt.rate" name="rate{{ d }}" (change)="calculateAmount(d)" />
                                   </div>
                                   <div class="col-lg-6 pl-1">
-                                    <ng-select
-                                      [clearable]="false"
-                                      class="form-control populate"
-                                      placeholder="unit type"
-                                      [(ngModel)]="dt.rateUnit"
-                                      (change)="changeUnit($event, d)"
-                                      name="rateUnit{{ d }}"
-                                    >
-                                      <ng-option
-                                        *ngFor="let unit of units"
-                                        value="{{ unit.value }}"
-                                        >{{ unit.name }}</ng-option
-                                      >
+                                    <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
+                                      [(ngModel)]="dt.rateUnit" (change)="changeUnit($event, d)" name="rateUnit{{ d }}">
+                                      <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name }}
+                                      </ng-option>
                                     </ng-select>
                                   </div>
                                 </div>
@@ -600,67 +424,42 @@
                               <td class="border">
                                 <div class="row">
                                   <div class="col-lg-12">
-                                    <input
-                                      type="text"
-                                      disabled
-                                      placeholder="Enter Amount"
-                                      [(ngModel)]="dt.amount"
-                                      name="amount{{ d }}"
-                                      class="form-control"
-                                    />
+                                    <input type="text" disabled placeholder="Enter Amount" [(ngModel)]="dt.amount"
+                                      name="amount{{ d }}" class="form-control" />
                                   </div>
                                 </div>
                               </td>
                               <td class="border">
-                                <ng-select
-                                  class="form-control populate"
-                                  placeholder="Select account"
-                                  [(ngModel)]="dt.accountID"
-                                  name="accountID{{ d }}"
-                                >
-                                  <ng-option
-                                    *ngFor="let act of accounts"
-                                    value="{{ act.actID }}"
-                                    >{{ act.actNo }} -
-                                    {{ act.actName | titlecase }}</ng-option
-                                  >
+                                <ng-select class="form-control populate" placeholder="Select account"
+                                  [(ngModel)]="dt.accountID" name="accountID{{ d }}">
+                                  <ng-option *ngFor="let act of accounts" value="{{ act.actID }}">{{ act.actNo }} -
+                                    {{ act.actName | titlecase }}</ng-option>
                                 </ng-select>
                               </td>
                               <td class="border text-center">
-                                <button
-                                  [disabled]="
+                                <button [disabled]="
                                     saleData.sOrderDetails.length === 1
-                                  "
-                                  type="button"
-                                  (click)="deleteDetail(d)"
-                                  class="btn btn-success btn-sm"
-                                >
+                                  " type="button" (click)="deleteDetail(d)" class="btn btn-success btn-sm">
                                   <i class="fas fa-minus"></i>
                                 </button>
                               </td>
                             </tr>
                             <tr>
                               <td colspan="4" class="border-0">
-                                <a
-                                  href="javascript:;"
-                                  (click)="addDetails()"
-                                  class="btn btn-success btn-sm"
-                                  ><i class="fas fa-plus"></i> Add Another
-                                  Line</a
-                                >
+                                <a href="javascript:;" (click)="addDetails()" class="btn btn-success btn-sm"><i
+                                    class="fas fa-plus"></i> Add Another
+                                  Line</a>
                               </td>
                               <td class="border-0">
-                                <span class="font-weight-semibold mr-1"
-                                  >Total: </span
-                                ><span class="pull-right">
+                                <span class="font-weight-semibold mr-1">Total: </span><span class="pull-right">
                                   {{
-                                    saleData.total.detailTotal
-                                      ? (saleData.total.detailTotal
-                                        | number: "1.2-2")
-                                      : 0.0
+                                  saleData.total.detailTotal
+                                  ? (saleData.total.detailTotal
+                                  | number: "1.2-2")
+                                  : 0.0
                                   }}
                                   {{
-                                    saleData.currency ? saleData.currency : ""
+                                  saleData.currency ? saleData.currency : ""
                                   }}
                                 </span>
                               </td>
@@ -677,124 +476,84 @@
                                 <div class="row mt-3">
                                   <div class="col-lg-5">
                                     <div class="col-lg-12 pl-0">
-                                      <label
-                                        class="
+                                      <label class="
                                           control-label
                                           font-weight-bold
                                           text-4 text-dark
-                                        "
-                                        >Remarks</label
-                                      >
-                                      <textarea
-                                        class="form-control h-auto"
-                                        name="remarks"
-                                        [(ngModel)]="saleData.remarks"
-                                        rows="14"
-                                      ></textarea>
+                                        ">Remarks</label>
+                                      <textarea class="form-control h-auto" name="remarks"
+                                        [(ngModel)]="saleData.remarks" rows="14"></textarea>
                                     </div>
                                   </div>
 
                                   <div class="col-lg-5 offset-lg-2">
-                                    <h4
-                                      class="
+                                    <h4 class="
                                         mt-0
                                         text-dark
                                         font-weight-bold
                                         text-4
                                         d-inline
-                                      "
-                                    >
+                                      ">
                                       Charges
                                     </h4>
 
                                     <div class="row mt-3">
                                       <div class="col-lg-6">
-                                        <label
-                                          class="
+                                        <label class="
                                             control-label
                                             font-weight-semibold
                                             text-3 text-dark
-                                          "
-                                          >Accessorial Fee</label
-                                        >
+                                          ">Accessorial Fee</label>
                                       </div>
                                       <div class="col-lg-2"></div>
                                       <div class="col-lg-4 text-right">
-                                        <label
-                                          class="
+                                        <label class="
                                             control-label
                                             font-weight-semibold
                                             text-3 text-dark
-                                          "
-                                          >Fee Total:
+                                          ">Fee Total:
                                         </label>
                                         {{
-                                          saleData.total.feeTotal
-                                            | number: "1.2-2"
+                                        saleData.total.feeTotal
+                                        | number: "1.2-2"
                                         }}
                                       </div>
                                     </div>
 
-                                    <div
-                                      class="row mt-3"
-                                      *ngFor="
+                                    <div class="row mt-3" *ngFor="
                                         let accAdd of saleData.charges.accFee;
                                         let aId = index
-                                      "
-                                    >
+                                      ">
                                       <div class="col-lg-6">
                                         <div class="row">
                                           <div class="col-lg-10 pr-0">
-                                            <input
-                                              type="text"
-                                              name="addCH{{ aId }}"
-                                              [(ngModel)]="accAdd.name"
-                                              class="form-control"
-                                              placeholder="Enter name"
-                                            />
+                                            <input type="text" name="addCH{{ aId }}" [(ngModel)]="accAdd.name"
+                                              class="form-control" placeholder="Enter name" />
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-3">
                                         <div class="row">
                                           <div class="col-lg-12 pr-0">
-                                            <input
-                                              type="text"
-                                              name="addamount{{ aId }}"
-                                              [(ngModel)]="accAdd.amount"
-                                              class="form-control"
-                                              placeholder="Enter amount"
-                                              (input)="accessorialFeeTotal()"
-                                              pattern="^[0-9]\d*(\.\d+)?$"
-                                              #accFeeam="ngModel"
-                                            />
+                                            <input type="text" name="addamount{{ aId }}" [(ngModel)]="accAdd.amount"
+                                              class="form-control" placeholder="Enter amount"
+                                              (input)="accessorialFeeTotal()" pattern="^[0-9]\d*(\.\d+)?$"
+                                              #accFeeam="ngModel" />
 
-                                            <div
-                                              *ngIf="accFeeam.errors?.pattern"
-                                              class="text-danger"
-                                            >
+                                            <div *ngIf="accFeeam.errors?.pattern" class="text-danger">
                                               Please enter valid amount
                                             </div>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-3 text-right">
-                                        <button
-                                          *ngIf="aId === 0"
-                                          type="button"
-                                          (click)="addAccessorialArr('fee')"
-                                          class="btn btn-success btn-sm"
-                                        >
+                                        <button *ngIf="aId === 0" type="button" (click)="addAccessorialArr('fee')"
+                                          class="btn btn-success btn-sm">
                                           <i class="fas fa-plus"></i>
                                         </button>
-                                        <button
-                                          *ngIf="aId > 0"
-                                          type="button"
-                                          (click)="
+                                        <button *ngIf="aId > 0" type="button" (click)="
                                             dedAccessorialArr('fee', aId)
-                                          "
-                                          class="btn btn-danger btn-sm"
-                                        >
+                                          " class="btn btn-danger btn-sm">
                                           <i class="fas fa-minus"></i>
                                         </button>
                                       </div>
@@ -802,65 +561,46 @@
 
                                     <div class="row mt-3">
                                       <div class="col-lg-6">
-                                        <label
-                                          class="
+                                        <label class="
                                             control-label
                                             font-weight-semibold
                                             text-3 text-dark
-                                          "
-                                          >Accessorial Deduction</label
-                                        >
+                                          ">Accessorial Deduction</label>
                                       </div>
                                       <div class="col-lg-2"></div>
                                       <div class="col-lg-4 text-right">
-                                        <label
-                                          class="
+                                        <label class="
                                             control-label
                                             font-weight-semibold
                                             text-3 text-dark
-                                          "
-                                          >Deduction Total:
+                                          ">Deduction Total:
                                         </label>
                                         {{
-                                          saleData.total.dedTotal
-                                            | number: "1.2-2"
+                                        saleData.total.dedTotal
+                                        | number: "1.2-2"
                                         }}
                                       </div>
                                     </div>
 
-                                    <div
-                                      class="row mt-3"
-                                      *ngFor="
+                                    <div class="row mt-3" *ngFor="
                                         let accDed of saleData.charges.accDed;
                                         let bId = index
-                                      "
-                                    >
+                                      ">
                                       <div class="col-lg-6">
                                         <div class="row">
                                           <div class="col-lg-10 pr-0">
-                                            <input
-                                              type="text"
-                                              name="dedCH{{ bId }}"
-                                              [(ngModel)]="accDed.name"
-                                              class="form-control"
-                                              placeholder="Enter name"
-                                            />
+                                            <input type="text" name="dedCH{{ bId }}" [(ngModel)]="accDed.name"
+                                              class="form-control" placeholder="Enter name" />
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-3">
                                         <div class="row">
                                           <div class="col-lg-12 pr-0">
-                                            <input
-                                              type="text"
-                                              name="dedamount{{ bId }}"
-                                              [(ngModel)]="accDed.amount"
-                                              class="form-control"
-                                              placeholder="Enter amount"
-                                              (input)="accessorialDedTotal()"
-                                              #dedam="ngModel"
-                                              pattern="^[0-9]\d*(\.\d+)?$"
-                                            />
+                                            <input type="text" name="dedamount{{ bId }}" [(ngModel)]="accDed.amount"
+                                              class="form-control" placeholder="Enter amount"
+                                              (input)="accessorialDedTotal()" #dedam="ngModel"
+                                              pattern="^[0-9]\d*(\.\d+)?$" />
 
                                             <div *ngIf="dedam.errors?.pattern">
                                               Please enter valid amount
@@ -869,159 +609,97 @@
                                         </div>
                                       </div>
                                       <div class="col-lg-3 text-right">
-                                        <button
-                                          *ngIf="bId === 0"
-                                          type="button"
-                                          (click)="addAccessorialArr('ded')"
-                                          class="btn btn-success btn-sm"
-                                        >
+                                        <button *ngIf="bId === 0" type="button" (click)="addAccessorialArr('ded')"
+                                          class="btn btn-success btn-sm">
                                           <i class="fas fa-plus"></i>
                                         </button>
-                                        <button
-                                          *ngIf="bId > 0"
-                                          type="button"
-                                          (click)="
+                                        <button *ngIf="bId > 0" type="button" (click)="
                                             dedAccessorialArr('ded', bId)
-                                          "
-                                          class="btn btn-danger btn-sm"
-                                        >
+                                          " class="btn btn-danger btn-sm">
                                           <i class="fas fa-minus"></i>
                                         </button>
                                       </div>
                                     </div>
                                     <div class="row mt-3 align-items-center">
                                       <div class="col-lg-5 pl-3 mb-2">
-                                        <div
-                                          class="
+                                        <div class="
                                             checkbox-custom checkbox-default
-                                          "
-                                        >
-                                          <input
-                                            [(ngModel)]="saleData.taxExempt"
-                                            name="taxExempt"
-                                            type="checkbox"
-                                            id="ZeroRated"
-                                          />
-                                          <label
-                                            class="
+                                          ">
+                                          <input [(ngModel)]="saleData.taxExempt" name="taxExempt" type="checkbox"
+                                            id="ZeroRated" />
+                                          <label class="
                                               control-label
                                               font-weight-semibold
                                               labelmt
                                               text-3 text-dark
-                                            "
-                                            for="ZeroRated"
-                                            >Tax Exempt</label
-                                          >
+                                            " for="ZeroRated">Tax Exempt</label>
                                         </div>
                                       </div>
-                                      <div
-                                        class="col-lg-7 pl-3 mb-0 text-right"
-                                      >
-                                        <span class="font-weight-semibold mr-5"
-                                          >Sub Total:
+                                      <div class="col-lg-7 pl-3 mb-0 text-right">
+                                        <span class="font-weight-semibold mr-5">Sub Total:
                                         </span>
                                         {{
-                                          saleData.total.subTotal
-                                            ? (saleData.total.subTotal
-                                              | number: "1.2-2")
-                                            : 0.0
+                                        saleData.total.subTotal
+                                        ? (saleData.total.subTotal
+                                        | number: "1.2-2")
+                                        : 0.0
                                         }}
                                       </div>
                                     </div>
-                                    <div
-                                      class="row mt-3"
-                                      *ngIf="!saleData.taxExempt"
-                                    >
+                                    <div class="row mt-3" *ngIf="!saleData.taxExempt">
                                       <div class="col-lg-12">
-                                        <label
-                                          class="
+                                        <label class="
                                             control-label
                                             font-weight-bold
                                             text-3 text-dark
-                                          "
-                                          for="inputDefault"
-                                          >Province/State</label
-                                        >
+                                          " for="inputDefault">Province/State</label>
                                       </div>
                                       <div class="col-lg-9">
-                                        <ng-select
-                                          [(ngModel)]="saleData.stateTaxID"
-                                          name="stateTaxID"
-                                          (change)="stateSelectChange()"
-                                          class="form-control populate"
-                                          [clearable]="false"
-                                        >
-                                          <ng-option
-                                            *ngFor="let stateTax of stateTaxes"
-                                            selected
-                                            value="{{ stateTax.stateTaxID }}"
-                                          >
-                                            {{ stateTax.stateName }}</ng-option
-                                          >
+                                        <ng-select [(ngModel)]="saleData.stateTaxID" name="stateTaxID"
+                                          (change)="stateSelectChange()" class="form-control populate"
+                                          [clearable]="false">
+                                          <ng-option *ngFor="let stateTax of stateTaxes" selected
+                                            value="{{ stateTax.stateTaxID }}">
+                                            {{ stateTax.stateName }}</ng-option>
                                         </ng-select>
                                       </div>
                                     </div>
 
-                                    <div
-                                      class="row"
-                                      *ngIf="!saleData.taxExempt"
-                                    >
+                                    <div class="row" *ngIf="!saleData.taxExempt">
                                       <div class="col-lg-8">
                                         <!-- GST -->
-                                        <div
-                                          class="row mt-3"
-                                          *ngFor="
+                                        <div class="row mt-3" *ngFor="
                                             let taxD of saleData.charges.taxes;
                                             let td = index
-                                          "
-                                        >
+                                          ">
                                           <div class="col-lg-5 pr-0">
-                                            <input
-                                              type="text"
-                                              disabled
-                                              class="form-control"
-                                              [(ngModel)]="taxD.name"
-                                              name="taxName{{ td }}"
-                                            />
+                                            <input type="text" disabled class="form-control" [(ngModel)]="taxD.name"
+                                              name="taxName{{ td }}" />
                                           </div>
 
-                                          <div
-                                            class="col-lg-5 pr-0 input-group"
-                                          >
-                                            <input
-                                              type="text"
-                                              [(ngModel)]="taxD.tax"
-                                              name="taxper{{ td }}"
-                                              class="form-control"
-                                              (input)="taxcalculation(td)"
-                                            /><span class="input-group-append"
-                                              ><span
-                                                class="
+                                          <div class="col-lg-5 pr-0 input-group">
+                                            <input type="text" [(ngModel)]="taxD.tax" name="taxper{{ td }}"
+                                              class="form-control" (input)="taxcalculation(td)" /><span
+                                              class="input-group-append"><span class="
                                                   input-group-text
                                                   pt-0
                                                   pb-0
-                                                "
-                                                >%</span
-                                              ></span
-                                            >
+                                                ">%</span></span>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-4">
-                                        <div
-                                          class="row mt-3 bordtop"
-                                          *ngFor="
+                                        <div class="row mt-3 bordtop" *ngFor="
                                             let taxD of saleData.charges.taxes;
                                             let td = index
-                                          "
-                                        >
+                                          ">
                                           <div class="col-lg-12 pt-1">
                                             <p class="text-right mb-0">
                                               {{
-                                                taxD.amount
-                                                  ? (taxD.amount
-                                                    | number: "1.2-2")
-                                                  : 0.0
+                                              taxD.amount
+                                              ? (taxD.amount
+                                              | number: "1.2-2")
+                                              : 0.0
                                               }}
                                             </p>
                                           </div>
@@ -1030,21 +708,19 @@
                                     </div>
                                     <div class="row align-items-center">
                                       <div class="col-lg-12 pt-1 text-right">
-                                        <span
-                                          class="
+                                        <span class="
                                             text-right
                                             h5
                                             font-weight-semibold
                                             text-4 text-dark
                                             mr-5
-                                          "
-                                        >
+                                          ">
                                           Total Amount
                                         </span>
                                         <span class="text-right m-0">
                                           {{
-                                            saleData.total.finalTotal
-                                              | number: "1.2-2"
+                                          saleData.total.finalTotal
+                                          | number: "1.2-2"
                                           }}
                                         </span>
                                       </div>
@@ -1060,20 +736,14 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button type="button" class="btn btn-default mr-3">
+                      <button type="button" routerLink="/accounts/sales/invoices/list" class="btn btn-default mr-3">
                         Cancel
                       </button>
-                      <a
-                        href="javascript:;"
-                        (click)="addOrder()"
-                        class="btn btn-success"
-                        >Save</a
-                      >
-                      <!-- <a
-                        href="#templateSelectionModal"
-                        class="modal-with-form btn btn-success"
-                        >Save & Send</a
-                      > -->
+                      <button href="javascript:;" [disabled]="
+                      !saleForm.form.valid || submitDisabled" *ngIf="!saleID" (click)="addInvoice()"
+                        class="btn btn-success">Save</button>
+                      <button href="javascript:;" *ngIf="saleID" (click)="updateInvoice()"
+                        class="btn btn-success">Update</button>
                     </div>
                   </div>
                 </form>

@@ -135,9 +135,9 @@ export class AddSalesInvoiceComponent implements OnInit {
       this.fetchSaleInvoice();
     } else {
       this.pageTitle = 'Add';
+      this.fetchAccounts();
     }
-    // this.fetchCustomers();
-    this.fetchAccounts();
+
     this.fetchQuantityUnits();
     this.getCurrentUser();
     this.fetchStateTaxes();
@@ -194,11 +194,16 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.saleData.sOrderDetails[i].amount = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
+    console.log('this.saleData.sOrderDetails', this.saleData.sOrderDetails)
+    if (i != null) {
+      this.saleData.sOrderDetails[i].amount = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
+    }
+
     this.saleData.sOrderDetails.forEach(element => {
       total += element.amount;
     });
     this.saleData.total.detailTotal = parseFloat(total);
+    this.saleData.total.finalTotal = this.saleData.total.detailTotal
   }
 
   async getCustomerOrders(ID: string) {
@@ -256,14 +261,14 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
 
-  fetchAccounts() {
+  async fetchAccounts() {
     this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
       this.accounts = res;
     });
   }
 
   addDetails() {
-    this.saleData.sOrderDetails.push({
+    let obj = {
       commodity: '',
       desc: '',
       qty: 0,
@@ -272,7 +277,20 @@ export class AddSalesInvoiceComponent implements OnInit {
       rateUnit: null,
       amount: 0,
       accountID: null,
-    });
+    };
+    const lastAdded: any = this.saleData.sOrderDetails[this.saleData.sOrderDetails.length - 1];
+    if (
+      lastAdded.commodity !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyUnit !== null &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateUnit !== null &&
+      lastAdded.amount !== 0 &&
+      lastAdded.accountID !== null
+    ) {
+      this.saleData.sOrderDetails.push(obj);
+    }
+
   }
 
   deleteDetail(d: number) {
@@ -448,7 +466,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
 
-  addOrder() {
+  addInvoice() {
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -487,10 +505,44 @@ export class AddSalesInvoiceComponent implements OnInit {
 
 
   async fetchSaleInvoice() {
-    this.accountService.getData(`sales-invoice/detail/${this.saleID}`).subscribe(res => {
-      this.saleData = res[0];
-      this.getCustomerOrders(this.saleData.customerID);
-      // this.getOrderDetail(this.saleData.sOrderNo)
+    let result = await this.accountService.getData(`sales-invoice/detail/${this.saleID}`).toPromise();
+    this.saleData = result[0];
+    await this.getCustomerCredit(this.saleData.customerID);
+    await this.getOrders(this.saleData.customerID);
+    await this.fetchAccounts();
+    this.getOrderDetail(this.saleData.sOrderNo)
+  }
+
+  updateInvoice() {
+    this.accountService.putData(`sales-invoice/update/${this.saleID}`, this.saleData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        this.submitDisabled = false;
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.key] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.submitDisabled = false;
+              // this.throwErrors();
+            },
+            error: () => {
+              // this.submitDisabled = false;
+            },
+            next: () => {
+            },
+          });
+      },
+      next: (res) => {
+        this.submitDisabled = false;
+        this.response = res;
+        this.toaster.success('Invoice updated successfully.');
+        this.cancel();
+      },
     });
   }
 }
