@@ -40,7 +40,6 @@ export class AddSalesOrderComponent implements OnInit {
       accountID: null,
     }],
     charges: {
-      remarks: "",
       accFee: [
         {
           name: "",
@@ -218,7 +217,7 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   addDetails() {
-    this.salesData.sOrderDetails.push({
+    let obj = {
       commodity: '',
       desc: '',
       qty: 0,
@@ -227,12 +226,25 @@ export class AddSalesOrderComponent implements OnInit {
       rateUnit: null,
       amount: 0,
       accountID: null,
-    });
+    };
+    const lastAdded = this.salesData.sOrderDetails[this.salesData.sOrderDetails.length - 1];
+    if (
+      lastAdded.commodity !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyUnit !== null &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateUnit !== null &&
+      lastAdded.amount !== 0 &&
+      lastAdded.accountID !== null
+    ) {
+      this.salesData.sOrderDetails.push(obj);
+    }
   }
 
   deleteDetail(d: number) {
-    // this.total -= this.salesData.sOrderDetails[d].amount;
+    this.salesData.total.detailTotal -= this.salesData.sOrderDetails[d].amount;
     this.salesData.sOrderDetails.splice(d, 1);
+    this.calculateFinalTotal();
   }
 
   addAccessorialArr(type) {
@@ -370,7 +382,7 @@ export class AddSalesOrderComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.salesData.sOrderDetails[i].amount = this.salesData.sOrderDetails[i].qty * this.salesData.sOrderDetails[i].rate;
+    this.salesData.sOrderDetails[i].amount = (this.salesData.sOrderDetails[i].qty ? this.salesData.sOrderDetails[i].qty : 0) * (this.salesData.sOrderDetails[i].rate ? this.salesData.sOrderDetails[i].rate : 0);
     this.salesData.sOrderDetails.forEach(element => {
       total += element.amount;
     });
@@ -379,6 +391,7 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   addSale() {
+    this.submitDisabled = true;
     this.accountService.postData(`sales-orders`, this.salesData).subscribe({
       complete: () => { },
       error: (err: any) => {
