@@ -100,7 +100,10 @@ const routes: Routes = [
   },
   { path: "vendor-payments/list", component: VendorPaymentsListComponent },
   { path: "vendor-payments/add", component: AddVendorPaymentComponent },
-  { path: "vendor-payments/detail", component: VendorPaymentDetailComponent },
+  {
+    path: "vendor-payments/detail/:paymentID",
+    component: VendorPaymentDetailComponent,
+  },
   {
     path: "vendor-credit-notes/list",
     component: VendorCreditNotesListComponent,

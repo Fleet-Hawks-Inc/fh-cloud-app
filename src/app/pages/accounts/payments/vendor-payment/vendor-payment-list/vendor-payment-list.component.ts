@@ -23,8 +23,8 @@ export class VendorPaymentListComponent implements OnInit {
   loaded = false;
   disableSearch = false;
   constructor(private toaster: ToastrService,
-              private accountService: AccountService,
-              private apiService: ApiService) { }
+    private accountService: AccountService,
+    private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.fetchPayments();
@@ -40,9 +40,9 @@ export class VendorPaymentListComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
         searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
-     } else {
-       searchParam = null;
-     }
+      } else {
+        searchParam = null;
+      }
       this.accountService.getData(`vendor-payments/paging?paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         if (result.length === 0) {
           this.disableSearch = false;
@@ -103,21 +103,21 @@ export class VendorPaymentListComponent implements OnInit {
   }
 
   resetFilter() {
-      this.disableSearch = true;
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.filter = {
-          startDate: null,
-          endDate: null,
-          paymentNo: null
-      };
-      this.payments = [];
-      this.lastItemSK = '';
-      this.fetchPayments();
+    this.disableSearch = true;
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.filter = {
+      startDate: null,
+      endDate: null,
+      paymentNo: null
+    };
+    this.payments = [];
+    this.lastItemSK = '';
+    this.fetchPayments();
   }
 
   onScroll() {
     if (this.loaded) {
-    this.fetchPayments();
+      this.fetchPayments();
     }
     this.loaded = false;
   }
@@ -126,9 +126,9 @@ export class VendorPaymentListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-        startDate: null,
-        endDate: null,
-        paymentNo: null
+      startDate: null,
+      endDate: null,
+      paymentNo: null
     };
     this.payments = [];
     this.lastItemSK = '';

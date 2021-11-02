@@ -201,6 +201,7 @@ export class OrderDetailComponent implements OnInit {
   tripData: {
     tripNo: "";
     tripID: "";
+
   };
 
   brokerage = {
@@ -219,6 +220,7 @@ export class OrderDetailComponent implements OnInit {
     address: "",
     phone: "",
   };
+
 
   showModal = false;
 
@@ -455,7 +457,7 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "png" ||
               x.storedName.split(".")[1] === "jpeg"
             ) {
-              console.log('x.storedName.split(".")[1]', x.storedName.split(".")[1])
+
               const obj = {
                 imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
                 docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -475,7 +477,7 @@ export class OrderDetailComponent implements OnInit {
               this.docs.push(obj);
             }
           });
-          console.log('uploadedDocs', this.docs)
+
 
           // this.docs = result.uploadedDocs.map(x => ({
           //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -570,7 +572,9 @@ export class OrderDetailComponent implements OnInit {
         //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
         // }
       },
-      (err) => { }
+
+      (err) => {}
+
     );
   }
 
@@ -723,7 +727,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`zeroRated`] = this.zeroRated;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -740,7 +744,9 @@ export class OrderDetailComponent implements OnInit {
             error: () => {
               this.generateBtnDisabled = false;
             },
-            next: () => { },
+
+            next: () => {},
+
           });
       },
       next: (res) => {
@@ -879,7 +885,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() { }
+  setSrcValue() {}
 
   caretClickShipper(i, j) {
     if (
@@ -930,7 +936,9 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
+
         this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
+
 
         this.orderInvData = result[0];
         this.isInvoice = true;
@@ -969,4 +977,6 @@ export class OrderDetailComponent implements OnInit {
       this.carrierData.address = result.adrs[0].userLoc;
     }
   }
+
 }
+

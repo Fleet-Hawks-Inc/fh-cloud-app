@@ -21,6 +21,7 @@ export class VendorCreditNotesListComponent implements OnInit {
     endDate: "",
     lastItemSK: "",
   };
+  purchaseOrders = [];
 
   loaded = false;
 
@@ -34,6 +35,7 @@ export class VendorCreditNotesListComponent implements OnInit {
     // this.getCredits();
     this.fetchVendors();
     this.fetchCredits();
+    this.fetchPurchaseOrders();
   }
 
   getCredits() {
@@ -51,7 +53,7 @@ export class VendorCreditNotesListComponent implements OnInit {
   }
 
   deleteCredit(creditID: string) {
-    if (confirm("Are you sure you want to void?") === true) {
+    if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
         .deleteData(`vendor-credits/delete/${creditID}`)
         .subscribe((res) => {
@@ -146,5 +148,12 @@ export class VendorCreditNotesListComponent implements OnInit {
     this.lastItemSK = "";
     this.allCredits = [];
     this.fetchCredits();
+  }
+
+  async fetchPurchaseOrders() {
+    let result: any = await this.accountService
+      .getData(`purchase-orders/get/list`)
+      .toPromise();
+    this.purchaseOrders = result;
   }
 }

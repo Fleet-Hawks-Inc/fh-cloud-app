@@ -2,6 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ToastrService } from "ngx-toastr";
+import Constants from "src/app/pages/fleet/constants";
 
 @Component({
   selector: "app-bill-details",
@@ -9,7 +12,9 @@ import { ApiService } from "src/app/services/api.service";
   styleUrls: ["./bill-details.component.css"],
 })
 export class BillDetailsComponent implements OnInit {
+  noRecord: string = Constants.NO_RECORDS_FOUND;
   orderData = {
+    attachments: [],
     billNo: "",
     txnDate: null,
     refNo: "",
@@ -83,11 +88,16 @@ export class BillDetailsComponent implements OnInit {
   billID = "";
   vendorName = "";
   puchaseOrdNo = "";
+  documentSlides = [];
+  pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
+  Asseturl = this.apiService.AssetUrl;
 
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private domSanitizer: DomSanitizer,
+    private toaster: ToastrService
   ) {}
 
   async ngOnInit() {
@@ -103,7 +113,22 @@ export class BillDetailsComponent implements OnInit {
       .getData(`bills/details/${this.billID}`)
       .toPromise();
     this.orderData = result[0];
+
+    if (
+      result[0].attachments != undefined &&
+      result[0].attachments.length > 0
+    ) {
+      result[0].attachments.map((x) => {
+        let obj = {
+          name: x.displayname,
+          bucketName: x.actualname,
+          path: `${this.Asseturl}/${result[0].pk}/${x.actualname}`,
+        };
+        this.documentSlides.push(obj);
+      });
+    }
     this.orderData.paymentTerm = this.orderData.paymentTerm.replace("_", " ");
+    this.orderData.status = this.orderData.status.replace("_", " ");
   }
 
   async purchaseOrderDetail() {
@@ -143,5 +168,28 @@ export class BillDetailsComponent implements OnInit {
         });
       });
     }
+  }
+
+  setPDFSrc(val) {
+    let pieces = val.split(/[\s.]+/);
+    let ext = pieces[pieces.length - 1];
+    this.pdfSrc = "";
+    if (ext == "doc" || ext == "docx" || ext == "xlsx") {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(
+        "https://docs.google.com/viewer?url=" + val + "&embedded=true"
+      );
+    } else {
+      this.pdfSrc = this.domSanitizer.bypassSecurityTrustResourceUrl(val);
+    }
+  }
+
+  deleteDocument(name: string, index: number) {
+    console.log("name", name);
+    this.accountService
+      .deleteData(`bills/uploadDelete/${this.billID}/${name}`)
+      .subscribe((result: any) => {
+        this.documentSlides.splice(index, 1);
+        this.toaster.success("Attachment deleted successfully.");
+      });
   }
 }

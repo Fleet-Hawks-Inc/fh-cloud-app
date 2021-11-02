@@ -127,6 +127,7 @@ export class OrdersListComponent implements OnInit {
   emailData = {
     emails: [],
     confirmEmail: false,
+    instructions: ''
   };
 
   confirmEmails = [];
@@ -571,11 +572,13 @@ export class OrdersListComponent implements OnInit {
       emails: [],
       confirm: false,
       customerID: this.newCustomerID,
+      instructions: ''
     };
     this.emailData.emails.forEach((elem) => {
       newData.emails.push(elem.label);
     });
     newData.confirm = this.emailData.confirmEmail;
+    newData.instructions = this.emailData.instructions;
     this.apiService
       .getData(
         `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
