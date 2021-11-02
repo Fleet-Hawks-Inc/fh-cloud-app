@@ -5,6 +5,7 @@ import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
 import * as moment from 'moment';
 import { ToastrService } from "ngx-toastr";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-summary',
@@ -26,7 +27,7 @@ export class SummaryComponent implements OnInit {
   lastItemSK = '';
   loaded = false;
 
-
+  suggestedAssets = [];
   constructor(private apiService: ApiService, private toastr: ToastrService) {
 
   }
@@ -35,12 +36,12 @@ export class SummaryComponent implements OnInit {
     this.fetchAssetsList();
   }
 
-
   fetchAssetCount() {
     this.apiService.getData('assets/fetch/assetCount').subscribe((result: any) => {
       this.assetsCount = result;
     })
   }
+
   onScroll() {
     if (this.loaded) {
       this.fetchAssetsList();
@@ -48,13 +49,34 @@ export class SummaryComponent implements OnInit {
     this.loaded = false;
   }
 
+  getSuggestions = _.debounce(function (value) {
+    value = value.toLowerCase();
+    if (value != '') {
+      this.apiService
+        .getData(`assets/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedAssets = result;
+        });
+    } else {
+      this.suggestedAssets = [];
+    }
+  }, 800)
+
+  setAsset(assetID, assetIdentification) {
+    this.assetIdentification = assetIdentification;
+    this.assetID = assetIdentification;
+    this.suggestedAssets = [];
+  }
+
   fetchAssetsList() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`assets/fetch/assetReport?asset=${this.assetIdentification}&assetType=${this.assetType}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-        this.dataMessage = Constants.FETCHING_DATA
+        this.dataMessage = Constants.FETCHING_DATA;
+        console.log('result', result);
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
+        this.suggestedAssets = [];
         if (result.Items.length > 0) {
 
           if (result.LastEvaluatedKey !== undefined) {
@@ -79,6 +101,7 @@ export class SummaryComponent implements OnInit {
         this.assetID = this.assetIdentification;
       }
       this.lastItemSK = '';
+      this.suggestedAssets = [];
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsList();
@@ -92,6 +115,7 @@ export class SummaryComponent implements OnInit {
       this.assetIdentification = '';
       this.lastItemSK = '';
       this.assetType = null;
+      this.suggestedAssets = [];
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchAssetsList();
