@@ -591,16 +591,21 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.orders = [];
-          this.confirmOrders = [];
-          this.dispatchOrders = [];
-          this.deliveredOrders = [];
-          this.cancelledOrders = [];
-          this.invoicedOrders = [];
-          this.partiallyOrders = [];
-          this.tonuOrders = [];
-          this.lastEvaluatedKey = "";
-          this.fetchAllTypeOrderCount();
+          // this.orders = [];
+          // this.confirmOrders = [];
+          // this.dispatchOrders = [];
+          // this.deliveredOrders = [];
+          // this.cancelledOrders = [];
+          // this.invoicedOrders = [];
+          // this.partiallyOrders = [];
+          // this.tonuOrders = [];
+          // this.lastEvaluatedKey = "";
+          // this.fetchAllTypeOrderCount();
+
+          let getOrder = this.orders[0].filter(elem => elem.orderID == this.newOrderID);
+
+          getOrder[0].orderStatus = 'confirmed';
+
           this.confirmRef.close();
           this.isConfirm = false;
         },
