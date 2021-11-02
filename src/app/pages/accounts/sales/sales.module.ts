@@ -91,7 +91,7 @@ const routes: Routes = [
   { path: 'invoices/detail/:saleID', component: SalesInvoiceDetailComponent },
   { path: 'receipts/list', component: SalesReceiptsListComponent },
   { path: 'receipts/add', component: AddSalesReceiptsComponent },
-  { path: 'receipts/detail', component: SalesReceiptsDetailComponent },
+  { path: 'receipts/detail/:saleID', component: SalesReceiptsDetailComponent },
   { path: 'credit-notes/list', component: CreditNotesListComponent },
   { path: 'credit-notes/add', component: AddCreditNoteComponent },
   { path: 'credit-notes/edit/:creditID', component: AddCreditNoteComponent },

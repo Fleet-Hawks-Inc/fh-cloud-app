@@ -32,7 +32,7 @@ export class SalesInvoiceDetailComponent implements OnInit {
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
-      this.fetchCustomersByIDs()
+      this.fetchCustomersByIDs();
       this.fetchSaleOrder();
     }
   }
