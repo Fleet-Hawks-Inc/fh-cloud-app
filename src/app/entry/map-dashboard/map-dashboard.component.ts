@@ -5,6 +5,7 @@ import { Subject } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ApiService } from "../../services";
 
+
 declare var $: any;
 declare var H: any;
 
@@ -40,8 +41,10 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   lat = -104.618896;
   lng = 50.44521;
   center = { lat: 48.48248695279594, lng: -99.0688673798094 };
-  markerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/location-pin.png' };
+  markerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
+  assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
   markerPositions = [];
+  assetPositions = [];
 
 
   isControlAdded = false;
@@ -57,6 +60,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     await this.getCurrentDriverLocation();
+    await this.getCurrentAssetLocation();
 
 
   }
@@ -65,6 +69,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
    * Get driver location for last 24 hours
    */
   async getCurrentDriverLocation() {
+
     this.apiService.getData('dashboard/drivers/getCurrentDriverLocation').subscribe((data) => {
       if (data) {
         this.markerPositions = [];
@@ -75,10 +80,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             position: { lng: parseFloat(value.lng), lat: parseFloat(value.lat) },
             data: {
               userId: value.userId,
-              time: new Date(value.timeCreated),
+              time: `${new Date(value.timeCreated).toLocaleDateString()} | ${new Date(value.timeCreated).toLocaleTimeString()}`,
               speed: speedVal.toFixed(2),
               driverId: key,
-              altitude: parseInt(value.altitude).toFixed(2)
+              altitude: parseInt(value.altitude).toFixed(2),
+              location: value.location
             }
           });
         }
@@ -91,233 +97,76 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   }
 
-  openInfoWindow(marker: MapMarker, data) {
+  /**
+  * Get driver location for last 24 hours
+  */
+  async getCurrentAssetLocation() {
+    this.apiService.getData('dashboard/assets/getCurrentAssetLocation').subscribe((data) => {
+      if (data) {
+        this.assetPositions = [];
+        for (const asset of data) {
 
-    this.infoDetail = this.prepareInfoTemplate(data);
+          this.assetPositions.push({
+            position: { lng: parseFloat(asset.lng), lat: parseFloat(asset.lat) },
+            data: {
+              assetIdentification: asset.assetIdentification,
+              time: `${new Date(asset.timeCreated).toLocaleDateString()} | ${new Date(asset.timeCreated).toLocaleTimeString()}`,
+              speed: asset.speed,
+              assetId: asset.assetID,
+              altitude: parseInt(asset.altitude).toFixed(2),
+              battery: asset.battery,
+              temp: asset.temp,
+              location: asset.location
+            }
+          });
+        }
+        console.log(this.assetPositions.length)
+
+      } else {
+        // console.log('No data');
+      }
+
+
+    })
+
+  }
+
+  openInfoWindow(marker: MapMarker, data, infoType: string) {
+    switch (infoType) {
+      case 'driver':
+        this.infoDetail = this.prepareDriverInfoTemplate(data);
+        break;
+      case 'asset':
+        this.infoDetail = this.prepareAssetInfoTemplate(data);
+        break;
+      default:
+        throw new Error('Unable to get Marker type info');
+
+    }
+
 
     this.infoWindow.open(marker);
 
   }
 
-  prepareInfoTemplate(data: any) {
-    return `<div style='padding:1px'><b> Driver: ${data.userId}</b><br/>
-     Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> Time : ${data.time}<br/>
-    <a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'>  View details</a> </div>`;
+  prepareDriverInfoTemplate(data: any) {
+    return `<a href='#/fleet/drivers/detail/${data.driverId}' target=_blank'><h4> Driver: ${data.userId}</h4></a> 
+    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
+    Time : ${data.time} <br/><br/>
+    `;
+  }
+  prepareAssetInfoTemplate(data: any) {
+    console.log('data', data);
+    return `<a href='#/fleet/assets/detail/${data.assetID}' target=_blank'><h4> Asset: ${data.assetIdentification}</h4></a>
+    Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
+    Time : ${data.time}<br/> <br/>
+    Temp. : ${data.temp} | Battery : ${data.battery}
+     `;
   }
 
   valuechange() {
     this.visible = !this.visible;
   }
-
-
-  // showDriverData() {
-  //   const mockData = this.getDriverData();
-  //   const geocoder = this.platform.getGeocodingService();
-  //   this.frontEndData = mockData;
-
-  //   mockData.drivers.forEach(async (driver) => {
-  //     const result = await geocoder.reverseGeocode({
-  //       prox: `${driver.location[0]},${driver.location[1]}`,
-  //       mode: "retrieveAddresses",
-  //       maxresults: "1",
-  //     });
-  //     const origin = location.origin;
-  //     const customMarker = origin + "/assets/img/cirlce-stroke.png";
-  //     const customIcon = new H.map.Icon(customMarker, {
-  //       size: { w: 25, h: 25 },
-  //     });
-  //     const markers = new H.map.Marker(
-  //       {
-  //         lat: driver.location[0],
-  //         lng: driver.location[1],
-  //       },
-  //       {
-  //         icon: customIcon,
-  //       }
-  //     );
-  //     // this.map.addObject(markers);
-  //     // const defaultLayers = this.platform.createDefaultLayers();
-  //     // const ui = H.ui.UI.createDefault(this.map, defaultLayers);
-  //     markers.setData(`<h5>${driver.driverName}</h5>
-  //     Load: ${driver.loadCapacity}</br>
-  //     Speed: ${driver.speed}<br>
-  //     Location: ${result.Response.View[0].Result[0].Location.Address.Label}
-  //     `);
-  //     markers.addEventListener(
-  //       "tap",
-  //       (evt) => {
-  //         const bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
-  //           // read custom data
-  //           content: evt.target.getData(),
-  //         });
-
-  //         // show info bubble
-
-  //       },
-  //       false
-  //     );
-  //   });
-  //   // this.HereMap.calculateRoute(['51.06739365305408,-114.08167471488684', '50.469846991997564,-104.61146016696867'])
-  // }
-
-  /** MOCK DATA:  This data will be from service */
-  getDriverData() {
-    const mockData = {
-      drivers: [
-        {
-          driverName: "Luca Steele",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [51.055783, -114.068639],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Maariya Holloway",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [51.052058, -114.071666],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Regina Cole",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [51.042866, -114.098134],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Luisa Leech",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [51.04283, -114.143733],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Karina Kennedy",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [50.86045, -114.036036],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Dru Drake",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "on Time",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1001 tonnes",
-          speed: "50 mile/hr",
-          location: [50.751927, -111.897283],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-        {
-          driverName: "Drain Drake",
-          driverStatus: "ON",
-          drivingCycle: "10D",
-          vehicle: "F 3650",
-          trailer: "2356",
-          scheduleStatus: "Late",
-          dispatchId: "DIS-6140",
-          loadCapacity: "1200 tonnes",
-          speed: "40 mile/hr",
-          location: [50.978391, -110.041988],
-          temprature: {
-            setTemperature: "15",
-            actualTemperature: "14",
-          },
-          referTemprature: {
-            refeer1: "14",
-            refeer2: "15",
-            refeer3: "16",
-          },
-        },
-      ],
-    };
-
-    return mockData;
-  }
-
-
 
   ngAfterViewInit(): void { }
 
