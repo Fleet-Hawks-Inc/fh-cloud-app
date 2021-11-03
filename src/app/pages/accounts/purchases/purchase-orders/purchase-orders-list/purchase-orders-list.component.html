@@ -155,7 +155,8 @@
                                                 mr-1 btn"
                                                 data-toggle="dropdown"
                                                 [disabled]="data.status
-                                                !=='draft'"><i
+                                                !=='draft' && data.status !==
+                                                'issued'"><i
                                                    class="fas fa-ellipsis-v"></i>
                                              </button>
                                              <div class="dropdown-menu"

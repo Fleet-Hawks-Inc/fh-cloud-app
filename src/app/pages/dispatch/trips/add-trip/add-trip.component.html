@@ -376,7 +376,7 @@
                                 *ngFor="let addt of trip.trailerID;
                                 let f= index">
                                 {{ addt ? assetsObjects[addt] : '' }}
-                                <span *ngIf="f> 0">,</span>
+                                <span *ngIf="f<trip.trailerID.length-1">,</span>
                               </span>
                             </td>
                             <td id="labelCell9{{ i }}" class="labelRow{{ i }}">
