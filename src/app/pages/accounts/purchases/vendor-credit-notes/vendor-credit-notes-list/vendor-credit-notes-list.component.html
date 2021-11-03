@@ -79,7 +79,8 @@
                         </tr>
 
                         <tr *ngFor="let item of allCredits">
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{
@@ -88,27 +89,32 @@
                             : "-"
                             }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vCrNo }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.crRef }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ purchaseOrders[item.purOrder] }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vendorID ? vendors[item.vendorID] : "-" }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
 
@@ -119,7 +125,8 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
 
@@ -130,14 +137,15 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
+                          <td class="cursorpoint"
+                            routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             <span class="badge badge-dark p-1 text-uppercase">{{
                               item.status
                               }}</span>
                           </td>
-                          <td>
+                          <td class="cursorpoint">
                             <div class="btn-group flex-wrap">
                               <button type="button" class="m-0 btn p-0" data-toggle="dropdown" aria-expanded="false"
                                 [disabled]="item.payLinked">
