@@ -82,7 +82,8 @@
                               class="back-color-gray font-weight-bold">
                               Purchase Order#
                             </td>
-                            <td width="60%">{{ purOrder ? purOrder : "-" }}</td>
+                            <td width="60%">{{ purOrder ?
+                              purchaseOrders[purOrder] : "-" }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -121,8 +122,9 @@
                             <td>{{ item.amount ? item.amount : "-" }}</td>
                             <td>{{ item.desc ? item.desc : "-" }}</td>
                           </tr>
-                          <tr *ngIf="crDetails?.length === 0">
-                            <td>No Data Found</td>
+                          <tr *ngIf="crDetails?.length === 0"
+                            class="text-center">
+                            <td colspan="5">No Data Found</td>
                           </tr>
                         </tbody>
                       </table>

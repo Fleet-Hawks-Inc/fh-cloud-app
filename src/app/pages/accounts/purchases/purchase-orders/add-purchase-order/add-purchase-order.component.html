@@ -118,6 +118,7 @@
                           name="currency"
                           placeholder="Select currency"
                           #curr="ngModel"
+                          [clearable]="false"
                           required>
                           <ng-option value="CAD">CAD</ng-option>
                           <ng-option value="USD">USD</ng-option>
@@ -564,7 +565,7 @@
                       Cancel
                     </button>
                     <button type="submit" *ngIf="!purchaseID"
-                      (click)="addRecord();"
+                      (click)="checkEmailStat('no');"
                       [disabled]="!purchaseForm.form.valid || submitDisabled"
                       class="btn
                       btn-success mr-2">Save</button>
@@ -574,7 +575,7 @@
                       class="btn
                       btn-success mr-2">Update</button>
                     <button type="button" *ngIf="!purchaseID" class="btn
-                      btn-success mr-2" (click)="addRecord();"
+                      btn-success mr-2" (click)="checkEmailStat('yes');"
                       [disabled]="!purchaseForm.form.valid || submitDisabled">Save
                       &
                       Send</button>

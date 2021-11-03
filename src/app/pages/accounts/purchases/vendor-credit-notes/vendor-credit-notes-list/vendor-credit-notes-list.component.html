@@ -5,14 +5,9 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
             <div class="w-100 mb-3">
-              <ng-select
-                [clearable]="false"
-                [(ngModel)]="filterData.vendorID"
-                name="vendorID"
+              <ng-select [clearable]="false" [(ngModel)]="filterData.vendorID" name="vendorID"
                 placeholder="Search By vendor">
-                <ng-option
-                  *ngFor="let item of vendors | keyvalue"
-                  value="{{ item.key }}">
+                <ng-option *ngFor="let item of vendors | keyvalue" value="{{ item.key }}">
                   {{ item.value }}
                 </ng-option>
               </ng-select>
@@ -26,56 +21,27 @@
                   <i class="fas fa-calendar-alt"></i>
                 </span>
               </span>
-              <input
-                type="text"
-                [(ngModel)]="filterData.startDate"
-                name="startDate"
-                (click)="startDate.toggle()"
-                ngbDatepicker
-                #startDate="ngbDatepicker"
-                class="form-control"
-                placeholder="mm/dd/yyyy"
-                readonly
-                />
-              <span
-                class="input-group-text border-left-0 border-right-0 rounded-0">
+              <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
+                ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+              <span class="input-group-text border-left-0 border-right-0 rounded-0">
                 to
               </span>
-              <input
-                type="text"
-                [(ngModel)]="filterData.endDate"
-                name="endDate"
-                (click)="endDate.toggle()"
-                ngbDatepicker
-                #endDate="ngbDatepicker"
-                class="form-control"
-                placeholder="mm/dd/yyyy"
-                readonly
-                />
+              <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
+                ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
             </div>
           </div>
 
           <div class="col-md-2 col-lg-2">
-            <button
-              type="submit"
-              [disabled]="isSearch"
-              (click)="searchCredits()"
-              class="btn btn-sm btn-success">
+            <button type="submit" [disabled]="isSearch" (click)="searchCredits()" class="btn btn-sm btn-success">
               Search
             </button>
-            <button
-              type="button"
-              class="btn btn-sm btn-success ml-3"
-              [disabled]="isSearch"
-              (click)="resetFilter()">
+            <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch" (click)="resetFilter()">
               Reset
             </button>
           </div>
 
           <div class="col-md-5 col-lg-5 text-right pr-2">
-            <a
-              routerLink="/accounts/purchases/vendor-credit-notes/add"
-              class="btn btn-success btn-sm ml-2"
+            <a routerLink="/accounts/purchases/vendor-credit-notes/add" class="btn btn-success btn-sm ml-2"
               style="color: white"><i class="fas fa-plus"></i> Add Vendor Credit
             </a>
           </div>
@@ -85,17 +51,12 @@
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
-            <div
-              infiniteScroll
-              [infiniteScrollDistance]="1"
-              [infiniteScrollUpDistance]="1"
-              [infiniteScrollThrottle]="5"
+            <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
               (scrolled)="onScroll()">
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <table
-                      class="table table-bordered table-striped
+                    <table class="table table-bordered table-striped
                       mb-0
                       simple-table
                       text-capitalize">
@@ -118,7 +79,7 @@
                         </tr>
 
                         <tr *ngFor="let item of allCredits">
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -128,31 +89,31 @@
                             : "-"
                             }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vCrNo }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.crRef }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ purchaseOrders[item.purOrder] }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
                             {{ item.vendorID ? vendors[item.vendorID] : "-" }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -164,7 +125,7 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -176,7 +137,7 @@
                             }}
                             {{ item.currency }}
                           </td>
-                          <td
+                          <td class="cursorpoint"
                             routerLink="/accounts/purchases/vendor-credit-notes/detail/{{
                             item.creditID
                             }}">
@@ -184,33 +145,21 @@
                               item.status
                               }}</span>
                           </td>
-                          <td>
+                          <td class="cursorpoint">
                             <div class="btn-group flex-wrap">
-                              <button
-                                type="button"
-                                class="m-0 btn p-0"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
+                              <button type="button" class="m-0 btn p-0" data-toggle="dropdown" aria-expanded="false"
                                 [disabled]="item.payLinked">
                                 <i class="fas fa-ellipsis-v"></i>
                               </button>
-                              <div
-                                class="dropdown-menu"
-                                role="menu"
-                                x-placement="bottom-start"
-                                style="position: absolute;
+                              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute;
                                 will-change: transform;
                                 top: 0px;
                                 left: 0px;
                                 transform: translate3d(0px, 42px, 0px);">
-                                <a
-                                  routerLink="/accounts/purchases/vendor-credit-notes/edit/{{
+                                <a routerLink="/accounts/purchases/vendor-credit-notes/edit/{{
                                   item.creditID
-                                  }}"
-                                  class="dropdown-item text-1">Edit</a>
-                                <a
-                                  (click)="deleteCredit(item.creditID)"
-                                  class="dropdown-item text-1">Delete</a>
+                                  }}" class="dropdown-item text-1">Edit</a>
+                                <a (click)="deleteCredit(item.creditID)" class="dropdown-item text-1">Delete</a>
                               </div>
                             </div>
                           </td>
@@ -218,13 +167,8 @@
                       </tbody>
                     </table>
                   </div>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastItemSK !== 'end' && allCredits.length !== 0">
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm text-light"
-                      (click)="onScroll()">
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allCredits.length !== 0">
+                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
                       Load More..
                     </button>
                   </div>
