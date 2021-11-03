@@ -26,12 +26,9 @@ export class ServicelogsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   dataMessage: string = Constants.FETCHING_DATA;
-  // dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
   asset: any;
   loaded = false;
-  // taskname = ''
-
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -51,38 +48,34 @@ export class ServicelogsComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
-          // this.allData = result.Items;
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+          }
+          else {
+            this.lastItemSK = 'end';
+          }
           if (result.Items.length > 0) {
-
-            if (result.LastEvaluatedKey !== undefined) {
-              this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
-            }
-            else {
-              this.lastItemSK = 'end';
-            }
             this.allData = this.allData.concat(result.Items)
             this.loaded = true;
-          }
-          result['Items'].map((v: any) => {
-            v.entityStatus = 'Active';
-            // v.entityStatus = 'outOfService', 'Active;
-            if (v.currentStatus === 'outOfService') {
-              v.entityStatus = 'Out of service';
-            } else if (v.currentStatus === 'active') {
+            result['Items'].map((v: any) => {
               v.entityStatus = 'Active';
-            } else if (v.currentStatus === 'inactive') {
-              v.entityStatus = 'In-active';
-            } else if (v.currentStatus === 'inActive') {
-              v.entityStatus = 'In-active';
-            } else if (v.currentStatus === 'sold') {
-              v.entityStatus = 'Sold';
-            }
-          })
-
+              if (v.currentStatus === 'outOfService') {
+                v.entityStatus = 'Out of service';
+              } else if (v.currentStatus === 'active') {
+                v.entityStatus = 'Active';
+              } else if (v.currentStatus === 'inactive') {
+                v.entityStatus = 'In-active';
+              } else if (v.currentStatus === 'inActive') {
+                v.entityStatus = 'In-active';
+              } else if (v.currentStatus === 'sold') {
+                v.entityStatus = 'Sold';
+              }
+            })
+          }
         })
     }
   }
@@ -96,7 +89,6 @@ export class ServicelogsComponent implements OnInit {
   fetchTasks() {
     this.apiService.getData('tasks').subscribe((result: any) => {
       this.tasks = result.Items;
-      // this.tasks["tasks"] += this.taskname;
     });
   }
 
@@ -111,7 +103,6 @@ export class ServicelogsComponent implements OnInit {
     this.apiService.getData('assets/get/list')
       .subscribe((result: any) => {
         this.assetsObject = result;
-        // console.log('this assetsObject', this.assetsObject)
       });
   }
   searchFilter() {
@@ -166,7 +157,9 @@ export class ServicelogsComponent implements OnInit {
         for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
           const element2 = element.allServiceTasks.serviceTaskList[i];
           taskName += element2.taskName;
-          console.log('taskName x', taskName)
+          if (i < element.allServiceTasks.serviceTaskList.length - 1) {
+            taskName += ' & ';
+          }
         }
         let obj = {}
         obj["Unit Type"] = element.unitType
