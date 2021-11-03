@@ -127,7 +127,6 @@ export class AddSalesReceiptsComponent implements OnInit {
   }
 
   assignFullPayment(index, data) {
-    console.log('data', data)
     if (data.fullPayment) {
       this.customerInvoices[index].paidAmount = data.balance;
       this.customerInvoices[index].paidStatus = true;
@@ -179,7 +178,6 @@ export class AddSalesReceiptsComponent implements OnInit {
 
   calculateFinalTotal() {
     let total = 0;
-    console.log('this.paymentData.invoiceData', this.paymentData.invoiceData)
     this.paymentData.invoiceData.forEach(elem => {
       total += elem.paidAmount;
     })
@@ -187,9 +185,6 @@ export class AddSalesReceiptsComponent implements OnInit {
   }
 
   addReceipt() {
-
-    console.log('dara', this.paymentData)
-
     this.accountService.postData(`sales-receipts`, this.paymentData).subscribe({
       complete: () => { },
       error: (err: any) => {
