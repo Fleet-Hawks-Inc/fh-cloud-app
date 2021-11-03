@@ -14,7 +14,7 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Search task">
-                     <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
+                     <ng-option *ngFor="let task of serviceList" [value]="task.taskID"> {{task.taskName}}
                      </ng-option>
                   </ng-select>
                </div>
@@ -144,5 +144,8 @@
                      </div>
                   </div>
                </div>
-
             </div>
+         </div>
+      </section>
+   </div>
+</section>

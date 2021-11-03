@@ -82,6 +82,7 @@ export class PurchaseOrdersListComponent implements OnInit {
           error: () => {},
           next: (result: any) => {
             this.dataMessage = Constants.FETCHING_DATA;
+            this.lastItemSK = "";
             this.payOrders = [];
             this.fetchPurchases();
             this.toastr.success("Purchase order deleted successfully");
@@ -97,6 +98,7 @@ export class PurchaseOrdersListComponent implements OnInit {
       this.filter.endDate !== null
     ) {
       this.payOrders = [];
+      this.lastItemSK = "";
       this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchPurchases();
@@ -110,6 +112,7 @@ export class PurchaseOrdersListComponent implements OnInit {
       endDate: null,
     };
     this.payOrders = [];
+    this.lastItemSK = "";
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.fetchPurchases();

@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./contact-renewals.component.css']
 })
 export class ContactRenewalsComponent implements OnInit {
-  empData = [];
+  empData: any = [];
   tasks = []
   // tasks: any = {};
   dataMessage: string = Constants.NO_RECORDS_FOUND;
@@ -22,21 +22,16 @@ export class ContactRenewalsComponent implements OnInit {
   lastItemSK = "";
   loaded = false
   empName = [];
-  count = {
-    total: '',
-    overdue: '',
-    dueSoon: '',
-  };
   status = null;
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchEmpData();
+    // this.fetchEmpData();
     this.fetchallitems();
     this.fectchTasks();
-    this.getRemindersCount();
+    // this.getRemindersCount();
     this.fetchEmployees();
-    this.fetchReminderCount();
+    // this.fetchReminderCount();
   }
 
   fectchTasks() {
@@ -45,48 +40,61 @@ export class ContactRenewalsComponent implements OnInit {
       console.log("tasks", result)
     })
   }
-  fetchReminderCount() {
-    this.apiService.getData(`reminders/fetch/count?type=service`).subscribe((result: any) => {
-      this.count = result;
-    })
-  }
+  // fetchReminderCount() {
+  //   this.apiService.getData(`reminders/fetch/count?type=service`).subscribe((result: any) => {
+  //     this.count = result;
+  //   })
+  // }
   fetchEmployees() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
-      console.log('result', res);
+      console.log('empName', res);
       this.empName = res;
     });
   }
-  fetchEmpData() {
-    this.apiService.getData("reminders").subscribe((result: any) => {
-      this.empData = result.Items;
-      console.log('empData', result)
-    });
-  }
-  getRemindersCount() {
-    this.apiService.getData(`reminders/get/count?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&reminderType=contact`).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-
-        this.fetchallitems();
-      },
-    });
-  }
+  // fetchEmpData() {
+  //   this.apiService.getData("reminders").subscribe((result: any) => {
+  //     this.empData = result.Items;
+  //     console.log('empData', result)
+  //   });
+  // }
+  // getRemindersCount() {
+  //   this.apiService.getData(`reminders/get/count?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&reminderType=contact`).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //     },
+  //   });
+  // }
   fetchallitems() {
-    this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&reminderType=contact&lastKey=${this.lastEvaluatedKey}`)
-      .subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.empData = result[`Items`];
-        console.log(' this.empData', this.empData);
-        if (this.entityID != null || this.searchServiceTask != null) {
-        }
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
-        }
-      },
-      );
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=contact`)
+        .subscribe((result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA
+          if (result.Items.length === 0) {
+
+            this.dataMessage = Constants.NO_RECORDS_FOUND
+          }
+          if (result.Items.length > 0) {
+
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
+            }
+            else {
+              this.lastItemSK = 'end'
+            }
+            this.empData = this.empData.concat(result.Items)
+
+            this.loaded = true;
+          }
+        });
+    }
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchallitems();
+    }
+    this.loaded = false;
   }
 
   searchData() {
