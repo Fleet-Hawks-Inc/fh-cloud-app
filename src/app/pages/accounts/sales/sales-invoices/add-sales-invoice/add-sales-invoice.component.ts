@@ -179,14 +179,6 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.listService.changeButton(false);
   }
 
-  // fetchCustomers() {
-  //   this.apiService
-  //     .getData(`contacts/get/list`)
-  //     .subscribe((result: any) => {
-  //       this.customers = result;
-  //     });
-  // }
-
   changeUnit(value: string, i: any) {
     this.saleData.sOrderDetails[i].qtyUnit = value;
     this.saleData.sOrderDetails[i].rateUnit = value;
@@ -194,7 +186,6 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    console.log('this.saleData.sOrderDetails', this.saleData.sOrderDetails)
     if (i != null) {
       this.saleData.sOrderDetails[i].amount = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
     }
@@ -222,6 +213,8 @@ export class AddSalesInvoiceComponent implements OnInit {
     if (ID != undefined) {
       this.getCustomerCredit(ID);
       this.getOrders(ID);
+      this.calculateAmount(null)
+      this.calculateFinalTotal();
     }
 
   }
@@ -244,6 +237,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
   async getCustomerCredit(ID: string) {
+    this.customerCredits = [];
     this.dataMessage = Constants.FETCHING_DATA;
     let result = await this.accountService.getData(`customer-credits/specific/${ID}`).toPromise();
     if (result.length === 0) {
@@ -258,6 +252,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     let getSaleOrder = this.salesOrder.find(elem => elem.saleID === ID);
     this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails]
     await this.calculateAmount(null);
+    this.calculateFinalTotal();
   }
 
 
