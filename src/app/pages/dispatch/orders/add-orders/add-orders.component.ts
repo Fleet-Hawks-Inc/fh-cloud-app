@@ -688,32 +688,34 @@ export class AddOrdersComponent implements OnInit {
     // this.isShipperSubmit = true;
     //check if all required fields are filled
     $('#poErr_' + i).hide();
-    if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
-      if (
-        !this.shippersReceivers[i].shippers.shipperID ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address
-          .countryCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
-      ) {
+    let newPicks = this.shippersReceivers[i].shippers;
+    if (!newPicks.shipperID) {
+      this.toastr.error("Please select shipper");
+      return false;
+    }
+    for (const pick of newPicks.pickupPoint) {
+      if (pick.address.manual) {
+        if (!pick.address.address ||
+          !pick.address.cityName ||
+          !pick.address.stateCode ||
+          !pick.address
+            .countryCode ||
+          !pick.address.zipCode ||
+          !pick.pickupDate ||
+          !pick.pickupTime ||
+          !pick.commodity[0].name) {
+          this.toastr.error("Please fill required fields.");
+          return false;
+        }
+      } else if (
+        !pick.address
+          .pickupLocation ||
+        !pick.pickupDate ||
+        !pick.pickupTime ||
+        !pick.commodity[0].name) {
         this.toastr.error("Please fill required fields.");
         return false;
       }
-    } else if (
-      !this.shippersReceivers[i].shippers.shipperID ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].address
-        .pickupLocation ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
-    ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
     }
 
     let newPosData = [];
@@ -833,31 +835,34 @@ export class AddOrdersComponent implements OnInit {
   }
   async saveReceiver(i) {
     // this.isReceiverSubmit = true;
-    if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
-      if (
-        !this.shippersReceivers[i].receivers.receiverID ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.countryCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-      ) {
+    let newDrops = this.shippersReceivers[i].receivers;
+    if (!newDrops.receiverID) {
+      this.toastr.error("Please select receiver");
+      return false;
+    }
+    for (const drop of newDrops.dropPoint) {
+      if (drop.address.manual) {
+        if (!drop.address.address ||
+          !drop.address.cityName ||
+          !drop.address.stateCode ||
+          !drop.address
+            .countryCode ||
+          !drop.address.zipCode ||
+          !drop.dropOffDate ||
+          !drop.dropOffTime ||
+          !drop.commodity[0].name) {
+          this.toastr.error("Please fill required fields.");
+          return false;
+        }
+      } else if (
+        !drop.address
+          .dropOffLocation ||
+        !drop.dropOffDate ||
+        !drop.dropOffTime ||
+        !drop.commodity[0].name) {
         this.toastr.error("Please fill required fields.");
         return false;
       }
-    } else if (
-      !this.shippersReceivers[i].receivers.receiverID ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].address
-        .dropOffLocation ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-    ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
     }
 
     if (this.shippersReceivers[i].receivers.update == true) {
@@ -1912,34 +1917,36 @@ export class AddOrdersComponent implements OnInit {
   async updateShipperReceiver(obj, i) {
     if (obj === "shipper") {
       $('#poErr_' + i).hide();
-      if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
-        if (
-          !this.shippersReceivers[i].shippers.shipperID ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address
-            .stateCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address
-            .countryCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
-        ) {
+      let newPicks = this.shippersReceivers[i].shippers;
+      if (!newPicks.shipperID) {
+        this.toastr.error("Please select shipper");
+        return false;
+      }
+      for (const pick of newPicks.pickupPoint) {
+        if (pick.address.manual) {
+          if (!pick.address.address ||
+            !pick.address.cityName ||
+            !pick.address.stateCode ||
+            !pick.address
+              .countryCode ||
+            !pick.address.zipCode ||
+            !pick.pickupDate ||
+            !pick.pickupTime ||
+            !pick.commodity[0].name) {
+            this.toastr.error("Please fill required fields.");
+            return false;
+          }
+        } else if (
+          !pick.address
+            .pickupLocation ||
+          !pick.pickupDate ||
+          !pick.pickupTime ||
+          !pick.commodity[0].name) {
           this.toastr.error("Please fill required fields.");
           return false;
         }
-      } else if (
-        !this.shippersReceivers[i].shippers.shipperID ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address
-          .pickupLocation ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
-      ) {
-        this.toastr.error("Please fill required fields.");
-        return false;
       }
+
       let data = this.shippersReceivers[i].shippers;
 
       this.finalShippersReceivers[i].shippers[
@@ -2016,32 +2023,34 @@ export class AddOrdersComponent implements OnInit {
       }, 500);
       this.emptyShipper(i);
     } else {
-      if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
-        if (
-          !this.shippersReceivers[i].receivers.receiverID ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address
-            .countryCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-        ) {
+      let newDrops = this.shippersReceivers[i].receivers;
+      if (!newDrops.receiverID) {
+        this.toastr.error("Please select receiver");
+        return false;
+      }
+      for (const drop of newDrops.dropPoint) {
+        if (drop.address.manual) {
+          if (!drop.address.address ||
+            !drop.address.cityName ||
+            !drop.address.stateCode ||
+            !drop.address
+              .countryCode ||
+            !drop.address.zipCode ||
+            !drop.dropOffDate ||
+            !drop.dropOffTime ||
+            !drop.commodity[0].name) {
+            this.toastr.error("Please fill required fields.");
+            return false;
+          }
+        } else if (
+          !drop.address
+            .dropOffLocation ||
+          !drop.dropOffDate ||
+          !drop.dropOffTime ||
+          !drop.commodity[0].name) {
           this.toastr.error("Please fill required fields.");
           return false;
         }
-      } else if (
-        !this.shippersReceivers[i].receivers.receiverID ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address
-          .dropOffLocation ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-      ) {
-        this.toastr.error("Please fill required fields.");
-        return false;
       }
       let data = this.shippersReceivers[i].receivers;
 
@@ -2411,6 +2420,7 @@ export class AddOrdersComponent implements OnInit {
       if (receivers.length == 0) flag = false;
     }
 
+
     //for location search in listing page
     let selectedLoc = "";
     let newloc = "";
@@ -2466,6 +2476,27 @@ export class AddOrdersComponent implements OnInit {
         }, 500);
         this.submitDisabled = false;
         return
+      }
+    }
+
+    for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
+      const element = this.orderData.shippersReceiversInfo[i];
+      for (let j = 0; j < element.shippers.length; j++) {
+        const ship = element.shippers[j];
+        for (let l = 0; l < ship.pickupPoint.length; l++) {
+          const newPick = ship.pickupPoint[l];
+          delete newPick.address.states;
+          delete newPick.address.cities;
+        }
+      }
+
+      for (let x = 0; x < element.receivers.length; x++) {
+        const newReceive = element.receivers[x];
+        for (let l = 0; l < newReceive.dropPoint.length; l++) {
+          const newDrop = newReceive.dropPoint[l];
+          delete newDrop.address.states;
+          delete newDrop.address.cities;
+        }
       }
     }
 
@@ -3140,9 +3171,8 @@ export class AddOrdersComponent implements OnInit {
         });
       });
     } else {
-      pos = this.orderData.cusPOs
+      pos = this.orderData.cusPOs ? this.orderData.cusPOs : []
     }
-
     let result = await this.apiService.getData(`orders/validate/pos?value=${encodeURIComponent(JSON.stringify(pos))}&confirmNo=${this.orderData.cusConfirmation}&orderID=${this.getOrderID}`).toPromise();
     return result
   }
