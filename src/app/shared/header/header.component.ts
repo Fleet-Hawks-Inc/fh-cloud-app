@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   isSafetyEnabled = environment.isSafetyEnabled;
   isAccountsEnabled = environment.isAccountsEnabled;
   isReportsEnabled = environment.isReportsEnabled;
-
+  
   Asseturl = this.apiService.AssetUrl;
   @Output() navClicked = new EventEmitter<any>();
   navSelected = '';
@@ -87,6 +87,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.init();
     this.getCurrentuser();
     this.fetchCarrier();
     if (this.headerFnService.subsVar === undefined) {
@@ -97,6 +98,18 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  async init(){
+    
+    await this.apiService.checkAccess();
+    this.isFleetEnabled = environment.isFleetEnabled;
+  this.isDispatchEnabled = environment.isDispatchEnabled;
+  this.isComplianceEnabled = environment.isComplianceEnabled;
+  this.isManageEnabled = environment.isManageEnabled;
+  this.isSafetyEnabled = environment.isSafetyEnabled;
+  this.isAccountsEnabled = environment.isAccountsEnabled;
+  this.isReportsEnabled = environment.isReportsEnabled;
+  
+  }
   onNavSelected(nav: string) {
     localStorage.setItem('active-header', nav);
     this.navClicked.emit(nav);
