@@ -15,8 +15,12 @@
         <google-map [width]="width" [height]="height" [center]="center" [zoom]="5">
           <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions"
             [position]="markerPosition.position" [options]="markerOptions"
-            (mapClick)="openInfoWindow(marker, markerPosition.data)"></map-marker>
+            (mapClick)="openInfoWindow(marker, markerPosition.data,'driver')"></map-marker>
           <map-info-window [innerHTML]="infoDetail"></map-info-window>
+          <map-marker #marker="mapMarker" *ngFor="let assetPosition of assetPositions"
+            [position]="assetPosition.position" [options]="assetMarkerOptions"
+            (mapClick)="openInfoWindow(marker, assetPosition.data,'asset')"
+            ></map-marker>          
         </google-map>
       </div>
       <div class="mapclass drivermain">
