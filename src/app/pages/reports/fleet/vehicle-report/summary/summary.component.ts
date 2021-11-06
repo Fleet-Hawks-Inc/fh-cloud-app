@@ -27,6 +27,7 @@ export class SummaryComponent implements OnInit {
     vehicleType: any = {};
     inActiveVehiclesCount = 0;
     activeVehiclesCount = 0;
+    soldVehiclesCount = 0;
     currentStatus = null;
     totalVehicleCount = 0;
     lastItemSK = '';
@@ -35,6 +36,7 @@ export class SummaryComponent implements OnInit {
     total: '',
     active: '',
     inactive: '',
+    sold: '',
   };
     vehicleID: any;
 
