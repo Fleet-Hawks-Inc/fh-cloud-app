@@ -11,12 +11,10 @@
                   [(ngModel)]="filterData.customerID"
                   name="customerID"
                   placeholder="Search By customer"
-                  class="text-capitalize"
-                >
+                  class="text-capitalize">
                   <ng-option
                     *ngFor="let item of customers | keyvalue"
-                    value="{{ item.key }}"
-                  >
+                    value="{{ item.key }}">
                     {{ item.value }}
                   </ng-option>
                 </ng-select>
@@ -40,14 +38,11 @@
                   class="form-control"
                   placeholder="mm/dd/yyyy"
                   readonly
-                />
+                  />
                 <span
-                  class="
-                    input-group-text
-                    border-left-0 border-right-0
-                    rounded-0
-                  "
-                >
+                  class="input-group-text
+                  border-left-0 border-right-0
+                  rounded-0">
                   to
                 </span>
                 <input
@@ -60,7 +55,7 @@
                   class="form-control"
                   placeholder="mm/dd/yyyy"
                   readonly
-                />
+                  />
               </div>
             </div>
 
@@ -69,16 +64,14 @@
                 type="submit"
                 [disabled]="isSearch"
                 (click)="searchCredits()"
-                class="btn btn-sm btn-success"
-              >
+                class="btn btn-sm btn-success">
                 Search
               </button>
               <button
                 type="button"
                 class="btn btn-sm btn-success ml-3"
                 [disabled]="isSearch"
-                (click)="resetFilter()"
-              >
+                (click)="resetFilter()">
                 Reset
               </button>
             </div>
@@ -86,8 +79,8 @@
               <a
                 routerLink="/accounts/sales/credit-notes/add"
                 class="btn btn-success btn-sm ml-2"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Customer Credit
+                style="color: white"><i class="fas fa-plus"></i> Add Customer
+                Credit
               </a>
             </div>
           </div>
@@ -101,8 +94,8 @@
               <div class="form-group row">
                 <div class="col-lg-12">
                   <table
-                    class="table table-bordered table-striped mb-0 simple-table"
-                  >
+                    class="table table-bordered table-striped mb-0
+                    simple-table">
                     <thead>
                       <tr class="bgcol2">
                         <th class="text-2">Date</th>
@@ -122,107 +115,93 @@
                       </tr>
 
                       <tr *ngFor="let item of allCredits">
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
+                          item.creditID
+                          }}">
                           {{
-                            item.txnDate
-                              ? (item.txnDate | date: "yyyy/MM/dd")
-                              : "-"
+                          item.txnDate
+                          ? (item.txnDate | date: "yyyy/MM/dd")
+                          : "-"
                           }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
+                          item.creditID
+                          }}">
                           {{ item.cCrNo }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
+                          item.creditID
+                          }}">
                           {{ item.crRef }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
+                          item.creditID
+                          }}">
                           <span class="badge badge-dark p-1 text-uppercase">{{
                             item.invStatus
-                          }}</span>
+                            }}</span>
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
+                          item.creditID
                           }}"
-                          class="text-capitalize"
-                        >
+                          class="text-capitalize">
                           {{
-                            item.customerID ? customers[item.customerID] : "-"
+                          item.customerID ? customers[item.customerID] : "-"
                           }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
-                          {{ item.currency }} {{ item.totalAmt }}
+                          item.creditID
+                          }}">
+                          {{ item.totalAmt | number: "1.2-2" }} {{ item.currency
+                          }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
-                          {{ item.currency }} {{ item.balance }}
+                          item.creditID
+                          }}">
+                          {{ item.balance | number: "1.2-2" }} {{ item.currency
+                          }}
                         </td>
-                        <td
+                        <td class="cursorpoint"
                           routerLink="/accounts/sales/credit-notes/detail/{{
-                            item.creditID
-                          }}"
-                        >
+                          item.creditID
+                          }}">
                           <span class="badge badge-dark p-1 text-uppercase">{{
                             item.status
-                          }}</span>
+                            }}</span>
                         </td>
-                        <td>
+                        <td class="cursorpoint">
                           <div class="btn-group flex-wrap">
                             <button
                               type="button"
                               class="m-0 p-0 btn"
                               data-toggle="dropdown"
-                              aria-expanded="false"
-                            >
+                              aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div
                               class="dropdown-menu"
                               role="menu"
                               x-placement="bottom-start"
-                              style="
-                                position: absolute;
-                                will-change: transform;
-                                top: 0px;
-                                left: 0px;
-                                transform: translate3d(0px, 42px, 0px);
-                              "
-                            >
+                              style="position: absolute;
+                              will-change: transform;
+                              top: 0px;
+                              left: 0px;
+                              transform: translate3d(0px, 42px, 0px);">
                               <a
                                 routerLink="/accounts/sales/credit-notes/edit/{{
-                                  item.creditID
+                                item.creditID
                                 }}"
-                                class="dropdown-item text-1"
-                                >Edit</a
-                              >
+                                class="dropdown-item text-1">Edit</a>
                               <a
                                 (click)="deleteCredit(item.creditID)"
-                                class="dropdown-item text-1"
-                                >Delete</a
-                              >
+                                class="dropdown-item text-1">Delete</a>
                             </div>
                           </div>
                         </td>
