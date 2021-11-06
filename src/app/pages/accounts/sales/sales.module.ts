@@ -16,6 +16,7 @@ import { CreditNotesListComponent } from './credit-notes/credit-notes-list/credi
 import { NgbDate, NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from "@ng-select/ng-select";
 import { CreditNoteDetailComponent } from './credit-notes/credit-note-detail/credit-note-detail.component';
+import { AddAccountModule } from '../add-account/add-account.module';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -118,7 +119,9 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+
+    AddAccountModule,
   ]
 })
 export class SalesModule { }
