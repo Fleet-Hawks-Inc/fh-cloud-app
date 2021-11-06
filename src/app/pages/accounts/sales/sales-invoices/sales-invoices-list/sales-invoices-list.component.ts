@@ -22,6 +22,7 @@ export class SalesInvoicesListComponent implements OnInit {
     lastItemSK: ''
   }
   lastItemSK = '';
+  loaded = false;
 
   customersObjects: any = {};
 
@@ -43,6 +44,7 @@ export class SalesInvoicesListComponent implements OnInit {
   }
 
   async fetchSales(refresh?: boolean) {
+    console.log('fdf', this.lastItemSK)
     if (refresh === true) {
       this.lastItemSK = '';
       this.allInvoices = [];
@@ -120,10 +122,21 @@ export class SalesInvoicesListComponent implements OnInit {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.deleteData(`sales-invoice/delete/${id}`).subscribe(res => {
         if (res) {
-          this.toaster.success('Order deleted successfully!')
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.allInvoices = [];
+          this.lastItemSK = '';
           this.fetchSales();
+          this.toaster.success('Order deleted successfully!')
         }
       });
     }
   }
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchSales();
+    }
+    this.loaded = false;
+  }
+
 }
