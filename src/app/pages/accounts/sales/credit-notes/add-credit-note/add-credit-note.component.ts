@@ -135,7 +135,7 @@ export class AddCreditNoteComponent implements OnInit {
   }
 
   addDetails() {
-    this.creditData.crDetails.push({
+    let obj = {
       commodity: "",
       desc: "",
       qty: 0,
@@ -144,7 +144,20 @@ export class AddCreditNoteComponent implements OnInit {
       rateUnit: null,
       amount: 0,
       accountID: null,
-    });
+    };
+    const lastAdded: any =
+      this.creditData.crDetails[this.creditData.crDetails.length - 1];
+    if (
+      lastAdded.commodity !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyUnit !== null &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateUnit !== null &&
+      lastAdded.amount !== 0 &&
+      lastAdded.accountID !== null
+    ) {
+      this.creditData.crDetails.push(obj);
+    }
   }
 
   deleteDetail(d: number) {

@@ -105,7 +105,7 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          CAD {{ item.total.finalTotal }}
+                          CAD {{ item.total.finalTotal | number : '1.2-2'}}
                         </td>
 
                         <td routerLink="/accounts/sales/invoices/detail/{{

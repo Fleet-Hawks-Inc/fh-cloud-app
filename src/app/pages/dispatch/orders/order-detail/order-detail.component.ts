@@ -84,6 +84,8 @@ export class OrderDetailComponent implements OnInit {
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
   pageVariable = 1;
+
+  carrierLogo: string;
   /**
    * Form props
    */
@@ -199,6 +201,7 @@ export class OrderDetailComponent implements OnInit {
   tripData: {
     tripNo: "";
     tripID: "";
+
   };
 
   brokerage = {
@@ -217,6 +220,7 @@ export class OrderDetailComponent implements OnInit {
     address: "",
     phone: "",
   };
+
 
   showModal = false;
 
@@ -453,6 +457,7 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "png" ||
               x.storedName.split(".")[1] === "jpeg"
             ) {
+
               const obj = {
                 imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
                 docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -472,6 +477,7 @@ export class OrderDetailComponent implements OnInit {
               this.docs.push(obj);
             }
           });
+
 
           // this.docs = result.uploadedDocs.map(x => ({
           //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -566,7 +572,9 @@ export class OrderDetailComponent implements OnInit {
         //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
         // }
       },
+
       (err) => {}
+
     );
   }
 
@@ -736,7 +744,9 @@ export class OrderDetailComponent implements OnInit {
             error: () => {
               this.generateBtnDisabled = false;
             },
+
             next: () => {},
+
           });
       },
       next: (res) => {
@@ -926,6 +936,10 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
+
+        this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
+
+
         this.orderInvData = result[0];
         this.isInvoice = true;
         if (this.orderInvData.carrierData.logo != "") {
@@ -963,4 +977,6 @@ export class OrderDetailComponent implements OnInit {
       this.carrierData.address = result.adrs[0].userLoc;
     }
   }
+
 }
+
