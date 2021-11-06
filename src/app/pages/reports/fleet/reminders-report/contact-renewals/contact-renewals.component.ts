@@ -13,8 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ContactRenewalsComponent implements OnInit {
   empData: any = [];
   tasks = []
-  // tasks: any = {};
-  dataMessage: string = Constants.NO_RECORDS_FOUND;
+  dataMessage: string = Constants.FETCHING_DATA;
   entityID = null;
   searchServiceTask = null;
   filterStatus = null;
@@ -23,48 +22,42 @@ export class ContactRenewalsComponent implements OnInit {
   loaded = false
   empName = [];
   status = null;
+  serviceTasks = [];
+  count = {
+    total: '',
+  }
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    // this.fetchEmpData();
     this.fetchallitems();
     this.fectchTasks();
-    // this.getRemindersCount();
     this.fetchEmployees();
-    // this.fetchReminderCount();
+    this.fetchServiceTaks();
+    this.fetchReminderCount();
   }
-
   fectchTasks() {
     this.apiService.getData("tasks/get/list").subscribe((result: any) => {
       this.tasks = result;
-      console.log("tasks", result)
     })
   }
-  // fetchReminderCount() {
-  //   this.apiService.getData(`reminders/fetch/count?type=service`).subscribe((result: any) => {
-  //     this.count = result;
-  //   })
-  // }
+  fetchReminderCount() {
+    this.apiService.getData("reminders/fetch/count?type=contact").subscribe((result: any) => {
+      this.count = result;
+    })
+  }
   fetchEmployees() {
     this.apiService.getData('contacts/get/emp/list').subscribe((res) => {
       console.log('empName', res);
       this.empName = res;
     });
   }
-  // fetchEmpData() {
-  //   this.apiService.getData("reminders").subscribe((result: any) => {
-  //     this.empData = result.Items;
-  //     console.log('empData', result)
-  //   });
-  // }
-  // getRemindersCount() {
-  //   this.apiService.getData(`reminders/get/count?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&reminderType=contact`).subscribe({
-  //     complete: () => { },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //     },
-  //   });
-  // }
+  fetchServiceTaks() {
+    let test = [];
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
+    });
+  }
   fetchallitems() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=contact`)
@@ -129,7 +122,7 @@ export class ContactRenewalsComponent implements OnInit {
       this.empData.forEach(element => {
         let obj = {}
         obj["Contact"] = this.empName[element.entityID]
-        obj["Contact Renewal Type"] = this.tasks[element.tasks.taskID]
+        obj["Renewal Type"] = this.tasks[element.tasks.taskID]
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Expiration Date"] = element.tasks.dueDate
         obj["Subscribers"] = element.subscribers
