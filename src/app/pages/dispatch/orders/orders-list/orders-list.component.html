@@ -338,10 +338,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU' ||
-                                      order.orderStatus == 'dispatched'
+                                      order.orderStatus!= 'delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -584,9 +581,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -795,9 +790,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -1006,9 +999,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                     order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -1217,9 +1208,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -1427,9 +1416,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -1639,9 +1626,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
@@ -1850,9 +1835,7 @@
                                     i
                                   }}">
                                   <a *ngIf="
-                                      order.orderStatus == 'created' ||
-                                      order.orderStatus == 'confirmed' ||
-                                      order.orderStatus == 'TONU'
+                                      order.orderStatus!='delivered'
                                     " class="dropdown-item" routerLink="/dispatch/orders/edit/{{
                                       order.orderID
                                     }}">Edit</a>
