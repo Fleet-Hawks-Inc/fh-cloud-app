@@ -44,7 +44,6 @@ export class SalesInvoicesListComponent implements OnInit {
   }
 
   async fetchSales(refresh?: boolean) {
-    console.log('fdf', this.lastItemSK)
     if (refresh === true) {
       this.lastItemSK = '';
       this.allInvoices = [];
