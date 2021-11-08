@@ -126,7 +126,7 @@
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
-                              <a class="dropdown-item text-1" href="#">Make Payment</a>
+                              <!-- <a class="dropdown-item text-1" href="#">Make Payment</a> -->
                               <a routerLink="/accounts/sales/invoices/edit/{{
                                   item.saleID
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
@@ -139,6 +139,15 @@
                       <tr></tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' &&
+                      allInvoices.length
+                      !==
+                      0">
+                  <button type="button" class="btn
+                          btn-success
+                          btn-sm text-light" (click)="onScroll()">Load
+                    More..</button>
                 </div>
               </div>
             </div>
