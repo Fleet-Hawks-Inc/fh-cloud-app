@@ -40,8 +40,8 @@
                               text-lg-right
                               pt-2
                             ">Payment Currency</label>
-                          <ng-select [clearable]="false" [(ngModel)]="saleData.currency" name="currency"
-                            placeholder="Select currency" #payCur="ngModel" required>
+                          <ng-select [clearable]="false" (change)="changeCur()" [(ngModel)]="saleData.currency"
+                            name="currency" placeholder="Select currency" #payCur="ngModel" required>
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -206,21 +206,10 @@
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            ">Due Date
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
-                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
-                            required />
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
                             ">Payment Terms
                             <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="saleData.paymentTerm" name="paymentTerm" placeholder="Select Payment
+                          <ng-select [(ngModel)]="saleData.paymentTerm" (change)="getInvDueDate($event)"
+                            name="paymentTerm" placeholder="Select Payment
                               Terms" #paymentTerm="ngModel" required>
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentTerms">{{ data.name }}
                             </ng-option>
@@ -235,6 +224,20 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-lg-5">
+                          <label class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            ">Due Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
+                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
+                            required />
+                        </div>
+
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
@@ -278,7 +281,7 @@
                                   <th class="text-2">Payment Date</th>
                                   <th class="text-2">Reference#</th>
                                   <th class="text-2">Amount</th>
-                                  <th class="text-2">Pending Amount</th>
+                                  <th class="text-2">Balance</th>
                                   <th class="text-2">Paid Amount</th>
                                   <th class="text-2">Status</th>
                                   <th class="text-2">Full Payment</th>
@@ -311,8 +314,7 @@
                                     {{ data.currency }}
                                   </td>
                                   <td>
-                                    -
-                                    <!-- {{ data.prevPaidAmount | number: "1.2-2" }} -->
+                                    {{ data.prevPaidAmount | number: "1.2-2" }}
                                   </td>
                                   <td>
                                     <span class="
