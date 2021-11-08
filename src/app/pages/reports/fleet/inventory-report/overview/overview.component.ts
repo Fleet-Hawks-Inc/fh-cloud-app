@@ -44,11 +44,11 @@ export class OverviewComponent implements OnInit {
         this.inventListReport();
         this.fetchVendors();
         this.listService.fetchVendors();
-        this.fetchDriversCount();
+        this.fetchInventCount();
         this.fetchWarehouses();
         this.allVendors = this.listService.vendorList;
     }
-    fetchDriversCount() {
+    fetchInventCount() {
         this.apiService.getData('items/count/invent/list').subscribe((result: any) => {
             this.inventCount = result;
         })
