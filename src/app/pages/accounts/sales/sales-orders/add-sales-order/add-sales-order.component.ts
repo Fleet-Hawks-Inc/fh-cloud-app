@@ -1,46 +1,50 @@
-import { Component, OnInit } from '@angular/core';
-import * as moment from 'moment';
-import { ApiService, AccountService, ListService } from "../../../../../services";
-import { HttpClient } from '@angular/common/http';
-import { Auth } from 'aws-amplify';
-import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Location } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import * as moment from "moment";
+import {
+  ApiService,
+  AccountService,
+  ListService,
+} from "../../../../../services";
+import { HttpClient } from "@angular/common/http";
+import { Auth } from "aws-amplify";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { Location } from "@angular/common";
+import { ToastrService } from "ngx-toastr";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-add-sales-order',
-  templateUrl: './add-sales-order.component.html',
-  styleUrls: ['./add-sales-order.component.css']
+  selector: "app-add-sales-order",
+  templateUrl: "./add-sales-order.component.html",
+  styleUrls: ["./add-sales-order.component.css"],
 })
 export class AddSalesOrderComponent implements OnInit {
-  pageTitle = 'Add';
+  pageTitle = "Add";
   stateTaxes = [];
   submitDisabled = false;
 
   salesData: any = {
-    txnDate: moment().format('YYYY-MM-DD'),
-    currency: 'CAD',
-    sRef: '',
+    txnDate: moment().format("YYYY-MM-DD"),
+    currency: "CAD",
+    sRef: "",
     cusInfo: {
-      customerID: '',
-      addressID: ''
+      customerID: "",
+      addressID: "",
     },
-    shipDate: '',
-    salePerson: '',
-    sOrderDetails: [{
-      commodity: '',
-      desc: '',
-      qty: 0,
-      qtyUnit: null,
-      rate: 0,
-      rateUnit: null,
-      amount: 0,
-      accountID: null,
-    }],
+    shipDate: "",
+    salePerson: "",
+    sOrderDetails: [
+      {
+        commodity: "",
+        desc: "",
+        qty: 0,
+        qtyUnit: null,
+        rate: 0,
+        rateUnit: null,
+        amount: 0,
+      },
+    ],
     charges: {
-      remarks: "",
       accFee: [
         {
           name: "",
@@ -84,34 +88,40 @@ export class AddSalesOrderComponent implements OnInit {
     },
     taxExempt: true,
     stateTaxID: null,
-    remarks: '',
-  }
+    remarks: "",
+  };
 
   customers = [];
   units = [];
-  accounts = [];
   customerSelected: any = [];
   notOfficeAddress: boolean = false;
 
   currentUser: any = "";
-  response: any = '';
+  response: any = "";
   errors = {};
 
   saleID: string;
 
-  constructor(public apiService: ApiService, private route: ActivatedRoute, public httpClient: HttpClient, private accountService: AccountService, private toaster: ToastrService, private location: Location, public listService: ListService) { }
+  constructor(
+    public apiService: ApiService,
+    private route: ActivatedRoute,
+    public httpClient: HttpClient,
+    private accountService: AccountService,
+    private toaster: ToastrService,
+    private location: Location,
+    public listService: ListService
+  ) {}
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
-      this.pageTitle = 'Edit';
+      this.pageTitle = "Edit";
       this.fetchSaleOrder();
     } else {
-      this.pageTitle = 'Add';
+      this.pageTitle = "Add";
     }
     this.fetchStateTaxes();
     this.fetchQuantityUnits();
-    this.fetchAccounts();
     this.listService.fetchCustomers();
     this.getCurrentuser();
 
@@ -147,7 +157,6 @@ export class AddSalesOrderComponent implements OnInit {
     this.listService.fetchCustomers();
   }
 
-
   selectedCustomer(customerID: any) {
     this.apiService
       .getData(`contacts/detail/${customerID}`)
@@ -159,10 +168,12 @@ export class AddSalesOrderComponent implements OnInit {
             element["isChecked"] = false;
           }
           this.customerSelected[0].adrs[0].isChecked = true;
-          this.salesData.cusInfo.addressID = this.customerSelected[0].adrs[0].addressID;
+          this.salesData.cusInfo.addressID =
+            this.customerSelected[0].adrs[0].addressID;
 
           if (this.customerSelected[0].adrs.length > 0) {
-            this.salesData.cusInfo.addressID = this.customerSelected[0].adrs[0].addressID;
+            this.salesData.cusInfo.addressID =
+              this.customerSelected[0].adrs[0].addressID;
           }
 
           let addressLength = this.customerSelected[0].adrs.length;
@@ -178,7 +189,6 @@ export class AddSalesOrderComponent implements OnInit {
           } else {
             this.notOfficeAddress = false;
           }
-
         }
       });
   }
@@ -203,12 +213,6 @@ export class AddSalesOrderComponent implements OnInit {
     this.salesData.sOrderDetails[i].rateUnit = value;
   }
 
-  fetchAccounts() {
-    this.accountService.getData(`chartAc/fetch/list`).subscribe((res: any) => {
-      this.accounts = res;
-    });
-  }
-
   fetchQuantityUnits() {
     this.httpClient
       .get("assets/jsonFiles/quantityTypes.json")
@@ -218,21 +222,33 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   addDetails() {
-    this.salesData.sOrderDetails.push({
-      commodity: '',
-      desc: '',
+    let obj = {
+      commodity: "",
+      desc: "",
       qty: 0,
       qtyUnit: null,
       rate: 0,
       rateUnit: null,
       amount: 0,
-      accountID: null,
-    });
+    };
+    const lastAdded =
+      this.salesData.sOrderDetails[this.salesData.sOrderDetails.length - 1];
+    if (
+      lastAdded.commodity !== "" &&
+      lastAdded.qty !== "" &&
+      lastAdded.qtyUnit !== null &&
+      lastAdded.rate !== "" &&
+      lastAdded.rateUnit !== null &&
+      lastAdded.amount !== 0
+    ) {
+      this.salesData.sOrderDetails.push(obj);
+    }
   }
 
   deleteDetail(d: number) {
-    // this.total -= this.salesData.sOrderDetails[d].amount;
+    this.salesData.total.detailTotal -= this.salesData.sOrderDetails[d].amount;
     this.salesData.sOrderDetails.splice(d, 1);
+    this.calculateFinalTotal();
   }
 
   addAccessorialArr(type) {
@@ -264,7 +280,6 @@ export class AddSalesOrderComponent implements OnInit {
       this.accessorialDedTotal();
       this.calculateFinalTotal();
     }
-
   }
 
   accessorialFeeTotal() {
@@ -310,7 +325,7 @@ export class AddSalesOrderComponent implements OnInit {
       element.amount = (element.tax * this.salesData.total.subTotal) / 100;
       countTax += element.amount;
     });
-    this.salesData.total.taxes = countTax
+    this.salesData.total.taxes = countTax;
   }
 
   taxTotal() {
@@ -367,11 +382,16 @@ export class AddSalesOrderComponent implements OnInit {
     //   (parseInt(selected.PST) ? selected.PST : 0);
   }
 
-
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.salesData.sOrderDetails[i].amount = this.salesData.sOrderDetails[i].qty * this.salesData.sOrderDetails[i].rate;
-    this.salesData.sOrderDetails.forEach(element => {
+    this.salesData.sOrderDetails[i].amount =
+      (this.salesData.sOrderDetails[i].qty
+        ? this.salesData.sOrderDetails[i].qty
+        : 0) *
+      (this.salesData.sOrderDetails[i].rate
+        ? this.salesData.sOrderDetails[i].rate
+        : 0);
+    this.salesData.sOrderDetails.forEach((element) => {
       total += element.amount;
     });
     this.salesData.total.detailTotal = parseFloat(total);
@@ -379,14 +399,15 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   addSale() {
+    this.submitDisabled = true;
     this.accountService.postData(`sales-orders`, this.salesData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
+              val.message = val.message.replace(/".*"/, "This Field");
               this.errors[val.context.key] = val.message;
             })
           )
@@ -398,14 +419,13 @@ export class AddSalesOrderComponent implements OnInit {
             error: () => {
               // this.submitDisabled = false;
             },
-            next: () => {
-            },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
-        this.toaster.success('Order added successfully.');
+        this.toaster.success("Order added successfully.");
         this.cancel();
       },
     });
@@ -416,44 +436,46 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   fetchSaleOrder() {
-    this.accountService.getData(`sales-orders/detail/${this.saleID}`).subscribe(res => {
-      this.salesData = res[0];
-    });
+    this.accountService
+      .getData(`sales-orders/detail/${this.saleID}`)
+      .subscribe((res) => {
+        this.salesData = res[0];
+      });
   }
 
   updateSale() {
     this.submitDisabled = true;
 
-    this.accountService.putData(`sales-orders/update/${this.saleID}`, this.salesData).subscribe({
-      complete: () => { },
-      error: (err: any) => {
-        this.submitDisabled = false;
-        from(err.error)
-          .pipe(
-            map((val: any) => {
-              val.message = val.message.replace(/".*"/, 'This Field');
-              this.errors[val.context.key] = val.message;
-            })
-          )
-          .subscribe({
-            complete: () => {
-              //this.submitDisabled = false;
-              // this.throwErrors();
-            },
-            error: () => {
-              // this.submitDisabled = false;
-            },
-            next: () => {
-            },
-          });
-      },
-      next: (res) => {
-        // this.submitDisabled = false;
-        this.response = res;
-        this.toaster.success('Order updated successfully.');
-        this.cancel();
-      },
-    });
+    this.accountService
+      .putData(`sales-orders/update/${this.saleID}`, this.salesData)
+      .subscribe({
+        complete: () => {},
+        error: (err: any) => {
+          this.submitDisabled = false;
+          from(err.error)
+            .pipe(
+              map((val: any) => {
+                val.message = val.message.replace(/".*"/, "This Field");
+                this.errors[val.context.key] = val.message;
+              })
+            )
+            .subscribe({
+              complete: () => {
+                //this.submitDisabled = false;
+                // this.throwErrors();
+              },
+              error: () => {
+                // this.submitDisabled = false;
+              },
+              next: () => {},
+            });
+        },
+        next: (res) => {
+          // this.submitDisabled = false;
+          this.response = res;
+          this.toaster.success("Order updated successfully.");
+          this.cancel();
+        },
+      });
   }
-
 }

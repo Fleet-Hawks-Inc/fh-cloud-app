@@ -127,7 +127,6 @@ export class OrdersListComponent implements OnInit {
   emailData = {
     emails: [],
     confirmEmail: false,
-    instructions: ''
   };
 
   confirmEmails = [];
@@ -578,7 +577,6 @@ export class OrdersListComponent implements OnInit {
       newData.emails.push(elem.label);
     });
     newData.confirm = this.emailData.confirmEmail;
-    newData.instructions = this.emailData.instructions;
     this.apiService
       .getData(
         `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
@@ -591,16 +589,21 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.orders = [];
-          this.confirmOrders = [];
-          this.dispatchOrders = [];
-          this.deliveredOrders = [];
-          this.cancelledOrders = [];
-          this.invoicedOrders = [];
-          this.partiallyOrders = [];
-          this.tonuOrders = [];
-          this.lastEvaluatedKey = "";
-          this.fetchAllTypeOrderCount();
+          // this.orders = [];
+          // this.confirmOrders = [];
+          // this.dispatchOrders = [];
+          // this.deliveredOrders = [];
+          // this.cancelledOrders = [];
+          // this.invoicedOrders = [];
+          // this.partiallyOrders = [];
+          // this.tonuOrders = [];
+          // this.lastEvaluatedKey = "";
+          // this.fetchAllTypeOrderCount();
+
+          let getOrder = this.orders[0].filter(elem => elem.orderID == this.newOrderID);
+
+          getOrder[0].orderStatus = 'confirmed';
+
           this.confirmRef.close();
           this.isConfirm = false;
         },
