@@ -120,9 +120,14 @@
                         <td routerLink="/accounts/sales/orders/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">{{
-                            item.invStatus
-                            }}</span>
+                          <span *ngIf="item.invStatus">
+                            <span class="badge badge-dark p-1 text-uppercase">
+                              Invoiced
+                            </span>
+                          </span>
+                          <span *ngIf="!item.invStatus">
+                            -
+                          </span>
                         </td>
                         <!-- <td
                           routerLink="/accounts/sales/orders/detail/{{

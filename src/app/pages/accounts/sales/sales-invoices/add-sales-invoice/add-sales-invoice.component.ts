@@ -26,7 +26,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     customerID: null,
     sOrderNo: '',
     sRef: '',
-    dueDate: null,
+    dueDate: moment().format('YYYY-MM-DD'),
     paymentTerm: null,
     salePerson: '',
     sOrderDetails: [{
@@ -81,6 +81,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       subTotal: 0,
       taxes: 0,
       finalTotal: 0,
+      customerCredit: 0
     },
     taxExempt: true,
     stateTaxID: null,
@@ -236,16 +237,31 @@ export class AddSalesInvoiceComponent implements OnInit {
     }
   }
 
+  changeCur() {
+    if (this.saleData.customerID != '') {
+      this.getCustomerCredit(this.saleData.customerID)
+    }
+
+  }
   async getCustomerCredit(ID: string) {
     this.customerCredits = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    let result = await this.accountService.getData(`customer-credits/specific/${ID}`).toPromise();
+    let result = await this.accountService.getData(`customer-credits/specific/${ID}?currency=${this.saleData.currency}`).toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
+
     if (result.length > 0) {
+      result.map((v) => {
+        v.prevPaidAmount = Number(v.totalAmt) - Number(v.balance);
+        v.paidStatus = false;
+        v.fullPayment = false;
+        v.paidAmount = 0;
+        v.newStatus = v.status.replace("_", " ");
+      });
       this.customerCredits = result;
     }
+
   }
 
   async getOrderDetail(ID: string) {
@@ -456,12 +472,35 @@ export class AddSalesInvoiceComponent implements OnInit {
         }
       }
     }
-    // this.creditCalculation();
+    this.creditCalculation();
     this.calculateFinalTotal();
   }
 
+  creditCalculation() {
+    this.saleData.total.customerCredit = 0;
+    for (const element of this.customerCredits) {
+      if (element.selected) {
+        this.saleData.total.customerCredit += Number(element.paidAmount);
+        this.saleData.creditData.map((v) => {
+          if (element.creditID === v.creditID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount =
+              Number(element.balance) - Number(element.paidAmount);
+            if (Number(element.paidAmount) === Number(element.balance)) {
+              v.status = "deducted";
+            } else if (Number(element.paidAmount) < Number(element.balance)) {
+              v.status = "partially_deducted";
+            } else {
+              v.status = "not_deducted";
+            }
+          }
+        });
+      }
+    }
+  }
 
   addInvoice() {
+
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {

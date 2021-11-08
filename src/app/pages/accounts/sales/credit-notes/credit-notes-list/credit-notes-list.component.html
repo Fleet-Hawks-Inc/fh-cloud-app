@@ -6,17 +6,9 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
               <div class="w-100 mb-3">
-                <ng-select
-                  [clearable]="false"
-                  [(ngModel)]="filterData.customerID"
-                  name="customerID"
-                  placeholder="Search By customer"
-                  class="text-capitalize"
-                >
-                  <ng-option
-                    *ngFor="let item of customers | keyvalue"
-                    value="{{ item.key }}"
-                  >
+                <ng-select [clearable]="false" [(ngModel)]="filterData.customerID" name="customerID"
+                  placeholder="Search By customer" class="text-capitalize">
+                  <ng-option *ngFor="let item of customers | keyvalue" value="{{ item.key }}">
                     {{ item.value }}
                   </ng-option>
                 </ng-select>
@@ -30,64 +22,31 @@
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  type="text"
-                  [(ngModel)]="filterData.startDate"
-                  name="startDate"
-                  (click)="startDate.toggle()"
-                  ngbDatepicker
-                  #startDate="ngbDatepicker"
-                  class="form-control"
-                  placeholder="mm/dd/yyyy"
-                  readonly
-                />
-                <span
-                  class="
+                <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
+                  ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+                <span class="
                     input-group-text
                     border-left-0 border-right-0
                     rounded-0
-                  "
-                >
+                  ">
                   to
                 </span>
-                <input
-                  type="text"
-                  [(ngModel)]="filterData.endDate"
-                  name="endDate"
-                  (click)="endDate.toggle()"
-                  ngbDatepicker
-                  #endDate="ngbDatepicker"
-                  class="form-control"
-                  placeholder="mm/dd/yyyy"
-                  readonly
-                />
+                <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
+                  ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                [disabled]="isSearch"
-                (click)="searchCredits()"
-                class="btn btn-sm btn-success"
-              >
+              <button type="submit" [disabled]="isSearch" (click)="searchCredits()" class="btn btn-sm btn-success">
                 Search
               </button>
-              <button
-                type="button"
-                class="btn btn-sm btn-success ml-3"
-                [disabled]="isSearch"
-                (click)="resetFilter()"
-              >
+              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch" (click)="resetFilter()">
                 Reset
               </button>
             </div>
             <div class="col-md-5 col-lg-5 text-right pr-1">
-              <a
-                routerLink="/accounts/sales/credit-notes/add"
-                class="btn btn-success btn-sm ml-2"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Customer Credit
+              <a routerLink="/accounts/sales/credit-notes/add" class="btn btn-success btn-sm ml-2"
+                style="color: white"><i class="fas fa-plus"></i> Add Customer Credit
               </a>
             </div>
           </div>
@@ -100,15 +59,13 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <table
-                    class="table table-bordered table-striped mb-0 simple-table"
-                  >
+                  <table class="table table-bordered table-striped mb-0 simple-table">
                     <thead>
                       <tr class="bgcol2">
                         <th class="text-2">Date</th>
                         <th class="text-2">Customer Credit#</th>
                         <th class="text-2">Reference#</th>
-                        <th class="text-2">Invoice#</th>
+                        <!-- <th class="text-2">Invoice#</th> -->
                         <th class="text-2">Customer</th>
                         <th class="text-2">Credit Amount</th>
                         <th class="text-2">Balance Amount</th>
@@ -122,107 +79,77 @@
                       </tr>
 
                       <tr *ngFor="let item of allCredits">
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           {{
-                            item.txnDate
-                              ? (item.txnDate | date: "yyyy/MM/dd")
-                              : "-"
+                          item.txnDate
+                          ? (item.txnDate | date: "yyyy/MM/dd")
+                          : "-"
                           }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           {{ item.cCrNo }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           {{ item.crRef }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <!-- <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
-                          <span class="badge badge-dark p-1 text-uppercase">{{
-                            item.invStatus
-                          }}</span>
-                        </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                          }}">
+                          <span *ngIf="item.invStatus">
+                            <span class="badge badge-dark p-1 text-uppercase">
+                              Invoiced
+                            </span>
+                          </span>
+                          <span *ngIf="!item.invStatus">
+                            -
+                          </span>
+                        </td> -->
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                          class="text-capitalize"
-                        >
+                          }}" class="text-capitalize">
                           {{
-                            item.customerID ? customers[item.customerID] : "-"
+                          item.customerID ? customers[item.customerID] : "-"
                           }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           {{ item.currency }} {{ item.totalAmt }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           {{ item.currency }} {{ item.balance }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/credit-notes/detail/{{
+                        <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
-                          }}"
-                        >
+                          }}">
                           <span class="badge badge-dark p-1 text-uppercase">{{
                             item.status
-                          }}</span>
+                            }}</span>
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
-                            <button
-                              type="button"
-                              class="m-0 p-0 btn"
-                              data-toggle="dropdown"
-                              aria-expanded="false"
-                            >
+                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown" aria-expanded="false">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
-                            <div
-                              class="dropdown-menu"
-                              role="menu"
-                              x-placement="bottom-start"
-                              style="
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                                 position: absolute;
                                 will-change: transform;
                                 top: 0px;
                                 left: 0px;
                                 transform: translate3d(0px, 42px, 0px);
-                              "
-                            >
-                              <a
-                                routerLink="/accounts/sales/credit-notes/edit/{{
+                              ">
+                              <a routerLink="/accounts/sales/credit-notes/edit/{{
                                   item.creditID
-                                }}"
-                                class="dropdown-item text-1"
-                                >Edit</a
-                              >
-                              <a
-                                (click)="deleteCredit(item.creditID)"
-                                class="dropdown-item text-1"
-                                >Delete</a
-                              >
+                                }}" class="dropdown-item text-1">Edit</a>
+                              <a (click)="deleteCredit(item.creditID)" class="dropdown-item text-1">Delete</a>
                             </div>
                           </div>
                         </td>

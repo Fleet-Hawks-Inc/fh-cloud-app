@@ -176,13 +176,14 @@
 
                               <th class="text-2">Sales Invoice#</th>
                               <th class="text-2">Amount Due</th>
+                              <th class="text-2">Balance</th>
                               <th class="text-2">Full Payment</th>
                               <th class="text-2" width="10%">Payment</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr *ngIf="customerInvoices.length === 0;">
-                              <td colspan="6">
+                              <td class="text-center" colspan="7">
                                 {{dataMessage}}
                               </td>
                             </tr>
@@ -196,6 +197,10 @@
                               </td>
                               <td style="width: 250px;">{{item.sInvNo}}</td>
                               <td style="width: 250px;">{{item.currency}} {{item.total.finalTotal}}</td>
+                              <td>
+                                {{ item.balance | number: "1.2-2" }}
+                                {{ item.currency }}
+                              </td>
                               <td style="width: 100px;" class="text-center">
                                 <input type="checkbox" [(ngModel)]="item.fullPayment" name="advfinal{{ i }}"
                                   (change)="assignFullPayment(i, item)" />
@@ -226,7 +231,7 @@
                             <label class="control-label font-weight-bold">Total Amount</label>
                           </div>
                           <div class="col-lg-6">
-                            {{paymentData.totalAmt}}
+                            {{paymentData.invoiceTotal}}
                           </div>
                         </div>
                       </div>
