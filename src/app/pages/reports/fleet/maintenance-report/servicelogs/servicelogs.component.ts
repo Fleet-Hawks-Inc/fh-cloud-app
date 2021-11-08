@@ -13,8 +13,6 @@ export class ServicelogsComponent implements OnInit {
   allData = [];
   vendorsObject: any = {};
   tasks = [];
-  vehicleID = null;
-  assetID = null;
   taskID = null;
   vehiclesObject: any = {};
   assetsObject: any = {};
@@ -40,11 +38,6 @@ export class ServicelogsComponent implements OnInit {
       'name': 'Asset',
       'value': 'asset'
     },
-    // {
-    //   'name': 'Task',
-    //   'value': 'task'
-    // },
-
   ]
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
@@ -64,9 +57,10 @@ export class ServicelogsComponent implements OnInit {
   }
   fetchSlogsList() {
     if (this.lastItemSK !== 'end') {
-      // this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
       this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
+          console.log('lastItemSK', this.lastItemSK)
+          console.log('lastItemSK', this.allData.length)
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -95,7 +89,6 @@ export class ServicelogsComponent implements OnInit {
                 }
                 this.allData.push(v);
               }
-
             })
           }
         })
@@ -132,8 +125,7 @@ export class ServicelogsComponent implements OnInit {
 
   }
   searchFilter() {
-    // if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-    if (this.searchValue != '' || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
       if (this.start != null && this.end == null) {
         this.toastr.error('Please select both start and end dates.');
         return false;
@@ -155,12 +147,8 @@ export class ServicelogsComponent implements OnInit {
       return false;
     }
   }
-
-
-
   resetFilter() {
-    // if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-    if (this.searchValue != '' || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
       this.searchValue = null;
       this.category = null;
       this.taskID = null;

@@ -38,8 +38,6 @@
                         </ng-option>
                      </ng-select>
                   </div>
-
-
                   <div class="col-md-3 col-lg-3 pr-0">
                      <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                         <span class="input-group-prepend">
@@ -60,10 +58,9 @@
                   </div>
 
                   <div class="col-md-2 col-lg-2">
-                     <button type="submit" (click)="searchFilter()"
-                        class="btn btn-sm mr-3 btn-success line-height-18">Search</button>
-                     <button class="btn btn-sm btn-success line-height-18" type="button"
-                        (click)=" resetFilter()">Reset</button>
+                     <button type="button" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+                     <button type="button" (click)="resetFilter()"
+                        class="btn btn-sm btn-success line-height-18">Reset</button>
                   </div>
 
 
