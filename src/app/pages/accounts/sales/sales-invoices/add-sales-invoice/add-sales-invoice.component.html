@@ -206,21 +206,10 @@
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            ">Due Date
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
-                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
-                            required />
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
                             ">Payment Terms
                             <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="saleData.paymentTerm" name="paymentTerm" placeholder="Select Payment
+                          <ng-select [(ngModel)]="saleData.paymentTerm" (change)="getInvDueDate($event)"
+                            name="paymentTerm" placeholder="Select Payment
                               Terms" #paymentTerm="ngModel" required>
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentTerms">{{ data.name }}
                             </ng-option>
@@ -235,6 +224,20 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-lg-5">
+                          <label class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            ">Due Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
+                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
+                            required />
+                        </div>
+
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">

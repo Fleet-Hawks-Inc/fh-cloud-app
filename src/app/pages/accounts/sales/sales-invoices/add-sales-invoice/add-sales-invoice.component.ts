@@ -26,7 +26,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     customerID: null,
     sOrderNo: '',
     sRef: '',
-    dueDate: moment().format('YYYY-MM-DD'),
+    dueDate: null,
     paymentTerm: null,
     salePerson: '',
     sOrderDetails: [{
@@ -92,24 +92,28 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   paymentTerms = [
     {
-      value: "15_days",
+      value: "15",
       name: "15 Days",
     },
     {
-      value: "30_days",
+      value: "30",
       name: "30 Days",
     },
     {
-      value: "45_days",
+      value: "45",
       name: "45 Days",
     },
     {
-      value: "due_on_receipt",
+      value: "dueReceipt",
       name: "Due on receipt",
     },
     {
-      value: "due_end_of_month",
+      value: "dueEnd",
       name: "Due end of the month",
+    },
+    {
+      value: "custom",
+      name: "Custom",
     },
   ];
 
@@ -224,6 +228,28 @@ export class AddSalesInvoiceComponent implements OnInit {
     let result = await this.accountService.getData(`sales-orders/specific/${ID}`).toPromise();
     if (result.length > 0) {
       this.salesOrder = result;
+    }
+  }
+
+  getInvDueDate(e: any) {
+    if (e === '15') {
+      const test = moment().add(15, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.saleData.dueDate = test1;
+    } else if (e === '30') {
+      const test = moment().add(30, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.saleData.dueDate = test1;
+    } else if (e === '45') {
+      const test = moment().add(45, 'd');
+      const test1 = moment(test).format('YYYY-MM-DD');
+      this.saleData.dueDate = test1;
+    } else if (e === 'dueReceipt') {
+      this.saleData.dueDate = moment().format('YYYY-MM-DD');
+    } else if (e === 'dueEnd') {
+      this.saleData.dueDate = moment().endOf('month').format('YYYY-MM-DD');
+    } else {
+      this.saleData.dueDate = null;
     }
   }
 
