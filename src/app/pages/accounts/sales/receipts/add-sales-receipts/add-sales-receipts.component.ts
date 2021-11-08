@@ -200,15 +200,16 @@ export class AddSalesReceiptsComponent implements OnInit {
   }
 
   calculateFinalTotal() {
-    let total = 0;
-    this.paymentData.invoiceData.forEach(elem => {
-      total += elem.paidAmount;
-    })
-    this.paymentData.totalAmt = total;
+    this.creditCalculation();
   }
 
   addReceipt() {
-
+    this.submitDisabled = true;
+    if (this.paymentData.invoiceData.length === 0) {
+      this.toaster.error('Please select at least one invoice');
+      this.submitDisabled = false;
+      return
+    }
     this.accountService.postData(`sales-receipts`, this.paymentData).subscribe({
       complete: () => { },
       error: (err: any) => {
