@@ -25,7 +25,10 @@ export class ContactRenewalsComponent implements OnInit {
   serviceTasks = [];
   count = {
     total: '',
-  }
+    overdue: '',
+    dueSoon: '',
+  };
+
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
