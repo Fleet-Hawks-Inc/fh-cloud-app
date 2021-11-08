@@ -29,6 +29,24 @@ export class ServicelogsComponent implements OnInit {
   lastItemSK = '';
   asset: any;
   loaded = false;
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+    // {
+    //   'name': 'Task',
+    //   'value': 'task'
+    // },
+
+  ]
+
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -46,7 +64,8 @@ export class ServicelogsComponent implements OnInit {
   }
   fetchSlogsList() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
+      // this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
+      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
@@ -59,21 +78,24 @@ export class ServicelogsComponent implements OnInit {
             this.lastItemSK = 'end';
           }
           if (result.Items.length > 0) {
-            this.allData = this.allData.concat(result.Items)
             this.loaded = true;
             result['Items'].map((v: any) => {
-              v.entityStatus = 'Active';
-              if (v.currentStatus === 'outOfService') {
-                v.entityStatus = 'Out of service';
-              } else if (v.currentStatus === 'active') {
+              if (v.isDeleted === 0) {
                 v.entityStatus = 'Active';
-              } else if (v.currentStatus === 'inactive') {
-                v.entityStatus = 'In-active';
-              } else if (v.currentStatus === 'inActive') {
-                v.entityStatus = 'In-active';
-              } else if (v.currentStatus === 'sold') {
-                v.entityStatus = 'Sold';
+                if (v.currentStatus === 'outOfService') {
+                  v.entityStatus = 'Out of service';
+                } else if (v.currentStatus === 'active') {
+                  v.entityStatus = 'Active';
+                } else if (v.currentStatus === 'inactive') {
+                  v.entityStatus = 'In-active';
+                } else if (v.currentStatus === 'inActive') {
+                  v.entityStatus = 'In-active';
+                } else if (v.currentStatus === 'sold') {
+                  v.entityStatus = 'Sold';
+                }
+                this.allData.push(v);
               }
+
             })
           }
         })
@@ -105,8 +127,13 @@ export class ServicelogsComponent implements OnInit {
         this.assetsObject = result;
       });
   }
+  categoryChange() {
+    this.searchValue = null;
+
+  }
   searchFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
+    // if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
+    if (this.searchValue != '' || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
       if (this.start != null && this.end == null) {
         this.toastr.error('Please select both start and end dates.');
         return false;
@@ -132,9 +159,10 @@ export class ServicelogsComponent implements OnInit {
 
 
   resetFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-      this.vehicleID = null;
-      this.assetID = null;
+    // if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
+    if (this.searchValue != '' || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+      this.searchValue = null;
+      this.category = null;
       this.taskID = null;
       this.start = null;
       this.end = null;
