@@ -110,16 +110,16 @@
                           <ng-select
                             [disabled]="editMode"
                             name="vehicle"
-                            [(ngModel)]="device.vehicle.vehicleID"
-                            class="form-control populate"
-                          >
-                            <ng-option
+                            [(ngModel)]="device.vehicleID"
+                            class="form-control populate"                            
+                          >   
+                          <ng-option
                               *ngFor="let vehicle of vehicles"
                               [value]="vehicle.vehicleID"
-                            >
-                              {{ vehicle.vehicleIdentification }}</ng-option
-                            >
+                              >{{ vehicle.vehicleIdentification }}
+                            </ng-option>                         
                           </ng-select>
+                         
                         </div>
                       </div>
                     </div>
@@ -141,7 +141,7 @@
                             [disabled]="editMode"
                             required
                             name="asset"
-                            [(ngModel)]="device.asset.assetID"
+                            [(ngModel)]="device.assetID"
                             class="form-control populate"
                           >
                             <ng-option
@@ -171,14 +171,13 @@
                           [disabled]="editMode"
                           (change)="deviceTypeSelected($event)"
                           required
+                          [items]='devicesTypes'
+                          bindLabel='text'
+                          bindValue='value'
                           name="deviceType"
                           [(ngModel)]="device.deviceType"
                           class="form-control populate"
-                        >
-                          <ng-option value="Tracker">Solar Tracker</ng-option>
-                          <ng-option value="Tracker">Wired Tracker</ng-option>
-                          <ng-option value="DashCam">Dash Camera</ng-option>
-                          <ng-option value="ELD">ELD</ng-option>
+                        >                        
                         </ng-select>
                       </div>
                       <div class="col-lg-5">
