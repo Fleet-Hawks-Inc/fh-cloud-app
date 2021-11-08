@@ -337,7 +337,7 @@ export class AddFuelEntryComponent implements OnInit {
 
     // append other fields
     this.apiService.postData("fuelEntries", this.fuelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -354,7 +354,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -371,12 +371,12 @@ export class AddFuelEntryComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -428,6 +428,8 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.date = result.data.date;
     this.fuelData.data.time = result.data.time;
     this.fuelData.data.type = result.data.type;
+    this.fuelData.data.rPpu = result.data.rPpu
+    this.fuelData.data.rAmt = result.data.rAmt
 
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
@@ -448,7 +450,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.submitDisabled = true;
     this.hideErrors();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -465,7 +467,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {

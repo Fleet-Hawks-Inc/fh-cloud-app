@@ -6,9 +6,11 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
               <div class="mb-3">
-                <ng-select [clearable]="false" [(ngModel)]="filterData.customerID" name="customerID"
+                <ng-select [clearable]="false"
+                  [(ngModel)]="filterData.customerID" name="customerID"
                   placeholder="Search By customers">
-                  <ng-option *ngFor="let item of customersObjects | keyvalue" value="{{ item.key }}">
+                  <ng-option *ngFor="let item of customersObjects | keyvalue"
+                    value="{{ item.key }}">
                     {{ item.value }}
                   </ng-option>
                 </ng-select>
@@ -21,30 +23,35 @@
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
-                  ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
-                <span class="
-                    input-group-text
-                    border-left-0 border-right-0
-                    rounded-0
-                  ">
+                <input type="text" [(ngModel)]="filterData.startDate"
+                  name="startDate" (click)="startDate.toggle()"
+                  ngbDatepicker #startDate="ngbDatepicker" class="form-control"
+                  placeholder="mm/dd/yyyy" readonly />
+                <span class="input-group-text
+                  border-left-0 border-right-0
+                  rounded-0">
                   to
                 </span>
-                <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
-                  ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+                <input type="text" [(ngModel)]="filterData.endDate"
+                  name="endDate" (click)="endDate.toggle()"
+                  ngbDatepicker #endDate="ngbDatepicker" class="form-control"
+                  placeholder="mm/dd/yyyy" readonly />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2">
-              <button type="submit" [disabled]="isSearch" (click)="searchSale()" class="btn btn-sm btn-success">
+              <button type="submit" [disabled]="isSearch" (click)="searchSale()"
+                class="btn btn-sm btn-success">
                 Search
               </button>
-              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch" (click)="resetFilter()">
+              <button type="button" class="btn btn-sm btn-success ml-3"
+                [disabled]="isSearch" (click)="resetFilter()">
                 Reset
               </button>
             </div>
             <div class="col-md-5 col-lg-5 text-right pr-2">
-              <a routerLink="/accounts/sales/orders/add" class="btn btn-success btn-sm ml-2" style="color: white"><i
+              <a routerLink="/accounts/sales/orders/add" class="btn btn-success
+                btn-sm ml-2" style="color: white"><i
                   class="fas fa-plus"></i> Add Sales Order
               </a>
             </div>
@@ -58,7 +65,8 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <table class="table table-bordered table-striped mb-0 simple-table">
+                  <table class="table table-bordered table-striped mb-0
+                    simple-table">
                     <thead>
                       <tr class="bgcol2">
                         <th class="text-2">Date</th>
@@ -79,46 +87,45 @@
                       </tr>
                       <tr *ngFor="let item of allSales">
                         <td title="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}" routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           {{ item.txnDate | date: "yyyy/MM/dd" }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           {{ item.sOrNo }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           {{ item.sRef }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           {{ customersObjects[item.cusInfo.customerID] }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           {{ item.shipDate | date: "yyyy/MM/dd" }}
                         </td>
                         <td title="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}" routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
-                          {{ item.currency }}
                           {{
                           item.total.finalTotal
                           ? (item.total.finalTotal | number: "1.2-2")
                           : ""
-                          }}
+                          }} {{ item.currency }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           <span *ngIf="item.invStatus">
                             <span class="badge badge-dark p-1 text-uppercase">
@@ -137,7 +144,7 @@
                           <span class="badge badge-dark p-1">UNPAID</span>
                         </td> -->
                         <td routerLink="/accounts/sales/orders/detail/{{
-                            item.saleID
+                          item.saleID
                           }}">
                           <span class="badge badge-dark p-1 text-uppercase">{{
                             item.status
@@ -145,7 +152,8 @@
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
-                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown">
+                            <button type="button" class="m-0 p-0 btn"
+                              data-toggle="dropdown">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
@@ -157,9 +165,11 @@
                                 >Create Invoice</a
                               > -->
                               <a routerLink="/accounts/sales/orders/edit/{{
-                                  item.saleID
-                                }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                              <a (click)="deleteSale(item.saleID)" class="dropdown-item text-1"
+                                item.saleID
+                                }}" class="dropdown-item text-1"
+                                href="javascript:;">Edit</a>
+                              <a (click)="deleteSale(item.saleID)"
+                                class="dropdown-item text-1"
                                 href="javascript:;">Delete</a>
                             </div>
                           </div>
