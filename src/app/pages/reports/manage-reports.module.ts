@@ -23,6 +23,10 @@ const routes: Routes = [
   {
     path: 'compliance',
     loadChildren: () => import('./compliance-reports/manage-compliance-reports.module').then((m) => m.ManageComplianceReportsModule),
+  },
+  {
+    path: 'accounts',
+    loadChildren: () => import('./accounts/manage-accounts-reports.module').then((m) => m.ManageAccountsReportsModule)
   }
 
 
