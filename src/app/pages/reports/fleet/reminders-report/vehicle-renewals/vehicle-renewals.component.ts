@@ -39,7 +39,6 @@ export class VehicleRenewalsComponent implements OnInit {
     this.fetchallData();
     this.fetchReminderCount();
     this.fetchVehiclesdata();
-    this.fetchServiceTask();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -53,13 +52,6 @@ export class VehicleRenewalsComponent implements OnInit {
     this.apiService.getData("reminders/fetch/count?type=vehicle").subscribe((result: any) => {
       this.count = result;
     })
-  }
-  fetchServiceTask() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
-    });
   }
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end')
