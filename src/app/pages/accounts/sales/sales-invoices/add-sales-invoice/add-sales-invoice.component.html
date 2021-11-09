@@ -40,8 +40,8 @@
                               text-lg-right
                               pt-2
                             ">Payment Currency</label>
-                          <ng-select [clearable]="false" [(ngModel)]="saleData.currency" name="currency"
-                            placeholder="Select currency" #payCur="ngModel" required>
+                          <ng-select [clearable]="false" (change)="changeCur()" [(ngModel)]="saleData.currency"
+                            name="currency" placeholder="Select currency" #payCur="ngModel" required>
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
@@ -206,21 +206,10 @@
                               font-weight-bold font-bold
                               text-lg-right
                               pt-2
-                            ">Due Date
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
-                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
-                            required />
-                        </div>
-                        <div class="col-lg-5">
-                          <label class="
-                              control-label
-                              font-weight-bold font-bold
-                              text-lg-right
-                              pt-2
                             ">Payment Terms
                             <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="saleData.paymentTerm" name="paymentTerm" placeholder="Select Payment
+                          <ng-select [(ngModel)]="saleData.paymentTerm" (change)="getInvDueDate($event)"
+                            name="paymentTerm" placeholder="Select Payment
                               Terms" #paymentTerm="ngModel" required>
                             <ng-option value="{{ data.value }}" *ngFor="let data of paymentTerms">{{ data.name }}
                             </ng-option>
@@ -235,6 +224,20 @@
                             </div>
                           </div>
                         </div>
+
+                        <div class="col-lg-5">
+                          <label class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            ">Due Date
+                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                          <input type="text" [(ngModel)]="saleData.dueDate" name="dueDate" class="form-control"
+                            (click)="dDate.toggle()" ngbDatepicker #dDate="ngbDatepicker" #sOrderDate="ngModel"
+                            required />
+                        </div>
+
                       </div>
                       <div class="row pt-2">
                         <div class="col-lg-10">
@@ -278,7 +281,7 @@
                                   <th class="text-2">Payment Date</th>
                                   <th class="text-2">Reference#</th>
                                   <th class="text-2">Amount</th>
-                                  <th class="text-2">Pending Amount</th>
+                                  <th class="text-2">Balance</th>
                                   <th class="text-2">Paid Amount</th>
                                   <th class="text-2">Status</th>
                                   <th class="text-2">Full Payment</th>
@@ -311,8 +314,7 @@
                                     {{ data.currency }}
                                   </td>
                                   <td>
-                                    -
-                                    <!-- {{ data.prevPaidAmount | number: "1.2-2" }} -->
+                                    {{ data.prevPaidAmount | number: "1.2-2" }}
                                   </td>
                                   <td>
                                     <span class="
@@ -385,7 +387,14 @@
                               ">
                               <td class="border">
                                 <input type="text" class="form-control" placeholder="Enter commodity"
-                                  [(ngModel)]="dt.commodity" name="commodity{{ d }}" />
+                                  [(ngModel)]="dt.commodity" name="commodity{{ d }}" #com="ngModel" required />
+                                <div *ngIf="com.invalid && (com.dirty || com.touched)" class="text-danger">
+                                  <div *ngIf="com.errors.required">
+                                    Commodity
+                                    is
+                                    required.
+                                  </div>
+                                </div>
                               </td>
                               <td class="border">
                                 <input type="text" class="form-control" placeholder="Description" [(ngModel)]="dt.desc"
@@ -395,7 +404,25 @@
                                 <div class="row">
                                   <div class="col-lg-6 pr-1">
                                     <input type="text" class="form-control" placeholder="Enter commodity/service"
-                                      [(ngModel)]="dt.qty" (change)="calculateAmount(d)" name="qty{{ d }}" />
+                                      [(ngModel)]="dt.qty" (input)="calculateAmount(d)" pattern="^[1-9]\d*(\.\d+)?$"
+                                      #qtyy="ngModel" required name="qty{{ d }}" />
+                                    <div *ngIf="qtyy.invalid
+                                      &&
+                                      (qtyy.dirty
+                                      ||
+                                      qtyy.touched)" class="text-danger">
+                                      <div *ngIf="qtyy.errors.required">
+                                        Quantity
+                                        is
+                                        required.
+                                      </div>
+                                      <div *ngIf="qtyy.errors.pattern">
+                                        Please
+                                        enter
+                                        valid
+                                        number
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="col-lg-6 pl-1">
                                     <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
@@ -410,7 +437,25 @@
                                 <div class="row">
                                   <div class="col-lg-6 pr-1">
                                     <input type="text" class="form-control" placeholder="Enter rate"
-                                      [(ngModel)]="dt.rate" name="rate{{ d }}" (change)="calculateAmount(d)" />
+                                      [(ngModel)]="dt.rate" name="rate{{ d }}" pattern="^[1-9]\d*(\.\d+)?$"
+                                      #rate="ngModel" required (input)="calculateAmount(d)" />
+                                    <div *ngIf="rate.invalid
+                                      &&
+                                      (rate.dirty
+                                      ||
+                                      rate.touched)" class="text-danger">
+                                      <div *ngIf="rate.errors.required">
+                                        Rate
+                                        is
+                                        required.
+                                      </div>
+                                      <div *ngIf="rate.errors.pattern">
+                                        Please
+                                        enter
+                                        valid
+                                        number
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="col-lg-6 pl-1">
                                     <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"

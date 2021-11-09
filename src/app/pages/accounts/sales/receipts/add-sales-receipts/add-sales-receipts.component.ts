@@ -30,7 +30,8 @@ export class AddSalesReceiptsComponent implements OnInit {
     remarks: '',
     totalAmt: 0,
     invoiceIds: [],
-    invoiceData: []
+    invoiceData: [],
+    invoiceTotal: 0
   }
 
   editDisabled = false;
@@ -127,7 +128,6 @@ export class AddSalesReceiptsComponent implements OnInit {
   }
 
   assignFullPayment(index, data) {
-    console.log('data', data)
     if (data.fullPayment) {
       this.customerInvoices[index].paidAmount = data.balance;
       this.customerInvoices[index].paidStatus = true;
@@ -135,6 +135,7 @@ export class AddSalesReceiptsComponent implements OnInit {
       this.customerInvoices[index].paidAmount = 0;
       this.customerInvoices[index].paidStatus = false;
     }
+    this.selectedCredits()
   }
 
   selectedCredits() {
@@ -166,30 +167,49 @@ export class AddSalesReceiptsComponent implements OnInit {
             status: status,
             paidAmount: element.paidAmount,
             totalAmount: element.balance,
-            balance:
-              Number(element.balance) - Number(element.paidAmount),
           };
           this.paymentData.invoiceData.push(obj);
         }
       }
     }
+    this.creditCalculation();
+    // this.calculateFinalTotal();
+  }
 
-    this.calculateFinalTotal();
+  creditCalculation() {
+    this.paymentData.invoiceTotal = 0;
+    for (const element of this.customerInvoices) {
+      if (element.selected) {
+        this.paymentData.invoiceTotal += Number(element.paidAmount);
+        this.paymentData.invoiceData.map((v) => {
+          if (element.saleID === v.saleID) {
+            v.paidAmount = Number(element.paidAmount);
+            v.pendingAmount =
+              Number(element.balance) - Number(element.paidAmount);
+            if (Number(element.paidAmount) === Number(element.balance)) {
+              v.status = "deducted";
+            } else if (Number(element.paidAmount) < Number(element.balance)) {
+              v.status = "partially_deducted";
+            } else {
+              v.status = "not_deducted";
+            }
+          }
+        });
+      }
+    }
   }
 
   calculateFinalTotal() {
-    let total = 0;
-    console.log('this.paymentData.invoiceData', this.paymentData.invoiceData)
-    this.paymentData.invoiceData.forEach(elem => {
-      total += elem.paidAmount;
-    })
-    this.paymentData.totalAmt = total;
+    this.creditCalculation();
   }
 
   addReceipt() {
-
-    console.log('dara', this.paymentData)
-
+    this.submitDisabled = true;
+    if (this.paymentData.invoiceData.length === 0) {
+      this.toaster.error('Please select at least one invoice');
+      this.submitDisabled = false;
+      return
+    }
     this.accountService.postData(`sales-receipts`, this.paymentData).subscribe({
       complete: () => { },
       error: (err: any) => {
