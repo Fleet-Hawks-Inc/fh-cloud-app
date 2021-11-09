@@ -155,7 +155,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}vehicle-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Service-renewal-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

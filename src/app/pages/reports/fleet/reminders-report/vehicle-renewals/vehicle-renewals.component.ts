@@ -135,8 +135,9 @@ export class VehicleRenewalsComponent implements OnInit {
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Renewal Type"] = this.tasksData[element.tasks.taskID] + " " + element.status
         obj["Due Date"] = element.tasks.dueDate
-        obj["Subscribers"] = element.subscribers
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
+        obj["Subscribers"] = element.subscribers
+
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
@@ -154,7 +155,7 @@ export class VehicleRenewalsComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}serviceReminder-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Vehicle-Reminder-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
