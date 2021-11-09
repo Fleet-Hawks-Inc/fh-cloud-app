@@ -58,13 +58,11 @@ export class SummaryComponent implements OnInit {
             this.assetList = result;
         });
     }
-
     fetchVehicleList() {
         this.apiService.getData(`vehicles/get/list`).subscribe((result: any) => {
             this.vehicleList = result;
         });
     }
-
     fetchAllAssets() {
         this.apiService.getData('assets').subscribe((result: any) => {
             result.Items.forEach((e: any) => {
@@ -78,7 +76,6 @@ export class SummaryComponent implements OnInit {
             });
         });
     }
-
     fetchAllVehicles() {
         this.apiService.getData('vehicles').subscribe((result: any) => {
             this.allVehicles = result.Items;
@@ -90,7 +87,6 @@ export class SummaryComponent implements OnInit {
             this.fuelCount = result;
         })
     }
-
     async fetchFuelReport(refresh?: boolean) {
         if (refresh === true) {
             this.lastItemSK = '';
@@ -130,8 +126,6 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
-
-
     resetFilter() {
         if (this.unitID !== null || this.assetUnitID !== null) {
             this.unitID = null;
@@ -144,10 +138,6 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
-
-
-
-    //csv
     generateFuelCSV() {
         if (this.fuelList.length > 0) {
             let dataObject = []

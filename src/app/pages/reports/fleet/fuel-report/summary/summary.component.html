@@ -3,32 +3,6 @@
         <section role="main" class="content-body pt-0 pr-0 pl-1">
             <header class="page-header pr19 pl11">
                 <div class="row" style="padding-top:10px;">
-
-                    <!--  
-                                   <div class="col-lg-3 col-md-3">
-                                <div class="input-daterange input-group">
-                                  <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                      <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                  </span>
-                                  <input [(ngModel)]="fromDate" name="fromDate" type="text"
-                                    placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                    class="form-control" autocomplete="off"
-                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                  <span class="input-group-text border-left-0 border-right-0
-                                    rounded-0">
-                                    to
-                                  </span>
-                                  <input [(ngModel)]="toDate" name="toDate" type="text"
-                                    placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                    ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit"
-                                    [maxDate]="futureDatesLimit">
-                                </div>
-                              </div>
-                              -->
                     <div class="col-md-2 col-lg-2 pr-0">
                         <ng-select [(ngModel)]="unitID" name="unitID" style="width:
                                     100%;" placeholder="Search by vehicle">
@@ -37,8 +11,6 @@
                             </ng-option>
                         </ng-select>
                     </div>
-
-
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
                             placeholder="Search by reefer">
@@ -47,20 +19,11 @@
                             </ng-option>
                         </ng-select>
                     </div>
-
-
-
-
-
-                    <!-- <div class="col-md-2 col-lg-2 pr-0">
-                                    <input autocomplete="off"[(ngModel)]=" " class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by reefer" type="text">
-                                 </div> -->
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-3">Search</button>
                         <button class="btn btn-sm btn-success" (click)="resetFilter()" type="submit">Reset</button>
                     </div>
-
                     <div class="col-md-6 col-lg-6 text-right pr-1">
                         <div class="btn-group flex-wrap ml-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -123,7 +86,6 @@
                                     <p class="tileCur mt-0 mb-0">{{fuelCount.usd_amount}} USD</p>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="col">
@@ -149,9 +111,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-
                                                 <tr *ngIf="fuelList.length == 0" class="text-center">
-
                                                     <td colspan="13">{{ dataMessage }}</td>
                                                 </tr>
                                                 <ng-container *ngFor="let fuelEntry of fuelList">
@@ -162,44 +122,34 @@
                                                         <td> <span *ngIf="fuelEntry.unitID">
                                                                 <span
                                                                     *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
-
                                                                 <span
                                                                     *ngIf="fuelEntry.data.useType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>
                                                                 {{fuelEntry.unitIdentification}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.cardNo">{{fuelEntry.data.cardNo}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.city">{{fuelEntry.data.city}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.fuelID">{{fuelEntry.data.type}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom}}</span>
                                                         </td>
-
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt}}&nbsp;{{fuelEntry.data.currency}}</span>
                                                         </td>

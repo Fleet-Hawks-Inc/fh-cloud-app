@@ -23,7 +23,6 @@ const routes: Routes = [
   { path: 'fvreport', component: FvreportComponent },
   { path: 'fdreport', component: FdreportComponent },
 ];
-
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -42,7 +41,6 @@ const routes: Routes = [
        day: + parseInt(parts[2])
      }
    }
- 
    toModel(date: NgbDateStruct): string // from internal model -> your mode
    {
      return date ? date.year + this.DELIMITER + ('0' + date.month).slice(-2)
@@ -55,9 +53,7 @@ const routes: Routes = [
   */
  @Injectable()
  export class CustomDateParserFormatter extends NgbDateParserFormatter {
- 
    readonly DELIMITER = '/';
- 
    parse(value: string): NgbDateStruct | null {
      if (value) {
        const date = value.split(this.DELIMITER);
@@ -70,12 +66,10 @@ const routes: Routes = [
      }
      return null;
    }
- 
    format(date: NgbDateStruct | null): string {
      return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
    }
  }
-
 @NgModule({
   declarations: [
     FoverviewComponent,
