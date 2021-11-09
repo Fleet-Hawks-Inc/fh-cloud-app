@@ -35,7 +35,7 @@ export class ContactRenewalsComponent implements OnInit {
     this.fetchallitems();
     this.fectchTasks();
     this.fetchEmployees();
-    this.fetchServiceTaks();
+    this.fetchServiceTask();
     this.fetchReminderCount();
   }
   fectchTasks() {
@@ -53,7 +53,7 @@ export class ContactRenewalsComponent implements OnInit {
       this.empName = res;
     });
   }
-  fetchServiceTaks() {
+  fetchServiceTask() {
     let test = [];
     this.apiService.getData('tasks').subscribe((result: any) => {
       test = result.Items;
@@ -124,7 +124,7 @@ export class ContactRenewalsComponent implements OnInit {
       this.empData.forEach(element => {
         let obj = {}
         obj["Contact"] = this.empName[element.entityID]
-        obj["Renewal Type"] = this.tasks[element.tasks.taskID]
+        obj["Renewal Type"] = this.tasks[element.tasks.taskID] + " " + element.status
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Expiration Date"] = element.tasks.dueDate
         obj["Subscribers"] = element.subscribers

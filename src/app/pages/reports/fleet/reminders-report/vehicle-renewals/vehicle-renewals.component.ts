@@ -36,22 +36,24 @@ export class VehicleRenewalsComponent implements OnInit {
   ngOnInit() {
     this.fetchvehiclesList();
     this.fetchTasksList();
-    this.fetchallData();
     this.fetchReminderCount();
     this.fetchVehiclesdata();
+    this.fetchServiceTask();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
-  }
-
-  fetchallData() {
-    this.apiService.getData("reminders").subscribe((result: any) => {
-    });
   }
   fetchReminderCount() {
     this.apiService.getData("reminders/fetch/count?type=vehicle").subscribe((result: any) => {
       this.count = result;
     })
+  }
+  fetchServiceTask() {
+    let test = [];
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    });
   }
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end')
@@ -127,9 +129,8 @@ export class VehicleRenewalsComponent implements OnInit {
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Renewal Type"] = this.tasksData[element.tasks.taskID] + " " + element.status
         obj["Due Date"] = element.tasks.dueDate
-        obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         obj["Subscribers"] = element.subscribers
-
+        obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
