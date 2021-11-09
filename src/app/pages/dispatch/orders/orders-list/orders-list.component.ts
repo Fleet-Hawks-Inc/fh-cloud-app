@@ -98,6 +98,14 @@ export class OrdersListComponent implements OnInit {
 
   statusData = [
     {
+      name: "Attached",
+      value: "attached",
+    },
+    {
+      name: "Created",
+      value: "created",
+    },
+    {
       name: "Confirmed",
       value: "confirmed",
     },
@@ -200,7 +208,7 @@ export class OrdersListComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private listService: ListService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchAllTypeOrderCount();
@@ -211,8 +219,8 @@ export class OrdersListComponent implements OnInit {
     this.allordersCount = 0;
 
     this.apiService.getData("orders/get/allTypes/count").subscribe({
-      complete: () => { },
-      error: () => { },
+      complete: () => {},
+      error: () => {},
       next: (result: any) => {
         this.allordersCount = result.allCount;
         this.totalRecords = result.allCount;
@@ -227,17 +235,19 @@ export class OrdersListComponent implements OnInit {
     this.apiService
       .getData(
         "orders/get/filter/count?searchValue=" +
-        this.orderFiltr.searchValue +
-        "&startDate=" +
-        this.orderFiltr.start +
-        "&endDate=" +
-        this.orderFiltr.end +
-        "&category=" +
-        this.orderFiltr.category
+          this.orderFiltr.searchValue +
+          "&startDate=" +
+          this.orderFiltr.start +
+          "&endDate=" +
+          this.orderFiltr.end +
+          "&category=" +
+          this.orderFiltr.category
       )
       .subscribe({
-        complete: () => { },
-        error: () => { this.isSearch = false; },
+        complete: () => {},
+        error: () => {
+          this.isSearch = false;
+        },
         next: (result: any) => {
           this.totalRecords = result.Count;
 
@@ -289,15 +299,15 @@ export class OrdersListComponent implements OnInit {
     this.apiService
       .getData(
         "orders/fetch/records/all?searchValue=" +
-        this.orderFiltr.searchValue +
-        "&startDate=" +
-        this.orderFiltr.start +
-        "&endDate=" +
-        this.orderFiltr.end +
-        "&category=" +
-        this.orderFiltr.category +
-        "&lastKey=" +
-        this.lastEvaluatedKey
+          this.orderFiltr.searchValue +
+          "&startDate=" +
+          this.orderFiltr.start +
+          "&endDate=" +
+          this.orderFiltr.end +
+          "&category=" +
+          this.orderFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
       )
       .subscribe(
         (result: any) => {
@@ -366,7 +376,6 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
-
     if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
       this.toastr.error("Please select category");
       return false;
@@ -420,7 +429,7 @@ export class OrdersListComponent implements OnInit {
         this.tonuOrders = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
-        this.lastEvaluatedKey = '';
+        this.lastEvaluatedKey = "";
         this.fetchOrdersCount();
         // this.initDataTable();
       }
@@ -429,7 +438,7 @@ export class OrdersListComponent implements OnInit {
 
   resetFilter() {
     if (
-      this.orderFiltr.category !== '' ||
+      this.orderFiltr.category !== "" ||
       this.orderFiltr.category !== null ||
       this.orderFiltr.startDate !== "" ||
       this.orderFiltr.endDate !== "" ||
@@ -456,7 +465,7 @@ export class OrdersListComponent implements OnInit {
       this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
       // this.fetchAllTypeOrderCount();
-      this.lastEvaluatedKey = '';
+      this.lastEvaluatedKey = "";
       this.fetchOrdersCount();
       // this.initDataTable();
       this.spinner.hide();
@@ -558,7 +567,6 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-
   async changeStatus() {
     this.isConfirm = true;
     if (this.emailData.confirmEmail && this.emailData.emails.length === 0) {
@@ -571,7 +579,7 @@ export class OrdersListComponent implements OnInit {
       emails: [],
       confirm: false,
       customerID: this.newCustomerID,
-      instructions: ''
+      instructions: "",
     };
     this.emailData.emails.forEach((elem) => {
       newData.emails.push(elem.label);
@@ -579,11 +587,12 @@ export class OrdersListComponent implements OnInit {
     newData.confirm = this.emailData.confirmEmail;
     this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
+        `orders/update/orderStatus/${this.newOrderID}/${
+          this.newOrderNumber
         }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
       )
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           this.isConfirm = false;
         },
@@ -600,9 +609,11 @@ export class OrdersListComponent implements OnInit {
           // this.lastEvaluatedKey = "";
           // this.fetchAllTypeOrderCount();
 
-          let getOrder = this.orders[0].filter(elem => elem.orderID == this.newOrderID);
+          let getOrder = this.orders[0].filter(
+            (elem) => elem.orderID == this.newOrderID
+          );
 
-          getOrder[0].orderStatus = 'confirmed';
+          getOrder[0].orderStatus = "confirmed";
 
           this.confirmRef.close();
           this.isConfirm = false;
