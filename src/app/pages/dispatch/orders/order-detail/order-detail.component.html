@@ -1676,7 +1676,7 @@
       <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
         Cancel
       </button>
-      <!-- <button (click)="emailInv()" class="btn btn-success">Email Invoice</button> -->
+      <button (click)="emailInv()" class="btn btn-success">Email Invoice</button>
       <button class="btn btn-success" (click)="generate()">Print</button>
       <button *ngIf="!isInvoiced && orderStatus != 'created'" [disabled]="generateBtnDisabled" (click)="generatePDF()"
         class="btn btn-success">

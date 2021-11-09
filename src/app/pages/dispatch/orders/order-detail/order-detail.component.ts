@@ -573,7 +573,7 @@ export class OrderDetailComponent implements OnInit {
         // }
       },
 
-      (err) => {}
+      (err) => { }
 
     );
   }
@@ -633,16 +633,18 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  emailInv() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "email--invoice",
-    };
-    this.emailRef = this.modalService.open(
-      this.emailInvoiceModal,
-      ngbModalOptions
-    );
-    this.emailData.emails.push({ label: this.customerEmail });
+  async emailInv() {
+    // let ngbModalOptions: NgbModalOptions = {
+    //   keyboard: true,
+    //   windowClass: "email--invoice",
+    // };
+    // this.emailRef = this.modalService.open(
+    //   this.emailInvoiceModal,
+    //   ngbModalOptions
+    // );
+    // this.emailData.emails.push({ label: this.customerEmail });
+    let result = await this.apiService.getData(`orders/emailInvoice/${this.orderID}`).toPromise();
+
   }
 
   showInv() {
@@ -727,7 +729,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`zeroRated`] = this.zeroRated;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -745,7 +747,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => {},
+            next: () => { },
 
           });
       },
@@ -885,7 +887,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
