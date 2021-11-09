@@ -29,7 +29,7 @@
                     </div>
                     <div class="col-md-2 col-lg-2 pl-0 pr-0">
                         <div class="input-group input-group-sm mb-3">
-                            <ng-select [(ngModel)]="category" name="category" style="width: 100%;"
+                            <ng-select [(ngModel)]="category" name="category"class="capitalize" style="width: 100%;"
                                 placeholder="Search items by category">
                                 <ng-option value="belts">Belts</ng-option>
                                 <ng-option value="brakes">Brakes</ng-option>
@@ -102,9 +102,9 @@
                                                 </tr>
                                                 <tr class="cursorpoint" *ngFor="let item of items; let i = index">
                                                     <td>{{ item.partNumber}}</td>
-                                                    <td>{{ item.itemName}}</td>
-                                                    <td>{{ item.category}}</td>
-                                                    <td>{{vendors[item.warehouseVendorID]}}</td>
+                                                    <td><span class="line-height-lg text-capitalize">{{ item.itemName}}</span></td>
+                                                    <td><span class="line-height-lg text-capitalize">{{ item.category}}</span></td>
+                                                    <td><span class="line-height-lg text-capitalize">{{ vendors[item.warehouseVendorID]}}</span></td>
                                                     <td>{{ item.quantity}}</td>
                                                     <td>{{item.cost}} {{item.costUnitType}}</td>
                                                     <td>{{warehouses[item.warehouseID]}}</td>
