@@ -1416,11 +1416,12 @@ export class NewAddressBookComponent implements OnInit {
   openDetail(targetModal, item) {
     this.editUser(item)
 
-    this.modalService.dismissAll();
+    // this.modalService.dismissAll();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
-      windowClass: 'units-detail__main'
+      windowClass: 'units-detail__main',
+      backdropClass: 'light-backdrop'
     };
     this.modalService.open(targetModal, ngbModalOptions);
 

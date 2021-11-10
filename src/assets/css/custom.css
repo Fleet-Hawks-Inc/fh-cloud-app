@@ -740,7 +740,6 @@
   }
 }
 
-
 @media (max-width: 896px) {
   .gmainbox2 {
     float: left;
@@ -3895,3 +3894,6 @@ input:checked + .sliderbtn:before {
   opacity: 0.431;
 }
 
+.light-backdrop {
+  background-color: #dfdfdf4a;
+}
