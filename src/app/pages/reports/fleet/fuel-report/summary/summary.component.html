@@ -3,42 +3,14 @@
         <section role="main" class="content-body pt-0 pr-0 pl-1">
             <header class="page-header pr19 pl11">
                 <div class="row" style="padding-top:10px;">
-
-                    <!--  
-                                   <div class="col-lg-3 col-md-3">
-                                <div class="input-daterange input-group">
-                                  <span class="input-group-prepend">
-                                    <span class="input-group-text">
-                                      <i class="fas fa-calendar-alt"></i>
-                                    </span>
-                                  </span>
-                                  <input [(ngModel)]="fromDate" name="fromDate" type="text"
-                                    placeholder="yyyy/mm/dd"
-                                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker"
-                                    class="form-control" autocomplete="off"
-                                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
-                                  <span class="input-group-text border-left-0 border-right-0
-                                    rounded-0">
-                                    to
-                                  </span>
-                                  <input [(ngModel)]="toDate" name="toDate" type="text"
-                                    placeholder="yyyy/mm/dd" (click)="to.toggle()"
-                                    ngbDatepicker #to="ngbDatepicker" class="form-control"
-                                    autocomplete="off" [minDate]="dateMinLimit"
-                                    [maxDate]="futureDatesLimit">
-                                </div>
-                              </div>
-                              -->
-                    <div class="col-md-2 col-lg-2 pr-0">
+                      <div class="col-md-2 col-lg-2 pr-0">
                         <ng-select [(ngModel)]="unitID" name="unitID" style="width:
                                     100%;" placeholder="Search by vehicle">
-                            <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">
+                            <ng-option *ngFor="let data of vehicleSet" [value]="data.vehicleID">
                                 {{data.vehicleIdentification}}
                             </ng-option>
                         </ng-select>
                     </div>
-
-
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
                             placeholder="Search by reefer">
@@ -47,14 +19,6 @@
                             </ng-option>
                         </ng-select>
                     </div>
-
-
-
-
-
-                    <!-- <div class="col-md-2 col-lg-2 pr-0">
-                                    <input autocomplete="off"[(ngModel)]=" " class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by reefer" type="text">
-                                 </div> -->
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-3">Search</button>
