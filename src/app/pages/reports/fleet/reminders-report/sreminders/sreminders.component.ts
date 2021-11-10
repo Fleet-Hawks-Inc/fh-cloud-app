@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { result } from 'lodash';
+import { map, result } from 'lodash';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { constants } from 'buffer';
@@ -19,13 +19,10 @@ export class SremindersComponent implements OnInit {
   lastItemSK = "";
   type = "null";
   allData = [];
-  pageLength = 10;
   lastEvaluatedKey = "";
-  carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
   tasksData = [];
-  taskName: string;
   serviceList = [];
   loaded = false
   filterStatus = null;
@@ -35,7 +32,7 @@ export class SremindersComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
-
+  record = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -44,6 +41,7 @@ export class SremindersComponent implements OnInit {
     this.fetchTasksList();
     this.fetchReminderCount();
     this.fetchTaskData();
+    this.fetchVehicleIDs();
 
   }
   setFilterStatus(val) {
@@ -126,6 +124,15 @@ export class SremindersComponent implements OnInit {
       test = result.Items;
       this.serviceList = test.filter((s: any) => s.taskType === 'service');
     });
+  }
+  fetchVehicleIDs() {
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
+    })
   }
   generateCSV() {
     if (this.allData.length > 0) {

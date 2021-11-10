@@ -7,7 +7,10 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
                      placeholder="Search By vehicle">
-                     <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <!-- <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option> -->
+                     <ng-option *ngFor="let data of record " value="{{ data.vehicleID }}"> {{ data.vehicleIdentification
+                        }}
                      </ng-option>
                   </ng-select>
                </div>
