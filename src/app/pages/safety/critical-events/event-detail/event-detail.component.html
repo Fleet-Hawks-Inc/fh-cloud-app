@@ -38,7 +38,7 @@
                 <div class="col-xl-9 col-12 pl-0 pr-0">
                   <div class="row pl-3 pr-3">
                     <div class="col-xl-6 col-6 pl-0">
-                      <div class="safetytile p-4 border">
+                      <div class="safetytile critical3box p-4 border">
                         <div class="driverbar">
                           <span
                             class="
@@ -107,7 +107,8 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventDate | date: "yyyy/MM/dd" }} {{ eventTime }}</span
+                            >{{ eventDate | date: "yyyy/MM/dd" }}
+                            {{ eventTime }}</span
                           >
                           <h2
                             class="
@@ -135,7 +136,7 @@
                               font-weight-bold
                               text-dark
                             "
-                            >{{ eventSpeed || 0 | number : '1.2-2' }} km/h</span
+                            >{{ eventSpeed || 0 | number: "1.2-2" }} km/h</span
                           >
                           <h2
                             class="
@@ -155,7 +156,7 @@
                     </div>
 
                     <div class="col-xl-6 col-6 pr-0">
-                      <div class="safetytile p-4 border">
+                      <div class="safetytile critical3box p-4 border">
                         <div class="driverbar">
                           <span
                             class="
@@ -180,13 +181,12 @@
                             >
 
                             <span *ngIf="eventType == 'impactTilt'"
-                            >Impact/Tilt</span
-                          >
+                              >Impact/Tilt</span
+                            >
 
                             <span *ngIf="eventType == 'harshBrake'">
                               Harsh Brake
                             </span>
-
                           </span>
                           <h2
                             class="
@@ -294,9 +294,17 @@
                   </div>
                 </div>
 
-                <div class="col-xl-3 col-12 mb-3 pl-0 pr-0">
+                <div class="col-xl-3 col-12 pl-0 pr-0">
                   <div class="col-xl-12 col-12 mb-3">
-                    <div class="vehicle-common-box maindisbox w100 pull-left">
+                    <div
+                      class="
+                        vehicle-common-box
+                        critical3box
+                        maindisbox
+                        w100
+                        pull-left
+                      "
+                    >
                       <div class="widgetload">
                         <div class="widgettbload">
                           <span class="pull-right text-3 mt-2 text-dark">
@@ -390,7 +398,7 @@
         </div>
 
         <div class="row mb-3">
-          <div class="col-6">
+          <div class="col-4">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <p class="mb-2 text-4 font-weight-bold text-dark">
@@ -446,7 +454,7 @@
             </div>
           </div>
 
-          <div class="col-6">
+          <div class="col-8">
             <div class="bg-white p-3 text-dark">
               <div class="form-group row justify-content-between pl-2 pr-2">
                 <div id="map" style="height: 520px; overflow: hidden"></div>
@@ -471,9 +479,7 @@
   <div class="modal-dialog" style="max-width: 600px" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewDocModalLabel">
-          View Events Gallery
-        </h5>
+        <h5 class="modal-title" id="viewDocModalLabel">View Events Gallery</h5>
         <button
           type="button"
           class="close"
@@ -485,7 +491,7 @@
       </div>
       <div class="modal-body">
         <div class="col-lg-12" *ngIf="eventImages?.length > 0">
-          <div class="mb-3" >
+          <div class="mb-3">
             <div class="row">
               <div class="col-12">
                 <ngx-slick-carousel
@@ -508,7 +514,7 @@
                 </ngx-slick-carousel>
               </div>
             </div>
-           </div>
+          </div>
         </div>
         <div *ngIf="eventImages?.length === 0">
           <div class="alert alert-secondary m-0" role="alert">
