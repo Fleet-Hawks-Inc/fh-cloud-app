@@ -32,9 +32,7 @@ export class AddDeviceComponent implements OnInit {
     assetID: '',
     deviceID: '',
     vehicle: {},
-    asset: {},
-    description: "",
-    deviceType: "",
+    asset: {}
   };
 
 
