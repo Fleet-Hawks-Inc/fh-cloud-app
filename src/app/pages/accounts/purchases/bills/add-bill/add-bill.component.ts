@@ -23,7 +23,7 @@ export class AddBillComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   orderData = {
-    txnDate: null,
+    txnDate: moment().format("YYYY-MM-DD"),
     refNo: "",
     currency: "CAD",
     vendorID: null,
@@ -42,6 +42,7 @@ export class AddBillComponent implements OnInit {
     ],
     charges: {
       remarks: "",
+      accountID: null,
       accFee: [
         {
           name: "",
@@ -86,7 +87,7 @@ export class AddBillComponent implements OnInit {
     },
     status: "open",
     billType: null,
-    dueDate: moment().format("YYYY-MM-DD"),
+    dueDate: null,
     paymentTerm: null,
     purchaseID: null,
     creditIds: [],
@@ -107,24 +108,28 @@ export class AddBillComponent implements OnInit {
   purchaseOrders = [];
   paymentTerms = [
     {
-      value: "15_days",
+      value: "15",
       name: "15 Days",
     },
     {
-      value: "30_days",
+      value: "30",
       name: "30 Days",
     },
     {
-      value: "45_days",
+      value: "45",
       name: "45 Days",
     },
     {
-      value: "due_on_receipt",
+      value: "dueReceipt",
       name: "Due on receipt",
     },
     {
-      value: "due_end_of_month",
+      value: "dueEnd",
       name: "Due end of the month",
+    },
+    {
+      value: "custom",
+      name: "Custom",
     },
   ];
   billID = "";
@@ -428,7 +433,7 @@ export class AddBillComponent implements OnInit {
     // append other fields
     formData.append("data", JSON.stringify(this.orderData));
     this.submitDisabled = true;
-
+    console.log("this.orderData", this.orderData);
     this.accountService.postData("bills", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -645,6 +650,28 @@ export class AddBillComponent implements OnInit {
       this.productDisabled = true;
     } else {
       this.productDisabled = false;
+    }
+  }
+
+  getDueDate(e: any) {
+    if (e === "15") {
+      const test = moment().add(15, "d");
+      const test1 = moment(test).format("YYYY-MM-DD");
+      this.orderData.dueDate = test1;
+    } else if (e === "30") {
+      const test = moment().add(30, "d");
+      const test1 = moment(test).format("YYYY-MM-DD");
+      this.orderData.dueDate = test1;
+    } else if (e === "45") {
+      const test = moment().add(45, "d");
+      const test1 = moment(test).format("YYYY-MM-DD");
+      this.orderData.dueDate = test1;
+    } else if (e === "dueReceipt") {
+      this.orderData.dueDate = moment().format("YYYY-MM-DD");
+    } else if (e === "dueEnd") {
+      this.orderData.dueDate = moment().endOf("month").format("YYYY-MM-DD");
+    } else {
+      this.orderData.dueDate = null;
     }
   }
 }
