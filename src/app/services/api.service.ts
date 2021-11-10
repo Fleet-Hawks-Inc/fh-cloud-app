@@ -157,6 +157,43 @@ export class ApiService {
 
   }
 
+  async checkAccess(){
+
+    const user = (await Auth.currentSession()).getIdToken().payload;
+    user.userRoles=user.userRoles.split(',')
+    environment.isReportsEnabled=true
+    environment.isFleetEnabled=true
+    if(user.userRoles.includes("orgAdmin") || user.userRoles.includes("role_view_admin")||user.userRoles.includes("role_super_admin")){
+      environment.isDispatchEnabled= true
+      environment.isComplianceEnabled=true
+      environment.isManageEnabled= true
+      environment.isSafetyEnabled= true
+      environment.isAccountsEnabled=true
+      return
+    }
+    if(user.userRoles.includes("role_safety")){
+      environment.isSafetyEnabled= true;
+      environment.isComplianceEnabled=true;
+    }
+    if(user.userRoles.includes("role_dispatch")){
+      environment.isDispatchEnabled= true;
+    }
+    if(user.userRoles.includes("role_accounts")){
+      environment.isAccountsEnabled=true;
+    }
+    // switch(true){
+    //   case user.userRoles.includes("role_safety"):
+    //     environment.isSafetyEnabled= true;
+    //     environment.isComplianceEnabled=true;
+    //     break;
+    //   case user.userRoles.includes("role_dispatch"):
+    //     environment.isDispatchEnabled= true;
+    //     break;
+    //   case user.userRoles.includes("role_accounts"):
+    //     environment.isAccountsEnabled=true;
+    //     break;
+    //       }
+  }
   getDatatablePostData(url: string, data) {
     // this.getHeaders();
     const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})

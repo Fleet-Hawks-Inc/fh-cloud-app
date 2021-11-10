@@ -136,7 +136,7 @@ confirmPassword:any;
         if(loginResponse){
         
         let allow=await this.apiService.checkIfUserActive();
-        
+        await this.apiService.checkAccess()
         if(!allow){
           this.submitDisabled=false
           this.hasError=true;

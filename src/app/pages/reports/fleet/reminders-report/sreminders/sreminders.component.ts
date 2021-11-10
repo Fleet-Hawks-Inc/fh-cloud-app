@@ -25,6 +25,8 @@ export class SremindersComponent implements OnInit {
   vehiclesList = [];
   taskfunction = [];
   tasksData = [];
+  taskName: string;
+  serviceList = [];
   loaded = false
   filterStatus = null;
   dataMessage: string = Constants.FETCHING_DATA
@@ -41,6 +43,7 @@ export class SremindersComponent implements OnInit {
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
+    this.fetchTaskData();
 
   }
   setFilterStatus(val) {
@@ -49,7 +52,7 @@ export class SremindersComponent implements OnInit {
 
   fetchReminderList() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastEvaluatedKey}`).subscribe((result: any) => {
 
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
@@ -115,6 +118,13 @@ export class SremindersComponent implements OnInit {
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => {
       this.tasksData = result;
+    });
+  }
+  fetchTaskData() {
+    let test = [];
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      test = result.Items;
+      this.serviceList = test.filter((s: any) => s.taskType === 'service');
     });
   }
   generateCSV() {

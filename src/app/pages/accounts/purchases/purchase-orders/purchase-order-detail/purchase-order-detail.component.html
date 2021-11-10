@@ -9,6 +9,12 @@
                         badge-dark p-1 text-uppercase">{{ orderData.status }}</span></h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
+                  <button type="button" class="btn btn-success btn-sm mr-3"
+                     (click)="sendConfirmationEmail()"
+                     [disabled]="emailDisabled">
+                     Send Email To Vendor
+                  </button>
+
                   <a routerLink="/accounts/purchases/orders/list" class="btn
                      btn-sm btn-default"><i class="fas fa-list"></i> All
                      Purchase Orders</a>
@@ -73,20 +79,12 @@
                                  <table class="table table-bordered
                                     table-responsive-lg">
                                     <tbody>
-                                       <!-- <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Delivery Date</td>
-                                    <td width="60%">10/04/2021</td>
-                                 </tr> -->
                                        <tr>
                                           <td class="back-color-gray
                                              font-weight-bold">Reference#</td>
                                           <td>{{ orderData.refNo ?
                                              orderData.refNo : '-' }}</td>
                                        </tr>
-                                       <!-- <tr>
-                                    <td class="back-color-gray font-weight-bold">Payment Terms</td>
-                                    <td>15 Days</td>
-                                 </tr> -->
                                        <tr>
                                           <td class="back-color-gray
                                              font-weight-bold">Remarks</td>
@@ -111,14 +109,6 @@
                                  <table class="table table-bordered
                                     table-responsive-lg">
                                     <tbody>
-                                       <!-- <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Discount</td>
-                                    <td width="60%">50 CAD</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Vendor Credit</td>
-                                    <td>57 CAD</td>
-                                 </tr> -->
                                        <tr>
                                           <td width="40%" class="back-color-gray
                                              font-weight-bold">Taxes</td>
