@@ -11,6 +11,7 @@ import {ChartsModule} from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import {Injectable} from '@angular/core';
 import { OverviewComponent } from './overview/overview.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const routes: Routes = [
@@ -83,7 +84,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    InfiniteScrollModule,
+    ChartsModule,
   ],
   providers: [unsavedChangesGuard,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

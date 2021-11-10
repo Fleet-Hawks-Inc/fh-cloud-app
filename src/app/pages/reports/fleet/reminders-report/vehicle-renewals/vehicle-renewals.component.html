@@ -14,7 +14,7 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Search task">
-                     <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
+                     <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
                      </ng-option>
                   </ng-select>
                </div>
@@ -100,9 +100,8 @@
                                           <th>Vehicle</th>
                                           <th>Vehicle Renewal Type</th>
                                           <th>Due Date</th>
-                                          <th>Subscribers</th>
                                           <th>Send Reminder</th>
-                                          <th>Renewal Status</th>
+                                          <th>Subscribers</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -110,24 +109,22 @@
                                           <td colspan="6">{{dataMessage}}</td>
                                        </tr>
                                        <tr *ngFor="let item of allData">
-                                          <td>{{vehiclesList[item.entityID]}}</td>
-                                          <td>{{tasksData[item.tasks.taskID]}}</td>
-                                          <td>{{item.nextServiceDate | date:'yyyy/MM/dd'}}</td>
-                                          <td>{{item.subscribers}}</td>
-                                          <td *ngIf="item.tasks.remindByUnit == 'time'">Every
-                                             {{item.tasks.time}}
-                                             {{item.tasks.timeUnit}}(s) </td>
+                                          <td>
+                                             <span class="text-capitalize">
+                                                {{vehiclesList[item.entityID]}}
+                                             </span>
+                                          </td>
                                           <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
                                                 *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                              <span class="text-danger font-weight-bold font-size-12 text-uppercase"
                                                 *ngIf="item.status === 'overdue'">{{item.status}}<br></span>
-                                             <span class="font-size-12">
-                                                <span *ngIf="item.tasks.remindByUnit == 'odometer'">Every
-                                                   {{item.tasks.odometer}} miles</span>
-                                             </span>
+                                             <span class="font-weight-bold"
+                                                title="Task">{{tasksData[item.tasks.taskID]}}</span>
                                           </td>
+                                          <td>{{item.tasks.dueDate | date:'yyyy/MM/dd'}}</td>
+                                          <td>{{item.tasks.time}} {{item.tasks.timeUnit}}(s) Before</td>
+                                          <td>{{item.subscribers}}</td>
                                        </tr>
-
                                     </tbody>
                                  </table>
                               </section>
