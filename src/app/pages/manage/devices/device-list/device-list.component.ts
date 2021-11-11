@@ -28,42 +28,42 @@ export class DeviceListComponent implements OnInit {
       this.apiService.getData('devices').subscribe((result) => {
 
         if (result) {
-          if (result.Items.length == 0) {
+          if (result.length == 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
           }
           else {
-            this.devices = result.Items.map((item) => {
+            this.devices = result.map((item) => {
               let device = {
                 deviceName: '',
                 deviceStatus: '',
                 description: '',
                 deviceSerialNo: '',
-                devicesSK: '',
                 deviceType: '',
                 vehicle: {
                   vehicleID: '',
                   vehicleIdentification: ''
                 },
-                asset: {}
+                asset: {
+                  assetID: '',
+                  assetIdentification: ''
+                },
+                deviceID: ''
               }
-              device.deviceName = item.deviceName,
-                device.deviceStatus = item.deviceStatus,
-                device.deviceSerialNo = item.deviceSerialNo,
-                device.description = item.description,
-                device.deviceType = item.deviceType,
-                device.devicesSK = item.devicesSK
-
-
-              if (item.vehicle) {
-                device.vehicle.vehicleID = item.vehicle.vehicleID,
-                  device.vehicle.vehicleIdentification = item.vehicle.vehicleIdentification
+              device.deviceName = item.deviceName;
+              device.deviceStatus = item.deviceStatus;
+              device.deviceSerialNo = item.deviceSerialNo;
+              device.description = item.description;
+              device.deviceType = item.deviceType;
+              device.deviceID = item.deviceID;
+              if (item.vehicleIdentification) {
+                device.vehicle.vehicleID = item.vehicleID;
+                device.vehicle.vehicleIdentification = item.vehicleIdentification;
               }
-
-              if (item.asset) {
-                device.asset = item.asset
+              if (item.assetIdentification) {
+                device.asset.assetID = item.assetID;
+                device.asset.assetIdentification = item.assetIdentification;
               }
-
-              return device
+              return device;
             })
           }
         }
@@ -75,13 +75,14 @@ export class DeviceListComponent implements OnInit {
     }
   }
 
-  public deactivateDevice(devicesType: any, deviceSerialNo: any) {
-    if (confirm('Are you sure you want to deactivate') === true) {
+  public deactivateDevice(devicesType: any, deviceID: string, activate: boolean) {
+    const confirmationText = activate == true ? 'activate' : 'deactivate';
+    if (confirm(`Are you sure you want to ${confirmationText}?`) === true) {
       try {
-        deviceSerialNo = deviceSerialNo.split('#')
         let body: any = {
-          deviceType: deviceSerialNo[0],
-          deviceSerialNo: deviceSerialNo[1]
+          deviceType: devicesType,
+          deviceID: deviceID,
+          activate: activate
         }
         this.apiService.putData(`devices/deactivate`, body).subscribe((result) => {
           if (result) {
