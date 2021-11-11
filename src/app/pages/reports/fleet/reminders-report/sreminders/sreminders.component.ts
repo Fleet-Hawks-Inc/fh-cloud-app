@@ -52,7 +52,7 @@ export class SremindersComponent implements OnInit {
 
   fetchReminderList() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastEvaluatedKey}`).subscribe((result: any) => {
+      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
@@ -155,7 +155,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}vehicle-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Service-renewal-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
