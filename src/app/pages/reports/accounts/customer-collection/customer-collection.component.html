@@ -1,1 +1,117 @@
-<p>customer-collection works!</p>
+<section class="body">
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0 pl-0">
+
+      <header class="page-header pr19 pl7">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-md-5 col-lg-5 text-right pr-1">
+            <div class="btn-group flex-wrap ml-2">
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fas fa-upload"></i> Export<span class="caret"></span>
+              </button>
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  ">
+
+                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </header>
+
+      <div class="m-2">
+
+        <div class="row text-dark">
+          <div class="col-12 mb-3">
+            <div class="bg-white p-3">
+              <div class="row text-dark">
+                <div class="col-12">
+                  <div>
+
+                    <h4 class="mt-1 mb-0 font-weight-bold">
+                      Customer Collection Report
+                    </h4>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-12 pr-0 pl-0">
+            <div class="card">
+              <div class="card-body bor-radius0px">
+                <section class="reports_div">
+                  <div class="row">
+                    <ngx-datatable #myTable class="bootstrap expandable" [rows]="customerCollection" [rowHeight]="rowHeight">
+                    
+                    <ngx-datatable-row-detail [rowHeight]="auto" #myDetailRow (toggle)="onDetailToggle($event)">
+                      <ng-template let-row="row" ngx-datatable-row-detail-template>
+                        <div style="padding-left:35px;">
+                          <div><strong>Last 10 Orders</strong></div>
+                          <ngx-datatable [rows]="row.orders" [columns]="[{
+                            name:'Order#', prop:'orderNumber'
+                          },
+                          {name:'Confirmation', prop:'cusConfirmation'},
+                          {name:'Type',prop:'orderMode'},
+                          {name:'Miles',prop:'milesInfo.totalMiles'},
+                          {name:'Amount',prop:'finalAmount'},
+                          {name:'Currency',prop:'charges.freightFee.currency'},
+                          {name:'Status', prop:'orderStatus'},
+                          {name:'Invoice', prop:'invoiceGenerate'}]"></ngx-datatable>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-row-detail>
+                    <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+                      [canAutoResize]="false">
+                      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                        <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
+                          [class.datatable-icon-down]="expanded" title="Expand/Collapse Row"
+                          (click)="toggleExpandRow(row,expanded)">
+                        </a>
+                      </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column name="Customer" prop="cName">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Email" prop="workEmail" [width]=300 [sortable]=false>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Phone" prop="workPhone" [sortable]=false>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Total Orders" prop="totalOrders" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Partial Paid Count" prop="partialPaidCount" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Paid Invoices Count" prop="paidInvoiceCount" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Total Amount" prop="totalAmount" >
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Amount Received" prop="amountReceived" >
+                  </ngx-datatable-column>
+                    </ngx-datatable>
+
+                  </div>
+
+                </section>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>

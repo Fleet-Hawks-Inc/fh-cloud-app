@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { AllReportsComponent } from '../reports/all-reports/all-reports.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable'
 const routes: Routes = [
 
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
+    NgxDatatableModule
 
   ]
 })
