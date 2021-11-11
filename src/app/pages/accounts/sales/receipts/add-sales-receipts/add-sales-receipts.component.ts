@@ -206,7 +206,7 @@ export class AddSalesReceiptsComponent implements OnInit {
 
   addReceipt() {
     this.submitDisabled = true;
-    console.log('this.paymentData.invoiceData', this.paymentData.invoiceData)
+
     if (this.paymentData.invoiceData.length === 0) {
       this.toaster.error('Please select at least one invoice');
       return
