@@ -84,6 +84,7 @@ export class BillDetailsComponent implements OnInit {
     purchaseID: null,
     creditIds: [],
     creditData: [],
+    transactionLog: [],
   };
   billID = "";
   vendorName = "";
@@ -91,6 +92,7 @@ export class BillDetailsComponent implements OnInit {
   documentSlides = [];
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   Asseturl = this.apiService.AssetUrl;
+  accountsObjects = [];
 
   constructor(
     private accountService: AccountService,
@@ -106,6 +108,7 @@ export class BillDetailsComponent implements OnInit {
     this.fetchVendor();
     this.purchaseOrderDetail();
     this.fetchVendorCredits();
+    this.fetchAccountsByIDs();
   }
 
   async fetchDetails() {
@@ -113,6 +116,7 @@ export class BillDetailsComponent implements OnInit {
       .getData(`bills/details/${this.billID}`)
       .toPromise();
     this.orderData = result[0];
+    console.log("this.orderData", this.orderData);
 
     if (
       result[0].attachments != undefined &&
@@ -190,6 +194,14 @@ export class BillDetailsComponent implements OnInit {
       .subscribe((result: any) => {
         this.documentSlides.splice(index, 1);
         this.toaster.success("Attachment deleted successfully.");
+      });
+  }
+
+  fetchAccountsByIDs() {
+    this.accountService
+      .getData("chartAc/get/all/list")
+      .subscribe((result: any) => {
+        this.accountsObjects = result;
       });
   }
 }

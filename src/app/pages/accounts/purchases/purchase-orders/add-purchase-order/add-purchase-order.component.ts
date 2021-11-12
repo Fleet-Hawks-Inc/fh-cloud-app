@@ -82,6 +82,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     status: "draft",
     billStatus: "",
     stateID: null,
+    stateName: "",
     exempt: false,
   };
   quantityTypes = [];
@@ -201,6 +202,15 @@ export class AddPurchaseOrderComponent implements OnInit {
       this.orderData.charges.accDed.splice(index, 1);
       this.accessorialDedTotal();
     }
+  }
+
+  checkEmailStat(type) {
+    if (type === "yes") {
+      this.orderData["sendEmail"] = true;
+    } else {
+      this.orderData["sendEmail"] = false;
+    }
+    this.addRecord();
   }
 
   addRecord() {
@@ -376,7 +386,7 @@ export class AddPurchaseOrderComponent implements OnInit {
       this.toaster.error("Amount should be greater than 0");
       return false;
     }
-
+    this.orderData["sendEmail"] = false;
     this.submitDisabled = true;
     this.accountService
       .putData(`purchase-orders/update/${this.purchaseID}`, this.orderData)
@@ -427,6 +437,7 @@ export class AddPurchaseOrderComponent implements OnInit {
       v.tax = 0;
     });
     this.orderData.stateID = null;
+    this.orderData.stateName = null;
     this.allTax();
     this.taxTotal();
   }
@@ -440,9 +451,11 @@ export class AddPurchaseOrderComponent implements OnInit {
       stateName: "",
       stateTaxID: "",
     };
+
     this.stateTaxes.map((v) => {
       if (v.stateTaxID === stateID) {
         taxObj = v;
+        this.orderData.stateName = v.stateName;
       }
     });
 

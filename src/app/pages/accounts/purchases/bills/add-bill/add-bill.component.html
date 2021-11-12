@@ -256,6 +256,41 @@
                                             <div class="col-lg-5">
                                                 <label class="control-label
                                                     font-weight-bold font-bold
+                                                    text-lg-right pt-2">Payment
+                                                    Terms
+                                                    <span class="mandfield
+                                                        text-2 ml-1"><sup>*</sup></span>
+                                                </label>
+                                                <ng-select
+                                                    [(ngModel)]="orderData.paymentTerm"
+                                                    name="paymentTerm"
+                                                    placeholder="Select Payment
+                                                    Terms"
+                                                    #paymentTerm="ngModel"
+                                                    required
+                                                    (change)="getDueDate($event)">
+                                                    <ng-option value="{{
+                                                        data.value }}"
+                                                        *ngFor="let data of
+                                                        paymentTerms">{{
+                                                        data.name }}</ng-option>
+                                                </ng-select>
+
+                                                <div *ngIf="paymentTerm.invalid
+                                                    &&
+                                                    (paymentTerm.dirty ||
+                                                    paymentTerm.touched)"
+                                                    class="text-danger">
+                                                    <div
+                                                        *ngIf="paymentTerm.errors.required">
+                                                        Payment terms is
+                                                        required.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label
+                                                    font-weight-bold font-bold
                                                     text-lg-right pt-2">Due Date
                                                     <span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span>
@@ -283,40 +318,6 @@
                                                     <div
                                                         *ngIf="dueDatem.errors.required">
                                                         Due date is
-                                                        required.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-5">
-                                                <label class="control-label
-                                                    font-weight-bold font-bold
-                                                    text-lg-right pt-2">Payment
-                                                    Terms
-                                                    <span class="mandfield
-                                                        text-2 ml-1"><sup>*</sup></span>
-                                                </label>
-                                                <ng-select
-                                                    [(ngModel)]="orderData.paymentTerm"
-                                                    name="paymentTerm"
-                                                    placeholder="Select Payment
-                                                    Terms"
-                                                    #paymentTerm="ngModel"
-                                                    required>
-                                                    <ng-option value="{{
-                                                        data.value }}"
-                                                        *ngFor="let data of
-                                                        paymentTerms">{{
-                                                        data.name }}</ng-option>
-                                                </ng-select>
-
-                                                <div *ngIf="paymentTerm.invalid
-                                                    &&
-                                                    (paymentTerm.dirty ||
-                                                    paymentTerm.touched)"
-                                                    class="text-danger">
-                                                    <div
-                                                        *ngIf="paymentTerm.errors.required">
-                                                        Payment terms is
                                                         required.
                                                     </div>
                                                 </div>
@@ -447,7 +448,7 @@
                                                             type="text"
                                                             class="form-control"
                                                             [(ngModel)]="data.paidAmount"
-                                                            (input)="calculateFinalTotal();"
+                                                            (input)="selectedCredits();"
                                                             name="advPaidAmount{{i}}"
                                                             [disabled]="data.paidStatus">
                                                         <label
@@ -748,6 +749,57 @@
                                                     font-weight-bold text-4">
                                                     Charges
                                                 </h4>
+
+                                                <div class="row mt-3">
+                                                    <div class="col-lg-6">
+                                                        <label
+                                                            class="control-label
+                                                            font-weight-semibold
+                                                            text-3 text-dark">Select
+                                                            Account
+                                                            <span
+                                                                class="mandfield
+                                                                text-2 ml-1"><sup>*</sup></span>
+                                                        </label>
+                                                        <ng-select
+                                                            name="chargeAccountID"
+                                                            [(ngModel)]="orderData.charges.accountID"
+                                                            placeholder="Select
+                                                            account"
+                                                            #chargeAcc="ngModel">
+                                                            <ng-option
+                                                                *ngFor="let
+                                                                act of
+                                                                accounts"
+                                                                value="{{
+                                                                act.actID
+                                                                }}">{{
+                                                                act.actNo }}
+                                                                -
+                                                                {{
+                                                                act.actName
+                                                                | titlecase
+                                                                }}
+                                                            </ng-option>
+                                                        </ng-select>
+                                                        <div
+                                                            *ngIf="chargeAcc.invalid
+                                                            &&
+                                                            (chargeAcc.dirty ||
+                                                            chargeAcc.touched)"
+                                                            class="text-danger">
+                                                            <div
+                                                                *ngIf="chargeAcc.errors.required">
+                                                                Account is
+                                                                required.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4
+                                                        text-right">
+                                                    </div>
+                                                </div>
+
                                                 <div class="row mt-3">
                                                     <div class="col-lg-6">
                                                         <label
@@ -807,6 +859,7 @@
                                                                     (input)="accessorialFeeTotal()"
                                                                     pattern="^[0-9]\d*(\.\d+)?$"
                                                                     #accFeeam="ngModel"
+                                                                    [disabled]="productDisabled"
                                                                     />
 
                                                                 <div
@@ -818,7 +871,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3
-                                                        text-right">
+                                                        text-right"
+                                                        *ngIf="!productDisabled">
                                                         <button *ngIf="aId ===
                                                             0" type="button"
                                                             (click)="addAccessorialArr('fee')"
@@ -900,6 +954,7 @@
                                                                     (input)="accessorialDedTotal()"
                                                                     #dedam="ngModel"
                                                                     pattern="^[0-9]\d*(\.\d+)?$"
+                                                                    [disabled]="productDisabled"
                                                                     />
 
                                                                 <div
@@ -935,7 +990,7 @@
                                                 </div>
 
                                                 <div class="row mt-3">
-                                                    <div class="col-lg-12 pl-3
+                                                    <div class="col-lg-6 pl-3
                                                         mb-2">
                                                         <div
                                                             class="checkbox-custom
@@ -956,6 +1011,21 @@
                                                                 for="ZeroRated">Tax
                                                                 Exempt</label>
                                                         </div>
+                                                    </div>
+                                                    <div class="col-lg-6 pl-3
+                                                        mb-2 text-right">
+                                                        <label
+                                                            class="control-label
+                                                            font-weight-semibold
+                                                            labelmt
+                                                            text-3
+                                                            text-dark"
+                                                            for="ZeroRated">Sub
+                                                            Total: {{
+                                                            orderData.total.subTotal
+                                                            | number :
+                                                            '1.2-2' }}
+                                                        </label>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <label
@@ -1050,7 +1120,7 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="row mt-3">
+                                                        <!-- <div class="row mt-3">
                                                             <div
                                                                 class="col-lg-9
                                                                 bordtop
@@ -1073,7 +1143,7 @@
                                                                     | number :
                                                                     '1.2-2' }}</p>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="row mt-3">
                                                             <div
                                                                 class="col-lg-9
