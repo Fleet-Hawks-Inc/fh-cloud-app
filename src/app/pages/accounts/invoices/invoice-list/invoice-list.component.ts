@@ -55,6 +55,8 @@ export class InvoiceListComponent implements OnInit {
   disableSearch = false;
   disableSearchOrder = false;
   searchActive = false;
+  invoicesCAD = [];
+  invoicesUSD = [];
 
   constructor(
     private accountService: AccountService,
@@ -112,28 +114,40 @@ export class InvoiceListComponent implements OnInit {
   //   }
   // }
   getTotalInvoices(invoices: any, type: string) {
-    const invoicesCAD = [];
-    const invoicesUSD = [];
+    // const invoicesCAD = [];
+    // const invoicesUSD = [];
+    this.openTotalUSD = 0;
+    this.paidTotalUSD = 0;
+    this.emailedTotalUSD = 0;
+    this.partiallyPaidTotalUSD = 0;
+    this.voidedTotalUSD = 0;
+    this.openTotalCAD = 0;
+    this.paidTotalCAD = 0;
+    this.emailedTotalCAD = 0;
+    this.partiallyPaidTotalCAD = 0;
+    this.voidedTotalCAD = 0;
+
     if (type === "manual") {
       invoices.map((e: any) => {
         if (e.invCur === "CAD") {
-          invoicesCAD.push(e);
+          this.invoicesCAD.push(e);
         } else {
-          invoicesUSD.push(e);
+          this.invoicesUSD.push(e);
         }
       });
     } else {
       invoices.map((e: any) => {
         if (e.charges.freightFee.currency === "CAD") {
-          invoicesCAD.push(e);
+          this.invoicesCAD.push(e);
         } else {
-          invoicesUSD.push(e);
+          this.invoicesUSD.push(e);
         }
       });
     }
-
-    if (invoicesCAD.length > 0 || invoicesUSD.length > 0) {
-      for (const element of invoicesCAD) {
+    console.log("this.invoicesCAD", this.invoicesCAD);
+    console.log("this.invoicesUSD", this.invoicesUSD);
+    if (this.invoicesCAD.length > 0 || this.invoicesUSD.length > 0) {
+      for (const element of this.invoicesCAD) {
         if (element.invStatus === "open") {
           this.openTotalCAD = this.openTotalCAD + Number(element.finalAmount);
           this.openTotalCAD = +this.openTotalCAD.toFixed(2);
@@ -156,8 +170,9 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalCAD + Number(element.finalAmount);
           this.voidedTotalCAD = +this.voidedTotalCAD.toFixed(2);
         }
+        console.log("element.finalAmount cad", element.finalAmount);
       }
-      for (const element of invoicesUSD) {
+      for (const element of this.invoicesUSD) {
         if (element.invStatus === "open") {
           this.openTotalUSD = this.openTotalUSD + Number(element.finalAmount);
           this.openTotalUSD = +this.openTotalUSD.toFixed(2);
@@ -180,6 +195,7 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalUSD + Number(element.finalAmount);
           this.voidedTotalUSD = +this.voidedTotalUSD.toFixed(2);
         }
+        console.log("element.finalAmount usd ", element.finalAmount);
       }
       this.totalUSD =
         this.openTotalUSD +
@@ -217,42 +233,45 @@ export class InvoiceListComponent implements OnInit {
         searchParam = null;
       }
 
-      this.accountService
+      let result: any = await this.accountService
         .getData(
           `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
-        .subscribe(async (result: any) => {
-          if (result.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-            this.loaded = true;
-            this.disableSearch = false;
-            this.categorizeInvoices(result);
-          }
-          if (result.length > 0) {
-            for (let index = 0; index < result.length; index++) {
-              const element = result[index];
-              this.disableSearch = false;
-              element.invStatus = element.invStatus.replace("_", " ");
-              this.invoices.push(element);
-            }
-            if (this.invoices[this.invoices.length - 1].sk !== undefined) {
-              this.lastItemSK = encodeURIComponent(
-                this.invoices[this.invoices.length - 1].sk
-              );
-            } else {
-              this.lastItemSK = "end";
-            }
-            this.loaded = true;
-            this.categorizeInvoices(this.invoices);
-            if (this.searchActive) {
-              this.getTotalInvoices(this.invoices, "manual");
-            }
-            this.searchActive = false;
-          }
-        });
+        .toPromise();
+      // .subscribe(async (result: any) => {
+      if (result.length === 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        this.loaded = true;
+        this.disableSearch = false;
+        this.categorizeInvoices(result);
+      }
+      if (result.length > 0) {
+        for (let index = 0; index < result.length; index++) {
+          const element = result[index];
+          this.disableSearch = false;
+          element.invStatus = element.invStatus.replace("_", " ");
+          this.invoices.push(element);
+        }
+        if (this.invoices[this.invoices.length - 1].sk !== undefined) {
+          this.lastItemSK = encodeURIComponent(
+            this.invoices[this.invoices.length - 1].sk
+          );
+        } else {
+          this.lastItemSK = "end";
+        }
+        this.loaded = true;
+        this.categorizeInvoices(this.invoices);
+        if (this.searchActive) {
+          this.invoicesCAD = [];
+          this.invoicesUSD = [];
+
+          this.getTotalInvoices(this.invoices, "manual");
+        }
+      }
+      // });
     }
     // Order invoices
-    searchParamOrder = this.getOrderInvoices(refresh, searchParamOrder);
+    searchParamOrder = await this.getOrderInvoices(refresh, searchParamOrder);
   }
 
   emptyPrevCalculation() {
@@ -318,6 +337,8 @@ export class InvoiceListComponent implements OnInit {
             this.loadedOrder = true;
             this.categorizeOrderInvoices(this.orderInvoices);
             if (this.searchActive) {
+              // this.invoicesCAD = [];
+              // this.invoicesUSD = [];
               this.getTotalInvoices(this.orderInvoices, "order");
             }
             this.searchActive = false;

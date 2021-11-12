@@ -1074,8 +1074,8 @@ export class OrderDetailComponent implements OnInit {
 
           this.orderLogs.sort((a, b) => {
             return (
-              new Date(a.dateAndTime).valueOf() -
-              new Date(b.dateAndTime).valueOf()
+              new Date(b.dateAndTime).valueOf() -
+              new Date(a.dateAndTime).valueOf()
             );
           });
         }
