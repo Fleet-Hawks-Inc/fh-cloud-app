@@ -64,7 +64,7 @@ export class AddCreditNoteComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];
@@ -185,7 +185,7 @@ export class AddCreditNoteComponent implements OnInit {
     this.accountService
       .postData(`customer-credits`, this.creditData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -203,14 +203,14 @@ export class AddCreditNoteComponent implements OnInit {
               error: () => {
                 // this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
           this.submitDisabled = false;
           this.response = res;
           this.toaster.success("Credit note added successfully.");
-          // this.cancel();
+          this.cancel();
         },
       });
   }
@@ -231,7 +231,7 @@ export class AddCreditNoteComponent implements OnInit {
     this.accountService
       .putData(`customer-credits/update/${this.creditID}`, this.creditData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -249,7 +249,7 @@ export class AddCreditNoteComponent implements OnInit {
               error: () => {
                 // this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
