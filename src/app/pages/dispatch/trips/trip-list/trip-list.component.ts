@@ -203,6 +203,10 @@ export class TripListComponent implements OnInit {
       result.Items[i].carrierIdCount = 0;
 
       const element = result.Items[i];
+      element.newStatus = element.tripStatus;
+      if (element.recall) {
+        element.newStatus = `${element.tripStatus} (R)`;
+      }
 
       for (let j = 0; j < result.Items[i].tripPlanning.length; j++) {
         const element2 = result.Items[i].tripPlanning[j];
@@ -278,6 +282,16 @@ export class TripListComponent implements OnInit {
         element.canEdit = true;
       } else {
         element.canEdit = false;
+      }
+
+      if (
+        element.tripStatus == "cancelled" ||
+        element.tripStatus == "tonu" ||
+        element.stlLink
+      ) {
+        element.disabledEdit = true;
+      } else {
+        element.disabledEdit = false;
       }
 
       if (element.tripStatus == "confirmed") {
@@ -741,6 +755,7 @@ export class TripListComponent implements OnInit {
           this.tripsFiltr.searchValue =
             this.tripsFiltr.searchValue.toLowerCase();
         }
+        this.tripDraw = 0;
         this.trips = [];
         this.confirmedTrips = [];
         this.dispatchedTrips = [];

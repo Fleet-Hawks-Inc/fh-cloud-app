@@ -32,7 +32,7 @@ export class CalendarViewComponent implements OnInit {
     private route: ActivatedRoute,
     private hereMap: HereMapService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, listPlugin];
   vehicles = [];
@@ -369,7 +369,7 @@ export class CalendarViewComponent implements OnInit {
       this.tripData.tripStatus = "dispatched";
 
       this.apiService.putData("trips", this.tripData).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -385,8 +385,8 @@ export class CalendarViewComponent implements OnInit {
                 this.spinner.hide();
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -424,7 +424,7 @@ export class CalendarViewComponent implements OnInit {
       delete result.isDelActiveSK;
       this.tripData = result;
       this.OrderIDs = this.tripData["orderId"];
-
+      this.tripData['oldOrdr'] = this.tripData["orderId"];
       if (this.tripData.tripPlanning.length === 0) {
         this.toastr.error(
           "The trip plan for the selected trip is empty. Please create one to assign."
@@ -641,7 +641,7 @@ export class CalendarViewComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -654,8 +654,8 @@ export class CalendarViewComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {

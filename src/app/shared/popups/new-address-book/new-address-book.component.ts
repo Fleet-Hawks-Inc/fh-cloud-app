@@ -1359,6 +1359,10 @@ export class NewAddressBookComponent implements OnInit {
   editUser(item: any) {
     this.listService.triggerModal('form');
     this.updateButton = true;
+    this.newEditUnit(item);
+  }
+
+  newEditUnit(item: any) {
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
 
@@ -1414,13 +1418,15 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, item) {
-    this.editUser(item)
+    this.emptyEntry();
+    this.newEditUnit(item);
 
-    this.modalService.dismissAll();
+    // this.modalService.dismissAll();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
-      windowClass: 'units-detail__main'
+      windowClass: 'units-detail__main',
+      backdropClass: 'light-backdrop'
     };
     this.modalService.open(targetModal, ngbModalOptions);
 

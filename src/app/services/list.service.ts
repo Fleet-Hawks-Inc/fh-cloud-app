@@ -106,6 +106,9 @@ export class ListService {
   brokeragePdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   brokeragePdfList = this.brokeragePdfDataSource.asObservable();
 
+  bolPdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  bolPdfList = this.bolPdfDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -320,5 +323,9 @@ export class ListService {
 
   triggerBrokeragePdf(value) {
     this.brokeragePdfDataSource.next(value);
+  }
+
+  triggerBolPdf(value) {
+    this.bolPdfDataSource.next(value);
   }
 }

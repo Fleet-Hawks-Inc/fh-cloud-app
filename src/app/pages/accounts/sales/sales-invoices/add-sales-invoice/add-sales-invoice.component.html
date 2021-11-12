@@ -329,7 +329,7 @@
                                   </td>
                                   <td>
                                     <input type="text" class="form-control" [(ngModel)]="data.paidAmount"
-                                      (input)="calculateFinalTotal()" name="advPaidAmount{{ i }}"
+                                      (input)="selectedCredits()" name="advPaidAmount{{ i }}"
                                       [disabled]="data.paidStatus" />
                                     <label id="stlErr{{ i }}" class="error">
                                       <!-- {{data.errText}} -->
@@ -749,6 +749,26 @@
                                             </p>
                                           </div>
                                         </div>
+                                      </div>
+                                    </div>
+
+                                    <div class="row align-items-center">
+                                      <div class="col-lg-12 pt-1 text-right">
+                                        <span class="
+                                            text-right
+                                            h5
+                                            font-weight-semibold
+                                            text-4 text-dark
+                                            mr-5
+                                          ">
+                                          Total Credits
+                                        </span>
+                                        <span class="text-right m-0 d-inline-block" style="width: 58px;">
+                                          {{
+                                          saleData.total.customerCredit ? (saleData.total.customerCredit
+                                          | number: "1.2-2" ): '0'
+                                          }}
+                                        </span>
                                       </div>
                                     </div>
                                     <div class="row align-items-center">
