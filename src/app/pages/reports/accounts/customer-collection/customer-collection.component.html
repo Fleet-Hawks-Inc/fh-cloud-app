@@ -4,6 +4,51 @@
 
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
+          <div class="col-lg-5 col-md-5 pr-0 d-flex">
+            <span class="">
+              <span class="input-group-text">
+                <i class="fas fa-calendar-alt"></i>
+              </span>
+            </span>
+            <div class="col-md-5 col-lg-5 pr-0">
+              <div class="input-group input-group-md mb-3">
+                <input type="text" class="form-control" [(ngModel)]="customer" placeholder="customer">
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 pr-0">
+              <div class="input-group input-group-md mb-3">
+
+                <div class="input-daterange input-group">
+                  <span class="input-group-prepend">
+                    <span class="input-group-text">
+                      <i class="fas fa-calendar-alt"></i>
+                    </span>
+                  </span>
+
+                  <input [(ngModel)]="customerFiltr.startDate" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                    (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control" autocomplete="off"
+                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                  <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                    to
+                  </span>
+                  <input [(ngModel)]="customerFiltr.endDate" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                    (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control" autocomplete="off"
+                    [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 col-lg-2">
+
+            <button class="btn btn-sm mr-2 btn-success" (click)="search()">
+              Search
+            </button>
+            <button class="btn btn-sm btn-success" (click)="reset()">
+              Reset
+            </button>
+          </div>
           <div class="col-md-5 col-lg-5 text-right pr-1">
             <div class="btn-group flex-wrap ml-2">
               <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
@@ -51,14 +96,86 @@
             <div class="card">
               <div class="card-body bor-radius0px">
                 <section class="reports_div">
-                  <div class="row">
-                    <ngx-datatable #myTable class="bootstrap expandable" [rows]="customerCollection" [rowHeight]="rowHeight">
-                    
-                    <ngx-datatable-row-detail [rowHeight]="auto" #myDetailRow (toggle)="onDetailToggle($event)">
-                      <ng-template let-row="row" ngx-datatable-row-detail-template>
-                        <div style="padding-left:35px;">
-                          <div><strong>Last 10 Orders</strong></div>
-                          <ngx-datatable [rows]="row.orders" [columns]="[{
+                  <div class="row setHeight">
+                    <ngx-datatable #myTable class="bootstrap expandable fixedTable" [rows]="customerCollection"
+                      [rowHeight]="rowHeight" [scrollbarV]="true" [loadingIndicator]="isLoading"
+                      [messages]="{ emptyMessage: dataMessage }" (scroll)="onScroll($event.offsetY)">
+
+                      <ngx-datatable-row-detail [rowHeight]="400" #myDetailRow (toggle)="onDetailToggle($event)">
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                          <div class="h-100" style="padding-left:35px;">
+                            <div class="row h-100">
+                              <div class="col-lg-5 h-100">
+                                <strong>Last 10 Orders</strong>
+                                <table class="w-100 h-90 table-bordered table-striped ">
+                                  <thead>
+                                    <tr>
+                                      <th>Order#</th>
+                                      <th>Confirmation#</th>
+                                      <th>Type</th>
+                                      <th>Miles</th>
+                                      <th>Amount</th>
+                                      <th>Status</th>
+                                      <th>Invoice</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngIf="row.orders.length==0" class="text-center">
+                                      <td colspan="7">No Records Found</td>
+                                    </tr>
+                                    <tr *ngFor="let order of row.orders">
+                                      <td>{{order.orderNumber}}</td>
+                                      <td>{{order.cusConfirmation}}</td>
+                                      <td>{{order.orderMode}}</td>
+                                      <td>{{order.milesInfo.totalMiles}}</td>
+                                      <td>{{order.finalAmount | currency:order.charges.freightFee.currency}}</td>
+                                      <td>{{order.orderStatus}}</td>
+                                      <td>{{order.invoiceGenerate}}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div>
+
+                              </div>
+                              <div class="col-lg-5 m-auto">
+                                <div>
+                                  <strong>Invoice Aging</strong>
+                                  <table class="table table-bordered w-50 ">
+                                    <thead>
+                                      <tr>
+                                        <th>
+                                          Aging
+                                        </th>
+                                        <th>
+                                          Balance
+                                        </th>
+                                      </tr>
+
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>30-45</td>
+                                        <td>{{row.balanceAge30.cad | currency:"CAD"}}
+                                          <br />US{{row.balanceAge30.usd | currency:"USD"}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>45-60</td>
+                                        <td>{{row.balanceAge45.cad | currency:"CAD"}}
+                                          <br />US{{row.balanceAge45.usd | currency:"USD"}}</td>
+                                      </tr>
+                                      <tr>
+                                        <td>60-90</td>
+                                        <td>{{row.balanceAge60.cad | currency:"CAD"}}
+                                          <br />US{{row.balanceAge60.usd | currency:"USD"}}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- <ngx-datatable class="bootstrap" [rows]="row.orders" [rowHeight]="20" [columns]="[{
                             name:'Order#', prop:'orderNumber'
                           },
                           {name:'Confirmation', prop:'cusConfirmation'},
@@ -67,40 +184,54 @@
                           {name:'Amount',prop:'finalAmount'},
                           {name:'Currency',prop:'charges.freightFee.currency'},
                           {name:'Status', prop:'orderStatus'},
-                          {name:'Invoice', prop:'invoiceGenerate'}]"></ngx-datatable>
-                        </div>
-                      </ng-template>
-                    </ngx-datatable-row-detail>
-                    <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
-                      [canAutoResize]="false">
-                      <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                        <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
-                          [class.datatable-icon-down]="expanded" title="Expand/Collapse Row"
-                          (click)="toggleExpandRow(row,expanded)">
-                        </a>
-                      </ng-template>
-                    </ngx-datatable-column>
+                          {name:'Invoice', prop:'invoiceGenerate'}]">
+                        </ngx-datatable> -->
+                          </div>
+                        </ng-template>
+                      </ngx-datatable-row-detail>
+                      <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+                        [canAutoResize]="false">
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                          <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
+                            [class.datatable-icon-down]="expanded" title="Expand/Collapse Row"
+                            (click)="toggleExpandRow(row,expanded)">
+                          </a>
+                        </ng-template>
+                      </ngx-datatable-column>
 
-                    <ngx-datatable-column name="Customer" prop="cName">
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Email" prop="workEmail" [width]=300 [sortable]=false>
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Phone" prop="workPhone" [sortable]=false>
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Total Orders" prop="totalOrders" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Partial Paid Count" prop="partialPaidCount" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Paid Invoices Count" prop="paidInvoiceCount" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Total Amount" prop="totalAmount" >
-                  </ngx-datatable-column>
-                  <ngx-datatable-column name="Amount Received" prop="amountReceived" >
-                  </ngx-datatable-column>
+                      <ngx-datatable-column name="Customer" prop="cName">
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Email" prop="workEmail" [width]=300 [sortable]=false>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Phone" prop="workPhone" [sortable]=false>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Total Orders" prop="totalOrders">
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders">
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Total Amount" prop="totalAmount">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                          let-row="row">
+                          {{value.cad | currency:'CAD'}}<br />
+                          US{{value.usd | currency: 'USD'}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Amount Received" prop="amountReceived">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                          let-row="row">
+                          {{value.cad | currency:'CAD'}}<br />
+                          US{{value.usd | currency: 'USD'}}
+                        </ng-template>
+                      </ngx-datatable-column>
+                      <ngx-datatable-column name="Balance" prop="balance">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                          let-row="row">
+                          {{value.cad | currency:'CAD'}}<br />
+                          US{{value.usd | currency: 'USD'}}
+                        </ng-template>
+                      </ngx-datatable-column>
                     </ngx-datatable>
 
                   </div>

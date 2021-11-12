@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component'
 import { CustomerCollectionComponent } from './customer-collection/customer-collection.component'
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 const routes: Routes = [
@@ -16,7 +18,9 @@ const routes: Routes = [
     imports: [
         CommonModule,
         RouterModule.forChild(routes),
-        NgxDatatableModule
+        NgxDatatableModule,
+        NgbModule,
+        FormsModule
 
     ]
 })
