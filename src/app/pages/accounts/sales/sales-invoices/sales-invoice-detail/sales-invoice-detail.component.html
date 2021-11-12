@@ -38,7 +38,7 @@
                         <i class="fa fa-user text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
-                          {{ customersObjects[customerID] }}
+                          {{ customerID ? customersObjects[customerID] : '-' }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
                       </div>
@@ -92,19 +92,19 @@
                             <td class="back-color-gray font-weight-bold">
                               Total Amount
                             </td>
-                            <td>{{ finalTotal }}</td>
+                            <td>{{ finalTotal }} {{currency}} </td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Received Amount
                             </td>
-                            <td>{{ txnDate }}</td>
+                            <td>{{ received }} {{currency}} </td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Balance Amount
                             </td>
-                            <td>{{ txnDate }}</td>
+                            <td>{{ balance }} {{currency}} </td>
                           </tr>
                         </tbody>
                       </table>

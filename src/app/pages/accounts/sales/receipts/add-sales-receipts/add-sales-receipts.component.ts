@@ -209,11 +209,13 @@ export class AddSalesReceiptsComponent implements OnInit {
 
     if (this.paymentData.invoiceData.length === 0) {
       this.toaster.error('Please select at least one invoice');
+      this.submitDisabled = false;
       return
     }
     this.customerInvoices.forEach(elem => {
       if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
         this.toaster.error('Please add invoice amount')
+        this.submitDisabled = false;
         return;
       }
     });
