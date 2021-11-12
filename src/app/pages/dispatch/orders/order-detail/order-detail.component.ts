@@ -19,6 +19,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
+import Constants from "src/app/pages/fleet/constants";
 declare var $: any;
 
 @Component({
@@ -34,12 +35,23 @@ export class OrderDetailComponent implements OnInit {
   previewInvoiceModal: TemplateRef<any>;
   @ViewChild("emailInvoiceModal", { static: true })
   emailInvoiceModal: TemplateRef<any>;
+
+  @ViewChild("emailInvoice", { static: true })
+  emailInvoice: TemplateRef<any>;
+
   @ViewChild("uploadBol", { static: true }) uploadBol: ElementRef;
 
   @ViewChild(PdfViewerComponent, { static: false })
   private pdfComponent: PdfViewerComponent;
+
+  noLogsMsg = Constants.NO_RECORDS_FOUND;
+
   docs = [];
   attachments = [];
+  tripDocs = [];
+
+  emailBtn = false;
+
   localPhotos = [];
   uploadedDocs = [];
 
@@ -201,8 +213,16 @@ export class OrderDetailComponent implements OnInit {
   tripData: {
     tripNo: "";
     tripID: "";
-
   };
+
+  emailDocs = [];
+  slides = [
+    { img: "http://placehold.it/350x150/000000" },
+    { img: "http://placehold.it/350x150/111111" },
+    { img: "http://placehold.it/350x150/333333" },
+    { img: "http://placehold.it/350x150/666666" },
+  ];
+  slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
 
   brokerage = {
     carrierID: "",
@@ -221,8 +241,8 @@ export class OrderDetailComponent implements OnInit {
     phone: "",
   };
 
-
   showModal = false;
+  showBolModal = false;
 
   orderInvData = {
     additionalContact: <any>null,
@@ -262,6 +282,8 @@ export class OrderDetailComponent implements OnInit {
     taxesAmt: 0,
   };
   companyLogoSrc = "";
+  orderLogs = [];
+  recallStatus = false;
 
   constructor(
     private apiService: ApiService,
@@ -281,6 +303,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
     this.fetchInvoiceData();
+    this.fetchOrderLogs();
   }
 
   /**
@@ -300,6 +323,10 @@ export class OrderDetailComponent implements OnInit {
         }
         if (result.brkAmount) {
           this.brokerage.brokerageAmount = result.brkAmount;
+        }
+
+        if (result.recall) {
+          this.recallStatus = true;
         }
         this.brokerage.orderNo = result.orderNumber;
         this.brokerage.miles = result.milesInfo.totalMiles;
@@ -443,10 +470,20 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
+            ext: x.split(".")[1],
           }));
         }
+
+        if (result.tripDocs != undefined && result.tripDocs.length > 0) {
+          this.tripDocs = result.tripDocs.map((x) => ({
+            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          }));
+        }
+
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
@@ -457,7 +494,6 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "png" ||
               x.storedName.split(".")[1] === "jpeg"
             ) {
-
               const obj = {
                 imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
                 docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -478,7 +514,6 @@ export class OrderDetailComponent implements OnInit {
             }
           });
 
-
           // this.docs = result.uploadedDocs.map(x => ({
           //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
           //   displayName: x.displayName,
@@ -486,6 +521,8 @@ export class OrderDetailComponent implements OnInit {
           //   ext: (x.storedName).split('.')[1]
           // }));
         }
+
+        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
         // if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
         //   obj = {
@@ -574,7 +611,6 @@ export class OrderDetailComponent implements OnInit {
       },
 
       (err) => {}
-
     );
   }
 
@@ -633,16 +669,40 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  emailInv() {
+  async openEmailInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "email--invoice",
     };
-    this.emailRef = this.modalService.open(
-      this.emailInvoiceModal,
-      ngbModalOptions
-    );
-    this.emailData.emails.push({ label: this.customerEmail });
+    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+    // this.emailData.emails.push({ label: this.customerEmail });
+  }
+
+  async sendEmailInv() {
+    this.emailBtn = true;
+    let newDocs = [];
+
+    for (const item of this.emailDocs) {
+      newDocs.push({
+        filename: item.displayName,
+        path: item.docPath,
+      });
+    }
+
+    let result = await this.apiService
+      .getData(
+        `orders/emailInvoice/${this.orderID}?docs=${encodeURIComponent(
+          JSON.stringify(newDocs)
+        )}`
+      )
+      .toPromise();
+    if (result) {
+      this.emailRef.close();
+      this.toastr.success("Email send successfully!");
+      this.emailBtn = false;
+    } else {
+      this.emailBtn = false;
+    }
   }
 
   showInv() {
@@ -746,7 +806,6 @@ export class OrderDetailComponent implements OnInit {
             },
 
             next: () => {},
-
           });
       },
       next: (res) => {
@@ -939,7 +998,6 @@ export class OrderDetailComponent implements OnInit {
 
         this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
 
-
         this.orderInvData = result[0];
         this.isInvoice = true;
         if (this.orderInvData.carrierData.logo != "") {
@@ -978,5 +1036,49 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-}
+  async downloadBolPdf() {
+    this.showBolModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      orderData: this.orderInvData,
+      showModal: this.showBolModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    this.listService.triggerBolPdf(data);
+  }
 
+  fetchOrderLogs() {
+    this.apiService
+      .getData(`auditLogs/details/${this.orderID}`)
+      .subscribe((res: any) => {
+        this.orderLogs = res.Items;
+        if (this.orderLogs.length > 0) {
+          this.orderLogs.map((k) => {
+            k.dateAndTime = `${k.createdDate} ${k.createdTime}`;
+            if (k.eventParams.userName !== undefined) {
+              const newString = k.eventParams.userName.split("_");
+              k.userFirstName = newString[0];
+              k.userLastName = newString[1];
+            }
+            if (k.eventParams.number !== undefined) {
+              k.entityNumber = k.eventParams.number;
+            }
+            if (k.eventParams.name !== undefined) {
+              if (k.eventParams.name.includes("_")) {
+                const newString = k.eventParams.name.split("_");
+                k.firstName = newString[0];
+                k.lastName = newString[1];
+              }
+            }
+          });
+
+          this.orderLogs.sort((a, b) => {
+            return (
+              new Date(a.dateAndTime).valueOf() -
+              new Date(b.dateAndTime).valueOf()
+            );
+          });
+        }
+      });
+  }
+}
