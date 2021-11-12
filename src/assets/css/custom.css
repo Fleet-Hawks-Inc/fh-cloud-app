@@ -740,7 +740,6 @@
   }
 }
 
-
 @media (max-width: 896px) {
   .gmainbox2 {
     float: left;
@@ -3760,7 +3759,19 @@ input:checked + .sliderbtn:before {
   max-width: 950px;
 }
 .email--invoice.modal .modal-dialog {
-  max-width: 600px;
+  max-width: 950px;
+}
+.invoice-wrapper .slick-prev:before,
+.invoice-wrapper .slick-next:before {
+  color: #000;
+}
+.invoice-wrapper .slick-next {
+  right: -20px;
+  top: 30%;
+}
+.invoice-wrapper .slick-prev {
+  left: -20px;
+  top: 30%;
 }
 
 /*
@@ -3894,4 +3905,3 @@ input:checked + .sliderbtn:before {
   color: rgb(92, 92, 92);
   opacity: 0.431;
 }
-

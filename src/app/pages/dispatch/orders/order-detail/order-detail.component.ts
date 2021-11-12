@@ -35,6 +35,10 @@ export class OrderDetailComponent implements OnInit {
   previewInvoiceModal: TemplateRef<any>;
   @ViewChild("emailInvoiceModal", { static: true })
   emailInvoiceModal: TemplateRef<any>;
+
+  @ViewChild("emailInvoice", { static: true })
+  emailInvoice: TemplateRef<any>;
+
   @ViewChild("uploadBol", { static: true }) uploadBol: ElementRef;
 
   @ViewChild(PdfViewerComponent, { static: false })
@@ -44,6 +48,10 @@ export class OrderDetailComponent implements OnInit {
 
   docs = [];
   attachments = [];
+  tripDocs = [];
+
+  emailBtn = false;
+
   localPhotos = [];
   uploadedDocs = [];
 
@@ -206,6 +214,15 @@ export class OrderDetailComponent implements OnInit {
     tripNo: "";
     tripID: "";
   };
+
+  emailDocs = [];
+  slides = [
+    { img: "http://placehold.it/350x150/000000" },
+    { img: "http://placehold.it/350x150/111111" },
+    { img: "http://placehold.it/350x150/333333" },
+    { img: "http://placehold.it/350x150/666666" },
+  ];
+  slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
 
   brokerage = {
     carrierID: "",
@@ -453,10 +470,20 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
+            ext: x.split(".")[1],
           }));
         }
+
+        if (result.tripDocs != undefined && result.tripDocs.length > 0) {
+          this.tripDocs = result.tripDocs.map((x) => ({
+            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          }));
+        }
+
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
@@ -494,6 +521,8 @@ export class OrderDetailComponent implements OnInit {
           //   ext: (x.storedName).split('.')[1]
           // }));
         }
+
+        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
         // if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
         //   obj = {
@@ -640,16 +669,40 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  emailInv() {
+  async openEmailInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
       windowClass: "email--invoice",
     };
-    this.emailRef = this.modalService.open(
-      this.emailInvoiceModal,
-      ngbModalOptions
-    );
-    this.emailData.emails.push({ label: this.customerEmail });
+    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+    // this.emailData.emails.push({ label: this.customerEmail });
+  }
+
+  async sendEmailInv() {
+    this.emailBtn = true;
+    let newDocs = [];
+
+    for (const item of this.emailDocs) {
+      newDocs.push({
+        filename: item.displayName,
+        path: item.docPath,
+      });
+    }
+
+    let result = await this.apiService
+      .getData(
+        `orders/emailInvoice/${this.orderID}?docs=${encodeURIComponent(
+          JSON.stringify(newDocs)
+        )}`
+      )
+      .toPromise();
+    if (result) {
+      this.emailRef.close();
+      this.toastr.success("Email send successfully!");
+      this.emailBtn = false;
+    } else {
+      this.emailBtn = false;
+    }
   }
 
   showInv() {
