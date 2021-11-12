@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { result } from 'lodash';
+import { map, result } from 'lodash';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { constants } from 'buffer';
@@ -19,13 +19,10 @@ export class SremindersComponent implements OnInit {
   lastItemSK = "";
   type = "null";
   allData = [];
-  pageLength = 10;
   lastEvaluatedKey = "";
-  carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
   tasksData = [];
-  taskName: string;
   serviceList = [];
   loaded = false
   filterStatus = null;
@@ -35,7 +32,7 @@ export class SremindersComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
-
+  record = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -44,6 +41,7 @@ export class SremindersComponent implements OnInit {
     this.fetchTasksList();
     this.fetchReminderCount();
     this.fetchTaskData();
+    this.fetchVehicleIDs();
 
   }
   setFilterStatus(val) {
@@ -52,7 +50,7 @@ export class SremindersComponent implements OnInit {
 
   fetchReminderList() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastEvaluatedKey}`).subscribe((result: any) => {
+      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
@@ -127,6 +125,15 @@ export class SremindersComponent implements OnInit {
       this.serviceList = test.filter((s: any) => s.taskType === 'service');
     });
   }
+  fetchVehicleIDs() {
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
+    })
+  }
   generateCSV() {
     if (this.allData.length > 0) {
       let dataObject = []
@@ -155,7 +162,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}vehicle-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Service-Reminders-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

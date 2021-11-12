@@ -111,7 +111,7 @@
                         >
                         <td>
                           <span class="badge badge-success text-3">{{
-                            device.deviceStatus
+                            device.deviceStatus === true ? 'Active' : 'Inactive'
                           }}</span>
                         </td>
                         <td class="border-0">
@@ -139,10 +139,11 @@
                                 (click)="
                                   deactivateDevice(
                                     device.deviceType,
-                                    device.deviceSerialNo
+                                    device.deviceID,
+                                    !device.deviceStatus
                                   )
                                 "
-                                >Deactivate</a
+                                >{{ device.deviceStatus === true ? 'Deactivate' : 'Activate'}}</a
                               >
                             </div>
                           </div>

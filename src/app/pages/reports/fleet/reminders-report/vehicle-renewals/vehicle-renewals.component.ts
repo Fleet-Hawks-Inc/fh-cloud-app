@@ -17,6 +17,8 @@ export class VehicleRenewalsComponent implements OnInit {
   tasksData = [];
   allData = [];
   entityID = null;
+  serviceTasks = [];
+  lastEvaluatedKey = "";
   loaded = false
   lastItemSK = "";
   filterStatus = null;
@@ -28,33 +30,37 @@ export class VehicleRenewalsComponent implements OnInit {
     dueSoon: '',
   }
   dataMessage: string = Constants.FETCHING_DATA
+  // record: any = {};
+  record = []
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchvehicleSList();
+    this.fetchvehiclesList();
     this.fetchTasksList();
-    this.fetchallData();
     this.fetchReminderCount();
     this.fetchVehiclesdata();
+    this.fetchServiceTask();
+    this.fetchVehicleIDs();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
   }
-
-  fetchallData() {
-    this.apiService.getData("reminders").subscribe((result: any) => {
-      // console.log('this.data', result)
-    });
-  }
   fetchReminderCount() {
-    this.apiService.getData(`reminders/fetch/count?status=${this.filterStatus}&type=service`).subscribe((result: any) => {
+    this.apiService.getData("reminders/fetch/count?type=vehicle").subscribe((result: any) => {
       this.count = result;
     })
   }
+  fetchServiceTask() {
+    let test = [];
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      test = result.Items;
+      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    });
+  }
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end')
-      this.apiService.getData(`reminders/fetch/report/list?entityID=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&type=service&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=vehicle`).subscribe((result: any) => {
         this.dataMessage = Constants.FETCHING_DATA
         if (result.Items.length === 0) {
 
@@ -74,18 +80,25 @@ export class VehicleRenewalsComponent implements OnInit {
         }
       });
   }
-  fetchvehicleSList() {
+  fetchvehiclesList() {
     this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
       this.vehiclesList = result;
-      // console.log("vehiclesList", result)
     });
 
+  }
+  fetchVehicleIDs() {
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
+    })
   }
 
   fetchTasksList() {
     this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
-      // console.log("tasksData", result)
     });
   }
   searchData() {
@@ -126,11 +139,10 @@ export class VehicleRenewalsComponent implements OnInit {
       this.allData.forEach(element => {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
-        obj["vehicle Renewal Type"] = this.tasksData[element.tasks.taskID]
-        obj["Due Date"] = element.nextServiceDate
+        obj["Renewal Type"] = this.tasksData[element.tasks.taskID] + " " + element.status
+        obj["Due Date"] = element.tasks.dueDate
         obj["Subscribers"] = element.subscribers
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
-        obj["Renewal Status"] = element.status
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
@@ -148,7 +160,7 @@ export class VehicleRenewalsComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}serviceReminder-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Vehicle-Renewals-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

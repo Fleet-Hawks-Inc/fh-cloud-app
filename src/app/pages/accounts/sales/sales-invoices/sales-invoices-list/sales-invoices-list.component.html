@@ -90,7 +90,7 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          {{ item.sRef }}
+                          {{ item.sRef ? item.sRef : '-' }}
                         </td>
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
@@ -116,9 +116,10 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">{{
-                            item.status
-                            }}</span>
+                          <span class="badge badge-dark p-1 text-uppercase">
+                            <span *ngIf="item.status === 'open'">Open</span>
+                            <span *ngIf="item.status === 'partially_deducted'">Partially Deducted</span>
+                          </span>
                         </td>
 
                       </tr>

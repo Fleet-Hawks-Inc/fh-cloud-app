@@ -8,7 +8,8 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
                      placeholder="Contact">
-                     <ng-option *ngFor="let data of empName | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <ng-option *ngFor="let data of record " value="{{ data.contactID }}">{{ data.firstName
+                        }} {{data.lastName}}
                      </ng-option>
                   </ng-select>
                </div>
@@ -16,7 +17,7 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Contact Renewal Type">
-                     <ng-option *ngFor="let data of tasks | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID"> {{task.taskName}}
                      </ng-option>
 
                   </ng-select>
@@ -64,24 +65,30 @@
                      </div>
                   </div>
                </div>
-
-               <div class="col-6 mb-3">
+               <div class="col-4 mb-3">
                   <div class="bg-white p-3">
                      <div>
                         <h4 class="m-0 text-4">Total Contacts</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{empData.length}}</h3>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.total}} </h3>
                      </div>
                   </div>
                </div>
-               <div class="col-6 mb-3">
+               <div class="col-4 mb-3">
                   <div class="bg-white p-3">
                      <div>
-                        <h4 class="m-0 text-4">Total Contact Renewal</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">{{empData.length}}</h3>
+                        <h4 class="m-0 text-4"> Total Overdue Service</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.overdue}}</h3>
                      </div>
                   </div>
                </div>
-
+               <div class="col-4 mb-3">
+                  <div class="bg-white p-3">
+                     <div>
+                        <h4 class="m-0 text-4">Total Due Soon</h4>
+                        <h3 class="mt-1 mb-0 font-weight-bold">{{count.dueSoon}}</h3>
+                     </div>
+                  </div>
+               </div>
                <div class="col">
                   <div class="card">
                      <div class="col-lg-12">
@@ -104,7 +111,12 @@
                                           <td colspan="6">{{dataMessage}}</td>
                                        </tr>
                                        <tr *ngFor="let item of empData">
-                                          <td>{{empName[item.entityID]}}</td>
+                                          <td>
+                                             <span class="text-capitalize">
+                                                {{empName[item.entityID]}}
+                                             </span>
+
+                                          </td>
                                           <td> <span class="text-warning font-weight-bold font-size-12 text-uppercase"
                                                 *ngIf="item.status === 'dueSoon'">{{item.status}}<br></span>
                                              <span class="text-danger font-weight-bold font-size-12 text-uppercase"
