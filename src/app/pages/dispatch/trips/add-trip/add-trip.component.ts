@@ -258,6 +258,8 @@ export class AddTripComponent implements OnInit {
   orderSearch = "";
   activeTab = "";
   searchOrder = "";
+  recalledState = false;
+
   constructor(
     private apiService: ApiService,
     private modalService: NgbModal,
@@ -268,10 +270,8 @@ export class AddTripComponent implements OnInit {
     private location: Location,
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService,
-    private el: ElementRef
-  ) // public selectionType: SelectionType,
-  // public columnMode: ColumnMode
-  {}
+    private el: ElementRef // public selectionType: SelectionType, // public columnMode: ColumnMode
+  ) {}
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -280,6 +280,13 @@ export class AddTripComponent implements OnInit {
     } else {
       this.pageTitle = "Add Trip";
     }
+
+    this.route.queryParams.subscribe((params) => {
+      const recallStatus = params.state;
+      if (recallStatus) {
+        this.recalledState = true;
+      }
+    });
     //this.fetchOrders();
     this.fetchCustomerByIDs();
     this.fetchCarriers();
@@ -2211,7 +2218,7 @@ export class AddTripComponent implements OnInit {
       });
   }
 
-  async onUpdateTrip() {
+  async onUpdateTrip(type) {
     this.hideErrors();
     this.submitDisabled = true;
     this.tripData.orderId = this.OrderIDs;
@@ -2391,7 +2398,15 @@ export class AddTripComponent implements OnInit {
     this.errors = {};
     this.hasError = false;
     this.hasSuccess = false;
-    this.apiService.putData("trips", this.tripData).subscribe({
+
+    let url = "";
+    if (type === "recall") {
+      url = "admin/trip/recall";
+    } else {
+      url = "trips";
+    }
+
+    this.apiService.putData(url, this.tripData).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)
