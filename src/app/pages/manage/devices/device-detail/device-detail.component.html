@@ -4,8 +4,7 @@
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            {{ device.deviceSerialNo }}
-            <span class="badge badge-dark p-1">ACTIVE</span>
+          Device Info for : {{ device.deviceSerialNo }}           
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a
@@ -20,7 +19,7 @@
                   device.deviceSerialNo.replace('#', '/')
                 }}"
                 class="btn btn-default btn-sm"
-                ><i class="fas fa-pencil-alt"></i> Edit Driver</a
+                ><i class="fas fa-pencil-alt"></i> Edit Device</a
               >
               <!-- <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions<span class="caret"></span></button>
                   <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
@@ -62,7 +61,7 @@
                               Device Serial / IMEI
                             </td>
                             <td width="60%">
-                              {{ device.deviceSerialNo.split("#")[1] }}
+                              {{ device.deviceSerialNo }}
                             </td>
                           </tr>
                           <tr>

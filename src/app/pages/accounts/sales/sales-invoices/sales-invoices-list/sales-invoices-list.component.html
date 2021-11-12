@@ -6,16 +6,9 @@
           <div class="row" style="padding-top: 10px">
             <div class="col-md-2 col-lg-2 pr-0">
               <div class="mb-3">
-                <ng-select
-                  [clearable]="false"
-                  [(ngModel)]="filterData.customerID"
-                  name="customerID"
-                  placeholder="Search By customers"
-                >
-                  <ng-option
-                    *ngFor="let item of customersObjects | keyvalue"
-                    value="{{ item.key }}"
-                  >
+                <ng-select [clearable]="false" [(ngModel)]="filterData.customerID" name="customerID"
+                  placeholder="Search By customers">
+                  <ng-option *ngFor="let item of customersObjects | keyvalue" value="{{ item.key }}">
                     {{ item.value }}
                   </ng-option>
                 </ng-select>
@@ -28,64 +21,31 @@
                     <i class="fas fa-calendar-alt"></i>
                   </span>
                 </span>
-                <input
-                  type="text"
-                  [(ngModel)]="filterData.startDate"
-                  name="startDate"
-                  (click)="startDate.toggle()"
-                  ngbDatepicker
-                  #startDate="ngbDatepicker"
-                  class="form-control"
-                  placeholder="mm/dd/yyyy"
-                  readonly
-                />
-                <span
-                  class="
+                <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
+                  ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+                <span class="
                     input-group-text
                     border-left-0 border-right-0
                     rounded-0
-                  "
-                >
+                  ">
                   to
                 </span>
-                <input
-                  type="text"
-                  [(ngModel)]="filterData.endDate"
-                  name="endDate"
-                  (click)="endDate.toggle()"
-                  ngbDatepicker
-                  #endDate="ngbDatepicker"
-                  class="form-control"
-                  placeholder="mm/dd/yyyy"
-                  readonly
-                />
+                <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
+                  ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
               </div>
             </div>
 
             <div class="col-md-2 col-lg-2">
-              <button
-                type="submit"
-                [disabled]="isSearch"
-                (click)="searchSale()"
-                class="btn btn-sm btn-success"
-              >
+              <button type="submit" [disabled]="isSearch" (click)="searchSale()" class="btn btn-sm btn-success">
                 Search
               </button>
-              <button
-                type="button"
-                class="btn btn-sm btn-success ml-3"
-                [disabled]="isSearch"
-                (click)="resetFilter()"
-              >
+              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch" (click)="resetFilter()">
                 Reset
               </button>
             </div>
             <div class="col-md-5 col-lg-5 text-right pr-2">
-              <a
-                routerLink="/accounts/sales/invoices/add"
-                class="btn btn-success btn-sm ml-2"
-                style="color: white"
-                ><i class="fas fa-plus"></i> Add Sales Invoice
+              <a routerLink="/accounts/sales/invoices/add" class="btn btn-success btn-sm ml-2" style="color: white"><i
+                  class="fas fa-plus"></i> Add Sales Invoice
               </a>
             </div>
           </div>
@@ -98,9 +58,7 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row">
                 <div class="col-lg-12">
-                  <table
-                    class="table table-bordered table-striped mb-0 simple-table"
-                  >
+                  <table class="table table-bordered table-striped mb-0 simple-table">
                     <thead>
                       <tr class="bgcol2">
                         <th class="text-2">Date</th>
@@ -111,7 +69,7 @@
                         <th class="text-2">Amount</th>
                         <th class="text-2">Payment Status</th>
                         <th class="text-2">Status</th>
-                        <th class="text-2">Action</th>
+
                       </tr>
                     </thead>
                     <tbody>
@@ -119,99 +77,63 @@
                         <td colspan="9">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of allInvoices">
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
-                          {{ item.txnDate }}
+                          }}">
+                          {{ item.txnDate | date: 'yyyy/MM/dd' }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
+                          }}">
                           {{ item.sInvNo }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
+                          }}">
                           {{ item.sRef }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
+                          }}">
                           {{ customersObjects[item.customerID] }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
-                          {{ item.dueDate }}
+                          }}">
+                          {{ item.dueDate | date: 'yyyy/MM/dd' }}
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
-                          CAD {{ item.total.finalTotal }}
+                          }}">
+                          CAD {{ item.total.finalTotal | number : '1.2-2'}}
                         </td>
 
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
-                          <span class="badge badge-dark p-1">-</span>
+                          }}">
+                          <span class="badge badge-dark p-1  text-uppercase">{{item.payStatus}}</span>
                         </td>
-                        <td
-                          routerLink="/accounts/sales/invoices/detail/{{
+                        <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
-                          }}"
-                        >
+                          }}">
                           <span class="badge badge-dark p-1 text-uppercase">{{
                             item.status
-                          }}</span>
+                            }}</span>
                         </td>
-                        <td>
-                          <div class="btn-group flex-wrap">
-                            <button
-                              type="button"
-                              class="m-0 btn"
-                              data-toggle="dropdown"
-                            >
-                              <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div class="dropdown-menu" role="menu">
-                              <a class="dropdown-item text-1" href="#"
-                                >Make Payment</a
-                              >
-                              <a
-                                routerLink="/accounts/sales/invoices/edit/{{
-                                  item.saleID
-                                }}"
-                                class="dropdown-item text-1"
-                                href="javascript:;"
-                                >Edit</a
-                              >
-                              <a
-                                (click)="deleteSale(item.saleID)"
-                                class="dropdown-item text-1"
-                                href="javascript:;"
-                                >Delete</a
-                              >
-                            </div>
-                          </div>
-                        </td>
+
                       </tr>
                       <tr></tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' &&
+                      allInvoices.length
+                      !==
+                      0">
+                  <button type="button" class="btn
+                          btn-success
+                          btn-sm text-light" (click)="onScroll()">Load
+                    More..</button>
                 </div>
               </div>
             </div>
