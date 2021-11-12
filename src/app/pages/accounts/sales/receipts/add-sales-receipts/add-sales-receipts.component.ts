@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import Constants from 'src/app/pages/fleet/constants';
 import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+declare var $: any;
 
 @Component({
   selector: 'app-add-sales-receipts',
@@ -205,11 +206,19 @@ export class AddSalesReceiptsComponent implements OnInit {
 
   addReceipt() {
     this.submitDisabled = true;
+
     if (this.paymentData.invoiceData.length === 0) {
       this.toaster.error('Please select at least one invoice');
-      this.submitDisabled = false;
       return
     }
+    this.customerInvoices.forEach(elem => {
+      if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
+        this.toaster.error('Please add invoice amount')
+        return;
+      }
+    });
+
+
     this.accountService.postData(`sales-receipts`, this.paymentData).subscribe({
       complete: () => { },
       error: (err: any) => {

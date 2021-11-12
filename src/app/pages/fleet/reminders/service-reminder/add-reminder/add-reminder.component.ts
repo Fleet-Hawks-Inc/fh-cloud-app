@@ -78,9 +78,7 @@ export class AddReminderComponent implements OnInit {
   async ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchServiceTaks();
-    // this.demoFunction();
 
-    this.sendEmailNotification();
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
       await this.fetchReminderByID();
@@ -196,18 +194,6 @@ export class AddReminderComponent implements OnInit {
     });
 
   }
-  // demoFunction(){
-  //   this.apiService.getData("/reminders/data").subscribe((result:any)=>{
-  //     console.log("hiii" , result);
-  //   })
-  // }
-  sendEmailNotification() {
-    this.apiService.getData("/reminders/sreminders").subscribe((result: any) => {
-      console.log("hii", result)
-    })
-
-  }
-
 
   throwErrors() {
     from(Object.keys(this.errors))

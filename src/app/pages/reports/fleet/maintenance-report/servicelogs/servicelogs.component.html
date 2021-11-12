@@ -21,15 +21,16 @@
 
                      <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Vehicle"
                         *ngIf="category == 'vehicle'">
-                        <ng-option *ngFor="let data of vehiclesObject | keyvalue" value="{{ data.key }}"> {{
-                           data.value }}</ng-option>
+                        <ng-option *ngFor="let data of vehiclesData " value="{{data.vehicleID}}">
+                           {{data.vehicleIdentification}}</ng-option>
                      </ng-select>
 
                      <ng-select [(ngModel)]="searchValue" name="searchValue" placeholder="Search By Asset"
                         *ngIf="category == 'asset'">
-                        <ng-option *ngFor="let data of assetsObject | keyvalue" value="{{data.key}}">{{data.value}}
-                        </ng-option>
+                        <ng-option *ngFor="let data of assetsData " value="{{data.assetID}}">
+                           {{data.assetIdentification}}</ng-option>
                      </ng-select>
+
                   </div>
                   <div class="col-md-2 col-lg-2 pr-0">
                      <ng-select [(ngModel)]="taskID" name="taskID" placeholder="search by service task">
