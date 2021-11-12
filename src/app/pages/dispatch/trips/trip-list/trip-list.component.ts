@@ -741,6 +741,7 @@ export class TripListComponent implements OnInit {
           this.tripsFiltr.searchValue =
             this.tripsFiltr.searchValue.toLowerCase();
         }
+        this.tripDraw = 0;
         this.trips = [];
         this.confirmedTrips = [];
         this.dispatchedTrips = [];
