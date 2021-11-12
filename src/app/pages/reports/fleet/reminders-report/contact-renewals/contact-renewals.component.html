@@ -8,7 +8,8 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
                      placeholder="Contact">
-                     <ng-option *ngFor="let data of empName | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <ng-option *ngFor="let data of record " value="{{ data.contactID }}">{{ data.firstName
+                        }} {{data.lastName}}
                      </ng-option>
                   </ng-select>
                </div>

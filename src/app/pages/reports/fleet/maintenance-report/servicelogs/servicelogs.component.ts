@@ -14,8 +14,8 @@ export class ServicelogsComponent implements OnInit {
   vendorsObject: any = {};
   tasks = [];
   taskID = null;
-  vehiclesObject: any = {};
-  assetsObject: any = {};
+  vehiclesData = []
+  assetsData: any = {};
   startDate: '';
   endDate: '';
   start = null;
@@ -59,8 +59,6 @@ export class ServicelogsComponent implements OnInit {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
         .subscribe((result: any) => {
-          console.log('lastItemSK', this.lastItemSK)
-          console.log('lastItemSK', this.allData.length)
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -108,18 +106,24 @@ export class ServicelogsComponent implements OnInit {
   }
 
   fetchAllVehiclesIDs() {
-    this.apiService.getData('vehicles/get/list')
+    this.apiService.getData('vehicles/list/minor')
       .subscribe((result: any) => {
-        this.vehiclesObject = result;
+        result['Items'].map((v: any) => {
+          if (v.isDeleted === 0) {
+            this.vehiclesData.push(v);
+          }
+        })
+      });
+  }
 
-      });
-  }
   fetchAllAssetsIDs() {
-    this.apiService.getData('assets/get/list')
+    this.apiService.getData('assets/get/minor/details')
       .subscribe((result: any) => {
-        this.assetsObject = result;
-      });
+        this.assetsData = result.Items;
+      })
+
   }
+
   categoryChange() {
     this.searchValue = null;
 

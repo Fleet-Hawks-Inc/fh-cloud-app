@@ -187,6 +187,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   changeUnit(value: string, i: any) {
     this.saleData.sOrderDetails[i].qtyUnit = value;
     this.saleData.sOrderDetails[i].rateUnit = value;
+    this.calculateAmount(null)
+    this.calculateFinalTotal();
   }
 
   async calculateAmount(i: number) {
@@ -199,7 +201,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       total += element.amount;
     });
     this.saleData.total.detailTotal = parseFloat(total);
-    this.saleData.total.finalTotal = this.saleData.total.detailTotal
+    this.saleData.total.finalTotal = this.saleData.total.detailTotal;
+    this.calculateFinalTotal();
   }
 
   async getCustomerOrders(ID: string) {
@@ -261,6 +264,7 @@ export class AddSalesInvoiceComponent implements OnInit {
       this.customerCredits[index].paidAmount = 0;
       this.customerCredits[index].paidStatus = false;
     }
+    this.selectedCredits();
   }
 
   changeCur() {
@@ -327,12 +331,15 @@ export class AddSalesInvoiceComponent implements OnInit {
     ) {
       this.saleData.sOrderDetails.push(obj);
     }
-
+    this.calculateAmount(null);
+    this.calculateFinalTotal();
   }
 
   deleteDetail(d: number) {
     this.total -= this.saleData.sOrderDetails[d].amount;
     this.saleData.sOrderDetails.splice(d, 1);
+    this.calculateAmount(null);
+    this.calculateFinalTotal();
   }
 
   addAccessorialArr(type) {
@@ -392,7 +399,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.allTax();
     this.saleData.total.finalTotal =
       Number(this.saleData.total.subTotal) +
-      Number(this.saleData.total.taxes);
+      Number(this.saleData.total.taxes) - Number(this.saleData.total.customerCredit);
   }
 
   taxcalculation(index) {
@@ -526,6 +533,12 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
+    this.customerCredits.forEach(elem => {
+      if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
+        this.toaster.error('Please add credits amount')
+        return;
+      }
+    })
 
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
