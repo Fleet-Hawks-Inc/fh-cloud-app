@@ -610,7 +610,7 @@ export class OrderDetailComponent implements OnInit {
         // }
       },
 
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -672,7 +672,7 @@ export class OrderDetailComponent implements OnInit {
   async openEmailInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
-      windowClass: "email--invoice",
+      windowClass: "send-email--modal",
     };
     this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
     // this.emailData.emails.push({ label: this.customerEmail });
@@ -787,7 +787,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`zeroRated`] = this.zeroRated;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -805,7 +805,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -944,7 +944,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
