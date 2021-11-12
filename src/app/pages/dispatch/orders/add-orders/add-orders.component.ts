@@ -1225,25 +1225,28 @@ export class AddOrdersComponent implements OnInit {
   }
 
   changeCusCurrency(value) {
-    if (value === "CA") {
-      this.orderData.charges.freightFee.currency = "CAD";
-      this.orderData.charges.fuelSurcharge.currency = "CAD";
-      this.accessFeesInfo.accessFees.forEach((elem) => {
-        elem.currency = "CAD";
-      });
-      this.accessorialDeductionInfo.accessDeductions.forEach((elem) => {
-        elem.currency = "CAD";
-      });
-    } else {
-      this.orderData.charges.freightFee.currency = "USD";
-      this.orderData.charges.fuelSurcharge.currency = "USD";
-      this.accessFeesInfo.accessFees.forEach((elem) => {
-        elem.currency = "USD";
-      });
-      this.accessorialDeductionInfo.accessDeductions.forEach((elem) => {
-        elem.currency = "USD";
-      });
+    if (!this.getOrderID) {
+      if (value === "CA") {
+        this.orderData.charges.freightFee.currency = "CAD";
+        this.orderData.charges.fuelSurcharge.currency = "CAD";
+        this.accessFeesInfo.accessFees.forEach((elem) => {
+          elem.currency = "CAD";
+        });
+        this.accessorialDeductionInfo.accessDeductions.forEach((elem) => {
+          elem.currency = "CAD";
+        });
+      } else {
+        this.orderData.charges.freightFee.currency = "USD";
+        this.orderData.charges.fuelSurcharge.currency = "USD";
+        this.accessFeesInfo.accessFees.forEach((elem) => {
+          elem.currency = "USD";
+        });
+        this.accessorialDeductionInfo.accessDeductions.forEach((elem) => {
+          elem.currency = "USD";
+        });
+      }
     }
+
   }
 
   setAdditionalContact(event) {
