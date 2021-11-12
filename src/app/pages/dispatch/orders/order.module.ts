@@ -16,6 +16,7 @@ import { OrderDetailComponent } from "./order-detail/order-detail.component";
 import { PdfAutomationComponent } from "../pdf-automation/pdf-automation.component";
 import { PdfViewerModule } from "ng2-pdf-viewer";
 import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
+import { BolPdfComponent } from './bol-pdf/bol-pdf.component';
 const routes: Routes = [
   { path: "", component: OrdersListComponent },
   { path: "edit/:orderID", component: AddOrdersComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
     OrderDetailComponent,
     PdfAutomationComponent,
     BrokeragePdfComponent,
+    BolPdfComponent,
   ],
   imports: [
     CommonModule,

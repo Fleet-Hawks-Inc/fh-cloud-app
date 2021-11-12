@@ -19,6 +19,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
+import Constants from "src/app/pages/fleet/constants";
 declare var $: any;
 
 @Component({
@@ -38,6 +39,9 @@ export class OrderDetailComponent implements OnInit {
 
   @ViewChild(PdfViewerComponent, { static: false })
   private pdfComponent: PdfViewerComponent;
+
+  noLogsMsg = Constants.NO_RECORDS_FOUND;
+
   docs = [];
   attachments = [];
   localPhotos = [];
@@ -201,7 +205,6 @@ export class OrderDetailComponent implements OnInit {
   tripData: {
     tripNo: "";
     tripID: "";
-
   };
 
   brokerage = {
@@ -221,8 +224,8 @@ export class OrderDetailComponent implements OnInit {
     phone: "",
   };
 
-
   showModal = false;
+  showBolModal = false;
 
   orderInvData = {
     additionalContact: <any>null,
@@ -262,6 +265,8 @@ export class OrderDetailComponent implements OnInit {
     taxesAmt: 0,
   };
   companyLogoSrc = "";
+  orderLogs = [];
+  recallStatus = false;
 
   constructor(
     private apiService: ApiService,
@@ -281,6 +286,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
     this.fetchInvoiceData();
+    this.fetchOrderLogs();
   }
 
   /**
@@ -300,6 +306,10 @@ export class OrderDetailComponent implements OnInit {
         }
         if (result.brkAmount) {
           this.brokerage.brokerageAmount = result.brkAmount;
+        }
+
+        if (result.recall) {
+          this.recallStatus = true;
         }
         this.brokerage.orderNo = result.orderNumber;
         this.brokerage.miles = result.milesInfo.totalMiles;
@@ -457,7 +467,6 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "png" ||
               x.storedName.split(".")[1] === "jpeg"
             ) {
-
               const obj = {
                 imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
                 docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -477,7 +486,6 @@ export class OrderDetailComponent implements OnInit {
               this.docs.push(obj);
             }
           });
-
 
           // this.docs = result.uploadedDocs.map(x => ({
           //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
@@ -574,7 +582,6 @@ export class OrderDetailComponent implements OnInit {
       },
 
       (err) => {}
-
     );
   }
 
@@ -746,7 +753,6 @@ export class OrderDetailComponent implements OnInit {
             },
 
             next: () => {},
-
           });
       },
       next: (res) => {
@@ -939,7 +945,6 @@ export class OrderDetailComponent implements OnInit {
 
         this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
 
-
         this.orderInvData = result[0];
         this.isInvoice = true;
         if (this.orderInvData.carrierData.logo != "") {
@@ -978,5 +983,49 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-}
+  async downloadBolPdf() {
+    this.showBolModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      orderData: this.orderInvData,
+      showModal: this.showBolModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    this.listService.triggerBolPdf(data);
+  }
 
+  fetchOrderLogs() {
+    this.apiService
+      .getData(`auditLogs/details/${this.orderID}`)
+      .subscribe((res: any) => {
+        this.orderLogs = res.Items;
+        if (this.orderLogs.length > 0) {
+          this.orderLogs.map((k) => {
+            k.dateAndTime = `${k.createdDate} ${k.createdTime}`;
+            if (k.eventParams.userName !== undefined) {
+              const newString = k.eventParams.userName.split("_");
+              k.userFirstName = newString[0];
+              k.userLastName = newString[1];
+            }
+            if (k.eventParams.number !== undefined) {
+              k.entityNumber = k.eventParams.number;
+            }
+            if (k.eventParams.name !== undefined) {
+              if (k.eventParams.name.includes("_")) {
+                const newString = k.eventParams.name.split("_");
+                k.firstName = newString[0];
+                k.lastName = newString[1];
+              }
+            }
+          });
+
+          this.orderLogs.sort((a, b) => {
+            return (
+              new Date(a.dateAndTime).valueOf() -
+              new Date(b.dateAndTime).valueOf()
+            );
+          });
+        }
+      });
+  }
+}
