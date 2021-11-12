@@ -12,6 +12,7 @@ export class BolPdfComponent implements OnInit {
   constructor(private listService: ListService) {}
   subscription: Subscription;
   orderData = {
+    createdDate: "",
     additionalContact: <any>null,
     carrierData: {
       address: "",
