@@ -28,7 +28,7 @@ export class ContactRenewalsComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
-
+  record = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -37,6 +37,7 @@ export class ContactRenewalsComponent implements OnInit {
     this.fetchEmployees();
     this.fetchServiceTask();
     this.fetchReminderCount();
+    this.fetchVehicleIDs();
   }
   fectchTasks() {
     this.apiService.getData("tasks/get/list").subscribe((result: any) => {
@@ -46,6 +47,15 @@ export class ContactRenewalsComponent implements OnInit {
   fetchReminderCount() {
     this.apiService.getData("reminders/fetch/count?type=contact").subscribe((result: any) => {
       this.count = result;
+    })
+  }
+  fetchVehicleIDs() {
+    this.apiService.getData('contacts/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
     })
   }
   fetchEmployees() {
@@ -145,7 +155,7 @@ export class ContactRenewalsComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Contact-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Contact-Renewal-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
