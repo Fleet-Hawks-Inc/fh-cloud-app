@@ -1,0 +1,21 @@
+ngx-datatable {
+  max-height: 70vh;
+  min-height: 60vh;
+  overflow-y: scroll;
+}
+
+td {
+  padding: 5px;
+}
+
+/* .ngx-datatable {
+  max-height: 70vh;
+  width: 100%;
+  overflow-y: visible;
+  overflow-x: hidden
+}
+
+.setHeight {
+  height: 700px;
+  width: 120em;
+} */
