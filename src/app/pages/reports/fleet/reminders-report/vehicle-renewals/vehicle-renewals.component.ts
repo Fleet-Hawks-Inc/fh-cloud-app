@@ -30,6 +30,8 @@ export class VehicleRenewalsComponent implements OnInit {
     dueSoon: '',
   }
   dataMessage: string = Constants.FETCHING_DATA
+  // record: any = {};
+  record = []
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
@@ -39,6 +41,7 @@ export class VehicleRenewalsComponent implements OnInit {
     this.fetchReminderCount();
     this.fetchVehiclesdata();
     this.fetchServiceTask();
+    this.fetchVehicleIDs();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -82,6 +85,15 @@ export class VehicleRenewalsComponent implements OnInit {
       this.vehiclesList = result;
     });
 
+  }
+  fetchVehicleIDs() {
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
+    })
   }
 
   fetchTasksList() {
@@ -148,7 +160,7 @@ export class VehicleRenewalsComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Vehicle-Reminder-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Vehicle-Renewals-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
