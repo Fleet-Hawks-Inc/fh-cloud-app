@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/services/api.service'
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import Constant from "src/app/pages/fleet/constants";
 import { ToastrService } from 'ngx-toastr';
+import * as moment from 'moment'
 @Component({
   selector: 'app-customer-collection',
   templateUrl: './customer-collection.component.html',
@@ -131,7 +132,48 @@ export class CustomerCollectionComponent implements OnInit {
     this.fetchCustomerCollection();
 
   }
-  generateCSV() {
+  async generateCSV() {
+    let dataObject = []
+    let csvArray = []
+    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    for (const element of result.Items) {
+      let obj = {}
+      obj["Customer"] = element.cName
+      obj["Email"] = element.workEmail
+      obj["Phone"] = element.workPhone
+      obj["Total Orders"] = element.totalOrders
+      obj["Delivered Orders"] = element.deliveredOrders
+      obj["Invoice Generated"] = element.invoiceGenerated
+      obj["Total Amount"] = `CAD ${element.totalAmount.cad}/USD${element.totalAmount.usd}`
+      obj["Amount Received"] = `CAD ${element.amountReceived.cad}/USD${element.amountReceived.usd}`
+      obj["Balance"] = `CAD ${element.balance.cad}/USD${element.balance.usd}`
+      obj["30-45"] = `CAD ${element.balanceAge30.cad}/USD${element.balanceAge30.usd}`
+      obj["45-60"] = `CAD ${element.balanceAge45.cad}/USD${element.balanceAge45.usd}`
+      obj["60-90"] = `CAD ${element.balanceAge60.cad}/USD${element.balanceAge60.usd}`
+      dataObject.push(obj)
+    }
+
+    let headers = Object.keys(dataObject[0]).join(',')
+    headers += '\n'
+    csvArray.push(headers)
+    dataObject.forEach(element => {
+      let obj = Object.values(element).join(',')
+      obj += '\n'
+      csvArray.push(obj)
+    })
+    const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Collection-Report.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    }
 
   }
 
