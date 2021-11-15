@@ -64,6 +64,8 @@ export class AddCreditNoteComponent implements OnInit {
   filesError = '';
   carrierID: any;
 
+  files: any;
+
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,

@@ -74,6 +74,7 @@ export class AddSalesReceiptsComponent implements OnInit {
 
   docs = [];
   filesError = '';
+  files: any;
 
   constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,) { }
 
