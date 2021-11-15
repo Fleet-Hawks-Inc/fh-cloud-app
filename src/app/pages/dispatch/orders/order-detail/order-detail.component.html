@@ -1178,12 +1178,6 @@
                           </span>
                           {{ orderNumber }}
                         </p>
-                        <p style="margin: 0; color: #000">
-                          <span style="font-size: 12px">
-                            <b>Customer Confirmation#: </b>
-                          </span>
-                          {{ invoiceData.cusConfirmation }}
-                        </p>
                       </td>
                       <td width="60%" class="title" valign="top" style="padding:
                         10px; text-align: right">
@@ -1322,13 +1316,6 @@
                                       pick.contactPerson
                                       }}</b>
                                   </p>
-                                  <p class="m-0 text-dark">
-                                    Customer PO#
-                                    <span *ngIf="pick.customerPO && pick.customerPO.length>0">
-                                    <span *ngFor="let po of pick.customerPO; let i=index">{{i}}<span *ngIf="po!=''">{{po}}</span><span *ngIf="pick.customerPO.length>0 && i<pick.customerPO.length-1">,</span></span>
-                                    </span>
-                                  </p>
-                                  
 
                                   <table width="100%" style="border-top: none;
                                     font-size: 12px">
