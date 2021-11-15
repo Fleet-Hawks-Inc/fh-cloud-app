@@ -405,7 +405,7 @@ export class AddTripComponent implements OnInit {
       this.textFieldValues[`splitDone`] = false;
       let commName = "";
       this.textFieldValues.commodity.map((cm) => {
-        commName = cm.trim();
+        commName += cm.trim() + ", ";
       });
 
       this.planOrderData.map((v) => {
