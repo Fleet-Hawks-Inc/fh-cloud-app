@@ -1,12 +1,12 @@
 export const environment = {
   production: true,
   isFeatureEnabled: true,
-  isFleetEnabled: false,
+  isFleetEnabled: true,
   isDispatchEnabled: false,
   isComplianceEnabled: false,
   isManageEnabled: false,
   isSafetyEnabled: false,
-  isAccountsEnabled: false,
+  isAccountsEnabled: true,
   isReportsEnabled: false,
 
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
