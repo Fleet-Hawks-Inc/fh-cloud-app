@@ -7,14 +7,17 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important;"
                      placeholder="Search By vehicle">
-                     <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     <!-- <ng-option *ngFor="let data of vehiclesList | keyvalue" value="{{ data.key }}"> {{ data.value }}
+                     </ng-option> -->
+                     <ng-option *ngFor="let data of record " value="{{ data.vehicleID }}"> {{ data.vehicleIdentification
+                        }}
                      </ng-option>
                   </ng-select>
                </div>
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Search task">
-                     <ng-option *ngFor="let task of tasksData | keyvalue" [value]="task.key">{{task.value}}
+                     <ng-option *ngFor="let task of serviceList" [value]="task.taskID"> {{task.taskName}}
                      </ng-option>
                   </ng-select>
                </div>
@@ -69,7 +72,7 @@
                <div class="col-4 mb-3">
                   <div class="bg-white p-3">
                      <div>
-                       <h4 class="m-0 text-4">Total Service Reminders</h4>
+                        <h4 class="m-0 text-4">Total Service Reminders</h4>
                         <h3 class="mt-1 mb-0 font-weight-bold">{{count.total}} </h3>
                      </div>
                   </div>
@@ -113,8 +116,16 @@
                                           <td colspan="6">{{dataMessage}}</td>
                                        </tr>
                                        <tr *ngFor="let item of allData">
-                                          <td>{{vehiclesList[item.entityID]}}</td>
-                                          <td>{{tasksData[item.tasks.taskID]}}</td>
+                                          <td>
+                                             <span class="text-capitalize">
+                                                {{vehiclesList[item.entityID]}}
+                                             </span>
+                                          </td>
+                                          <td>
+                                             <span class="text-capitalize">
+                                                {{tasksData[item.tasks.taskID]}}
+                                             </span>
+                                          </td>
                                           <td>{{item.createdDate | date:'yyyy/MM/dd'}}</td>
                                           <td>{{item.subscribers}}</td>
                                           <td><span class="text-warning font-weight-bold font-size-12 text-uppercase"
@@ -144,5 +155,8 @@
                      </div>
                   </div>
                </div>
-
             </div>
+         </div>
+      </section>
+   </div>
+</section>

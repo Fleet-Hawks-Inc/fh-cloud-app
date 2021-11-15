@@ -22,11 +22,11 @@
           Assets
         </a>
       </li>
-      <!-- <li>
+      <li>
         <a class="nav-link" [routerLink]="['/reports', 'fleet','fuel','overview']">
           Fuel
         </a>
-      </li> -->
+      </li>
       <li>
         <a class="nav-link" [routerLink]="['/reports', 'fleet','reminders','overview']">
           Reminders
@@ -37,11 +37,11 @@
           Issues
         </a>
       </li> -->
-      <!-- <li>
+      <li>
         <a class="nav-link" [routerLink]="['/reports', 'fleet','maintenance','overview']">
           Maintenance
         </a>
-      </li> -->
+      </li>
       <!-- <li>
         <a class="nav-link" [routerLink]="['/reports', 'fleet','inventory','overview']">
           Inventory
@@ -162,6 +162,21 @@
   <!-- </ul>
 </li> -->
 
+<li class="nav-parent">
+  <a class="nav-link" href="#">
+    <i class="fas fa-file-invoice-dollar"></i>
+    <span>Accounts
+    </span>
+  </a>
+  <ul class="nav nav-children">
+    <li>
+      <a class="nav-link" [routerLink]="['/reports', 'accounts','collections']">
+        Customer Colelction
+      </a>
+    </li>
 
+
+  </ul>
+</li>
 
 </ul>

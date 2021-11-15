@@ -14,7 +14,7 @@ import { FoverviewComponent } from './foverview/foverview.component';
 import { SummaryComponent } from './summary/summary.component';
 import { FvreportComponent } from './fvreport/fvreport.component';
 import { FdreportComponent } from './fdreport/fdreport.component';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const routes: Routes = [
@@ -92,7 +92,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     {provide: NgbDateAdapter, useClass: CustomAdapter},

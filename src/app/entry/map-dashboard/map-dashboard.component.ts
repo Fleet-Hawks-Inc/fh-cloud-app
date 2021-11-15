@@ -110,9 +110,9 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             position: { lng: parseFloat(asset.lng), lat: parseFloat(asset.lat) },
             data: {
               assetIdentification: asset.assetIdentification,
-              time: `${new Date(asset.timeCreated).toLocaleDateString()} | ${new Date(asset.timeCreated).toLocaleTimeString()}`,
+              time: `${new Date(asset.timeModified).toLocaleDateString()} | ${new Date(asset.timeModified).toLocaleTimeString()}`,
               speed: asset.speed,
-              assetId: asset.assetID,
+              assetID: asset.assetID,
               altitude: parseInt(asset.altitude).toFixed(2),
               battery: asset.battery,
               temp: asset.temp,
@@ -120,7 +120,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        console.log(this.assetPositions.length)
+        console.log(this.assetPositions)
 
       } else {
         // console.log('No data');

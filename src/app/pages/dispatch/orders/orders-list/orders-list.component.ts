@@ -98,6 +98,14 @@ export class OrdersListComponent implements OnInit {
 
   statusData = [
     {
+      name: "Attached",
+      value: "attached",
+    },
+    {
+      name: "Created",
+      value: "created",
+    },
+    {
       name: "Confirmed",
       value: "confirmed",
     },
@@ -237,7 +245,9 @@ export class OrdersListComponent implements OnInit {
       )
       .subscribe({
         complete: () => { },
-        error: () => { this.isSearch = false; },
+        error: () => {
+          this.isSearch = false;
+        },
         next: (result: any) => {
           this.totalRecords = result.Count;
 
@@ -262,6 +272,10 @@ export class OrdersListComponent implements OnInit {
   allignOrders(orders) {
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
+      element.newStatus = element.orderStatus;
+      if (element.recall) {
+        element.newStatus = `${element.orderStatus} (R)`;
+      }
       if (element.orderStatus === "confirmed") {
         this.confirmOrders.push(element);
       } else if (element.orderStatus == "dispatched") {
@@ -366,7 +380,6 @@ export class OrdersListComponent implements OnInit {
   }
 
   filterOrders() {
-
     if (this.orderFiltr.category == null || this.orderFiltr.category == "") {
       this.toastr.error("Please select category");
       return false;
@@ -410,6 +423,7 @@ export class OrdersListComponent implements OnInit {
         if (this.orderFiltr.endDate !== "") {
           this.orderFiltr.end = this.orderFiltr.endDate;
         }
+        this.ordersDraw = 0;
         this.orders = [];
         this.confirmOrders = [];
         this.dispatchOrders = [];
@@ -420,7 +434,7 @@ export class OrdersListComponent implements OnInit {
         this.tonuOrders = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
-        this.lastEvaluatedKey = '';
+        this.lastEvaluatedKey = "";
         this.fetchOrdersCount();
         // this.initDataTable();
       }
@@ -429,7 +443,7 @@ export class OrdersListComponent implements OnInit {
 
   resetFilter() {
     if (
-      this.orderFiltr.category !== '' ||
+      this.orderFiltr.category !== "" ||
       this.orderFiltr.category !== null ||
       this.orderFiltr.startDate !== "" ||
       this.orderFiltr.endDate !== "" ||
@@ -445,6 +459,7 @@ export class OrdersListComponent implements OnInit {
         end: "",
       };
       $("#categorySelect").text("Search by category");
+      this.ordersDraw = 0;
       this.records = false;
       this.orders = [];
       this.confirmOrders = [];
@@ -456,7 +471,7 @@ export class OrdersListComponent implements OnInit {
       this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
       // this.fetchAllTypeOrderCount();
-      this.lastEvaluatedKey = '';
+      this.lastEvaluatedKey = "";
       this.fetchOrdersCount();
       // this.initDataTable();
       this.spinner.hide();
@@ -558,7 +573,6 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-
   async changeStatus() {
     this.isConfirm = true;
     if (this.emailData.confirmEmail && this.emailData.emails.length === 0) {
@@ -571,7 +585,7 @@ export class OrdersListComponent implements OnInit {
       emails: [],
       confirm: false,
       customerID: this.newCustomerID,
-      instructions: ''
+      instructions: "",
     };
     this.emailData.emails.forEach((elem) => {
       newData.emails.push(elem.label);
@@ -599,16 +613,19 @@ export class OrdersListComponent implements OnInit {
           // this.tonuOrders = [];
           // this.lastEvaluatedKey = "";
           // this.fetchAllTypeOrderCount();
-
-          let getOrder = this.orders[0].filter(elem => elem.orderID == this.newOrderID);
-
-          getOrder[0].orderStatus = 'confirmed';
-
+          this.orders[0].filter((elem) => {
+            if (elem.orderID == this.newOrderID) {
+              elem.orderStatus = "confirmed";
+            }
+          }
+          );
+          this.allignOrders(this.orders[0]);
           this.confirmRef.close();
           this.isConfirm = false;
         },
       });
   }
+
 
   async confirmEmail(order) {
     this.emailData.emails = [];
