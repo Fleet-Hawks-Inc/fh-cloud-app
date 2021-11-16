@@ -167,14 +167,14 @@ export class ApiService {
 
     if (user.userRoles.includes("orgAdmin") || user.userRoles.includes("role_view_admin") || user.userRoles.includes("role_super_admin")) {
       localStorage.setItem("isDispatchEnabled", "true")
-      localStorage.setItem("isComplianceEnabled", "true")
+      localStorage.setItem("isComplianceEnabled", "false")
       localStorage.setItem("isSafetyEnabled", "true")
       localStorage.setItem("isAccountsEnabled", "true")
       localStorage.setItem("isManageEnabled", "true")
       return
     }
     if (user.userRoles.includes("role_safety")) {
-      localStorage.setItem("isComplianceEnabled", "true")
+      localStorage.setItem("isComplianceEnabled", "false")
       localStorage.setItem("isSafetyEnabled", "true")
     }
     if (user.userRoles.includes("role_dispatch")) {
