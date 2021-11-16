@@ -112,11 +112,11 @@ export class HeaderComponent implements OnInit {
   async init() {
     await this.apiService.checkAccess();
     this.isFleetEnabled = environment.isFleetEnabled;
-    this.isDispatchEnabled = environment.isDispatchEnabled;
-    this.isComplianceEnabled = environment.isComplianceEnabled;
-    this.isManageEnabled = environment.isManageEnabled;
-    this.isSafetyEnabled = environment.isSafetyEnabled;
-    this.isAccountsEnabled = environment.isAccountsEnabled;
+    this.isDispatchEnabled = localStorage.getItem("isDispatchEnabled") ? JSON.parse(localStorage.getItem("isDispatchEnabled")) : environment.isDispatchEnabled;
+    this.isComplianceEnabled = localStorage.getItem("isComplianceEnabled") ? JSON.parse(localStorage.getItem("isComplianceEnabled")) : environment.isComplianceEnabled;
+    this.isManageEnabled = localStorage.getItem("isManageEnabled") ? JSON.parse(localStorage.getItem("isManageEnabled")) : environment.isManageEnabled;
+    this.isSafetyEnabled = localStorage.getItem("isSafetyEnabled") ? JSON.parse(localStorage.getItem("isSafetyEnabled")) : environment.isSafetyEnabled;
+    this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled") ? JSON.parse(localStorage.getItem("isAccountsEnabled")) : environment.isAccountsEnabled; environment.isAccountsEnabled;
     this.isReportsEnabled = environment.isReportsEnabled;
   }
   onNavSelected(nav: string) {
@@ -158,6 +158,11 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem("active-header");
       localStorage.removeItem("currentUserName");
       localStorage.removeItem("nickName");
+      localStorage.removeItem("isDispatchEnabled")
+      localStorage.removeItem("isComplianceEnabled")
+      localStorage.removeItem("isSafetyEnabled")
+      localStorage.removeItem("isAccountsEnabled")
+      localStorage.removeItem("isManageEnabled");
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local
       // localStorage.removeItem('jwt');
