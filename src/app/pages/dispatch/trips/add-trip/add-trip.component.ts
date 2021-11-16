@@ -555,13 +555,16 @@ export class AddTripComponent implements OnInit {
       this.trips[index].name = $("#editCell3" + index).val();
     }
     let commName = "";
-    this.trips[index].commodity.forEach((cm, index) => {
-      commName += cm.trim();
+    if (this.trips[index].commodity) {
+      this.trips[index].commodity.forEach((cm, index) => {
+        commName += cm.trim();
 
-      if (index < this.trips[index].commodity.length - 1) {
-        commName += ", ";
-      }
-    });
+        if (index < this.trips[index].commodity.length - 1) {
+          commName += ", ";
+        }
+      });
+    }
+
     this.trips[index].commName = commName;
     this.trips[index].miles = $("#editCell6" + index).val();
     this.trips[index].time = $("#editCell12" + index).val();
