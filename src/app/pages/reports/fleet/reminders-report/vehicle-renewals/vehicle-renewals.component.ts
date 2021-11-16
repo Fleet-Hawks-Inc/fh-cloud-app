@@ -31,7 +31,8 @@ export class VehicleRenewalsComponent implements OnInit {
   }
   dataMessage: string = Constants.FETCHING_DATA
   // record: any = {};
-  record = []
+  record = [];
+  data = [];
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
@@ -42,6 +43,7 @@ export class VehicleRenewalsComponent implements OnInit {
     this.fetchVehiclesdata();
     this.fetchServiceTask();
     this.fetchVehicleIDs();
+    // this.fetchAllExport();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -131,18 +133,31 @@ export class VehicleRenewalsComponent implements OnInit {
       return false;
     }
   }
+  fetchAllExport() {
+    this.apiService.getData("reminders/fetch/export?type=vehicle").subscribe((result: any) => {
+      this.data = result.Items;
+      this.generateCSV();
+    })
+  }
+  csvData() {
+    if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
+      this.data = this.allData;
+      this.generateCSV();
+    } else {
+      this.fetchAllExport()
+    }
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.data.length > 0) {
       let dataObject = []
       let csvArray = []
-
-      this.allData.forEach(element => {
+      this.data.forEach(element => {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Renewal Type"] = this.tasksData[element.tasks.taskID] + " " + element.status
-        obj["Due Date"] = element.tasks.dueDate
-        obj["Subscribers"] = element.subscribers
+        obj["Due Date"] = element.tasks.dueDat
         obj["Send Reminder"] = element.tasks.time + " " + element.tasks.timeUnit
+        obj["Subscribers"] = element.subscribers
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
