@@ -158,6 +158,23 @@
                           </div>
                         </div>
                       </div>
+
+                      <div class="row">
+                        <div class="col-lg-10">
+                          <label class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            ">
+                            Attachments</label>
+                          <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
+                            name="files" class="form-control" />
+                          <span *ngIf="filesError != ''" class="text-danger">
+                            {{ filesError }}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div class="row">

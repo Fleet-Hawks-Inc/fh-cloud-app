@@ -72,8 +72,8 @@
                           <ng-select [clearable]="false" [(ngModel)]="creditData.customerID" name="customerID"
                             class="form-control text-capitalize" placeholder="Select customer" #cusID="ngModel"
                             required>
-                            <ng-option *ngFor="let customer of customers | keyvalue" value="{{ customer.key }}">
-                              {{ customer.value }}
+                            <ng-option *ngFor="let customer of customers" value="{{ customer.contactID }}">
+                              {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
                           <div *ngIf="
@@ -95,15 +95,10 @@
                               text-lg-right
                               pt-2
                             ">
-                            Reference#
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            Reference# </label>
                           <input type="text" [(ngModel)]="creditData.crRef" name="crRef" class="form-control"
-                            #ref="ngModel" required placeholder="Enter Unique Reference Number" />
-                          <div *ngIf="ref.invalid && (ref.dirty || ref.touched)" class="text-danger">
-                            <div *ngIf="ref.errors.required">
-                              Reference# is required.
-                            </div>
-                          </div>
+                            placeholder="Enter Unique Reference Number" />
+
                         </div>
                       </div>
                       <div class="row">
@@ -114,11 +109,13 @@
                               text-lg-right
                               pt-2
                             ">
-                            Salesperson</label>
+                            Sales Person</label>
                           <input type="text" disabled [(ngModel)]="creditData.salePerson" name="salePerson"
                             class="form-control" />
                         </div>
                       </div>
+
+
                     </div>
                   </div>
                   <div class="row">
@@ -233,9 +230,63 @@
                           {{ creditData.currency }}
                         </div>
                       </div>
+                      <div class="row">
+
+                      </div>
                       <div class="row mt-3">
-                        <div class="col-lg-8"></div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <label class="
+                                  control-label
+                                  font-weight-bold font-bold
+                                  text-lg-right
+                                  pt-2
+                                ">
+                                Attachments</label>
+                              <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
+                                name="files" class="form-control" />
+                              <span *ngIf="filesError != ''" class="text-danger">
+                                {{ filesError }}
+                              </span>
+                            </div>
+                            <div class="col-10 mt-3" style="max-height: 256px; overflow:
+                            scroll">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <th>Sr.</th>
+                                  <th>Name</th>
+                                  <th>Icon/Thumbnail</th>
+                                  <th>Action</th>
+                                </thead>
+                                <tbody>
+                                  <tr *ngIf="oldDocs.length == 0">
+                                    <td colspan="4">
+                                      <span>No document found</span>
+                                    </td>
+                                  </tr>
+                                  <tr *ngFor="let doc of oldDocs; let d= index">
+                                    <td>{{ d + 1 }}</td>
+                                    <td>{{ doc.displayName }}</td>
+                                    <td>
+                                      <a class="image-popup-no-margins" href="{{
+                                        doc.docPath }}" target="_blank">
+                                        <img class="img-fluid img_thumbnail" src="{{
+                                          doc.imgPath }}" />
+                                      </a>
+                                    </td>
+                                    <td class="cursorpoint text-center">
+                                      <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
+                                        class="modal-with-form">
+                                        <em class="fas fa-times text-danger"></em></a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 offset-2">
                           <div class="col-lg-12">
                             <label class="
                                 control-label
