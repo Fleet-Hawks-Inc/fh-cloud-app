@@ -408,8 +408,29 @@ export class AddSalesOrderComponent implements OnInit {
     this.calculateFinalTotal();
   }
 
+
+  checkEmailStat(type) {
+    if (type === "yes") {
+      this.salesData["sendEmail"] = true;
+    } else {
+      this.salesData["sendEmail"] = false;
+    }
+    this.addSale();
+  }
+
   addSale() {
     this.submitDisabled = true;
+    if (this.cloneID) {
+      delete this.salesData.pk;
+      delete this.salesData.sOrNo;
+      delete this.salesData.saleID;
+      delete this.salesData.stlStatus;
+      delete this.salesData.status;
+      delete this.salesData.invStatus
+      delete this.salesData._type
+      delete this.salesData.created
+      delete this.salesData.updated
+    }
     this.accountService.postData(`sales-orders`, this.salesData).subscribe({
       complete: () => { },
       error: (err: any) => {
