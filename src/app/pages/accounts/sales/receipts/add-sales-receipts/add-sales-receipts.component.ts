@@ -72,6 +72,10 @@ export class AddSalesReceiptsComponent implements OnInit {
 
   payModeLabel = "";
 
+  docs = [];
+  filesError = '';
+  files: any;
+
   constructor(private apiService: ApiService, private route: ActivatedRoute, public listService: ListService, private httpClient: HttpClient, private location: Location, private toaster: ToastrService, private accountService: AccountService,) { }
 
   ngOnInit() {
@@ -220,8 +224,18 @@ export class AddSalesReceiptsComponent implements OnInit {
       }
     });
 
+    // create form data instance
+    const formData = new FormData();
 
-    this.accountService.postData(`sales-receipts`, this.paymentData).subscribe({
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.paymentData));
+
+    this.accountService.postData(`sales-receipts`, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
@@ -282,4 +296,39 @@ export class AddSalesReceiptsComponent implements OnInit {
     this.paymentData.payModeDate = null;
   }
 
+
+  uploadDocs(documents) {
+    let files = [...documents];
+    let filesSize = 0;
+    if (files.length > 5) {
+      this.toaster.error("Files count limit exceeded");
+      this.filesError = "Files should not be more than 5";
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toaster.error("Files size limit exceeded");
+        this.filesError = 'Files size limit exceeded. Files size should be less than 10mb';
+        return;
+      } else {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.docs.push(files[i]);
+        } else {
+          this.filesError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
+  }
 }
