@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AccountService, ApiService } from 'src/app/services';
 
 @Component({
@@ -26,8 +27,9 @@ export class SalesOrderDetailComponent implements OnInit {
   accDed: any;
 
   customersObjects: any = {};
+  emailDisabled = false;
 
-  constructor(public accountService: AccountService, public apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(public accountService: AccountService, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -66,6 +68,19 @@ export class SalesOrderDetailComponent implements OnInit {
     this.apiService.getData('contacts/get/list').subscribe((result: any) => {
       this.customersObjects = result;
     });
+  }
+
+  async sendConfirmationEmail() {
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`sales-orders/send/confirmation-email/${this.saleID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.toaster.success("Email sent successfully");
+    } else {
+      this.toaster.error("Something went wrong.");
+    }
   }
 
 }

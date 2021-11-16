@@ -8,15 +8,16 @@
               Sales Order# - {{ sOrNo }}
               <span class="badge badge-dark p-1 text-uppercase">{{
                 status
-              }}</span>
+                }}</span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a
-              routerLink="/accounts/sales/orders/list"
-              class="btn btn-sm btn-default"
-              ><i class="fas fa-list"></i> All Sales Orders</a
-            >
+            <button type="button" class="btn btn-success btn-sm mr-3" (click)="sendConfirmationEmail()"
+              [disabled]="emailDisabled">
+              Send Email To Customer
+            </button>
+            <a routerLink="/accounts/sales/orders/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
+              Sales Orders</a>
           </div>
         </div>
       </header>
@@ -42,14 +43,12 @@
                       <div class="text-center p-4 cmaindiv">
                         <i class="fa fa-user text-7"></i>
                         <br />
-                        <p
-                          class="
+                        <p class="
                             mb-0
                             text-5
                             font-weight-bold
                             text-dark text-capitalize
-                          "
-                        >
+                          ">
                           {{ customerID ? customersObjects[customerID] : "-" }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
@@ -63,7 +62,7 @@
                         <p class="mb-0 text-5 font-weight-bold text-dark">
                           {{ currency }}
                           {{
-                            finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
                           }}
                         </p>
                         <p class="mb-0">AMOUNT</p>
@@ -86,10 +85,7 @@
                       <table class="table table-bordered table-responsive-lg">
                         <tbody>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Shipment Date
                             </td>
                             <td width="60%">
@@ -134,40 +130,30 @@
                             <td width="60%">50 CAD</td>
                           </tr> -->
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Taxes
                             </td>
                             <td width="60%">
-                              <span
-                                *ngFor="
+                              <span *ngFor="
                                   let data of taxes;
                                   let j = index;
                                   last as isLast
-                                "
-                              >
+                                ">
                                 {{ data.name }}: {{ data.tax }}%
                                 <span *ngIf="!isLast">,</span>
                               </span>
                             </td>
                           </tr>
                           <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
+                            <td width="40%" class="back-color-gray font-weight-bold">
                               Additions
                             </td>
                             <td width="60%">
-                              <span
-                                *ngFor="
+                              <span *ngFor="
                                   let data of accFees;
                                   let j = index;
                                   last as isLast
-                                "
-                              >
+                                ">
                                 {{ data.name }}:
                                 {{ data.amount | number: "1.2-2" }}
                                 {{ currency }}
@@ -180,13 +166,11 @@
                               Deductions
                             </td>
                             <td width="60%">
-                              <span
-                                *ngFor="
+                              <span *ngFor="
                                   let data of accDed;
                                   let j = index;
                                   last as isLast
-                                "
-                              >
+                                ">
                                 {{ data.name }}:
                                 {{ data.amount | number: "1.2-2" }}
                                 {{ currency }}

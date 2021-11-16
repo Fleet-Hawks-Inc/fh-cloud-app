@@ -5,6 +5,9 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
             {{ pageTitle }} Sales Order
+            <span *ngIf="sOrNo != ''" class="badge badge-dark p-1 text-capitalize">
+              {{sOrNo}}
+            </span>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
             <a routerLink="/accounts/sales/orders/list" class="btn btn-default
@@ -428,6 +431,54 @@
                           <textarea class="form-control h-auto" name="remarks" [(ngModel)]="salesData.remarks"
                             rows="6"></textarea>
                         </div>
+                        <div class="col-lg-12 pl-0">
+                          <label class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            ">
+                            Attachments</label>
+                          <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
+                            name="files" class="form-control" />
+                          <span *ngIf="filesError != ''" class="text-danger">
+                            {{ filesError }}
+                          </span>
+                        </div>
+                        <div class="col-12 pl-0 mt-3" style="max-height: 256px; overflow:
+                            scroll">
+                          <table class="table table-bordered">
+                            <thead>
+                              <th>Sr.</th>
+                              <th>Name</th>
+                              <th>Icon/Thumbnail</th>
+                              <th>Action</th>
+                            </thead>
+                            <tbody>
+                              <tr *ngIf="oldDocs.length == 0">
+                                <td colspan="4">
+                                  <span>No document found</span>
+                                </td>
+                              </tr>
+                              <tr *ngFor="let doc of oldDocs; let d= index">
+                                <td>{{ d + 1 }}</td>
+                                <td>{{ doc.displayName }}</td>
+                                <td>
+                                  <a class="image-popup-no-margins" href="{{
+                                        doc.docPath }}" target="_blank">
+                                    <img class="img-fluid img_thumbnail" src="{{
+                                          doc.imgPath }}" />
+                                  </a>
+                                </td>
+                                <td class="cursorpoint text-center">
+                                  <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
+                                    class="modal-with-form">
+                                    <em class="fas fa-times text-danger"></em></a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
 
                       <div class="col-lg-5 offset-lg-2">
@@ -668,7 +719,7 @@
                       btn-success">
                       Update
                     </button>
-                    <button type="button" *ngIf="!purchaseID" class="btn
+                    <button type="button" *ngIf="!saleID" class="btn
                       btn-success ml-2" (click)="checkEmailStat('yes');"
                       [disabled]="!saleForm.form.valid || submitDisabled">Save
                       &

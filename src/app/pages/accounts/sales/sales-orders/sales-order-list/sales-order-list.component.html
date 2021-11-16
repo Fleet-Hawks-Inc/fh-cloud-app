@@ -143,8 +143,7 @@
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
-                            <button type="button" [disabled]="item.invStatus" class="m-0 p-0 btn"
-                              data-toggle="dropdown">
+                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
@@ -155,10 +154,10 @@
                                 routerLink="/accounts/sales/invoices/add"
                                 >Create Invoice</a
                               > -->
-                              <a routerLink="/accounts/sales/orders/edit/{{
+                              <a *ngIf="!item.invStatus" routerLink="/accounts/sales/orders/edit/{{
                                 item.saleID
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                              <a (click)="deleteSale(item.saleID)" class="dropdown-item text-1"
+                              <a *ngIf="!item.invStatus" (click)="deleteSale(item.saleID)" class="dropdown-item text-1"
                                 href="javascript:;">Delete</a>
                               <a [routerLink]="[
                                 '/accounts',

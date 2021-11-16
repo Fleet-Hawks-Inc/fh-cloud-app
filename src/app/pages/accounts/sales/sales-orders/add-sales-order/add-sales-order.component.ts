@@ -19,6 +19,7 @@ import { ActivatedRoute } from "@angular/router";
   styleUrls: ["./add-sales-order.component.css"],
 })
 export class AddSalesOrderComponent implements OnInit {
+  assetUrl = this.apiService.AssetUrl;
   pageTitle = "Add";
   stateTaxes = [];
   submitDisabled = false;
@@ -102,6 +103,15 @@ export class AddSalesOrderComponent implements OnInit {
 
   saleID: string;
   cloneID: any;
+
+  files: any;
+  docs = [];
+  oldDocs = [];
+  removedDocs = [];
+  filesError = '';
+  carrierID: any;
+
+  sOrNo: string = '';
 
   constructor(
     public apiService: ApiService,
@@ -431,7 +441,19 @@ export class AddSalesOrderComponent implements OnInit {
       delete this.salesData.created
       delete this.salesData.updated
     }
-    this.accountService.postData(`sales-orders`, this.salesData).subscribe({
+    console.log('this.salesData*******', this.salesData)
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.salesData));
+
+    this.accountService.postData(`sales-orders`, formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
@@ -471,14 +493,55 @@ export class AddSalesOrderComponent implements OnInit {
       .getData(`sales-orders/detail/${this.saleID}`)
       .subscribe((res) => {
         this.salesData = res[0];
+        this.sOrNo = res[0].sOrNo;
+        this.carrierID = res[0].pk;
+
+        if (res[0].docs.length > 0) {
+          res[0].docs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.oldDocs.push(obj);
+          });
+        }
       });
   }
 
   updateSale() {
     this.submitDisabled = true;
+    this.salesData.removedDocs = this.removedDocs;
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.salesData));
 
     this.accountService
-      .putData(`sales-orders/update/${this.saleID}`, this.salesData)
+      .putData(`sales-orders/update/${this.saleID}`, formData, true)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -516,5 +579,54 @@ export class AddSalesOrderComponent implements OnInit {
       .subscribe((res) => {
         this.salesData = res[0];
       });
+  }
+
+  uploadDocs(documents) {
+    let files = [...documents];
+    let filesSize = 0;
+    if (files.length > 5) {
+      this.toaster.error("Files count limit exceeded");
+      this.filesError = "Files should not be more than 5";
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toaster.error("Files size limit exceeded");
+        this.filesError = 'Files size limit exceeded. Files size should be less than 10mb';
+        return;
+      } else {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.docs.push(files[i]);
+        } else {
+          this.filesError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.oldDocs.filter(elem => {
+      if (elem.displayName === name) {
+        let obj = {
+          storedName: elem.name,
+          displayName: elem.displayName,
+        }
+        this.removedDocs.push(obj);;
+      }
+    })
+
+    this.oldDocs.splice(index, 1);
   }
 }
