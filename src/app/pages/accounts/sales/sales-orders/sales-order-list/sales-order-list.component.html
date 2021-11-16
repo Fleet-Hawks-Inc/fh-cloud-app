@@ -160,6 +160,14 @@
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
                               <a (click)="deleteSale(item.saleID)" class="dropdown-item text-1"
                                 href="javascript:;">Delete</a>
+                              <a [routerLink]="[
+                                '/accounts',
+                                'sales',
+                                'orders',
+                                'add'
+                                ]" [queryParams]="{
+                                cloneID: item.saleID
+                                }" class="dropdown-item text-1" href="javascript:;">Clone</a>
                             </div>
                           </div>
                         </td>

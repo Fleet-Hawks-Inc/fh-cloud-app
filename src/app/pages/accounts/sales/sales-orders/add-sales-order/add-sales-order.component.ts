@@ -101,6 +101,7 @@ export class AddSalesOrderComponent implements OnInit {
   errors = {};
 
   saleID: string;
+  cloneID: any;
 
   constructor(
     public apiService: ApiService,
@@ -110,7 +111,7 @@ export class AddSalesOrderComponent implements OnInit {
     private toaster: ToastrService,
     private location: Location,
     public listService: ListService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -120,6 +121,15 @@ export class AddSalesOrderComponent implements OnInit {
     } else {
       this.pageTitle = "Add";
     }
+
+    this.route.queryParams.subscribe((params) => {
+      this.cloneID = params.cloneID;
+      if (this.cloneID != undefined && this.cloneID != "") {
+        this.pageTitle = "Clone";
+        this.cloneSale(this.cloneID);
+      }
+    });
+
     this.fetchStateTaxes();
     this.fetchQuantityUnits();
     this.listService.fetchCustomers();
@@ -401,7 +411,7 @@ export class AddSalesOrderComponent implements OnInit {
   addSale() {
     this.submitDisabled = true;
     this.accountService.postData(`sales-orders`, this.salesData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
@@ -419,7 +429,7 @@ export class AddSalesOrderComponent implements OnInit {
             error: () => {
               // this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -449,7 +459,7 @@ export class AddSalesOrderComponent implements OnInit {
     this.accountService
       .putData(`sales-orders/update/${this.saleID}`, this.salesData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -467,7 +477,7 @@ export class AddSalesOrderComponent implements OnInit {
               error: () => {
                 // this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -476,6 +486,14 @@ export class AddSalesOrderComponent implements OnInit {
           this.toaster.success("Order updated successfully.");
           this.cancel();
         },
+      });
+  }
+
+  cloneSale(ID) {
+    this.accountService
+      .getData(`sales-orders/detail/${ID}`)
+      .subscribe((res) => {
+        this.salesData = res[0];
       });
   }
 }
