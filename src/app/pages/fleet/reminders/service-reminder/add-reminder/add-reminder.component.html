@@ -89,7 +89,7 @@
                         <ng-select [(ngModel)]="taskID" placeholder="Select service task to perform on vehicle"
                           name="taskID" style="width: 100%" #sst="ngModel" required>
                           <optgroup label="Select Service Task">
-                            <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">
+                            <ng-option *ngFor="let task of taskData" [value]="task.taskID">
                               {{ task.taskName }}
                             </ng-option>
                           </optgroup>

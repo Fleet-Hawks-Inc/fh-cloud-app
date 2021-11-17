@@ -52,14 +52,14 @@ export class ListContactRenewComponent implements OnInit {
   driversList: any = {};
   mergedList: any = {};
   constructor(private apiService: ApiService,
-              private listService: ListService,
-              private toastr: ToastrService,
-              private spinner: NgxSpinnerService) { }
+    private listService: ListService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.listService.fetchDrivers();
     this.getRemindersCount();
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
     this.fetchTasksList();
     this.fetchEmployeeList();
     this.fetchEmployees();
@@ -74,8 +74,7 @@ export class ListContactRenewComponent implements OnInit {
   }
   fetchEmployees() {
     this.apiService.getData('contacts/employee/records').subscribe((res) => {
-    console.log('result', res);
-    this.employees = res.Items;
+      this.employees = res.Items;
     });
   }
   fetchEmployeeList() {
@@ -84,7 +83,7 @@ export class ListContactRenewComponent implements OnInit {
       if (res) {
         this.apiService.getData('drivers/get/list').subscribe((result) => {
           this.driversList = result;
-          this.mergedList = {...res, ...result}; // merge id lists to one
+          this.mergedList = { ...res, ...result }; // merge id lists to one
         });
       }
     });
@@ -105,11 +104,10 @@ export class ListContactRenewComponent implements OnInit {
       this.tasksList = result;
     });
   }
-  fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
+
+  fetchServiceTasks() {
+    this.apiService.getData('tasks?type=contact').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
   setFilterStatus(val) {
@@ -139,8 +137,7 @@ export class ListContactRenewComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.getStartandEndVal();
-        this.remindersData = result[`Items`];
-        console.log(' this.remindersData',  this.remindersData);
+        this.remindersData = result[`Items`];;
         if (this.contactID != null || this.searchServiceTask != null) {
           this.contactRenewStartPoint = 1;
           this.contactRenewEndPoint = this.totalRecords;

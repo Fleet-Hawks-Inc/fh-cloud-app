@@ -17,7 +17,7 @@
                <div class="col-md-2 col-lg-2 pr-0">
                   <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important;"
                      placeholder="Search task">
-                     <ng-option *ngFor="let task of serviceList" [value]="task.taskID"> {{task.taskName}}
+                     <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID"> {{task.taskName}}
                      </ng-option>
                   </ng-select>
                </div>

@@ -32,6 +32,7 @@ export class SremindersComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
+  serviceTasks = []
   record = []
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
@@ -119,10 +120,9 @@ export class SremindersComponent implements OnInit {
     });
   }
   fetchTaskData() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceList = test.filter((s: any) => s.taskType === 'service');
+
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
   fetchVehicleIDs() {
