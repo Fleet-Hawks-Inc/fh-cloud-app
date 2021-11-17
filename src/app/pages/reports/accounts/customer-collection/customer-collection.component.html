@@ -199,33 +199,33 @@
                         </ng-template>
                       </ngx-datatable-column>
 
-                      <ngx-datatable-column name="Customer" prop="cName">
+                      <ngx-datatable-column name="Customer" prop="cName" [width]="200">
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Email" prop="workEmail" [width]=300 [sortable]=false>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Phone" prop="workPhone" [sortable]=false>
+                      <ngx-datatable-column name="Phone" prop="workPhone" [sortable]=false [width]="200">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Total Orders" prop="totalOrders">
+                      <ngx-datatable-column name="Total Orders" prop="totalOrders" [width]="200">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders">
+                      <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders" [width]="200">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
+                      <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated" [width]="200">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Total Amount" prop="totalAmount">
+                      <ngx-datatable-column name="Total Amount" prop="totalAmount" [width]="200" [sortable]=false>
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                           {{value.cad | currency:'CAD'}}<br />
                           US{{value.usd | currency: 'USD'}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Amount Received" prop="amountReceived">
+                      <ngx-datatable-column name="Amount Received" prop="amountReceived" [width]="200" [sortable]=false>
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                           {{value.cad | currency:'CAD'}}<br />
                           US{{value.usd | currency: 'USD'}}
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Balance" prop="balance">
+                      <ngx-datatable-column name="Balance" prop="balance" [width]="200" [sortable]=false>
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                           {{value.cad | currency:'CAD'}}<br />
