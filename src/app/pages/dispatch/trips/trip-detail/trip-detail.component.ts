@@ -76,7 +76,7 @@ export class TripDetailComponent implements OnInit {
   documentID = [];
   allFetchedOrders = [];
   customersObjects = [];
-  orderNumbers = "-";
+  orderNumbers = "";
   routeName = "-";
   plannedMiles = 0;
   uploadedDocs = [];
@@ -95,6 +95,7 @@ export class TripDetailComponent implements OnInit {
   showEdit = false;
   tripStatus = "";
   recallStatus = false;
+  ordersData: any = [];
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -226,14 +227,17 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       });
   }
-  fetchTripDetail() {
-    this.spinner.show();
+  async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
     this.apiService
       .getData("trips/" + this.tripID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+
+        if (result.orderId.length > 0) {
+          await this.fetchOrderDetails(result.orderId);
+        }
         if (result.settlmnt) {
           this.tripStatus = "Settled";
         } else {
@@ -256,9 +260,6 @@ export class TripDetailComponent implements OnInit {
         }
         this.tripData = result;
         let tripPlanning = result.tripPlanning;
-        if (result.orderId.length > 0) {
-          this.fetchOrderDetails(result.orderId);
-        }
 
         if (result.routeID != "" && result.routeID != undefined) {
           this.apiService
@@ -303,7 +304,6 @@ export class TripDetailComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-
           let obj = {
             planID: element.planID,
             assetID: element.assetID,
@@ -336,6 +336,8 @@ export class TripDetailComponent implements OnInit {
             dropTime: element.dropTime,
             time: element.time,
             pickupTime: element.pickupTime,
+            commodity: element.commodity ? element.commodity : "",
+            orderID: element.orderID ? element.orderID : "",
           };
 
           if (element.type == "Delivery") {
@@ -367,7 +369,6 @@ export class TripDetailComponent implements OnInit {
         if (this.newCoords.length > 0) {
           this.getCoords();
         }
-        this.spinner.hide();
       });
   }
 
@@ -556,20 +557,23 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
-  fetchOrderDetails(orderIds) {
+  async fetchOrderDetails(orderIds) {
     orderIds = JSON.stringify(orderIds);
-    this.apiService
+    let result: any = await this.apiService
       .getData("orders/fetch/selectedOrders?orderIds=" + orderIds)
-      .subscribe((result: any) => {
-        for (let i = 0; i < result.length; i++) {
-          const element = result[i];
+      .toPromise();
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
 
-          this.orderNumbers = element.orderNumber;
-          if (i > 0 && i < result.length - 1) {
-            this.orderNumbers = this.orderNumbers + ", ";
-          }
-        }
-      });
+      this.orderNumbers += element.orderNumber;
+      if (i < result.length - 1) {
+        this.orderNumbers = this.orderNumbers + ", ";
+      }
+    }
+
+    this.ordersData = result.reduce((a: any, b: any) => {
+      return (a[b["orderID"]] = b["orderNumber"]), a;
+    }, {});
   }
 
   /*

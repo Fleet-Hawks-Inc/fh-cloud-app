@@ -22,46 +22,43 @@ export class AddDeviceComponent implements OnInit {
   ) {}
 
   public device: any = {
-    deviceName: '',
-    deviceSerialNo: '',
-    fleetID: '',
-    deviceStatus: true,
-    description: '',
-    deviceType: '',
-    vehicleID: '',
-    assetID: '',
-    deviceID: '',
+    deviceName: "",
+    deviceSerialNo: "",
+    fleetID: "",
+    deviceStatus: "Active",
+    description: "",
+    deviceType: null,
+    vehicleID: null,
+    assetID: null,
+    deviceID: "",
     vehicle: {},
-    asset: {}
+    asset: {},
   };
 
-
   deviceVehicle = [
-    { value: 'Tracker', text: 'Solar Tracker' },
-    { value: 'Tracker', text: 'Wired Tracker' },
-    { value: 'DashCam', text: 'Dash Camera' },
-    { value: 'ELD', text: 'ELD' }
-  ]
+    { value: "Tracker", text: "Solar Tracker" },
+    { value: "Tracker", text: "Wired Tracker" },
+    { value: "DashCam", text: "Dash Camera" },
+    { value: "ELD", text: "ELD" },
+  ];
 
   deviceAsset = [
-    { value: 'Tracker', text: 'Solar Tracker' },
-    { value: 'Tracker', text: 'Wired Tracker' }
-  ]
+    { value: "Tracker", text: "Solar Tracker" },
+    { value: "Tracker", text: "Wired Tracker" },
+  ];
 
   devicesTypes = this.deviceVehicle;
 
-  public deviceID = '';
-
+  public deviceID = "";
 
   public vehicles: any = [];
   public assets: any = [];
-  attachedWith = "Vehicle"
+  attachedWith = "Vehicle";
   editMode = false;
 
-
   async ngOnInit() {
-    let deviceType = this.route.snapshot.params['deviceType'];
-    let deviceSerialNo = this.route.snapshot.params['deviceSerialNo']
+    let deviceType = this.route.snapshot.params["deviceType"];
+    let deviceSerialNo = this.route.snapshot.params["deviceSerialNo"];
 
     if (deviceType && deviceSerialNo) {
       this.editMode = true;
@@ -76,7 +73,7 @@ export class AddDeviceComponent implements OnInit {
   async deviceAttachedVehicle() {
     if (!this.editMode) {
       this.devicesTypes = this.deviceVehicle;
-      this.attachedWith = "Vehicle"
+      this.attachedWith = "Vehicle";
       await this.fetchVehicles();
     }
   }
@@ -85,68 +82,64 @@ export class AddDeviceComponent implements OnInit {
     if (!this.editMode) {
       this.devicesTypes = this.deviceAsset;
 
-      this.attachedWith = "Asset"
+      this.attachedWith = "Asset";
       this.fetchAssets();
     }
-
   }
   fetchAssets() {
     this.device.vehicle = {};
     try {
-      this.apiService.getData('assets/get/list').subscribe((result) => {
-
-        if (result) {
-          for (let key in result) {
-            let obj = {
-              assetIdentification: result[key],
-              assetID: key
-            }
-            this.assets.push(obj)
-          }
-        }
-      })
-    }
-    catch (error) {
-
+      this.apiService
+        .getData("assets/get/minor/details")
+        .subscribe((result) => {
+          this.assets = result.Items;
+          // console.log("result", result);
+          // this.assets
+          // if (result) {
+          //   for (let key in result) {
+          //     let obj = {
+          //       assetIdentification: result[key],
+          //       assetID: key
+          //     }
+          //     this.assets.push(obj)
+          //   }
+          // }
+        });
+    } catch (error) {
       throw new Error(error);
     }
   }
 
   private fetchDevices() {
     try {
-      this.apiService.getData(`devices/getDeviceBySerialNo/${this.deviceID}`).subscribe(async (result) => {
-        if (result) {
-
-          this.device = {
-            deviceName: result.deviceName,
-            deviceStatus: result.deviceStatus === true ? 'Active' : 'Inactive',
-            deviceSerialNo: result.deviceSerialNo.split('#')[1],
-            description: result.description,
-            deviceType: result.deviceType,
-            deviceID: result.deviceID
+      this.apiService
+        .getData(`devices/getDeviceBySerialNo/${this.deviceID}`)
+        .subscribe(async (result) => {
+          if (result) {
+            this.device = {
+              deviceName: result.deviceName,
+              deviceStatus:
+                result.deviceStatus === true ? "Active" : "Inactive",
+              deviceSerialNo: result.deviceSerialNo.split("#")[1],
+              description: result.description,
+              deviceType: result.deviceType,
+              deviceID: result.deviceID,
+            };
+            if (result.assetID) {
+              this.device.assetID = result.assetID;
+              this.attachedWith = "Asset";
+              await this.fetchAssets();
+            } else {
+              this.device.vehicleID = result.vehicleID;
+              this.attachedWith = "Vehicle";
+              await this.fetchVehicles();
+            }
           }
-          if (result.assetID) {
-            this.device.assetID = result.assetID;
-            this.attachedWith = "Asset";
-            await this.fetchAssets();
-          }
-          else {
-            this.device.vehicleID = result.vehicleID;
-            this.attachedWith = "Vehicle";
-            await this.fetchVehicles();
-
-          }
-
-        }
-      });
-
-    }
-    catch (error) {
-
-      throw new Error(error)
+        });
+    } catch (error) {
+      throw new Error(error);
     }
   }
-
 
   /**
    * Fetch vehicles
@@ -155,22 +148,22 @@ export class AddDeviceComponent implements OnInit {
     this.device.asset = {};
     const resultVehicles = [];
     try {
-      const result = await this.apiService.getData('vehicles').toPromise();
+      const result = await this.apiService.getData("vehicles").toPromise();
       if (result && result.Items) {
         for (const item of result.Items) {
-          let obj = {
-            vehicleIdentification: '',
-            vehicleID: ''
+          if (item.isDeleted === 0) {
+            let obj = {
+              vehicleIdentification: "",
+              vehicleID: "",
+            };
+            obj.vehicleIdentification = item.vehicleIdentification;
+            obj.vehicleID = item.vehicleID;
+            resultVehicles.push(obj);
           }
-          obj.vehicleIdentification = item.vehicleIdentification;
-          obj.vehicleID = item.vehicleID
-          resultVehicles.push(obj);
         }
       }
       this.vehicles = resultVehicles;
-    }
-    catch (error) {
-
+    } catch (error) {
       throw new Error(error);
     }
   }
@@ -178,11 +171,11 @@ export class AddDeviceComponent implements OnInit {
   // Fires when submit button is clicked
   public submit() {
     if (this.device) {
-
       if (this.device.vehicleID) {
-        this.vehicles.forEach(element => {
+        this.vehicles.forEach((element) => {
           if (this.device.vehicleID == element.vehicleID) {
-            this.device.vehicle.vehicleIdentification = element.vehicleIdentification;
+            this.device.vehicle.vehicleIdentification =
+              element.vehicleIdentification;
             this.device.vehicle.vehicleID = element.vehicleID;
 
             this.device.fleetID = element.vehicleIdentification;
@@ -190,13 +183,9 @@ export class AddDeviceComponent implements OnInit {
         });
 
         this.device.asset = undefined;
-
-
-      }
-      else if (this.device.assetID) {
-        this.assets.forEach(element => {
+      } else if (this.device.assetID) {
+        this.assets.forEach((element) => {
           if (this.device.assetID == element.assetID) {
-
             this.device.asset.assetIdentification = element.assetIdentification;
             this.device.asset.assetID = element.assetID;
             this.device.fleetID = element.assetIdentification;
@@ -204,12 +193,10 @@ export class AddDeviceComponent implements OnInit {
         });
 
         this.device.vehicle = undefined;
-
       }
       this.device.deviceID = undefined;
       this.device.assetID = undefined;
       this.device.vehicleID = undefined;
-
 
       try {
         this.apiService.postData("devices", this.device).subscribe({
@@ -227,15 +214,13 @@ export class AddDeviceComponent implements OnInit {
     }
   }
 
-
   // fires when submit button is clicked
   public updateAndSubmit() {
-    if (this.device.deviceStatus === 'Active') {
+    if (this.device.deviceStatus === "Active") {
       this.device.deviceStatus = true;
     }
     if (this.device.deviceStatus === "Inactive") {
       this.device.deviceStatus = false;
-
     }
     this.device.vehicleID = undefined;
     this.device.assetID = undefined;
