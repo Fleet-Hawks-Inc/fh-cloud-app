@@ -5,7 +5,7 @@ export const environment = {
   isDispatchEnabled: true,
   isComplianceEnabled: false,
   isManageEnabled: true,
-  isSafetyEnabled: true,
+  isSafetyEnabled: false,
   isAccountsEnabled: true,
   isReportsEnabled: true,
 
