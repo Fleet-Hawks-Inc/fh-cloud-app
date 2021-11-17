@@ -311,7 +311,7 @@ export class OrderDetailComponent implements OnInit {
    */
   async fetchOrder() {
     this.docs = [];
-    this.apiService.getData(`orders/${this.orderID}`).subscribe(
+    this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
         this.newOrderData = result;
         result = result.Items[0];
