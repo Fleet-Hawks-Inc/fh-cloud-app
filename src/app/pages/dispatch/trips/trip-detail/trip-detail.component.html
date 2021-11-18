@@ -272,6 +272,8 @@
                           <thead>
                             <tr>
                               <th>Type</th>
+                              <th>Order#</th>
+                              <th>Commodity</th>
                               <th>Date</th>
                               <!-- <th>Time</th> -->
                               <th>Pickup Time</th>
@@ -291,8 +293,25 @@
                             </tr>
                           </thead>
                           <tbody>
+                            <tr *ngIf="trips.length === 0" class="text-center">
+                              <td colspan="15">
+                                {{ noOrdersMsg }}
+                              </td>
+                            </tr>
                             <tr *ngFor="let trip of trips">
                               <td>{{ trip.type }}</td>
+                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                                '' }}</td>
+                              <td>
+                                <span *ngIf="trip.commodity">
+                                  <span *ngFor="let data of trip.commodity; let
+                                    d=index;">
+                                    {{ data }}
+                                    <span *ngIf="d<trip.commodity.length-1">,
+                                    </span>
+                                  </span>
+                                </span>
+                              </td>
                               <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
                               <!-- <td>{{ trip.time }}</td> -->
                               <td>{{ trip.pickupTime }}</td>
@@ -310,7 +329,8 @@
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                              <td>{{ trip.vehicleID ?
+                                vehiclesObject[trip.vehicleID] : '' }}</td>
                               <td>
                                 <span *ngFor="let asst of trip.assetID">
                                   {{ assetsObject[asst] }}
@@ -318,7 +338,8 @@
                                 </span>
                               </td>
                               <td>
-                                {{ driversObject[trip.driverID] }}
+                                {{ (trip.driverID) ?
+                                driversObject[trip.driverID] : '' }}
                                 <span *ngIf="trip.driverStatus &&
                                   trip.driverStatus == 'STARTED'" class="badge
                                   badge-success">{{ trip.driverStatus }}</span>
@@ -336,7 +357,8 @@
                                   bg-blue">{{ trip.driverStatus }}</span>
                               </td>
                               <td>
-                                {{ driversObject[trip.coDriverID] }}
+                                {{ (trip.coDriverID) ?
+                                driversObject[trip.coDriverID] : '' }}
                                 <span *ngIf="trip.coDriverStatus &&
                                   trip.coDriverStatus == 'REJECTED'"
                                   class="badge
@@ -357,7 +379,8 @@
                                   class="badge
                                   bg-blue">{{ trip.coDriverStatus }}</span>
                               </td>
-                              <td>{{ carriersObject[trip.carrierID] }}</td>
+                              <td>{{ (trip.carrierID) ?
+                                carriersObject[trip.carrierID] : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -396,6 +419,8 @@
                           <thead>
                             <tr>
                               <th>Type</th>
+                              <th>Order#</th>
+                              <th>Commodity</th>
                               <th>Date</th>
                               <!-- <th>Time</th> -->
                               <th>Pickup Time</th>
@@ -417,6 +442,18 @@
                           <tbody>
                             <tr *ngFor="let trip of data">
                               <td>{{ trip.type }}</td>
+                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                                '' }}</td>
+                              <td>
+                                <span *ngIf="trip.commodity">
+                                  <span *ngFor="let data of trip.commodity; let
+                                    d=index;">
+                                    {{ data }}
+                                    <span *ngIf="d<trip.commodity.length-1">,
+                                    </span>
+                                  </span>
+                                </span>
+                              </td>
                               <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
                               <!-- <td>{{ trip.time }}</td> -->
                               <td>{{ trip.pickupTime }}</td>
@@ -434,16 +471,20 @@
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                              <td>{{ trip.vehicleID ?
+                                vehiclesObject[trip.vehicleID] : '' }}</td>
                               <td>
                                 <span *ngFor="let asst of trip.assetID">
                                   {{ assetsObject[asst] }}
                                   <br />
                                 </span>
                               </td>
-                              <td>{{ driversObject[trip.driverID] }}</td>
-                              <td>{{ driversObject[trip.coDriverID] }}</td>
-                              <td>{{ carriersObject[trip.carrierID] }}</td>
+                              <td>{{ trip.driverID ?
+                                driversObject[trip.driverID] : '' }}</td>
+                              <td>{{ trip.coDriverID ?
+                                driversObject[trip.coDriverID] : '' }}</td>
+                              <td>{{ trip.carrierID ?
+                                carriersObject[trip.carrierID] : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -468,7 +509,8 @@
                     </div>
                   </div>
 
-                  <div class="tripinfoscroll">
+                  <div class="" [ngClass]="trips.length> 15 ?
+                    'tripinfoscroll' : '' " >
                     <div class="row
                       d-flex
                       flex-row flex-nowrap
@@ -486,7 +528,7 @@
                             {{ trip.type }} <br />{{
                             trip.date | date: "yyyy/MM/dd"
                             }}
-                            -
+                            <br>
                             {{
                             trip.type == "Pickup"
                             ? trip.pickupTime

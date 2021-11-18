@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
 import { AccountService, ApiService } from "src/app/services";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-sales-receipts-detail",
@@ -12,6 +13,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
   saleID: any;
   customersObjects: any;
   dataMessage = Constants.NO_RECORDS_FOUND;
+  assetUrl = this.apiService.AssetUrl;
 
   txnDate: any;
   customerID: any;
@@ -29,11 +31,15 @@ export class SalesReceiptsDetailComponent implements OnInit {
   accountsObjects = [];
   transactionLogs = [];
 
+  docs = [];
+  carrierID = '';
+
   constructor(
     public accountService: AccountService,
     public apiService: ApiService,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private toaster: ToastrService
+  ) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -68,6 +74,7 @@ export class SalesReceiptsDetailComponent implements OnInit {
       .subscribe((res) => {
         let result = res[0];
 
+        this.carrierID = result.pk;
         this.txnDate = result.txnDate;
         this.customerID = result.customerID;
         this.totalAmt = result.totalAmt;
@@ -80,6 +87,34 @@ export class SalesReceiptsDetailComponent implements OnInit {
         this.status = result.status;
         this.payMode = result.payMode;
         this.transactionLogs = result.transactionLog;
+
+        if (result.docs.length > 0) {
+          result.docs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.docs.push(obj);
+          });
+        }
       });
   }
 
@@ -88,6 +123,15 @@ export class SalesReceiptsDetailComponent implements OnInit {
       .getData("chartAc/get/all/list")
       .subscribe((result: any) => {
         this.accountsObjects = result;
+      });
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.accountService
+      .deleteData(`sales-receipts/uploadDelete/${this.saleID}/${name}`)
+      .subscribe((result: any) => {
+        this.docs.splice(index, 1);
+        this.toaster.success("Attachment deleted successfully.");
       });
   }
 }

@@ -144,8 +144,6 @@ export class InvoiceListComponent implements OnInit {
         }
       });
     }
-    console.log("this.invoicesCAD", this.invoicesCAD);
-    console.log("this.invoicesUSD", this.invoicesUSD);
     if (this.invoicesCAD.length > 0 || this.invoicesUSD.length > 0) {
       for (const element of this.invoicesCAD) {
         if (element.invStatus === "open") {
@@ -170,7 +168,6 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalCAD + Number(element.finalAmount);
           this.voidedTotalCAD = +this.voidedTotalCAD.toFixed(2);
         }
-        console.log("element.finalAmount cad", element.finalAmount);
       }
       for (const element of this.invoicesUSD) {
         if (element.invStatus === "open") {
@@ -195,7 +192,6 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalUSD + Number(element.finalAmount);
           this.voidedTotalUSD = +this.voidedTotalUSD.toFixed(2);
         }
-        console.log("element.finalAmount usd ", element.finalAmount);
       }
       this.totalUSD =
         this.openTotalUSD +
@@ -240,10 +236,10 @@ export class InvoiceListComponent implements OnInit {
         .toPromise();
       // .subscribe(async (result: any) => {
       if (result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        // this.dataMessage = Constants.NO_RECORDS_FOUND;
         this.loaded = true;
         this.disableSearch = false;
-        this.categorizeInvoices(result);
+        // this.categorizeInvoices(result);
       }
       if (result.length > 0) {
         for (let index = 0; index < result.length; index++) {
@@ -285,6 +281,8 @@ export class InvoiceListComponent implements OnInit {
     this.partiallyPaidTotalUSD = 0;
     this.voidedTotalCAD = 0;
     this.voidedTotalUSD = 0;
+    this.invoicesUSD = [];
+    this.invoicesCAD = [];
   }
 
   private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
