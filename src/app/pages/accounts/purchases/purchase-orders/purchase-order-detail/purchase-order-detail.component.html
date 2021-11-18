@@ -126,31 +126,22 @@
                                        <tr>
                                           <td width="40%"
                                              class="back-color-gray
-                                             font-weight-bold">Additions</td>
+                                             font-weight-bold">Type</td>
                                           <td width="60%">
-                                             <span *ngFor="let data of
-                                                orderData.charges.accFee; let
-                                                j=index">
-                                                {{ data.name }}: {{ data.amount
-                                                | number : '1.2-2'
-                                                }}
-                                                <span *ngIf="j
-                                                <orderData.charges.accFee.length-1">,</span>
-                                             </span>
+                                             {{ orderData.poType }}
                                           </td>
                                        </tr>
                                        <tr>
                                           <td class="back-color-gray
-                                             font-weight-bold">Deductions</td>
+                                             font-weight-bold">Charges</td>
                                           <td width="60%">
-                                             <span *ngFor="let data of
-                                                orderData.charges.accDed; let
-                                                j=index">
-                                                {{ data.name }}: {{ data.amount
-                                                | number : '1.2-2'
-                                                }}
-                                                <span *ngIf="j
-                                                <orderData.charges.accDed.length-1">,</span>
+                                             {{ orderData.charges.cName }}:
+                                             <span
+                                                *ngIf="orderData.charges.cType">
+                                                {{ (orderData.charges.cType ===
+                                                'ded') ? '-' : '' }} {{
+                                                orderData.charges.cAmount }} {{
+                                                orderData.currency }}
                                              </span>
                                           </td>
                                        </tr>
