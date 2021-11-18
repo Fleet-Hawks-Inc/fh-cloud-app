@@ -119,8 +119,8 @@ export class CustomerCollectionComponent implements OnInit {
     this.customer = ''
     this.customerFiltr.startDate = ''
     this.customerFiltr.endDate = ''
-    this.dataMessage = Constant.FETCHING_DATA
     this.customerCollection = []
+
     this.fetchCustomerCollection();
 
   }

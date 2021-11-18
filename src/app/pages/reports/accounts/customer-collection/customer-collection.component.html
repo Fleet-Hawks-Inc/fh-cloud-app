@@ -98,8 +98,8 @@
                 <section class="reports_div">
                   <div class="row setHeight">
                     <ngx-datatable #myTable class="bootstrap expandable fixedTable" [rows]="customerCollection"
-                      [rowHeight]="rowHeight" [scrollbarV]="true" [loadingIndicator]="isLoading"
-                      [messages]="{ emptyMessage: dataMessage }" (scroll)="onScroll($event.offsetY)">
+                      [rowHeight]="rowHeight" [scrollbarV]="true" 
+                      [messages]="{ emptyMessage:dataMessage }" (scroll)="onScroll($event.offsetY)">
 
                       <ngx-datatable-row-detail [rowHeight]="400" #myDetailRow (toggle)="onDetailToggle($event)">
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -133,11 +133,11 @@
                                       <td>{{order.orderMode}}</td>
                                       <td>{{order.milesInfo.totalMiles}}</td>
                                       <td>{{order.finalAmount | currency:order.charges.freightFee.currency}}</td>
-                                      <td>{{order.orderStatus}}</td>
+                                      <td><span class="badge badge-dark">{{order.orderStatus}}</span></td>
                                       <td>{{order.invoiceGenerate}}</td>
                                       <td><span *ngIf="order.invDate">{{order.invDate}}</span> <span *ngIf="!order.invDate">-</span></td>
                                       <td><span *ngIf="order.invNo">{{order.invNo}}</span> <span *ngIf="!order.invNo">-</span></td>
-                                      <td><span *ngIf="order.invStat">{{order.invStat}}</span> <span *ngIf="!order.invStat">-</span></td>
+                                      <td><span *ngIf="order.invStat" class="badge badge-dark">{{order.invStat}}</span> <span *ngIf="!order.invStat">-</span></td>
                                       <td><span *ngIf="order.paid">{{order.paid}}</span> <span *ngIf="!order.paid">-</span></td>
                                     </tr>
                                   </tbody>
