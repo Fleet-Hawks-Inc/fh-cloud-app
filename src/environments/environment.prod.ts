@@ -6,7 +6,7 @@ export const environment = {
   isComplianceEnabled: false,
 
   isManageEnabled: true,
-  isSafetyEnabled: false,
+  isSafetyEnabled: true,
   isAccountsEnabled: true,
 
   isReportsEnabled: true,
