@@ -66,7 +66,7 @@ export class CustomerCollectionComponent implements OnInit {
     }
     if (this.lastSK != 'end') {
       const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}&customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-
+      //console.log(result)
       this.dataMessage = Constant.FETCHING_DATA
       if (result.Items.length == 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND
@@ -109,7 +109,6 @@ export class CustomerCollectionComponent implements OnInit {
     else {
       this.loaded = false
       this.customerCollection = []
-      this.dataMessage = Constant.FETCHING_DATA
       this.lastSK = ''
       this.fetchCustomerCollection();
     }
@@ -120,8 +119,8 @@ export class CustomerCollectionComponent implements OnInit {
     this.customer = ''
     this.customerFiltr.startDate = ''
     this.customerFiltr.endDate = ''
-    this.dataMessage = Constant.FETCHING_DATA
     this.customerCollection = []
+
     this.fetchCustomerCollection();
 
   }
@@ -130,6 +129,7 @@ export class CustomerCollectionComponent implements OnInit {
     let ordersData = []
     let csvArray = []
     const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    //console.log(result)
     for (const element of result.Items) {
 
       let obj = {}
