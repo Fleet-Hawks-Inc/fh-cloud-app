@@ -5,13 +5,11 @@
             <div class="row" style="padding-top:10px;">
                <div class="col-md-4 col-lg-4">
                   <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment#
-                     - 1279430 <span
-                        class="badge badge-dark p-1">{{status}}</span></h4>
+                     - 1279430 <span class="badge badge-dark p-1">{{status}}</span></h4>
                </div>
                <div class="col-md-8 col-lg-8 text-right pr-1">
                   <a routerLink="/accounts/sales/receipts/list" class="btn
-                     btn-sm btn-default"><i
-                        class="fas fa-list"></i> All Sales Receipts</a>
+                     btn-sm btn-default"><i class="fas fa-list"></i> All Sales Receipts</a>
                </div>
             </div>
          </header>
@@ -77,8 +75,7 @@
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       <tr *ngIf="invoiceData.length === 0"
-                                          class="text-center">
+                                       <tr *ngIf="invoiceData.length === 0" class="text-center">
                                           <td colspan="2">
                                              {{ dataMessage }}
                                           </td>
@@ -137,8 +134,7 @@
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr *ngIf="transactionLogs.length === 0"
-                                    class="text-center">
+                                 <tr *ngIf="transactionLogs.length === 0" class="text-center">
                                     <td colspan="3">
                                        {{ dataMessage }}
                                     </td>
@@ -173,7 +169,39 @@
                               </tbody>
                            </table>
                         </div>
-
+                        <div class="col-6">
+                           <table class="table table-bordered">
+                              <thead>
+                                 <th>Sr.</th>
+                                 <th>Name</th>
+                                 <th>Icon/Thumbnail</th>
+                                 <th>Action</th>
+                              </thead>
+                              <tbody>
+                                 <tr *ngIf="docs.length == 0">
+                                    <td colspan="4">
+                                       <span>No document found</span>
+                                    </td>
+                                 </tr>
+                                 <tr *ngFor="let doc of docs; let d= index">
+                                    <td>{{ d + 1 }}</td>
+                                    <td>{{ doc.displayName }}</td>
+                                    <td>
+                                       <a class="image-popup-no-margins" href="{{
+                                     doc.docPath }}" target="_blank">
+                                          <img class="img-fluid img_thumbnail" src="{{
+                                       doc.imgPath }}" />
+                                       </a>
+                                    </td>
+                                    <td class="cursorpoint text-center">
+                                       <a href="javascript:;" (click)="deleteDocument(doc.displayName, d)"
+                                          class="modal-with-form">
+                                          <em class="fas fa-times text-danger"></em></a>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
                      </div>
                   </div>
                </div>

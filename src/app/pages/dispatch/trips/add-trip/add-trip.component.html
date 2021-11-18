@@ -185,7 +185,7 @@
                         </div>
                       </div>
 
-                      <div class="row mb-2">
+                      <div class="mb-2">
                         <div class="col-lg-12">
                           <label
                             class="control-label
@@ -256,13 +256,29 @@
                         <thead>
                           <tr>
                             <th width="4%">Select</th>
-                            <th width="6%">Type</th>
-                            <th width="6%">Date</th>
-                            <th width="6%">Pickup Time</th>
-                            <th width="6%">Drop Time</th>
+                            <th width="6%">Type
+                              <span class="mandfield text-2 ml-1">
+                                <sup>*</sup>
+                              </span>
+                            </th>
+                            <th width="6%">Order#</th>
+                            <th width="6%">Commodity</th>
+                            <th width="6%">Date
+                              <span class="mandfield text-2 ml-1">
+                                <sup>*</sup>
+                              </span>
+                            </th>
+                            <th width="6%">Pickup Time
+                            </th>
+                            <th width="6%">Drop Time
+                            </th>
                             <!-- <th width="4%">Actual Pickup Time</th> -->
                             <!-- <th width="4%">Actual Drop Off Time</th> -->
-                            <th width="8%">Name</th>
+                            <th width="8%">Name
+                              <span class="mandfield text-2 ml-1">
+                                <sup>*</sup>
+                              </span>
+                            </th>
                             <th width="4%">
                               ML
                               <i
@@ -278,6 +294,9 @@
                               width: 150px;
                               min-width: 150px;">
                               Location
+                              <span class="mandfield text-2 ml-1">
+                                <sup>*</sup>
+                              </span>
                             </th>
                             <th width="4%">
                               MM
@@ -288,7 +307,11 @@
                                 title="Manual
                                 Miles"></i>
                             </th>
-                            <th width="7%">Loaded/ Empty</th>
+                            <th width="7%">Loaded/ Empty
+                              <span class="mandfield text-2 ml-1">
+                                <sup>*</sup>
+                              </span>
+                            </th>
                             <th width="5%">Miles</th>
                             <th width="5%">Vehicle</th>
                             <th width="5%">Asset</th>
@@ -317,6 +340,12 @@
                             </td>
                             <td id="labelCell1{{ i }}" class="labelRow{{ i }}">
                               {{ trip.type }}
+                            </td>
+                            <td id="labelCell21{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.orderNo }}
+                            </td>
+                            <td id="labelCell22{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.commName }}
                             </td>
                             <td id="labelCell2{{ i }}" class="labelRow{{ i }}">
                               {{ trip.date | date: "yyyy/MM/dd" }}
@@ -373,10 +402,10 @@
                             </td>
                             <td id="labelCell8{{ i }}" class="labelRow{{ i }}">
                               <span
-                                *ngFor="let addt of trip.trailerID;
+                                *ngFor="let addt of trip.trailer;
                                 let f= index">
-                                {{ addt ? assetsObjects[addt] : '' }}
-                                <span *ngIf="f<trip.trailerID.length-1">,</span>
+                                {{ addt.id ? assetsObjects[addt.id] : '' }}
+                                <span *ngIf="f<trip.trailer.length-1">,</span>
                               </span>
                             </td>
                             <td id="labelCell9{{ i }}" class="labelRow{{ i }}">
@@ -392,6 +421,10 @@
                               : '' }}
                             </td>
                             <td class="labelRow{{ i }}">
+                              <i
+                                class="fas fa-copy mr-2"
+                                title="Copy Row"
+                                (click)="copyRow(i)"></i>
                               <i
                                 class="fas fa-edit mr-2"
                                 title="Edit Row"
@@ -414,13 +447,51 @@
                               editRow{{ i }}">
                               <ng-select
                                 [(ngModel)]="trip.type"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                (change)="checkType($event, i)"
                                 id="editCell1{{ i }}"
-                                name="tripType"
+                                name="tripType{{ i }}"
                                 placeholder="Select
                                 trip type">
                                 <ng-option
                                   value="{{ type }}"
                                   *ngFor="let type of typeOptions">{{ type }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td
+                              class="rowStatus
+                              textRows
+                              editRow{{ i }}">
+                              <ng-select
+                                [(ngModel)]="trip.orderID"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                id="cell21{{ i }}"
+                                name="neworderID{{ i }}"
+                                placeholder="Select
+                                Order">
+                                <ng-option
+                                  value="{{ ord.orderID }}"
+                                  *ngFor="let ord of planOrderData">{{
+                                  ord.orderNo }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td
+                              class="rowStatus
+                              textRows
+                              editRow{{ i }}">
+                              <ng-select
+                                [(ngModel)]="trip.commodity"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                [multiple]= true
+                                id="cell22{{ i }}"
+                                name="newComm{{ i }}"
+                                placeholder="Commodity">
+                                <ng-option
+                                  value="{{ comm }}"
+                                  *ngFor="let comm of planComm">{{ comm }}</ng-option>
                               </ng-select>
                             </td>
                             <td
@@ -564,6 +635,8 @@
                               editRow{{ i }}">
                               <ng-select
                                 [(ngModel)]="trip.mileType"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
                                 id="editCell5{{ i }}"
                                 name="tripmileType{{ i }}"
                                 placeholder="Select
@@ -638,6 +711,8 @@
                               editRow{{ i }}">
                               <ng-select
                                 [(ngModel)]="trip.carrierID"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
                                 id="editCell11{{ i }}"
                                 name="editCarrID"
                                 placeholder="Select
@@ -667,6 +742,9 @@
                               <ng-select
                                 [(ngModel)]="textFieldValues.type"
                                 class="newRow"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                (change)="checkType($event, '')"
                                 id="cell1"
                                 name="newTripType"
                                 placeholder="Select
@@ -674,6 +752,37 @@
                                 <ng-option
                                   value="{{ type }}"
                                   *ngFor="let type of typeOptions">{{ type }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td>
+                              <ng-select
+                                [(ngModel)]="textFieldValues.orderID"
+                                class="newRow"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                id="cell91"
+                                name="neworderID"
+                                placeholder="Select
+                                Order">
+                                <ng-option
+                                  value="{{ ord.orderID }}"
+                                  *ngFor="let ord of planOrderData">{{
+                                  ord.orderNo }}</ng-option>
+                              </ng-select>
+                            </td>
+                            <td>
+                              <ng-select
+                                [(ngModel)]="textFieldValues.commodity"
+                                class="newRow typedrpdown"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
+                                [multiple]= true
+                                id="cell81"
+                                name="newComm"
+                                placeholder="Commodity">
+                                <ng-option
+                                  value="{{ comm }}"
+                                  *ngFor="let comm of planComm">{{ comm }}</ng-option>
                               </ng-select>
                             </td>
                             <td>
@@ -796,6 +905,8 @@
                                 [(ngModel)]="textFieldValues.mileType"
                                 id="cell5"
                                 name="newMileType"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
                                 placeholder="Select
                                 type">
                                 <ng-option value="empty">EMPTY</ng-option>
@@ -863,6 +974,8 @@
                                 class="newRow"
                                 id="cell1"
                                 name="newcarrierID"
+                                (open)="dropdownOpen()"
+                                (close)="dropdownClose()"
                                 placeholder="Select
                                 Carrier">
                                 <ng-option
@@ -921,6 +1034,8 @@
                         <thead>
                           <tr>
                             <th>Type</th>
+                            <th width="6%">Order#</th>
+                            <th width="6%">Commodity</th>
                             <th>Date</th>
                             <th>Pickup Time</th>
                             <th>Drop Off Time</th>
@@ -942,6 +1057,12 @@
                             class="ui-sortable-handle"
                             *ngFor="let trip of split; let i= index">
                             <td>{{ trip.type }}</td>
+                            <td id="labelCell21{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.orderNo }}
+                            </td>
+                            <td id="labelCell22{{ i }}" class="labelRow{{ i }}">
+                              {{ trip.commName }}
+                            </td>
                             <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
                             <td>{{ trip.pickupTime }}</td>
                             <td>{{ trip.dropTime }}</td>
@@ -958,7 +1079,8 @@
                                 *ngIf="!!trip.mileType">{{ trip.mileType }}</span>
                             </td>
                             <td>{{ trip.miles }}</td>
-                            <td>{{ vehiclesObjects[trip.vehicleID] }}</td>
+                            <td>{{ trip.vehicleID ?
+                              vehiclesObjects[trip.vehicleID] : '' }}</td>
                             <td>
                               <span
                                 *ngFor="let addt of trip.trailerID;
@@ -967,9 +1089,11 @@
                                 <span *ngIf="f> 0">,</span>
                               </span>
                             </td>
-                            <td>{{ driversObjects[trip.driverID] }}</td>
-                            <td>{{ driversObjects[trip.coDriverID] }}</td>
-                            <td>{{ trip.carrierName }}</td>
+                            <td>{{ trip.driverID ? driversObjects[trip.driverID]
+                              : '' }}</td>
+                            <td>{{ trip.coDriverID ?
+                              driversObjects[trip.coDriverID]: '' }}</td>
+                            <td>{{ trip.carrierName ? trip.carrierName : '' }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -1093,7 +1217,8 @@
                       </div>
                     </div>
 
-                    <div class="tripinfoscroll">
+                    <div class="" [ngClass]="trips.length> 15 ?
+                      'tripinfoscroll' : '' " >
                       <div
                         class="row
                         d-flex
@@ -1117,7 +1242,7 @@
                               {{ trip.type }} <br />{{
                               trip.date | date: "yyyy/MM/dd"
                               }}
-                              -
+                              <br>
                               {{
                               trip.type == "Pickup"
                               ? trip.pickupTime
@@ -1267,7 +1392,7 @@
                 [disabled]="submitDisabled"
                 (click)="onUpdateTrip('recall')"
                 class="btn cus-btn-padd btn-success">
-                Updatea
+                Update
               </button>
             </div>
           </div>
