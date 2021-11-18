@@ -32,7 +32,9 @@ export class SremindersComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
-  record = []
+  record = [];
+  export = [];
+  data = [];
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -42,7 +44,6 @@ export class SremindersComponent implements OnInit {
     this.fetchReminderCount();
     this.fetchTaskData();
     this.fetchVehicleIDs();
-
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -134,11 +135,25 @@ export class SremindersComponent implements OnInit {
       })
     })
   }
+  fetchAllExport() {
+    this.apiService.getData("reminders/fetch/export?type=service").subscribe((result: any) => {
+      this.data = result.Items;
+      this.generateCSV();
+    })
+  }
+  csvData() {
+    if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
+      this.data = this.allData;
+      this.generateCSV();
+    } else {
+      this.fetchAllExport()
+    }
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.data.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.data.forEach(element => {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Service Task"] = this.tasksData[element.tasks.taskID]
@@ -173,6 +188,10 @@ export class SremindersComponent implements OnInit {
     else {
       this.toastr.error("No Records found")
     }
+
   }
+
+
 }
+
 
