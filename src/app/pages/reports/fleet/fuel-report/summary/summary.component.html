@@ -14,7 +14,7 @@
                     <div class="col-md-2 col-lg-2 pr-0 pl-2">
                         <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
                             placeholder="Search by reefer">
-                            <ng-option *ngFor="let data of allAssets" [value]="data.assetID">
+                            <ng-option *ngFor="let data of assetsSet" [value]="data.assetID">
                                 {{data.assetIdentification}}
                             </ng-option>
                         </ng-select>
@@ -32,7 +32,7 @@
                                     class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" (click)="generateFuelCSV()">CSV</a>
+                                <a class="dropdown-item text-1" (click)="csvExport()">CSV</a>
                             </div>
                         </div>
                     </div>
