@@ -1325,10 +1325,12 @@
                                   <p class="m-0 text-dark">
                                     Customer PO#
                                     <span *ngIf="pick.customerPO && pick.customerPO.length>0">
-                                    <span *ngFor="let po of pick.customerPO; let i=index">{{i}}<span *ngIf="po!=''">{{po}}</span><span *ngIf="pick.customerPO.length>0 && i<pick.customerPO.length-1">,</span></span>
+                                      <span *ngFor="let po of pick.customerPO; let i=index">{{i}}<span
+                                          *ngIf="po!=''">{{po}}</span><span
+                                          *ngIf="pick.customerPO.length>0 && i<pick.customerPO.length-1">,</span></span>
                                     </span>
                                   </p>
-                                  
+
 
                                   <table width="100%" style="border-top: none;
                                     font-size: 12px">
@@ -2398,12 +2400,23 @@
       </section>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="modal.dismiss('Cross click')" class="btn
+      <!-- <div>
+        <div class="form-check">
+          <input class="form-check-input" (change)="sendEmailCopy($event.target.checked)" type="checkbox" value=""
+            id="copy">
+          <label class="form-check-label" for="copy">
+            Send me a copy
+          </label>
+        </div>
+      </div> -->
+      <div>
+        <button type="button" (click)="modal.dismiss('Cross click')" class="btn
         btn-default">
-        Cancel
-      </button>
-      <button (click)="sendEmailInv()" [disabled]="emailBtn" class="btn
-        btn-success">Send</button>
+          Cancel
+        </button>
+        <button (click)="sendEmailInv()" [disabled]="emailBtn" class="btn
+        btn-success ml-2 ">Send</button>
+      </div>
     </div>
   </div>
 </ng-template>
@@ -2900,7 +2913,7 @@
 
 <ng-template #emailInvoiceModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
+    <h4 class="modal-title" id="modal-basic-title">Please add email</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -2911,18 +2924,8 @@
         <div class="input-group mb-4">
           <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
             placeholder="eg. johnsmith@gmail.com" [(ngModel)]="emailData.emails" name="emails" type="text"
-            class="form-control h-auto"></ng-select>
-          <!-- <div *ngIf="em.invalid && EmailInvF.submitted" class="text-danger w-100">
-                        <div *ngIf="em.errors.required">
-                        Email is required.
-                        </div>
-                        <div *ngIf="em.errors.pattern">
-                        Enter valid email eg. johnsmith@gmail.com
-                        </div>
-                    </div> -->
-        </div>
-        <div class="input-group">
-          <textarea class="form-control h-auto" placeholder="eg. 0006,123" cols="5"></textarea>
+            class="form-control h-auto" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+          </ng-select>
         </div>
       </div>
     </div>
@@ -2931,7 +2934,8 @@
         btn-default">
         Cancel
       </button>
-      <button (click)="sendInvEmail()" class="btn btn-success">Send</button>
+      <button type="submit" [disabled]="!emailInvoice.form.valid" (click)="sendInvEmail()"
+        class="btn btn-success">Add</button>
     </div>
   </form>
 </ng-template>
