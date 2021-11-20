@@ -47,6 +47,7 @@ export class InvoiceListComponent implements OnInit {
     startDate: null,
     endDate: null,
     invNo: null,
+    customer: null,
   };
   lastItemSK = "";
   lastItemOrderSK = "";
@@ -231,7 +232,7 @@ export class InvoiceListComponent implements OnInit {
 
       let result: any = await this.accountService
         .getData(
-          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}`
         )
         .toPromise();
       // .subscribe(async (result: any) => {
@@ -307,7 +308,7 @@ export class InvoiceListComponent implements OnInit {
       }
       this.accountService
         .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}`
+          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}`
         )
         .subscribe(async (result: any) => {
           if (result.length === 0) {
@@ -556,7 +557,8 @@ export class InvoiceListComponent implements OnInit {
     if (
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
-      this.filter.invNo !== null
+      this.filter.invNo !== null ||
+      this.filter.customer !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
       if (this.filter.startDate !== "" && this.filter.endDate === "") {
@@ -597,6 +599,7 @@ export class InvoiceListComponent implements OnInit {
       startDate: null,
       endDate: null,
       invNo: null,
+      customer: null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -634,6 +637,7 @@ export class InvoiceListComponent implements OnInit {
       startDate: null,
       endDate: null,
       invNo: null,
+      customer: null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
