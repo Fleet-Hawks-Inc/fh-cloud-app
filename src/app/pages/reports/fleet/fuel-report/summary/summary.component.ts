@@ -41,6 +41,9 @@ export class SummaryComponent implements OnInit {
     l_quantity = 0;
     g_quantity = 0;
     fuel_Odometer = '';
+    vehicleSet = []
+    assetsSet: any = {};
+    exportList: any = [];
 
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -66,23 +69,20 @@ export class SummaryComponent implements OnInit {
     }
 
     fetchAllAssets() {
-        this.apiService.getData('assets').subscribe((result: any) => {
-            result.Items.forEach((e: any) => {
-                if (e.assetType == 'reefer') {
-                    let obj = {
-                        assetID: e.assetID,
-                        assetIdentification: e.assetIdentification
-                    };
-                    this.allAssets.push(obj);
-                }
-            });
-        });
-    }
+    this.apiService.getData('assets/get/minor/details')
+      .subscribe((result: any) => {
+        this.assetsSet = result.Items;
+      })
+  }
 
     fetchAllVehicles() {
-        this.apiService.getData('vehicles').subscribe((result: any) => {
-            this.allVehicles = result.Items;
-        });
+        this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+        result['Items'].map((v: any) => {
+          if (v.isDeleted === 0) {
+            this.vehicleSet.push(v);
+          }
+        })
+      });
     }
 
     fetchFuelCount() {
@@ -131,7 +131,6 @@ export class SummaryComponent implements OnInit {
         }
     }
 
-
     resetFilter() {
         if (this.unitID !== null || this.assetUnitID !== null) {
             this.unitID = null;
@@ -144,15 +143,12 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
-
-
-
-    //csv
+    
     generateFuelCSV() {
-        if (this.fuelList.length > 0) {
+        if (this.exportList.length > 0) {
             let dataObject = []
             let csvArray = []
-            this.fuelList.forEach(element => {
+            this.exportList.forEach(element => {
                 let obj = {}
                 obj["Date"] = element.data.date
                 obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
@@ -190,4 +186,20 @@ export class SummaryComponent implements OnInit {
             this.toastr.error("No Records found")
         }
     }
+    
+    getSetExport(){
+        this.apiService.getData("fuelEntries/get/export?type=unitID").subscribe((result: any) => {
+        this.exportList = result.Items;
+        this.generateFuelCSV();
+    })
+    }
+    
+     csvExport() {
+    if (this.unitID !== null || this.assetUnitID !== null ) {
+      this.exportList = this.fuelList
+      this.generateFuelCSV();
+    } else {
+      this.getSetExport();
+    }
+  }
 }
