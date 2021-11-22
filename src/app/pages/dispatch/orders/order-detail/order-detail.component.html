@@ -2414,7 +2414,7 @@
         btn-default">
           Cancel
         </button>
-        <button (click)="sendEmailInv()" [disabled]="emailBtn" class="btn
+        <button (click)="openEmailModal()" class="btn
         btn-success ml-2 ">Send</button>
       </div>
     </div>
@@ -2912,30 +2912,37 @@
 </ng-template>
 
 <ng-template #emailInvoiceModal let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Please add email</h4>
+  <!-- <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Emails</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
+  </div> -->
   <form>
     <div class="modal-body">
       <div class="email--invoice__main">
-        <div class="input-group mb-4">
-          <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
-            placeholder="eg. johnsmith@gmail.com" [(ngModel)]="emailData.emails" name="emails" type="text"
-            class="form-control h-auto" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-          </ng-select>
+        <div class="row align-items-center mb-2">
+
+          <div class="col-12">
+            <label class="control-label font-weight-bold mt-2 text-3 text-dark" for="inputDefault">Do you want to
+              receive copy
+              of this email?
+              <small>You can also add multiple email(s)</small></label>
+            <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
+              placeholder="eg. johnsmith@gmail.com" [(ngModel)]="emailData.emails" name="emails" type="text"
+              class="form-control h-auto" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+            </ng-select>
+          </div>
         </div>
+
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" (click)="modal.dismiss('Cross click')" class="btn
+      <button type="button" [disabled]="isEmail" (click)="sendEmailOnly()" class="btn
         btn-default">
-        Cancel
+        No
       </button>
-      <!-- <button type="submit" [disabled]="!emailInvoice.form.valid" (click)="sendInvEmail()"
-        class="btn btn-success">Add</button> -->
+      <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">Yes</button>
     </div>
   </form>
 </ng-template>

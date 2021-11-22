@@ -50,8 +50,6 @@ export class OrderDetailComponent implements OnInit {
   attachments = [];
   tripDocs = [];
 
-  emailBtn = false;
-
   localPhotos = [];
   uploadedDocs = [];
 
@@ -204,6 +202,7 @@ export class OrderDetailComponent implements OnInit {
   previewRef: any;
   generateRef: any;
   emailRef: any;
+  emailCopyRef: any;
 
   emailData = {
     emails: [],
@@ -216,12 +215,8 @@ export class OrderDetailComponent implements OnInit {
   };
 
   emailDocs = [];
-  slides = [
-    { img: "http://placehold.it/350x150/000000" },
-    { img: "http://placehold.it/350x150/111111" },
-    { img: "http://placehold.it/350x150/333333" },
-    { img: "http://placehold.it/350x150/666666" },
-  ];
+  isEmail = false;
+
   slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
 
   brokerage = {
@@ -243,6 +238,8 @@ export class OrderDetailComponent implements OnInit {
 
   showModal = false;
   showBolModal = false;
+
+  userEmails = [];
 
   orderInvData = {
     additionalContact: <any>null,
@@ -284,6 +281,8 @@ export class OrderDetailComponent implements OnInit {
   companyLogoSrc = "";
   orderLogs = [];
   recallStatus = false;
+
+  isFlag = true;
 
   constructor(
     private apiService: ApiService,
@@ -675,11 +674,20 @@ export class OrderDetailComponent implements OnInit {
       windowClass: "send-email--modal",
     };
     this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
-    // this.emailData.emails.push({ label: this.customerEmail });
+
+  }
+
+  openEmailModal() {
+    this.emailRef.close();
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "order-send__email",
+    };
+    this.emailCopyRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
   }
 
   async sendEmailInv() {
-    this.emailBtn = true;
     let newDocs = [];
 
     for (const item of this.emailDocs) {
@@ -689,19 +697,27 @@ export class OrderDetailComponent implements OnInit {
       });
     }
 
+    const data = {
+      docs: newDocs,
+      emails: this.userEmails
+    }
+
     let result = await this.apiService
       .getData(
-        `orders/emailInvoice/${this.orderID}?docs=${encodeURIComponent(
-          JSON.stringify(newDocs)
+        `orders/emailInvoice/${this.orderID}?data=${encodeURIComponent(
+          JSON.stringify(data)
         )}`
       )
       .toPromise();
     if (result) {
       this.emailRef.close();
+      this.emailCopyRef.close();
       this.toastr.success("Email send successfully!");
-      this.emailBtn = false;
+      this.isEmail = false;
+      this.userEmails = [];
+      this.emailData.emails = [];
     } else {
-      this.emailBtn = false;
+      this.isEmail = false;
     }
   }
 
@@ -716,14 +732,37 @@ export class OrderDetailComponent implements OnInit {
     );
   }
 
-  sendInvEmail() {
+  addEmails() {
+    this.isFlag = true;
+    this.isEmail = true;
+    if (this.emailData.emails.length === 0) { this.toastr.error('Please enter at least one email'); this.isEmail = false; return };
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
       let result = re.test(String(elem.label).toLowerCase());
-      if (!result) this.toastr.error("Please enter valid email(s)");
-      return;
+      if (!result) {
+        this.toastr.error("Please enter valid email(s)");
+        this.isFlag = false;
+        this.isEmail = false;
+
+        return;
+      } else {
+        if (!this.userEmails.includes(elem.label)) {
+          this.userEmails.push(elem.label)
+        }
+
+      }
     });
+
+    if (this.isFlag) {
+      this.sendEmailInv();
+    }
+
+
+  }
+
+  sendEmailOnly() {
+    this.sendEmailInv();
   }
 
   async generate() {
@@ -1082,14 +1121,14 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  sendEmailCopy(value) {
-    if (value) {
-      let ngbModalOptions: NgbModalOptions = {
-        keyboard: false,
-        backdrop: "static",
-        windowClass: "order-send__email",
-      };
-      this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
-    }
-  }
+  // sendEmailCopy(value) {
+  //   if (value) {
+  //     let ngbModalOptions: NgbModalOptions = {
+  //       keyboard: false,
+  //       backdrop: "static",
+  //       windowClass: "order-send__email",
+  //     };
+  //     this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
+  //   }
+  // }
 }
