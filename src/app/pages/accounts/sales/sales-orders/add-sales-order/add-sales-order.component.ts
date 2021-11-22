@@ -591,6 +591,7 @@ export class AddSalesOrderComponent implements OnInit {
     }
 
     for (let i = 0; i < files.length; i++) {
+      this.filesError = '';
       filesSize += files[i].size / 1024 / 1024;
       if (filesSize > 10) {
         this.toaster.error("Files size limit exceeded");
