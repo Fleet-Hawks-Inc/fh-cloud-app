@@ -762,6 +762,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   sendEmailOnly() {
+    this.isEmail = true;
     this.sendEmailInv();
   }
 
