@@ -203,7 +203,7 @@ export class OrdersListComponent implements OnInit {
   showModal = false;
 
   isLoad: boolean = false;
-  isLoadText = 'Load More...';
+  isLoadText = "Load More...";
 
   constructor(
     private apiService: ApiService,
@@ -211,54 +211,53 @@ export class OrdersListComponent implements OnInit {
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
     private listService: ListService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    // this.fetchAllTypeOrderCount();
     this.initDataTable();
     this.fetchCustomersByIDs();
   }
 
-  fetchAllTypeOrderCount = () => {
-    this.allordersCount = 0;
+  // fetchAllTypeOrderCount = () => {
+  //   this.allordersCount = 0;
 
-    this.apiService.getData("orders/get/allTypes/count").subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.allordersCount = result.allCount;
-        this.totalRecords = result.allCount;
+  //   this.apiService.getData("orders/get/allTypes/count").subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       this.allordersCount = result.allCount;
+  //       this.totalRecords = result.allCount;
 
-        this.initDataTable();
-      },
-    });
-  };
+  //       this.initDataTable();
+  //     },
+  //   });
+  // };
 
-  fetchOrdersCount() {
-    this.isSearch = true;
-    this.apiService
-      .getData(
-        "orders/get/filter/count?searchValue=" +
-        this.orderFiltr.searchValue +
-        "&startDate=" +
-        this.orderFiltr.start +
-        "&endDate=" +
-        this.orderFiltr.end +
-        "&category=" +
-        this.orderFiltr.category
-      )
-      .subscribe({
-        complete: () => { },
-        error: () => {
-          this.isSearch = false;
-        },
-        next: (result: any) => {
-          this.totalRecords = result.Count;
+  // fetchOrdersCount() {
+  //   this.isSearch = true;
+  //   this.apiService
+  //     .getData(
+  //       "orders/get/filter/count?searchValue=" +
+  //       this.orderFiltr.searchValue +
+  //       "&startDate=" +
+  //       this.orderFiltr.start +
+  //       "&endDate=" +
+  //       this.orderFiltr.end +
+  //       "&category=" +
+  //       this.orderFiltr.category
+  //     )
+  //     .subscribe({
+  //       complete: () => { },
+  //       error: () => {
+  //         this.isSearch = false;
+  //       },
+  //       next: (result: any) => {
+  //         this.totalRecords = result.Count;
 
-          this.initDataTable();
-        },
-      });
-  }
+  //         this.initDataTable();
+  //       },
+  //     });
+  // }
 
   /*
    * Get all customers's IDs of names from api
@@ -278,7 +277,15 @@ export class OrdersListComponent implements OnInit {
       const element = orders[i];
 
       this.orders.push(element);
+      element.canRecall = false;
+      if (element.orderStatus === "delivered") {
+        element.canRecall = true;
+      }
+      if (element.recptStat) {
+        element.canRecall = false;
+      }
       element.newStatus = element.orderStatus;
+
       if (element.recall) {
         element.newStatus = `${element.orderStatus} (R)`;
       }
@@ -299,25 +306,24 @@ export class OrdersListComponent implements OnInit {
         this.tonuOrders.push(element);
       }
     }
-
   }
 
   initDataTable() {
     this.spinner.show();
     // this.orders = [];
-    if (this.lastEvaluatedKey !== 'end') {
+    if (this.lastEvaluatedKey !== "end") {
       this.apiService
         .getData(
           "orders/fetch/records/all?searchValue=" +
-          this.orderFiltr.searchValue +
-          "&startDate=" +
-          this.orderFiltr.start +
-          "&endDate=" +
-          this.orderFiltr.end +
-          "&category=" +
-          this.orderFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+            this.orderFiltr.searchValue +
+            "&startDate=" +
+            this.orderFiltr.start +
+            "&endDate=" +
+            this.orderFiltr.end +
+            "&category=" +
+            this.orderFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -384,7 +390,6 @@ export class OrdersListComponent implements OnInit {
           }
         );
     }
-
   }
 
   filterOrders() {
@@ -443,8 +448,7 @@ export class OrdersListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
         this.lastEvaluatedKey = "";
-        this.fetchOrdersCount();
-        // this.initDataTable();
+        this.initDataTable();
       }
     }
   }
@@ -457,7 +461,6 @@ export class OrdersListComponent implements OnInit {
       this.orderFiltr.endDate !== "" ||
       this.orderFiltr.searchValue !== ""
     ) {
-      this.spinner.show();
       this.orderFiltr = {
         searchValue: "",
         startDate: "",
@@ -478,11 +481,8 @@ export class OrdersListComponent implements OnInit {
       this.partiallyOrders = [];
       this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      // this.fetchAllTypeOrderCount();
       this.lastEvaluatedKey = "";
-      this.fetchOrdersCount();
-      // this.initDataTable();
-      this.spinner.hide();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -506,7 +506,7 @@ export class OrdersListComponent implements OnInit {
           this.records = false;
           this.ordersDraw = 0;
           this.lastEvaluatedKey = "";
-          this.fetchAllTypeOrderCount();
+          this.initDataTable();
           this.toastr.success("Order deleted successfully!");
         });
     }
@@ -516,56 +516,6 @@ export class OrdersListComponent implements OnInit {
     if (type == "all") {
       this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
       this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
-    }
-  }
-
-  // next button func
-  nextResults(type) {
-    if (type == "all") {
-      this.ordersNext = true;
-      this.ordersDraw += 1;
-
-      if (this.orders[this.ordersDraw] == undefined) {
-        this.records = false;
-
-        this.initDataTable();
-        this.ordersPrev = false;
-      } else {
-        if (this.ordersDraw <= 0) {
-          this.ordersPrev = true;
-        } else {
-          this.ordersPrev = false;
-        }
-        if (this.ordersDraw < this.lastFetched.draw) {
-          this.ordersNext = false;
-        } else {
-          this.ordersNext = this.lastFetched.status;
-        }
-        this.getStartandEndVal("all");
-        this.ordersEndPoint =
-          this.ordersStartPoint + this.orders[this.ordersDraw].length - 1;
-      }
-    }
-  }
-
-  // prev button func
-  prevResults(type) {
-    if (type == "all") {
-      this.ordersNext = true;
-      this.ordersPrev = true;
-      this.ordersDraw -= 1;
-
-      if (this.orders[this.ordersDraw] == undefined) {
-        this.initDataTable();
-      } else {
-        if (this.ordersDraw <= 0) {
-          this.ordersPrev = true;
-        } else {
-          this.ordersPrev = false;
-        }
-        this.ordersNext = false;
-        this.getStartandEndVal("all");
-      }
     }
   }
 
@@ -601,39 +551,28 @@ export class OrdersListComponent implements OnInit {
     newData.confirm = this.emailData.confirmEmail;
     this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
+        `orders/update/orderStatus/${this.newOrderID}/${
+          this.newOrderNumber
         }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
       )
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           this.isConfirm = false;
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          // this.orders = [];
-          // this.confirmOrders = [];
-          // this.dispatchOrders = [];
-          // this.deliveredOrders = [];
-          // this.cancelledOrders = [];
-          // this.invoicedOrders = [];
-          // this.partiallyOrders = [];
-          // this.tonuOrders = [];
-          // this.lastEvaluatedKey = "";
-          // this.fetchAllTypeOrderCount();
           this.orders[0].filter((elem) => {
             if (elem.orderID == this.newOrderID) {
               elem.orderStatus = "confirmed";
             }
-          }
-          );
+          });
           this.allignOrders(this.orders[0]);
           this.confirmRef.close();
           this.isConfirm = false;
         },
       });
   }
-
 
   async confirmEmail(order) {
     this.emailData.emails = [];
@@ -691,8 +630,7 @@ export class OrdersListComponent implements OnInit {
     this.partiallyOrders = [];
     this.tonuOrders = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    // this.fetchAllTypeOrderCount();
-    this.fetchOrdersCount();
+    this.initDataTable();
   }
 
   async showBrokerageModal(order, draw, index, actionFrom) {
@@ -835,7 +773,7 @@ export class OrdersListComponent implements OnInit {
 
   onScroll() {
     this.isLoad = true;
-    this.isLoadText = 'Loading';
+    this.isLoadText = "Loading";
     this.initDataTable();
   }
 }
