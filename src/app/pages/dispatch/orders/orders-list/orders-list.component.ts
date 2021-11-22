@@ -218,47 +218,6 @@ export class OrdersListComponent implements OnInit {
     this.fetchCustomersByIDs();
   }
 
-  // fetchAllTypeOrderCount = () => {
-  //   this.allordersCount = 0;
-
-  //   this.apiService.getData("orders/get/allTypes/count").subscribe({
-  //     complete: () => { },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       this.allordersCount = result.allCount;
-  //       this.totalRecords = result.allCount;
-
-  //       this.initDataTable();
-  //     },
-  //   });
-  // };
-
-  // fetchOrdersCount() {
-  //   this.isSearch = true;
-  //   this.apiService
-  //     .getData(
-  //       "orders/get/filter/count?searchValue=" +
-  //       this.orderFiltr.searchValue +
-  //       "&startDate=" +
-  //       this.orderFiltr.start +
-  //       "&endDate=" +
-  //       this.orderFiltr.end +
-  //       "&category=" +
-  //       this.orderFiltr.category
-  //     )
-  //     .subscribe({
-  //       complete: () => { },
-  //       error: () => {
-  //         this.isSearch = false;
-  //       },
-  //       next: (result: any) => {
-  //         this.totalRecords = result.Count;
-
-  //         this.initDataTable();
-  //       },
-  //     });
-  // }
-
   /*
    * Get all customers's IDs of names from api
    */
