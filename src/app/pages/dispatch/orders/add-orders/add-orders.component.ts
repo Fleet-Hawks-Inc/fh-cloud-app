@@ -2194,6 +2194,9 @@ export class AddOrdersComponent implements OnInit {
           (o) => o.stateTaxID == result.stateTaxID
         );
 
+        if (result.recptStat) {
+          this.recalledState = false;
+        }
         this.orderData.taxesInfo = [
           {
             name: "GST",
