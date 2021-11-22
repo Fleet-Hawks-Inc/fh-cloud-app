@@ -1090,4 +1090,15 @@ export class OrderDetailComponent implements OnInit {
       .toPromise();
     result = result.Items[0];
   }
+
+  sendEmailCopy(value) {
+    if (value) {
+      let ngbModalOptions: NgbModalOptions = {
+        keyboard: false,
+        backdrop: "static",
+        windowClass: "order-send__email",
+      };
+      this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
+    }
+  }
 }

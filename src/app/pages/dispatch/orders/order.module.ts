@@ -17,7 +17,7 @@ import { PdfAutomationComponent } from "../pdf-automation/pdf-automation.compone
 import { PdfViewerModule } from "ng2-pdf-viewer";
 import { BrokeragePdfComponent } from "./brokerage-pdf/brokerage-pdf.component";
 import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SlickCarouselModule } from "ngx-slick-carousel";
 const routes: Routes = [
   { path: "", component: OrdersListComponent },
@@ -48,7 +48,8 @@ const routes: Routes = [
     ChartsModule,
     PdfViewerModule,
     SlickCarouselModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard],
 })
-export class OrderModule {}
+export class OrderModule { }
