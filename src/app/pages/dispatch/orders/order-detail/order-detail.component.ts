@@ -787,7 +787,7 @@ export class OrderDetailComponent implements OnInit {
 
   async generatePDF() {
     this.isShow = true;
-
+    await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0.15,
@@ -801,9 +801,9 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-    await this.saveInvoice();
-    await this.invoiceGenerated();
-    await this.fetchOrder();
+    // await this.saveInvoice();
+    // await this.invoiceGenerated();
+    // await this.fetchOrder();
     this.previewRef.close();
   }
 
@@ -820,7 +820,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountReceived`] = 0;
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
-    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
+    this.invoiceData[`balance`] = this.totalCharges;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
@@ -848,6 +848,7 @@ export class OrderDetailComponent implements OnInit {
           });
       },
       next: (res) => {
+        this.isInvoiced = true;
         this.generateBtnDisabled = false;
         this.toastr.success("Invoice Added Successfully.");
         $("#previewInvoiceModal").modal("hide");
@@ -855,15 +856,15 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  async invoiceGenerated() {
-    this.invGenStatus = true;
-    let result = await this.apiService
-      .getData(
-        `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
-      )
-      .toPromise();
-    this.isInvoice = result.Attributes.invoiceGenerate;
-  }
+  // async invoiceGenerated() {
+  //   this.invGenStatus = true;
+  //   let result = await this.apiService
+  //     .getData(
+  //       `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
+  //     )
+  //     .toPromise();
+  //   this.isInvoice = result.Attributes.invoiceGenerate;
+  // }
 
   previewModal() {
     $("#templateSelectionModal").modal("hide");
@@ -1044,7 +1045,7 @@ export class OrderDetailComponent implements OnInit {
         }
       });
   }
-
+  invoiceGenerate;
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
     this.showModal = true;
@@ -1076,14 +1077,15 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async downloadBolPdf() {
-    this.showBolModal = true;
-    let data = {
-      carrierData: this.carrierData,
-      orderData: this.orderInvData,
-      showModal: this.showBolModal,
-      companyLogo: this.companyLogoSrc,
-    };
-    this.listService.triggerBolPdf(data);
+    await this.fetchBOLDetails();
+    // this.showBolModal = true;
+    // let data = {
+    //   carrierData: this.carrierData,
+    //   orderData: this.orderInvData,
+    //   showModal: this.showBolModal,
+    //   companyLogo: this.companyLogoSrc,
+    // };
+    // this.listService.triggerBolPdf(data);
   }
 
   fetchOrderLogs() {
@@ -1121,14 +1123,21 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  // sendEmailCopy(value) {
-  //   if (value) {
-  //     let ngbModalOptions: NgbModalOptions = {
-  //       keyboard: false,
-  //       backdrop: "static",
-  //       windowClass: "order-send__email",
-  //     };
-  //     this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
-  //   }
-  // }
+  async fetchBOLDetails() {
+    let result: any = await this.apiService
+      .getData(`orders/get/bol/data/${this.orderID}`)
+      .toPromise();
+    result = result.Items[0];
+  }
+
+  sendEmailCopy(value) {
+    if (value) {
+      let ngbModalOptions: NgbModalOptions = {
+        keyboard: false,
+        backdrop: "static",
+        windowClass: "order-send__email",
+      };
+      this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
+    }
+  }
 }

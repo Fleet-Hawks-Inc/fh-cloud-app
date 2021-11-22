@@ -2226,6 +2226,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
         this.isInvoiceGenerated = result.invoiceGenerate;
+        this.orderData["invoiceGenerate"] = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -2254,6 +2255,10 @@ export class AddOrdersComponent implements OnInit {
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
+
+        if (result.invData) {
+          this.orderData["invData"] = result.invData;
+        }
 
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
         let shimentLength = result.shippersReceiversInfo.length;
