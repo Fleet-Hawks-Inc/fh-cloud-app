@@ -2,13 +2,13 @@ export const environment = {
   production: true,
   isFeatureEnabled: true,
   isFleetEnabled: true,
-  isDispatchEnabled: true,
+  isDispatchEnabled: false,
   isComplianceEnabled: false,
-  isManageEnabled: true,
-  isSafetyEnabled: true,
-  isAccountsEnabled: true,
+  isManageEnabled: false,
+  isSafetyEnabled: false,
+  isAccountsEnabled: false,
   isReportsEnabled: true,
-  
+
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
   AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
@@ -37,8 +37,8 @@ export const environment = {
     region: 'ap-south-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
-  PORT : 9001,
-  MQTTPATH : '/',
+  PORT: 9001,
+  MQTTPATH: '/',
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },

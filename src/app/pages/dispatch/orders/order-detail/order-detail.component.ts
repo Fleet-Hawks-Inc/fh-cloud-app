@@ -19,6 +19,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
+import Constants from "src/app/pages/fleet/constants";
 declare var $: any;
 
 @Component({
@@ -34,12 +35,21 @@ export class OrderDetailComponent implements OnInit {
   previewInvoiceModal: TemplateRef<any>;
   @ViewChild("emailInvoiceModal", { static: true })
   emailInvoiceModal: TemplateRef<any>;
+
+  @ViewChild("emailInvoice", { static: true })
+  emailInvoice: TemplateRef<any>;
+
   @ViewChild("uploadBol", { static: true }) uploadBol: ElementRef;
 
   @ViewChild(PdfViewerComponent, { static: false })
   private pdfComponent: PdfViewerComponent;
+
+  noLogsMsg = Constants.NO_RECORDS_FOUND;
+
   docs = [];
   attachments = [];
+  tripDocs = [];
+
   localPhotos = [];
   uploadedDocs = [];
 
@@ -84,6 +94,8 @@ export class OrderDetailComponent implements OnInit {
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
   pageVariable = 1;
+
+  carrierLogo: string;
   /**
    * Form props
    */
@@ -190,6 +202,7 @@ export class OrderDetailComponent implements OnInit {
   previewRef: any;
   generateRef: any;
   emailRef: any;
+  emailCopyRef: any;
 
   emailData = {
     emails: [],
@@ -200,6 +213,11 @@ export class OrderDetailComponent implements OnInit {
     tripNo: "";
     tripID: "";
   };
+
+  emailDocs = [];
+  isEmail = false;
+
+  slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
 
   brokerage = {
     carrierID: "",
@@ -219,6 +237,9 @@ export class OrderDetailComponent implements OnInit {
   };
 
   showModal = false;
+  showBolModal = false;
+
+  userEmails = [];
 
   orderInvData = {
     additionalContact: <any>null,
@@ -258,6 +279,10 @@ export class OrderDetailComponent implements OnInit {
     taxesAmt: 0,
   };
   companyLogoSrc = "";
+  orderLogs = [];
+  recallStatus = false;
+
+  isFlag = true;
 
   constructor(
     private apiService: ApiService,
@@ -277,6 +302,7 @@ export class OrderDetailComponent implements OnInit {
     this.fetchShippersByIDs();
     this.fetchReceiversByIDs();
     this.fetchInvoiceData();
+    this.fetchOrderLogs();
   }
 
   /**
@@ -284,7 +310,7 @@ export class OrderDetailComponent implements OnInit {
    */
   async fetchOrder() {
     this.docs = [];
-    this.apiService.getData(`orders/${this.orderID}`).subscribe(
+    this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
         this.newOrderData = result;
         result = result.Items[0];
@@ -296,6 +322,10 @@ export class OrderDetailComponent implements OnInit {
         }
         if (result.brkAmount) {
           this.brokerage.brokerageAmount = result.brkAmount;
+        }
+
+        if (result.recall) {
+          this.recallStatus = true;
         }
         this.brokerage.orderNo = result.orderNumber;
         this.brokerage.miles = result.milesInfo.totalMiles;
@@ -439,10 +469,20 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            path: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
             name: x,
+            ext: x.split(".")[1],
           }));
         }
+
+        if (result.tripDocs != undefined && result.tripDocs.length > 0) {
+          this.tripDocs = result.tripDocs.map((x) => ({
+            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            name: x.storedName,
+            ext: x.storedName.split(".")[1],
+          }));
+        }
+
         if (
           result.uploadedDocs !== undefined &&
           result.uploadedDocs.length > 0
@@ -480,6 +520,8 @@ export class OrderDetailComponent implements OnInit {
           //   ext: (x.storedName).split('.')[1]
           // }));
         }
+
+        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
 
         // if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
         //   obj = {
@@ -566,7 +608,8 @@ export class OrderDetailComponent implements OnInit {
         //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
         // }
       },
-      (err) => {}
+
+      (err) => { }
     );
   }
 
@@ -625,16 +668,57 @@ export class OrderDetailComponent implements OnInit {
       });
   }
 
-  emailInv() {
+  async openEmailInv() {
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
-      windowClass: "email--invoice",
+      windowClass: "send-email--modal",
     };
-    this.emailRef = this.modalService.open(
-      this.emailInvoiceModal,
-      ngbModalOptions
-    );
-    this.emailData.emails.push({ label: this.customerEmail });
+    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+
+  }
+
+  openEmailModal() {
+    this.emailRef.close();
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "order-send__email",
+    };
+    this.emailCopyRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
+  }
+
+  async sendEmailInv() {
+    let newDocs = [];
+
+    for (const item of this.emailDocs) {
+      newDocs.push({
+        filename: item.displayName,
+        path: item.docPath,
+      });
+    }
+
+    const data = {
+      docs: newDocs,
+      emails: this.userEmails
+    }
+
+    let result = await this.apiService
+      .getData(
+        `orders/emailInvoice/${this.orderID}?data=${encodeURIComponent(
+          JSON.stringify(data)
+        )}`
+      )
+      .toPromise();
+    if (result) {
+      this.emailRef.close();
+      this.emailCopyRef.close();
+      this.toastr.success("Email send successfully!");
+      this.isEmail = false;
+      this.userEmails = [];
+      this.emailData.emails = [];
+    } else {
+      this.isEmail = false;
+    }
   }
 
   showInv() {
@@ -648,14 +732,38 @@ export class OrderDetailComponent implements OnInit {
     );
   }
 
-  sendInvEmail() {
+  addEmails() {
+    this.isFlag = true;
+    this.isEmail = true;
+    if (this.emailData.emails.length === 0) { this.toastr.error('Please enter at least one email'); this.isEmail = false; return };
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
       let result = re.test(String(elem.label).toLowerCase());
-      if (!result) this.toastr.error("Please enter valid email(s)");
-      return;
+      if (!result) {
+        this.toastr.error("Please enter valid email(s)");
+        this.isFlag = false;
+        this.isEmail = false;
+
+        return;
+      } else {
+        if (!this.userEmails.includes(elem.label)) {
+          this.userEmails.push(elem.label)
+        }
+
+      }
     });
+
+    if (this.isFlag) {
+      this.sendEmailInv();
+    }
+
+
+  }
+
+  sendEmailOnly() {
+    this.isEmail = true;
+    this.sendEmailInv();
   }
 
   async generate() {
@@ -680,7 +788,7 @@ export class OrderDetailComponent implements OnInit {
 
   async generatePDF() {
     this.isShow = true;
-
+    await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0.15,
@@ -694,9 +802,9 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-    await this.saveInvoice();
-    await this.invoiceGenerated();
-    await this.fetchOrder();
+    // await this.saveInvoice();
+    // await this.invoiceGenerated();
+    // await this.fetchOrder();
     this.previewRef.close();
   }
 
@@ -713,13 +821,13 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountReceived`] = 0;
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
-    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
+    this.invoiceData[`balance`] = this.totalCharges;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -736,10 +844,12 @@ export class OrderDetailComponent implements OnInit {
             error: () => {
               this.generateBtnDisabled = false;
             },
-            next: () => {},
+
+            next: () => { },
           });
       },
       next: (res) => {
+        this.isInvoiced = true;
         this.generateBtnDisabled = false;
         this.toastr.success("Invoice Added Successfully.");
         $("#previewInvoiceModal").modal("hide");
@@ -747,15 +857,15 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  async invoiceGenerated() {
-    this.invGenStatus = true;
-    let result = await this.apiService
-      .getData(
-        `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
-      )
-      .toPromise();
-    this.isInvoice = result.Attributes.invoiceGenerate;
-  }
+  // async invoiceGenerated() {
+  //   this.invGenStatus = true;
+  //   let result = await this.apiService
+  //     .getData(
+  //       `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
+  //     )
+  //     .toPromise();
+  //   this.isInvoice = result.Attributes.invoiceGenerate;
+  // }
 
   previewModal() {
     $("#templateSelectionModal").modal("hide");
@@ -875,7 +985,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
@@ -926,6 +1036,9 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
+
+        this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
+
         this.orderInvData = result[0];
         this.isInvoice = true;
         if (this.orderInvData.carrierData.logo != "") {
@@ -933,7 +1046,7 @@ export class OrderDetailComponent implements OnInit {
         }
       });
   }
-
+  invoiceGenerate;
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
     this.showModal = true;
@@ -961,6 +1074,71 @@ export class OrderDetailComponent implements OnInit {
       }
     } else {
       this.carrierData.address = result.adrs[0].userLoc;
+    }
+  }
+
+  async downloadBolPdf() {
+    await this.fetchBOLDetails();
+    // this.showBolModal = true;
+    // let data = {
+    //   carrierData: this.carrierData,
+    //   orderData: this.orderInvData,
+    //   showModal: this.showBolModal,
+    //   companyLogo: this.companyLogoSrc,
+    // };
+    // this.listService.triggerBolPdf(data);
+  }
+
+  fetchOrderLogs() {
+    this.apiService
+      .getData(`auditLogs/details/${this.orderID}`)
+      .subscribe((res: any) => {
+        this.orderLogs = res.Items;
+        if (this.orderLogs.length > 0) {
+          this.orderLogs.map((k) => {
+            k.dateAndTime = `${k.createdDate} ${k.createdTime}`;
+            if (k.eventParams.userName !== undefined) {
+              const newString = k.eventParams.userName.split("_");
+              k.userFirstName = newString[0];
+              k.userLastName = newString[1];
+            }
+            if (k.eventParams.number !== undefined) {
+              k.entityNumber = k.eventParams.number;
+            }
+            if (k.eventParams.name !== undefined) {
+              if (k.eventParams.name.includes("_")) {
+                const newString = k.eventParams.name.split("_");
+                k.firstName = newString[0];
+                k.lastName = newString[1];
+              }
+            }
+          });
+
+          this.orderLogs.sort((a, b) => {
+            return (
+              new Date(b.dateAndTime).valueOf() -
+              new Date(a.dateAndTime).valueOf()
+            );
+          });
+        }
+      });
+  }
+
+  async fetchBOLDetails() {
+    let result: any = await this.apiService
+      .getData(`orders/get/bol/data/${this.orderID}`)
+      .toPromise();
+    result = result.Items[0];
+  }
+
+  sendEmailCopy(value) {
+    if (value) {
+      let ngbModalOptions: NgbModalOptions = {
+        keyboard: false,
+        backdrop: "static",
+        windowClass: "order-send__email",
+      };
+      this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
     }
   }
 }

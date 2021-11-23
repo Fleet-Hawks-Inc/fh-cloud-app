@@ -1,122 +1,188 @@
 <section class="body">
-   <div class="inner-wrapper">
-      <section role="main" class="content-body pt-0 pr-0 pl-1">
-         <header class="page-header pr19 pl11">
-            <div class="row" style="padding-top:10px;">
-               <div class="col-md-3 col-lg-3 pr-0">
-                  <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
-                     <span class="input-group-prepend">
-                     <span class="input-group-text">
-                     <i class="fas fa-calendar-alt"></i>
-                     </span>
-                     </span>
-                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="start">
-                     <span class="input-group-text border-left-0 border-right-0 rounded-0">
-                     to
-                     </span>
-                     <input type="text" data-plugin-datepicker="" placeholder="yyyy/mm/dd" class="form-control" name="end">
-                  </div>
-               </div>
-               <div class="col-md-2 col-lg-2 pr-0">
-                  <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by vehicle" type="text">
-               </div>
-               <div class="col-md-2 col-lg-2 pr-0">
-                  <input autocomplete="off" class="form-control ng-pristine line-height-xs ng-valid ng-touched" name="driverName" placeholder="Search Fuel by reefer" type="text">
-               </div>
-               <div class="col-md-2 col-lg-2">
-                  <button type="submit" class="btn btn-sm btn-success mr-3">Search</button>
-                  <button class="btn btn-sm btn-success" type="submit">Reset</button>
-               </div>
-               <div class="col-md-3 col-lg-3 text-right pr-1">
-                  <div class="btn-group flex-wrap ml-2">
-                     <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
-                     <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                        <a class="dropdown-item text-1" href="">CSV</a>
-                        <a class="dropdown-item text-1" href="">PDF</a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </header>
-         <div class="m-2">
-            <div class="row text-dark">
-               <div class="col-12 mb-3">
-                  <div class="bg-white p-3">
-                     <div class="row text-dark">
-                        <div class="col-12">
-                           <div>
-                              <h4 class="mt-1 mb-0 font-weight-bold">Fuel Summary</h4>
-                           </div>
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+                <div class="row" style="padding-top:10px;">
+                      <div class="col-md-2 col-lg-2 pr-0">
+                        <ng-select [(ngModel)]="unitID" name="unitID" style="width:
+                                    100%;" placeholder="Search by vehicle">
+                            <ng-option *ngFor="let data of vehicleSet" [value]="data.vehicleID">
+                                {{data.vehicleIdentification}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 col-lg-2 pr-0 pl-2">
+                        <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
+                            placeholder="Search by reefer">
+                            <ng-option *ngFor="let data of assetsSet" [value]="data.assetID">
+                                {{data.assetIdentification}}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="submit" (click)="searchFilter()"
+                            class="btn btn-sm btn-success mr-3">Search</button>
+                        <button class="btn btn-sm btn-success" (click)="resetFilter()" type="submit">Reset</button>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6 text-right pr-1">
+                        <div class="btn-group flex-wrap ml-2">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false"><i class="fas fa-upload"></i> Export<span
+                                    class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" (click)="csvExport()">CSV</a>
+                            </div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-4 mb-3">
-                  <div class="bg-white p-3">
-                     <div>
-                        <h4 class="m-0 text-4">Total Distance</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">725428 miles</h3>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-4 mb-3">
-                  <div class="bg-white p-3">
-                     <div>
-                        <h4 class="m-0 text-4">Total Fuel Consume</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">12240 litre(s)</h3>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-4 mb-3">
-                  <div class="bg-white p-3">
-                     <div>
-                        <h4 class="m-0 text-4">Total Fuel Cost</h4>
-                        <h3 class="mt-1 mb-0 font-weight-bold">$ 25075.00</h3>
-                     </div>
-                  </div>
-               </div>
-               <div class="col">
-                  <div class="card">
-                     <div class="card-body bor-radius0px">
-                        <section class="reports_div">
-                           <table class="table reports_small_div">
-                              <thead>
-                                 <tr class="back-color-gray">
-                                    <th>Date/Time</th>
-                                    <th>Fuel Card#</th>
-                                    <th>Province/State</th>
-                                    <th>Unit Number</th>
-                                    <th>Unit Type</th>
-                                    <th>Odometer</th>
-                                    <th>Fuel Type</th>
-                                    <th>Fuel Unit</th>
-                                    <th>Vendor</th>
-                                    <th>Cost/Liters or Gallons</th>
-                                    <th>Total Cost</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td class="cursorpoint"  >2020/06/20, 09:20 AM</td>
-                                    <td class="cursorpoint"  >76782020</td>
-                                    <td class="cursorpoint"  >Toronto</td>
-                                    <td class="cursorpoint"  >2400</td>
-                                    <td class="cursorpoint"  >Vehicle</td>
-                                    <td class="cursorpoint"  >61658</td>
-                                    <td class="cursorpoint"  >Diesel</td>
-                                    <td class="cursorpoint"  >315.52 litre(s)</td>
-                                    <td class="cursorpoint"  >FJ-MOOSE JAW 811</td>
-                                    <td class="cursorpoint"  >1.339 CAD</td>
-                                    <td class="cursorpoint"  >550.50 USD</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </section>
-                     </div>
-                  </div>
-               </div>
+                    </div>
+                </div>
+            </header>
+            <div class="m-2">
+                <div class="row text-dark">
+                    <div class="col-12 mb-3">
+                        <div class="bg-white p-3">
+                            <div class="row text-dark">
+                                <div class="col-12">
+                                    <div>
+                                        <h4 class="mt-1 mb-0 font-weight-bold">Fuel Summary</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <div class="bg-white p-3">
+                            <div>
+                                <h4 class="m-0 text-4">Total Distance</h4>
+                                <h4 class="mt-1 mb-0 font-weight-bold">{{fuelCount.fuel_Odometer}} Odometer</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <div class="bg-white p-3">
+                            <div>
+                                <h4 class="m-0 text-4">Total Fuel Consume</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="tileCur mt-0 mb-0">{{fuelCount.l_quantity}} Liters</p>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="tileCur mt-0 mb-0">{{fuelCount.g_quantity}} Gallons</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <div class="bg-white p-3">
+                            <div>
+                                <h4 class="m-0 text-4">Total Fuel Cost</h4>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <p class="tileCur mt-0 mb-0">{{fuelCount.cad_amount}} CAD</p>
+                                </div>
+                                <div class="col-lg-12">
+                                    <p class="tileCur mt-0 mb-0">{{fuelCount.usd_amount}} USD</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body bor-radius0px">
+                                <section class="reports_div">
+                                    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                                        [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                                        <table class="table reports_small_div">
+                                            <thead>
+                                                <tr class="back-color-gray">
+                                                    <th style="">Date</th>
+                                                    <th>Unit Name</th>
+                                                    <th>Fuel Card#</th>
+                                                    <th>City</th>
+                                                    <th>Fuel Quantity</th>
+                                                    <th>Use Type</th>
+                                                    <th>Odometer</th>
+                                                    <th>Fuel Type</th>
+                                                    <th>Total Discount</th>
+                                                    <th>Liters or Gallons</th>
+                                                    <th>Total Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                             <tr *ngIf="fuelList.length == 0" class="text-center">
+                                               <td colspan="13">{{ dataMessage }}</td>
+                                                </tr>
+                                                <ng-container *ngFor="let fuelEntry of fuelList">
+                                                    <tr style="cursor: pointer;">
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.date">{{fuelEntry.data.date}}</span>
+                                                        </td>
+                                                        <td> <span *ngIf="fuelEntry.unitID">
+                                                                <span
+                                                                    *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
+
+                                                                <span
+                                                                    *ngIf="fuelEntry.data.useType=='reefer'">{{assetList[fuelEntry.unitID]}}</span>
+                                                                {{fuelEntry.unitIdentification}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.cardNo">{{fuelEntry.data.cardNo}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.city">{{fuelEntry.data.city}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.fuelID">{{fuelEntry.data.type}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt}}&nbsp;{{fuelEntry.data.currency}}</span>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                        <div class="row mt-3 dtPaginate">
+                                            <div class="col-lg-12 mt-3 text-center"
+                                                *ngIf="lastItemSK !== 'end' && fuelList.length !== 0">
+                                                <button type="button" (click)="onScroll()"
+                                                    class="btn btn-success btn-sm text-light">Load More..</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-         </div>
-      </section>
-   </div>
+        </section>
+    </div>
 </section>

@@ -13,59 +13,85 @@ export class ServicelogsComponent implements OnInit {
   allData = [];
   vendorsObject: any = {};
   tasks = [];
-  vehicleID = null;
-  assetID = null;
   taskID = null;
-  vehiclesObject: any = {};
-  assetsObject: any = {};
-  // startDate: '';
-  // endDate: '';
+  vehiclesData = []
+  assetsData: any = {};
+  startDate: '';
+  endDate: '';
   start = null;
   end = null;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   dataMessage: string = Constants.FETCHING_DATA;
+  lastItemSK = '';
   asset: any;
-  // taskname = ''
+  loaded = false;
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+  ]
 
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchServicelogs();
+    this.fetchSlogsList();
     this.fetchAllVendorsIDs();
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
     this.fetchTasks();
-
-
   }
-  fetchServicelogs() {
-    this.apiService.getData(`serviceLogs/fetch/serviceLogReport?vehicleID=${this.vehicleID}&asset=${this.assetID}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}`)
-      .subscribe((result: any) => {
-        this.allData = result.Items;
-        console.log('this.allData', this.allData)
-        this.dataMessage = Constants.FETCHING_DATA
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND
-        }
-        result['Items'].map((v: any) => {
-          v.entityStatus = 'Active';
-          if (v.currentStatus === 'outOfService') {
-            v.entityStatus = 'Out of service';
-          } else if (v.currentStatus === 'active') {
-            v.entityStatus = 'Active';
-          } else if (v.currentStatus === 'inActive') {
-            v.entityStatus = 'In-active';
-          } else if (v.currentStatus === 'sold') {
-            v.entityStatus = 'Sold';
+  onScroll() {
+    if (this.loaded) {
+      this.fetchSlogsList();
+    }
+    this.loaded = false;
+  }
+  fetchSlogsList() {
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
+        .subscribe((result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA
+          if (result.Items.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND
+          }
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+          }
+          else {
+            this.lastItemSK = 'end';
+          }
+          if (result.Items.length > 0) {
+            this.loaded = true;
+            result['Items'].map((v: any) => {
+              if (v.isDeleted === 0) {
+                v.entityStatus = 'Active';
+                if (v.currentStatus === 'outOfService') {
+                  v.entityStatus = 'Out of service';
+                } else if (v.currentStatus === 'active') {
+                  v.entityStatus = 'Active';
+                } else if (v.currentStatus === 'inactive') {
+                  v.entityStatus = 'In-active';
+                } else if (v.currentStatus === 'inActive') {
+                  v.entityStatus = 'In-active';
+                } else if (v.currentStatus === 'sold') {
+                  v.entityStatus = 'Sold';
+                }
+                this.allData.push(v);
+              }
+            })
           }
         })
-
-      })
+    }
   }
-
-
   fetchAllVendorsIDs() {
     this.apiService.getData('contacts/get/list/vendor')
       .subscribe((result: any) => {
@@ -76,44 +102,66 @@ export class ServicelogsComponent implements OnInit {
   fetchTasks() {
     this.apiService.getData('tasks').subscribe((result: any) => {
       this.tasks = result.Items;
-      // this.tasks["tasks"] += this.taskname;
     });
   }
 
   fetchAllVehiclesIDs() {
-    this.apiService.getData('vehicles/get/list')
+    this.apiService.getData('vehicles/list/minor')
       .subscribe((result: any) => {
-        this.vehiclesObject = result;
-
+        result['Items'].map((v: any) => {
+          if (v.isDeleted === 0) {
+            this.vehiclesData.push(v);
+          }
+        })
       });
   }
+
   fetchAllAssetsIDs() {
-    this.apiService.getData('assets/get/list')
+    this.apiService.getData('assets/get/minor/details')
       .subscribe((result: any) => {
-        this.assetsObject = result;
-        console.log('this assetsObject', this.assetsObject)
-      });
+        this.assetsData = result.Items;
+      })
+
+  }
+
+  categoryChange() {
+    this.searchValue = null;
+
   }
   searchFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-      this.dataMessage = Constants.FETCHING_DATA
-      this.allData = []
-      this.fetchServicelogs()
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+      if (this.start != null && this.end == null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start == null && this.end != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start > this.end) {
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else {
+        this.dataMessage = Constants.FETCHING_DATA
+        this.lastItemSK = '';
+        this.allData = []
+        this.fetchSlogsList()
+      }
     }
     else {
       return false;
     }
   }
   resetFilter() {
-    if (this.vehicleID != null || this.assetID != null || this.taskID != null || this.start !== null || this.end !== null) {
-      this.vehicleID = null;
-      this.assetID = null;
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+      this.searchValue = null;
+      this.category = null;
       this.taskID = null;
       this.start = null;
       this.end = null;
       this.dataMessage = Constants.FETCHING_DATA
+      this.lastItemSK = '';
       this.allData = []
-      this.fetchServicelogs()
+      this.fetchSlogsList()
     }
     else {
       return false;
@@ -125,13 +173,21 @@ export class ServicelogsComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.allData.forEach(element => {
+        let taskName = '';
+        for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
+          const element2 = element.allServiceTasks.serviceTaskList[i];
+          taskName += element2.taskName;
+          if (i < element.allServiceTasks.serviceTaskList.length - 1) {
+            taskName += ' & ';
+          }
+        }
         let obj = {}
         obj["Unit Type"] = element.unitType
         obj["Vehicle/Asset"] = element.unitName
         obj["Odometer"] = element.odometer
         obj["Vendor"] = this.vendorsObject[element.vendorID]
-        obj["Service"] = element.taskname
-        obj["Service Date"] = element.completionDate
+        obj["Service"] = taskName
+        obj["Service Date"] = moment(element.completionDate).format("YYYY/MM/DD")
         obj["Status"] = element.entityStatus
         obj["Service Cost"] = element.allServiceTasks.subTotal + "." + "00" + " " + element.allServiceTasks.currency
         dataObject.push(obj)

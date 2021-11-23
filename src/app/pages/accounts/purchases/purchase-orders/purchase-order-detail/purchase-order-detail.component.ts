@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
 import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 
@@ -14,6 +15,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
     refNo: "",
     orderNo: "",
     currency: "CAD",
+    poType: "",
     vendorID: null,
     detail: [
       {
@@ -27,6 +29,9 @@ export class PurchaseOrderDetailComponent implements OnInit {
     ],
     charges: {
       remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       accFee: [
         {
           name: "",
@@ -68,25 +73,27 @@ export class PurchaseOrderDetailComponent implements OnInit {
       taxes: 0,
       finalTotal: 0,
     },
-    status: "draft",
+    status: "",
     billStatus: "",
   };
   purchaseID;
   vendorName: "";
+  emailDisabled = false;
 
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toaster: ToastrService
   ) {}
 
   async ngOnInit() {
+    this.purchaseID = this.route.snapshot.params["purchaseID"];
     await this.fetchDetails();
     await this.fetchVendor();
   }
 
   async fetchDetails() {
-    this.purchaseID = this.route.snapshot.params["purchaseID"];
     let result: any = await this.accountService
       .getData(`purchase-orders/details/${this.purchaseID}`)
       .toPromise();
@@ -99,6 +106,19 @@ export class PurchaseOrderDetailComponent implements OnInit {
       .toPromise();
     if (result.Items.length > 0) {
       this.vendorName = result.Items[0].cName;
+    }
+  }
+
+  async sendConfirmationEmail() {
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`purchase-orders/send/confirmation-email/${this.purchaseID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.toaster.success("Email sent successfully");
+    } else {
+      this.toaster.error("Something went wrong.");
     }
   }
 }

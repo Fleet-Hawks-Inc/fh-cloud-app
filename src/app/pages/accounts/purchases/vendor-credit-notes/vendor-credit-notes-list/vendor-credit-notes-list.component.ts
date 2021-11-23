@@ -29,10 +29,9 @@ export class VendorCreditNotesListComponent implements OnInit {
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    // this.getCredits();
     this.fetchVendors();
     this.fetchCredits();
     this.fetchPurchaseOrders();

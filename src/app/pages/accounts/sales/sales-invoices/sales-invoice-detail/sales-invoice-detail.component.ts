@@ -11,8 +11,8 @@ export class SalesInvoiceDetailComponent implements OnInit {
   saleID: any;
 
   txnDate: string;
-  customerID: string;
-  finalTotal: string;
+  customerID: string = '';
+  finalTotal: any;
   currency: string;
   shipDate: string;
   sRef: string;
@@ -24,16 +24,19 @@ export class SalesInvoiceDetailComponent implements OnInit {
   taxes: string;
   accFees: string;
   accDed: string;
-
+  paymentTerm: string;
+  dueDate: string;
   customersObjects: any;
 
+  balance: any;
+  received: any;
   constructor(public accountService: AccountService, public apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
-      this.fetchCustomersByIDs()
       this.fetchSaleOrder();
+      this.fetchCustomersByIDs();
     }
   }
 
@@ -55,7 +58,11 @@ export class SalesInvoiceDetailComponent implements OnInit {
       this.txnDate = result.txnDate;
       this.customerID = result.customerID;
       this.finalTotal = result.total.finalTotal;
+      this.balance = result.balance;
+      this.received = this.finalTotal - this.balance;
       this.currency = result.currency;
+      this.paymentTerm = result.paymentTerm;
+      this.dueDate = result.dueDate;
       this.shipDate = result.shipDate;
       this.sRef = result.sRef;
       this.salePerson = result.salePerson;

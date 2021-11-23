@@ -203,6 +203,8 @@
                           <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
                           <th id="" class="minWidth120">Email</th>
                           <th id="" class="minWidth120">Phone</th>
+                          <th id="" class="minWidth120">Employee ID</th>
+                          <th id="" class="minWidth120">Username</th>
                           <th id="" class="minWidth120">Driver Type</th>
                           <th id="" class="minWidth120">Start Date</th>
                           <th id="" class="minWidth120">CDL#</th>
@@ -240,6 +242,11 @@
                             driver.email }}</td>
                           <td class="cursorpoint" [routerLink]="driver.url">{{
                             driver.phone }}</td>
+                          <td class="cursorpoint" [routerLink]="driver.url">{{
+                            driver.employeeContractorId ?
+                            driver.employeeContractorId : '-' }}</td>
+                          <td class="cursorpoint" [routerLink]="driver.url">{{
+                            driver.userName ? driver.userName : '-' }}</td>
                           <td class="cursorpoint text-capitalize"
                             [routerLink]="driver.url">{{ driver.driverType }}</td>
                           <td class="cursorpoint" [routerLink]="driver.url">

@@ -740,7 +740,6 @@
   }
 }
 
-
 @media (max-width: 896px) {
   .gmainbox2 {
     float: left;
@@ -3760,7 +3759,25 @@ input:checked + .sliderbtn:before {
   max-width: 950px;
 }
 .email--invoice.modal .modal-dialog {
-  max-width: 600px;
+  max-width: 650px;
+}
+.send-email--modal.modal .modal-dialog {
+  max-width: 950px;
+}
+.order-send__email.modal .modal-dialog {
+  max-width: 650px;
+}
+.invoice-wrapper .slick-prev:before,
+.invoice-wrapper .slick-next:before {
+  color: #000;
+}
+.invoice-wrapper .slick-next {
+  right: -20px;
+  top: 30%;
+}
+.invoice-wrapper .slick-prev {
+  left: -20px;
+  top: 30%;
 }
 
 /*
@@ -3895,3 +3912,6 @@ input:checked + .sliderbtn:before {
   opacity: 0.431;
 }
 
+.light-backdrop {
+  background-color: #dfdfdf4a;
+}

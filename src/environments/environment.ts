@@ -23,11 +23,11 @@ export const environment = {
   // SafetyServiceUrl: "https://safety.ap-south-1.fleethawks.com/api/v1/",
 
   isFleetEnabled: true,
-  isDispatchEnabled: true,
+  isDispatchEnabled: false,
   isComplianceEnabled: false,
-  isManageEnabled: true,
-  isSafetyEnabled: true,
-  isAccountsEnabled: true,
+  isManageEnabled: false,
+  isSafetyEnabled: false,
+  isAccountsEnabled: false,
   isReportsEnabled: true,
 
   AssetURL: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com",

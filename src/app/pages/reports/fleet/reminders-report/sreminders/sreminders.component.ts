@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { result } from 'lodash';
+import { map, result } from 'lodash';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { constants } from 'buffer';
@@ -19,12 +19,11 @@ export class SremindersComponent implements OnInit {
   lastItemSK = "";
   type = "null";
   allData = [];
-  pageLength = 10;
   lastEvaluatedKey = "";
-  carrierEndPoint = this.pageLength;
   vehiclesList = [];
   taskfunction = [];
   tasksData = [];
+  serviceList = [];
   loaded = false
   filterStatus = null;
   dataMessage: string = Constants.FETCHING_DATA
@@ -33,7 +32,9 @@ export class SremindersComponent implements OnInit {
     overdue: '',
     dueSoon: '',
   };
-
+  record = [];
+  export = [];
+  data = [];
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -41,7 +42,8 @@ export class SremindersComponent implements OnInit {
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
-
+    this.fetchTaskData();
+    this.fetchVehicleIDs();
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -117,11 +119,41 @@ export class SremindersComponent implements OnInit {
       this.tasksData = result;
     });
   }
+  fetchTaskData() {
+    let test = [];
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      test = result.Items;
+      this.serviceList = test.filter((s: any) => s.taskType === 'service');
+    });
+  }
+  fetchVehicleIDs() {
+    this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
+      result["Items"].map((r: any) => {
+        if (r.isDeleted === 0) {
+          this.record.push(r);
+        }
+      })
+    })
+  }
+  fetchAllExport() {
+    this.apiService.getData("reminders/fetch/export?type=service").subscribe((result: any) => {
+      this.data = result.Items;
+      this.generateCSV();
+    })
+  }
+  csvData() {
+    if (this.entityID !== null || this.searchServiceTask !== null || this.filterStatus !== null) {
+      this.data = this.allData;
+      this.generateCSV();
+    } else {
+      this.fetchAllExport()
+    }
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.data.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.data.forEach(element => {
         let obj = {}
         obj["Vehicle"] = this.vehiclesList[element.entityID]
         obj["Service Task"] = this.tasksData[element.tasks.taskID]
@@ -145,7 +177,7 @@ export class SremindersComponent implements OnInit {
 
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}vehicle-renewal-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY/MM/DD:HH:m")}Service-Reminders-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
@@ -156,6 +188,10 @@ export class SremindersComponent implements OnInit {
     else {
       this.toastr.error("No Records found")
     }
+
   }
+
+
 }
+
 
