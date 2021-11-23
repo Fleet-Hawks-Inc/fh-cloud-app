@@ -22,8 +22,6 @@ export class ActivityComponent implements OnInit {
   assetIDD: any = []
   dataMessage: string = Constants.FETCHING_DATA;
   suggestedAssets = [];
-  // tripPlanning :any = []
-  // dataMessageConfirm: string = Constants.NO_RECORDS_FOUND;
   ordersObject = []
   total = 0;
 
@@ -31,14 +29,7 @@ export class ActivityComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // this.fetchTripData();
-    this.fetchAllAssetIDs();
-    this.fetchAllOrderIDs();
-
   }
-
-
-
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
     if (value != '') {
@@ -58,9 +49,7 @@ export class ActivityComponent implements OnInit {
     this.suggestedAssets = [];
   }
 
-
   fetchTripData() {
-
     this.apiService.getData(`trips/get/tripData?asset=${this.assetID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.allData = result.Items;
       for (let asst of this.allData) {
@@ -77,19 +66,6 @@ export class ActivityComponent implements OnInit {
 
     });
   }
-  fetchAllAssetIDs() {
-    this.apiService.getData("assets/get/list").subscribe((result: any) => {
-      this.assetsObject = result;
-    })
-
-  }
-  fetchAllOrderIDs() {
-    this.apiService.getData("orders/get/list").subscribe((result: any) => {
-      this.ordersObject = result;
-    });
-  }
-
-
   searchFilter() {
     if (this.assetID != '' && this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -148,11 +124,11 @@ export class ActivityComponent implements OnInit {
           }
         }
         let obj = {}
-        obj["Asset"] = this.assetsObject[element.assetIDs];
+        obj["Asset"] = element.assetName;
         obj["Trip#"] = element.tripNo;
-        obj["Order#"] = this.ordersObject[element.orderId];
+        obj["Order#"] = element.orderName
         obj["location"] = location;
-        obj["Total Miles"] = miles;
+        obj["Total Miles"] = element.miles;
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
