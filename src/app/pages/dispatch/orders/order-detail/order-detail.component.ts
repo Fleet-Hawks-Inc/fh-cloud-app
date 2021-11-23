@@ -1046,7 +1046,7 @@ export class OrderDetailComponent implements OnInit {
         }
       });
   }
-  invoiceGenerate;
+
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
     this.showModal = true;
