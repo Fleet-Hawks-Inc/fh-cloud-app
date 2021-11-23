@@ -39,17 +39,18 @@ export class DriverListComponent implements OnInit {
   vehiclesObject: any = {};
   groupssObject: any = {};
 
-  driverID = "";
-  driverName = "";
-  dutyStatus = "";
+  driverID = '';
+  driverName = '';
+  dutyStatus = '';
   driverType = null;
   suggestedDrivers = [];
-  homeworld: Observable<{}>;
+  //homeworld: Observable<{}>;
 
-  totalRecords = 10;
-  pageLength = 10;
-  lastEvaluatedKey = "";
+  //totalRecords = 10;
+  //pageLength = 10;
+  lastEvaluatedKey = '';
   currentStatus: any;
+  loaded = false;
   hideShow = {
     name: true,
     dutyStatus: true,
@@ -77,12 +78,12 @@ export class DriverListComponent implements OnInit {
     licStateName: true,
   };
 
-  driverNext = false;
-  driverPrev = true;
-  driverDraw = 0;
-  driverPrevEvauatedKeys = [""];
-  driverStartPoint = 1;
-  driverEndPoint = this.pageLength;
+ //driverNext = false;
+  //driverPrev = true;
+  //driverDraw = 0;
+  //driverPrevEvauatedKeys = [""];
+  //driverStartPoint = 1;
+  //driverEndPoint = this.pageLength;
 
   constructor(
     private apiService: ApiService,
@@ -96,9 +97,10 @@ export class DriverListComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllDocumentsTypes();
-    this.fetchDriversCount();
+    //this.fetchDriversCount();
     this.fetchAllVehiclesIDs();
     this.fetchAllGrorups();
+    this.initDataTable();
     $(document).ready(() => {
       setTimeout(() => {
         $("#DataTables_Table_0_wrapper .dt-buttons")
@@ -175,24 +177,11 @@ export class DriverListComponent implements OnInit {
     this.suggestedDrivers = [];
   }
 
-  fetchDriversCount() {
-    this.apiService
-      .getData(
-        `drivers/get/count?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}`
-      )
-      .subscribe({
-        complete: () => {},
-        error: () => {},
-        next: (result: any) => {
-          this.totalRecords = result.Count;
-
-          if (this.driverID != "") {
-            this.driverEndPoint = this.totalRecords;
-          }
-          this.initDataTable();
-        },
-      });
-  }
+  
+  
+  //code 9433
+  
+  
   fetchAllGrorups() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupssObject = result;
@@ -256,69 +245,67 @@ export class DriverListComponent implements OnInit {
         )
         .subscribe((result: any) => {
           this.drivers = [];
-          this.driverDraw = 0;
+         // this.driverDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;
           this.lastEvaluatedKey = "";
-          this.fetchDriversCount();
+         // this.fetchDriversCount();
           this.toastr.success("Driver is deleted!");
         });
     }
   }
 
-  initDataTable() {
-    this.spinner.show();
-    this.apiService
-      .getData(
-        `drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`
-      )
-      .subscribe(
-        (result: any) => {
-          if (result.Items.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-          }
-          result.Items.map((v) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//initDataTable
+
+
+
+
+
+
+  
+      async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND
+            }
+              result.Items.map((v) => {
             v.url = `/fleet/drivers/detail/${v.driverID}`;
           });
-          this.suggestedDrivers = [];
-          this.getStartandEndVal();
-          this.drivers = result[`Items`];
-          // this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
-          if (this.driverID !== "") {
-            this.driverStartPoint = 1;
-            this.driverEndPoint = this.totalRecords;
-          }
-          if (result[`LastEvaluatedKey`] !== undefined) {
-            const lastEvalKey = result[`LastEvaluatedKey`].driverSK.replace(
-              /#/g,
-              "--"
-            );
-            this.driverNext = false;
-            // for prev button
-            if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
-              this.driverPrevEvauatedKeys.push(lastEvalKey);
+                        this.suggestedDrivers = [];
+            if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.drivers = this.drivers.concat(result.Items);
+                this.loaded = true;
             }
-            this.lastEvaluatedKey = lastEvalKey;
-          } else {
-            this.driverNext = true;
-            this.lastEvaluatedKey = "";
-            this.driverEndPoint = this.totalRecords;
-          }
-          if (this.totalRecords < this.driverEndPoint) {
-            this.driverEndPoint = this.totalRecords;
-          }
-          // disable prev btn
-          if (this.driverDraw > 0) {
-            this.driverPrev = false;
-          } else {
-            this.driverPrev = true;
-          }
-          this.spinner.hide();
-        },
-        (err) => {
-          this.spinner.hide();
         }
-      );
-  }
+    }
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
+        }
+        this.loaded = false;
+    }
   fetchAddress(drivers: any) {
     for (let d = 0; d < drivers.length; d++) {
       drivers.map(async (e: any) => {
@@ -342,49 +329,52 @@ export class DriverListComponent implements OnInit {
           }
         });
       }
-
       // }
     }
   }
+  
   searchFilter() {
     if (
-      this.driverName !== "" ||
-      this.dutyStatus !== "" ||
+      this.driverName !== '' ||
+      this.dutyStatus !== '' ||
       this.driverType !== null
     ) {
       this.driverName = this.driverName.toLowerCase();
-      if (this.driverID == "") {
+      if (this.driverID == '') {
         this.driverID = this.driverName;
       }
       this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
+      this.lastEvaluatedKey = '';
       this.suggestedDrivers = [];
-      this.fetchDriversCount();
+      this.initDataTable();
+     // this.fetchDriversCount();
     } else {
       return false;
     }
   }
-
   resetFilter() {
     if (
-      this.driverName !== "" ||
-      this.dutyStatus !== "" ||
+      this.driverName !== '' ||
+      this.dutyStatus !== '' ||
       this.driverType !== null
     ) {
-      this.drivers = [];
-      this.driverID = "";
-      this.dutyStatus = "";
-      this.driverName = "";
+     this.driverID = '';
+      this.dutyStatus = '';
+      this.driverName = '';
       this.driverType = null;
+      this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchDriversCount();
-      this.driverDraw = 0;
-      this.resetCountResult();
+
+      //this.lastEvaluatedKey = '';
+      this.initDataTable();
+      //this.fetchDriversCount();
+      //this.driverDraw = 0;
+      //this.resetCountResult();
     } else {
       return false;
     }
   }
-
   hideShowColumn() {
     //for headers
     if (this.hideShow.name == false) {
@@ -522,7 +512,8 @@ export class DriverListComponent implements OnInit {
       $(".col10").css("min-width", "200px");
     }
   }
-
+  
+  /*
   getStartandEndVal() {
     this.driverStartPoint = this.driverDraw * this.pageLength + 1;
     this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
@@ -550,17 +541,18 @@ export class DriverListComponent implements OnInit {
     this.driverEndPoint = this.pageLength;
     this.driverDraw = 0;
   }
-
-  refreshData() {
+  */
+    refreshData() {
     this.drivers = [];
-    this.driverID = "";
-    this.dutyStatus = "";
-    this.driverName = "";
+    this.driverID = '';
+    this.dutyStatus = '';
+    this.driverName = '';
     this.driverType = null;
-    this.lastEvaluatedKey = "";
+    this.lastEvaluatedKey = '';
+    this.initDataTable();
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchDriversCount();
-    this.driverDraw = 0;
-    this.resetCountResult();
+    //this.fetchDriversCount();
+   // this.driverDraw = 0;
+   // this.resetCountResult();
   }
 }
