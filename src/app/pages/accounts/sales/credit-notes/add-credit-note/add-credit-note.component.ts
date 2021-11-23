@@ -320,6 +320,7 @@ export class AddCreditNoteComponent implements OnInit {
   }
 
   uploadDocs(documents) {
+    this.filesError = '';
     let files = [...documents];
     let filesSize = 0;
     if (files.length > 5) {

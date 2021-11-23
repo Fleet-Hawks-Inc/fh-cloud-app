@@ -3764,6 +3764,9 @@ input:checked + .sliderbtn:before {
 .send-email--modal.modal .modal-dialog {
   max-width: 950px;
 }
+.order-send__email.modal .modal-dialog {
+  max-width: 650px;
+}
 .invoice-wrapper .slick-prev:before,
 .invoice-wrapper .slick-next:before {
   color: #000;

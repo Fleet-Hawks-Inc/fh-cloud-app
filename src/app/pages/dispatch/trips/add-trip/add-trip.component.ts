@@ -1084,19 +1084,21 @@ export class AddTripComponent implements OnInit {
   }
 
   fetchDrivers() {
-    this.apiService.getData("drivers").subscribe((result: any) => {
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          element.fullName = element.firstName;
-          this.drivers.push(element);
-        }
-      });
-      this.codrivers = this.drivers;
+    this.apiService
+      .getData("drivers/fetch/forTrips")
+      .subscribe((result: any) => {
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            element.fullName = element.firstName;
+            this.drivers.push(element);
+          }
+        });
+        this.codrivers = this.drivers;
 
-      this.driversObjects = result.Items.reduce((a: any, b: any) => {
-        return (a[b["driverID"]] = b["firstName"]), a;
-      }, {});
-    });
+        this.driversObjects = result.Items.reduce((a: any, b: any) => {
+          return (a[b["driverID"]] = b["firstName"]), a;
+        }, {});
+      });
   }
 
   fetchCoDriver(driverID) {
@@ -2667,9 +2669,9 @@ export class AddTripComponent implements OnInit {
     for (let i = 0; i < result.length; i++) {
       const element = result[i];
       const v = result[i];
-      if (v.invoiceGenerate) {
-        this.submitDisabled = true;
-      }
+      // if (v.invoiceGenerate) {
+      //   this.submitDisabled = true;
+      // }
       calcultedBy = element.milesInfo.calculateBy;
       // totalMilesOrder += parseFloat(element.milesInfo.totalMiles);
       this.orderNo += element.orderNumber;
