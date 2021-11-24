@@ -1,0 +1,121 @@
+<section class="body">
+    <div class="inner-wrapper">
+        <section role="main" class="content-body pt-0 pr-0 pl-1">
+            <header class="page-header pr19 pl11">
+                <div class="row" style="padding-top:10px;">
+                    <div class="col-md-5 col-lg-5 pr-0">
+                        <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                            <div class="col-md-5 col-lg-5 pr-2">
+                                <!-- <ng-select [(ngModel)]="driverIDs" name="driverIDs" style="width: 90% !important;"
+                                    placeholder="Name">
+                                    <ng-option *ngFor="let data of driver | keyvalue" value="{{ data.key }}"> {{
+                                        data.value }}
+                                    </ng-option>
+                                </ng-select> -->
+                                <div class="input-group input-group-sm mb-3">
+                                    <input type="text" autocomplete="off" name="driverName" [(ngModel)]="driverName"
+                                        placeholder="Search driver by name" class="form-control"
+                                        (input)="getSuggestions($event.target.value)">
+                                </div>
+                                <div *ngIf="suggestedDrivers?.length> 0" class="result-suggestions">
+                                    <ul>
+                                        <li *ngFor="let suggestedDriver of suggestedDrivers" class="cursorpoint"
+                                            (click)="setDriver(suggestedDriver.driverID,
+                                                suggestedDriver.firstName, suggestedDriver.lastName,
+                                                suggestedDriver.middleName)" class="text-capitalize">{{
+                                            suggestedDriver.firstName }} {{
+                                            suggestedDriver.middleName }} {{ suggestedDriver.lastName }}</li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 pr-1">
+                                <div class="input-daterange input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </span>
+
+                                    <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                                        (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                                    <span class="input-group-text border-left-0
+                                        border-right-0 rounded-0">
+                                        to
+                                    </span>
+                                    <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                                        (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                                        autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-lg-2">
+                        <button type="button" (click)="searchFilter()"
+                            class="btn btn-sm btn-success mr-3">Search</button>
+                        <button class="btn btn-sm btn-success" type="button" (click)="resetFilter()">Reset</button>
+                    </div>
+                    <div class="col-md-5 col-lg-5 pr-1 text-right">
+                        <div class="btn-group flex-wrap mr-2" *ngIf="!environment">
+                            <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                                aria-expanded="false"><i class="fas fa-upload"></i> Export<span
+                                    class="caret"></span></button>
+                            <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                                <a class="dropdown-item text-1" (click)="generateCSV()">CSV</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="row text-dark">
+                <div class="col pr-0">
+                    <div class="card">
+                        <div class="card-body">
+                            <section class="reports_div">
+                                <table class="table reports_small_div">
+                                    <thead>
+                                        <tr class="back-color-gray">
+                                            <th>Name</th>
+                                            <th>Trip Number</th>
+                                            <th>Order Number</th>
+                                            <th>Location</th>
+                                            <th>Total Miles</th>
+                                        </tr>
+                                    </thead>
+                                    <tr *ngIf="data.length == 0" class="text-center">
+                                        <td colspan="6">{{dataMessage}}</td>
+                                    </tr>
+                                    <tr *ngFor="let item of data">
+                                        <td>{{item.driverName}}</td>
+                                        <td>{{item.tripNo}}</td>
+                                        <td>{{item.orderNumber}}</td>
+                                        <td><span title="Location" *ngFor="let item of item.tripPlanning"><span
+                                                    class="font-weight-bold line-height-lg text-capitalize">{{item.type}}:</span>{{item.location}}<span
+                                                    *ngIf="!$last" class="list-format">
+                                                    <br>
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td><span>
+                                                {{item.miles}}
+                                            </span>
+                                        </td>
+                                    </tr>
+
+
+                                </table>
+                            </section>
+                            <!-- <div class="col-lg-12 mt-3 text-center"> <button type="button"
+                                    class="btn btn-success btn-sm text-light" (click)="fetchTrip()">Load
+                                    More..</button>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</section>
