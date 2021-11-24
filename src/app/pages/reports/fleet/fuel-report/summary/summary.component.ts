@@ -17,12 +17,10 @@ import * as _ from 'lodash';
 })
 export class SummaryComponent implements OnInit {
     dataMessage: string = Constants.FETCHING_DATA;
-    [x: string]: any;
     vehiclesList = [];
     vehicleList: any = {};
     vehicles = [];
     fuelList = [];
-    date = new Date();
     unitID = null;
     assetUnitID = null;
     allAssets: any = [];
@@ -30,20 +28,28 @@ export class SummaryComponent implements OnInit {
     vehicleIdentification = '';
     allVehicles = [];
     assetList: any = {};
-    end: any = '';
     lastItemSK = '';
-    start: any = '';
     loaded = false;
-    futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
     currency = 0;
-    cad_amount = 0;
-    usd_amount = 0;
-    l_quantity = 0;
-    g_quantity = 0;
-    fuel_Odometer = '';
+    fuelCount = {
+        cad_amount: 0,
+        usd_amount: 0,
+        l_quantity: 0,
+        g_quantity: 0,
+        fuel_Odometer: '',
+    }
     vehicleSet = []
-    assetsSet: any = {};
+    assetsSet = []
     exportList: any = [];
+
+
+    startDate: '';
+    endDate: '';
+    start = null;
+    end = null;
+    dateMinLimit = { year: 1950, month: 1, day: 1 };
+    date = new Date();
+    futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
     constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
@@ -69,20 +75,20 @@ export class SummaryComponent implements OnInit {
     }
 
     fetchAllAssets() {
-    this.apiService.getData('assets/get/minor/details')
-      .subscribe((result: any) => {
-        this.assetsSet = result.Items;
-      })
-  }
+        this.apiService.getData('assets/get/minor/details')
+            .subscribe((result: any) => {
+                this.assetsSet = result.Items;
+            })
+    }
 
     fetchAllVehicles() {
         this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
-        result['Items'].map((v: any) => {
-          if (v.isDeleted === 0) {
-            this.vehicleSet.push(v);
-          }
-        })
-      });
+            result['Items'].map((v: any) => {
+                if (v.isDeleted === 0) {
+                    this.vehicleSet.push(v);
+                }
+            })
+        });
     }
 
     fetchFuelCount() {
@@ -97,7 +103,7 @@ export class SummaryComponent implements OnInit {
             this.fuelList = []
         }
         if (this.lastItemSK !== 'end') {
-            const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&lastKey=${this.lastItemSK}`).toPromise();
+            const result = await this.apiService.getData(`fuelEntries/fetch/fuel/report?unitID=${this.unitID}&asset=${this.assetUnitID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).toPromise();
             if (result.Items.length == 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
@@ -121,9 +127,39 @@ export class SummaryComponent implements OnInit {
         this.loaded = false;
     }
     searchFilter() {
-        if (this.unitID !== null || this.assetUnitID !== null) {
-            this.lastItemSK = '';
+        if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
+
+            if (this.start != null && this.end == null) {
+                this.toastr.error('Please select both start and end dates.');
+                return false;
+            }
+            else if (this.start == null && this.end != null) {
+                this.toastr.error('Please select both start and end dates.');
+                return false;
+            }
+            else if (this.start > this.end) {
+                this.toastr.error('Start Date should be less then end date.');
+                return false;
+            }
+            else {
+                this.dataMessage = Constants.FETCHING_DATA;
+                this.fuelList = [];
+                this.lastItemSK = '';
+                this.fetchFuelReport();
+            }
+        } else {
+            return false;
+        }
+    }
+
+    resetFilter() {
+        if (this.unitID !== null || this.assetUnitID !== null || this.start !== null || this.end !== null) {
+            this.unitID = null;
+            this.assetUnitID = null;
+            this.start = null;
+            this.end = null;
             this.fuelList = [];
+            this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
             this.fetchFuelReport();
         } else {
@@ -131,19 +167,6 @@ export class SummaryComponent implements OnInit {
         }
     }
 
-    resetFilter() {
-        if (this.unitID !== null || this.assetUnitID !== null) {
-            this.unitID = null;
-            this.assetUnitID = null;
-            this.fuelList = [];
-            this.lastItemSK = '';
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.fetchFuelReport();
-        } else {
-            return false;
-        }
-    }
-    
     generateFuelCSV() {
         if (this.exportList.length > 0) {
             let dataObject = []
@@ -186,20 +209,20 @@ export class SummaryComponent implements OnInit {
             this.toastr.error("No Records found")
         }
     }
-    
-    getSetExport(){
+
+    getSetExport() {
         this.apiService.getData("fuelEntries/get/export?type=unitID").subscribe((result: any) => {
-        this.exportList = result.Items;
-        this.generateFuelCSV();
-    })
+            this.exportList = result.Items;
+            this.generateFuelCSV();
+        })
     }
-    
-     csvExport() {
-    if (this.unitID !== null || this.assetUnitID !== null ) {
-      this.exportList = this.fuelList
-      this.generateFuelCSV();
-    } else {
-      this.getSetExport();
+
+    csvExport() {
+        if (this.unitID !== null || this.assetUnitID !== null) {
+            this.exportList = this.fuelList
+            this.generateFuelCSV();
+        } else {
+            this.getSetExport();
+        }
     }
-  }
 }
