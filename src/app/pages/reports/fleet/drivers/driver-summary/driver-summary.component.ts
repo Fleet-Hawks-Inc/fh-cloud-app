@@ -7,8 +7,10 @@ import { result } from 'lodash';
 import { timeStamp } from 'console';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { HereMapService } from 'src/app/services/here-map.service';
+
 import * as moment from 'moment'
-import * as _ from "lodash";
+import * as _ from 'lodash';
 @Component({
     selector: 'app-driver-summary',
     templateUrl: './driver-summary.component.html',
@@ -18,13 +20,14 @@ export class DriverSummaryComponent implements OnInit {
     dataMessage: string = Constants.FETCHING_DATA;
     drivers: any = [];
     driverID = '';
-    firstName = '';
+   firstName = '';
+   lastName = '';
+   middleName = '';
     driversCount = {
         total: '',
         active: '',
         inactive: '',
     };
-    lastName = '';
     driverStatus = null;
     driverName = '';
     lastItemSK = '';
@@ -66,49 +69,60 @@ export class DriverSummaryComponent implements OnInit {
         this.loaded = false;
     }
     fetchDriversCount() {
-        this.apiService.getData('drivers/fetch/driverCount').subscribe((result: any) => {
+        this.apiService.getData(`drivers/fetch/driverCount`).subscribe((result: any) => {
             this.driversCount = result;
         })
     }
-    searchDriver() {
-        if (this.driverName !== '' || this.driverStatus !== null) {
+  getSuggestions = _.debounce(function (value) {
+    this.driverID = "";
+    value = value.toLowerCase();
+    if (value != "") {
+      this.apiService
+        .getData(`drivers/get/suggestions/${value}`)
+        .subscribe((result) => {
+          result.map((v) => {
+            if (v.lastName == undefined) {
+              v.lastName = "";
+            }
+            return v;
+          });
+          this.suggestedDrivers = result;
+        });
+    } else {
+      this.suggestedDrivers = [];
+    }
+  }, 800);
+
+  setDriver(driverID, firstName = "", lastName = "", middleName = "") {
+    if (middleName !== "") {
+      this.driverName = `${firstName} ${middleName} ${lastName}`;
+      // this.driverID = driverID;
+      this.driverID = `${firstName} ${middleName} ${lastName}`;
+    } else {
+      this.driverName = `${firstName} ${lastName}`;
+      this.driverID = `${firstName} ${lastName}`;
+    }
+
+    this.suggestedDrivers = [];
+  }
+      searchDriver() {
+        if (this.driverName !== '' || this.driverStatus !== null) 
+        {
             this.driverName = this.driverName.toLowerCase();
-            //this.disableSearch = true;
+               if (this.driverID == '') 
+               {
+               this.driverID = this.driverName;
+                }
             this.drivers = [];
+                        this.suggestedDrivers = [];
             this.lastItemSK = '';
             this.dataMessage = Constants.FETCHING_DATA;
-            this.suggestedDrivers = [];
             this.fetchPagination();
-            console.log(result);
         }
         else {
             return false;
         }
     }
-    
-   
-    getSuggestions = _.debounce(function (value) {
-        this.driverID = "";
-        value = value.toLowerCase();
-        if (value != '') {
-            this.apiService
-                .getData(`drivers/get/suggestions/${value}`)
-                .subscribe((result) => {
-                    this.suggestedDrivers = result;
-                });
-        } else {
-            this.suggestedDrivers = []
-        }
-    }, 800);
-    
-
-    setDriver(driverID, driverName) {
-        this.driverName = driverName;
-        this.driverID = driverName;
-        this.suggestedDrivers = [];
-    }
-    
-
     resetDriver() {
         if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
             this.driverName = '';

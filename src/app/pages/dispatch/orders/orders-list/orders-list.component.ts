@@ -8,6 +8,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import * as html2pdf from "html2pdf.js";
 import * as moment from "moment";
 import { ListService } from "src/app/services/list.service";
+import * as _ from "lodash";
 
 declare var $: any;
 @Component({
@@ -43,6 +44,8 @@ export class OrdersListComponent implements OnInit {
     start: "",
     end: "",
   };
+  customerValue = '';
+
   totalRecords = 10;
   pageLength = 10;
   serviceUrl = "";
@@ -139,6 +142,8 @@ export class OrdersListComponent implements OnInit {
 
   confirmEmails = [];
   carriersObject = [];
+  suggestions = [];
+
   brokerage = {
     orderNo: "",
     orderID: "",
@@ -202,6 +207,11 @@ export class OrdersListComponent implements OnInit {
   companyLogoSrc = "";
   showModal = false;
 
+  isLoad: boolean = false;
+  isLoadText = "Load More...";
+
+  customerFlag = false;
+
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -211,59 +221,9 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fetchAllTypeOrderCount();
-    this.fetchCustomersByIDs();
+    this.initDataTable();
   }
 
-  fetchAllTypeOrderCount = () => {
-    this.allordersCount = 0;
-
-    this.apiService.getData("orders/get/allTypes/count").subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.allordersCount = result.allCount;
-        this.totalRecords = result.allCount;
-
-        this.initDataTable();
-      },
-    });
-  };
-
-  fetchOrdersCount() {
-    this.isSearch = true;
-    this.apiService
-      .getData(
-        "orders/get/filter/count?searchValue=" +
-        this.orderFiltr.searchValue +
-        "&startDate=" +
-        this.orderFiltr.start +
-        "&endDate=" +
-        this.orderFiltr.end +
-        "&category=" +
-        this.orderFiltr.category
-      )
-      .subscribe({
-        complete: () => { },
-        error: () => {
-          this.isSearch = false;
-        },
-        next: (result: any) => {
-          this.totalRecords = result.Count;
-
-          this.initDataTable();
-        },
-      });
-  }
-
-  /*
-   * Get all customers's IDs of names from api
-   */
-  fetchCustomersByIDs() {
-    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
 
   fetchTabData(tabType) {
     this.activeTab = tabType;
@@ -272,7 +232,17 @@ export class OrdersListComponent implements OnInit {
   allignOrders(orders) {
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
+
+      this.orders.push(element);
+      element.canRecall = false;
+      if (element.orderStatus === "delivered") {
+        element.canRecall = true;
+      }
+      if (element.recptStat) {
+        element.canRecall = false;
+      }
       element.newStatus = element.orderStatus;
+
       if (element.recall) {
         element.newStatus = `${element.orderStatus} (R)`;
       }
@@ -293,90 +263,90 @@ export class OrdersListComponent implements OnInit {
         this.tonuOrders.push(element);
       }
     }
-
-    this.orders.push(orders);
   }
 
   initDataTable() {
     this.spinner.show();
     // this.orders = [];
-    this.apiService
-      .getData(
-        "orders/fetch/records/all?searchValue=" +
-        this.orderFiltr.searchValue +
-        "&startDate=" +
-        this.orderFiltr.start +
-        "&endDate=" +
-        this.orderFiltr.end +
-        "&category=" +
-        this.orderFiltr.category +
-        "&lastKey=" +
-        this.lastEvaluatedKey
-      )
-      .subscribe(
-        (result: any) => {
-          if (result.Items.length == 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-            this.records = false;
-          } else {
-            this.records = true;
-          }
-          result.Items.map((v) => {
-            v.url = `/dispatch/orders/detail/${v.orderID}`;
-          });
-          this.fetchedRecordsCount += result.Count;
-          this.getStartandEndVal("all");
-          // this.orders.push(result['Items']);
-          this.allignOrders(result[`Items`]);
-          if (
-            this.orderFiltr.searchValue !== "" ||
-            this.orderFiltr.start !== ""
-          ) {
-            this.ordersStartPoint = 1;
-            this.ordersEndPoint = this.totalRecords;
-          }
-
-          if (result["LastEvaluatedKey"] !== undefined) {
-            let lastEvalKey = result[`LastEvaluatedKey`].orderSK.replace(
-              /#/g,
-              "--"
-            );
-            this.ordersNext = false;
-            // for prev button
-            if (!this.ordersPrevEvauatedKeys.includes(lastEvalKey)) {
-              this.ordersPrevEvauatedKeys.push(lastEvalKey);
+    if (this.lastEvaluatedKey !== "end") {
+      this.apiService
+        .getData(
+          "orders/fetch/records/all?searchValue=" +
+          this.orderFiltr.searchValue +
+          "&startDate=" +
+          this.orderFiltr.start +
+          "&endDate=" +
+          this.orderFiltr.end +
+          "&category=" +
+          this.orderFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
+        )
+        .subscribe(
+          (result: any) => {
+            if (result.Items.length == 0) {
+              this.dataMessage = Constants.NO_RECORDS_FOUND;
+              this.records = false;
+            } else {
+              this.records = true;
             }
-            this.lastEvaluatedKey = lastEvalKey;
-          } else {
-            this.ordersNext = true;
-            this.lastEvaluatedKey = "";
-            this.ordersEndPoint = this.totalRecords;
-          }
+            result.Items.map((v) => {
+              v.url = `/dispatch/orders/detail/${v.orderID}`;
+            });
+            this.fetchedRecordsCount += result.Count;
+            this.getStartandEndVal("all");
+            // this.orders.push(result['Items']);
+            this.allignOrders(result[`Items`]);
+            if (
+              this.orderFiltr.searchValue !== "" ||
+              this.orderFiltr.start !== ""
+            ) {
+              this.ordersStartPoint = 1;
+              this.ordersEndPoint = this.totalRecords;
+            }
 
-          // disable prev btn
-          if (this.ordersDraw == 0) {
-            this.ordersPrev = true;
-          }
+            if (result["LastEvaluatedKey"] !== undefined) {
+              let lastEvalKey = result[`LastEvaluatedKey`].orderSK.replace(
+                /#/g,
+                "--"
+              );
+              this.ordersNext = false;
+              // for prev button
+              if (!this.ordersPrevEvauatedKeys.includes(lastEvalKey)) {
+                this.ordersPrevEvauatedKeys.push(lastEvalKey);
+              }
+              this.lastEvaluatedKey = lastEvalKey;
+            } else {
+              this.ordersNext = true;
+              this.lastEvaluatedKey = "end";
+              this.ordersEndPoint = this.totalRecords;
+            }
 
-          // disable next btn when no records at last
-          if (this.fetchedRecordsCount < this.totalRecords) {
-            this.ordersNext = false;
-          } else if (this.fetchedRecordsCount === this.totalRecords) {
-            this.ordersNext = true;
-          }
-          this.lastFetched = {
-            draw: this.ordersDraw,
-            status: this.ordersNext,
-          };
+            // disable prev btn
+            if (this.ordersDraw == 0) {
+              this.ordersPrev = true;
+            }
 
-          this.spinner.hide();
-          this.isSearch = false;
-        },
-        (err) => {
-          this.spinner.hide();
-          this.isSearch = false;
-        }
-      );
+            // disable next btn when no records at last
+            if (this.fetchedRecordsCount < this.totalRecords) {
+              this.ordersNext = false;
+            } else if (this.fetchedRecordsCount === this.totalRecords) {
+              this.ordersNext = true;
+            }
+            this.lastFetched = {
+              draw: this.ordersDraw,
+              status: this.ordersNext,
+            };
+            this.isLoad = false;
+            this.spinner.hide();
+            this.isSearch = false;
+          },
+          (err) => {
+            this.spinner.hide();
+            this.isSearch = false;
+          }
+        );
+    }
   }
 
   filterOrders() {
@@ -385,6 +355,10 @@ export class OrdersListComponent implements OnInit {
       return false;
     }
 
+    if (this.orderFiltr.category === 'customer' && !this.customerFlag) {
+      this.toastr.error("Please select customer from suggestions");
+      return false;
+    }
     if (this.orderFiltr.startDate === null) this.orderFiltr.startDate = "";
     if (this.orderFiltr.endDate === null) this.orderFiltr.endDate = "";
     if (
@@ -435,8 +409,7 @@ export class OrdersListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
         this.lastEvaluatedKey = "";
-        this.fetchOrdersCount();
-        // this.initDataTable();
+        this.initDataTable();
       }
     }
   }
@@ -447,9 +420,9 @@ export class OrdersListComponent implements OnInit {
       this.orderFiltr.category !== null ||
       this.orderFiltr.startDate !== "" ||
       this.orderFiltr.endDate !== "" ||
-      this.orderFiltr.searchValue !== ""
+      this.orderFiltr.searchValue !== "" ||
+      this.customerValue !== ""
     ) {
-      this.spinner.show();
       this.orderFiltr = {
         searchValue: "",
         startDate: "",
@@ -458,6 +431,7 @@ export class OrdersListComponent implements OnInit {
         start: "",
         end: "",
       };
+      this.customerValue = '';
       $("#categorySelect").text("Search by category");
       this.ordersDraw = 0;
       this.records = false;
@@ -470,11 +444,8 @@ export class OrdersListComponent implements OnInit {
       this.partiallyOrders = [];
       this.tonuOrders = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      // this.fetchAllTypeOrderCount();
       this.lastEvaluatedKey = "";
-      this.fetchOrdersCount();
-      // this.initDataTable();
-      this.spinner.hide();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -498,7 +469,7 @@ export class OrdersListComponent implements OnInit {
           this.records = false;
           this.ordersDraw = 0;
           this.lastEvaluatedKey = "";
-          this.fetchAllTypeOrderCount();
+          this.initDataTable();
           this.toastr.success("Order deleted successfully!");
         });
     }
@@ -508,56 +479,6 @@ export class OrdersListComponent implements OnInit {
     if (type == "all") {
       this.ordersStartPoint = this.ordersDraw * this.pageLength + 1;
       this.ordersEndPoint = this.ordersStartPoint + this.pageLength - 1;
-    }
-  }
-
-  // next button func
-  nextResults(type) {
-    if (type == "all") {
-      this.ordersNext = true;
-      this.ordersDraw += 1;
-
-      if (this.orders[this.ordersDraw] == undefined) {
-        this.records = false;
-
-        this.initDataTable();
-        this.ordersPrev = false;
-      } else {
-        if (this.ordersDraw <= 0) {
-          this.ordersPrev = true;
-        } else {
-          this.ordersPrev = false;
-        }
-        if (this.ordersDraw < this.lastFetched.draw) {
-          this.ordersNext = false;
-        } else {
-          this.ordersNext = this.lastFetched.status;
-        }
-        this.getStartandEndVal("all");
-        this.ordersEndPoint =
-          this.ordersStartPoint + this.orders[this.ordersDraw].length - 1;
-      }
-    }
-  }
-
-  // prev button func
-  prevResults(type) {
-    if (type == "all") {
-      this.ordersNext = true;
-      this.ordersPrev = true;
-      this.ordersDraw -= 1;
-
-      if (this.orders[this.ordersDraw] == undefined) {
-        this.initDataTable();
-      } else {
-        if (this.ordersDraw <= 0) {
-          this.ordersPrev = true;
-        } else {
-          this.ordersPrev = false;
-        }
-        this.ordersNext = false;
-        this.getStartandEndVal("all");
-      }
     }
   }
 
@@ -603,29 +524,17 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          // this.orders = [];
-          // this.confirmOrders = [];
-          // this.dispatchOrders = [];
-          // this.deliveredOrders = [];
-          // this.cancelledOrders = [];
-          // this.invoicedOrders = [];
-          // this.partiallyOrders = [];
-          // this.tonuOrders = [];
-          // this.lastEvaluatedKey = "";
-          // this.fetchAllTypeOrderCount();
           this.orders[0].filter((elem) => {
             if (elem.orderID == this.newOrderID) {
               elem.orderStatus = "confirmed";
             }
-          }
-          );
+          });
           this.allignOrders(this.orders[0]);
           this.confirmRef.close();
           this.isConfirm = false;
         },
       });
   }
-
 
   async confirmEmail(order) {
     this.emailData.emails = [];
@@ -683,8 +592,7 @@ export class OrdersListComponent implements OnInit {
     this.partiallyOrders = [];
     this.tonuOrders = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    // this.fetchAllTypeOrderCount();
-    this.fetchOrdersCount();
+    this.initDataTable();
   }
 
   async showBrokerageModal(order, draw, index, actionFrom) {
@@ -823,5 +731,30 @@ export class OrdersListComponent implements OnInit {
           }
         });
     }
+  }
+
+  onScroll() {
+    this.isLoad = true;
+    this.isLoadText = "Loading";
+    this.initDataTable();
+  }
+
+  getSuggestions = _.debounce(function (value) {
+    if (value != '') {
+      value = value.toLowerCase()
+      this.apiService
+        .getData(`contacts/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestions = result.Items;
+        });
+    }
+
+  }, 800);
+
+  setSearchValues(name, searchValue) {
+    this.customerValue = name;
+    this.orderFiltr.searchValue = searchValue;
+    this.suggestions = [];
+    this.customerFlag = true;
   }
 }

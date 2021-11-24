@@ -117,6 +117,8 @@ export class DispatchOverviewComponent implements OnInit {
   pageload = true;
   activitiesCount = 0;
   prevKeyExist = true;
+  tommDeliverCount = 0;
+  todayDeliverCount = 0;
 
   constructor(
     private apiService: ApiService,
@@ -127,14 +129,15 @@ export class DispatchOverviewComponent implements OnInit {
   ngOnInit() {
     this.fetchActivitiesCount();
     this.initDataTable();
-    this.initManifestGraph();
+    // this.initManifestGraph();
     this.initTripsGraph();
 
     this.fetchAllTrips();
     this.fetchAllRoutes();
-    this.fetchAllCustomers();
-    this.fetchAlldrivers();
-    this.fetchAllVehicles();
+    this.fetchTripsCount();
+    // this.fetchAllCustomers();
+    // this.fetchAlldrivers();
+    // this.fetchAllVehicles();
     // this.fetchAceManifest();
     // this.fetchAciManifest();
   }
@@ -301,27 +304,28 @@ export class DispatchOverviewComponent implements OnInit {
             this.tripsMonths.nov += 1;
           } else if (tripMonth == "12") {
             if (element.tripStatus === "confirmed") {
-              var todayDate = new Date();
-              var tomorrowDate = new Date(
-                new Date().getTime() + 24 * 60 * 60 * 1000
-              );
-              let pickDate = element.dateCreated.split("-");
-              var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
-              if (
-                todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)
-              ) {
-                this.todaysPickCount = this.todaysPickCount + 1;
-              } else if (
-                tomorrowDate.setHours(0, 0, 0, 0) ===
-                dateOne.setHours(0, 0, 0, 0)
-              ) {
-                this.tomorrowsPickCount = this.tomorrowsPickCount + 1;
-              }
+              this.tripsMonths.dec += 1;
+              // var todayDate = new Date();
+              // var tomorrowDate = new Date(
+              //   new Date().getTime() + 24 * 60 * 60 * 1000
+              // );
+              // let pickDate = element.dateCreated.split("-");
+              // var dateOne = new Date(pickDate[0], pickDate[1] - 1, pickDate[2]);
+              // if (
+              //   todayDate.setHours(0, 0, 0, 0) === dateOne.setHours(0, 0, 0, 0)
+              // ) {
+              //   this.todaysPickCount = this.todaysPickCount + 1;
+              // } else if (
+              //   tomorrowDate.setHours(0, 0, 0, 0) ===
+              //   dateOne.setHours(0, 0, 0, 0)
+              // ) {
+              //   this.tomorrowsPickCount = this.tomorrowsPickCount + 1;
+              // }
             }
 
-            if (element.tripStatus === "enroute") {
-              this.activeTripsCount += 1;
-            }
+            // if (element.tripStatus === "enroute") {
+            //   this.activeTripsCount += 1;
+            // }
           }
         }
 
@@ -344,11 +348,11 @@ export class DispatchOverviewComponent implements OnInit {
     });
   }
 
-  fetchAllCustomers() {
-    this.apiService
-      .getData("contacts/get/active/customers")
-      .subscribe((result: any) => {});
-  }
+  // fetchAllCustomers() {
+  //   this.apiService
+  //     .getData("contacts/get/active/customers")
+  //     .subscribe((result: any) => {});
+  // }
 
   fetchEventActivities() {
     this.spinner.show();
@@ -372,23 +376,23 @@ export class DispatchOverviewComponent implements OnInit {
     });
   }
 
-  fetchAlldrivers() {
-    this.spinner.show();
-    this.apiService.getData("drivers").subscribe((result: any) => {
-      // result = result.Items[0];
-      this.availableDriversCount = result.Count;
-      this.spinner.hide();
-    });
-  }
+  // fetchAlldrivers() {
+  //   this.spinner.show();
+  //   this.apiService.getData("drivers").subscribe((result: any) => {
+  //     // result = result.Items[0];
+  //     this.availableDriversCount = result.Count;
+  //     this.spinner.hide();
+  //   });
+  // }
 
-  fetchAllVehicles() {
-    this.spinner.show();
-    this.apiService.getData("vehicles").subscribe((result: any) => {
-      // result = result.Items[0];
-      this.availableVehiclesCount = result.Count;
-      this.spinner.hide();
-    });
-  }
+  // fetchAllVehicles() {
+  //   this.spinner.show();
+  //   this.apiService.getData("vehicles").subscribe((result: any) => {
+  //     // result = result.Items[0];
+  //     this.availableVehiclesCount = result.Count;
+  //     this.spinner.hide();
+  //   });
+  // }
 
   fetchRouteDetail(routeID, index, callback) {
     this.apiService.getData("routes/" + routeID).subscribe((result: any) => {
@@ -663,5 +667,17 @@ export class DispatchOverviewComponent implements OnInit {
         this.prevKeyExist = true;
       }
     }
+  }
+
+  async fetchTripsCount() {
+    let result = await this.apiService
+      .getData("trips/get/today/count")
+      .toPromise();
+
+    this.activeTripsCount = result.todayActive;
+    this.todaysPickCount = result.todayPick;
+    this.tomorrowsPickCount = result.tommPick;
+    this.tommDeliverCount = result.tommDeliver;
+    this.todayDeliverCount = result.todayDeliver;
   }
 }

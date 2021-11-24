@@ -65,8 +65,8 @@ export class CustomerCollectionComponent implements OnInit {
       this.customerCollection = []
     }
     if (this.lastSK != 'end') {
-      const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}`).toPromise();
-
+      const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}&customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+      //console.log(result)
       this.dataMessage = Constant.FETCHING_DATA
       if (result.Items.length == 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND
@@ -109,17 +109,8 @@ export class CustomerCollectionComponent implements OnInit {
     else {
       this.loaded = false
       this.customerCollection = []
-      this.dataMessage = Constant.FETCHING_DATA
-      const result: any = await this.apiService.getData(`contacts/get/customer/collection?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-
-      if (result) {
-        if (result.Items.length > 0) {
-          this.customerCollection = result.Items
-        }
-        else {
-          this.dataMessage = Constant.NO_RECORDS_FOUND
-        }
-      }
+      this.lastSK = ''
+      this.fetchCustomerCollection();
     }
   }
 
@@ -129,14 +120,18 @@ export class CustomerCollectionComponent implements OnInit {
     this.customerFiltr.startDate = ''
     this.customerFiltr.endDate = ''
     this.customerCollection = []
+
     this.fetchCustomerCollection();
 
   }
   async generateCSV() {
     let dataObject = []
+    let ordersData = []
     let csvArray = []
     const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    //console.log(result)
     for (const element of result.Items) {
+
       let obj = {}
       obj["Customer"] = element.cName
       obj["Email"] = element.workEmail
@@ -144,23 +139,52 @@ export class CustomerCollectionComponent implements OnInit {
       obj["Total Orders"] = element.totalOrders
       obj["Delivered Orders"] = element.deliveredOrders
       obj["Invoice Generated"] = element.invoiceGenerated
-      obj["Total Amount"] = `CAD ${element.totalAmount.cad}/USD${element.totalAmount.usd}`
-      obj["Amount Received"] = `CAD ${element.amountReceived.cad}/USD${element.amountReceived.usd}`
-      obj["Balance"] = `CAD ${element.balance.cad}/USD${element.balance.usd}`
-      obj["30-45"] = `CAD ${element.balanceAge30.cad}/USD${element.balanceAge30.usd}`
-      obj["45-60"] = `CAD ${element.balanceAge45.cad}/USD${element.balanceAge45.usd}`
-      obj["60-90"] = `CAD ${element.balanceAge60.cad}/USD${element.balanceAge60.usd}`
+      obj["Total Amount CAD"] = `CAD ${element.totalAmount.cad}`
+      obj["Total Amount USD"] = `USD${element.totalAmount.usd}`
+      obj["Amount Received CAD"] = `CAD ${element.amountReceived.cad}`
+      obj["Amount Received USD"] = `USD${element.amountReceived.usd}`
+      obj["Balance CAD"] = `CAD ${element.balance.cad}`
+      obj["Balance USD"] = `USD${element.balance.usd}`
+      obj["30-45 CAD"] = `CAD ${element.balanceAge30.cad}`
+      obj["30-45 USD"] = `USD${element.balanceAge30.usd}`
+      obj["45-60 CAD"] = `CAD ${element.balanceAge45.cad}`
+      obj["45-60 USD"] = `USD${element.balanceAge45.usd}`
+      obj["60-90 CAD"] = `CAD ${element.balanceAge60.cad}`
+      obj["60-90 USD"] = `USD${element.balanceAge60.usd}`
       dataObject.push(obj)
+
+      obj["orders"] = element.orders
+      ordersData.push(obj)
     }
 
     let headers = Object.keys(dataObject[0]).join(',')
     headers += '\n'
     csvArray.push(headers)
-    dataObject.forEach(element => {
+    for (const element of ordersData) {
+      let orders = element.orders
+      let orderHeaders = ''
+      let oArray = []
+      if (orders.length > 0) {
+        orderHeaders = "," + Object.keys(orders[0]).join(',')
+        orderHeaders += '\n'
+        for (const i of orders) {
+          i.milesInfo = i.milesInfo.totalMiles
+          i.charges = i.charges.freightFee.currency
+          let o = "," + Object.values(i).join(',')
+          o += '\n'
+          oArray.push(o)
+        }
+      }
+      else {
+        oArray = ['']
+      }
+      delete element.orders
       let obj = Object.values(element).join(',')
       obj += '\n'
+      obj += orderHeaders
+      obj += oArray.join('')
       csvArray.push(obj)
-    })
+    }
     const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
     const link = document.createElement('a');
     if (link.download !== undefined) {

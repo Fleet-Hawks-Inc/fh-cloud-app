@@ -47,6 +47,7 @@ export class InvoiceListComponent implements OnInit {
     startDate: null,
     endDate: null,
     invNo: null,
+    customer: null,
   };
   lastItemSK = "";
   lastItemOrderSK = "";
@@ -144,8 +145,6 @@ export class InvoiceListComponent implements OnInit {
         }
       });
     }
-    console.log("this.invoicesCAD", this.invoicesCAD);
-    console.log("this.invoicesUSD", this.invoicesUSD);
     if (this.invoicesCAD.length > 0 || this.invoicesUSD.length > 0) {
       for (const element of this.invoicesCAD) {
         if (element.invStatus === "open") {
@@ -170,7 +169,6 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalCAD + Number(element.finalAmount);
           this.voidedTotalCAD = +this.voidedTotalCAD.toFixed(2);
         }
-        console.log("element.finalAmount cad", element.finalAmount);
       }
       for (const element of this.invoicesUSD) {
         if (element.invStatus === "open") {
@@ -195,7 +193,6 @@ export class InvoiceListComponent implements OnInit {
             this.voidedTotalUSD + Number(element.finalAmount);
           this.voidedTotalUSD = +this.voidedTotalUSD.toFixed(2);
         }
-        console.log("element.finalAmount usd ", element.finalAmount);
       }
       this.totalUSD =
         this.openTotalUSD +
@@ -235,15 +232,15 @@ export class InvoiceListComponent implements OnInit {
 
       let result: any = await this.accountService
         .getData(
-          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}`
         )
         .toPromise();
       // .subscribe(async (result: any) => {
       if (result.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
+        // this.dataMessage = Constants.NO_RECORDS_FOUND;
         this.loaded = true;
         this.disableSearch = false;
-        this.categorizeInvoices(result);
+        // this.categorizeInvoices(result);
       }
       if (result.length > 0) {
         for (let index = 0; index < result.length; index++) {
@@ -285,6 +282,8 @@ export class InvoiceListComponent implements OnInit {
     this.partiallyPaidTotalUSD = 0;
     this.voidedTotalCAD = 0;
     this.voidedTotalUSD = 0;
+    this.invoicesUSD = [];
+    this.invoicesCAD = [];
   }
 
   private getOrderInvoices(refresh: boolean, searchParamOrder: any) {
@@ -309,7 +308,7 @@ export class InvoiceListComponent implements OnInit {
       }
       this.accountService
         .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}`
+          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}`
         )
         .subscribe(async (result: any) => {
           if (result.length === 0) {
@@ -558,7 +557,8 @@ export class InvoiceListComponent implements OnInit {
     if (
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
-      this.filter.invNo !== null
+      this.filter.invNo !== null ||
+      this.filter.customer !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
       if (this.filter.startDate !== "" && this.filter.endDate === "") {
@@ -599,6 +599,7 @@ export class InvoiceListComponent implements OnInit {
       startDate: null,
       endDate: null,
       invNo: null,
+      customer: null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -636,6 +637,7 @@ export class InvoiceListComponent implements OnInit {
       startDate: null,
       endDate: null,
       invNo: null,
+      customer: null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";

@@ -594,33 +594,34 @@ export class TripListComponent implements OnInit {
             this.trips[this.tripDraw][this.recIndex].canEdit = true;
           }
           if (this.activeTab == "all") {
-            this.trips[this.tripDraw][this.recIndex].tripStatus;
+            this.trips[this.tripDraw][this.recIndex].newStatus =
+              this.tripStatus;
             if (this.tripStatus === "tonu") {
-              this.trips[this.tripDraw][this.recIndex].tripStatus =
+              this.trips[this.tripDraw][this.recIndex].newStatus =
                 this.trips[this.tripDraw][
                   this.recIndex
-                ].tripStatus.toUpperCase();
+                ].newStatus.toUpperCase();
             }
             // this.trips[this.tripDraw][this.recIndex].showStatus = false;
             this.resetMainTabValues();
           } else {
             if (this.activeTab == "confirmed") {
-              this.confirmedTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.confirmedTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "dispatched") {
-              this.dispatchedTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.dispatchedTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "started") {
-              this.startedTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.startedTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "enroute") {
-              this.enrouteTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.enrouteTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "cancelled") {
-              this.cancelledTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.cancelledTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "delivered") {
               this.deliveredTrips[this.recIndex].canEdit = true;
-              this.deliveredTrips[this.recIndex].tripStatus = this.tripStatus;
+              this.deliveredTrips[this.recIndex].newStatus = this.tripStatus;
             } else if (this.activeTab == "tonu") {
-              this.tonuTrips[this.recIndex].tripStatus = this.tripStatus;
-              this.tonuTrips[this.recIndex].tripStatus =
-                this.tonuTrips[this.recIndex].tripStatus.toUpperCase();
+              this.tonuTrips[this.recIndex].newStatus = this.tripStatus;
+              this.tonuTrips[this.recIndex].newStatus =
+                this.tonuTrips[this.recIndex].newStatus.toUpperCase();
             }
             this.resetMainTabValues();
           }

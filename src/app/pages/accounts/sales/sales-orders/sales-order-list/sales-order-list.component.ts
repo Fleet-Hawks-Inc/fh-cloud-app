@@ -24,6 +24,7 @@ export class SalesOrderListComponent implements OnInit {
   lastItemSK = '';
 
   customersObjects: any = {};
+  loaded = false;
 
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
@@ -83,7 +84,7 @@ export class SalesOrderListComponent implements OnInit {
             } else {
               this.lastItemSK = 'end';
             }
-            // this.loaded = true;
+            this.loaded = true;
 
           }
         });
@@ -133,4 +134,10 @@ export class SalesOrderListComponent implements OnInit {
     this.fetchSales();
   }
 
+  onScroll() {
+    if (this.loaded) {
+      this.fetchSales();
+    }
+    this.loaded = false;
+  }
 }

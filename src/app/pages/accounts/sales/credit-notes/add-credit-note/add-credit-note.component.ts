@@ -16,6 +16,8 @@ import { Auth } from "aws-amplify";
   styleUrls: ["./add-credit-note.component.css"],
 })
 export class AddCreditNoteComponent implements OnInit {
+  assetUrl = this.apiService.AssetUrl;
+
   submitDisabled = false;
   total = 0;
   creditData: any = {
@@ -56,6 +58,14 @@ export class AddCreditNoteComponent implements OnInit {
   customers = [];
   currentUser: any;
 
+  docs = [];
+  oldDocs = [];
+  removedDocs = [];
+  filesError = '';
+  carrierID: any;
+
+  files: any;
+
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,
@@ -78,18 +88,15 @@ export class AddCreditNoteComponent implements OnInit {
     this.fetchAccounts();
     this.fetchQuantityUnits();
     this.getCurrentUser();
-    this.fetchCustomers();
+    this.listService.fetchCustomers();
+    let customerList = new Array<any>();
+    this.getValidCustomers(customerList);
+    this.customers = customerList;
   }
 
   changeUnit(value: string, i: any) {
     this.creditData.crDetails[i].qtyUnit = value;
     this.creditData.crDetails[i].rateUnit = value;
-  }
-
-  fetchCustomers() {
-    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-      this.customers = result;
-    });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -182,8 +189,19 @@ export class AddCreditNoteComponent implements OnInit {
   addNotes() {
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.creditData));
+
     this.accountService
-      .postData(`customer-credits`, this.creditData)
+      .postData(`customer-credits`, formData, true)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -220,16 +238,56 @@ export class AddCreditNoteComponent implements OnInit {
       .getData(`customer-credits/detail/${this.creditID}`)
       .subscribe((res) => {
         this.creditData = res[0];
-
+        this.carrierID = res[0].pk;
         this.total = res[0].totalAmt;
+
+        if (res[0].docs.length > 0) {
+          res[0].docs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.oldDocs.push(obj);
+          });
+        }
       });
   }
 
   updateNotes() {
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
+    this.creditData.removedDocs = this.removedDocs;
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.creditData));
+
     this.accountService
-      .putData(`customer-credits/update/${this.creditID}`, this.creditData)
+      .putData(`customer-credits/update/${this.creditID}`, formData, true)
       .subscribe({
         complete: () => { },
         error: (err: any) => {
@@ -259,5 +317,54 @@ export class AddCreditNoteComponent implements OnInit {
           this.cancel();
         },
       });
+  }
+
+  uploadDocs(documents) {
+    this.filesError = '';
+    let files = [...documents];
+    let filesSize = 0;
+    if (files.length > 5) {
+      this.toaster.error("Files count limit exceeded");
+      this.filesError = "Files should not be more than 5";
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toaster.error("Files size limit exceeded");
+        this.filesError = 'Files size limit exceeded. Files size should be less than 10mb';
+        return;
+      } else {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.docs.push(files[i]);
+        } else {
+          this.filesError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
+  }
+  deleteDocument(name: string, index: number) {
+    this.oldDocs.filter(elem => {
+      if (elem.displayName === name) {
+        let obj = {
+          storedName: elem.name,
+          displayName: elem.displayName,
+        }
+        this.removedDocs.push(obj);;
+      }
+    })
+
+    this.oldDocs.splice(index, 1);
   }
 }

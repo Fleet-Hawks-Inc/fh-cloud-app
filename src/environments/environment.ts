@@ -22,13 +22,13 @@ export const environment = {
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
   // SafetyServiceUrl: "https://safety.ap-south-1.fleethawks.com/api/v1/",
 
-  isFleetEnabled: false,
+  isFleetEnabled: true,
   isDispatchEnabled: false,
   isComplianceEnabled: false,
   isManageEnabled: false,
   isSafetyEnabled: false,
   isAccountsEnabled: false,
-  isReportsEnabled: false,
+  isReportsEnabled: true,
 
   AssetURL: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com",
   safetyURL: "http://localhost:4000/api/v1/",

@@ -113,10 +113,6 @@ export class ActivityComponent implements OnInit {
         let location = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
-          miles += element2.miles
-        }
-        for (let i = 0; i < element.tripPlanning.length; i++) {
-          const element2 = element.tripPlanning[i];
           element2.location = element2.location.replace(/,/g, ' ');
           location += element2.location
           if (i < element.tripPlanning.length - 1) {

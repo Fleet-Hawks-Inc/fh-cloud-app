@@ -23,6 +23,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     txnDate: null,
     refNo: "",
     currency: "CAD",
+    poType: "product",
     vendorID: null,
     detail: [
       {
@@ -38,18 +39,9 @@ export class AddPurchaseOrderComponent implements OnInit {
     ],
     charges: {
       remarks: "",
-      accFee: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
-      accDed: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       taxes: [
         {
           name: "GST",
@@ -74,7 +66,6 @@ export class AddPurchaseOrderComponent implements OnInit {
     total: {
       detailTotal: 0,
       feeTotal: 0,
-      dedTotal: 0,
       subTotal: 0,
       taxes: 0,
       finalTotal: 0,
@@ -174,36 +165,6 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.detailsTotal();
   }
 
-  addAccessorialArr(type) {
-    let obj = {
-      name: "",
-      amount: 0,
-    };
-    if (type === "fee") {
-      const lastAdded =
-        this.orderData.charges.accFee[this.orderData.charges.accFee.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.orderData.charges.accFee.push(obj);
-      }
-    } else if (type === "ded") {
-      const lastAdded =
-        this.orderData.charges.accDed[this.orderData.charges.accDed.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.orderData.charges.accDed.push(obj);
-      }
-    }
-  }
-
-  dedAccessorialArr(type, index) {
-    if (type === "fee") {
-      this.orderData.charges.accFee.splice(index, 1);
-      this.accessorialFeeTotal();
-    } else if (type === "ded") {
-      this.orderData.charges.accDed.splice(index, 1);
-      this.accessorialDedTotal();
-    }
-  }
-
   checkEmailStat(type) {
     if (type === "yes") {
       this.orderData["sendEmail"] = true;
@@ -298,16 +259,15 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.allTax();
   }
 
-  setQuanType(val: string, index: number) {
-    this.orderData.detail[index].qtyTyp = val;
-    this.orderData.detail[index].rateTyp = val;
+  setQuanType(event: any, index: number) {
+    this.orderData.detail[index].qtyTyp = event.target.value;
+    this.orderData.detail[index].rateTyp = event.target.value;
   }
 
   calculateFinalTotal() {
     this.orderData.total.subTotal =
       Number(this.orderData.total.detailTotal) +
-      Number(this.orderData.total.feeTotal) -
-      Number(this.orderData.total.dedTotal);
+      Number(this.orderData.total.feeTotal);
 
     this.allTax();
     this.orderData.total.finalTotal =
@@ -316,18 +276,11 @@ export class AddPurchaseOrderComponent implements OnInit {
   }
 
   accessorialFeeTotal() {
-    this.orderData.total.feeTotal = 0;
-    this.orderData.charges.accFee.forEach((element) => {
-      this.orderData.total.feeTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
-
-  accessorialDedTotal() {
-    this.orderData.total.dedTotal = 0;
-    this.orderData.charges.accDed.forEach((element) => {
-      this.orderData.total.dedTotal += Number(element.amount);
-    });
+    if (this.orderData.charges.cType === "add") {
+      this.orderData.total.feeTotal = Number(this.orderData.charges.cAmount);
+    } else if (this.orderData.charges.cType === "ded") {
+      this.orderData.total.feeTotal = -Number(this.orderData.charges.cAmount);
+    }
     this.calculateFinalTotal();
   }
 
