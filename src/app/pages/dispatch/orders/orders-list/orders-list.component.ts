@@ -207,6 +207,7 @@ export class OrdersListComponent implements OnInit {
   companyLogoSrc = "";
   showModal = false;
 
+  loaded = false;
   isLoad: boolean = false;
   isLoadText = "Load More...";
 
@@ -265,7 +266,11 @@ export class OrdersListComponent implements OnInit {
     }
   }
 
-  initDataTable() {
+  initDataTable(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastEvaluatedKey = '';
+      this.orders = [];
+    }
     this.spinner.show();
     // this.orders = [];
     if (this.lastEvaluatedKey !== "end") {
@@ -297,6 +302,7 @@ export class OrdersListComponent implements OnInit {
             this.getStartandEndVal("all");
             // this.orders.push(result['Items']);
             this.allignOrders(result[`Items`]);
+            this.loaded = true;
             if (
               this.orderFiltr.searchValue !== "" ||
               this.orderFiltr.start !== ""
@@ -524,12 +530,12 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.orders[0].filter((elem) => {
+          this.orders.filter((elem) => {
             if (elem.orderID == this.newOrderID) {
               elem.orderStatus = "confirmed";
             }
           });
-          this.allignOrders(this.orders[0]);
+          this.allignOrders(this.orders);
           this.confirmRef.close();
           this.isConfirm = false;
         },
@@ -734,9 +740,13 @@ export class OrdersListComponent implements OnInit {
   }
 
   onScroll() {
-    this.isLoad = true;
-    this.isLoadText = "Loading";
-    this.initDataTable();
+    if (this.loaded) {
+      this.isLoad = true;
+      this.isLoadText = "Loading";
+      this.initDataTable();
+    }
+    this.loaded = false;
+
   }
 
   getSuggestions = _.debounce(function (value) {

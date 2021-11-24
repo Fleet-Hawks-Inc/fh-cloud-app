@@ -56,7 +56,6 @@ export class AddReminderComponent implements OnInit {
     groupMembers: []
   };
   finalSubscribers = [];
-  serviceTasks = [];
   serviceForm;
   errors = {};
   Error = '';
@@ -64,7 +63,7 @@ export class AddReminderComponent implements OnInit {
   response: any = '';
   hasError = false;
   hasSuccess = false;
-  test = [];
+  taskData = [];
   submitDisabled = false;
   currentDate = moment().format('YYYY-MM-DD');
   subscribers = [];
@@ -77,7 +76,7 @@ export class AddReminderComponent implements OnInit {
 
   async ngOnInit() {
     this.reminderID = this.route.snapshot.params[`reminderID`];
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
 
     if (this.reminderID) {
       this.pageTitle = 'Edit Service Reminder';
@@ -89,12 +88,9 @@ export class AddReminderComponent implements OnInit {
     }
     await this.fetchVehicles();
   }
-
-  fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+  fetchServiceTasks() {
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.taskData = result;
     });
   }
 
@@ -301,12 +297,12 @@ export class AddReminderComponent implements OnInit {
         this.response = res;
         $('#addServiceTasks').modal('toggle');
         this.toastr.success('Service Task Added Successfully');
-        this.fetchServiceTaks();
+        this.fetchServiceTasks();
       },
     });
   }
 
   refreshTaskData() {
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
   }
 }
