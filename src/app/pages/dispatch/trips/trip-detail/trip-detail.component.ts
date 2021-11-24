@@ -6,6 +6,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
+import * as html2pdf from "html2pdf.js";
 
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
@@ -19,6 +20,7 @@ import Constants from "src/app/pages/fleet/constants";
 export class TripDetailComponent implements OnInit {
   @ViewChild("tripInfoModal", { static: true })
   tripInfoModal: TemplateRef<any>;
+  tripInfoRef: any;
 
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
@@ -51,6 +53,7 @@ export class TripDetailComponent implements OnInit {
     bol: "",
     dateCreated: "",
   };
+  orderType: string;
   tripID = "";
   allAssetName = "";
   errors: {};
@@ -93,9 +96,12 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  showTripInfo = false;
   tripStatus = "";
   recallStatus = false;
   ordersData: any = [];
+
+  customerData = [];
 
   ngOnInit() {
     this.fetchAllVehiclesIDs();
@@ -237,6 +243,7 @@ export class TripDetailComponent implements OnInit {
 
         if (result.orderId.length > 0) {
           await this.fetchOrderDetails(result.orderId);
+          await this.fetchCustomerDetails(result.orderId)
         }
         if (result.settlmnt) {
           this.tripStatus = "Settled";
@@ -254,11 +261,14 @@ export class TripDetailComponent implements OnInit {
           this.showEdit = false;
         } else {
           this.showEdit = true;
+
         }
+        this.showTripInfo = true;
         if (result.documents == undefined) {
           result.documents = [];
         }
         this.tripData = result;
+        this.orderType = result.orderType;
         let tripPlanning = result.tripPlanning;
 
         if (result.routeID != "" && result.routeID != undefined) {
@@ -576,6 +586,15 @@ export class TripDetailComponent implements OnInit {
     }, {});
   }
 
+  async fetchCustomerDetails(orderIds) {
+    orderIds = JSON.stringify(orderIds);
+    let result: any = await this.apiService
+      .getData("orders/fetch/customerInfo/orders?orderIds=" + orderIds)
+      .toPromise();
+    this.customerData = result;
+
+  }
+
   /*
    * Selecting files before uploading
    */
@@ -620,7 +639,7 @@ export class TripDetailComponent implements OnInit {
       this.apiService
         .postData("trips/update/bol/" + this.tripID, formData, true)
         .subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -634,8 +653,8 @@ export class TripDetailComponent implements OnInit {
                 complete: () => {
                   this.spinner.hide();
                 },
-                error: () => {},
-                next: () => {},
+                error: () => { },
+                next: () => { },
               });
           },
           next: (res: any) => {
@@ -714,6 +733,32 @@ export class TripDetailComponent implements OnInit {
       keyboard: false,
       windowClass: "trip--info__main",
     };
-    this.modalService.open(this.tripInfoModal, ngbModalOptions);
+    this.tripInfoRef = this.modalService.open(this.tripInfoModal, ngbModalOptions);
+  }
+
+  async generate() {
+    var data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0.15,
+      filename: "trip-information.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+
+    this.tripInfoRef.close();
+  }
+
+  driverEmail() {
+    this.apiService
+      .getData(`trips/send/emailDriver/${this.tripID}`)
+      .subscribe((res: any) => {
+
+      });
   }
 }

@@ -175,7 +175,7 @@ export class TripListComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchAllTripsCount();
@@ -340,17 +340,17 @@ export class TripListComponent implements OnInit {
     this.apiService
       .getData(
         "trips/get/count?searchValue=" +
-          this.tripsFiltr.searchValue +
-          "&startDate=" +
-          this.tripsFiltr.start +
-          "&endDate=" +
-          this.tripsFiltr.end +
-          "&category=" +
-          this.tripsFiltr.category
+        this.tripsFiltr.searchValue +
+        "&startDate=" +
+        this.tripsFiltr.start +
+        "&endDate=" +
+        this.tripsFiltr.end +
+        "&category=" +
+        this.tripsFiltr.category
       )
       .subscribe({
-        complete: () => {},
-        error: () => {},
+        complete: () => { },
+        error: () => { },
         next: (result: any) => {
           this.totalRecords = result.Count;
           this.initDataTable();
@@ -376,8 +376,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => {},
-          error: () => {},
+          complete: () => { },
+          error: () => { },
           next: (result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -645,15 +645,15 @@ export class TripListComponent implements OnInit {
     this.apiService
       .getData(
         "trips/fetch/records/all?searchValue=" +
-          this.tripsFiltr.searchValue +
-          "&startDate=" +
-          this.tripsFiltr.start +
-          "&endDate=" +
-          this.tripsFiltr.end +
-          "&category=" +
-          this.tripsFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+        this.tripsFiltr.searchValue +
+        "&startDate=" +
+        this.tripsFiltr.start +
+        "&endDate=" +
+        this.tripsFiltr.end +
+        "&category=" +
+        this.tripsFiltr.category +
+        "&lastKey=" +
+        this.lastEvaluatedKey
       )
       .subscribe(
         (result: any) => {

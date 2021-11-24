@@ -29,6 +29,7 @@ export class ServicelogsComponent implements OnInit {
   loaded = false;
   searchValue = null;
   category = null;
+  data = []
   categoryFilter = [
     {
       'name': 'Vehicle',
@@ -40,6 +41,7 @@ export class ServicelogsComponent implements OnInit {
     },
   ]
 
+
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -48,6 +50,7 @@ export class ServicelogsComponent implements OnInit {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
     this.fetchTasks();
+    // this.fetchServiceLogsList()
   }
   onScroll() {
     if (this.loaded) {
@@ -100,8 +103,8 @@ export class ServicelogsComponent implements OnInit {
   }
 
   fetchTasks() {
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      this.tasks = result.Items;
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.tasks = result;
     });
   }
 
@@ -167,7 +170,24 @@ export class ServicelogsComponent implements OnInit {
       return false;
     }
   }
+  // fetchServiceLogsList() {
+  //   this.apiService.getData('serviceLogs/fetch/ServiceLogList')
+  //     .subscribe((result: any) => {
+  //       this.data = result.Items;
+  //       console.log('data', this.data)
+  //     })
+  //   this.generateCSV();
+  // }
 
+  // csv() {
+  //   if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+  //     this.allData = this.data;
+  //     this.generateCSV();
+  //   }
+  //   else {
+  //     this.fetchServiceLogsList();
+  //   }
+  // }
   generateCSV() {
     if (this.allData.length > 0) {
       let dataObject = []

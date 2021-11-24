@@ -335,7 +335,7 @@ export class AddOrdersComponent implements OnInit {
   singleDatePickerOptions;
 
   stateShipperIndex: any;
-  stateReceiverIndex: number;
+  stateReceiverIndex: any;
   uploadedDocs = [];
   existingUploadedDocs = [];
   packagingUnitsList: any = [];
@@ -1165,7 +1165,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1502,7 +1502,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1528,7 +1528,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1544,12 +1544,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1904,6 +1904,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
+
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
@@ -1928,7 +1929,8 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.save = false;
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
-      this.stateShipperIndex = i;
+      this.stateReceiverIndex = i;
+
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
@@ -1936,6 +1938,7 @@ export class AddOrdersComponent implements OnInit {
 
   async updateShipperReceiver(obj, i) {
     if (obj === "shipper") {
+      // for shipper
       $("#poErr_" + i).hide();
       let newPicks = this.shippersReceivers[i].shippers;
       if (!newPicks.shipperID) {
@@ -2049,6 +2052,7 @@ export class AddOrdersComponent implements OnInit {
       }, 500);
       this.emptyShipper(i);
     } else {
+      // for receiver
       let newDrops = this.shippersReceivers[i].receivers;
       if (!newDrops.receiverID) {
         this.toastr.error("Please select receiver");
@@ -2081,20 +2085,20 @@ export class AddOrdersComponent implements OnInit {
       }
       let data = this.shippersReceivers[i].receivers;
 
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffDate;
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffTime;
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].receiverID = data.receiverID;
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].dropPoint = data.dropPoint;
       let location: any;
       let allDropPoints =
-        this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+        this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
           .dropPoint;
       for (let index = 0; index < allDropPoints.length; index++) {
         const element = this.shippersReceivers[i].receivers.dropPoint[index];
@@ -2127,7 +2131,7 @@ export class AddOrdersComponent implements OnInit {
       }
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
 
@@ -2147,7 +2151,6 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
-    this.stateShipperIndex = "";
   }
 
   addShipReceiver(obj: string, i: any) {
@@ -2194,6 +2197,9 @@ export class AddOrdersComponent implements OnInit {
           (o) => o.stateTaxID == result.stateTaxID
         );
 
+        if (result.recptStat) {
+          this.recalledState = false;
+        }
         this.orderData.taxesInfo = [
           {
             name: "GST",
@@ -2226,6 +2232,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
         this.isInvoiceGenerated = result.invoiceGenerate;
+        this.orderData["invoiceGenerate"] = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -2254,6 +2261,10 @@ export class AddOrdersComponent implements OnInit {
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
+
+        if (result.invData) {
+          this.orderData["invData"] = result.invData;
+        }
 
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
         let shimentLength = result.shippersReceiversInfo.length;
@@ -2550,7 +2561,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2571,7 +2582,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3213,8 +3224,7 @@ export class AddOrdersComponent implements OnInit {
       .getData(
         `orders/validate/pos?value=${encodeURIComponent(
           JSON.stringify(pos)
-        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${
-          this.getOrderID
+        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${this.getOrderID
         }`
       )
       .toPromise();

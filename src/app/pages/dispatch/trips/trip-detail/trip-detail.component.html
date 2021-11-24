@@ -14,11 +14,10 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <!-- <button (click)="openTripInfo()" class="btn btn-sm btn-success">
+            <button (click)="openTripInfo()" *ngIf="showTripInfo" class="btn btn-sm btn-success mr-2">
               Trip Info.
-            </button> -->
-            <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}"
-              *ngIf="showEdit"
+            </button>
+            <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit"
               class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i>
               Edit Trip</a>
             <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
@@ -42,8 +41,7 @@
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
                          </div> -->
-            <a href="javascript:;" routerLink="/dispatch/trips/trip-list"
-              class="btn btn-default btn-sm"><i
+            <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm"><i
                 class="fas fa-list"></i> All Trips
             </a>
           </div>
@@ -223,8 +221,7 @@
                             </div>
                             <div class="col-lg-7">
                               <input type="file" id="bolUpload" class="p-0
-                                form-control border-0 mb-2"
-                                (change)="selectDocuments($event)" multiple />
+                                form-control border-0 mb-2" (change)="selectDocuments($event)" multiple />
                             </div>
                           </div>
 
@@ -233,8 +230,7 @@
                               uploadedDocSrc">
                               <a class="image-popup-no-margins" href="{{
                                 docs.docPath }}" target="_blank">
-                                <img class="thumbnail" src="{{ docs.imgPath }}"
-                                  />
+                                <img class="thumbnail" src="{{ docs.imgPath }}" />
                               </a>
                             </div>
                           </div>
@@ -323,8 +319,7 @@
                               <td>{{ trip.locationName }}</td>
                               <td>
                                 <span class="badge badge-dark p-1
-                                  text-uppercase" title=""
-                                  data-original-title="Empty Miles"
+                                  text-uppercase" title="" data-original-title="Empty Miles"
                                   *ngIf="trip.mileType != ''">{{ trip.mileType
                                   }}</span>
                               </td>
@@ -360,23 +355,19 @@
                                 {{ (trip.coDriverID) ?
                                 driversObject[trip.coDriverID] : '' }}
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'REJECTED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'REJECTED'" class="badge
                                   badge-danger">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
                                   trip.coDriverStatus == 'STARTED'" class="badge
                                   badge-success">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'DELIVERED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'DELIVERED'" class="badge
                                   badge-primary">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ACCEPTED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'ACCEPTED'" class="badge
                                   badge-success">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ASSIGNED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'ASSIGNED'" class="badge
                                   bg-blue">{{ trip.coDriverStatus }}</span>
                               </td>
                               <td>{{ (trip.carrierID) ?
@@ -465,8 +456,7 @@
                               <td>{{ trip.locationName }}</td>
                               <td>
                                 <span class="badge badge-dark p-1
-                                  text-uppercase" title=""
-                                  data-original-title="Empty Miles"
+                                  text-uppercase" title="" data-original-title="Empty Miles"
                                   *ngIf="trip.mileType != ''">{{ trip.mileType
                                   }}</span>
                               </td>
@@ -510,7 +500,7 @@
                   </div>
 
                   <div class="" [ngClass]="trips.length> 15 ?
-                    'tripinfoscroll' : '' " >
+                    'tripinfoscroll' : '' ">
                     <div class="row
                       d-flex
                       flex-row flex-nowrap
@@ -520,8 +510,7 @@
                       <div class="text-center" *ngFor="let trip of trips">
                         <div class="tripcirclen" data-toggle="tooltip" title="{{
                           trip.locationName }}"></div>
-                        <div class="tripcontentn" data-toggle="tooltip"
-                          title="{{ trip.locationName }}">
+                        <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
                           <p class="font-weight-bold
                             text-dark text-2
                             line-height-xs">
@@ -638,8 +627,7 @@
                           </div>
                           <div class="col-lg-4 text-right mt-2">
                             <a routerLink="/accounts/expense/add" class="btn
-                              btn-success btn-xs" style="color: white"><i
-                                class="fas fa-plus"></i> Add Expense
+                              btn-success btn-xs" style="color: white"><i class="fas fa-plus"></i> Add Expense
                             </a>
                             <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
@@ -859,16 +847,14 @@
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-12">
               <div class="radio">
-                <label><input type="radio" name="split-stop" value="split_stop"
-                    id="stop" onclick="show_stop_dropdown()"
+                <label><input type="radio" name="split-stop" value="split_stop" id="stop" onclick="show_stop_dropdown()"
                     checked="checked" />
                   Stop</label>
               </div>
             </div>
             <div class="form-group col-lg-3 col-md-12">
               <div class="radio">
-                <label><input type="radio" name="split-stop" value="split_yard"
-                    id="yard"
+                <label><input type="radio" name="split-stop" value="split_yard" id="yard"
                     onclick="show_yard_dropdown()" />
                   Location</label>
               </div>
@@ -887,8 +873,7 @@
                 <option value="2">Truck AtoZ | 1818 Weston Row</option>
               </select>
             </div>
-            <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown"
-              style="display: none">
+            <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown" style="display: none">
               <label class="control-label
                 font-weight-semibold
                 labelmt
@@ -903,16 +888,14 @@
                 labelmt
                 text-3 text-dark">Stop Arrival Date
               </label>
-              <input type="date" data-plugin-datepicker="" class="form-control"
-                placeholder="3/4/2020" />
+              <input type="date" data-plugin-datepicker="" class="form-control" placeholder="3/4/2020" />
             </div>
             <div class="form-group col-lg-6 col-md-12">
               <label class="control-label
                 font-weight-semibold
                 labelmt
                 text-3 text-dark">Stop Departure Date</label>
-              <input type="date" data-plugin-datepicker="" class="form-control"
-                placeholder="select date" />
+              <input type="date" data-plugin-datepicker="" class="form-control" placeholder="select date" />
             </div>
           </div>
         </div>
@@ -933,14 +916,12 @@
 <ng-template #tripInfoModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Trip Information</h5>
-    <button type="button" (click)="modal.dismiss()" class="close"
-      data-dismiss="modal" aria-label="Close">
+    <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
       <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
     </button>
   </div>
-  <div class="modal-body px-4">
-    <table width="100%" border="0" align="center" cellpadding="0"
-      cellspacing="0">
+  <div class="modal-body text-dark px-4">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="print_wrap">
       <tbody>
         <tr>
           <td width="50%">
@@ -955,27 +936,29 @@
         </tr>
         <tr>
           <td valign="top">
-            <h2 style="font-size: 20px; margin-bottom: 10px">Trip# 24690</h2>
+            <h2 style="font-size: 20px; margin-bottom: 10px">Trip# {{ tripData.tripNo }}</h2>
             <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Trip Type:</strong> FTL
+              <strong>Trip Type:</strong> {{orderType}}
             </p>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
+            <!-- <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
               <strong>Source:</strong> 300 Assiniboine, Assiniboine Avenue,
               Winnipeg, MB, Canada
             </p>
             <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
               <strong>Destination:</strong> 165 Wellington St W, Barrie, ON L4N
               1L7, Canada
-            </p>
-            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 5px">
+            </p> -->
+            <!-- <p style="font-size: 13px; margin-top: 5px; margin-bottom: 5px">
               <strong>Miles:</strong> 1223.70
-            </p>
+            </p> -->
           </td>
           <td valign="top" align="right">
             <h2 style="font-size: 20px; margin-bottom: 10px">
-              Trip Date# 2021/10/05
+              Trip Date# {{
+              tripData.dateCreated | date: "yyyy/MM/dd"
+              }}
             </h2>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
+            <!-- <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
               <strong>Vehicle:</strong> 5428
             </p>
             <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
@@ -986,66 +969,79 @@
             </p>
             <p style="font-size: 13px; margin-top: 5px; margin-bottom: 5px">
               <strong>Co-Driver:</strong> Rohit
-            </p>
+            </p> -->
           </td>
         </tr>
         <tr>
           <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
         </tr>
-        <tr>
-          <td valign="top">
-            <h2 style="font-size: 16px">Customer: Mark Daniel</h2>
-          </td>
-          <td valign="top">&nbsp;</td>
-        </tr>
-        <tr>
-          <td colspan="2" valign="top">
-            <table width="100%" style="border: 1px solid #adadad;
-              font-size: 13px;
-              margin-bottom: 10px;" cellpadding="0" cellspacing="0"
-              bordercolor="#adadad">
+        <tr *ngFor="let item of customerData;">
+          <td colspan="2">
+            <table class=" w-100">
               <tbody>
                 <tr>
-                  <td colspan="4" style="border-bottom: 1px solid #adadad;
-                    padding-left: 10px">
-                    <p>62 Administration Rd. Concord, Ontario, CA L4K 2R7</p>
+                  <td valign="top">
+                    <h2 class="m-0" style="font-size: 16px"><strong>Customer: </strong> <span
+                        class="text-capitalize">{{item.cName}}</span></h2>
+                  </td>
+                  <td valign="top" align="right" style="line-height: 42px;"><strong>Order(s)#:</strong>
+                    <span *ngFor="let ord of item.orderNo; last as isLast">
+                      {{ord}} <span *ngIf="!isLast">,</span>
+                    </span>
                   </td>
                 </tr>
                 <tr>
-                  <td width="25%" bgcolor="#f3f3f3" style="border-right: 1px
-                    solid #adadad; padding-left: 10px">
-                    <p style="font-weight: 600">Phone</p>
-                  </td>
-                  <td width="25%" style="border-right: 1px solid #adadad;
-                    padding-left: 10px">
-                    <p>1-809-387-1904</p>
-                  </td>
-                  <td width="25%" bgcolor="#f3f3f3" style="padding-left: 10px;
-                    border-right: 1px solid #adadad">
-                    <p style="font-weight: 600">Email</p>
-                  </td>
-                  <td style="padding-left: 10px">
-                    <p>admin@wclntrans.ca</p>
+                  <td colspan="2" valign="top">
+                    <table width="100%" style="border: 1px solid #adadad;
+                      font-size: 13px;
+                      margin-bottom: 10px;" cellpadding="0" cellspacing="0" bordercolor="#adadad">
+                      <tbody>
+                        <tr>
+                          <td colspan="4" style="border-bottom: 1px solid #adadad;
+                            padding: 10px;">
+                            <p class="m-0"><strong>Address: </strong>{{item.address ? item.address : 'NA'}}</p>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="25%" bgcolor="#f3f3f3" style="border-right: 1px
+                            solid #adadad; padding: 10px">
+                            <p class="m-0" style="font-weight: 600">Phone</p>
+                          </td>
+                          <td width="25%" style="border-right: 1px solid #adadad;
+                            padding: 10px">
+                            <p class="m-0">{{item.workPhone ? item.workPhone : 'NA'}}</p>
+                          </td>
+                          <td width="25%" bgcolor="#f3f3f3" style="padding: 10px;
+                            border-right: 1px solid #adadad">
+                            <p class="m-0" style="font-weight: 600">Email</p>
+                          </td>
+                          <td style="padding: 10px">
+                            <p class="m-0">{{item.workEmail ? item.workEmail : 'NA'}}</p>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </td>
                 </tr>
               </tbody>
             </table>
           </td>
         </tr>
+
         <tr>
           <td colspan="2">
-            <table class="table table-sm table-bordered table-striped"
-              id="locationTable">
+            <table class="table table-sm table-bordered
+                          table-striped text-capitalize " id="locationTable">
               <thead>
                 <tr>
                   <th>Type</th>
+                  <th>Order#</th>
+                  <th>Commodity</th>
                   <th>Date</th>
-                  <!-- <th>Time</th> -->
+
                   <th>Pickup Time</th>
                   <th>Drop Off Time</th>
-                  <!-- <th>Actual Pickup Time</th>
-                                                    <th>Actual Drop Off Time</th> -->
-                  <!-- <th>Departure Date/Time</th> -->
+
                   <th>Name</th>
                   <th>Location</th>
                   <th>Loaded/ Empty</th>
@@ -1058,24 +1054,41 @@
                 </tr>
               </thead>
               <tbody>
+                <tr *ngIf="trips.length === 0" class="text-center">
+                  <td colspan="15">
+                    {{ noOrdersMsg }}
+                  </td>
+                </tr>
                 <tr *ngFor="let trip of trips">
                   <td>{{ trip.type }}</td>
+                  <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                    '' }}</td>
+                  <td>
+                    <span *ngIf="trip.commodity">
+                      <span *ngFor="let data of trip.commodity; let
+                                    d=index;">
+                        {{ data }}
+                        <span *ngIf="d<trip.commodity.length-1">,
+                        </span>
+                      </span>
+                    </span>
+                  </td>
                   <td>{{ trip.date | date: "yyyy/MM/dd" }}</td>
-                  <!-- <td>{{ trip.time }}</td> -->
+
                   <td>{{ trip.pickupTime }}</td>
                   <td>{{ trip.dropTime }}</td>
-                  <!-- <td>{{ trip.actualPickupTime }}</td>
-                                                    <td>{{ trip.actualDropTime }}</td> -->
-                  <!-- <td>6/6/2020 10:00 AM</td> -->
+
                   <td>{{ trip.name }}</td>
                   <td>{{ trip.locationName }}</td>
                   <td>
-                    <span class="badge badge-dark p-1 text-uppercase" title=""
-                      data-original-title="Empty Miles"
-                      *ngIf="trip.mileType != ''">{{ trip.mileType }}</span>
+                    <span class="badge badge-dark p-1
+                                  text-uppercase" title="" data-original-title="Empty Miles"
+                      *ngIf="trip.mileType != ''">{{ trip.mileType
+                      }}</span>
                   </td>
                   <td>{{ trip.miles }}</td>
-                  <td>{{ vehiclesObject[trip.vehicleID] }}</td>
+                  <td>{{ trip.vehicleID ?
+                    vehiclesObject[trip.vehicleID] : '' }}</td>
                   <td>
                     <span *ngFor="let asst of trip.assetID">
                       {{ assetsObject[asst] }}
@@ -1083,374 +1096,51 @@
                     </span>
                   </td>
                   <td>
-                    {{ driversObject[trip.driverID] }}
-                    <span *ngIf="trip.driverStatus" class="badge badge-success">{{
-                      trip.driverStatus }}</span>
-                    <span *ngIf="trip.driverStatus && trip.driverStatus ==
-                      'DELIVERED'" class="badge badge-primary">{{
-                      trip.driverStatus }}</span>
-                    <span *ngIf="trip.driverStatus && trip.driverStatus ==
-                      'REJECTED'" class="badge badge-danger">{{
-                      trip.driverStatus
-                      }}</span>
-                    <span *ngIf="trip.driverStatus && trip.driverStatus ==
-                      'ACCEPTED'" class="badge badge-success">{{
-                      trip.driverStatus }}</span>
-                    <span *ngIf="trip.driverStatus && trip.driverStatus ==
-                      'ASSIGNED'" class="badge bg-blue">{{ trip.driverStatus }}</span>
+                    {{ (trip.driverID) ?
+                    driversObject[trip.driverID] : '' }}
+                    <span *ngIf="trip.driverStatus &&
+                                  trip.driverStatus == 'STARTED'" class="badge
+                                  badge-success">{{ trip.driverStatus }}</span>
+                    <span *ngIf="trip.driverStatus &&
+                                  trip.driverStatus == 'DELIVERED'" class="badge
+                                  badge-primary">{{ trip.driverStatus }}</span>
+                    <span *ngIf="trip.driverStatus &&
+                                  trip.driverStatus == 'REJECTED'" class="badge
+                                  badge-danger">{{ trip.driverStatus }}</span>
+                    <span *ngIf="trip.driverStatus &&
+                                  trip.driverStatus == 'ACCEPTED'" class="badge
+                                  badge-success">{{ trip.driverStatus }}</span>
+                    <span *ngIf="trip.driverStatus &&
+                                  trip.driverStatus == 'ASSIGNED'" class="badge
+                                  bg-blue">{{ trip.driverStatus }}</span>
                   </td>
                   <td>
-                    {{ driversObject[trip.coDriverID] }}
-                    <span *ngIf="trip.coDriverStatus && trip.coDriverStatus ==
-                      'STARTED'" class="badge badge-success">{{
-                      trip.driverStatus
-                      }}</span>
-                    <span *ngIf="trip.coDriverStatus && trip.coDriverStatus ==
-                      'DELIVERED'" class="badge badge-primary">{{
-                      trip.driverStatus }}</span>
-                    <span *ngIf="trip.coDriverStatus && trip.coDriverStatus ==
-                      'REJECTED'" class="badge badge-danger">{{
-                      trip.coDriverStatus }}</span>
-                    <span *ngIf="trip.coDriverStatus && trip.coDriverStatus ==
-                      'ACCEPTED'" class="badge badge-success">{{
-                      trip.coDriverStatus }}</span>
-                    <span *ngIf="trip.coDriverStatus && trip.coDriverStatus ==
-                      'ASSIGNED'" class="badge bg-blue">{{ trip.coDriverStatus
-                      }}</span>
+                    {{ (trip.coDriverID) ?
+                    driversObject[trip.coDriverID] : '' }}
+                    <span *ngIf="trip.coDriverStatus &&
+                                  trip.coDriverStatus == 'REJECTED'" class="badge
+                                  badge-danger">{{ trip.coDriverStatus }}</span>
+                    <span *ngIf="trip.coDriverStatus &&
+                                  trip.coDriverStatus == 'STARTED'" class="badge
+                                  badge-success">{{ trip.coDriverStatus }}</span>
+                    <span *ngIf="trip.coDriverStatus &&
+                                  trip.coDriverStatus == 'DELIVERED'" class="badge
+                                  badge-primary">{{ trip.coDriverStatus }}</span>
+                    <span *ngIf="trip.coDriverStatus &&
+                                  trip.coDriverStatus == 'ACCEPTED'" class="badge
+                                  badge-success">{{ trip.coDriverStatus }}</span>
+                    <span *ngIf="trip.coDriverStatus &&
+                                  trip.coDriverStatus == 'ASSIGNED'" class="badge
+                                  bg-blue">{{ trip.coDriverStatus }}</span>
                   </td>
-                  <td>{{ carriersObject[trip.carrierID] }}</td>
+                  <td>{{ (trip.carrierID) ?
+                    carriersObject[trip.carrierID] : '' }}</td>
                 </tr>
               </tbody>
             </table>
           </td>
         </tr>
-        <tr>
-          <td colspan="2" valign="top">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0"
-              style="border: 1px solid #d0d0d0">
-              <tbody>
-                <tr>
-                  <td style="padding: 10px">
-                    <table width="100%" border="0" cellpadding="0"
-                      cellspacing="0">
-                      <tbody>
-                        <tr>
-                          <td>
-                            <table width="100%" style="border: 1px solid
-                              #adadad;
-                              font-size: 13px;
-                              margin-bottom: 10px;" cellpadding="0"
-                              cellspacing="0" bordercolor="#adadad">
-                              <tbody>
-                                <tr>
-                                  <td colspan="3" style="border-bottom: 1px
-                                    solid #adadad;
-                                    padding-left: 10px;">
-                                    <h2 style="font-size: 16px;
-                                      margin-bottom: 8px;
-                                      margin-top: 8px;">
-                                      Order# 5200
-                                    </h2>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td width="25%" bgcolor="#f3f3f3"
-                                    style="border-bottom:
-                                    1px solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Order Date</p>
-                                  </td>
-                                  <td width="25%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>2021/08/17</p>
-                                  </td>
-                                  <td width="25%" bgcolor="#f3f3f3"
-                                    style="border-bottom:
-                                    1px solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Commodity</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>Pulses</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#f3f3f3" style="border-bottom:
-                                    1px solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Quantity</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>110 Box</p>
-                                  </td>
-                                  <td bgcolor="#f3f3f3" style="border-bottom:
-                                    1px solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Weight</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>4500 kg</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td bgcolor="#f3f3f3" style="border-right: 1px
-                                    solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Reference`</p>
-                                  </td>
-                                  <td colspan="3" style="padding-left: 10px">
-                                    <p>Handle with care please. Thanks</p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <table width="100%" border="0" style="border: 1px
-                              solid #adadad;
-                              font-size: 13px;
-                              margin-bottom: 10px;" cellspacing="0"
-                              cellpadding="0">
-                              <tbody>
-                                <tr>
-                                  <td colspan="3" style="border-bottom: 1px
-                                    solid #adadad;
-                                    padding-left: 10px;">
-                                    <h2 style="font-size: 16px;
-                                      margin-bottom: 8px;
-                                      margin-top: 8px;">
-                                      Shipment 1
-                                    </h2>
-                                  </td>
-                                </tr>
-                                <tr bgcolor="#f3f3f3">
-                                  <td width="52%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Shipper</p>
-                                  </td>
-                                  <td width="24%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Date</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    text-align: right;
-                                    padding-right: 10px;">
-                                    <p style="font-weight: 600">Time</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>
-                                      <strong>Altoba Freight Inc</strong><br />
-                                      180 Ryan St, Winnipeg, MB, R2R 0P1
-                                    </p>
-                                  </td>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>2021/08/20</p>
-                                  </td>
-                                  <td style="text-align: right;
-                                    padding-right: 10px;">
-                                    <p>08:45 PM</p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <table width="100%" border="0" style="border: 1px
-                              solid #adadad;
-                              font-size: 13px;
-                              margin-bottom: 10px;" cellspacing="0"
-                              cellpadding="0">
-                              <tbody>
-                                <tr bgcolor="#f3f3f3">
-                                  <td width="52%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Receiver</p>
-                                  </td>
-                                  <td width="24%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>Date</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    text-align: right;
-                                    padding-right: 10px;">
-                                    <p style="font-weight: 600">Time</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>
-                                      <strong>Sterling Yarn Ltd</strong><br />
-                                      92 Highway 39, Estevan, SK S4A 2A7, Canada
-                                    </p>
-                                  </td>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>2021/08/20</p>
-                                  </td>
-                                  <td style="text-align: right;
-                                    padding-right: 10px;">
-                                    <p>08:45 PM</p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <table width="100%" border="0" style="border: 1px
-                              solid #adadad;
-                              font-size: 13px;
-                              margin-bottom: 10px;" cellspacing="0"
-                              cellpadding="0">
-                              <tbody>
-                                <tr>
-                                  <td colspan="3" style="border-bottom: 1px
-                                    solid #adadad;
-                                    padding-left: 10px;">
-                                    <h2 style="font-size: 16px;
-                                      margin-bottom: 8px;
-                                      margin-top: 8px;">
-                                      Shipment 2
-                                    </h2>
-                                  </td>
-                                </tr>
-                                <tr bgcolor="#f3f3f3">
-                                  <td width="52%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Shipper</p>
-                                  </td>
-                                  <td width="24%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Date</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    text-align: right;
-                                    padding-right: 10px;">
-                                    <p style="font-weight: 600">Time</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>
-                                      <strong>Altoba Freight Inc</strong><br />
-                                      180 Ryan St, Winnipeg, MB, R2R 0P1
-                                    </p>
-                                  </td>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>2021/08/20</p>
-                                  </td>
-                                  <td style="text-align: right;
-                                    padding-right: 10px;">
-                                    <p>08:45 PM</p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <table width="100%" border="0" style="border: 1px
-                              solid #adadad;
-                              font-size: 13px;
-                              margin-bottom: 10px;" cellspacing="0"
-                              cellpadding="0">
-                              <tbody>
-                                <tr bgcolor="#f3f3f3">
-                                  <td width="52%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p style="font-weight: 600">Receiver</p>
-                                  </td>
-                                  <td width="24%" style="border-bottom: 1px
-                                    solid #adadad;
-                                    border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>Date</p>
-                                  </td>
-                                  <td style="border-bottom: 1px solid #adadad;
-                                    text-align: right;
-                                    padding-right: 10px;">
-                                    <p style="font-weight: 600">Time</p>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>
-                                      <strong>Sterling Yarn Ltd</strong><br />
-                                      92 Highway 39, Estevan, SK S4A 2A7, Canada
-                                    </p>
-                                  </td>
-                                  <td style="border-right: 1px solid #adadad;
-                                    padding-left: 10px;">
-                                    <p>2021/08/20</p>
-                                  </td>
-                                  <td style="text-align: right;
-                                    padding-right: 10px;">
-                                    <p>08:45 PM</p>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody></tbody>
-            </table>
-          </td>
-        </tr>
+
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
@@ -1507,8 +1197,7 @@
                 <tr>
                   <td align="center">
                     <h2 style="font-size: 13px">Powered By</h2>
-                    <img src="../../../../../assets/img/logo.png" width="207"
-                      height="28" />
+                    <img src="../../../../../assets/img/logo.png" width="207" height="28" />
                   </td>
                 </tr>
               </tbody>
@@ -1520,5 +1209,12 @@
         </tr>
       </tbody>
     </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
+      Cancel
+    </button>
+    <!-- <button class="btn btn-success" (click)="driverEmail()">Email to Driver</button> -->
+    <button class="btn btn-success" (click)="generate()">Print</button>
   </div>
 </ng-template>
