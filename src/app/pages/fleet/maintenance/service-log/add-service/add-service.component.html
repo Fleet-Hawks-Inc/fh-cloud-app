@@ -327,8 +327,10 @@
                                 text-lg-right
                                 pt-2
                               ">Select Service Task</label>
-                            <ng-select [(ngModel)]="taskID" name="taskID" style="width: 100%"
-                              placeholder="Select Service Task" #rtSlt="ngModel" required>
+                            <ng-select bindLabel="taskName" [(ngModel)]="selectedTasks" name="selectedTasks"
+                              placeholder="Select service task" (add)="addTasks()" [multiple]="true" style="width: 100%"
+                              (clear)="clearTaks('tasks')" (remove)="removeTasks($event)">
+
                               <ng-option *ngFor="let task of taskData | async" [value]="task.taskID">{{ task.taskName }}
                               </ng-option>
                             </ng-select>
