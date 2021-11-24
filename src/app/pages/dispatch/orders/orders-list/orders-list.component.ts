@@ -524,12 +524,12 @@ export class OrdersListComponent implements OnInit {
         },
         next: (res) => {
           this.dataMessage = Constants.FETCHING_DATA;
-          this.orders[0].filter((elem) => {
+          this.orders.filter((elem) => {
             if (elem.orderID == this.newOrderID) {
               elem.orderStatus = "confirmed";
             }
           });
-          this.allignOrders(this.orders[0]);
+          this.allignOrders(this.orders);
           this.confirmRef.close();
           this.isConfirm = false;
         },
