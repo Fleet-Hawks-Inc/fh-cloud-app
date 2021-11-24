@@ -53,11 +53,11 @@ export class ServiceListComponent implements OnInit {
   assetID = null;
 
   constructor(
-      private apiService: ApiService,
-      private router: Router,
-      private spinner: NgxSpinnerService,
-      private toastr: ToastrService,
-    ) {}
+    private apiService: ApiService,
+    private router: Router,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
+  ) { }
 
   ngOnInit() {
     this.fetchLogsCount();
@@ -116,19 +116,19 @@ export class ServiceListComponent implements OnInit {
    * Get all tasks from api
    */
   fetchTasks() {
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      this.tasks = result.Items;
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.tasks = result;
     });
   }
 
   fetchLogsCount() {
-    this.apiService.getData('serviceLogs/get/count?vehicleID='+this.vehicleID+'&asset=' +this.assetID+ '&taskID='+this.taskID).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('serviceLogs/get/count?vehicleID=' + this.vehicleID + '&asset=' + this.assetID + '&taskID=' + this.taskID).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
+        if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogEndPoint = this.totalRecords;
         }
         this.initDataTable();
@@ -136,9 +136,9 @@ export class ServiceListComponent implements OnInit {
     });
   }
 
-  gotoIssue(issue){
+  gotoIssue(issue) {
     localStorage.setItem('issueID', issue);
-    this.router.navigateByUrl('/fleet/maintenance/issues/detail/'+issue);
+    this.router.navigateByUrl('/fleet/maintenance/issues/detail/' + issue);
   }
 
   openComponent(vendorID) {
@@ -150,39 +150,39 @@ export class ServiceListComponent implements OnInit {
     this.vendorTextStatus = true;
     this.apiService.getData(`contacts/detail/${vendorID}`).subscribe(res => {
       this.vendorTextStatus = false;
-      this.vendorsData =  res.Items[0];
+      this.vendorsData = res.Items[0];
       this.vendorAddress = res.Items[0].adrs;
     })
   }
   initDataTable() {
 
-    this.apiService.getData('serviceLogs/fetch/records?vehicleID='+this.vehicleID + '&taskID='+this.taskID +'&asset=' +this.assetID + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('serviceLogs/fetch/records?vehicleID=' + this.vehicleID + '&taskID=' + this.taskID + '&asset=' + this.assetID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
-        if(result.Items.length == 0) {
+        if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.suggestedVehicles = [];
         this.getStartandEndVal();
 
-        result['Items'].map((v:any) => {
+        result['Items'].map((v: any) => {
           v.entityStatus = 'Active';
-          if(v.currentStatus === 'outOfService') {
+          if (v.currentStatus === 'outOfService') {
             v.entityStatus = 'Out of service';
-          } else if(v.currentStatus === 'active') {
+          } else if (v.currentStatus === 'active') {
             v.entityStatus = 'Active';
-          } else if(v.currentStatus === 'inActive') {
+          } else if (v.currentStatus === 'inActive') {
             v.entityStatus = 'In-active';
           }
         })
         this.logs = result['Items'];
-        if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
+        if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
           this.serviceLogStartPoint = 1;
           this.serviceLogEndPoint = this.totalRecords;
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
           this.serviceLogNext = false;
-          let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
           // for prev button
           if (!this.serviceLogPrevEvauatedKeys.includes(lastEvalKey)) {
             this.serviceLogPrevEvauatedKeys.push(lastEvalKey);
@@ -195,7 +195,7 @@ export class ServiceListComponent implements OnInit {
           this.serviceLogEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.serviceLogEndPoint) {
+        if (this.totalRecords < this.serviceLogEndPoint) {
           this.serviceLogEndPoint = this.totalRecords;
         }
 
@@ -212,7 +212,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   searchFilter() {
-    if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
+    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.fetchLogsCount();
@@ -222,7 +222,7 @@ export class ServiceListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.vehicleID != null || this.assetID != null || this.taskID != null) {
+    if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
       this.vehicleID = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.vehicleIdentification = '';

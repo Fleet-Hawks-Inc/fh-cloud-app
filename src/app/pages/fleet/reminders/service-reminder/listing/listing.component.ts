@@ -46,7 +46,7 @@ export class ListingComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
+  // test = []
   serviceNext = false;
   servicePrev = true;
   serviceDraw = 0;
@@ -87,10 +87,8 @@ export class ListingComponent implements OnInit {
   }
 
   fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'service');
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
 

@@ -118,7 +118,7 @@ export class ListService {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   fetchVendors() {
     this.apiService
@@ -221,10 +221,12 @@ export class ListService {
         this.customersDataSource.next(result);
       });
   }
-
+  /*
+   * Get all taskList
+  */
   fetchTasks() {
-    this.apiService.getData(`tasks`).subscribe((result: any) => {
-      this.tasksDataSource.next(result.Items);
+    this.apiService.getData(`tasks?type=service`).subscribe((result: any) => {
+      this.tasksDataSource.next(result);
     });
   }
 
