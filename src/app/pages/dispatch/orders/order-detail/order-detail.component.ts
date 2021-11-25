@@ -609,7 +609,7 @@ export class OrderDetailComponent implements OnInit {
         // }
       },
 
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -674,7 +674,6 @@ export class OrderDetailComponent implements OnInit {
       windowClass: "send-email--modal",
     };
     this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
-
   }
 
   openEmailModal() {
@@ -684,7 +683,10 @@ export class OrderDetailComponent implements OnInit {
       backdrop: "static",
       windowClass: "order-send__email",
     };
-    this.emailCopyRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
+    this.emailCopyRef = this.modalService.open(
+      this.emailInvoiceModal,
+      ngbModalOptions
+    );
   }
 
   async sendEmailInv() {
@@ -699,8 +701,8 @@ export class OrderDetailComponent implements OnInit {
 
     const data = {
       docs: newDocs,
-      emails: this.userEmails
-    }
+      emails: this.userEmails,
+    };
 
     let result = await this.apiService
       .getData(
@@ -735,7 +737,11 @@ export class OrderDetailComponent implements OnInit {
   addEmails() {
     this.isFlag = true;
     this.isEmail = true;
-    if (this.emailData.emails.length === 0) { this.toastr.error('Please enter at least one email'); this.isEmail = false; return };
+    if (this.emailData.emails.length === 0) {
+      this.toastr.error("Please enter at least one email");
+      this.isEmail = false;
+      return;
+    }
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
@@ -748,17 +754,14 @@ export class OrderDetailComponent implements OnInit {
         return;
       } else {
         if (!this.userEmails.includes(elem.label)) {
-          this.userEmails.push(elem.label)
+          this.userEmails.push(elem.label);
         }
-
       }
     });
 
     if (this.isFlag) {
       this.sendEmailInv();
     }
-
-
   }
 
   sendEmailOnly() {
@@ -825,9 +828,10 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
+    this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -845,7 +849,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -985,7 +989,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() { }
+  setSrcValue() {}
 
   caretClickShipper(i, j) {
     if (

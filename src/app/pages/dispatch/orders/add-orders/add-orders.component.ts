@@ -1165,7 +1165,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-            this.getAllCords.join(";")
+              this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1502,7 +1502,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1528,7 +1528,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1544,12 +1544,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -1904,7 +1904,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
-
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
@@ -1930,7 +1929,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
       this.stateReceiverIndex = i;
-
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
@@ -2214,6 +2212,9 @@ export class AddOrdersComponent implements OnInit {
             amount: state ? state.PST : "",
           },
         ];
+        this.orderData["recptStat"] = result.recptStat
+          ? result.recptStat
+          : false;
         this.orderData["customerID"] = result.customerID;
         this.orderData.cusConfirmation = result.cusConfirmation;
         this.selectedCustomer(result.customerID);
@@ -2561,7 +2562,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2582,7 +2583,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -3224,7 +3225,8 @@ export class AddOrdersComponent implements OnInit {
       .getData(
         `orders/validate/pos?value=${encodeURIComponent(
           JSON.stringify(pos)
-        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${this.getOrderID
+        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${
+          this.getOrderID
         }`
       )
       .toPromise();
