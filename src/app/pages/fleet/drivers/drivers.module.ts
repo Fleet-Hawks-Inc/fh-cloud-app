@@ -10,6 +10,7 @@ import { DriverListComponent } from './driver-list/driver-list.component';
 import { DriverDetailComponent } from './driver-detail/driver-detail.component';
 import { SharedModule } from '../../../shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -82,6 +83,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    InfiniteScrollModule,
     NgSelectModule,
   ],
   providers: [unsavedChangesGuard,

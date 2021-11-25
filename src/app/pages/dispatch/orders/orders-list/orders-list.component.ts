@@ -26,6 +26,7 @@ export class OrdersListComponent implements OnInit {
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
   confirmOrders = [];
+  confirmIndex: number;
   dispatchOrders = [];
   deliveredOrders = [];
   tonuOrders = [];
