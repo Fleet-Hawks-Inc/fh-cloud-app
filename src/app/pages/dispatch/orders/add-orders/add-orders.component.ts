@@ -443,7 +443,14 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+
+    this.router.navigate(['/dispatch/orders'])
+  }
+  goBack() {
+
+    this.router.navigate(['/dispatch/orders']).then((value) => {
+      window.location.reload();
+    }); // <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -1534,7 +1541,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -2588,7 +2595,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
