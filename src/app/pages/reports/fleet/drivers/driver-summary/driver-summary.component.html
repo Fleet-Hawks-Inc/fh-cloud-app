@@ -43,7 +43,7 @@
                                     class="caret"></span></button>
                             <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                <a class="dropdown-item text-1" (click)="generateDriverCSV()">CSV</a>
+                                <a class="dropdown-item text-1" (click)="requiredCSV()">CSV</a>
                             </div>
                         </div>
                     </div>
@@ -89,12 +89,12 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-body bor-radius0px">
-                                <div>
+                                
                                     <section class="reports_div">
                                         <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
                                             [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                                             <table id="diverTbl"
-                                                class="table table-responsive-md table-bordered mb-0 no-footer table-xs table-striped table-hover">
+                                                class="table reports_small_div">
                                                 <thead>
                                                     <tr>
                                                         <th id="" class="col1 minWidth200">Name</th>
@@ -122,12 +122,11 @@
                                                         <td class="cursorpoint text-capitalize">{{driver.driverType}}
                                                         </td>
                                                         <td class="cursorpoint">{{driver.DOB}}</td>
-                                                        <td class="cursorpoint">{{driver.gender === "M" ? 'Male' :
-                                                            'Female'}}</td>
+                                                        <td class="cursorpoint">{{driver.gender === "M" ? 'Male' : 'Female'}}</td>
                                                         <td class="cursorpoint">{{driver.CDL_Number}}</td>
                                                         <td class="cursorpoint">{{driver.phone}}</td>
                                                         <td class="cursorpoint"><span
-                                                                class="badge badge-dark p-2 text-uppercase">{{driver.driverStatus}}</span>
+                                                        class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>
                                                         </td>
                                                 </tbody>
                                             </table>
@@ -140,7 +139,7 @@
                                             </div>
                                         </div>
                                     </section>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
