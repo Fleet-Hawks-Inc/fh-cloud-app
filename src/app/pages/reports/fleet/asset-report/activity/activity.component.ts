@@ -4,7 +4,8 @@ import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from "ngx-toastr";
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_compiler';
+import { ActivatedRoute } from "@angular/router";
+import { result } from 'lodash';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -12,27 +13,33 @@ import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_c
 })
 export class ActivityComponent implements OnInit {
   allData = [];
+  assetData = [];
   lastItemSK = '';
   loaded = false
   assetsObject = [];
-  startDate: '';
-  endDate: '';
+  startDate = '';
+  endDate = '';
   start = null;
   end = null;
   assetIdentification = '';
   assetID = '';
-  assetIDD: any = []
   dataMessage = Constants.NO_RECORDS_FOUND
   suggestedAssets = [];
   ordersObject = []
   total = 0;
-
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  ngOnInit() {
+  public astId;
+  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute,) { }
 
+
+  ngOnInit() {
+    this.astId = this.route.snapshot.params[`astId`];
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.fetchTripData()
+    this.fetchAsset();
   }
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
@@ -52,14 +59,21 @@ export class ActivityComponent implements OnInit {
     this.assetID = assetID;
     this.suggestedAssets = [];
   }
+  fetchAsset() {
+    this.apiService.getData('assets/get/minor/details').subscribe((result: any) => {
+      this.assetData = result;
+    });
+  }
 
   fetchTripData() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`trips/get/tripData?asset=${this.assetID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
         this.allData = result.Items;
         for (let asst of this.allData) {
           let dataa = asst
           asst.miles = 0
+          asst.ordr = ''
+
           for (let element of dataa.tripPlanning) {
             asst.miles += Number(element.miles);
           }
@@ -136,8 +150,9 @@ export class ActivityComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.allData.forEach(element => {
-        let miles = '';
         let location = ''
+        let j: any
+        let order = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           element2.location = element2.location.replace(/,/g, ' ');
@@ -167,7 +182,7 @@ export class ActivityComponent implements OnInit {
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}Asset-Report.csv`);
+        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}assetActivity-Report.csv`);
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

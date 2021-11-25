@@ -5,23 +5,7 @@
 
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2 pr-0">
-                            <div class="input-group input-group-sm mb-3">
-                                <input type="text" autocomplete="off" placeholder="Search Asset"
-                                    name="assetIdentification" [(ngModel)]="assetIdentification" class="form-control"
-                                    (input)="getSuggestions($event.target.value)">
 
-                            </div>
-                            <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;"
-                                        (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)">
-                                        {{
-                                        suggestedAsset.assetIdentification }}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="col-md-3 col-lg-3 pr-0">
                             <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                                 <span class="input-group-prepend">
@@ -49,7 +33,10 @@
                         </div>
 
 
-                        <div class="col-md-5 col-lg-5 text-right pr-1">
+                        <div class="col-md-7 col-lg-7 text-right pr-1">
+                            <a routerLink="/reports/fleet/asset/activity-list" class="btn btn-sm btn-success">Asset
+                                List</a>
+
                             <div class="btn-group flex-wrap ml-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
                                     data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i>
@@ -61,9 +48,23 @@
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </form>
             </header>
+            <div class="col-6 mb-3 mt-2">
+                <div class="bg-white p-3">
+                    <div class="row text-dark">
+                        <div class="col-12">
+                            <div>
+                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Activity</h4>
+                                <!-- <h3><span *ngFor="let data of allData">{{data.assetName}}</span></h3> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row text-dark">
                 <div class="col pr-0">
                     <div class="card">
@@ -89,16 +90,8 @@
                                             </tr>
                                             <tr *ngFor="let item of allData">
                                                 <td>{{item.assetName}}
-                                                </td>
-                                                <!-- <td>
-                                                {{item.assetName? item.assetName : '-'}}<span title="Asset "
-                                                    *ngIf="item.assetName > 1;let j = index; let $last = last"> <span
-                                                        *ngIf="!$last" class="list-format">,
-                                                    </span>
-
-                                                </span></td> -->
                                                 <td>{{item.tripNo}}</td>
-                                                <td>{{item.orderName}}</td>
+                                                <td>{{item.orderName}}
                                                 <td>
                                                     <span title="Location" *ngFor="let data of item.tripPlanning">
                                                         <b>
