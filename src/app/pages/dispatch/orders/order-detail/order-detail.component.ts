@@ -20,6 +20,7 @@ import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
 import Constants from "src/app/pages/fleet/constants";
+import { Location } from "@angular/common";
 declare var $: any;
 
 @Component({
@@ -184,6 +185,8 @@ export class OrderDetailComponent implements OnInit {
   isInvoice = false;
   taxableAmount: any;
   invoiceData: any;
+  vehicles = [];
+  assets = []
   newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
@@ -291,7 +294,8 @@ export class OrderDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private listService: ListService
+    private listService: ListService,
+    private location: Location,
   ) {
     this.today = new Date();
   }
@@ -609,7 +613,7 @@ export class OrderDetailComponent implements OnInit {
         // }
       },
 
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -674,7 +678,6 @@ export class OrderDetailComponent implements OnInit {
       windowClass: "send-email--modal",
     };
     this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
-
   }
 
   openEmailModal() {
@@ -684,7 +687,10 @@ export class OrderDetailComponent implements OnInit {
       backdrop: "static",
       windowClass: "order-send__email",
     };
-    this.emailCopyRef = this.modalService.open(this.emailInvoiceModal, ngbModalOptions)
+    this.emailCopyRef = this.modalService.open(
+      this.emailInvoiceModal,
+      ngbModalOptions
+    );
   }
 
   async sendEmailInv() {
@@ -699,8 +705,8 @@ export class OrderDetailComponent implements OnInit {
 
     const data = {
       docs: newDocs,
-      emails: this.userEmails
-    }
+      emails: this.userEmails,
+    };
 
     let result = await this.apiService
       .getData(
@@ -735,7 +741,11 @@ export class OrderDetailComponent implements OnInit {
   addEmails() {
     this.isFlag = true;
     this.isEmail = true;
-    if (this.emailData.emails.length === 0) { this.toastr.error('Please enter at least one email'); this.isEmail = false; return };
+    if (this.emailData.emails.length === 0) {
+      this.toastr.error("Please enter at least one email");
+      this.isEmail = false;
+      return;
+    }
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
@@ -748,17 +758,14 @@ export class OrderDetailComponent implements OnInit {
         return;
       } else {
         if (!this.userEmails.includes(elem.label)) {
-          this.userEmails.push(elem.label)
+          this.userEmails.push(elem.label);
         }
-
       }
     });
 
     if (this.isFlag) {
       this.sendEmailInv();
     }
-
-
   }
 
   sendEmailOnly() {
@@ -786,6 +793,9 @@ export class OrderDetailComponent implements OnInit {
     $("#previewInvoiceModal").modal("hide");
   }
 
+  cancel() {
+    this.location.back();
+  }
   async generatePDF() {
     this.isShow = true;
     await this.saveInvoice();
@@ -825,9 +835,10 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
+    this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -845,7 +856,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -985,7 +996,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() { }
+  setSrcValue() {}
 
   caretClickShipper(i, j) {
     if (
@@ -1044,6 +1055,13 @@ export class OrderDetailComponent implements OnInit {
         if (this.orderInvData.carrierData.logo != "") {
           this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
         }
+        if (this.invoiceData.assets != undefined) {
+          this.assets = this.invoiceData.assets;
+        }
+        if (this.invoiceData.vehicles != undefined) {
+          this.vehicles = this.invoiceData.vehicles;
+        }
+
       });
   }
 

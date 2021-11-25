@@ -7,36 +7,37 @@ import { DispatchOverviewComponent } from './home/dispatch-overview/dispatch-ove
 const routes: Routes = [
   {
     path: 'orders',
-    loadChildren: () => import('./orders/order.module').then((m) => m.OrderModule) ,
+    loadChildren: () => import('./orders/order.module').then((m) => m.OrderModule),
   },
   {
     path: 'trips',
-    loadChildren: () => import('./trips/trip.module').then((m) => m.TripModule) ,
+    loadChildren: () => import('./trips/trip.module').then((m) => m.TripModule),
+
   },
   {
     path: 'routes',
-    loadChildren: () => import('./permanent-routing/route.module').then((m) => m.RouteModule) ,
+    loadChildren: () => import('./permanent-routing/route.module').then((m) => m.RouteModule),
   },
   {
     path: 'planner',
-    loadChildren: () => import('./planner/planner.module').then((m) => m.PlannerModule) ,
+    loadChildren: () => import('./planner/planner.module').then((m) => m.PlannerModule),
   },
   {
     path: 'cross-border',
-    loadChildren: () => import('./cross-border/cross-border.module').then((m) => m.CrossBorderModule) ,
+    loadChildren: () => import('./cross-border/cross-border.module').then((m) => m.CrossBorderModule),
   },
   {
     path: 'documents',
-    loadChildren: () => import('./new-documents/new-documents.module').then((m) => m.DocumentsModule) ,
+    loadChildren: () => import('./new-documents/new-documents.module').then((m) => m.DocumentsModule),
   },
   {
     path: 'quotes',
-    loadChildren: () => import('./quotes/quote.module').then((m) => m.QuoteModule) ,
+    loadChildren: () => import('./quotes/quote.module').then((m) => m.QuoteModule),
   },
   {
     path: 'overview',
     children: [
-      { path: '', component: DispatchOverviewComponent}
+      { path: '', component: DispatchOverviewComponent }
     ]
   },
 ];

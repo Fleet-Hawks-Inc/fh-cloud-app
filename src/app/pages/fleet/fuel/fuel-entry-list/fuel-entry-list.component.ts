@@ -7,6 +7,7 @@ import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
+import * as _ from 'lodash'
 declare var $: any;
 
 @Component({
@@ -283,7 +284,8 @@ export class FuelEntryListComponent implements OnInit {
 
       });
 
-      this.fuelList = result[`Items`];
+
+      this.fuelList = _.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc'])
 
 
       if (this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
