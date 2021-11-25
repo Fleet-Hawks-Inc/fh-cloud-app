@@ -264,6 +264,7 @@ export class AddTripComponent implements OnInit {
   planOrderData = [];
   planComm = [];
   currentCarrID = "";
+  tripsObject: any = {};
 
   constructor(
     private apiService: ApiService,
@@ -276,7 +277,7 @@ export class AddTripComponent implements OnInit {
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService,
     private el: ElementRef // public selectionType: SelectionType, // public columnMode: ColumnMode
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -303,6 +304,7 @@ export class AddTripComponent implements OnInit {
     this.fetchDrivers();
     this.searchLocation();
     this.getCurrentuser();
+    this.fetchTripsByIDs();
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -586,8 +588,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -1532,7 +1534,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1550,7 +1552,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1564,17 +1566,24 @@ export class AddTripComponent implements OnInit {
     });
   }
 
+  fetchTripsByIDs() {
+    this.apiService.getData('trips/get/list')
+      .subscribe((result: any) => {
+        this.tripsObject = result;
+      })
+  }
+
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2535,7 +2544,7 @@ export class AddTripComponent implements OnInit {
     }
 
     this.apiService.putData(url, this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -2553,7 +2562,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3129,7 +3138,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -3142,8 +3151,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
