@@ -1357,6 +1357,12 @@
                               <p class="m-0 text-dark"><strong> Asset:</strong> {{driver.assets ?
                                 assetsObjects[driver.assets]
                                 : 'NA'}}</p>
+                              <p class="m-0 text-dark"><strong> Trip#:</strong> {{driver.tripID ?
+                                (tripsObject[driver.tripID]) : 'NA'}}</p>
+
+                              <p class="m-0 text-dark"><strong> Delivered Date:</strong> {{driver.updatedAt ?
+                                driver.updatedAt
+                                : 'NA'}}</p>
                               <!-- <span class="driverstatus"> Crescent Road Vancouver, BC V6T
                                                               1Z2</span>
                                                           <span class="driverstatus"><i class="fas fa-clock"></i> <span
@@ -1391,6 +1397,12 @@
                               'NA'}}</p>
                             <p class="m-0 text-dark"><strong> Asset:</strong> {{driver.assets ?
                               assetsObjects[driver.assets]
+                              : 'NA'}}</p>
+                            <p class="m-0 text-dark"><strong> Trip#:</strong> {{driver.tripID ?
+                              (tripsObject[driver.tripID]) : 'NA'}}</p>
+
+                            <p class="m-0 text-dark"><strong> Delivered Date:</strong> {{driver.updatedAt ?
+                              driver.updatedAt
                               : 'NA'}}</p>
                             <!--<span class="offduty pull-right" >OFF</span>
                                                        <span class="driverstatus"><i class="fas fa-clock"></i> <span

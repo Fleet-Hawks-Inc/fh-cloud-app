@@ -12,6 +12,8 @@ export class LoadInvoiceDetailComponent implements OnInit {
   invoiceData: any = {
     orderID: "",
   };
+  vehicles = [];
+  assets = []
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
@@ -19,7 +21,7 @@ export class LoadInvoiceDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
@@ -35,6 +37,7 @@ export class LoadInvoiceDetailComponent implements OnInit {
       .getData(`order-invoice/detail/${this.invID}`)
       .toPromise();
     this.invoiceData = res[0];
+
     this.invoiceData.transactionLog.map((v: any) => {
       v.type = v.type.replace("_", " ");
     });
@@ -60,5 +63,13 @@ export class LoadInvoiceDetailComponent implements OnInit {
     this.invoiceData["cusAddressID"] = result[0]["cusAddressID"];
     this.invoiceData["orderNumber"] = result[0]["orderNumber"];
     this.invoiceData["data"] = result[0]["data"];
+
+    console.log('this.invoiceData', this.invoiceData)
+    if (result[0].assets != undefined) {
+      this.assets = result[0].assets;
+    }
+    if (result[0].vehicles != undefined) {
+      this.vehicles = result[0].vehicles;
+    }
   }
 }

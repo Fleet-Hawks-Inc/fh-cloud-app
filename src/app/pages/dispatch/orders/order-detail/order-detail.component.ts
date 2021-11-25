@@ -185,6 +185,8 @@ export class OrderDetailComponent implements OnInit {
   isInvoice = false;
   taxableAmount: any;
   invoiceData: any;
+  vehicles = [];
+  assets = []
   newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
@@ -1053,6 +1055,13 @@ export class OrderDetailComponent implements OnInit {
         if (this.orderInvData.carrierData.logo != "") {
           this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
         }
+        if (this.invoiceData.assets != undefined) {
+          this.assets = this.invoiceData.assets;
+        }
+        if (this.invoiceData.vehicles != undefined) {
+          this.vehicles = this.invoiceData.vehicles;
+        }
+
       });
   }
 

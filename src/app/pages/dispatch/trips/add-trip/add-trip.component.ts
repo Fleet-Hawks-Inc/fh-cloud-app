@@ -264,6 +264,7 @@ export class AddTripComponent implements OnInit {
   planOrderData = [];
   planComm = [];
   currentCarrID = "";
+  tripsObject: any = {};
 
   constructor(
     private apiService: ApiService,
@@ -277,6 +278,7 @@ export class AddTripComponent implements OnInit {
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
+
   ) { }
 
   async ngOnInit() {
@@ -304,6 +306,7 @@ export class AddTripComponent implements OnInit {
     this.fetchDrivers();
     this.searchLocation();
     this.getCurrentuser();
+    this.fetchTripsByIDs();
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -1567,6 +1570,13 @@ export class AddTripComponent implements OnInit {
         this.goBack();
       },
     });
+  }
+
+  fetchTripsByIDs() {
+    this.apiService.getData('trips/get/list')
+      .subscribe((result: any) => {
+        this.tripsObject = result;
+      })
   }
 
   throwErrors() {
