@@ -14,9 +14,7 @@ export class CommonSideBarComponent implements OnInit {
 
   constructor(private routeManagement: RouteManagementServiceService) { }
 
-  generateOrderSessionID() {
-    return this.routeManagement.orderUpdateSessionID;
-  }
+
   ngOnInit() {
     $(document).ready(() => {
       // window.theme = {};
@@ -270,6 +268,14 @@ export class CommonSideBarComponent implements OnInit {
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
     //this.router.navigate(['/Login']);
+  }
+
+  // Managing Route sessions for performance
+  generateOrderSessionID() {
+    return this.routeManagement.orderUpdateSessionID;
+  }
+  generateTripSessionID() {
+    return this.routeManagement.tripUpdateSessionID;
   }
 }
 
