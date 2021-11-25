@@ -64,6 +64,7 @@ export class OrdersListComponent implements OnInit {
   newOrderID: string;
   newOrderNumber: string;
   newCustomerID: string;
+  confirmIndex: number;
   confirmRef: any;
 
   isConfirm: boolean = false;
@@ -231,6 +232,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   allignOrders(orders) {
+
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 
@@ -512,37 +514,28 @@ export class OrdersListComponent implements OnInit {
       emails: [],
       confirm: false,
       customerID: this.newCustomerID,
-      instructions: "",
     };
     this.emailData.emails.forEach((elem) => {
       newData.emails.push(elem.label);
     });
     newData.confirm = this.emailData.confirmEmail;
-    this.apiService
+    let result = await this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
-        }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
-      )
-      .subscribe({
-        complete: () => { },
-        error: (err: any) => {
-          this.isConfirm = false;
-        },
-        next: (res) => {
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.orders.filter((elem) => {
-            if (elem.orderID == this.newOrderID) {
-              elem.orderStatus = "confirmed";
-            }
-          });
-          this.allignOrders(this.orders);
-          this.confirmRef.close();
-          this.isConfirm = false;
-        },
-      });
+        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber}/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
+      ).toPromise();
+    if (result) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.orders[this.confirmIndex].newStatus = "confirmed";
+      this.confirmOrders.unshift(this.orders[this.confirmIndex])
+      this.confirmRef.close();
+      this.isConfirm = false;
+    } else {
+      this.isConfirm = false;
+    }
+
   }
 
-  async confirmEmail(order) {
+  async confirmEmail(order, i) {
     this.emailData.emails = [];
     let ngbModalOptions: NgbModalOptions = {
       keyboard: true,
@@ -555,6 +548,7 @@ export class OrdersListComponent implements OnInit {
     this.newOrderID = order.orderID;
     this.newOrderNumber = order.orderNumber;
     this.newCustomerID = order.customerID;
+    this.confirmIndex = i;
     let email = await this.fetchCustomersByID(order.customerID);
     if (email != undefined && email != "") {
       this.emailData.emails = [...this.emailData.emails, { label: email }];
