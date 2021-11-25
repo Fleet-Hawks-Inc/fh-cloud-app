@@ -54,7 +54,7 @@ const routes: Routes = [
   },
   {
     path: 'dispatch',
-    loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false },
+    loadChildren: () => import('./pages/dispatch/dispatch.module').then((m) => m.DispatchModule), data: { preload: false, reuse: true },
     canActivate: [AuthService, CheckProfileServiceService]
   },
   {

@@ -46,6 +46,8 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomRouteReuseStrategy } from './services/costomRouteReuseService';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -92,7 +94,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
 
 
   ],
-  providers: [HttpInterceptorProviders, PreLoadStrategy, InvokeHeaderFnService],
+  providers: [HttpInterceptorProviders, PreLoadStrategy, InvokeHeaderFnService, {
+    provide: RouteReuseStrategy,
+    useClass: CustomRouteReuseStrategy
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
