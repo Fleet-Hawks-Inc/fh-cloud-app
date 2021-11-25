@@ -1,13 +1,22 @@
-import { Component, OnInit, Directive } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, Directive, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Auth } from 'aws-amplify';
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 declare var jQuery: any;
+
 
 @Directive()
 export class CommonSideBarComponent implements OnInit {
   //constructor(private router: Router) {}
   companyID: string;
+
+
+  constructor(private routeManagement: RouteManagementServiceService) { }
+
+  generateOrderSessionID() {
+    return this.routeManagement.orderUpdateSessionID;
+  }
   ngOnInit() {
     $(document).ready(() => {
       // window.theme = {};
@@ -235,7 +244,7 @@ export class CommonSideBarComponent implements OnInit {
           $window.on('scroll', function () {
             if ($window.width() < 992) {
               var tabNavOffset =
-                  $tabNav.position().top + $tabNav.height() + 100,
+                $tabNav.position().top + $tabNav.height() + 100,
                 windowOffset = $window.scrollTop();
 
               if (windowOffset > tabNavOffset) {
@@ -257,7 +266,7 @@ export class CommonSideBarComponent implements OnInit {
     });
   }
   Logout() {
-    
+
     // localStorage.removeItem('LoggedIn');
     // localStorage.removeItem('jwt');
     //this.router.navigate(['/Login']);
@@ -269,8 +278,8 @@ export class CommonSideBarComponent implements OnInit {
   templateUrl: './fleet-sidebar.component.html',
 })
 export class FleetSidebarComponent extends CommonSideBarComponent {
-  constructor(private router: Router,) {
-    super();
+  constructor(private router: Router, routeManagement: RouteManagementServiceService) {
+    super(routeManagement);
   }
   //super(router: Router) { }
   Logout() {
@@ -288,8 +297,8 @@ export class FleetSidebarComponent extends CommonSideBarComponent {
   templateUrl: './compliance-sidebar.component.html',
 })
 export class ComplianceSidebarComponent extends CommonSideBarComponent {
-  constructor(private router: Router) {
-    super();
+  constructor(private router: Router, routeManagement: RouteManagementServiceService) {
+    super(routeManagement);
   }
   //super(router: Router) { }
   // Logout() {
@@ -303,43 +312,44 @@ export class ComplianceSidebarComponent extends CommonSideBarComponent {
   selector: 'alert-sidebar',
   templateUrl: './alert-sidebar.component.html',
 })
-export class AlertSidebarComponent extends CommonSideBarComponent {}
+export class AlertSidebarComponent extends CommonSideBarComponent { }
 
 @Component({
   selector: 'setting-sidebar',
   templateUrl: './setting-sidebar.component.html',
 })
-export class SettingSidebarComponent extends CommonSideBarComponent {}
+export class SettingSidebarComponent extends CommonSideBarComponent { }
 
 @Component({
   selector: 'dispatch-sidebar',
   templateUrl: './dispatch-sidebar.component.html',
 })
-export class DispatchSidebarComponent extends CommonSideBarComponent {}
+export class DispatchSidebarComponent extends CommonSideBarComponent {
+}
 
 @Component({
   selector: 'accounts-sidebar',
   templateUrl: './accounts-sidebar.component.html',
 })
-export class AccountsSidebarComponent extends CommonSideBarComponent {}
+export class AccountsSidebarComponent extends CommonSideBarComponent { }
 
 @Component({
   selector: 'safety-sidebar',
   templateUrl: './safety-sidebar.component.html',
 })
-export class SafetySidebarComponent extends CommonSideBarComponent {}
+export class SafetySidebarComponent extends CommonSideBarComponent { }
 
 @Component({
   selector: 'manage-sidebar',
   templateUrl: './manage-sidebar.component.html',
 })
-export class ManageSidebarComponent extends CommonSideBarComponent {}
+export class ManageSidebarComponent extends CommonSideBarComponent { }
 
 @Component({
   selector: 'report-sidebar',
   templateUrl: './module-report-sidebar.component.html',
 })
-export class ReportsSidebarComponent extends CommonSideBarComponent {}
+export class ReportsSidebarComponent extends CommonSideBarComponent { }
 
 export const MultiSidebarComponents = [
   FleetSidebarComponent,

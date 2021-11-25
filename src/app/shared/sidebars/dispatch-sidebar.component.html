@@ -13,14 +13,14 @@
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'orders']">
+    <a class="nav-link" [routerLink]="['/dispatch', 'orders', 'order-list', generateOrderSessionID()]">
       <!-- <i class="fas fa-truck-loading" aria-hidden="true"></i> -->
       <i class="icon-icon-order"></i>
       <span>Orders</span>
     </a>
   </li>
   <li routerLinkActive="nav-active">
-    <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list']">
+    <a class="nav-link" [routerLink]="['/dispatch', 'trips', 'trip-list',generateOrderSessionID()]">
       <i class="fas fa-road" aria-hidden="true"></i>
       <span>Trips</span>
     </a>
