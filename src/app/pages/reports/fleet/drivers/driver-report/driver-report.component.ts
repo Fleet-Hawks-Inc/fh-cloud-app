@@ -3,8 +3,10 @@ import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import Constants from 'src/app/pages/fleet/constants';
 import * as _ from "lodash";
-import { result } from 'lodash';
+import { result, subtract } from 'lodash';
 import * as moment from 'moment'
+import { ActivatedRoute } from '@angular/router';
+import { format } from 'path';
 @Component({
   selector: 'app-driver-report',
   templateUrl: './driver-report.component.html',
@@ -12,7 +14,11 @@ import * as moment from 'moment'
 })
 export class DriverReportComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private toastr: ToastrService) { }
+  public drivIDs;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
   data = []
   driverIDs = "";
   start = null
@@ -21,10 +27,15 @@ export class DriverReportComponent implements OnInit {
   order = []
   suggestedDrivers = [];
   driverID = "";
-  dataMessage: string = Constants.FETCHING_DATA
+  dataMessage: string = Constants.NO_RECORDS_FOUND
   driverName = ''
   loaded = false
+
   ngOnInit(): void {
+    this.drivIDs = this.route.snapshot.params['drivIDs']
+    this.end = moment().format("YYYY-MM-DD");
+    this.start = moment().subtract(1, "months").format("YYYY-MM-DD");
+
     this.fetchTrip();
   }
   getSuggestions = _.debounce(function (value) {
@@ -54,7 +65,7 @@ export class DriverReportComponent implements OnInit {
   }
 
   fetchTrip() {
-    this.apiService.getData(`trips/get/trip/data?driver=${this.driverIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.apiService.getData(`trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.data = result.Items
       for (let driv of this.data) {
         let dataa = driv
