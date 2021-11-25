@@ -20,7 +20,11 @@ import { BolPdfComponent } from "./bol-pdf/bol-pdf.component";
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SlickCarouselModule } from "ngx-slick-carousel";
 const routes: Routes = [
-  { path: "", component: OrdersListComponent },
+  {
+    path: "", component: OrdersListComponent, data: {
+      reuseRoute: true
+    }
+  },
   { path: "edit/:orderID", component: AddOrdersComponent },
   { path: "add", component: AddOrdersComponent },
   { path: "detail/:orderID", component: OrderDetailComponent },
