@@ -4,6 +4,7 @@ import * as moment from 'moment'
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { ToastrService } from 'ngx-toastr';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-contact-renewals',
@@ -65,10 +66,8 @@ export class ContactRenewalsComponent implements OnInit {
     });
   }
   fetchServiceTask() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
+    this.apiService.getData('tasks?type=contact').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
   fetchallitems() {

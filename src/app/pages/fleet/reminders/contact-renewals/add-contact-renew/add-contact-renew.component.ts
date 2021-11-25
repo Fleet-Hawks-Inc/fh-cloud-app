@@ -47,7 +47,7 @@ export class AddContactRenewComponent implements OnInit {
   employees = [];
   drivers: any;
   users = [];
-  test = [];
+  taskData = [];
   groups = [];
   groupData = {
     groupName: "",
@@ -56,7 +56,6 @@ export class AddContactRenewComponent implements OnInit {
     groupMembers: [],
   };
   finalSubscribers = [];
-  serviceTasks = [];
   form;
   errors = {};
   driverID = null;
@@ -80,7 +79,7 @@ export class AddContactRenewComponent implements OnInit {
     private ngbCalendar: NgbCalendar,
     private location: Location,
     private dateAdapter: NgbDateAdapter<string>
-  ) {}
+  ) { }
   get today() {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
@@ -90,7 +89,7 @@ export class AddContactRenewComponent implements OnInit {
     this.reminderID = this.route.snapshot.params[`reminderID`];
     this.fetchUsers();
     this.fetchEmployees();
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
     if (this.reminderID) {
       this.pageTitle = " Edit Contact Renewal Reminder";
       this.fetchReminderByID();
@@ -126,13 +125,9 @@ export class AddContactRenewComponent implements OnInit {
       }
     });
   }
-  fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData("tasks").subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter(
-        (s: any) => s.taskType === constants.TASK_CONTACT
-      );
+  fetchServiceTasks() {
+    this.apiService.getData("tasks?type=contact").subscribe((result: any) => {
+      this.taskData = result;
     });
   }
   fetchUsers() {
@@ -167,7 +162,7 @@ export class AddContactRenewComponent implements OnInit {
     this.reminderData.entityID = this.entityID != null ? this.entityID : "";
     this.reminderData.tasks.taskID = this.taskID != null ? this.taskID : "";
     this.apiService.postData("reminders", this.reminderData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -184,7 +179,7 @@ export class AddContactRenewComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -213,12 +208,12 @@ export class AddContactRenewComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -291,7 +286,7 @@ export class AddContactRenewComponent implements OnInit {
     this.reminderData.tasks.taskID = this.taskID != null ? this.taskID : "";
 
     this.apiService.putData("reminders", this.reminderData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -331,7 +326,7 @@ export class AddContactRenewComponent implements OnInit {
   // SERVICE TASK
   addServiceTask() {
     this.apiService.postData("tasks", this.serviceTask).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -344,20 +339,20 @@ export class AddContactRenewComponent implements OnInit {
             complete: () => {
               // this.throwErrors();
             },
-            error: () => {},
-            next: () => {},
+            error: () => { },
+            next: () => { },
           });
       },
       next: (res) => {
         this.response = res;
         $("#addServiceTasks").modal("toggle");
         this.toastr.success("Contact Renewal Added Successfully!");
-        this.fetchServiceTaks();
+        this.fetchServiceTasks();
       },
     });
   }
 
   refreshTaskData() {
-    this.fetchServiceTaks();
+    this.fetchServiceTasks();
   }
 }

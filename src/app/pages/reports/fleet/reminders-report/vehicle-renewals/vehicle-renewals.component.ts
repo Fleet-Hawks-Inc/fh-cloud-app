@@ -54,10 +54,9 @@ export class VehicleRenewalsComponent implements OnInit {
     })
   }
   fetchServiceTask() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    this.apiService.getData('tasks?type=vehicle').subscribe((result: any) => {
+      this.serviceTasks = result;
+
     });
   }
   fetchVehiclesdata() {
