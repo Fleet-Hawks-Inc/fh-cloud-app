@@ -346,7 +346,7 @@
                                       order.orderStatus == 'confirmed'" class="dropdown-item" href="javascript:;"
                                       (click)="deactivateOrder(order)">Delete</a>
                                     <a *ngIf="order.orderStatus === 'created'" class="dropdown-item"
-                                      (click)="confirmEmail(order)">Confirm</a>
+                                      (click)="confirmEmail(order, i)">Confirm</a>
                                     <a *ngIf="order.orderStatus === 'created' ||
                                       order.orderStatus === 'confirmed'" class="dropdown-item" (click)="showBrokerageModal(
                                       order,
