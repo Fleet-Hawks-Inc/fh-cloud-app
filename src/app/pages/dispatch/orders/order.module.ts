@@ -21,7 +21,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SlickCarouselModule } from "ngx-slick-carousel";
 const routes: Routes = [
   {
-    path: "", component: OrdersListComponent, data: {
+    path: "order-list/:sessionId", component: OrdersListComponent, data: {
       reuseRoute: true
     }
   },

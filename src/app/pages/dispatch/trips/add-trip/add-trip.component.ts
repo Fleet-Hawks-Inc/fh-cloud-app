@@ -15,7 +15,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
 import Constant from "src/app/pages/fleet/constants";
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-
 import {
   debounceTime,
   distinctUntilChanged,
@@ -28,6 +27,7 @@ import { Location } from "@angular/common";
 import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 declare var $: any;
 
@@ -275,7 +275,8 @@ export class AddTripComponent implements OnInit {
     private location: Location,
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService,
-    private el: ElementRef // public selectionType: SelectionType, // public columnMode: ColumnMode
+    private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
+    private routeMnagementSvc: RouteManagementServiceService
   ) { }
 
   async ngOnInit() {
@@ -388,9 +389,7 @@ export class AddTripComponent implements OnInit {
   }
   goBack() {
 
-    this.router.navigate(['/dispatch/trips/trip-list']).then((value) => {
-      window.location.reload();
-    }); // <-- go back to previous location on cancel
+    this.router.navigate([`/dispatch/trips/trip-list/${this.routeMnagementSvc.tripUpdated()}`])
   }
   async addRow() {
     if (

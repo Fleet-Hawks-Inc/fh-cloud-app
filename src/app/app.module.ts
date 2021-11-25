@@ -47,7 +47,7 @@ import { InvokeHeaderFnService } from './services/invoke-header-fn.service';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouteReuseStrategy } from '@angular/router';
-import { CustomRouteReuseStrategy } from './services/costomRouteReuseService';
+import { CustomRouteReuseStrategy } from './services/customRouteReuseService';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
