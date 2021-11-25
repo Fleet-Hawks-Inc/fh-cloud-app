@@ -36,8 +36,7 @@ export class SummaryComponent implements OnInit {
         usd_amount: 0,
         l_quantity: 0,
         g_quantity: 0,
-        fuel_Odometer: '',
-    }
+        }
     vehicleSet = []
     assetsSet = []
     exportList: any = [];
@@ -174,16 +173,16 @@ export class SummaryComponent implements OnInit {
             this.exportList.forEach(element => {
                 let obj = {}
                 obj["Date"] = element.data.date
+                obj["Use Type"] = element.data.useType
                 obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj["Fuel Card#"] = element.data.cardNo
                 obj["City"] = element.data.city
-                obj["Fuel Quantity"] = element.data.qty
-                obj["Use Type"] = element.data.useType
-                obj["Odometer"] = element.data.odometer
                 obj["Fuel Type"] = element.data.type
-                obj["Total Discount"] = element.data.discAmt
-                obj["Liters or Gallons"] = element.data.uom
-                obj["Total Amount"] = element.data.amt
+                obj["Fuel Quantity"] = element.data.qty + " " + ".00" 
+                obj["Liters or Gallons"] = element.data.uom ==="L" ? 'LTR' : 'GL'
+                obj["Odometer"] = element.data.odometer
+                obj["Total Discount"] = element.data.discAmt 
+                obj["Total Amount"] = element.data.amt + "." + "00" + " " + element.data.currency
                 dataObject.push(obj)
             });
             let headers = Object.keys(dataObject[0]).join(',')

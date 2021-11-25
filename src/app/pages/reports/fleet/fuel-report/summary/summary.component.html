@@ -69,25 +69,18 @@
                             </div>
                         </div>
                     </div>
+                  
                     <div class="col-4 mb-3">
                         <div class="bg-white p-3">
                             <div>
-                                <h4 class="m-0 text-4">Total Distance</h4>
-                                <h4 class="mt-1 mb-0 font-weight-bold">{{fuelCount.fuel_Odometer}} Odometer</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <div class="bg-white p-3">
-                            <div>
-                                <h4 class="m-0 text-4">Total Fuel Consume</h4>
+                                <h4 class="m-0 text-4">Total Fuel Consumed</h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.l_quantity}} Litres</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.l_quantity | number : '1.2-2' }} LTR</h4>
                                 </div>
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.g_quantity}} Gallons</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.g_quantity | number : '1.2-2' }} GL</h4>
                                 </div>
                             </div>
                         </div>
@@ -99,10 +92,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.cad_amount | number : '1.2-2'}} CAD</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.cad_amount | number : '1.2-2'}} CAD</h4>
                                 </div>
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.usd_amount | number : '1.2-2'}} USD</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.usd_amount | number : '1.2-2'}} USD</h4>
                                 </div>
                             </div>
 
@@ -118,15 +111,16 @@
                                             <thead>
                                                 <tr class="back-color-gray">
                                                     <th style="">Date</th>
+                                                    <th>Use Type</th>
                                                     <th>Unit Name</th>
                                                     <th>Fuel Card#</th>
                                                     <th>City</th>
-                                                    <th>Fuel Quantity</th>
-                                                    <th>Use Type</th>
-                                                    <th>Odometer</th>
                                                     <th>Fuel Type</th>
-                                                    <th>Total Discount</th>
+                                                    <th>Fuel Quantity</th>
                                                     <th>Litres or Gallons</th>
+                                                    <th>Odometer</th>
+                                                    <th>Total Discount</th>
+                                                    
                                                     <th>Total Amount</th>
                                                 </tr>
                                             </thead>
@@ -139,7 +133,12 @@
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.date">{{fuelEntry.data.date}}</span>
                                                         </td>
-                                                        <td> <span *ngIf="fuelEntry.unitID">
+                                                        
+                                                        <td class="line-height-lg text-capitalize" ><span
+                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
+                                                        </td>
+                                                        
+                                                        <td class="line-height-lg text-capitalize"> <span *ngIf="fuelEntry.unitID">
                                                                 <span
                                                                     *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
 
@@ -155,29 +154,25 @@
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.city">{{fuelEntry.data.city}}</span>
                                                         </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
-                                                        </td>
-
+                                                        
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.fuelID">{{fuelEntry.data.type}}</span>
                                                         </td>
 
                                                         <td><span
-                                                                *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
+                                                                *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty | number : '1.2-2'}}</span>
+                                                        </td>
+                                                        
+                                                        <td class="cursorpoint"><span
+                                                                *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom === "L" ? 'LTR' : 'GL' }}</span>
                                                         </td>
 
                                                         <td><span
-                                                                *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom}}</span>
+                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer }}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.discAmt">{{fuelEntry.data.discAmt}}</span>
                                                         </td>
 
                                                         <td><span
