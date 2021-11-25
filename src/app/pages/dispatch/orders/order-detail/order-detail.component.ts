@@ -20,6 +20,7 @@ import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
 import Constants from "src/app/pages/fleet/constants";
+import { Location } from "@angular/common";
 declare var $: any;
 
 @Component({
@@ -291,7 +292,8 @@ export class OrderDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private listService: ListService
+    private listService: ListService,
+    private location: Location,
   ) {
     this.today = new Date();
   }
@@ -789,6 +791,9 @@ export class OrderDetailComponent implements OnInit {
     $("#previewInvoiceModal").modal("hide");
   }
 
+  cancel() {
+    this.location.back();
+  }
   async generatePDF() {
     this.isShow = true;
     await this.saveInvoice();

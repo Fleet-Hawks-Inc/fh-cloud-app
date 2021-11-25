@@ -15,7 +15,6 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
 import Constant from "src/app/pages/fleet/constants";
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-
 import {
   debounceTime,
   distinctUntilChanged,
@@ -28,6 +27,7 @@ import { Location } from "@angular/common";
 import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 
 declare var $: any;
 
@@ -275,8 +275,9 @@ export class AddTripComponent implements OnInit {
     private location: Location,
     private hereMap: HereMapService,
     private countryStateCity: CountryStateCityService,
-    private el: ElementRef // public selectionType: SelectionType, // public columnMode: ColumnMode
-  ) {}
+    private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
+    private routeMnagementSvc: RouteManagementServiceService
+  ) { }
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -385,6 +386,10 @@ export class AddTripComponent implements OnInit {
   }
   cancel() {
     this.location.back(); // <-- go back to previous location on cancel
+  }
+  goBack() {
+
+    this.router.navigate([`/dispatch/trips/trip-list/${this.routeMnagementSvc.tripUpdated()}`])
   }
   async addRow() {
     if (
@@ -586,8 +591,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -1532,7 +1537,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1550,7 +1555,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1559,7 +1564,7 @@ export class AddTripComponent implements OnInit {
         this.response = res;
         // this.updateOrderStatus();
         this.toastr.success("Trip added successfully.");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -1569,12 +1574,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2535,7 +2540,7 @@ export class AddTripComponent implements OnInit {
     }
 
     this.apiService.putData(url, this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -2553,7 +2558,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -2561,7 +2566,7 @@ export class AddTripComponent implements OnInit {
         this.spinner.hide();
         this.response = res;
         this.toastr.success("Trip updated successfully.");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -3129,7 +3134,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -3142,8 +3147,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {

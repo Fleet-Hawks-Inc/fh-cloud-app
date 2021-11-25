@@ -1,23 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService, ListService } from "../../../../services";
-import { Router, ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, from, Subject, throwError } from "rxjs";
-import * as _ from "lodash";
-import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
-import { map } from "rxjs/operators";
-import { HereMapService } from "../../../../services";
-import { environment } from "../../../../../environments/environment.prod";
-import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
-import { NgForm } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer } from "@angular/platform-browser";
-
-import { Auth } from "aws-amplify";
 import { Location } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbCalendar, NgbDateAdapter, NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
+import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
+import { BehaviorSubject, from, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-import { element } from "protractor";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { v4 as uuidv4 } from 'uuid';
+import { environment } from "../../../../../environments/environment.prod";
+import { ApiService, HereMapService, ListService } from "../../../../services";
+import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
+
 
 declare var $: any;
 declare var H: any;
@@ -370,7 +368,8 @@ export class AddOrdersComponent implements OnInit {
     private listService: ListService,
     private domSanitizer: DomSanitizer,
     private location: Location,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagement: RouteManagementServiceService
   ) {
     const current = new Date();
 
@@ -443,7 +442,12 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+
+    this.location.back();
+  }
+  goBack() {
+
+    this.router.navigate([`/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`])// <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -1534,7 +1538,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -2589,7 +2593,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
