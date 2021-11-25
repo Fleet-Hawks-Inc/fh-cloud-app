@@ -741,14 +741,14 @@ export class TripDetailComponent implements OnInit {
     html2pdf(data, {
       margin: 0.15,
       filename: "trip-information.pdf",
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "jpeg", quality: 1 },
       html2canvas: {
         dpi: 300,
         letterRendering: true,
         allowTaint: true,
         useCORS: true,
       },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
 
     this.tripInfoRef.close();
