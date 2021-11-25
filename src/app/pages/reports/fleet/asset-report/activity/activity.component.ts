@@ -12,6 +12,8 @@ import { elementEventFullName } from '@angular/compiler/src/view_compiler/view_c
 })
 export class ActivityComponent implements OnInit {
   allData = [];
+  lastItemSK = '';
+  loaded = false
   assetsObject = [];
   startDate: '';
   endDate: '';
@@ -20,10 +22,11 @@ export class ActivityComponent implements OnInit {
   assetIdentification = '';
   assetID = '';
   assetIDD: any = []
-  dataMessage: string = Constants.FETCHING_DATA;
+  dataMessage = Constants.NO_RECORDS_FOUND
   suggestedAssets = [];
   ordersObject = []
   total = 0;
+
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
@@ -51,21 +54,40 @@ export class ActivityComponent implements OnInit {
   }
 
   fetchTripData() {
-    this.apiService.getData(`trips/get/tripData?asset=${this.assetID}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.allData = result.Items;
-      for (let asst of this.allData) {
-        let dataa = asst
-        asst.miles = 0
-        for (let element of dataa.tripPlanning) {
-          asst.miles += Number(element.miles);
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`trips/get/tripData?asset=${this.assetID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+        this.allData = result.Items;
+        for (let asst of this.allData) {
+          let dataa = asst
+          asst.miles = 0
+          for (let element of dataa.tripPlanning) {
+            asst.miles += Number(element.miles);
+          }
         }
-      }
-      if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
-      this.suggestedAssets = [];
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
+        this.suggestedAssets = [];
+        if (result.Items.length > 0) {
 
-    });
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
+          }
+          else {
+            this.lastItemSK = 'end'
+          }
+          // this.allData = this.allData.concat(result.Items)
+
+          this.loaded = true;
+        }
+      });
+    }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fetchTripData();
+    }
+    this.loaded = false;
   }
   searchFilter() {
     if (this.assetID != '' && this.start != null && this.end != null) {
@@ -82,6 +104,7 @@ export class ActivityComponent implements OnInit {
       else {
         this.suggestedAssets = [];
         this.allData = []
+        this.lastItemSK = '';
         this.dataMessage = Constants.FETCHING_DATA
         this.fetchTripData()
       }
@@ -94,12 +117,15 @@ export class ActivityComponent implements OnInit {
   resetFilter() {
     if (this.assetID !== '' || this.start != null && this.end != null) {
       this.assetID = '';
+      this.assetIdentification = '';
       this.start = null;
       this.end = null;
       this.suggestedAssets = [];
       this.allData = [];
+      this.lastItemSK = '';
       this.fetchTripData();
       this.dataMessage = Constants.FETCHING_DATA
+      this.dataMessage = Constants.NO_RECORDS_FOUND
     }
     else {
       return false;
