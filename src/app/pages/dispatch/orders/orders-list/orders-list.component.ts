@@ -26,7 +26,6 @@ export class OrdersListComponent implements OnInit {
   noOrdersMsg = Constants.NO_RECORDS_FOUND;
   orders = [];
   confirmOrders = [];
-  confirmIndex: number;
   dispatchOrders = [];
   deliveredOrders = [];
   tonuOrders = [];
@@ -65,6 +64,7 @@ export class OrdersListComponent implements OnInit {
   newOrderID: string;
   newOrderNumber: string;
   newCustomerID: string;
+  confirmIndex: number;
   confirmRef: any;
 
   isConfirm: boolean = false;
@@ -232,6 +232,7 @@ export class OrdersListComponent implements OnInit {
   }
 
   allignOrders(orders) {
+
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 

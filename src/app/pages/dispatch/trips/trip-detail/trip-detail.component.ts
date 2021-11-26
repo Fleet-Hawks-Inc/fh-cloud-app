@@ -12,6 +12,7 @@ import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
+import { Location } from "@angular/common";
 @Component({
   selector: "app-trip-detail",
   templateUrl: "./trip-detail.component.html",
@@ -31,7 +32,8 @@ export class TripDetailComponent implements OnInit {
     private accountService: AccountService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private hereMap: HereMapService
+    private hereMap: HereMapService,
+    private location: Location
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -741,14 +743,14 @@ export class TripDetailComponent implements OnInit {
     html2pdf(data, {
       margin: 0.15,
       filename: "trip-information.pdf",
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "jpeg", quality: 1 },
       html2canvas: {
         dpi: 300,
         letterRendering: true,
         allowTaint: true,
         useCORS: true,
       },
-      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
 
     this.tripInfoRef.close();
@@ -760,5 +762,9 @@ export class TripDetailComponent implements OnInit {
       .subscribe((res: any) => {
 
       });
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 }

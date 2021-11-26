@@ -41,7 +41,7 @@
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
                          </div> -->
-            <a href="javascript:;" routerLink="/dispatch/trips/trip-list" class="btn btn-default btn-sm"><i
+            <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i
                 class="fas fa-list"></i> All Trips
             </a>
           </div>
@@ -935,54 +935,35 @@
           <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
         </tr>
         <tr>
-          <td valign="top">
-            <h2 style="font-size: 20px; margin-bottom: 10px">Trip# {{ tripData.tripNo }}</h2>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
+          <td valign="top" class="text-dark">
+            <h2 style="font-size: 20px; margin-bottom: 0px"><strong>Trip#</strong> {{ tripData.tripNo }}</h2>
+            <p class="text-dark" style="font-size: 13px; margin-bottom: 15px;
+            margin-top: 0px;
+            display: inline-block;">
               <strong>Trip Type:</strong> {{orderType}}
             </p>
-            <!-- <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Source:</strong> 300 Assiniboine, Assiniboine Avenue,
-              Winnipeg, MB, Canada
-            </p>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Destination:</strong> 165 Wellington St W, Barrie, ON L4N
-              1L7, Canada
-            </p> -->
-            <!-- <p style="font-size: 13px; margin-top: 5px; margin-bottom: 5px">
-              <strong>Miles:</strong> 1223.70
-            </p> -->
+
           </td>
-          <td valign="top" align="right">
+          <td valign="top" class="text-dark" align="right">
             <h2 style="font-size: 20px; margin-bottom: 10px">
-              Trip Date# {{
+              <strong> Trip Date# </strong>{{
               tripData.dateCreated | date: "yyyy/MM/dd"
               }}
             </h2>
-            <!-- <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Vehicle:</strong> 5428
-            </p>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Asset:</strong> 25660
-            </p>
-            <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
-              <strong>Driver:</strong> Manjit Singh
-            </p>
-            <p style="font-size: 13px; margin-top: 5px; margin-bottom: 5px">
-              <strong>Co-Driver:</strong> Rohit
-            </p> -->
+
           </td>
         </tr>
         <tr>
           <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
         </tr>
-        <tr *ngFor="let item of customerData;">
+        <tr class="text-dark" *ngFor="let item of customerData;">
           <td colspan="2">
             <table class=" w-100">
               <tbody>
                 <tr>
                   <td valign="top">
                     <h2 class="m-0" style="font-size: 16px"><strong>Customer: </strong> <span
-                        class="text-capitalize">{{item.cName}}</span></h2>
+                        class="text-capitalize text-dark">{{item.cName}}</span></h2>
                   </td>
                   <td valign="top" align="right" style="line-height: 42px;"><strong>Order(s)#:</strong>
                     <span *ngFor="let ord of item.orderNo; last as isLast">
@@ -997,26 +978,27 @@
                       margin-bottom: 10px;" cellpadding="0" cellspacing="0" bordercolor="#adadad">
                       <tbody>
                         <tr>
-                          <td colspan="4" style="border-bottom: 1px solid #adadad;
-                            padding: 10px;">
-                            <p class="m-0"><strong>Address: </strong>{{item.address ? item.address : 'NA'}}</p>
+                          <td colspan="4" class="text-dark" style="border-bottom: 1px solid #adadad;
+                            padding: 10px;font-size: 14px;;">
+                            <p class="m-0 text-dark"><strong>Address: </strong>{{item.address ? item.address : 'NA'}}
+                            </p>
                           </td>
                         </tr>
                         <tr>
-                          <td width="25%" bgcolor="#f3f3f3" style="border-right: 1px
+                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="border-right: 1px
                             solid #adadad; padding: 10px">
-                            <p class="m-0" style="font-weight: 600">Phone</p>
+                            <p class="m-0 text-dark" style="font-weight: 600">Phone</p>
                           </td>
-                          <td width="25%" style="border-right: 1px solid #adadad;
+                          <td width="25%" class="text-dark" style="border-right: 1px solid #adadad;
                             padding: 10px">
-                            <p class="m-0">{{item.workPhone ? item.workPhone : 'NA'}}</p>
+                            <p class="m-0 text-dark">{{item.workPhone ? item.workPhone : 'NA'}}</p>
                           </td>
-                          <td width="25%" bgcolor="#f3f3f3" style="padding: 10px;
+                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="padding: 10px;
                             border-right: 1px solid #adadad">
-                            <p class="m-0" style="font-weight: 600">Email</p>
+                            <p class="m-0 text-dark" style="font-weight: 600">Email</p>
                           </td>
                           <td style="padding: 10px">
-                            <p class="m-0">{{item.workEmail ? item.workEmail : 'NA'}}</p>
+                            <p class="m-0 text-dark">{{item.workEmail ? item.workEmail : 'NA'}}</p>
                           </td>
                         </tr>
                       </tbody>
@@ -1134,7 +1116,7 @@
                                   bg-blue">{{ trip.coDriverStatus }}</span>
                   </td>
                   <td>{{ (trip.carrierID) ?
-                    carriersObject[trip.carrierID] : '' }}</td>
+                    carriersObject[trip.carrierID] : '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -1144,42 +1126,28 @@
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
-        <tr>
-          <td colspan="2">
-            <p style="font-size: 11px">
-              <strong>Special Instructions: By signing this agreement or by
-                picking
-                up and taking possession of the shipment the CARRIER agrees to
-                all the terms and conditions as outlined in this rate
-                confirmation and the transportation agreement between company,
-                the "BROKER" and the CARRIER (the "Agreement").</strong>
-            </p>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2">&nbsp;</td>
-        </tr>
+
         <tr>
           <td colspan="2">
             <table width="100%" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr>
                   <td width="10%">
-                    <p style="font-size: 13px">
+                    <p style="font-size: 13px" class="text-dark ">
                       <strong>Accepted By: </strong>
                     </p>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
-                  <td width="10%" style="font-size: 13px">
+                  <td width="10%" style="font-size: 13px" class="text-center">
                     <strong>Date:</strong>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
                   <td width="10%">
-                    <p style="font-size: 13px"><strong>Signature</strong></p>
+                    <p style="font-size: 13px" class="text-dark text-center"><strong>Signature</strong></p>
                   </td>
                   <td style="border-bottom: solid 1px #999">&nbsp;</td>
                 </tr>
@@ -1214,7 +1182,7 @@
     <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
       Cancel
     </button>
-    <!-- <button class="btn btn-success" (click)="driverEmail()">Email to Driver</button> -->
+    <button class="btn btn-success" (click)="driverEmail()">Email to Driver</button>
     <button class="btn btn-success" (click)="generate()">Print</button>
   </div>
 </ng-template>
