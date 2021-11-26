@@ -125,11 +125,11 @@
                           <td>{{customersObjects[invOrder.customerID] |
                             titlecase}}</td>
                           <td>{{invOrder.finalAmount}}
-                            {{invOrder.charges.freightFee.currency}}</td>
+                            {{invOrder.currency}}</td>
                           <td>{{invOrder.amountReceived}}
-                            {{invOrder.charges.freightFee.currency}}</td>
+                            {{invOrder.currency}}</td>
                           <td>{{invOrder.balance}}
-                            {{invOrder.charges.freightFee.currency}}</td>
+                            {{invOrder.currency}}</td>
                           <td><span class="badge badge-dark p-1">{{invOrder.invStatus
                               | uppercase}}</span>
                           </td>
@@ -291,8 +291,7 @@
                       class="control-label
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.addAccountID"
-                      name="addChargeaccountID" placeholder="Select account"
-                      #receiptAct="ngModel" required>
+                      name="addChargeaccountID" placeholder="Select account">
                       <ng-option value="{{ item.actID }}" *ngFor="let item
                         of accounts | async">{{ item.actNo }} -
                         {{ item.actName | titlecase}}</ng-option>
@@ -405,8 +404,7 @@
                       class="control-label
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.dedAccountID"
-                      name="dedaccountID" placeholder="Select account"
-                      #receiptAct="ngModel" required>
+                      name="dedaccountID" placeholder="Select account">
                       <ng-option value="{{ item.actID }}" *ngFor="let item
                         of accounts | async">{{ item.actNo }} -
                         {{ item.actName | titlecase}}</ng-option>
