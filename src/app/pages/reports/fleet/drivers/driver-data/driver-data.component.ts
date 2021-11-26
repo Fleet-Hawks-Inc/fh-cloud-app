@@ -32,6 +32,7 @@ export class DriverDataComponent implements OnInit {
   driverCheckCount;
   selectedDriverID;
   drivers = [];
+  loaded = false
 
   statesObject: any = {};
   countriesObject: any = {};
@@ -236,58 +237,44 @@ export class DriverDataComponent implements OnInit {
 
 
   initDataTable() {
-    this.spinner.show();
-    this.apiService
-      .getData(
-        `drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`
-      )
-      .subscribe(
-        (result: any) => {
-          if (result.Items.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-          }
-          result.Items.map((v) => {
-            v.url = `/reports/fleet/drivers/driver-report/${v.driverID}`;
-          });
-          this.suggestedDrivers = [];
-          this.getStartandEndVal();
-          this.drivers = result[`Items`];
-          // this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
-          if (this.driverID !== "") {
-            this.driverStartPoint = 1;
-            this.driverEndPoint = this.totalRecords;
-          }
-          if (result[`LastEvaluatedKey`] !== undefined) {
-            const lastEvalKey = result[`LastEvaluatedKey`].driverSK.replace(
-              /#/g,
-              "--"
-            );
-            this.driverNext = false;
-            // for prev button
-            if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
-              this.driverPrevEvauatedKeys.push(lastEvalKey);
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService
+        .getData(
+          `drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`
+        )
+        .subscribe(
+          (result: any) => {
+            result.Items.map((v) => {
+              v.url = `/reports/fleet/drivers/driver-report/${v.driverID}`;
+            });
+            if (result.Items.length === 0) {
+
+              this.dataMessage = Constants.NO_RECORDS_FOUND
             }
-            this.lastEvaluatedKey = lastEvalKey;
-          } else {
-            this.driverNext = true;
-            this.lastEvaluatedKey = "";
-            this.driverEndPoint = this.totalRecords;
-          }
-          if (this.totalRecords < this.driverEndPoint) {
-            this.driverEndPoint = this.totalRecords;
-          }
-          // disable prev btn
-          if (this.driverDraw > 0) {
-            this.driverPrev = false;
-          } else {
-            this.driverPrev = true;
-          }
-          this.spinner.hide();
-        },
-        (err) => {
-          this.spinner.hide();
-        }
-      );
+            if (result.Items.length === 0) {
+
+              this.dataMessage = Constants.NO_RECORDS_FOUND
+            }
+            if (result.Items.length > 0) {
+
+              if (result.LastEvaluatedKey !== undefined) {
+                this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+              }
+              else {
+                this.lastEvaluatedKey = 'end'
+              }
+              this.drivers = this.drivers.concat(result.Items)
+
+              this.loaded = true;
+            }
+          });
+    }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fetchDriversCount();
+    }
+    this.loaded = false;
   }
   fetchAddress(drivers: any) {
     for (let d = 0; d < drivers.length; d++) {
@@ -297,7 +284,7 @@ export class DriverDataComponent implements OnInit {
             e.citizenship
           );
       });
-      // for(let i=0;i<drivers[d].address.length; i++){
+
       if (drivers[d].address !== undefined) {
         drivers[d].address.map(async (a: any) => {
           if (a.manual) {
@@ -313,7 +300,7 @@ export class DriverDataComponent implements OnInit {
         });
       }
 
-      // }
+
     }
   }
   searchFilter() {
@@ -328,6 +315,7 @@ export class DriverDataComponent implements OnInit {
       }
       this.drivers = [];
       this.dataMessage = Constants.FETCHING_DATA;
+      this.lastEvaluatedKey = ''
       this.suggestedDrivers = [];
       this.fetchDriversCount();
     } else {
@@ -348,189 +336,11 @@ export class DriverDataComponent implements OnInit {
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchDriversCount();
+      this.lastEvaluatedKey = ''
       this.driverDraw = 0;
-      this.resetCountResult();
     } else {
       return false;
     }
   }
 
-  hideShowColumn() {
-    //for headers
-    if (this.hideShow.name == false) {
-      $(".col1").css("display", "none");
-    } else {
-      $(".col1").css("display", "");
-    }
-
-    if (this.hideShow.dutyStatus == false) {
-      $(".col2").css("display", "none");
-    } else {
-      $(".col2").css("display", "");
-    }
-
-    if (this.hideShow.location == false) {
-      $(".col18").css("display", "none");
-    } else {
-      $(".col18").css("display", "");
-    }
-
-    if (this.hideShow.currCycle == false) {
-      $(".col11").css("display", "none");
-    } else {
-      $(".col11").css("display", "");
-    }
-
-    if (this.hideShow.currVehicle == false) {
-      $(".col12").css("display", "none");
-    } else {
-      $(".col12").removeClass("extra");
-      $(".col12").css("display", "");
-      $(".col12").css("min-width", "200px");
-    }
-
-    if (this.hideShow.assets == false) {
-      $(".col13").css("display", "none");
-    } else {
-      $(".col13").removeClass("extra");
-      $(".col13").css("display", "");
-      $(".col13").css("min-width", "200px");
-    }
-
-    if (this.hideShow.contact == false) {
-      $(".col14").css("display", "none");
-    } else {
-      $(".col14").removeClass("extra");
-      $(".col14").css("display", "");
-      $(".col14").css("min-width", "200px");
-    }
-
-    if (this.hideShow.dl == false) {
-      $(".col15").css("display", "none");
-    } else {
-      $(".col15").removeClass("extra");
-      $(".col15").css("display", "");
-      $(".col15").css("min-width", "200px");
-    }
-
-    if (this.hideShow.document == false) {
-      $(".col16").css("display", "none");
-    } else {
-      $(".col16").removeClass("extra");
-      $(".col16").css("display", "");
-      $(".col16").css("min-width", "200px");
-    }
-
-    if (this.hideShow.status == false) {
-      $(".col17").css("display", "none");
-    } else {
-      $(".col17").css("display", "");
-    }
-
-    //extra columns
-    if (this.hideShow.groupID == false) {
-      $(".col3").css("display", "none");
-    } else {
-      $(".col3").removeClass("extra");
-      $(".col3").css("display", "");
-      $(".col3").css("min-width", "200px");
-    }
-
-    if (this.hideShow.citizenship == false) {
-      $(".col4").css("display", "none");
-    } else {
-      $(".col4").removeClass("extra");
-      $(".col4").css("display", "");
-      $(".col4").css("min-width", "200px");
-    }
-
-    if (this.hideShow.address == false) {
-      $(".col5").css("display", "none");
-    } else {
-      $(".col5").removeClass("extra");
-      $(".col5").css("display", "");
-      $(".col5").css("min-width", "200px");
-    }
-
-    if (this.hideShow.paymentType == false) {
-      $(".col6").css("display", "none");
-    } else {
-      $(".col6").removeClass("extra");
-      $(".col6").css("display", "");
-      $(".col6").css("min-width", "200px");
-    }
-
-    if (this.hideShow.sin == false) {
-      $(".col7").css("display", "none");
-    } else {
-      $(".col7").removeClass("extra");
-      $(".col7").css("display", "");
-      $(".col7").css("min-width", "200px");
-    }
-
-    if (this.hideShow.contractStart == false) {
-      $(".col8").css("display", "none");
-    } else {
-      $(".col8").removeClass("extra");
-      $(".col8").css("display", "");
-      $(".col8").css("min-width", "200px");
-    }
-
-    if (this.hideShow.homeTerminal == false) {
-      $(".col9").css("display", "none");
-    } else {
-      $(".col9").removeClass("extra");
-      $(".col9").css("display", "");
-      $(".col9").css("min-width", "200px");
-    }
-
-    if (this.hideShow.fastNumber == false) {
-      $(".col10").css("display", "none");
-    } else {
-      $(".col10").removeClass("extra");
-      $(".col10").css("display", "");
-      $(".col10").css("min-width", "200px");
-    }
-  }
-
-  getStartandEndVal() {
-    this.driverStartPoint = this.driverDraw * this.pageLength + 1;
-    this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.driverNext = true;
-    this.driverPrev = true;
-    this.driverDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.driverNext = true;
-    this.driverPrev = true;
-    this.driverDraw -= 1;
-    this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.driverStartPoint = 1;
-    this.driverEndPoint = this.pageLength;
-    this.driverDraw = 0;
-  }
-
-  refreshData() {
-    this.drivers = [];
-    this.driverID = "";
-    this.dutyStatus = "";
-    this.driverName = "";
-    this.driverType = null;
-    this.lastEvaluatedKey = "";
-    this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchDriversCount();
-    this.driverDraw = 0;
-    this.resetCountResult();
-  }
 }

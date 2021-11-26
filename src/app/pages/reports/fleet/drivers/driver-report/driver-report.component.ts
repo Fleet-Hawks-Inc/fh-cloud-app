@@ -25,11 +25,13 @@ export class DriverReportComponent implements OnInit {
   end = null
   driver = []
   order = []
-  suggestedDrivers = [];
+
   driverID = "";
   dataMessage: string = Constants.FETCHING_DATA
   driverName = ''
-  loaded = false
+
+  DrivN = []
+
 
   ngOnInit(): void {
     this.drivIDs = this.route.snapshot.params['drivIDs']
@@ -37,31 +39,14 @@ export class DriverReportComponent implements OnInit {
     this.start = moment().subtract(1, "months").format("YYYY-MM-DD");
 
     this.fetchTrip();
+    this.fetchDriverName();
   }
-  getSuggestions = _.debounce(function (value) {
-    this.driverID = "";
-    value = value.toLowerCase();
-    if (value != "") {
-      this.apiService
-        .getData(`drivers/get/suggestions/${value}`)
-        .subscribe((result) => {
-          result.map((v) => {
-            if (v.lastName == undefined) {
-              v.lastName = "";
-            }
-            return v;
-          });
-          this.suggestedDrivers = result;
-        });
-    } else {
-      this.suggestedDrivers = [];
-    }
-  }, 800);
 
-  setDriver(driverIDs, driverName) {
-    this.driverName = driverName;
-    this.driverIDs = driverIDs;
-    this.suggestedDrivers = [];
+
+  fetchDriverName() {
+    this.apiService.getData(`drivers/fetch/driver/detail/${this.drivIDs}`).subscribe((result: any) => {
+      this.DrivN = result.Items
+    })
   }
 
   fetchTrip() {
@@ -79,17 +64,10 @@ export class DriverReportComponent implements OnInit {
         this.dataMessage = Constants.NO_RECORDS_FOUND
       }
 
-      console.log("Trip", this.data)
-      this.suggestedDrivers = [];
+
 
 
     })
-  }
-  onScroll() {
-    if (this.loaded) {
-      this.fetchTrip();
-    }
-    this.loaded = false;
   }
 
   searchFilter() {
@@ -97,27 +75,12 @@ export class DriverReportComponent implements OnInit {
       this.data = []
       this.dataMessage = Constants.FETCHING_DATA
       this.fetchTrip()
-      this.suggestedDrivers = [];
+
     }
     else {
       return false;
     }
   }
-  resetFilter() {
-    if (this.drivIDs !== '' && this.start !== null && this.end !== null) {
-      this.data = []
-      this.drivIDs = ''
-      this.start = null
-      this.end = null
-      this.dataMessage = Constants.NO_RECORDS_FOUND
-      this.fetchTrip();
-    }
-    else {
-      return false;
-    }
-  }
-
-
   generateCSV() {
     if (this.data.length > 0) {
       let dataObject = []
@@ -136,7 +99,7 @@ export class DriverReportComponent implements OnInit {
         let obj = {}
         obj["Name"] = element.driverName
         obj["Trip Number"] = element.tripNo
-        obj["Order Number"] = element.orderNumber
+        obj["Order Number"] = element.orderNumber.replace(/,/g, '&')
         obj["Location"] = location
         obj["Total Miles"] = element.miles
         dataObject.push(obj)
