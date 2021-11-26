@@ -13,7 +13,9 @@ import { format } from 'path';
   styleUrls: ['./driver-report.component.css']
 })
 export class DriverReportComponent implements OnInit {
-
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public drivIDs;
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
@@ -25,7 +27,7 @@ export class DriverReportComponent implements OnInit {
   order = []
   suggestedDrivers = [];
   driverID = "";
-  dataMessage: string = Constants.NO_RECORDS_FOUND
+  dataMessage: string = Constants.FETCHING_DATA
   driverName = ''
   loaded = false
 
@@ -91,7 +93,7 @@ export class DriverReportComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.driverIDs !== '' && this.start !== null && this.end !== null) {
+    if (this.drivIDs !== '' && this.start !== null && this.end !== null) {
       this.data = []
       this.dataMessage = Constants.FETCHING_DATA
       this.fetchTrip()
@@ -102,12 +104,12 @@ export class DriverReportComponent implements OnInit {
     }
   }
   resetFilter() {
-    if (this.driverIDs !== '' && this.start !== null && this.end !== null) {
+    if (this.drivIDs !== '' && this.start !== null && this.end !== null) {
       this.data = []
-      this.driverIDs = ''
+      this.drivIDs = ''
       this.start = null
       this.end = null
-      this.dataMessage = Constants.FETCHING_DATA
+      this.dataMessage = Constants.NO_RECORDS_FOUND
       this.fetchTrip();
     }
     else {
