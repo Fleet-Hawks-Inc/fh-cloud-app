@@ -24,7 +24,7 @@
             <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{ orderID }}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i>
               Edit Order</a>
-            <a routerLink="/dispatch/orders" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
+            <a (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All Orders</a>
             <div class="btn-group flex-wrap" *ngIf="!environment">
               <button type="button" class="btn btn-success btn-sm
                 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -1232,7 +1232,7 @@
                           <br /></span>
                         {{ invoiceData.data[0].customerData.address }} <br />
                       </td>
-                      <td style="text-align: right; font-size: 13px">
+                      <td style="padding: 10px; text-align: right; font-size: 13px">
                         <div>
                           <b>Phone:</b>
                           {{
@@ -1250,6 +1250,42 @@
                           }}
                         </div>
                       </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <table width="100%" style="color: #040404;margin-top: 0px; border-bottom: 1px
+                      solid #cdcdcd">
+                  <tbody>
+                    <tr>
+                      <td style="padding: 10px; font-size: 13px" valign="top">
+                        <div>
+                          <span>
+                            <b style="font-size: 12px">Vehicle(s):</b>
+                          </span>
+                          <span style="text-transform: capitalize" *ngIf="vehicles.length === 0;">
+                            NA
+                          </span>
+                          <span style="text-transform: capitalize" *ngFor="let veh of vehicles; let isLast=last">
+                            {{veh.vehicleIdentification}} <span *ngIf="!isLast">,</span>
+                          </span>
+                        </div>
+                      </td>
+
+                      <td style="padding: 10px; font-size: 13px" valign="top" align="right">
+                        <div>
+                          <span>
+                            <b style="font-size: 12px">Asset(s):</b>
+                          </span>
+                          <span style="text-transform: capitalize" *ngIf="assets.length === 0;">
+                            NA
+                          </span>
+                          <span style="text-transform: capitalize" *ngFor="let ast of assets; let isLast=last">
+                            {{ast.assetIdentification}} <span *ngIf="!isLast">,</span>
+                          </span>
+                        </div>
+                      </td>
+
                     </tr>
                   </tbody>
                 </table>
@@ -1774,32 +1810,11 @@
       </button>
     </div>
     <div class="modal-body p-0">
-      <section class="invoice-wrapper p-4" style="background-color:
+      <section class="invoice-wrapper p-2" style="background-color:
         #fff;max-height: 650px;overflow-y: auto;
         overflow-x: hidden;">
         <div class="row">
-          <!-- <div class="col-3 border-right">
-            <div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked disabled>
-                <label class="form-check-label" for="defaultCheck1">
-                  Invoice
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-                <label class="form-check-label" for="defaultCheck2">
-                  BOL
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-                <label class="form-check-label" for="defaultCheck3">
-                  Order Confirmation
-                </label>
-              </div>
-            </div>
-          </div> -->
+
           <div class="col-12">
             <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
               <table width="100%">
@@ -1835,6 +1850,12 @@
                                   <b>Order#</b>
                                 </span>
                                 {{ orderNumber }}
+                              </p>
+                              <p style="margin: 0; color: #000">
+                                <span style="font-size: 12px">
+                                  <b>Customer Confirmation#: </b>
+                                </span>
+                                {{ invoiceData.cusConfirmation }}
                               </p>
                             </td>
                             <td width="60%" class="title" valign="top" style="padding: 10px; text-align: right">
@@ -1876,7 +1897,7 @@
                         1px solid #cdcdcd">
                         <tbody>
                           <tr>
-                            <td style="padding: 10px; font-size: 13px" valign="top">
+                            <td style="color: #040404;padding: 10px; font-size: 13px" valign="top">
                               <b style="font-size: 12px">Customer:</b> <br />
                               <span style="text-transform: capitalize">
                                 {{ invoiceData.data[0].customerData.companyName
@@ -1884,7 +1905,7 @@
                                 <br /></span>
                               {{ invoiceData.data[0].customerData.address }} <br />
                             </td>
-                            <td style="text-align: right; font-size: 13px">
+                            <td style="color: #040404;padding: 10px; text-align: right; font-size: 13px">
                               <div>
                                 <b>Phone:</b>
                                 {{
@@ -1905,13 +1926,49 @@
                           </tr>
                         </tbody>
                       </table>
+
+                      <table width="100%" style="color: #040404;margin-top: 0px; border-bottom: 1px
+                      solid #cdcdcd">
+                        <tbody>
+                          <tr>
+                            <td style="padding: 10px; font-size: 13px" valign="top">
+                              <div>
+                                <span>
+                                  <b style="font-size: 12px">Vehicle(s):</b>
+                                </span>
+                                <span style="text-transform: capitalize" *ngIf="vehicles.length === 0;">
+                                  NA
+                                </span>
+                                <span style="text-transform: capitalize" *ngFor="let veh of vehicles; let isLast=last">
+                                  {{veh.vehicleIdentification}} <span *ngIf="!isLast">,</span>
+                                </span>
+                              </div>
+                            </td>
+
+                            <td style="padding: 10px; font-size: 13px" valign="top" align="right">
+                              <div>
+                                <span>
+                                  <b style="font-size: 12px">Asset(s):</b>
+                                </span>
+                                <span style="text-transform: capitalize" *ngIf="assets.length === 0;">
+                                  NA
+                                </span>
+                                <span style="text-transform: capitalize" *ngFor="let ast of assets; let isLast=last">
+                                  {{ast.assetIdentification}} <span *ngIf="!isLast">,</span>
+                                </span>
+                              </div>
+                            </td>
+
+                          </tr>
+                        </tbody>
+                      </table>
                     </td>
                   </tr>
 
                   <tr>
                     <td>
                       <div class="p-2">
-                        <table width="100%" class="invoice-iner__wrapper" style="padding: 10px">
+                        <table width="100%" class="invoice-iner__wrapper" style="color: #040404;padding: 10px">
                           <tbody>
                             <tr>
                               <td valign="top" colspan="2">
@@ -2170,7 +2227,7 @@
                           </tbody>
                         </table>
 
-                        <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
+                        <table class="invoice-iner__wrapper" width="100%" style="color: #040404;border-top: none">
                           <tbody>
                             <tr>
                               <td colspan="6">
