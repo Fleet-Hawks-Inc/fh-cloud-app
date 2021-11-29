@@ -122,7 +122,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        console.log(this.assetPositions)
 
       } else {
         // console.log('No data');
@@ -149,17 +148,14 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
               time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
               speed: devices.location.speed,
               vehicleID: devices.vehicleID,
-              // altitude: parseInt(devices.altitude).toFixed(2),
-              // battery: devices.battery,
-              // temp: devices.temp,
               location: devices.location.label
             }
           });
         }
-        console.log(this.vehicleDashPositions)
+
 
       } else {
-        // console.log('No data');
+        // Do nothing
       }
 
 
@@ -204,10 +200,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   }
 
   prepareVehicleInfoTemplate(data: any) {
-    console.log('data', data);
-    this.center = { lat: 22.561779, lng: 113.938431 };
-    this.zoom = 11;
-    return `<a href='#/fleet/assets/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
+    return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
     Speed: ${data.speed} KM/H 
     Time : ${data.time}<br/> <br/>   
      `;
