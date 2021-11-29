@@ -19,13 +19,31 @@
                             </ng-option>
                         </ng-select>
                     </div>
+                    
+                     <div class="col-md-3 col-lg-3 pr-0">
+                     <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
+                        <span class="input-group-prepend">
+                           <span class="input-group-text">
+                              <i class="fas fa-calendar-alt"></i>
+                           </span>
+                        </span>
+                        <input [(ngModel)]="start" name="fromDate" type="text" placeholder="yyyy/mm/dd"
+                           (click)="from.toggle()" ngbDatepicker #from="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                        <span class="input-group-text border-left-0 border-right-0 rounded-0">
+                           to
+                        </span>
+                        <input [(ngModel)]="end" name="toDate" type="text" placeholder="yyyy/mm/dd"
+                           (click)="to.toggle()" ngbDatepicker #to="ngbDatepicker" class="form-control"
+                           autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit">
+                     </div>
+                  </div>
                     <div class="col-md-2 col-lg-2">
                         <button type="submit" (click)="searchFilter()"
                             class="btn btn-sm btn-success mr-3">Search</button>
                         <button class="btn btn-sm btn-success" (click)="resetFilter()" type="submit">Reset</button>
                     </div>
-
-                    <div class="col-md-6 col-lg-6 text-right pr-1">
+                <div class="col-md-3 col-lg-3 text-right pr-1">
                         <div class="btn-group flex-wrap ml-2">
                             <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
                                 aria-expanded="false"><i class="fas fa-upload"></i> Export<span
@@ -51,25 +69,18 @@
                             </div>
                         </div>
                     </div>
+                  
                     <div class="col-4 mb-3">
                         <div class="bg-white p-3">
                             <div>
-                                <h4 class="m-0 text-4">Total Distance</h4>
-                                <h4 class="mt-1 mb-0 font-weight-bold">{{fuelCount.fuel_Odometer}} Odometer</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-4 mb-3">
-                        <div class="bg-white p-3">
-                            <div>
-                                <h4 class="m-0 text-4">Total Fuel Consume</h4>
+                                <h4 class="m-0 text-4">Total Fuel Consumed</h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.l_quantity}} Liters</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.l_quantity | number : '1.2-2' }} LTR</h4>
                                 </div>
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.g_quantity}} Gallons</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.g_quantity | number : '1.2-2' }} GL</h4>
                                 </div>
                             </div>
                         </div>
@@ -81,10 +92,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.cad_amount}} CAD</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.cad_amount | number : '1.2-2'}} CAD</h4>
                                 </div>
                                 <div class="col-lg-12">
-                                    <p class="tileCur mt-0 mb-0">{{fuelCount.usd_amount}} USD</p>
+                                    <h4 class="m-0 text-4-bold">{{fuelCount.usd_amount | number : '1.2-2'}} USD</h4>
                                 </div>
                             </div>
 
@@ -100,15 +111,16 @@
                                             <thead>
                                                 <tr class="back-color-gray">
                                                     <th style="">Date</th>
+                                                    <th>Use Type</th>
                                                     <th>Unit Name</th>
                                                     <th>Fuel Card#</th>
                                                     <th>City</th>
-                                                    <th>Fuel Quantity</th>
-                                                    <th>Use Type</th>
-                                                    <th>Odometer</th>
                                                     <th>Fuel Type</th>
+                                                    <th>Fuel Quantity</th>
+                                                    <th>Litres or Gallons</th>
+                                                    <th>Odometer</th>
                                                     <th>Total Discount</th>
-                                                    <th>Liters or Gallons</th>
+                                                    
                                                     <th>Total Amount</th>
                                                 </tr>
                                             </thead>
@@ -121,7 +133,12 @@
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.date">{{fuelEntry.data.date}}</span>
                                                         </td>
-                                                        <td> <span *ngIf="fuelEntry.unitID">
+                                                        
+                                                        <td class="line-height-lg text-capitalize" ><span
+                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
+                                                        </td>
+                                                        
+                                                        <td class="line-height-lg text-capitalize"> <span *ngIf="fuelEntry.unitID">
                                                                 <span
                                                                     *ngIf="fuelEntry.unitType!='reefer'">{{vehicleList[fuelEntry.unitID]}}</span>
 
@@ -137,21 +154,21 @@
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.city">{{fuelEntry.data.city}}</span>
                                                         </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.useType">{{fuelEntry.data.useType}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer}}</span>
-                                                        </td>
-
+                                                        
                                                         <td><span
                                                                 *ngIf="fuelEntry.data.fuelID">{{fuelEntry.data.type}}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.qty">{{fuelEntry.data.qty | number : '1.2-2'}}</span>
+                                                        </td>
+                                                        
+                                                        <td class="cursorpoint"><span
+                                                                *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom === "L" ? 'LTR' : 'GL' }}</span>
+                                                        </td>
+
+                                                        <td><span
+                                                                *ngIf="fuelEntry.data.odometer">{{fuelEntry.data.odometer }}</span>
                                                         </td>
 
                                                         <td><span
@@ -159,11 +176,7 @@
                                                         </td>
 
                                                         <td><span
-                                                                *ngIf="fuelEntry.data.uom">{{fuelEntry.data.uom}}</span>
-                                                        </td>
-
-                                                        <td><span
-                                                                *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt}}&nbsp;{{fuelEntry.data.currency}}</span>
+                                                                *ngIf="fuelEntry.data.amt">{{fuelEntry.data.amt | number : '1.2-2' }}&nbsp;{{fuelEntry.data.currency}}</span>
                                                         </td>
                                                     </tr>
                                                 </ng-container>

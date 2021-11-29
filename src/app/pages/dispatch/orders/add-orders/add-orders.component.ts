@@ -1,23 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService, ListService } from "../../../../services";
-import { Router, ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, from, Subject, throwError } from "rxjs";
-import * as _ from "lodash";
-import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
-import { map } from "rxjs/operators";
-import { HereMapService } from "../../../../services";
-import { environment } from "../../../../../environments/environment.prod";
-import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
-import { NgForm } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer } from "@angular/platform-browser";
-
-import { Auth } from "aws-amplify";
 import { Location } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbCalendar, NgbDateAdapter, NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
+import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
+import { BehaviorSubject, from, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-import { element } from "protractor";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { v4 as uuidv4 } from 'uuid';
+import { environment } from "../../../../../environments/environment.prod";
+import { ApiService, HereMapService, ListService } from "../../../../services";
+import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
+
 
 declare var $: any;
 declare var H: any;
@@ -370,7 +368,8 @@ export class AddOrdersComponent implements OnInit {
     private listService: ListService,
     private domSanitizer: DomSanitizer,
     private location: Location,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagement: RouteManagementServiceService
   ) {
     const current = new Date();
 
@@ -443,7 +442,12 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+
+    this.location.back();
+  }
+  goBack() {
+
+    this.router.navigate([`/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`])// <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -1165,7 +1169,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-            this.getAllCords.join(";")
+              this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1502,7 +1506,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1528,13 +1532,13 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -1544,12 +1548,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -1904,7 +1908,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
-
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
@@ -1930,7 +1933,6 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
       this.stateReceiverIndex = i;
-
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
@@ -2214,6 +2216,9 @@ export class AddOrdersComponent implements OnInit {
             amount: state ? state.PST : "",
           },
         ];
+        this.orderData["recptStat"] = result.recptStat
+          ? result.recptStat
+          : false;
         this.orderData["customerID"] = result.customerID;
         this.orderData.cusConfirmation = result.cusConfirmation;
         this.selectedCustomer(result.customerID);
@@ -2561,7 +2566,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2582,13 +2587,13 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -3224,7 +3229,8 @@ export class AddOrdersComponent implements OnInit {
       .getData(
         `orders/validate/pos?value=${encodeURIComponent(
           JSON.stringify(pos)
-        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${this.getOrderID
+        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${
+          this.getOrderID
         }`
       )
       .toPromise();
