@@ -13,9 +13,9 @@
       </header>
       <div style="height: calc(100vh - 110px);width: 100%;">
         <google-map [width]="width" [height]="height" [center]="center" [zoom]="5">
-          <map-marker #marker="mapMarker" *ngFor="let markerPosition of markerPositions"
-            [position]="markerPosition.position" [options]="markerOptions"
-            (mapClick)="openInfoWindow(marker, markerPosition.data,'driver')"></map-marker>
+          <map-marker #marker="mapMarker" *ngFor="let driverPosition of driverMarkerOptions"
+            [position]="driverPosition.position" [options]="markerOptions"
+            (mapClick)="openInfoWindow(marker, driverPosition.data,'driver')"></map-marker>
           <map-info-window [innerHTML]="infoDetail"></map-info-window>
           <map-marker #marker="mapMarker" *ngFor="let assetPosition of assetPositions"
             [position]="assetPosition.position" [options]="assetMarkerOptions"

@@ -46,7 +46,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
   markerPositions = [];
   assetPositions = [];
-
+  vehicleDashPositions = [];
 
   isControlAdded = false;
   frontEndData = {
@@ -131,7 +131,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     })
 
   }
-  vehicleDashPositions
+
   /**
  * Get vehicle location by dashCam
  */
@@ -140,7 +140,6 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
       if (data) {
         this.vehicleDashPositions = [];
         for (const devices of data) {
-          console.log(devices);
           this.vehicleDashPositions.push({
             position: { lng: parseFloat(devices.location.lng), lat: parseFloat(devices.location.lat) },
             data: {
