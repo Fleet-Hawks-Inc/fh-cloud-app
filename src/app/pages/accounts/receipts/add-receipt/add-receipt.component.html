@@ -151,7 +151,7 @@
                               name="invOrder.amountPaid{{i}}"
                               [disabled]="invOrder.payDisable"
                               max="{{invOrder.balance}}" min="0"
-                              (change)="findReceivedAmtFn(); applyDiscount(i,
+                              (change)="applyDiscount(i,
                               'order')"
                               class="form-control input-sm p-0">
                           </td>
@@ -181,7 +181,7 @@
                               name="inv.amountPaid{{j}}"
                               max="{{inv.balance}}" min="0"
                               [disabled]="inv.payDisable"
-                              (change)="findReceivedAmtFn(); applyDiscount(j,
+                              (change)="applyDiscount(j,
                               'inv')"
                               class="form-control input-sm p-0">
                           </td>
@@ -292,9 +292,8 @@
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.addAccountID"
                       name="addChargeaccountID" placeholder="Select account">
-                      <ng-option value="{{ item.actID }}" *ngFor="let item
-                        of accounts | async">{{ item.actNo }} -
-                        {{ item.actName | titlecase}}</ng-option>
+                      <ng-option value="{{ item.key }}" *ngFor="let item
+                        of accounts | keyvalue">{{ item.value }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -404,10 +403,10 @@
                       class="control-label
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.dedAccountID"
-                      name="dedaccountID" placeholder="Select account">
-                      <ng-option value="{{ item.actID }}" *ngFor="let item
-                        of accounts | async">{{ item.actNo }} -
-                        {{ item.actName | titlecase}}</ng-option>
+                      name="dedaccountID" placeholder="Select account"
+                      id="ded_acc" (change)="getJournalPreview()">
+                      <ng-option value="{{ item.key }}" *ngFor="let item
+                        of accounts | keyvalue">{{ item.value }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -443,7 +442,7 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <input type="number" min="0" class="form-control"
-                              [(ngModel)]="receiptData.totalAmount"
+                              [(ngModel)]="totalAmount"
                               name="totalAmount" [disabled]="true">
                           </div>
                           <div class="col-lg-6">
@@ -514,19 +513,40 @@
                     </div>
                     <div class="row mt-5">
                       <div class="col-lg-10">
+                        <label class="control-label font-weight-bold
+                          font-weight-bold text-lg-right text-5">Journal</label>
+                      </div>
+                      <div class="col-lg-10">
                         <table class="table table-bordered table-hover">
                           <thead>
                             <tr>
                               <th>Account Name</th>
-                              <th>Name</th>
                               <th>Type</th>
-                              <th>Debit</th>
                               <th>Credit</th>
+                              <th>Debit</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>=</td>
+                            <tr *ngIf="journalPrev.length === 0"
+                              class="text-center">
+                              <td colspan="4">{{ dataMessageAdv }}</td>
+                            </tr>
+                            <tr *ngFor="let data of journalPrev">
+                              <td>
+                                <span *ngIf="data.cType === 'add' || data.cType
+                                  === 'ded' || data.cType === 'recpt'">
+                                  {{ accounts[data.accName] }}
+                                </span>
+                                <span *ngIf="data.cType === 'recv' || data.cType
+                                  === 'dis'">
+                                  {{ data.accName }}
+                                </span>
+                              </td>
+                              <td>{{ data.jType }}</td>
+                              <td>{{ data.type == 'credit' ? data.amount: '0.00'
+                                }} {{ receiptData.recAmountCur }}</td>
+                              <td>{{ data.type == 'debit' ? data.amount: '0.00'
+                                }} {{ receiptData.recAmountCur }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -541,10 +561,10 @@
                           Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="receiptData.accountID"
                           name="accountID" placeholder="Select account"
-                          #receiptAct="ngModel" required>
-                          <ng-option value="{{ item.actID }}" *ngFor="let item
-                            of accounts | async">{{ item.actNo }} -
-                            {{ item.actName | titlecase}}</ng-option>
+                          #receiptAct="ngModel" required
+                          (change)="getJournalPreview()">
+                          <ng-option value="{{ item.key }}" *ngFor="let item
+                            of accounts | keyvalue">{{ item.value }}</ng-option>
                         </ng-select>
                         <div *ngIf="receiptAct.invalid && (receiptAct.dirty ||
                           receiptAct.touched)" class="text-danger">

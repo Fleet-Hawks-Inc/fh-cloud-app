@@ -674,6 +674,12 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData.taxObj.carrFedAmount = Number(
       this.settlementData.taxObj.carrFedAmount.toFixed(2)
     );
+    this.settlementData.fuelAdd = Number(
+      this.settlementData.fuelAdd.toFixed(2)
+    );
+    this.settlementData.fuelDed = Number(
+      this.settlementData.fuelDed.toFixed(2)
+    );
     this.finalPayment = this.settlementData.finalTotal;
 
     if (this.settlementData.type === "owner_operator") {

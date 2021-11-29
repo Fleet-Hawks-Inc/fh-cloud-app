@@ -1,0 +1,22 @@
+import { Injectable } from "@angular/core";
+import { AccountService } from "./account.service";
+
+@Injectable({
+  providedIn: "root",
+})
+export class AccountUtitlityServiceService {
+  constructor(private accountService: AccountService) {}
+
+  predefinedAccounts: any = {};
+
+  public getPreDefinedAccounts = async (): Promise<any[]> => {
+    var size = Object.keys(this.predefinedAccounts).length;
+    if (size === 0) {
+      const result = await this.accountService
+        .getData("chartAc/get/internalID/list/all")
+        .toPromise();
+      this.predefinedAccounts = result;
+    }
+    return this.predefinedAccounts;
+  };
+}
