@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'src/app/services';
-import { environment } from 'src/environments/environment';
 import Constants from 'src/app/pages/fleet/constants';
 import { result } from 'lodash';
 import { timeStamp } from 'console';
@@ -85,8 +84,8 @@ export class DriverSummaryComponent implements OnInit {
             return false;
         }
     }
-    
-   
+
+
     getSuggestions = _.debounce(function (value) {
         this.driverID = "";
         value = value.toLowerCase();
@@ -100,14 +99,14 @@ export class DriverSummaryComponent implements OnInit {
             this.suggestedDrivers = []
         }
     }, 800);
-    
+
 
     setDriver(driverID, driverName) {
         this.driverName = driverName;
         this.driverID = driverName;
         this.suggestedDrivers = [];
     }
-    
+
 
     resetDriver() {
         if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {

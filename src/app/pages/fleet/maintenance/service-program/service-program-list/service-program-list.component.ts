@@ -11,7 +11,7 @@ import * as _ from 'lodash';
   templateUrl: './service-program-list.component.html',
   styleUrls: ['./service-program-list.component.css'],
 })
-export class ServiceProgramListComponent implements  OnInit {
+export class ServiceProgramListComponent implements OnInit {
 
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
@@ -30,25 +30,25 @@ export class ServiceProgramListComponent implements  OnInit {
   serviceProgramStartPoint = 1;
   serviceProgramEndPoint = this.pageLength;
   suggestions = [];
-
+  loaded = false
   constructor(
-      private apiService: ApiService,
-      private spinner: NgxSpinnerService,
-      private toastr: ToastrService
-    ) {}
+    private apiService: ApiService,
+    private spinner: NgxSpinnerService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     this.fetchProgramsCount();
   }
 
   fetchProgramsCount() {
-    this.apiService.getData('servicePrograms/get/count?programName='+this.programeName).subscribe({
-      complete: () => {},
-      error: () => {},
+    this.apiService.getData('servicePrograms/get/count?programName=' + this.programeName).subscribe({
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.programeName != '') {
+        if (this.programeName != '') {
           this.serviceProgramEndPoint = this.totalRecords;
         }
 
@@ -57,48 +57,36 @@ export class ServiceProgramListComponent implements  OnInit {
     });
   }
 
+
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('servicePrograms/fetch/records?programName='+this.programeName + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if(result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.getStartandEndVal();
-        this.programs = result['Items'];
-        if (this.programeName != '') {
-          this.serviceProgramStartPoint = 1;
-          this.serviceProgramEndPoint = this.totalRecords;
-        }
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('servicePrograms/fetch/records?programName=' + this.programeName + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
 
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.serviceProgramNext = false;
-          // for prev button
-          if (!this.serviceProgramPrevEvauatedKeys.includes(result['LastEvaluatedKey'].programID)) {
-            this.serviceProgramPrevEvauatedKeys.push(result['LastEvaluatedKey'].programID);
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].programID;
+          this.suggestions = [];
+          if (result.Items.length > 0) {
 
-        } else {
-          this.serviceProgramNext = true;
-          this.lastEvaluatedKey = '';
-          this.serviceProgramEndPoint = this.totalRecords;
-        }
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].programID);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.programs = this.programs.concat(result.Items)
 
-        if(this.totalRecords < this.serviceProgramEndPoint) {
-          this.serviceProgramEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.serviceProgramDraw > 0) {
-          this.serviceProgramPrev = false;
-        } else {
-          this.serviceProgramPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+            this.loaded = true;
+          }
+        });
+    }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fetchProgramsCount();
+    }
+    this.loaded = false;
   }
 
   searchFilter() {
@@ -106,6 +94,7 @@ export class ServiceProgramListComponent implements  OnInit {
       this.programeName = this.programeName.toLowerCase();
       this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
+      this.lastEvaluatedKey = ''
       this.fetchProgramsCount();
     } else {
       return false;
@@ -117,8 +106,9 @@ export class ServiceProgramListComponent implements  OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.programeName = '';
       this.programs = [];
+      this.lastEvaluatedKey = ''
       this.fetchProgramsCount();
-      this.resetCountResult();
+
     } else {
       return false;
     }
@@ -127,52 +117,25 @@ export class ServiceProgramListComponent implements  OnInit {
   deleteProgram(entryID, programName) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .deleteData(`servicePrograms/isDeleted/${entryID}/${programName}/` + 1)
-      .subscribe((result: any) => {
-        this.programs = [];
-        this.serviceProgramDraw = 0;
-        this.lastEvaluatedKey = '';
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchProgramsCount();
-        this.toastr.success('Service Program Deleted Successfully!');
-      });
+        .deleteData(`servicePrograms/isDeleted/${entryID}/${programName}/` + 1)
+        .subscribe((result: any) => {
+          this.programs = [];
+          this.serviceProgramDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.fetchProgramsCount();
+          this.toastr.success('Service Program Deleted Successfully!');
+        });
     }
   }
 
-  getStartandEndVal() {
-    this.serviceProgramStartPoint = this.serviceProgramDraw * this.pageLength + 1;
-    this.serviceProgramEndPoint = this.serviceProgramStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.serviceProgramNext = true;
-    this.serviceProgramPrev = true;
-    this.serviceProgramDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.serviceProgramNext = true;
-    this.serviceProgramPrev = true;
-    this.serviceProgramDraw -= 1;
-    this.lastEvaluatedKey = this.serviceProgramPrevEvauatedKeys[this.serviceProgramDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.serviceProgramStartPoint = 1;
-    this.serviceProgramEndPoint = this.pageLength;
-    this.serviceProgramDraw = 0;
-  }
 
   getSuggestions = _.debounce(function (searchvalue) {
     this.suggestions = [];
-    if(searchvalue !== '') {
+    if (searchvalue !== '') {
       searchvalue = searchvalue.toLowerCase();
-      this.apiService.getData('servicePrograms/get/suggestions/'+searchvalue).subscribe({
-        complete: () => {},
+      this.apiService.getData('servicePrograms/get/suggestions/' + searchvalue).subscribe({
+        complete: () => { },
         error: () => { },
         next: (result: any) => {
           this.suggestions = result;
@@ -192,6 +155,6 @@ export class ServiceProgramListComponent implements  OnInit {
     this.programs = [];
     this.lastEvaluatedKey = '';
     this.fetchProgramsCount();
-    this.resetCountResult();
+
   }
 }

@@ -31,7 +31,7 @@ export class IssueListComponent implements OnInit {
   issueName = '';
   issueStatus = null;
   suggestedUnits = [];
-  usersList:any = {};
+  usersList: any = {};
   assetUnitName = '';
   assetUnitID = null;
   suggestedUnitsAssets = [];
@@ -49,6 +49,7 @@ export class IssueListComponent implements OnInit {
   allVehicles = [];
   allAssets = [];
   suggestedIssues = [];
+  loaded = false
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -60,7 +61,7 @@ export class IssueListComponent implements OnInit {
     this.fetchUsersList();
     this.fetchAllAssets();
     this.fetchAllVehicles();
-   
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -71,12 +72,12 @@ export class IssueListComponent implements OnInit {
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
 
-    if(value != '') {
+    if (value != '') {
       this.apiService
-      .getData(`issues/get/suggestions/${value}`)
-      .subscribe((result) => {
-        this.suggestedIssues = result;
-      });
+        .getData(`issues/get/suggestions/${value}`)
+        .subscribe((result) => {
+          this.suggestedIssues = result;
+        });
     } else {
       this.suggestedIssues = [];
     }
@@ -109,12 +110,12 @@ export class IssueListComponent implements OnInit {
   }
   fetchIssuesCount() {
     this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&asset=' + this.assetUnitID + '&currentStatus=' + this.issueStatus).subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.totalRecords = result.Count;
 
-        if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
+        if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
           this.issuesEndPoint = this.totalRecords;
         }
 
@@ -126,68 +127,54 @@ export class IssueListComponent implements OnInit {
   deleteIssue(entryID: any, issueName: any) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.apiService
-      .deleteData(`issues/isDeleted/${entryID}/${issueName}/` + 1)
-      .subscribe((result: any) => {
-        this.issuesDraw = 0;
-        this.lastEvaluatedKey = '';
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchIssuesCount();
-        this.issues = [];
-        this.toastr.success('Issue Deleted Successfully!');
-      });
+        .deleteData(`issues/isDeleted/${entryID}/${issueName}/` + 1)
+        .subscribe((result: any) => {
+          this.issuesDraw = 0;
+          this.lastEvaluatedKey = '';
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.fetchIssuesCount();
+          this.issues = [];
+          this.toastr.success('Issue Deleted Successfully!');
+        });
     }
   }
 
+
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if(result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedIssues = [];
-        this.getStartandEndVal();
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
 
-        this.issues = result['Items'];
-        if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-          this.issuesStartPoint = 1;
-          this.issuesEndPoint = this.totalRecords;
-        }
-
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.issuesNext = false;
-          // for prev button
-          if (!this.issuesPrevEvauatedKeys.includes(result['LastEvaluatedKey'].issueID)) {
-            this.issuesPrevEvauatedKeys.push(result['LastEvaluatedKey'].issueID);
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          this.lastEvaluatedKey = result['LastEvaluatedKey'].issueID;
+          this.suggestedIssues = [];
+          if (result.Items.length > 0) {
 
-        } else {
-          this.issuesNext = true;
-          this.lastEvaluatedKey = '';
-          this.issuesEndPoint = this.totalRecords;
-        }
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].issueID);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.issues = this.issues.concat(result.Items)
 
-        if(this.totalRecords < this.issuesEndPoint) {
-          this.issuesEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.issuesDraw > 0) {
-          this.issuesPrev = false;
-        } else {
-          this.issuesPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+            this.loaded = true;
+          }
+        });
+    }
   }
-
+  onScroll() {
+    if (this.loaded) {
+      this.fetchIssuesCount();
+    }
+    this.loaded = false;
+  }
   searchFilter() {
-    if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
+    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
       this.issueName = this.issueName.toLowerCase();
       this.fetchIssuesCount();
+      this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
     } else {
@@ -196,49 +183,22 @@ export class IssueListComponent implements OnInit {
   }
 
   resetFilter() {
-    if(this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
+    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
       this.unitID = null;
       this.unitName = '';
       this.issueName = '';
       this.issueStatus = null;
       this.assetUnitID = null;
       this.suggestedIssues = [];
+      this.lastEvaluatedKey = ''
       this.fetchIssuesCount();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
-      this.resetCountResult();
     } else {
       return false;
     }
   }
 
-  getStartandEndVal() {
-    this.issuesStartPoint = this.issuesDraw * this.pageLength + 1;
-    this.issuesEndPoint = this.issuesStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.issuesNext = true;
-    this.issuesPrev = true;
-    this.issuesDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.issuesNext = true;
-    this.issuesPrev = true;
-    this.issuesDraw -= 1;
-    this.lastEvaluatedKey = this.issuesPrevEvauatedKeys[this.issuesDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.issuesStartPoint = 1;
-    this.issuesEndPoint = this.pageLength;
-    this.issuesDraw = 0;
-  }
 
   fetchAllVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -246,13 +206,13 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  
+
   fetchAllAssets() {
     this.apiService.getData('assets').subscribe((result: any) => {
       this.allAssets = result.Items;
     });
   }
-  
+
   refreshData() {
     this.unitID = null;
     this.unitName = '';
@@ -264,10 +224,10 @@ export class IssueListComponent implements OnInit {
     this.fetchIssuesCount();
     this.dataMessage = Constants.FETCHING_DATA;
     this.issues = [];
-    this.resetCountResult();
+
 
   }
-  
+
   cloneIssue(id: string) {
   }
 }

@@ -67,6 +67,8 @@ export class FuelEntryListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  loaded = false
+  lastItemSK = ''
 
   constructor(
     private apiService: ApiService,
@@ -76,7 +78,7 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchVendorList();
-    this.fuelEntriesCount();
+    // this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -249,85 +251,68 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.fuelEntriesCount();
+        // this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
-  initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
-      if (result.Items.length == 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND;
-      }
-      this.suggestedUnits = [];
-      this.getStartandEndVal();
-      result[`Items`].forEach(element => {
 
-        if (element.fuelProvider == "WEX") {
-          element.dateTime = moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
+  initDataTable() {
+    if (this.lastEvaluatedKey !== 'end')
+      this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
+        this.dataMessage = Constants.FETCHING_DATA
+        if (result.Items.length === 0) {
+
+          this.dataMessage = Constants.NO_RECORDS_FOUND
         }
-        else {
-          let date: any = moment(element.data.date)
-          if (element.data.time) {
-            let time = moment(element.data.time, 'h mm a')
-            date.set({
-              hour: time.get('hour'),
-              minute: time.get('minute')
-            })
-            date = date.format('MMM Do YYYY, h:mm a')
+        if (result.Items.length > 0) {
+
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].fuelSK);
           }
           else {
-            date = date.format('MMM Do YYYY')
+            this.lastEvaluatedKey = 'end'
           }
-          element.dateTime = date
+          this.fuelList = this.fuelList.concat(result.Items)
 
-          // element.fuelTime=moment(element.fuelTime).format('h:mm a')
-
+          this.loaded = true;
         }
 
+        this.suggestedUnits = [];
 
-      });
+        result[`Items`].forEach(element => {
 
-      this.fuelList = result[`Items`];
+          if (element.fuelProvider == "WEX") {
+            element.dateTime = moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
+          }
+          else {
+            let date: any = moment(element.data.date)
+            if (element.data.time) {
+              let time = moment(element.data.time, 'h mm a')
+              date.set({
+                hour: time.get('hour'),
+                minute: time.get('minute')
+              })
+              date = date.format('MMM Do YYYY, h:mm a')
+            }
+            else {
+              date = date.format('MMM Do YYYY')
+            }
+            element.dateTime = date
+
+            // element.fuelTime=moment(element.fuelTime).format('h:mm a')
+
+          }
+        });
 
 
-      if (this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
-        this.fuelStartPoint = 1;
-        this.fuelEndPoint = this.totalRecords;
-      }
-      if (result[`LastEvaluatedKey`] !== undefined) {
-
-        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
-        this.fuelNext = false;
-        // for prev button
-
-        if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
-          this.fuelPrevEvauatedKeys.push(lastEvalKey);
-
-        }
-        this.lastEvaluatedKey = lastEvalKey;
-
-      } else {
-        this.fuelNext = true;
-        this.lastEvaluatedKey = '';
-        this.fuelEndPoint = this.totalRecords;
-      }
-
-      if (this.totalRecords < this.fuelEndPoint) {
-        this.fuelEndPoint = this.totalRecords;
-      }
-
-      // disable prev btn
-      if (this.fuelDraw > 0) {
-        this.fuelPrev = false;
-      } else {
-        this.fuelPrev = true;
-      }
-      this.spinner.hide();
-    }, err => {
-      this.spinner.hide();
-    });
+      })
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.fuelEntriesCount();
+    }
+    this.loaded = false;
   }
 
   searchFilter() {
@@ -340,6 +325,8 @@ export class FuelEntryListComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
+      this.lastEvaluatedKey = ''
+      // this.initDataTable();
       this.fuelEntriesCount();
     } else {
       return false;
@@ -354,43 +341,14 @@ export class FuelEntryListComponent implements OnInit {
       this.assetUnitID = null;
       this.start = '';
       this.end = '';
+      this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.fuelEntriesCount();
-      this.resetCountResult();
+      // this.initDataTable();
     } else {
       return false;
     }
-  }
-
-  getStartandEndVal() {
-    this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
-    this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.fuelNext = true;
-    this.fuelPrev = true;
-    this.fuelDraw += 1;
-    this.initDataTable();
-    //this.getStartandEndVal();
-  }
-
-  // prev button func
-  prevResults() {
-    this.fuelNext = true;
-    this.fuelPrev = true;
-    this.fuelDraw -= 1;
-    this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
-    this.initDataTable();
-    //this.getStartandEndVal();
-  }
-
-  resetCountResult() {
-    this.fuelStartPoint = 1;
-    this.fuelEndPoint = this.pageLength;
-    this.fuelDraw = 0;
   }
 
   fetchAllVehicles() {
@@ -424,6 +382,7 @@ export class FuelEntryListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
     this.fuelEntriesCount();
-    this.resetCountResult();
+
+
   }
 }

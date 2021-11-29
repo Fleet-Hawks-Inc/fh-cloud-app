@@ -36,7 +36,7 @@ export class VehicleRenewListComponent implements OnInit {
   unitName = '';
   searchServiceTask = null;
   serviceTasks = [];
-  filterStatus=null;
+  filterStatus = null;
 
   totalRecords = 20;
   pageLength = 10;
@@ -50,6 +50,7 @@ export class VehicleRenewListComponent implements OnInit {
   vehicleRenewEndPoint = this.pageLength;
   allVehicles = [];
   users = [];
+  loaded = false
 
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
@@ -85,7 +86,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  deleteRenewal(eventData) { 
+  deleteRenewal(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       let record = {
         date: eventData.createdDate,
@@ -94,18 +95,18 @@ export class VehicleRenewListComponent implements OnInit {
         type: eventData.type
       }
       this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
-          this.remindersData = [];
-          this.vehicleRenewDraw = 0;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastEvaluatedKey = '';
-          this.getRemindersCount();
-          this.toastr.success('Vehicle Renewal Deleted Successfully!');
-        });
+        this.remindersData = [];
+        this.vehicleRenewDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.getRemindersCount();
+        this.toastr.success('Vehicle Renewal Deleted Successfully!');
+      });
     }
   }
 
   getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle').subscribe({
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -120,55 +121,40 @@ export class VehicleRenewListComponent implements OnInit {
     });
   }
 
+
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if (result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedVehicles = [];
-        this.getStartandEndVal();
-        this.remindersData = result['Items'];
-        if (this.vehicleID != null || this.searchServiceTask != null) {
-          this.vehicleRenewStartPoint = 1;
-          this.vehicleRenewEndPoint = this.totalRecords;
-        }
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
 
-        if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g,'--');
-          this.vehicleRenewNext = false;
-          // for prev button
-          if (!this.vehicleRenewPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.vehicleRenewPrevEvauatedKeys.push(lastEvalKey);
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          this.lastEvaluatedKey = lastEvalKey;
+          if (result.Items.length > 0) {
 
-        } else {
-          this.vehicleRenewNext = true;
-          this.lastEvaluatedKey = '';
-          this.vehicleRenewEndPoint = this.totalRecords;
-        }
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.remindersData = this.remindersData.concat(result.Items)
 
-        if(this.totalRecords < this.vehicleRenewEndPoint) {
-          this.vehicleRenewEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.vehicleRenewDraw > 0) {
-          this.vehicleRenewPrev = false;
-        } else {
-          this.vehicleRenewPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+            this.loaded = true;
+          }
+        });
+    }
   }
-
+  onScroll() {
+    if (this.loaded) {
+      this.getRemindersCount();
+    }
+    this.loaded = false;
+  }
   searchFilter() {
     if (this.vehicleID != null || this.searchServiceTask != null || this.filterStatus != null) {
       this.remindersData = [];
+      this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
     } else {
@@ -182,11 +168,10 @@ export class VehicleRenewListComponent implements OnInit {
       this.vehicleIdentification = '';
       this.searchServiceTask = null;
       this.filterStatus = null;
-
+      this.lastEvaluatedKey = ''
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.getRemindersCount();
-      this.resetCountResult();
     } else {
       return false;
     }
@@ -203,46 +188,16 @@ export class VehicleRenewListComponent implements OnInit {
     }
   }
 
-  getStartandEndVal() {
-    this.vehicleRenewStartPoint = this.vehicleRenewDraw * this.pageLength + 1;
-    this.vehicleRenewEndPoint = this.vehicleRenewStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.vehicleRenewNext = true;
-    this.vehicleRenewPrev = true;
-    this.vehicleRenewDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.vehicleRenewNext = true;
-    this.vehicleRenewPrev = true;
-    this.vehicleRenewDraw -= 1;
-    this.lastEvaluatedKey = this.vehicleRenewPrevEvauatedKeys[this.vehicleRenewDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.vehicleRenewNext = true;
-    this.vehicleRenewPrev = true;
-    this.vehicleRenewStartPoint = 1;
-    this.vehicleRenewEndPoint = this.pageLength;
-    this.vehicleRenewDraw = 0;
-  }
-
   refreshData() {
     this.vehicleID = null;
-      this.vehicleIdentification = '';
-      this.searchServiceTask = null;
-      this.filterStatus = null;
-      this.lastEvaluatedKey = '';
-      this.remindersData = [];
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
-      this.resetCountResult();
+    this.vehicleIdentification = '';
+    this.searchServiceTask = null;
+    this.filterStatus = null;
+    this.lastEvaluatedKey = '';
+    this.remindersData = [];
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.getRemindersCount();
+
   }
 
 }
