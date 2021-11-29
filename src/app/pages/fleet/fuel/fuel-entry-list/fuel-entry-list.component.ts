@@ -68,6 +68,8 @@ export class FuelEntryListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  readonly rowHeight = 70;
+  readonly headerHeight = 70;
 
   constructor(
     private apiService: ApiService,
@@ -95,6 +97,9 @@ export class FuelEntryListComponent implements OnInit {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+  }
+  onScroll($event) {
+
   }
   setUnit(unitID, unitName) {
     this.unitName = unitName;
@@ -262,7 +267,7 @@ export class FuelEntryListComponent implements OnInit {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
       this.suggestedUnits = [];
-      this.getStartandEndVal();
+      // this.getStartandEndVal();
       result[`Items`].forEach(element => {
 
 
@@ -285,45 +290,18 @@ export class FuelEntryListComponent implements OnInit {
       });
 
 
-      this.fuelList = _.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc'])
+      this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
+      console.log(this.fuelList)
 
-
-      if (this.unitID != null || this.start !== '' || this.end !== '' || this.assetUnitID != null) {
-        this.fuelStartPoint = 1;
-        this.fuelEndPoint = this.totalRecords;
-      }
       if (result[`LastEvaluatedKey`] !== undefined) {
 
-        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK.replace(/#/g, '--');
-        this.fuelNext = false;
+        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK
         // for prev button
-
-        if (!this.fuelPrevEvauatedKeys.includes(lastEvalKey)) {
-          this.fuelPrevEvauatedKeys.push(lastEvalKey);
-
-        }
         this.lastEvaluatedKey = lastEvalKey;
-
       } else {
-        this.fuelNext = true;
         this.lastEvaluatedKey = '';
-        this.fuelEndPoint = this.totalRecords;
       }
-
-      if (this.totalRecords < this.fuelEndPoint) {
-        this.fuelEndPoint = this.totalRecords;
-      }
-
-      // disable prev btn
-      if (this.fuelDraw > 0) {
-        this.fuelPrev = false;
-      } else {
-        this.fuelPrev = true;
-      }
-      this.spinner.hide();
-    }, err => {
-      this.spinner.hide();
-    });
+    })
   }
 
   searchFilter() {
@@ -359,10 +337,10 @@ export class FuelEntryListComponent implements OnInit {
     }
   }
 
-  getStartandEndVal() {
-    this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
-    this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
-  }
+  // getStartandEndVal() {
+  //   this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
+  //   this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
+  // }
 
   // next button func
   nextResults() {
