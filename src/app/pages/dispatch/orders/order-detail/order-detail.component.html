@@ -2969,37 +2969,43 @@
 </ng-template>
 
 <ng-template #emailInvoiceModal let-modal>
-  <!-- <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Emails</h4>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div> -->
+  </div>
   <form>
     <div class="modal-body">
       <div class="email--invoice__main">
         <div class="row align-items-center mb-2">
 
           <div class="col-12">
-            <label class="control-label font-weight-bold mt-2 text-3 text-dark" for="inputDefault">Do you want to
-              receive copy
-              of this email?
-              <small>You can also add multiple email(s)</small></label>
+            <label class="control-label font-weight-bold mt-2 text-3 text-dark" for="inputDefault">Send To
+              <small>You can add multiple email(s)</small></label>
             <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
               placeholder="eg. johnsmith@gmail.com" [(ngModel)]="emailData.emails" name="emails" type="text"
               class="form-control h-auto" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
             </ng-select>
+          </div>
+          <div class="col-12">
+            <label class="control-label font-weight-bold mt-2 text-3 text-dark" for="inputDefault">Subject</label>
+            <input type="text" [(ngModel)]="subject" class="form-control" placeholder="Enter subject" name="subject">
           </div>
         </div>
 
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" [disabled]="isEmail" (click)="sendEmailOnly()" class="btn
+      <!-- <button type="button" [disabled]="isEmail" (click)="sendEmailOnly()" class="btn
         btn-default">
         No
+      </button> -->
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn
+        btn-default">
+        Cancel
       </button>
-      <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">Yes</button>
+      <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">Submit</button>
     </div>
   </form>
 </ng-template>
