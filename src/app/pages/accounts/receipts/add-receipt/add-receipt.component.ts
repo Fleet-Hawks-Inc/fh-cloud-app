@@ -175,7 +175,7 @@ export class AddReceiptComponent implements OnInit {
             this.orderInvoices.map((v: any) => {
               v.payDisable = false;
               v.discount = 0;
-              v.invStatus = v.invStatus.replace("_", " ");
+              v.invStatus = v.invStatus ? v.invStatus.replace("_", " ") : "";
             });
             // if (this.orderInvoices.length > 0) {
             //   this.receiptData.recAmountCur =
@@ -333,7 +333,6 @@ export class AddReceiptComponent implements OnInit {
   async getPaidInvoices() {
     const paidInvoices = [];
     for (const element of this.orderInvoices) {
-      // console.log("order element", element);
       if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
@@ -351,7 +350,6 @@ export class AddReceiptComponent implements OnInit {
       }
     }
     for (const element of this.invoices) {
-      // console.log("inv element", element);
       if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
@@ -397,7 +395,6 @@ export class AddReceiptComponent implements OnInit {
       this.hasError = false;
       this.hasSuccess = false;
       await this.getPaidInvoices();
-      console.log("this.receiptData", this.receiptData);
       this.accountService.postData("receipts", this.receiptData).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -510,17 +507,7 @@ export class AddReceiptComponent implements OnInit {
   }
 
   applyDiscount(index, type) {
-    console.log("index", index);
-    console.log("type", type);
     if (type === "order") {
-      console.log(
-        "this.orderInvoices[index].discount",
-        this.orderInvoices[index].discount
-      );
-      console.log(
-        "this.orderInvoices[index].amountPaid",
-        this.orderInvoices[index].amountPaid
-      );
       let userPay =
         Number(this.orderInvoices[index].discount) +
         Number(this.orderInvoices[index].amountPaid);
@@ -539,14 +526,6 @@ export class AddReceiptComponent implements OnInit {
         this.totalErr = false;
       }
     } else if (type === "inv") {
-      console.log(
-        "this.invoices[index].discount",
-        this.invoices[index].discount
-      );
-      console.log(
-        "this.invoices[index].amountPaid",
-        this.invoices[index].amountPaid
-      );
       let userPay =
         Number(this.invoices[index].discount) +
         Number(this.invoices[index].amountPaid);

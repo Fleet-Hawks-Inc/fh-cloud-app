@@ -15,13 +15,15 @@ import { SummaryComponent } from './summary/summary.component';
 import { DetailComponent } from './detail/detail.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ActivityComponent } from './activity/activity.component';
+import { ActivityListComponent } from './activity-list/activity-list.component';
 
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
   { path: 'summary', component: SummaryComponent },
   { path: 'detail', component: DetailComponent },
-  { path: 'activity', component: ActivityComponent },
+  { path: 'activity/:astId', component: ActivityComponent },
+  { path: 'activity-list', component: ActivityListComponent },
 ];
 
 /**
@@ -87,7 +89,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 
 
     DetailComponent,
-    ActivityComponent],
+    ActivityComponent,
+    ActivityListComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
