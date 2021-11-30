@@ -211,6 +211,8 @@ export class OrderDetailComponent implements OnInit {
     emails: [],
   };
 
+  subject = '';
+
   hideEdit: boolean = false;
   tripData: {
     tripNo: "";
@@ -613,7 +615,7 @@ export class OrderDetailComponent implements OnInit {
         // }
       },
 
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -673,15 +675,16 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async openEmailInv() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "send-email--modal",
-    };
-    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+    // let ngbModalOptions: NgbModalOptions = {
+    //   keyboard: true,
+    //   windowClass: "send-email--modal",
+    // };
+    // this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+    this.openEmailModal();
   }
 
   openEmailModal() {
-    this.emailRef.close();
+    // this.emailRef.close();
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
@@ -706,6 +709,7 @@ export class OrderDetailComponent implements OnInit {
     const data = {
       docs: newDocs,
       emails: this.userEmails,
+      subject: this.subject
     };
 
     let result = await this.apiService
@@ -716,12 +720,13 @@ export class OrderDetailComponent implements OnInit {
       )
       .toPromise();
     if (result) {
-      this.emailRef.close();
+      // this.emailRef.close();
       this.emailCopyRef.close();
       this.toastr.success("Email send successfully!");
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
+      this.subject = '';
     } else {
       this.isEmail = false;
     }
@@ -762,6 +767,11 @@ export class OrderDetailComponent implements OnInit {
         }
       }
     });
+    if (this.subject == '') {
+      this.toastr.error("Please enter subject");
+      this.isEmail = false;
+      return;
+    }
 
     if (this.isFlag) {
       this.sendEmailInv();
@@ -838,7 +848,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -856,7 +866,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -996,7 +1006,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
