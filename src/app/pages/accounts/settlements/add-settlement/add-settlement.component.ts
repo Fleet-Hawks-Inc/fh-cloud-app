@@ -279,7 +279,11 @@ export class AddSettlementComponent implements OnInit {
           element.subSelected = false;
           element.splitArr = [];
           element.indeterminate = false;
-
+          element.entityMiles = 0;
+          element.entityDriver = [];
+          element.entityVehicle = [];
+          element.entityAsset = [];
+          element.entityCarrier = [];
           for (let j = 0; j < element.tripPlanning.length; j++) {
             const plan = element.tripPlanning[j];
 
@@ -292,14 +296,43 @@ export class AddSettlementComponent implements OnInit {
                 this.settlementData.entityId === plan.coDriverID ||
                 this.settlementData.entityId === plan.carrierID
               ) {
-                if (plan.type == "Pickup") {
-                  element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-                  pickCount++;
+                element.pickupLocation += `${pickCount}) <strong>${
+                  plan.type
+                }</strong>: ${plan.location} <br>
+                <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+                  plan.type === "Pickup" ? "Pickup" : "Drop"
+                } Time</u>: ${
+                  plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+                } <br>`;
+                pickCount++;
+                element.entityMiles += Number(plan.miles);
+
+                if (
+                  this.settlementData.entityId === plan.driverID ||
+                  this.settlementData.entityId === plan.coDriverID
+                ) {
+                  if (!element.entityDriver.includes(plan.driverID)) {
+                    element.entityDriver.push(plan.driverID);
+                  }
+
+                  if (!element.entityDriver.includes(plan.coDriverID)) {
+                    element.entityDriver.push(plan.coDriverID);
+                  }
                 }
 
-                if (plan.type == "Delivery") {
-                  element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-                  dropCount++;
+                if (!element.entityVehicle.includes(plan.vehicleID)) {
+                  element.entityVehicle.push(plan.vehicleID);
+                }
+
+                if (!element.entityCarrier.includes(plan.carrierID)) {
+                  element.entityCarrier.push(plan.carrierID);
+                }
+
+                for (let f = 0; f < plan.assetID.length; f++) {
+                  const elemAsset = plan.assetID[f];
+                  if (!element.entityAsset.includes(elemAsset)) {
+                    element.entityAsset.push(elemAsset);
+                  }
                 }
               }
             } else if (this.settlementData.type === "owner_operator") {
@@ -307,14 +340,38 @@ export class AddSettlementComponent implements OnInit {
                 this.operatorDriversList.includes(plan.driverID) ||
                 this.operatorDriversList.includes(plan.coDriverID)
               ) {
-                if (plan.type == "Pickup") {
-                  element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-                  pickCount++;
+                element.pickupLocation += `${pickCount}) <strong>${
+                  plan.type
+                }</strong>: ${plan.location} <br>
+                  <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+                  plan.type === "Pickup" ? "Pickup" : "Drop"
+                } Time</u>: ${
+                  plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+                } <br>`;
+                pickCount++;
+                element.entityMiles += Number(plan.miles);
+
+                if (!element.entityDriver.includes(plan.driverID)) {
+                  element.entityDriver.push(plan.driverID);
                 }
 
-                if (plan.type == "Delivery") {
-                  element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-                  dropCount++;
+                if (!element.entityDriver.includes(plan.coDriverID)) {
+                  element.entityDriver.push(plan.coDriverID);
+                }
+
+                if (!element.entityVehicle.includes(plan.vehicleID)) {
+                  element.entityVehicle.push(plan.vehicleID);
+                }
+
+                if (!element.entityCarrier.includes(plan.carrierID)) {
+                  element.entityCarrier.push(plan.carrierID);
+                }
+
+                for (let f = 0; f < plan.assetID.length; f++) {
+                  const elemAsset = plan.assetID[f];
+                  if (!element.entityAsset.includes(elemAsset)) {
+                    element.entityAsset.push(elemAsset);
+                  }
                 }
               }
             }
@@ -413,6 +470,7 @@ export class AddSettlementComponent implements OnInit {
             a
           );
         }, {});
+        console.log("this.trips====", this.trips);
         this.tripsObject = _.merge(this.tripsObject, stlObj);
       });
   }

@@ -28,6 +28,7 @@ export class AddReceiptComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   totalAmount = 0;
   receiptData = {
+    currency: "CAD",
     customerID: [],
     txnDate: moment().format("YYYY-MM-DD"),
     recNo: null,
@@ -36,8 +37,6 @@ export class AddReceiptComponent implements OnInit {
     discount: 0,
     recAmountCur: "CAD",
     accountID: null,
-    // advAmt: 0,
-    // advAmtCur: null,
     paymentMode: null,
     paymentModeNo: null,
     paymentModeDate: null,
@@ -122,11 +121,7 @@ export class AddReceiptComponent implements OnInit {
 
   ngOnInit() {
     this.listService.fetchCustomers();
-    // this.customers = this.listService.customersList;
     this.fetchCustomersByIDs();
-    // this.listService.fetchChartAccounts();
-    // this.accounts = this.listService.accountsList;
-    // /get/all/list
     this.fetchAccounts();
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
@@ -167,6 +162,9 @@ export class AddReceiptComponent implements OnInit {
     if (this.receiptData.customerID.length > 0) {
       this.searchDisabled = true;
       this.newTotal = 0;
+      this.receiptData.totalAmount = 0;
+      this.receiptData.discount = 0;
+      this.receiptData.recAmount = 0;
       this.advancePayments = [];
       this.orderInvoices = [];
       this.invoices = [];
@@ -177,7 +175,7 @@ export class AddReceiptComponent implements OnInit {
       );
       this.accountService
         .getData(
-          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
+          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.currency}`
         )
         .subscribe((res: any) => {
           if (res.length === 0) {
@@ -190,19 +188,15 @@ export class AddReceiptComponent implements OnInit {
               v.discount = 0;
               v.invStatus = v.invStatus ? v.invStatus.replace("_", " ") : "";
             });
-            // if (this.orderInvoices.length > 0) {
-            //   this.receiptData.recAmountCur =
-            //     this.orderInvoices[0].charges.freightFee.currency;
-            // }
             for (const op of this.orderInvoices) {
               this.newTotal += op.balance;
-              this.totalAmount = this.newTotal;
+              this.totalAmount = Number(this.newTotal.toFixed(2));
             }
           }
         });
       this.accountService
         .getData(
-          `invoices/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
+          `invoices/customer/${customerIDs}?currency=${this.receiptData.currency}`
         )
         .subscribe((result) => {
           this.searchDisabled = false;
@@ -216,13 +210,9 @@ export class AddReceiptComponent implements OnInit {
               v.discount = 0;
               v.invStatus = v.invStatus.replace("_", " ");
             });
-            // if (this.invoices.length > 0) {
-            //   this.receiptData.recAmountCur = this.invoices[0].invCur;
-            //   // this.receiptData.advAmtCur = this.invoices[0].invCur;
-            // }
             for (const op of this.invoices) {
               this.newTotal += op.balance;
-              this.totalAmount = this.newTotal;
+              this.totalAmount = Number(this.newTotal.toFixed(2));
             }
           }
         });
@@ -301,29 +291,19 @@ export class AddReceiptComponent implements OnInit {
     if (this.orderInvoices[j].fullPayment === true) {
       this.orderInvoices[j].payDisable = true;
       this.orderInvoices[j].amountPaid =
-        Number(this.orderInvoices[j].balance) -
-        Number(this.orderInvoices[j].discount);
+        Number(this.orderInvoices[j].balance.toFixed(2)) -
+        Number(this.orderInvoices[j].discount.toFixed(2));
     } else {
       this.orderInvoices[j].payDisable = false;
       this.orderInvoices[j].amountPaid = 0;
     }
 
     this.applyDiscount(j, "order");
-
-    // if (this.orderInvoices[j].fullPayment === true) {
-    //   this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    // } else if (
-    //   this.orderInvoices[j].fullPayment === true &&
-    //   this.orderInvoices[j].invStatus === "partially_paid"
-    // ) {
-    //   this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    // } else {
-    //   this.orderInvoices[j].amountPaid = 0;
-    // }
-
     this.findReceivedAmtFn();
   }
   getAmountManual(k: any) {
+    this.invoices[k].balance = Number(this.invoices[k].balance.toFixed(2));
+    this.invoices[k].discount = Number(this.invoices[k].discount.toFixed(2));
     if (this.invoices[k].fullPayment === true) {
       this.invoices[k].amountPaid =
         Number(this.invoices[k].balance) - Number(this.invoices[k].discount);
@@ -331,16 +311,6 @@ export class AddReceiptComponent implements OnInit {
       this.invoices[k].amountPaid = 0;
     }
     this.applyDiscount(k, "inv");
-    // if (this.invoices[k].fullPayment === true) {
-    //   this.invoices[k].amountPaid = this.invoices[k].balance;
-    // } else if (
-    //   this.invoices[k].fullPayment === true &&
-    //   this.invoices[k].invStatus === "partially_paid"
-    // ) {
-    //   this.invoices[k].amountPaid = this.invoices[k].balance;
-    // } else {
-    //   this.invoices[k].amountPaid = 0;
-    // }
     this.findReceivedAmtFn();
   }
   async getPaidInvoices() {
@@ -350,7 +320,6 @@ export class AddReceiptComponent implements OnInit {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
-          // amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: "orderInvoice",
           amountPaid: element.amountPaid,
@@ -367,7 +336,6 @@ export class AddReceiptComponent implements OnInit {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
-          // amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: "manual",
           amountPaid: element.amountPaid,
@@ -411,15 +379,28 @@ export class AddReceiptComponent implements OnInit {
     if (this.receiptData.recAmount === 0) {
       this.toastr.error("Select invoice");
     } else {
+      if (
+        this.receiptData.charges.addTotal > 0 &&
+        this.receiptData.charges.addAccountID === null
+      ) {
+        this.toastr.error("Please select addition account");
+        return false;
+      }
+
+      if (
+        this.receiptData.charges.dedTotal > 0 &&
+        this.receiptData.charges.dedAccountID === null
+      ) {
+        this.toastr.error("Please select deduction account");
+        return false;
+      }
+
       this.submitDisabled = true;
       this.errors = {};
       this.hasError = false;
       this.hasSuccess = false;
       this.getInvoiceArr();
-      // await this.getPaidInvoices();
-      // this.receiptData.paidInvoices.map((v) => {
-      //   this.receiptData.totalAmount += Number(v.amountPaid);
-      // });
+
       this.accountService.postData("receipts", this.receiptData).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -445,7 +426,7 @@ export class AddReceiptComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toastr.success("Receipt added successfully.");
-          // this.router.navigateByUrl("/accounts/receipts/list");
+          this.router.navigateByUrl("/accounts/receipts/list");
         },
       });
     }
@@ -465,13 +446,27 @@ export class AddReceiptComponent implements OnInit {
       this.receiptData.charges.addTotal -
       this.receiptData.discount -
       this.receiptData.charges.dedTotal;
-    // this.receiptData.recAmount = this.totalReceivedAmt;
+
+    this.limitDecimals();
     if (this.receiptData.recAmount > this.totalAmount) {
       this.totalErr = true;
     } else {
       this.totalErr = false;
     }
     this.getJournalPreview();
+  }
+
+  limitDecimals() {
+    this.totalReceivedAmt = Number(this.totalReceivedAmt.toFixed(2));
+    this.receiptData.charges.addTotal = Number(
+      this.receiptData.charges.addTotal.toFixed(2)
+    );
+    this.receiptData.discount = Number(this.receiptData.discount.toFixed(2));
+    this.receiptData.charges.dedTotal = Number(
+      this.receiptData.charges.dedTotal.toFixed(2)
+    );
+    this.receiptData.recAmount = Number(this.receiptData.recAmount.toFixed(2));
+    this.totalAmount = Number(this.totalAmount.toFixed(2));
   }
 
   addAdditionRow() {
@@ -607,7 +602,7 @@ export class AddReceiptComponent implements OnInit {
 
       if (!jtype.includes("recv")) {
         let obj = {
-          accName: "Accounts Receivable",
+          accName: "1200 - Accounts Receivable",
           amount: this.receiptData.totalAmount,
           type: "credit",
           jType: "accounts receivable",
@@ -635,7 +630,7 @@ export class AddReceiptComponent implements OnInit {
     if (this.receiptData.discount > 0) {
       if (!jtype.includes("disc")) {
         let obj = {
-          accName: "Early Payment Purchase Discount",
+          accName: "5240 - Early Payment Purchase Discount",
           amount: this.receiptData.discount,
           type: "debit",
           jType: "discount",

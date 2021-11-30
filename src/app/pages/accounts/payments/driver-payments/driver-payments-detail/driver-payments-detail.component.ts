@@ -92,8 +92,12 @@ export class DriverPaymentsDetailComponent implements OnInit {
     let result: any = await this.accountService
       .getData(`driver-payments/detail/${this.paymentID}`)
       .toPromise();
+
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    if (this.paymentData.transactionLog.length === 0) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
     if (this.paymentData.payMode) {
       this.paymentData.payMode = this.paymentData.payMode.replace("_", " ");
     } else {
