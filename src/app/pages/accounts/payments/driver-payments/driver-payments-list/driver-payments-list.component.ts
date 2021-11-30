@@ -73,7 +73,6 @@ export class DriverPaymentsListComponent implements OnInit {
             this.dataMessage = Constants.NO_RECORDS_FOUND;
             this.disableSearch = false;
           }
-          console.log("pay result", result);
           if (result.length > 0) {
             this.disableSearch = false;
             if (result[result.length - 1].sk !== undefined) {

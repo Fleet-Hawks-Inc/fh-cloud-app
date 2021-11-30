@@ -26,6 +26,7 @@ export class AddReceiptComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  totalAmount = 0;
   receiptData = {
     customerID: [],
     txnDate: moment().format("YYYY-MM-DD"),
@@ -108,6 +109,8 @@ export class AddReceiptComponent implements OnInit {
     desc: "",
     amount: 0,
   };
+  journalPrev = [];
+
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -121,8 +124,10 @@ export class AddReceiptComponent implements OnInit {
     this.listService.fetchCustomers();
     // this.customers = this.listService.customersList;
     this.fetchCustomersByIDs();
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
+    // this.listService.fetchChartAccounts();
+    // this.accounts = this.listService.accountsList;
+    // /get/all/list
+    this.fetchAccounts();
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.pageTitle = "Edit Receipt";
@@ -133,6 +138,14 @@ export class AddReceiptComponent implements OnInit {
     let customerList = new Array<any>();
     this.getValidCustomers(customerList);
     this.customers = customerList;
+  }
+
+  fetchAccounts() {
+    this.accountService
+      .getData(`chartAc/get/all/list`)
+      .subscribe((result: any) => {
+        this.accounts = result;
+      });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -183,7 +196,7 @@ export class AddReceiptComponent implements OnInit {
             // }
             for (const op of this.orderInvoices) {
               this.newTotal += op.balance;
-              this.receiptData.totalAmount = this.newTotal;
+              this.totalAmount = this.newTotal;
             }
           }
         });
@@ -209,7 +222,7 @@ export class AddReceiptComponent implements OnInit {
             // }
             for (const op of this.invoices) {
               this.newTotal += op.balance;
-              this.receiptData.totalAmount = this.newTotal;
+              this.totalAmount = this.newTotal;
             }
           }
         });
@@ -386,6 +399,14 @@ export class AddReceiptComponent implements OnInit {
     }
   }
 
+  getInvoiceArr() {
+    this.getPaidInvoices();
+    this.receiptData.totalAmount = 0;
+    this.receiptData.paidInvoices.map((v) => {
+      this.receiptData.totalAmount += Number(v.amountPaid);
+    });
+  }
+
   async addReceipt() {
     if (this.receiptData.recAmount === 0) {
       this.toastr.error("Select invoice");
@@ -394,7 +415,11 @@ export class AddReceiptComponent implements OnInit {
       this.errors = {};
       this.hasError = false;
       this.hasSuccess = false;
-      await this.getPaidInvoices();
+      this.getInvoiceArr();
+      // await this.getPaidInvoices();
+      // this.receiptData.paidInvoices.map((v) => {
+      //   this.receiptData.totalAmount += Number(v.amountPaid);
+      // });
       this.accountService.postData("receipts", this.receiptData).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -420,7 +445,7 @@ export class AddReceiptComponent implements OnInit {
           this.submitDisabled = false;
           this.response = res;
           this.toastr.success("Receipt added successfully.");
-          this.router.navigateByUrl("/accounts/receipts/list");
+          // this.router.navigateByUrl("/accounts/receipts/list");
         },
       });
     }
@@ -434,12 +459,19 @@ export class AddReceiptComponent implements OnInit {
     for (const element of this.orderInvoices) {
       this.totalReceivedAmt += element.amountPaid;
     }
-    this.receiptData.recAmount = this.totalReceivedAmt;
-    if (this.receiptData.recAmount > this.receiptData.totalAmount) {
+
+    this.receiptData.recAmount =
+      this.totalReceivedAmt +
+      this.receiptData.charges.addTotal -
+      this.receiptData.discount -
+      this.receiptData.charges.dedTotal;
+    // this.receiptData.recAmount = this.totalReceivedAmt;
+    if (this.receiptData.recAmount > this.totalAmount) {
       this.totalErr = true;
     } else {
       this.totalErr = false;
     }
+    this.getJournalPreview();
   }
 
   addAdditionRow() {
@@ -459,6 +491,7 @@ export class AddReceiptComponent implements OnInit {
     this.receiptData.charges.addition.forEach((element) => {
       this.receiptData.charges.addTotal += Number(element.amount);
     });
+    this.findReceivedAmtFn();
   }
 
   delAddData(index) {
@@ -483,6 +516,7 @@ export class AddReceiptComponent implements OnInit {
     this.receiptData.charges.deduction.forEach((element) => {
       this.receiptData.charges.dedTotal += Number(element.amount);
     });
+    this.findReceivedAmtFn();
   }
 
   delDedData(index) {
@@ -504,6 +538,8 @@ export class AddReceiptComponent implements OnInit {
         this.receiptData.discount += Number(v.discount);
       }
     });
+
+    this.findReceivedAmtFn();
   }
 
   applyDiscount(index, type) {
@@ -549,5 +585,79 @@ export class AddReceiptComponent implements OnInit {
     }
 
     this.calDiscountTotal();
+  }
+
+  getJournalPreview() {
+    this.getInvoiceArr();
+    this.journalPrev = [];
+    let jtype = [];
+
+    if (this.receiptData.recAmount > 0) {
+      if (!jtype.includes("first")) {
+        let obj = {
+          accName: this.receiptData.accountID,
+          amount: this.receiptData.recAmount,
+          type: "debit",
+          jType: "receipt amount",
+          cType: "recpt",
+        };
+        jtype.push("first");
+        this.journalPrev.push(obj);
+      }
+
+      if (!jtype.includes("recv")) {
+        let obj = {
+          accName: "Accounts Receivable",
+          amount: this.receiptData.totalAmount,
+          type: "credit",
+          jType: "accounts receivable",
+          cType: "recv",
+        };
+        jtype.push("recv");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.charges.dedTotal > 0) {
+      if (!jtype.includes("ded")) {
+        let obj = {
+          accName: this.receiptData.charges.dedAccountID,
+          amount: this.receiptData.charges.dedTotal,
+          type: "debit",
+          jType: "deduction charges",
+          cType: "ded",
+        };
+        jtype.push("ded");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.discount > 0) {
+      if (!jtype.includes("disc")) {
+        let obj = {
+          accName: "Early Payment Purchase Discount",
+          amount: this.receiptData.discount,
+          type: "debit",
+          jType: "discount",
+          cType: "dis",
+        };
+        jtype.push("disc");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.charges.addTotal > 0) {
+      if (!jtype.includes("add")) {
+        let obj = {
+          accName: this.receiptData.charges.addAccountID,
+          amount: this.receiptData.charges.addTotal,
+          type: "credit",
+          jType: "addition charges",
+          cType: "add",
+        };
+        jtype.push("add");
+        this.journalPrev.push(obj);
+      }
+    }
   }
 }
