@@ -31,7 +31,6 @@ export class DeviceListComponent implements OnInit {
         return;
       }
       this.apiService.getData(`devices/getDevices/${this.next}`).subscribe((result) => {
-        console.log(result);
         if (result && result.length !== 0) {
           //console.log(result)
           result.data.forEach(device => {
