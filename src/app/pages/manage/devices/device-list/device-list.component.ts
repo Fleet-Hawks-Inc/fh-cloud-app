@@ -16,56 +16,56 @@ export class DeviceListComponent implements OnInit {
   constructor(private apiService: ApiService,
     private toastr: ToastrService) { }
 
+  next: any = 'null';
 
   dataMessage: string = Constants.FETCHING_DATA;
   public devices: any = [];
 
   ngOnInit() {
+
     this.fetchDevices();
   }
   private fetchDevices() {
     try {
-      this.apiService.getData('devices').subscribe((result) => {
+      if (this.next === 'end') {
+        return;
+      }
+      this.apiService.getData(`devices/getDevices/${this.next}`).subscribe((result) => {
+        console.log(result);
+        if (result && result.length !== 0) {
+          //console.log(result)
+          result.data.forEach(device => {
+            let deviceItem: any = {
+              deviceName: device.deviceName,
+              deviceStatus: device.deviceStatus,
+              deviceSerialNo: device.deviceSerialNo,
+              description: device.description,
+              deviceType: device.deviceType,
+              deviceID: device.deviceID,
+              vehicle: {
+                vehicleID: '',
+                vehicleIdentification: ''
+              },
+              asset: {
+                assetID: '',
+                assetIdentification: ''
+              }
+            }
+            if (device.vehicleIdentification) {
+              deviceItem.vehicle.vehicleID = device.vehicleID;
+              deviceItem.vehicle.vehicleIdentification = device.vehicleIdentification;
+            }
+            if (device.assetIdentification) {
+              deviceItem.asset.assetID = device.assetID;
+              deviceItem.asset.assetIdentification = device.assetIdentification;
+            }
+            this.devices.push(deviceItem);
 
-        if (result) {
-          if (result.length == 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-          }
-          else {
-            this.devices = result.map((item) => {
-              let device = {
-                deviceName: '',
-                deviceStatus: '',
-                description: '',
-                deviceSerialNo: '',
-                deviceType: '',
-                vehicle: {
-                  vehicleID: '',
-                  vehicleIdentification: ''
-                },
-                asset: {
-                  assetID: '',
-                  assetIdentification: ''
-                },
-                deviceID: ''
-              }
-              device.deviceName = item.deviceName;
-              device.deviceStatus = item.deviceStatus;
-              device.deviceSerialNo = item.deviceSerialNo;
-              device.description = item.description;
-              device.deviceType = item.deviceType;
-              device.deviceID = item.deviceID;
-              if (item.vehicleIdentification) {
-                device.vehicle.vehicleID = item.vehicleID;
-                device.vehicle.vehicleIdentification = item.vehicleIdentification;
-              }
-              if (item.assetIdentification) {
-                device.asset.assetID = item.assetID;
-                device.asset.assetIdentification = item.assetIdentification;
-              }
-              return device;
-            })
-          }
+          });
+          this.next = result.nextPage || 'end';
+
+        } else {
+          this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
       })
     }
@@ -96,5 +96,10 @@ export class DeviceListComponent implements OnInit {
         throw new Error(error)
       }
     }
+  }
+
+  onScroll() {
+    this.fetchDevices();
+
   }
 }
