@@ -9,4 +9,4 @@ export * from "./leaflet-map.service";
 export * from "./event-activities.service";
 export * from "./list.service";
 export * from "./account.service";
-export * from "./account-utitlity-service.service";
+export * from "./account-utility.service";

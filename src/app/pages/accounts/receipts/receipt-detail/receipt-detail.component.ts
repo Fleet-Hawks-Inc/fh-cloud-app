@@ -1,10 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "../../../fleet/constants";
-import {
-  AccountService,
-  AccountUtitlityServiceService,
-} from "./../../../../services";
+import { AccountService, AccountUtilityService } from "./../../../../services";
 import * as html2pdf from "html2pdf.js";
 @Component({
   selector: "app-receipt-detail",
@@ -44,7 +41,7 @@ export class ReceiptDetailComponent implements OnInit {
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private accountutility: AccountUtitlityServiceService
+    private accountUtility: AccountUtilityService
   ) {}
 
   async ngOnInit() {
@@ -52,7 +49,7 @@ export class ReceiptDetailComponent implements OnInit {
     if (this.recID) {
       this.fetchReceipt();
     }
-    this.accountsIntObjects = await this.accountutility.getPreDefinedAccounts();
+    this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
   }
 
   async fetchReceipt() {

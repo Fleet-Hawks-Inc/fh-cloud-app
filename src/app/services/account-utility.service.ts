@@ -4,7 +4,7 @@ import { AccountService } from "./account.service";
 @Injectable({
   providedIn: "root",
 })
-export class AccountUtitlityServiceService {
+export class AccountUtilityService {
   constructor(private accountService: AccountService) {}
 
   predefinedAccounts: any = {};
