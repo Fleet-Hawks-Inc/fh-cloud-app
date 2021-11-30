@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -51,7 +51,7 @@ export class FuelEntryListComponent implements OnInit {
   unitName: string;
   start: any = '';
   end: any = '';
-
+  lastTimeCreated = ''
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -70,16 +70,19 @@ export class FuelEntryListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   readonly rowHeight = 70;
   readonly headerHeight = 70;
+  pageLimit = 10
+  loaded = false;
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private el: ElementRef) {
   }
   ngOnInit() {
     this.fetchVendorList();
-    this.fuelEntriesCount();
+    // this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -98,8 +101,24 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-  onScroll($event) {
+  onScroll(offsetY) {
+    const viewHeight =
+      this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
 
+    if (
+      offsetY + viewHeight + this.fuelList.length * this.rowHeight
+    ) {
+      let limit = this.pageLimit;
+      if (this.fuelList.length === 0) {
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        limit = Math.max(pageSize, this.pageLimit);
+      }
+      if (this.loaded) {
+        this.initDataTable();
+      }
+      this.loaded = false;
+    }
   }
   setUnit(unitID, unitName) {
     this.unitName = unitName;
@@ -202,21 +221,21 @@ export class FuelEntryListComponent implements OnInit {
       });
     });
   }
-  fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
+  // fuelEntriesCount() {
+  //   this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       this.totalRecords = result.Count;
 
-        if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
-          this.fuelEndPoint = this.totalRecords;
-        }
+  //       if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
+  //         this.fuelEndPoint = this.totalRecords;
+  //       }
 
-        this.initDataTable();
-      },
-    });
-  }
+  //       this.initDataTable();
+  //     },
+  //   });
+  // }
 
   showTopValues() {
 
@@ -255,14 +274,14 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.fuelEntriesCount();
+        //this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
@@ -288,16 +307,19 @@ export class FuelEntryListComponent implements OnInit {
         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
 
       });
+      console.log(result)
 
 
       this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
       console.log(this.fuelList)
 
-      if (result[`LastEvaluatedKey`] !== undefined) {
-
-        const lastEvalKey = result[`LastEvaluatedKey`].fuelSK
+      if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
-        this.lastEvaluatedKey = lastEvalKey;
+        this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
+        if (result.LastEvaluatedKey.timeCreated !== undefined) {
+          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+        }
+        this.loaded = true
       } else {
         this.lastEvaluatedKey = '';
       }
@@ -314,27 +336,27 @@ export class FuelEntryListComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
-      this.fuelEntriesCount();
+      this.lastEvaluatedKey = ''
+      this.initDataTable();
+      //this.fuelEntriesCount();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
-      this.unitID = null;
-      this.fromDate = '';
-      this.toDate = '';
-      this.assetUnitID = null;
-      this.start = '';
-      this.end = '';
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fuelList = [];
-      this.fuelEntriesCount();
-      this.resetCountResult();
-    } else {
-      return false;
-    }
+    this.unitID = null;
+    this.fromDate = '';
+    this.toDate = '';
+    this.assetUnitID = null;
+    this.start = '';
+    this.end = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fuelList = [];
+    this.initDataTable();
+    //this.fuelEntriesCount();
+    //this.resetCountResult();
+
   }
 
   // getStartandEndVal() {
@@ -397,7 +419,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
-    this.fuelEntriesCount();
+    // this.fuelEntriesCount();
     this.resetCountResult();
   }
 }
