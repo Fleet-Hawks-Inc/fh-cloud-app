@@ -502,7 +502,7 @@
                                                                                                     </td>
                                                                                                     <td>
                                                                                                         <span
-                                                                                                            *ngIf="spltLine.vehicleID"><b>Vehile:
+                                                                                                            *ngIf="spltLine.vehicleID"><b>Vehicle:
                                                                                                             </b>
                                                                                                             {{
                                                                                                             vehicles[spltLine.vehicleID]
@@ -569,16 +569,16 @@
                                                             <th width="4%">
                                                                 <!-- <input type="checkbox"> -->
                                                             </th>
-                                                            <th width="6%">Trip</th>
+                                                            <th width="6%">Trip#</th>
                                                             <th width="6%">Date</th>
                                                             <th width="6%">Order#</th>
-                                                            <th width="19%">Pick-up</th>
-                                                            <th width="19%">Delivery</th>
+                                                            <th width="35%">Locations</th>
+                                                            <th width="6%">Miles</th>
                                                             <th width="11%">Driver</th>
                                                             <th width="7%">Vehicle</th>
                                                             <th width="7%">Assets</th>
                                                             <th width="8%">Carrier</th>
-                                                            <th width="7%">Status</th>
+                                                            <th width="5%">Status</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -604,9 +604,13 @@
                                                                         [(ngModel)]="trp.selected"
                                                                         name="chk{{t}}">
                                                                 </td>
-                                                                <td>{{
-                                                                    trp.tripNo
-                                                                    }}</td>
+                                                                <td>
+                                                                    <a
+                                                                        href="/#/dispatch/trips/trip-details/{{trp.tripID}}"
+                                                                        target="_blank">{{
+                                                                        trp.tripNo
+                                                                        }}</a>
+                                                                </td>
                                                                 <td>{{
                                                                     trp.dateCreated
                                                                     |
@@ -616,56 +620,71 @@
                                                                     <span
                                                                         *ngFor="let
                                                                         ord of
-                                                                        trp.orderId">
-                                                                        {{
-                                                                        orders[ord]
-                                                                        }}
+                                                                        trp.orderId;
+                                                                        let
+                                                                        jo=index">
+                                                                        <a
+                                                                            href="/#/dispatch/orders/detail/{{ord}}"
+                                                                            target="_blank">
+                                                                            {{
+                                                                            orders[ord]
+                                                                            }}
+                                                                        </a>
+                                                                        <span
+                                                                            *ngIf="jo
+                                                                        <trp.orderId.length-1">,</span>
                                                                     </span>
                                                                 </td>
                                                                 <td
-                                                                    [innerHTML]="trp.pickupLocation"></td>
-                                                                <td
-                                                                    [innerHTML]="trp.dropLocation"></td>
+                                                                    [innerHTML]="trp.pickupLocation">
+                                                                </td>
+                                                                <td>
+                                                                    {{
+                                                                    trp.entityMiles
+                                                                    | number :
+                                                                    '1.2-2'
+                                                                    }}
+                                                                </td>
                                                                 <td>
                                                                     <span
                                                                         *ngFor="let
                                                                         drv of
-                                                                        trp.driverIDs;
+                                                                        trp.entityDriver;
                                                                         let
                                                                         d=index">
                                                                         {{
                                                                         driversObj[drv]
                                                                         }}
                                                                         <span
-                                                                            *ngIf="d<trp.driverIDs.length-1">,<br></span>
+                                                                            *ngIf="d<trp.entityDriver.length-1">,<br></span>
                                                                     </span>
                                                                 </td>
                                                                 <td>
                                                                     <span
                                                                         *ngFor="let
                                                                         veh of
-                                                                        trp.vehicleIDs;
+                                                                        trp.entityVehicle;
                                                                         let
                                                                         v=index">
                                                                         {{
                                                                         vehicles[veh]
                                                                         }}
                                                                         <span
-                                                                            *ngIf="v<trp.vehicleIDs.length-1">,<br></span>
+                                                                            *ngIf="v<trp.entityVehicle.length-1">,<br></span>
                                                                     </span>
                                                                 </td>
                                                                 <td>
                                                                     <span
                                                                         *ngFor="let
                                                                         ast of
-                                                                        trp.assetIDs;
+                                                                        trp.entityAsset;
                                                                         let
                                                                         a=index">
                                                                         {{
                                                                         assets[ast]
                                                                         }}
                                                                         <span
-                                                                            *ngIf="a<trp.assetIDs.length-1">,<br></span>
+                                                                            *ngIf="a<trp.entityAsset.length-1">,<br></span>
                                                                     </span>
                                                                 </td>
                                                                 <td>
@@ -735,10 +754,18 @@
                                                                                             <span>
                                                                                                 <b>{{
                                                                                                     spltLine.type
-                                                                                                    }}
-                                                                                                    Location:
+                                                                                                    }}:
                                                                                                 </b>{{
                                                                                                 spltLine.planLoc
+                                                                                                }}
+                                                                                                <br>
+                                                                                                <b>Miles</b>:
+                                                                                                {{
+                                                                                                spltLine.miles
+                                                                                                |
+                                                                                                number
+                                                                                                :
+                                                                                                '1.2-2'
                                                                                                 }}
                                                                                             </span>
                                                                                         </td>
@@ -765,7 +792,7 @@
                                                                                         </td>
                                                                                         <td>
                                                                                             <span
-                                                                                                *ngIf="spltLine.vehicleID"><b>Vehile:
+                                                                                                *ngIf="spltLine.vehicleID"><b>Vehicle:
                                                                                                 </b>
                                                                                                 {{
                                                                                                 vehicles[spltLine.vehicleID]

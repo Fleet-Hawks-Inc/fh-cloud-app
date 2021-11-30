@@ -5,8 +5,11 @@
         <h2>Sales Payment Received</h2>
         <div class="right-wrapper text-right">
           <div class="pull-right pr-2">
-            <a routerLink="/accounts/sales/receipts/list" class="mt-2 btn-sm btn
-              btn-default"><i class="fas fa-list"></i>All Sales Receipts</a>
+            <a
+              routerLink="/accounts/sales/receipts/list"
+              class="mt-2 btn-sm btn btn-default"
+              ><i class="fas fa-list"></i>All Sales Receipts</a
+            >
           </div>
         </div>
       </header>
@@ -15,142 +18,277 @@
           <div class="row">
             <div class="col pr-0">
               <div class="card-body text-dark">
-                <form class="form-horizontal form-bordered" method="post" #saleForm="ngForm" id="saleForm">
+                <form
+                  class="form-horizontal form-bordered"
+                  method="post"
+                  #saleForm="ngForm"
+                  id="saleForm"
+                >
                   <div class="row">
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
-
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold
-                            text-lg-right pt-2">Payment Date <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Date
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            >
                           </label>
-                          <input type="text" [(ngModel)]="paymentData.txnDate" name="txnDate" class="form-control"
-                            (click)="tDate.toggle()" readonly ngbDatepicker #tDate="ngbDatepicker" #sOrderDate="ngModel"
-                            required>
+                          <input
+                            type="text"
+                            [(ngModel)]="paymentData.txnDate"
+                            name="txnDate"
+                            class="form-control"
+                            (click)="tDate.toggle()"
+                            readonly
+                            ngbDatepicker
+                            #tDate="ngbDatepicker"
+                            #sOrderDate="ngModel"
+                            required
+                          />
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold
-                            text-lg-right pt-2">Payment Currency
-                            <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Currency
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            >
                           </label>
-                          <ng-select [clearable]="false" [(ngModel)]="paymentData.currency" name="currency"
-                            placeholder="Select currency" #payCur="ngModel" required>
+                          <ng-select
+                            [clearable]="false"
+                            [(ngModel)]="paymentData.currency"
+                            name="currency"
+                            placeholder="Select currency"
+                            #payCur="ngModel"
+                            required
+                          >
                             <ng-option value="CAD">CAD</ng-option>
                             <ng-option value="USD">USD</ng-option>
                           </ng-select>
                         </div>
                       </div>
-                      <div class="row pt-2">
+                      <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold
-                            text-lg-right pt-2">Customer <span class="mandfield text-2 ml-1"><sup>*</sup></span>
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Customer
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            >
                           </label>
-                          <ng-select [clearable]="false" [(ngModel)]="paymentData.customerID" name="customerID"
-                            class="form-control text-capitalize" placeholder="Select customer" #cusID="ngModel" required
-                            (change)="getCustomerInvoices($event)">
-                            <ng-option *ngFor="let customer of customers" value="{{ customer.contactID }}">
+                          <ng-select
+                            [clearable]="false"
+                            [(ngModel)]="paymentData.customerID"
+                            name="customerID"
+                            class="form-control text-capitalize"
+                            placeholder="Select customer"
+                            #cusID="ngModel"
+                            required
+                            (change)="getCustomerInvoices($event)"
+                          >
+                            <ng-option
+                              *ngFor="let customer of customers"
+                              value="{{ customer.contactID }}"
+                            >
                               {{ customer.companyName }}
                             </ng-option>
                           </ng-select>
-                          <div *ngIf="cusID.invalid && (cusID.dirty ||
-                            cusID.touched)" class="text-danger">
+                          <div
+                            *ngIf="
+                              cusID.invalid && (cusID.dirty || cusID.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="cusID.errors.required">
                               Customer is required.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold pt-2">Deposited
-                            To <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select class="form-control populate" placeholder="Select account"
-                            [(ngModel)]="paymentData.accountID" name="accountID" #deposit="ngModel" required>
-                            <ng-option value="{{ data.actID }}" *ngFor="let data
-                              of accounts | async">{{ data.actNo }} -
-                              {{ data.actName | titlecase}}</ng-option>
+                          <label class="control-label font-weight-bold pt-2"
+                            >Deposited To
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <ng-select
+                            class="form-control populate"
+                            placeholder="Select account"
+                            [(ngModel)]="paymentData.accountID"
+                            name="accountID"
+                            #deposit="ngModel"
+                            required
+                          >
+                            <ng-option
+                              value="{{ data.actID }}"
+                              *ngFor="let data of accounts | async"
+                              >{{ data.actNo }} -
+                              {{ data.actName | titlecase }}</ng-option
+                            >
                           </ng-select>
                         </div>
-                        <div class="col-lg-2 pl-1" style="margin-top:
-                          37px;">
-                          <button type="button" data-target="#addAccountModal" data-toggle="modal"
-                            class="btn btn-success btn-sm mr-3" style="color:white;"><i class="fas fa-plus"></i>
+                        <div class="col-lg-2 pl-1" style="margin-top: 37px">
+                          <button
+                            type="button"
+                            data-target="#addAccountModal"
+                            data-toggle="modal"
+                            class="btn btn-success btn-sm mr-3"
+                            style="color: white"
+                          >
+                            <i class="fas fa-plus"></i>
                           </button>
-                          <a href="javascript:;" (click)="refreshAccount()" data-toggle="tooltip"
-                            title="Refresh account data" class="btn btn-success
-                            btn-sm modal-with-form"><i class="fas fa-sync"></i></a>
+                          <a
+                            href="javascript:;"
+                            (click)="refreshAccount()"
+                            data-toggle="tooltip"
+                            title="Refresh account data"
+                            class="btn btn-success btn-sm modal-with-form"
+                            ><i class="fas fa-sync"></i
+                          ></a>
                         </div>
                       </div>
-
                     </div>
                     <div class="col-lg-5 offset-lg-1">
                       <div class="row">
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold font-bold
-                            text-lg-right pt-2">Payment
-                            Reference#</label>
-                          <input type="text" [(ngModel)]="paymentData.payRef" name="payRef" class="form-control">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold font-bold
+                              text-lg-right
+                              pt-2
+                            "
+                            >Payment Reference#</label
+                          >
+                          <input
+                            type="text"
+                            [(ngModel)]="paymentData.payRef"
+                            name="payRef"
+                            class="form-control"
+                          />
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label font-weight-bold
-                            labelalign pt-2">Payment Mode <span
-                              class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                          <ng-select [(ngModel)]="paymentData.payMode" name="payMode" placeholder="Select
-                            Payment Mode" (change)="changePaymentMode($event)" #payMode="ngModel" required
-                            [disabled]="editDisabled">
+                          <label
+                            class="
+                              control-label
+                              font-weight-bold
+                              labelalign
+                              pt-2
+                            "
+                            >Payment Mode
+                            <span class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <ng-select
+                            [(ngModel)]="paymentData.payMode"
+                            name="payMode"
+                            placeholder="Select
+                            Payment Mode"
+                            (change)="changePaymentMode($event)"
+                            #payMode="ngModel"
+                            required
+                            [disabled]="editDisabled"
+                          >
                             <ng-option value="cash">Cash</ng-option>
                             <ng-option value="cheque">Cheque</ng-option>
                             <ng-option value="eft">EFT</ng-option>
-                            <ng-option value="credit_card">Credit
-                              Card</ng-option>
-                            <ng-option value="debit_card">Debit
-                              Card</ng-option>
-                            <ng-option value="demand_draft">Demand
-                              Draft</ng-option>
+                            <ng-option value="credit_card"
+                              >Credit Card</ng-option
+                            >
+                            <ng-option value="debit_card">Debit Card</ng-option>
+                            <ng-option value="demand_draft"
+                              >Demand Draft</ng-option
+                            >
                           </ng-select>
                         </div>
                       </div>
 
                       <div class="row pt-1" *ngIf="paymentData.payMode">
                         <div class="col-lg-5">
-                          <label class="control-label
-                            font-weight-bold
-                            labelalign">{{
-                            payModeLabel }}
-                            Reference<span class="mandfield
-                              text-2 ml-1"><sup>*</sup></span></label>
-                          <input type="text" class="form-control" [(ngModel)]="paymentData.payModeNo" name="payModeNo"
-                            placeholder="{{
-                            payModeLabel }} Reference" #modeNo="ngModel" [required]="paymentData.payMode
-                            && paymentData.payMode
-                            !== 'cheque'" pattern="^[a-zA-Z0-9\s]+$" [disabled]="editDisabled">
-                          <div *ngIf="modeNo.invalid
-                            && (modeNo.dirty ||
-                            modeNo.touched)" class="text-danger">
+                          <label
+                            class="control-label font-weight-bold labelalign"
+                            >{{ payModeLabel }} Reference<span
+                              class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="paymentData.payModeNo"
+                            name="payModeNo"
+                            placeholder="{{ payModeLabel }} Reference"
+                            #modeNo="ngModel"
+                            [required]="
+                              paymentData.payMode &&
+                              paymentData.payMode !== 'cheque'
+                            "
+                            pattern="^[a-zA-Z0-9\s]+$"
+                            [disabled]="editDisabled"
+                          />
+                          <div
+                            *ngIf="
+                              modeNo.invalid && (modeNo.dirty || modeNo.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="modeNo.errors.required">
                               {{ payModeLabel }}
-                              Reference is
-                              required.
+                              Reference is required.
                             </div>
                             <div *ngIf="modeNo.errors.pattern">
                               {{ payModeLabel }}
-                              Reference must
-                              contain alphanumeric
-                              characters.
+                              Reference must contain alphanumeric characters.
                             </div>
                           </div>
                         </div>
                         <div class="col-lg-5">
-                          <label class="control-label
-                            font-weight-bold
-                            labelalign">{{
-                            payModeLabel }} Date<span class="mandfield
-                              text-2 ml-1"><sup>*</sup></span></label>
-                          <input [(ngModel)]="paymentData.payModeDate" name="payModeDate" type="text"
-                            placeholder="yyyy/mm/dd" (click)="payModeDate.toggle()" ngbDatepicker
-                            #payModeDate="ngbDatepicker" class="form-control" autocomplete="off" #modeDate="ngModel"
-                            required [disabled]="editDisabled">
-                          <div *ngIf="modeDate.invalid
-                            && (modeDate.dirty ||
-                            modeDate.touched)" class="text-danger">
+                          <label
+                            class="control-label font-weight-bold labelalign"
+                            >{{ payModeLabel }} Date<span
+                              class="mandfield text-2 ml-1"
+                              ><sup>*</sup></span
+                            ></label
+                          >
+                          <input
+                            [(ngModel)]="paymentData.payModeDate"
+                            name="payModeDate"
+                            type="text"
+                            placeholder="yyyy/mm/dd"
+                            (click)="payModeDate.toggle()"
+                            ngbDatepicker
+                            #payModeDate="ngbDatepicker"
+                            class="form-control"
+                            autocomplete="off"
+                            #modeDate="ngModel"
+                            required
+                            [disabled]="editDisabled"
+                          />
+                          <div
+                            *ngIf="
+                              modeDate.invalid &&
+                              (modeDate.dirty || modeDate.touched)
+                            "
+                            class="text-danger"
+                          >
                             <div *ngIf="modeDate.errors.required">
                               {{ payModeLabel }}
                               date is required.
@@ -161,15 +299,31 @@
 
                       <div class="row">
                         <div class="col-lg-10">
-                          <label class="
+                          <label
+                            class="
                               control-label
                               font-weight-bold font-bold
-                              text-lg-right
                               pt-2
-                            ">
-                            Attachments</label>
-                          <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
-                            name="files" class="form-control" />
+                              w100
+                            "
+                          >
+                            Attachments</label
+                          >
+                          <span
+                            class="
+                              btn btn-default btn-file btn-xs
+                              w100
+                              text-left
+                            "
+                          >
+                            <input
+                              type="file"
+                              multiple
+                              (change)="uploadDocs($event.target.files)"
+                              [(ngModel)]="files"
+                              name="files"
+                            />
+                          </span>
                           <span *ngIf="filesError != ''" class="text-danger">
                             {{ filesError }}
                           </span>
@@ -186,8 +340,13 @@
                   <div id="employeePaymentDiv">
                     <div class="row">
                       <div class="col-lg-10 offset-lg-1">
-                        <table class="table table-bordered table-striped mb-0
-                          simple-table">
+                        <table
+                          class="
+                            table table-bordered table-striped
+                            mb-0
+                            simple-table
+                          "
+                        >
                           <thead>
                             <tr class="bgcol2">
                               <th></th>
@@ -201,33 +360,53 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngIf="customerInvoices.length === 0;">
+                            <tr *ngIf="customerInvoices.length === 0">
                               <td class="text-center" colspan="7">
-                                {{dataMessage}}
+                                {{ dataMessage }}
                               </td>
                             </tr>
-                            <tr *ngFor="let item of customerInvoices; let i=
-                              index;">
-                              <td style="width: 30px;">
-                                <input type="checkbox" name="stl{{ i }}" [(ngModel)]="item.selected"
-                                  (change)="selectedCredits()" />
+                            <tr
+                              *ngFor="
+                                let item of customerInvoices;
+                                let i = index
+                              "
+                            >
+                              <td style="width: 30px">
+                                <input
+                                  type="checkbox"
+                                  name="stl{{ i }}"
+                                  [(ngModel)]="item.selected"
+                                  (change)="selectedCredits()"
+                                />
                               </td>
-                              <td style="width: 200px;">
-                                {{item.txnDate | date: 'yyyy/MM/dd'}}
+                              <td style="width: 200px">
+                                {{ item.txnDate | date: "yyyy/MM/dd" }}
                               </td>
-                              <td style="width: 250px;">{{item.sInvNo}}</td>
-                              <td style="width: 250px;">{{item.currency}} {{item.total.finalTotal}}</td>
+                              <td style="width: 250px">{{ item.sInvNo }}</td>
+                              <td style="width: 250px">
+                                {{ item.currency }} {{ item.total.finalTotal }}
+                              </td>
                               <td>
                                 {{ item.balance | number: "1.2-2" }}
                                 {{ item.currency }}
                               </td>
-                              <td style="width: 100px;" class="text-center">
-                                <input type="checkbox" [(ngModel)]="item.fullPayment" name="advfinal{{ i }}"
-                                  (change)="assignFullPayment(i, item)" />
+                              <td style="width: 100px" class="text-center">
+                                <input
+                                  type="checkbox"
+                                  [(ngModel)]="item.fullPayment"
+                                  name="advfinal{{ i }}"
+                                  (change)="assignFullPayment(i, item)"
+                                />
                               </td>
-                              <td style="min-width: 100px;"><input type="text" class="form-control"
-                                  [(ngModel)]="item.paidAmount" (input)="calculateFinalTotal()"
-                                  name="advPaidAmount{{ i }}" [disabled]="item.paidStatus" />
+                              <td style="min-width: 100px">
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  [(ngModel)]="item.paidAmount"
+                                  (input)="calculateFinalTotal()"
+                                  name="advPaidAmount{{ i }}"
+                                  [disabled]="item.paidStatus"
+                                />
                                 <label id="stlErr{{ i }}" class="error">
                                   <!-- {{data.errText}} -->
                                 </label>
@@ -236,24 +415,33 @@
                           </tbody>
                         </table>
                       </div>
-
                     </div>
                     <div class="row pt-2 mt-3">
                       <div class="col-lg-5 offset-lg-1">
-                        <label class="control-label font-weight-bold font-bold
-                          text-lg-right">Remarks</label>
-                        <textarea class="form-control h-auto" name="remarks" [(ngModel)]="paymentData.remarks"
-                          rows="10"></textarea>
-
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                          "
+                          >Remarks</label
+                        >
+                        <textarea
+                          class="form-control h-auto"
+                          name="remarks"
+                          [(ngModel)]="paymentData.remarks"
+                          rows="10"
+                        ></textarea>
                       </div>
                       <div class="col-lg-3 offset-lg-2">
                         <div class="row">
                           <div class="col-lg-6 text-right">
-                            <label class="control-label font-weight-bold">Total
-                              Amount</label>
+                            <label class="control-label font-weight-bold"
+                              >Total Amount</label
+                            >
                           </div>
                           <div class="col-lg-6">
-                            {{paymentData.invoiceTotal}}
+                            {{ paymentData.invoiceTotal }}
                           </div>
                         </div>
                       </div>
@@ -261,10 +449,20 @@
                   </div>
                   <div class="form-group row mt-4">
                     <div class="col-lg-11 text-right">
-                      <button type="button" class="btn btn-default mr-2"
-                        routerLink="/accounts/sales/receipts/list">Cancel</button>
-                      <button [disabled]="!saleForm.form.valid ||
-                        submitDisabled" (click)="addReceipt()" class="btn btn-success">Save</button>
+                      <button
+                        type="button"
+                        class="btn btn-default mr-2"
+                        routerLink="/accounts/sales/receipts/list"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        [disabled]="!saleForm.form.valid || submitDisabled"
+                        (click)="addReceipt()"
+                        class="btn btn-success"
+                      >
+                        Save
+                      </button>
                     </div>
                   </div>
                 </form>
@@ -277,14 +475,25 @@
   </div>
 </section>
 
-<div class="modal fade" id="addAccountModal" tabindex="-1" role="dialog" aria-labelledby="addAccountModal"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  id="addAccountModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addAccountModal"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add Account</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size:25px;">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
           </i>
         </button>
       </div>

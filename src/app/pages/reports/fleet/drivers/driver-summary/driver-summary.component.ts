@@ -30,6 +30,7 @@ export class DriverSummaryComponent implements OnInit {
     };
     driverStatus = null;
     driverName = '';
+    fullExportDriver:any = [];
     lastItemSK = '';
     suggestedDrivers = [];
     disableSearch = false;
@@ -123,6 +124,8 @@ export class DriverSummaryComponent implements OnInit {
             return false;
         }
     }
+   
+    
     resetDriver() {
         if (this.driverName !== '' || this.driverStatus !== null || this.lastItemSK !== '') {
             this.driverName = '';
@@ -138,10 +141,10 @@ export class DriverSummaryComponent implements OnInit {
         }
     }
     generateDriverCSV() {
-        if (this.drivers.length > 0) {
+        if (this.fullExportDriver.length > 0) {
             let dataObject = []
             let csvArray = []
-            this.drivers.forEach(element => {
+            this.fullExportDriver.forEach(element => {
                 let obj = {}
                 obj["Name"] = element.firstName + "  " + element.middleName + " " + element.lastName
                 obj["Email"] = element.email
@@ -174,6 +177,22 @@ export class DriverSummaryComponent implements OnInit {
         }
         else {
             this.toastr.error("No Records found")
+        }
+    }
+    
+    requiredExport() {
+        this.apiService.getData(`drivers/get/getFull/export`).subscribe((result: any) => {
+            this.fullExportDriver = result.Items;
+            this.generateDriverCSV();
+        })
+    }
+
+    requiredCSV() {
+        if (this.driverName !== '' || this.driverStatus !== null) {
+            this.fullExportDriver = this.drivers
+            this.generateDriverCSV();
+        } else {
+            this.requiredExport();
         }
     }
 }

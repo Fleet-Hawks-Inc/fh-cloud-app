@@ -66,7 +66,7 @@
                           text-lg-right pt-2">Select Currency<span
                             class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select class="form-control populate"
-                          [(ngModel)]="receiptData.recAmountCur" name="currency"
+                          [(ngModel)]="receiptData.currency" name="currency"
                           [clearable]="false"
                           (change)="getInvoices()">
                           <ng-option value="CAD">CAD</ng-option>
@@ -124,12 +124,12 @@
                           <td>{{invOrder.txnDate}}</td>
                           <td>{{customersObjects[invOrder.customerID] |
                             titlecase}}</td>
-                          <td>{{invOrder.finalAmount}}
-                            {{invOrder.charges.freightFee.currency}}</td>
-                          <td>{{invOrder.amountReceived}}
-                            {{invOrder.charges.freightFee.currency}}</td>
-                          <td>{{invOrder.balance}}
-                            {{invOrder.charges.freightFee.currency}}</td>
+                          <td>{{invOrder.finalAmount | number : '1.2-2' }}
+                            {{invOrder.currency}}</td>
+                          <td>{{invOrder.amountReceived | number : '1.2-2'}}
+                            {{invOrder.currency}}</td>
+                          <td>{{invOrder.balance | number : '1.2-2' }}
+                            {{invOrder.currency}}</td>
                           <td><span class="badge badge-dark p-1">{{invOrder.invStatus
                               | uppercase}}</span>
                           </td>
@@ -151,7 +151,7 @@
                               name="invOrder.amountPaid{{i}}"
                               [disabled]="invOrder.payDisable"
                               max="{{invOrder.balance}}" min="0"
-                              (change)="findReceivedAmtFn(); applyDiscount(i,
+                              (change)="applyDiscount(i,
                               'order')"
                               class="form-control input-sm p-0">
                           </td>
@@ -160,9 +160,11 @@
                           <td>{{inv.invNo}}</td>
                           <td>{{inv.txnDate}}</td>
                           <td>{{customersObjects[inv.customerID] | titlecase}}</td>
-                          <td>{{inv.finalAmount}} {{inv.invCur}}</td>
-                          <td>{{inv.amountReceived}} {{inv.invCur}}</td>
-                          <td>{{inv.balance}} {{inv.invCur}}</td>
+                          <td>{{inv.finalAmount | number : '1.2-2'}}
+                            {{inv.invCur}}</td>
+                          <td>{{inv.amountReceived | number : '1.2-2'}}
+                            {{inv.invCur}}</td>
+                          <td>{{inv.balance | number : '1.2-2'}} {{inv.invCur}}</td>
                           <td><span class="badge badge-dark p-1">{{inv.invStatus
                               | uppercase}}</span></td>
                           <td>
@@ -181,7 +183,7 @@
                               name="inv.amountPaid{{j}}"
                               max="{{inv.balance}}" min="0"
                               [disabled]="inv.payDisable"
-                              (change)="findReceivedAmtFn(); applyDiscount(j,
+                              (change)="applyDiscount(j,
                               'inv')"
                               class="form-control input-sm p-0">
                           </td>
@@ -191,12 +193,12 @@
                   </div>
                 </div>
 
-                <div class="form-group row" *ngIf="totalErr">
+                <!-- <div class="form-group row" *ngIf="totalErr">
                   <div class="col-lg-11 text-right">
                     <label class="control-label error">Paid Amount can not be
                       greater than Balance Amount.</label>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -231,7 +233,7 @@
                           <td>{{ data.desc }}</td>
                           <td>{{ data.amount
                             }} {{
-                            receiptData.recAmountCur }}</td>
+                            receiptData.currency }}</td>
                           <td>
                             <span
                               class="badge
@@ -292,10 +294,10 @@
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.addAccountID"
                       name="addChargeaccountID" placeholder="Select account"
-                      #receiptAct="ngModel" required>
-                      <ng-option value="{{ item.actID }}" *ngFor="let item
-                        of accounts | async">{{ item.actNo }} -
-                        {{ item.actName | titlecase}}</ng-option>
+                      class="text-capitalize"
+                      (change)="getJournalPreview()">
+                      <ng-option value="{{ item.key }}" *ngFor="let item
+                        of accounts | keyvalue">{{ item.value }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -345,7 +347,7 @@
                           <td>{{ data.desc }}</td>
                           <td>{{ data.amount
                             }} {{
-                            receiptData.recAmountCur }}</td>
+                            receiptData.currency }}</td>
                           <td>
                             <span
                               class="badge
@@ -406,10 +408,10 @@
                       font-weight-bold">Account</label>
                     <ng-select [(ngModel)]="receiptData.charges.dedAccountID"
                       name="dedaccountID" placeholder="Select account"
-                      #receiptAct="ngModel" required>
-                      <ng-option value="{{ item.actID }}" *ngFor="let item
-                        of accounts | async">{{ item.actNo }} -
-                        {{ item.actName | titlecase}}</ng-option>
+                      class="text-capitalize"
+                      id="ded_acc" (change)="getJournalPreview()">
+                      <ng-option value="{{ item.key }}" *ngFor="let item
+                        of accounts | keyvalue">{{ item.value }}</ng-option>
                     </ng-select>
                   </div>
                   <div class="col-lg-2">
@@ -445,12 +447,13 @@
                         <div class="row">
                           <div class="col-lg-6">
                             <input type="number" min="0" class="form-control"
-                              [(ngModel)]="receiptData.totalAmount"
+                              [(ngModel)]="totalAmount"
                               name="totalAmount" [disabled]="true">
                           </div>
                           <div class="col-lg-6">
                             <input type="text" class="form-control"
-                              [ngModel]="totalCur" name="totalCur" disabled>
+                              [ngModel]="receiptData.currency"
+                              name="totalCur" disabled>
                           </div>
                         </div>
                       </div>
@@ -465,7 +468,8 @@
                           </div>
                           <div class="col-lg-6">
                             <input type="text" class="form-control"
-                              [ngModel]="totalCur" name="totalCur" disabled>
+                              [ngModel]="receiptData.currency"
+                              name="totalCur" disabled>
                           </div>
                         </div>
                       </div>
@@ -498,8 +502,8 @@
                             </ng-select>
                           </div>
                         </div>
-                        <div class="row" *ngIf="currency !==
-                          this.receiptData.recAmountCur">
+                        <div class="row" *ngIf="receiptData.currency !==
+                          receiptData.recAmountCur">
                           <div class="col-lg-12">
                             <p>1 {{currency}} = {{rate}}
                               {{this.receiptData.recAmountCur}}</p>
@@ -508,27 +512,60 @@
 
                       </div>
                     </div>
-                    <div class="row" *ngIf="totalErr">
+                    <!-- <div class="row" *ngIf="totalErr">
                       <div class="col-lg-7">
                         <label class="control-label error">Received Amount can
                           not be greater than Total Amount.</label>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="row mt-5">
+                      <div class="col-lg-10">
+                        <label class="control-label font-weight-bold
+                          font-weight-bold text-lg-right text-5">Journal</label>
+                      </div>
                       <div class="col-lg-10">
                         <table class="table table-bordered table-hover">
                           <thead>
                             <tr>
                               <th>Account Name</th>
-                              <th>Name</th>
                               <th>Type</th>
-                              <th>Debit</th>
                               <th>Credit</th>
+                              <th>Debit</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>=</td>
+                            <tr *ngIf="journalPrev.length === 0"
+                              class="text-center">
+                              <td colspan="4">{{ dataMessageAdv }}</td>
+                            </tr>
+                            <tr *ngFor="let data of journalPrev">
+                              <td class="text-capitalize">
+                                <span *ngIf="data.cType === 'add' || data.cType
+                                  === 'ded' || data.cType === 'recpt'">
+                                  {{ accounts[data.accName] }}
+                                </span>
+                                <span *ngIf="data.cType === 'recv' || data.cType
+                                  === 'dis'">
+                                  {{ data.accName }}
+                                </span>
+                              </td>
+                              <td class="text-capitalize">{{ data.jType }}</td>
+                              <td>
+                                <span *ngIf="data.type === 'credit'">
+                                  {{ data.amount | number : '1.2-2'}}
+                                </span>
+                                <span *ngIf="data.type !== 'credit'">
+                                  0.00
+                                </span> {{ receiptData.currency }}
+                              </td>
+                              <td>
+                                <span *ngIf="data.type === 'debit'">
+                                  {{ data.amount | number : '1.2-2'}}
+                                </span>
+                                <span *ngIf="data.type !== 'debit'">
+                                  0.00
+                                </span> {{ receiptData.currency }}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -543,10 +580,10 @@
                           Account<span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="receiptData.accountID"
                           name="accountID" placeholder="Select account"
-                          #receiptAct="ngModel" required>
-                          <ng-option value="{{ item.actID }}" *ngFor="let item
-                            of accounts | async">{{ item.actNo }} -
-                            {{ item.actName | titlecase}}</ng-option>
+                          #receiptAct="ngModel" required class="text-capitalize"
+                          (change)="getJournalPreview()">
+                          <ng-option value="{{ item.key }}" *ngFor="let item
+                            of accounts | keyvalue">{{ item.value }}</ng-option>
                         </ng-select>
                         <div *ngIf="receiptAct.invalid && (receiptAct.dirty ||
                           receiptAct.touched)" class="text-danger">
@@ -648,8 +685,8 @@
                     <a type="button" class="btn btn-default mr-3"
                       routerLink="/accounts/receipts/list">Cancel</a>
                     <button type="button" class="btn btn-success" *ngIf="!recID"
-                      [disabled]="!recForm.form.valid || submitDisabled ||
-                      totalErr" (click)="addReceipt()">Save</button>
+                      [disabled]="!recForm.form.valid || submitDisabled"
+                      (click)="addReceipt()">Save</button>
                   </div>
                 </div>
               </div>
