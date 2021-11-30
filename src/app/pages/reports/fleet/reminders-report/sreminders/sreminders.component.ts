@@ -35,6 +35,7 @@ export class SremindersComponent implements OnInit {
   record = [];
   export = [];
   data = [];
+  serviceTasks = [];
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -120,10 +121,8 @@ export class SremindersComponent implements OnInit {
     });
   }
   fetchTaskData() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceList = test.filter((s: any) => s.taskType === 'service');
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
   fetchVehicleIDs() {
@@ -193,5 +192,3 @@ export class SremindersComponent implements OnInit {
 
 
 }
-
-

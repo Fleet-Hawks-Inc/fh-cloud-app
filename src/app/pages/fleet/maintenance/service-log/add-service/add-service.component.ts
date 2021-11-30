@@ -11,6 +11,7 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 import { ListService } from '../../../../../services/list.service'
 import { isTemplateHead } from 'typescript';
 import { DomSanitizer } from '@angular/platform-browser';
+import constants from "../../../constants";
 declare var $: any;
 
 @Component({
@@ -24,7 +25,8 @@ export class AddServiceComponent implements OnInit {
   vendors;
   vehicles = [];
   assets = [];
-  tasks: any;
+  tasks: any = [];
+  taskData: any = [];
   newTaskResp;
   reminders = [];
   issues: any;
@@ -206,7 +208,7 @@ export class AddServiceComponent implements OnInit {
       window.localStorage.removeItem('reminderUnitID');
     }
 
-    this.tasks = this.listService.tasksList;
+    this.taskData = this.listService.tasksList;
     // this.vendors = this.listService.vendorList;
     let vendorList = new Array<any>();
     this.getValidVendors(vendorList);
@@ -225,7 +227,7 @@ export class AddServiceComponent implements OnInit {
           ids.push(element2.contactID);
         }
 
-        if(element2.isDeleted === 1 && this.serviceData.vendorID === element2.contactID) {
+        if (element2.isDeleted === 1 && this.serviceData.vendorID === element2.contactID) {
           this.serviceData.vendorID = null;
         }
       })
@@ -368,12 +370,12 @@ export class AddServiceComponent implements OnInit {
    * Get all vehicles from api
    */
   async fetchVehicles() {
-    let result:any = await this.apiService.getData('vehicles').toPromise();
+    let result: any = await this.apiService.getData('vehicles').toPromise();
     result.Items.forEach(element => {
-      if(element.isDeleted === 0) {
+      if (element.isDeleted === 0) {
         this.vehicles.push(element);
       }
-      if(element.isDeleted === 1 && this.serviceData.unitID === element.vehicleID) {
+      if (element.isDeleted === 1 && this.serviceData.unitID === element.vehicleID) {
         this.serviceData.unitID = null;
       }
     });
@@ -401,30 +403,17 @@ export class AddServiceComponent implements OnInit {
    * Get all assets from api
    */
   async fetchAssets() {
-    let result:any = await this.apiService.getData('assets').toPromise();
+    let result: any = await this.apiService.getData('assets').toPromise();
     result.Items.forEach(element => {
-      if(element.isDeleted === 0) {
+      if (element.isDeleted === 0) {
         this.assets.push(element);
       }
-      if(element.isDeleted === 1 && this.serviceData.unitID === element.assetID) {
+      if (element.isDeleted === 1 && this.serviceData.unitID === element.assetID) {
         this.serviceData.unitID = null;
       }
     });
   }
 
-  /*
-   * Get all tasks from api
-   */
-  fetchTasks() {
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      result.Items.forEach(element => {
-        if (element.taskType === 'service') {
-          this.tasks.push(element);
-        }
-      });
-
-    });
-  }
 
   /*
    * Get a task by id
@@ -740,99 +729,99 @@ export class AddServiceComponent implements OnInit {
 
   async fetchServiceByID() {
     // this.spinner.show(); // loader init
-    let result:any = await this.apiService
+    let result: any = await this.apiService
       .getData('serviceLogs/' + this.logID).toPromise();
-      // .subscribe(async (result: any) => {
-        result = result.Items[0];
+    // .subscribe(async (result: any) => {
+    result = result.Items[0];
 
-        this.serviceData['logID'] = this.logID;
-        this.serviceData.unitType = result.unitType;
-        if (result.unitType == 'vehicle') {
-          await this.getVehicleIssues(result.unitID);
-          this.serviceData.unitID = result.unitID;
-        } else {
-          await this.getAssetIssues(result.unitID);
-          this.serviceData.unitID = result.unitID;
-        }
+    this.serviceData['logID'] = this.logID;
+    this.serviceData.unitType = result.unitType;
+    if (result.unitType == 'vehicle') {
+      await this.getVehicleIssues(result.unitID);
+      this.serviceData.unitID = result.unitID;
+    } else {
+      await this.getAssetIssues(result.unitID);
+      this.serviceData.unitID = result.unitID;
+    }
 
-        this.serviceData.odometer = result.odometer;
-        this.serviceData.completionDate = result.completionDate;
-        this.serviceData.vendorID = result.vendorID;
-        this.serviceData.reference = result.reference;
-        // this.serviceData.location = result.location;
-        this.serviceData.geoCords.lat = result.geoCords.lat;
-        this.serviceData.geoCords.lng = result.geoCords.lng;
-        this.serviceData.odometer = result.odometer;
-        this.serviceData.description = result.description;
+    this.serviceData.odometer = result.odometer;
+    this.serviceData.completionDate = result.completionDate;
+    this.serviceData.vendorID = result.vendorID;
+    this.serviceData.reference = result.reference;
+    // this.serviceData.location = result.location;
+    this.serviceData.geoCords.lat = result.geoCords.lat;
+    this.serviceData.geoCords.lng = result.geoCords.lng;
+    this.serviceData.odometer = result.odometer;
+    this.serviceData.description = result.description;
 
-        this.savedIssues = result.selectedIssues;
-        this.serviceData.selectedIssues = result.selectedIssues;
+    this.savedIssues = result.selectedIssues;
+    this.serviceData.selectedIssues = result.selectedIssues;
 
-        let newTasks = [];
-        for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
-          newTasks.push({
-            taskName: result.allServiceTasks.serviceTaskList[i].taskName,
-            taskID: result.allServiceTasks.serviceTaskList[i].taskID,
-            schedule: result.allServiceTasks.serviceTaskList[i].schedule,
-            reminderID: result.allServiceTasks.serviceTaskList[i].reminderID,
-            laborCost: result.allServiceTasks.serviceTaskList[i].laborCost,
-          });
-          this.selectedTasks.push(result.allServiceTasks.serviceTaskList[i].taskName)
-        }
-        this.serviceData.allServiceTasks['discountAmount'] = result.allServiceTasks['discountAmount'];
-        this.serviceData.allServiceTasks['discountPercent'] = result.allServiceTasks['discountPercent'];
-        this.serviceData.allServiceTasks['taxPercent'] = result.allServiceTasks['taxPercent'];
-        this.serviceData.allServiceTasks['taxAmount'] = result.allServiceTasks['taxAmount'];
-        this.serviceData.allServiceTasks['total'] = result.allServiceTasks['total'];
-        this.serviceData.allServiceTasks['subTotal'] = result.allServiceTasks['subTotal'];
-        this.totalLabors = result.allServiceTasks['subTotal'];
+    let newTasks = [];
+    for (var i = 0; i < result.allServiceTasks.serviceTaskList.length; i++) {
+      newTasks.push({
+        taskName: result.allServiceTasks.serviceTaskList[i].taskName,
+        taskID: result.allServiceTasks.serviceTaskList[i].taskID,
+        schedule: result.allServiceTasks.serviceTaskList[i].schedule,
+        reminderID: result.allServiceTasks.serviceTaskList[i].reminderID,
+        laborCost: result.allServiceTasks.serviceTaskList[i].laborCost,
+      });
+      this.selectedTasks.push(result.allServiceTasks.serviceTaskList[i].taskName)
+    }
+    this.serviceData.allServiceTasks['discountAmount'] = result.allServiceTasks['discountAmount'];
+    this.serviceData.allServiceTasks['discountPercent'] = result.allServiceTasks['discountPercent'];
+    this.serviceData.allServiceTasks['taxPercent'] = result.allServiceTasks['taxPercent'];
+    this.serviceData.allServiceTasks['taxAmount'] = result.allServiceTasks['taxAmount'];
+    this.serviceData.allServiceTasks['total'] = result.allServiceTasks['total'];
+    this.serviceData.allServiceTasks['subTotal'] = result.allServiceTasks['subTotal'];
+    this.totalLabors = result.allServiceTasks['subTotal'];
 
-        this.serviceData.allServiceTasks.serviceTaskList = newTasks;
-        let newParts = [];
-        for (var j = 0; j < result.allServiceParts.servicePartsList.length; j++) {
-          newParts.push({
-            description: result.allServiceParts.servicePartsList[j].description,
-            partCost: result.allServiceParts.servicePartsList[j].partCost,
-            partNumber: result.allServiceParts.servicePartsList[j].partNumber,
-            quantity: result.allServiceParts.servicePartsList[j].quantity,
-            rate: result.allServiceParts.servicePartsList[j].rate,
-            partName: result.allServiceParts.servicePartsList[j].partName,
-          });
-          this.selectedParts.push(result.allServiceParts.servicePartsList[j].partName);
-        }
-        this.serviceData.allServiceParts.servicePartsList = newParts;
+    this.serviceData.allServiceTasks.serviceTaskList = newTasks;
+    let newParts = [];
+    for (var j = 0; j < result.allServiceParts.servicePartsList.length; j++) {
+      newParts.push({
+        description: result.allServiceParts.servicePartsList[j].description,
+        partCost: result.allServiceParts.servicePartsList[j].partCost,
+        partNumber: result.allServiceParts.servicePartsList[j].partNumber,
+        quantity: result.allServiceParts.servicePartsList[j].quantity,
+        rate: result.allServiceParts.servicePartsList[j].rate,
+        partName: result.allServiceParts.servicePartsList[j].partName,
+      });
+      this.selectedParts.push(result.allServiceParts.servicePartsList[j].partName);
+    }
+    this.serviceData.allServiceParts.servicePartsList = newParts;
 
-        this.serviceData.allServiceParts['discountAmount'] = result.allServiceParts['discountAmount'];
-        this.serviceData.allServiceParts['discountPercent'] = result.allServiceParts['discountPercent'];
-        this.serviceData.allServiceParts['taxPercent'] = result.allServiceParts['taxPercent'];
-        this.serviceData.allServiceParts['taxAmount'] = result.allServiceParts['taxAmount'];
-        this.serviceData.allServiceParts['total'] = result.allServiceParts['total'];
-        this.serviceData.allServiceParts['subTotal'] = result.allServiceParts['subTotal'];
-        this.serviceData.allServiceParts['totalQuantity'] = result.allServiceParts['totalQuantity'];
+    this.serviceData.allServiceParts['discountAmount'] = result.allServiceParts['discountAmount'];
+    this.serviceData.allServiceParts['discountPercent'] = result.allServiceParts['discountPercent'];
+    this.serviceData.allServiceParts['taxPercent'] = result.allServiceParts['taxPercent'];
+    this.serviceData.allServiceParts['taxAmount'] = result.allServiceParts['taxAmount'];
+    this.serviceData.allServiceParts['total'] = result.allServiceParts['total'];
+    this.serviceData.allServiceParts['subTotal'] = result.allServiceParts['subTotal'];
+    this.serviceData.allServiceParts['totalQuantity'] = result.allServiceParts['totalQuantity'];
 
-        this.totalPartsPrice = result.allServiceParts['subTotal'];
-        this.totalQuantity = result.allServiceParts['totalQuantity'];
-        this.existingPhotos = result.uploadedPhotos;
-        this.existingDocs = result.uploadedDocs;
-        if (result.selectedIssues.length > 0) {
-          this.getResolvedIssues(result.selectedIssues)
-        }
+    this.totalPartsPrice = result.allServiceParts['subTotal'];
+    this.totalQuantity = result.allServiceParts['totalQuantity'];
+    this.existingPhotos = result.uploadedPhotos;
+    this.existingDocs = result.uploadedDocs;
+    if (result.selectedIssues.length > 0) {
+      this.getResolvedIssues(result.selectedIssues)
+    }
 
 
-        if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
-          this.logImages = result.uploadedPhotos.map(x => ({
-            path: `${this.logurl}/${result.carrierID}/${x}`,
-            name: x,
-          }));
-        }
+    if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
+      this.logImages = result.uploadedPhotos.map(x => ({
+        path: `${this.logurl}/${result.carrierID}/${x}`,
+        name: x,
+      }));
+    }
 
-        if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-          this.logDocs = result.uploadedDocs.map(x => ({ path: `${this.logurl}/${result.carrierID}/${x}`, name: x }));
-        }
+    if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
+      this.logDocs = result.uploadedDocs.map(x => ({ path: `${this.logurl}/${result.carrierID}/${x}`, name: x }));
+    }
 
-        this.selectedIssues = result.selectedIssues;
-        this.serviceData['timeCreated'] = result.timeCreated;
-      // });
+    this.selectedIssues = result.selectedIssues;
+    this.serviceData['timeCreated'] = result.timeCreated;
+    // });
   }
 
   onChangeUnitType(value: any) {

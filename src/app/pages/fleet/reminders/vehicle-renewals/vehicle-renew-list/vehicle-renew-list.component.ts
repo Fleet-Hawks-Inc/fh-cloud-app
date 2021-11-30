@@ -36,7 +36,7 @@ export class VehicleRenewListComponent implements OnInit {
   unitName = '';
   searchServiceTask = null;
   serviceTasks = [];
-  filterStatus=null;
+  filterStatus = null;
 
   totalRecords = 20;
   pageLength = 10;
@@ -63,10 +63,8 @@ export class VehicleRenewListComponent implements OnInit {
   }
 
   fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'vehicle');
+    this.apiService.getData('tasks?type=vehicle').subscribe((result: any) => {
+      this.serviceTasks = result;
     });
   }
 
@@ -85,7 +83,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  deleteRenewal(eventData) { 
+  deleteRenewal(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       let record = {
         date: eventData.createdDate,
@@ -94,18 +92,18 @@ export class VehicleRenewListComponent implements OnInit {
         type: eventData.type
       }
       this.apiService.deleteData(`reminders/delete/${eventData.reminderID}/${eventData.type}`).subscribe((result: any) => {
-          this.remindersData = [];
-          this.vehicleRenewDraw = 0;
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.lastEvaluatedKey = '';
-          this.getRemindersCount();
-          this.toastr.success('Vehicle Renewal Deleted Successfully!');
-        });
+        this.remindersData = [];
+        this.vehicleRenewDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.getRemindersCount();
+        this.toastr.success('Vehicle Renewal Deleted Successfully!');
+      });
     }
   }
 
   getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle').subscribe({
+    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle').subscribe({
       complete: () => { },
       error: () => { },
       next: (result: any) => {
@@ -122,7 +120,7 @@ export class VehicleRenewListComponent implements OnInit {
 
   initDataTable() {
     this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask +'&status='+this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
+    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle' + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -136,7 +134,7 @@ export class VehicleRenewListComponent implements OnInit {
         }
 
         if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g,'--');
+          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
           this.vehicleRenewNext = false;
           // for prev button
           if (!this.vehicleRenewPrevEvauatedKeys.includes(lastEvalKey)) {
@@ -150,7 +148,7 @@ export class VehicleRenewListComponent implements OnInit {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
 
-        if(this.totalRecords < this.vehicleRenewEndPoint) {
+        if (this.totalRecords < this.vehicleRenewEndPoint) {
           this.vehicleRenewEndPoint = this.totalRecords;
         }
 
@@ -235,14 +233,14 @@ export class VehicleRenewListComponent implements OnInit {
 
   refreshData() {
     this.vehicleID = null;
-      this.vehicleIdentification = '';
-      this.searchServiceTask = null;
-      this.filterStatus = null;
-      this.lastEvaluatedKey = '';
-      this.remindersData = [];
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
-      this.resetCountResult();
+    this.vehicleIdentification = '';
+    this.searchServiceTask = null;
+    this.filterStatus = null;
+    this.lastEvaluatedKey = '';
+    this.remindersData = [];
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.getRemindersCount();
+    this.resetCountResult();
   }
 
 }
