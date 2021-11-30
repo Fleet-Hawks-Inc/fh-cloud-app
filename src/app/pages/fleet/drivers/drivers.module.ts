@@ -74,7 +74,6 @@ const routes: Routes = [
     AddDriverComponent,
     DriverListComponent,
     DriverDetailComponent,
-    InfiniteScrollModule,
   ],
   imports: [
     CommonModule,
