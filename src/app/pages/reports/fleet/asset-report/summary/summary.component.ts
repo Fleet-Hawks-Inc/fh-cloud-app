@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { timeStamp } from 'console';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
@@ -25,6 +24,7 @@ export class SummaryComponent implements OnInit {
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
+  lastEvaluatedKey = ''
   loaded = false;
   data = [];
 
@@ -123,19 +123,21 @@ export class SummaryComponent implements OnInit {
       return false;
     }
   }
-  fetchAssetsData() {
+  fetchExportfullList() {
     this.apiService.getData('assets/fetch/assetList').subscribe((result: any) => {
       this.data = result.Items;
       this.generateCSV();
     })
+
   }
+
   csv() {
     if (this.assetIdentification !== '' || this.assetType != null) {
       this.data = this.allData
       this.generateCSV();
     }
     else {
-      this.fetchAssetsData()
+      this.fetchExportfullList()
     }
   }
 
