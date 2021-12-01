@@ -149,7 +149,6 @@ export class UserDetailsComponent implements OnInit {
     } else {
       this.passwordValidation.lowerCase = false;
     }
-
     if (passwordVerify.contains.includes('uppercase')) {
       this.passwordValidation.upperCase = true;
     } else {
