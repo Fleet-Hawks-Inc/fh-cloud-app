@@ -41,7 +41,8 @@
                                 placeholder="Search By Driver" [(ngModel)]="orderValue" name="orderValue"
                                 class="form-control" (input)="getDriversSuggestions($event.target.value)" />
                             <div *ngIf="tripsFiltr.category == 'driver' && suggestions?.length > 0"
-                                class="result-suggestions text-capitalize">
+                                class="result-suggestions text-capitalize" style="max-height: 150px;
+                                overflow-y: auto;">
                                 <ul class="m-0">
                                     <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
                                         (click)="setSearchValues(suggestedUser.fullName, suggestedUser.driverID)">
@@ -54,7 +55,8 @@
                                 placeholder="Search By Vehicle" [(ngModel)]="orderValue" name="orderValue"
                                 class="form-control" (input)="getVehiclesSuggestions($event.target.value)" />
                             <div *ngIf="tripsFiltr.category == 'vehicle' && suggestions?.length > 0"
-                                class="result-suggestions text-capitalize">
+                                class="result-suggestions text-capitalize" style="max-height: 150px;
+                                overflow-y: auto;">
                                 <ul class="m-0">
                                     <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
                                         (click)="setSearchValues(suggestedUser.vehicleIdentification, suggestedUser.vehicleID)">
@@ -68,7 +70,8 @@
                                 placeholder="Search By Asset" [(ngModel)]="orderValue" name="orderValue"
                                 class="form-control" (input)="getAssetSuggestions($event.target.value)" />
                             <div *ngIf="tripsFiltr.category == 'asset' && suggestions?.length > 0"
-                                class="result-suggestions text-capitalize">
+                                class="result-suggestions text-capitalize" style="max-height: 150px;
+                                overflow-y: auto;">
                                 <ul class="m-0">
                                     <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
                                         (click)="setSearchValues(suggestedUser.assetIdentification, suggestedUser.assetID)">
@@ -81,7 +84,8 @@
                                 placeholder="Search By Order" [(ngModel)]="orderValue" name="orderValue"
                                 class="form-control" (input)="getOrdersSuggestions($event.target.value)" />
                             <div *ngIf="tripsFiltr.category == 'orderNo' && suggestions?.length > 0"
-                                class="result-suggestions text-capitalize">
+                                class="result-suggestions text-capitalize" style="max-height: 150px;
+                                overflow-y: auto;">
                                 <ul class="m-0">
                                     <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
                                         (click)="setSearchValues(suggestedUser.orderNumber, suggestedUser.orderID)">
@@ -418,23 +422,6 @@
                                                     </i> {{isLoadText}}</button>
                                             </div>
                                         </div>
-                                        <!-- <div class="row mt-3 dtPaginate" *ngIf="records && activeTab ==
-                                            'all'">
-                                            <div class="col-6">
-                                                Showing <span class="text-lowercase">{{
-                                                    tripStartPoint }} to {{
-                                                    tripEndPoint }} of {{
-                                                    totalRecords }} enteries</span>
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <button type="button" class="btn
-                                                    btn-default mr-2" (click)="prevResults('all')"
-                                                    [disabled]="tripPrev">Prev</button>
-                                                <button type="button" class="btn
-                                                    btn-default" (click)="nextResults('all')"
-                                                    [disabled]="tripNext">Next</button>
-                                            </div>
-                                        </div> -->
 
                                         <div class="tab-pane table-responsive" [ngClass]="{'show active': activeTab
                                             == 'confirmed'}" id="confirmed" role="tabpanel"

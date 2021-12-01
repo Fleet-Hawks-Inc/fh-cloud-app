@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "../../../fleet/constants";
-import { AccountService, ApiService } from "./../../../../services";
+import { AccountService, AccountUtilityService } from "./../../../../services";
 import * as html2pdf from "html2pdf.js";
 @Component({
   selector: "app-receipt-detail",
@@ -12,7 +12,7 @@ export class ReceiptDetailComponent implements OnInit {
   dataMessage = Constants.NO_RECORDS_FOUND;
   public recID: string;
   accountsObjects = {};
-  accountsIntObjects = {};
+  accountsIntObjects: any = {};
   receiptData = {
     customerID: null,
     txnDate: null,
@@ -40,32 +40,16 @@ export class ReceiptDetailComponent implements OnInit {
   isLoaded = false;
   constructor(
     private accountService: AccountService,
-    private apiService: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private accountUtility: AccountUtilityService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.fetchReceipt();
     }
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
-  }
-
-  fetchAccountsByIDs() {
-    this.accountService
-      .getData("chartAc/get/list/all")
-      .subscribe((result: any) => {
-        this.accountsObjects = result;
-      });
-  }
-  fetchAccountsByInternalIDs() {
-    this.accountService
-      .getData("chartAc/get/internalID/list/all")
-      .subscribe((result: any) => {
-        this.accountsIntObjects = result;
-      });
+    this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
   }
 
   async fetchReceipt() {
@@ -93,9 +77,19 @@ export class ReceiptDetailComponent implements OnInit {
             }
           });
         }
-        this.receiptData.transactionLog.map((v: any) => {
-          v.type = v.type.replace("_", " ");
-        });
+
+        for (let j = 0; j < this.receiptData.transactionLog.length; j++) {
+          const element = this.receiptData.transactionLog[j];
+          element.accName = "";
+          element.type = element.type.replace("_", " ");
+          if (element.actIDType === "actID") {
+            this.receiptData.fetchedInvoices.map((v) => {
+              if (v._type === "Accounts" && v.actID === element.accountID) {
+                element.accName = v.actName;
+              }
+            });
+          }
+        }
       });
   }
 

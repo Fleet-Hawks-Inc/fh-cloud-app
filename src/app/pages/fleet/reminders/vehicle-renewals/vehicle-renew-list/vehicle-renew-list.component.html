@@ -14,7 +14,9 @@
                     <div class="col-lg-2 col-md-2 pl-0">
                         <ng-select placeholder="Search By Renewal Type" [(ngModel)]="searchServiceTask"
                             name="searchServiceTask" style="width: 100%;">
-                            <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+
+                            <ng-option *ngFor="let data of tasksList | keyvalue" value="{{ data.key }}"> {{ data.value
+                                }}
                             </ng-option>
                         </ng-select>
                     </div>

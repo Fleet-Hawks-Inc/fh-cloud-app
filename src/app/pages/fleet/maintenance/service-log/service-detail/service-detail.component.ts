@@ -114,7 +114,10 @@ export class ServiceDetailComponent implements OnInit {
         this.partsTotal = result.allServiceParts.total;
 
         this.currency = result.allServiceParts.currency;
+          this.logImages = result.uploadedPics;
+          this.logDocs = result.uploadDocument;
         
+        /*
        if(result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0){
           this.logImages = result.uploadedPhotos.map(x => ({
             path: `${this.logurl}/${result.carrierID}/${x}`,
@@ -125,6 +128,8 @@ export class ServiceDetailComponent implements OnInit {
         if(result.uploadedDocs !== undefined && result.uploadedDocs.length > 0){
           this.logDocs = result.uploadedDocs.map(x => ({path: `${this.logurl}/${result.carrierID}/${x}`, name: x}));
         }
+        */
+        
         this.spinner.hide(); // loader init
       },
     });
