@@ -232,7 +232,7 @@
                         <label
                            class="control-label font-weight-bold font-bold text-lg-right text-dark text-4 font-weight-bold pt-2">Documents</label>
                            <div class="row" *ngFor="let doc of logDocs;let d= index">
-                              <div class="col-lg-9"><a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
+                              <div class="col-lg-9"><a href="javascript:;"href="{{ doc.path }}"  data-toggle="modal" data-target="#viewDocModal"
                                     (click)="setPDFSrc(doc.path)">Document {{d+1}}</a> </div>
                               <div class="col-lg-3 text-right">
                                  <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(doc.path)" data-toggle="modal"
