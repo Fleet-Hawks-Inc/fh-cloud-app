@@ -7,9 +7,8 @@
                     </div>
                     <div class="col-md-2 col-lg-2 pr-0">
                         <div class="input-group input-group-sm mb-3">
-                            <input type="text" autocomplete="off" name="driverIDs" [(ngModel)]="driverIDs"
-                                placeholder="Search driver by name" class="form-control"
-                                (input)="getSuggestions($event.target.value)">
+                            <input type="text" autocomplete="off" placeholder="Search driver by name"
+                                class="form-control" (input)="getSuggestions($event.target.value)">
                         </div>
                         <div *ngIf="suggestedDrivers?.length> 0" class="result-suggestions">
 
