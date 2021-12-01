@@ -104,7 +104,7 @@ export class TripDetailComponent implements OnInit {
   ordersData: any = [];
 
   customerData = [];
-
+  isEmail: boolean = false;
   ngOnInit() {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetIDs();
@@ -756,12 +756,17 @@ export class TripDetailComponent implements OnInit {
     this.tripInfoRef.close();
   }
 
-  driverEmail() {
-    this.apiService
-      .getData(`trips/send/emailDriver/${this.tripID}`)
-      .subscribe((res: any) => {
-
-      });
+  async driverEmail() {
+    this.isEmail = true;
+    let result = await this.apiService
+      .getData(`trips/send/emailDriver/${this.tripID}`).toPromise();
+    if (result === null) {
+      this.tripInfoRef.close();
+      this.toastr.success("Email send successfully");
+      this.isEmail = false;
+    } else {
+      this.isEmail = false;
+    }
   }
 
   cancel() {
