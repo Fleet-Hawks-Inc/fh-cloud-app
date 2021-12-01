@@ -122,6 +122,7 @@ export class ServicelogsComponent implements OnInit {
     this.apiService.getData('assets/get/minor/details')
       .subscribe((result: any) => {
         this.assetsData = result.Items;
+
       })
 
   }
@@ -196,9 +197,10 @@ export class ServicelogsComponent implements OnInit {
 
           })
         }
+        this.generateCSV();
       })
 
-    this.generateCSV();
+
   }
 
   csv() {

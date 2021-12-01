@@ -59,7 +59,7 @@ export class ListContactRenewComponent implements OnInit {
   ngOnInit() {
     this.listService.fetchDrivers();
     this.getRemindersCount();
-    this.fetchServiceTasks();
+
     this.fetchTasksList();
     this.fetchEmployeeList();
     this.fetchEmployees();
@@ -100,16 +100,12 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+    this.apiService.getData('tasks/get/list?type=contact').subscribe((result: any) => {
       this.tasksList = result;
+
     });
   }
 
-  fetchServiceTasks() {
-    this.apiService.getData('tasks?type=contact').subscribe((result: any) => {
-      this.serviceTasks = result;
-    });
-  }
   setFilterStatus(val) {
     this.filterStatus = val;
   }

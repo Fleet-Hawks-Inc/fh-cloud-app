@@ -56,7 +56,7 @@
                     <div class="row text-dark">
                         <div class="col-12">
                             <div>
-                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Activity</h4>
+                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Name</h4>
                                 <h3><span *ngFor="let data of assetData">{{data.assetIdentification}}</span></h3>
 
                             </div>
@@ -80,6 +80,7 @@
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
                                                 <th>Location</th>
+                                                <th>Date</th>
                                                 <th>Total Miles</th>
                                             </tr>
                                         </thead>
@@ -100,7 +101,15 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {{ item.miles}}
+                                                    <span title="Date" *ngFor="let data of item.tripPlanning">
+                                                        <b>
+                                                            {{data.type}}:
+                                                        </b>
+                                                        {{ data.date}} <br>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {{ item.miles | number : '1.2-2'}}
                                                 </td>
                                             </tr>
                                         </tbody>

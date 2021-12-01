@@ -5,19 +5,20 @@
         <div class="row" style="padding-top:10px;">
 
           <div class="col-md-2 col-lg-2 pr-0">
+            <h4 class="text-4 mt-0 font-weight-bold mb-0 text-dark">Asset Summary</h4>
+          </div>
+
+          <div class="col-md-2 col-lg-2 pr-0">
             <div class="input-group input-group-sm mb-3">
               <input type="text" autocomplete="off" placeholder="Search Asset" name="assetIdentification"
-                [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)" />
+                [(ngModel)]="assetIdentification" class="form-control" (input)="getSuggestions($event.target.value)">
+
             </div>
             <div *ngIf="suggestedAssets?.length > 0" class="result-suggestions">
               <ul>
-                <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer" (click)="
-                    setAsset(
-                      suggestedAsset.assetID,
-                      suggestedAsset.assetIdentification
-                    )
-                  ">
-                  {{ suggestedAsset.assetIdentification }}
+                <li *ngFor="let suggestedAsset of suggestedAssets" style="cursor: pointer;"
+                  (click)="setAsset(suggestedAsset.assetID, suggestedAsset.assetIdentification)"> {{
+                  suggestedAsset.assetIdentification }}
                 </li>
               </ul>
             </div>
@@ -47,148 +48,105 @@
           </div>
 
           <div class="col-md-2 col-lg-2">
-            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">
-              Search
-            </button>
-            <button class="btn btn-sm btn-success" type="submit" (click)="resetFilter()">
-              Reset
-            </button>
+            <button type="submit" (click)="searchFilter()" class="btn btn-sm btn-success mr-3">Search</button>
+            <button class="btn btn-sm btn-success" type="submit" (click)=" resetFilter()">Reset</button>
+
           </div>
 
-          <section class="reports_div">
-
-            <table class="row-border hover table table-bordered table-striped mb-0">
-              <thead>
-                <tr class="back-color-gray">
-                  <th>Asset Name/Number</th>
-                  <th>VIN</th>
-                  <th>Asset Type</th>
-                  <th>Make</th>
-                  <th>Last Location</th>
-                  <th>License Plate Number</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngIf="allData.length == 0" class="text-center">
-                  <td colspan="15">{{dataMessage}}</td>
-                </tr>
-                <tr *ngFor="let item of allData">
-                  <td><span class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
-                  </td>
-                  <td>{{item.VIN}}</td>
-                  <td>{{item.assetType}}</td>
-                  <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}
-                  </td>
-                  <td>-</td>
-                  <td>{{item.assetDetails.licencePlateNumber}}</td>
-                  <td><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </section>
+          <div class="col-md-4 col-lg-4 text-right pr-1">
+            <div class="btn-group flex-wrap ml-2">
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                aria-expanded="false"><i class="fas fa-upload"></i> Export<span class="caret"></span></button>
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
+                style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                <a class="dropdown-item text-1" (click)="csv()">CSV</a>
+              </div>
+            </div>
+          </div>
         </div>
+      </header>
 
-        <div class="m-2">
-          <div class="row text-dark">
-            <div class="col-3 mb-3">
-              <div class="bg-white p-3">
-                <div>
-                  <h4 class="m-0 text-4">Total Assets</h4>
-                  <h3 class="mt-1 mb-0 font-weight-bold">
-                    {{ assetsCount.total }}
-                  </h3>
-                </div>
-              </div>
-            </div>
-            <div class="col-3 mb-3">
-              <div class="bg-white p-3">
-                <div>
-                  <h4 class="m-0 text-4">Active Assets</h4>
-                  <h3 class="mt-1 mb-0 font-weight-bold">
-                    {{ assetsCount.active }}
-                  </h3>
-                </div>
-              </div>
-            </div>
-            <div class="col-3 mb-3">
-              <div class="bg-white p-3">
-                <div>
-                  <h4 class="m-0 text-4">Inactive Assets</h4>
-                  <h3 class="mt-1 mb-0 font-weight-bold">
-                    {{ assetsCount.inactive }}
-                  </h3>
-                </div>
-              </div>
-            </div>
-            <div class="col">
-              <div class="card">
-                <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                  [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-                  <div class="card-body bor-radius0px p-3">
-                    <section class="reports_div">
-                      <table class="
-                        row-border
-                        hover
-                        table table-bordered table-striped
-                        mb-0
-                      ">
-                        <thead>
-                          <tr class="back-color-gray">
-                            <th>Asset Name/Number</th>
-                            <th>VIN</th>
-                            <th>Asset Type</th>
-                            <th>Make</th>
-                            <th>Last Location</th>
-                            <th>License Plate Number</th>
-                            <th>Status</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngIf="allData.length == 0" class="text-center">
-                            <td colspan="15">{{ dataMessage }}</td>
-                          </tr>
-                          <tr *ngFor="let item of allData">
-                            <td>
-                              <span class="
-                                font-weight-bold
-                                line-height-lg
-                                text-capitalize
-                              ">{{ item.assetIdentification }}</span>
-                            </td>
-                            <td>{{ item.VIN }}</td>
-                            <td>{{ item.assetType }}</td>
-                            <td>
-                              {{
-                              item.assetDetails.manufacturer
-                              ? item.assetDetails.manufacturer
-                              : "-"
-                              }}
-                            </td>
-                            <td>-</td>
-                            <td>{{ item.assetDetails.licencePlateNumber }}</td>
-                            <td>
-                              <span class="badge badge-dark p-1 text-uppercase">{{
-                                item.currentStatus
-                                }}</span>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </section>
-                  </div>
+      <div class="m-2">
+        <div class="row text-dark">
+          <div class="col-3 mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Total Assets</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.total}}</h3>
 
-                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
-                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
-                      Load More..
-                    </button>
-                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-3 mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Active Assets</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.active}}</h3>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-3 mb-3">
+            <div class="bg-white p-3">
+              <div>
+                <h4 class="m-0 text-4">Inactive Assets</h4>
+                <h3 class="mt-1 mb-0 font-weight-bold">{{assetsCount.inactive}}</h3>
+
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                <div class="card-body bor-radius0px">
+
+                  <section class="reports_div">
+
+                    <table class="row-border hover table table-bordered table-striped mb-0">
+                      <thead>
+                        <tr class="back-color-gray">
+                          <th>Asset Name/Number</th>
+                          <th>VIN</th>
+                          <th>Asset Type</th>
+                          <th>Make</th>
+                          <th>Last Location</th>
+                          <th>License Plate Number</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="allData.length == 0" class="text-center">
+                          <td colspan="15">{{dataMessage}}</td>
+                        </tr>
+                        <tr *ngFor="let item of allData">
+                          <td><span
+                              class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
+                          </td>
+                          <td>{{item.VIN}}</td>
+                          <td>{{item.assetType}}</td>
+                          <td>{{item.assetDetails.manufacturer ? item.assetDetails.manufacturer : '-'}}
+                          </td>
+                          <td>-</td>
+                          <td>{{item.assetDetails.licencePlateNumber}}</td>
+                          <td><span class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </section>
+                </div>
+
+                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+                  <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll() ">Load
+                    More..</button>
+
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     </section>
   </div>
 </section>
