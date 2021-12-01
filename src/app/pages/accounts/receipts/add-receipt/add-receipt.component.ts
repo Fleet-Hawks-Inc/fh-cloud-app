@@ -50,6 +50,7 @@ export class AddReceiptComponent implements OnInit {
     },
     paidInvoices: [],
     transactionLog: [],
+    invAmount: 0,
   };
   paymentMode = [
     {
@@ -400,7 +401,7 @@ export class AddReceiptComponent implements OnInit {
       this.hasError = false;
       this.hasSuccess = false;
       this.getInvoiceArr();
-
+      this.receiptData.invAmount = this.totalReceivedAmt;
       this.accountService.postData("receipts", this.receiptData).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -444,7 +445,6 @@ export class AddReceiptComponent implements OnInit {
     this.receiptData.recAmount =
       this.totalReceivedAmt +
       this.receiptData.charges.addTotal -
-      this.receiptData.discount -
       this.receiptData.charges.dedTotal;
 
     this.limitDecimals();
@@ -603,7 +603,8 @@ export class AddReceiptComponent implements OnInit {
       if (!jtype.includes("recv")) {
         let obj = {
           accName: "1200 - Accounts Receivable",
-          amount: this.receiptData.totalAmount,
+          amount:
+            Number(this.totalReceivedAmt) + Number(this.receiptData.discount),
           type: "credit",
           jType: "accounts receivable",
           cType: "recv",
