@@ -41,8 +41,8 @@
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
                          </div> -->
-            <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i
-                class="fas fa-list"></i> All Trips
+            <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
+              Trips
             </a>
           </div>
         </div>
@@ -1182,7 +1182,7 @@
     <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
       Cancel
     </button>
-    <button class="btn btn-success" (click)="driverEmail()">Email to Driver</button>
+    <button class="btn btn-success" [disabled]="isEmail" (click)="driverEmail()">Email to Driver</button>
     <button class="btn btn-success" (click)="generate()">Print</button>
   </div>
 </ng-template>
