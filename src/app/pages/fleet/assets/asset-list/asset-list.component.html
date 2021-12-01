@@ -309,8 +309,6 @@
                                           {{item.assetDetails.licencePlateNumber}}</td>
                                        <td *ngIf="hideShow.year" [routerLink]="item.url">{{ item.assetDetails.ownerShip
                                           !=='interchange' ? item.assetDetails.year : '-'}}</td>
-
-
                                        <td *ngIf="hideShow.model" [routerLink]="item.url">{{item.assetDetails.model ?
                                           modelsObjects[item.assetDetails.model] : '-'}}</td>
                                        <td *ngIf="hideShow.ownership" [routerLink]="item.url">
@@ -320,10 +318,15 @@
                                              *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator
                                              ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</span>
                                           <span
-                                             *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.rentCompany
-                                             ? item.assetDetails.rentCompany : '-'}}</span>
+                                             *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.ownCname
+                                             ? item.assetDetails.ownCname : '-'}}
+                                             </span>
                                           <span
-                                             *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'">-</span>
+                                             *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'"></span>
+                                             <span
+                                             *ngIf="item.assetDetails.ownerShip === 'leased'">{{item.assetDetails.ownCname
+                                             ? item.assetDetails.ownCname : '-'}}
+                                             </span>
                                        </td>
                                        <td *ngIf="hideShow.safetyDate" [routerLink]="item.url">{{
                                           item.assetDetails.ownerShip !=='interchange' ?

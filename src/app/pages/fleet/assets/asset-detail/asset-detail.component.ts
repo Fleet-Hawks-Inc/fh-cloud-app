@@ -60,7 +60,12 @@ export class AssetDetailComponent implements OnInit {
   GVWR_Unit: string;
   ownerShip: string;
   remarks: string;
-  rentCompany: string;
+  ownCname: string;
+  ownAmt: string;
+  ownCurr: string;
+  ownDate: string;
+  ownRec: string;
+  ownFrq: string;
   startDate: string;
   currentStatus: string;
   annualSafetyDate: string;
@@ -307,7 +312,12 @@ export class AssetDetailComponent implements OnInit {
           this.GVWR = result.assetDetails.GVWR;
           this.GVWR_Unit = result.assetDetails.GVWR_Unit;
           this.ownerShip = result.assetDetails.ownerShip;
-          this.rentCompany = result.assetDetails.rentCompany;
+          this.ownCname = result.assetDetails.ownCname;
+          this.ownAmt = result.assetDetails.ownAmt;    
+          this.ownCurr = result.assetDetails.ownCurr;
+          this.ownDate = result.assetDetails.ownDate;
+          this.ownRec = result.assetDetails.ownRec;
+          this.ownFrq = result.assetDetails.ownFrq;
           this.remarks = result.assetDetails.remarks;
           this.dateOfIssue = result.insuranceDetails.dateOfIssue;
           this.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
