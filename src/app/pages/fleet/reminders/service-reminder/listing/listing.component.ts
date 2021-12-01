@@ -37,8 +37,9 @@ export class ListingComponent implements OnInit {
   newData = [];
   suggestedVehicles = [];
   vehicleID = null;
-  serviceTasks = [];
-  tasksList = [];
+
+  tasksList: any = {}
+
   searchServiceTask = null;
   filterStatus = null;
   inServiceOdometer: string;
@@ -46,7 +47,7 @@ export class ListingComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-  // test = []
+
   serviceNext = false;
   servicePrev = true;
   serviceDraw = 0;
@@ -62,7 +63,7 @@ export class ListingComponent implements OnInit {
     this.getRemindersCount();
     this.fetchTasksList();
     this.fetchVehicleList();
-    this.fetchServiceTaks();
+
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -77,8 +78,9 @@ export class ListingComponent implements OnInit {
   }
 
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+    this.apiService.getData('tasks/get/list?type=service').subscribe((result: any) => {
       this.tasksList = result;
+
     });
   }
 
@@ -86,11 +88,7 @@ export class ListingComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  fetchServiceTaks() {
-    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
-      this.serviceTasks = result;
-    });
-  }
+
 
   resolveReminder(unitID) {
     let unitType = 'vehicle';

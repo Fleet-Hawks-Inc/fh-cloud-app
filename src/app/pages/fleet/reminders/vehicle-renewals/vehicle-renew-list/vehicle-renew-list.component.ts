@@ -35,7 +35,7 @@ export class VehicleRenewListComponent implements OnInit {
   unitID = '';
   unitName = '';
   searchServiceTask = null;
-  serviceTasks = [];
+
   filterStatus = null;
 
   totalRecords = 20;
@@ -55,22 +55,17 @@ export class VehicleRenewListComponent implements OnInit {
 
   ngOnInit() {
     this.getRemindersCount();
-    this.fetchServiceTaks();
     // this.fetchGroupsList();
     this.fetchVehicleList();
     this.fetchTasksList();
     // this.fetchUsers();
   }
 
-  fetchServiceTaks() {
-    this.apiService.getData('tasks?type=vehicle').subscribe((result: any) => {
-      this.serviceTasks = result;
-    });
-  }
 
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+    this.apiService.getData('tasks/get/list?type=vehicle').subscribe((result: any) => {
       this.tasksList = result;
+      console.log('taskkk', this.tasksList)
     });
   }
 

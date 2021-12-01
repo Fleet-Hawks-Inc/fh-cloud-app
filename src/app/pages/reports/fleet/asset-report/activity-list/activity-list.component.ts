@@ -55,26 +55,6 @@ export class ActivityListComponent implements OnInit {
   Error = '';
   Success = '';
 
-  hideShow = {
-    vin: true,
-    assetName: true,
-    type: true,
-    plateNo: true,
-    lastLocation: true,
-    year: true,
-    make: true,
-    model: false,
-    ownership: true,
-    currentStatus: true,
-    group: false,
-    aceID: false,
-    aciID: false,
-    gvwr: false,
-    gawr: false,
-    companyName: true,
-    safetyDate: true
-  }
-
   message: any;
   groupsList: any = {};
 
@@ -89,9 +69,7 @@ export class ActivityListComponent implements OnInit {
   manufacturersObjects: any = {};
   modelsObjects: any = {};
 
-  assetNext = false;
-  assetPrev = true;
-  assetDraw = 0;
+
   assetPrevEvauatedKeys = [''];
   assetStartPoint = 1;
   assetEndPoint = this.pageLength;
@@ -108,7 +86,6 @@ export class ActivityListComponent implements OnInit {
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
     this.fetchAssetsCount();
-    this.fetchGroups();
     this.fetchContacts();
 
   }
@@ -134,21 +111,11 @@ export class ActivityListComponent implements OnInit {
     this.suggestedAssets = [];
   }
 
-  fetchGroups() {
-    this.apiService.getData('groups/get/list').subscribe((result: any) => {
-      this.groupsList = result;
-    });
-  }
-
 
   fetchContacts() {
     this.apiService.getData('contacts/get/list/ownerOperator').subscribe((result: any) => {
       this.contactsObjects = result;
     });
-  }
-
-  someClickHandler(info: any): void {
-    this.message = info.id + ' - ' + info.firstName;
   }
 
   fetchAssetsCount() {
@@ -166,32 +133,6 @@ export class ActivityListComponent implements OnInit {
   }
 
 
-  deleteAsset(eventData) {
-    ;
-    // }
-    if (confirm('Are you sure you want to delete?') === true) {
-      this.apiService.deleteData(`assets/delete/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
-        this.allData = [];
-        this.assetDraw = 0;
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.lastEvaluatedKey = '';
-        this.fetchAssetsCount();
-        this.toastr.success('Asset Deleted Successfully!');
-      });
-    }
-
-  }
-  mapShow() {
-    this.mapView = true;
-    this.listView = false;
-    setTimeout(() => {
-      this.hereMap.mapInit();
-    }, 500);
-  }
-
-  valuechange() {
-    this.visible = !this.visible;
-  }
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
