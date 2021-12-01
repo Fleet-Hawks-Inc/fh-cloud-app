@@ -97,7 +97,7 @@ export class DriverDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllDocumentsTypes();
-    this.fetchDriversCount();
+    this.initDataTable();
     this.fetchAllVehiclesIDs();
     this.fetchAllGrorups();
     $(document).ready(() => {
@@ -176,24 +176,7 @@ export class DriverDataComponent implements OnInit {
     this.suggestedDrivers = [];
   }
 
-  fetchDriversCount() {
-    this.apiService
-      .getData(
-        `drivers/get/count?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}`
-      )
-      .subscribe({
-        complete: () => { },
-        error: () => { },
-        next: (result: any) => {
-          this.totalRecords = result.Count;
 
-          if (this.driverID != "") {
-            this.driverEndPoint = this.totalRecords;
-          }
-          this.initDataTable();
-        },
-      });
-  }
   fetchAllGrorups() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupssObject = result;
@@ -272,7 +255,7 @@ export class DriverDataComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.fetchDriversCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -317,7 +300,7 @@ export class DriverDataComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
       this.suggestedDrivers = [];
-      this.fetchDriversCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -335,7 +318,7 @@ export class DriverDataComponent implements OnInit {
       this.driverName = "";
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchDriversCount();
+      this.initDataTable();
       this.lastEvaluatedKey = ''
       this.driverDraw = 0;
     } else {

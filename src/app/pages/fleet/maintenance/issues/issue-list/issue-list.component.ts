@@ -54,7 +54,7 @@ export class IssueListComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.fetchIssuesCount();
+    this.initDataTable();
     this.fetchVehicleList();
     this.fetchDriverList();
     this.fetchAssetList();
@@ -108,21 +108,7 @@ export class IssueListComponent implements OnInit {
       this.usersList = result;
     });
   }
-  fetchIssuesCount() {
-    this.apiService.getData('issues/get/count?unitID=' + this.unitID + '&issueName=' + this.issueName + '&asset=' + this.assetUnitID + '&currentStatus=' + this.issueStatus).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-          this.issuesEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
 
   deleteIssue(entryID: any, issueName: any) {
     if (confirm('Are you sure you want to delete?') === true) {
@@ -132,7 +118,7 @@ export class IssueListComponent implements OnInit {
           this.issuesDraw = 0;
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
-          this.fetchIssuesCount();
+          this.initDataTable();
           this.issues = [];
           this.toastr.success('Issue Deleted Successfully!');
         });
@@ -166,14 +152,14 @@ export class IssueListComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.fetchIssuesCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
   searchFilter() {
     if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-      this.issueName = this.issueName.toLowerCase();
-      this.fetchIssuesCount();
+      // this.issueName = this.issueName.toLowerCase();
+      this.initDataTable();
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
@@ -191,7 +177,7 @@ export class IssueListComponent implements OnInit {
       this.assetUnitID = null;
       this.suggestedIssues = [];
       this.lastEvaluatedKey = ''
-      this.fetchIssuesCount();
+      this.initDataTable();
       this.dataMessage = Constants.FETCHING_DATA;
       this.issues = [];
     } else {
@@ -221,7 +207,7 @@ export class IssueListComponent implements OnInit {
     this.assetUnitID = null;
     this.suggestedIssues = [];
     this.lastEvaluatedKey = '';
-    this.fetchIssuesCount();
+    this.initDataTable();
     this.dataMessage = Constants.FETCHING_DATA;
     this.issues = [];
 

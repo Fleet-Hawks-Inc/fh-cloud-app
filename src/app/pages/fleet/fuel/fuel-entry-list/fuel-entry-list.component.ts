@@ -78,12 +78,9 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchVendorList();
-    // this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
-    //this.fetchFuelTypeList();
-    //this.fetchCountries();
     this.fetchTripList();
     this.fetchDriverList();
     this.fetchAllAssets();
@@ -198,21 +195,6 @@ export class FuelEntryListComponent implements OnInit {
       });
     });
   }
-  fuelEntriesCount() {
-    this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-
-        if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
-          this.fuelEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
 
   showTopValues() {
 
@@ -251,7 +233,7 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        // this.fuelEntriesCount();
+        this.initDataTable();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
@@ -310,7 +292,7 @@ export class FuelEntryListComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.fuelEntriesCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -326,8 +308,8 @@ export class FuelEntryListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
       this.lastEvaluatedKey = ''
-      // this.initDataTable();
-      this.fuelEntriesCount();
+      this.initDataTable();
+
     } else {
       return false;
     }
@@ -344,8 +326,7 @@ export class FuelEntryListComponent implements OnInit {
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.fuelList = [];
-      this.fuelEntriesCount();
-      // this.initDataTable();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -381,7 +362,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
-    this.fuelEntriesCount();
+    this.initDataTable();
 
 
   }

@@ -55,7 +55,7 @@ export class VehicleRenewListComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.getRemindersCount();
+    this.initDataTable();
     this.fetchServiceTaks();
     // this.fetchGroupsList();
     this.fetchVehicleList();
@@ -99,27 +99,13 @@ export class VehicleRenewListComponent implements OnInit {
         this.vehicleRenewDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.getRemindersCount();
+        this.initDataTable();
         this.toastr.success('Vehicle Renewal Deleted Successfully!');
       });
     }
   }
 
-  getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=vehicle').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.vehicleID != null || this.searchServiceTask != null) {
-          this.vehicleRenewEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
 
 
   initDataTable() {
@@ -147,7 +133,7 @@ export class VehicleRenewListComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.getRemindersCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -156,7 +142,7 @@ export class VehicleRenewListComponent implements OnInit {
       this.remindersData = [];
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -171,7 +157,7 @@ export class VehicleRenewListComponent implements OnInit {
       this.lastEvaluatedKey = ''
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -196,7 +182,7 @@ export class VehicleRenewListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.remindersData = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    this.getRemindersCount();
+    this.initDataTable();
 
   }
 

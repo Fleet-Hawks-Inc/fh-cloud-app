@@ -86,7 +86,6 @@ export class VehicleListComponent implements OnInit {
 
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    // this.fetchVehiclesCount();
     // this.fetchVehicleModelList();
     // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
@@ -158,21 +157,6 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  fetchVehiclesCount() {
-    this.apiService.getData('vehicles/get/count?vehicle=' + this.vehicleID + '&status=' + this.currentStatus).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.vehicleID != '' || this.currentStatus != null) {
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
-
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleIdentification;
@@ -228,7 +212,7 @@ export class VehicleListComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.fetchVehiclesCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -277,7 +261,7 @@ export class VehicleListComponent implements OnInit {
       this.vehicles = [];
       this.lastEvaluatedKey = ''
       this.suggestedVehicles = [];
-      this.fetchVehiclesCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -292,7 +276,7 @@ export class VehicleListComponent implements OnInit {
       this.lastEvaluatedKey = ''
       this.vehicles = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchVehiclesCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -313,7 +297,7 @@ export class VehicleListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         // this.fetchVehiclesCount();
-        // this.initDataTable();
+        this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
@@ -475,9 +459,7 @@ export class VehicleListComponent implements OnInit {
     this.vehicles = [];
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchVehiclesCount();
-
-
+    this.initDataTable();
   }
 
 

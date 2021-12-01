@@ -38,24 +38,10 @@ export class ServiceProgramListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchProgramsCount();
+    this.initDataTable();
   }
 
-  fetchProgramsCount() {
-    this.apiService.getData('servicePrograms/get/count?programName=' + this.programeName).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.programeName != '') {
-          this.serviceProgramEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
 
 
   initDataTable() {
@@ -84,7 +70,7 @@ export class ServiceProgramListComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.fetchProgramsCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -95,7 +81,7 @@ export class ServiceProgramListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.programs = [];
       this.lastEvaluatedKey = ''
-      this.fetchProgramsCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -107,7 +93,7 @@ export class ServiceProgramListComponent implements OnInit {
       this.programeName = '';
       this.programs = [];
       this.lastEvaluatedKey = ''
-      this.fetchProgramsCount();
+      this.initDataTable();
 
     } else {
       return false;
@@ -123,7 +109,7 @@ export class ServiceProgramListComponent implements OnInit {
           this.serviceProgramDraw = 0;
           this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
-          this.fetchProgramsCount();
+          this.initDataTable();
           this.toastr.success('Service Program Deleted Successfully!');
         });
     }
@@ -154,7 +140,7 @@ export class ServiceProgramListComponent implements OnInit {
     this.programeName = '';
     this.programs = [];
     this.lastEvaluatedKey = '';
-    this.fetchProgramsCount();
+    this.initDataTable();
 
   }
 }

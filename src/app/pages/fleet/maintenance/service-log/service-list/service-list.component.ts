@@ -61,7 +61,7 @@ export class ServiceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchLogsCount();
+    this.initDataTable();
     this.fetchTasks();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
@@ -122,20 +122,7 @@ export class ServiceListComponent implements OnInit {
     });
   }
 
-  fetchLogsCount() {
-    this.apiService.getData('serviceLogs/get/count?vehicleID=' + this.vehicleID + '&asset=' + this.assetID + '&taskID=' + this.taskID).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
-          this.serviceLogEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
-  }
 
   gotoIssue(issue) {
     localStorage.setItem('issueID', issue);
@@ -195,7 +182,7 @@ export class ServiceListComponent implements OnInit {
       this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
       this.lastEvaluatedKey = ''
-      this.fetchLogsCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -210,7 +197,7 @@ export class ServiceListComponent implements OnInit {
       this.taskID = null;
       this.lastEvaluatedKey = ''
       this.logs = [];
-      this.fetchLogsCount();
+      this.initDataTable();
       // this.resetCountResult();
     } else {
       return false;
@@ -228,7 +215,7 @@ export class ServiceListComponent implements OnInit {
         this.serviceLogDraw = 0;
         this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchLogsCount();
+        this.initDataTable();
         this.toastr.success('Service log deleted successfully!');
       });
     }
@@ -243,7 +230,7 @@ export class ServiceListComponent implements OnInit {
     this.taskID = null;
     this.logs = [];
     this.lastEvaluatedKey = '';
-    this.fetchLogsCount();
+    this.initDataTable();
 
   }
 }

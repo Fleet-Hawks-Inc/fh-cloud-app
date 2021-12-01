@@ -59,10 +59,10 @@ export class ListContactRenewComponent implements OnInit {
 
   ngOnInit() {
     this.listService.fetchDrivers();
-    this.getRemindersCount();
     this.fetchServiceTaks();
     this.fetchTasksList();
     this.fetchEmployeeList();
+    this.initDataTable();
     this.fetchEmployees();
     $(document).ready(() => {
       setTimeout(() => {
@@ -75,7 +75,7 @@ export class ListContactRenewComponent implements OnInit {
   }
   fetchEmployees() {
     this.apiService.getData('contacts/employee/records').subscribe((res) => {
-      console.log('result', res);
+
       this.employees = res.Items;
     });
   }
@@ -117,66 +117,6 @@ export class ListContactRenewComponent implements OnInit {
     this.filterStatus = val;
   }
 
-  getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.contactID != null || this.searchServiceTask != null) {
-          this.contactRenewEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
-
-  // initDataTable() {
-  //   this.spinner.show();
-  //   this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
-  //     .subscribe((result: any) => {
-  //       if (result.Items.length === 0) {
-  //         this.dataMessage = Constants.NO_RECORDS_FOUND;
-  //       }
-  //       this.getStartandEndVal();
-  //       this.remindersData = result[`Items`];
-  //       console.log(' this.remindersData',  this.remindersData);
-  //       if (this.contactID != null || this.searchServiceTask != null) {
-  //         this.contactRenewStartPoint = 1;
-  //         this.contactRenewEndPoint = this.totalRecords;
-  //       }
-
-  //       if (result[`LastEvaluatedKey`] !== undefined) {
-  //         let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
-  //         this.contactRenewNext = false;
-  //         // for prev button
-  //         if (!this.contactRenewPrevEvauatedKeys.includes(lastEvalKey)) {
-  //           this.contactRenewPrevEvauatedKeys.push(lastEvalKey);
-  //         }
-  //         this.lastEvaluatedKey = lastEvalKey;
-
-  //       } else {
-  //         this.contactRenewNext = true;
-  //         this.lastEvaluatedKey = '';
-  //         this.contactRenewEndPoint = this.totalRecords;
-  //       }
-
-  //       if (this.totalRecords < this.contactRenewEndPoint) {
-  //         this.contactRenewEndPoint = this.totalRecords;
-  //       }
-
-  //       // disable prev btn
-  //       if (this.contactRenewDraw > 0) {
-  //         this.contactRenewPrev = false;
-  //       } else {
-  //         this.contactRenewPrev = true;
-  //       }
-  //       this.spinner.hide();
-  //     }, err => {
-  //       this.spinner.hide();
-  //     });
-  // }
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.contactID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=contact' + '&lastKey=' + this.lastEvaluatedKey)
@@ -185,26 +125,28 @@ export class ListContactRenewComponent implements OnInit {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          if (result.Items.length > 0) {
-            if (result[`LastEvaluatedKey`] !== undefined) {
-              let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
-              if (result.LastEvaluatedKey !== undefined) {
-                this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
-              }
-              else {
-                this.lastEvaluatedKey = 'end'
-              }
-              this.remindersData = this.remindersData.concat(result.Items)
 
-              this.loaded = true;
+          if (result.Items.length > 0) {
+
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
+              let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
+              this.lastEvaluatedKey = lastEvalKey;
             }
+
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.remindersData = this.remindersData.concat(result.Items)
+
+            this.loaded = true;
           }
         });
     }
   }
   onScroll() {
     if (this.loaded) {
-      this.getRemindersCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -214,7 +156,7 @@ export class ListContactRenewComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -229,8 +171,7 @@ export class ListContactRenewComponent implements OnInit {
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.remindersData = [];
-      this.getRemindersCount();
-      this.resetCountResult();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -249,7 +190,7 @@ export class ListContactRenewComponent implements OnInit {
         this.contactRenewDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.getRemindersCount();
+        this.initDataTable();
         this.toastr.success('Contact Renewal Deleted Successfully!');
       });
     }
@@ -266,33 +207,6 @@ export class ListContactRenewComponent implements OnInit {
     }
   }
 
-  getStartandEndVal() {
-    this.contactRenewStartPoint = this.contactRenewDraw * this.pageLength + 1;
-    this.contactRenewEndPoint = this.contactRenewStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.contactRenewNext = true;
-    this.contactRenewPrev = true;
-    this.contactRenewDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.contactRenewNext = true;
-    this.contactRenewPrev = true;
-    this.contactRenewDraw -= 1;
-    this.lastEvaluatedKey = this.contactRenewPrevEvauatedKeys[this.contactRenewDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.contactRenewStartPoint = 1;
-    this.contactRenewEndPoint = this.pageLength;
-    this.contactRenewDraw = 0;
-  }
 
   refreshData() {
     this.contactID = null;
@@ -302,7 +216,6 @@ export class ListContactRenewComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.remindersData = [];
-    this.getRemindersCount();
-    this.resetCountResult();
+    this.initDataTable();
   }
 }

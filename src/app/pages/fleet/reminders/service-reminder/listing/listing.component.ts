@@ -59,7 +59,7 @@ export class ListingComponent implements OnInit {
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.getRemindersCount();
+    this.initDataTable();
     this.fetchTasksList();
     this.fetchVehicleList();
     this.fetchServiceTaks();
@@ -117,26 +117,10 @@ export class ListingComponent implements OnInit {
         this.serviceDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.getRemindersCount();
+        this.initDataTable();
         this.toastr.success('Service Reminder Deleted Successfully!');
       });
     }
-  }
-
-  getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-
-        if (this.vehicleID != null || this.searchServiceTask != null) {
-          this.serviceEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
   }
 
   initDataTable() {
@@ -165,7 +149,7 @@ export class ListingComponent implements OnInit {
   }
   onScroll() {
     if (this.loaded) {
-      this.getRemindersCount();
+      this.initDataTable();
     }
     this.loaded = false;
   }
@@ -174,7 +158,7 @@ export class ListingComponent implements OnInit {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
-      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -189,14 +173,14 @@ export class ListingComponent implements OnInit {
       this.filterStatus = null;
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
+      this.initDataTable();
     } else {
       return false;
     }
   }
 
   sendEmailNotification(value) {
-    console.log('value', value);
+
     if (value.status !== undefined && value.status !== '') {
       this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?status=${value.status}`).subscribe((result) => {
         this.toastr.success('Email sent successfully');
@@ -215,6 +199,6 @@ export class ListingComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.remindersData = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    this.getRemindersCount();
+    this.initDataTable();
   }
 }

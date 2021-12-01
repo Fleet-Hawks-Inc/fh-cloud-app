@@ -25,13 +25,14 @@ export class DriverReportComponent implements OnInit {
   end = null
   driver = []
   order = []
-
+  datee = ''
+  lastEvaluatedKey = ''
   driverID = "";
   dataMessage: string = Constants.FETCHING_DATA
   driverName = ''
 
   DrivN = []
-
+  loaded = false
 
   ngOnInit(): void {
     this.drivIDs = this.route.snapshot.params['drivIDs']
@@ -50,29 +51,48 @@ export class DriverReportComponent implements OnInit {
   }
 
   fetchTrip() {
-    this.apiService.getData(`trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.data = result.Items
-      for (let driv of this.data) {
-        let dataa = driv
-        driv.miles = 0
-        for (let element of dataa.tripPlanning) {
-          driv.miles += Number(element.miles);
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData(`trips/get/trip/data?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastEvaluatedKey}&date=${this.datee}`).subscribe((result: any) => {
+        // this.data = result.Items
+        this.data = this.data.concat(result.Items)
+        for (let driv of this.data) {
+          let dataa = driv
+          driv.miles = 0
+          for (let element of dataa.tripPlanning) {
+            driv.miles += Number(element.miles);
+          }
         }
-      }
-      if (result.Items.length === 0) {
 
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
+        if (result.Items.length === 0) {
 
+          this.dataMessage = Constants.NO_RECORDS_FOUND
+        }
+        if (result.Items.length > 0) {
 
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
+            this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated);
+          }
+          else {
+            this.lastEvaluatedKey = 'end'
 
+          }
 
-    })
+          this.loaded = true;
+        }
+      })
+    }
   }
-
+  onScroll() {
+    if (this.loaded) {
+      this.fetchTrip();
+    }
+    this.loaded = true;
+  }
   searchFilter() {
-    if (this.drivIDs !== '' && this.start !== null && this.end !== null) {
+    if (this.start !== null && this.end !== null) {
       this.data = []
+      this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA
       this.fetchTrip()
 
@@ -86,21 +106,26 @@ export class DriverReportComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.data.forEach(element => {
-        let miles = '';
+        let type = '';
         let location = '';
+        let date = "";
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
+          type += element2.type
+          date += element2.date
           element2.location = element2.location.replace(/,/g, ' ');
-          location += element2.location
+          location += element2.type + ":" + element2.location
+          date += element2.type + ":" + element2.date
           if (i < element.tripPlanning.length - 1) {
             location += " & ";
           }
         }
         let obj = {}
-        obj["Name"] = element.driverName
+        obj["Name"] = element.driverName.replace(/,/g, '&')
         obj["Trip Number"] = element.tripNo
         obj["Order Number"] = element.orderNumber.replace(/,/g, '&')
         obj["Location"] = location
+        obj["Date"] = date
         obj["Total Miles"] = element.miles
         dataObject.push(obj)
       });
