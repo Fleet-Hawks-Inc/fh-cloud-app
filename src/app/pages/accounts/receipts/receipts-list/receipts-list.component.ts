@@ -22,6 +22,16 @@ export class ReceiptsListComponent implements OnInit {
   };
   loaded = false;
   disableSearch = false;
+  recTotal = {
+    cadTotal: 0,
+    usdTotal: 0,
+  };
+
+  storeTotal = {
+    cadTotal: 0,
+    usdTotal: 0,
+  };
+
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -32,6 +42,7 @@ export class ReceiptsListComponent implements OnInit {
   ngOnInit() {
     this.lastItemSK = "";
     this.receipts = [];
+    this.getReceiptTotal();
     this.fetchReceipts();
     this.fetchCustomersByIDs();
     this.fetchAccounts();
@@ -63,6 +74,7 @@ export class ReceiptsListComponent implements OnInit {
             for (const element of result) {
               this.receipts.push(element);
             }
+            this.calculateSearchTotal();
             if (this.receipts[this.receipts.length - 1].sk !== undefined) {
               this.lastItemSK = encodeURIComponent(
                 this.receipts[this.receipts.length - 1].sk
@@ -75,6 +87,24 @@ export class ReceiptsListComponent implements OnInit {
         });
     }
   }
+
+  calculateSearchTotal() {
+    if (
+      this.filter.recNo !== null ||
+      this.filter.startDate !== null ||
+      this.filter.endDate !== null ||
+      this.filter.customer !== null
+    ) {
+      this.receipts.forEach((element) => {
+        if (element.recAmountCur == "CAD") {
+          this.recTotal.cadTotal += element.recAmount;
+        } else if (element.recAmountCur == "USD") {
+          this.recTotal.usdTotal += element.recAmount;
+        }
+      });
+    }
+  }
+
   onScroll() {
     if (this.loaded) {
       this.fetchReceipts();
@@ -132,6 +162,8 @@ export class ReceiptsListComponent implements OnInit {
       } else {
         this.receipts = [];
         this.lastItemSK = "";
+        this.recTotal.cadTotal = 0;
+        this.recTotal.usdTotal = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchReceipts();
       }
@@ -149,6 +181,7 @@ export class ReceiptsListComponent implements OnInit {
     };
     this.receipts = [];
     this.lastItemSK = "";
+    this.recTotal = this.storeTotal;
     this.fetchReceipts();
   }
 
@@ -163,6 +196,18 @@ export class ReceiptsListComponent implements OnInit {
     };
     this.receipts = [];
     this.lastItemSK = "";
+
     this.fetchReceipts();
+    this.getReceiptTotal();
+  }
+
+  getReceiptTotal() {
+    this.accountService.getData(`receipts/get/total`).subscribe((res) => {
+      this.recTotal = res;
+      this.storeTotal = {
+        cadTotal: res.cadTotal,
+        usdTotal: res.usdTotal,
+      };
+    });
   }
 }
