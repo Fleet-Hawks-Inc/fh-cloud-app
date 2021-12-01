@@ -14,7 +14,7 @@
                 </ng-select>
               </div>
             </div>
-            <div class="col-md-2 col-lg-2 pr-0 pl-2">
+            <!-- <div class="col-md-2 col-lg-2 pr-0 pl-2">
               <div class="input-group input-group-sm mb-3">
                 <ng-select [(ngModel)]="assetUnitID" name="assetUnitID"
                   style="width: 100%;"
@@ -24,7 +24,7 @@
                   </ng-option>
                 </ng-select>
               </div>
-            </div>
+            </div> -->
             <div class="col-lg-3 col-md-3">
               <div class="input-daterange input-group">
                 <span class="input-group-prepend">
@@ -70,11 +70,11 @@
                 </div>
               </div>
 
-              <a href="javascript:;" (click)="refreshData()"
+              <!-- <a href="javascript:;" (click)="refreshData()"
                 data-toggle="tooltip" title="Refresh data"
                 class="btn btn-success btn-sm modal-with-form mr-2">
                 <i class="fas fa-sync"></i>
-              </a>
+              </a> -->
 
               <a routerLink="/fleet/fuel/add" class="btn btn-success btn-sm
                 ml-2" style="color:white;"><i
@@ -83,8 +83,6 @@
           </div>
         </form>
       </header>
-
-
       <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
@@ -97,9 +95,9 @@
                     <ngx-datatable #myTable class="bootstrap expandable fixedTable" [rows]="fuelList"
                     [rowHeight]="rowHeight" [scrollbarV]="true" 
                     [messages]="{ emptyMessage:dataMessage }" (scroll)="onScroll($event.offsetY)">
-                    <ngx-datatable-column name="Date Time" prop="dateTime">
+                    <ngx-datatable-column name="Date Time" [width]=300 prop="dateTime">
                     </ngx-datatable-column>
-                    <ngx-datatable-column name=" Fuel Card#" prop="data.cardNo" >
+                    <ngx-datatable-column name=" Fuel Card#" [width]=200 prop="data.cardNo" >
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Unit#" prop="unitID">
                       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
@@ -119,13 +117,13 @@
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Site" prop="data.site">
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Province" prop="data" [sortable]=false>
+                    <ngx-datatable-column name="Province" prop="data" [width]=300 [sortable]=false>
                       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                           {{value.city}},{{value.state}},{{value.country}}
                           </ng-template>
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Actions" prop="data" [sortable]=false>
+                    <!-- <ngx-datatable-column name="Actions" prop="data" [sortable]=false>
                       <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                       <div class="btn-group flex-wrap">
@@ -144,7 +142,7 @@
                         </div>
                       </div>
                       </ng-template>
-                    </ngx-datatable-column>
+                    </ngx-datatable-column> -->
                     </ngx-datatable>
                     
                     

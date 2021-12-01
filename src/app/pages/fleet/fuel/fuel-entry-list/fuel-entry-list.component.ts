@@ -307,11 +307,11 @@ export class FuelEntryListComponent implements OnInit {
         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
 
       });
-      console.log(result)
+
 
 
       this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-      console.log(this.fuelList)
+
 
       if (result.LastEvaluatedKey.fuelSK !== undefined) {
         // for prev button
