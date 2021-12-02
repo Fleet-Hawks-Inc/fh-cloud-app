@@ -21,8 +21,9 @@ export class ActivityComponent implements OnInit {
   assetIdentification = '';
   assetID = '';
   dataMessage = Constants.FETCHING_DATA;
-
-
+  lastItemSK = '';
+  datee = '';
+  loaded = false;
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -34,7 +35,7 @@ export class ActivityComponent implements OnInit {
     this.astId = this.route.snapshot.params[`astId`];
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
-    this.fetchTripData()
+    this.fetchAssetActivity()
     this.fetchAsset();
   }
   fetchAsset() {
@@ -43,21 +44,41 @@ export class ActivityComponent implements OnInit {
     });
   }
 
-  fetchTripData() {
-
-    this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
-      this.allData = result.Items;
-      for (let asst of this.allData) {
-        let dataa = asst
-        asst.miles = 0
-        for (let element of dataa.tripPlanning) {
-          asst.miles += Number(element.miles);
+  onScroll() {
+    if (this.loaded) {
+      this.fetchAssetActivity();
+    }
+    this.loaded = false;
+  }
+  fetchAssetActivity() {
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
+        this.dataMessage = Constants.FETCHING_DATA;
+        if (result.Items.length === 0) {
+          this.dataMessage = Constants.NO_RECORDS_FOUND
         }
-      }
-      if (result.Items.length === 0) {
-        this.dataMessage = Constants.NO_RECORDS_FOUND
-      }
-    });
+        this.allData = this.allData.concat(result.Items)
+        for (let asst of this.allData) {
+          let dataa = asst
+          asst.miles = 0
+          for (let element of dataa.tripPlanning) {
+            asst.miles += Number(element.miles);
+          }
+        }
+
+        if (result.Items.length > 0) {
+          if (result.LastEvaluatedKey !== undefined) {
+            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
+            this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
+          }
+
+          else {
+            this.lastItemSK = 'end';
+          }
+          this.loaded = true;
+        }
+      });
+    }
   }
   searchFilter() {
     if (this.start != null && this.end != null) {
@@ -72,9 +93,10 @@ export class ActivityComponent implements OnInit {
         return false;
       }
       else {
+        this.lastItemSK = '';
         this.allData = []
         this.dataMessage = Constants.FETCHING_DATA
-        this.fetchTripData()
+        this.fetchAssetActivity()
       }
     }
     else {
@@ -88,10 +110,15 @@ export class ActivityComponent implements OnInit {
       let csvArray = []
       this.allData.forEach(element => {
         let location = ''
+        let date = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
+          date += element2.type + " : " + element2.date
+          if (i < element.tripPlanning.length - 1) {
+            date += " & ";
+          }
           element2.location = element2.location.replace(/,/g, ' ');
-          location += element2.location
+          location += element2.type + ' : ' + element2.location
           if (i < element.tripPlanning.length - 1) {
             location += " & ";
           }
@@ -101,6 +128,7 @@ export class ActivityComponent implements OnInit {
         obj["Trip#"] = element.tripNo;
         obj["Order#"] = element.orderName.replace(/, /g, ' &');
         obj["location"] = location;
+        obj["	Date"] = date;
         obj["Total Miles"] = element.miles;
         dataObject.push(obj)
       });

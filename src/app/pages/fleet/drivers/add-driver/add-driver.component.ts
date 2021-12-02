@@ -9,6 +9,7 @@ import {
   NgbCalendar,
   NgbDateAdapter,
   NgbModal,
+  NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -38,8 +39,7 @@ declare var $: any;
   styleUrls: ["./add-driver.component.css"],
 })
 export class AddDriverComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate
-{
+  implements OnInit, OnDestroy, CanComponentDeactivate {
   @ViewChild("driverF") driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
@@ -382,7 +382,12 @@ export class AddDriverComponent
   canLeave(): boolean {
     if (this.driverF.dirty && !this.isSubmitted) {
       if (!this.modalService.hasOpenModals()) {
-        this.modalService.open(UnsavedChangesComponent, { size: "sm" });
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop: 'static',
+          keyboard: false,
+          size: "sm"
+        };
+        this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
       }
       return false;
     }
@@ -760,7 +765,7 @@ export class AddDriverComponent
     this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -777,7 +782,7 @@ export class AddDriverComponent
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -940,7 +945,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -959,7 +964,7 @@ export class AddDriverComponent
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => {},
+                next: () => { },
               });
           },
           next: (res) => {
@@ -1033,12 +1038,12 @@ export class AddDriverComponent
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -1386,7 +1391,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1709,7 +1714,7 @@ export class AddDriverComponent
         });
     }
   }
-  
+
   validateCDL() {
     this.hideVal();
     if (this.driverData.CDL_Number !== "") {

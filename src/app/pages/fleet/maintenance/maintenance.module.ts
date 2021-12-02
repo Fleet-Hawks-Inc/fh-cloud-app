@@ -10,6 +10,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import {
   AddServiceProgramComponent,
   ServiceProgramListComponent,
@@ -145,7 +146,8 @@ const routes: Routes = [
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    InfiniteScrollModule
   ],
   exports: [...COMPONENTS],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },

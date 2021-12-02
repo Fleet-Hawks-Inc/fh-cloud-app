@@ -178,6 +178,7 @@ export class SettlementsListComponent implements OnInit {
     if (this.loaded) {
       this.fetchSettlements();
     }
+    this.loaded = false;
   }
 
   refreshData() {

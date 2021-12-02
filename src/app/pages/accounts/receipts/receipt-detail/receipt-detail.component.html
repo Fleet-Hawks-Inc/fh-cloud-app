@@ -149,42 +149,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-6" *ngIf="receiptData.transactionLog">
-                  <table class="table table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th>Account Name</th>
-                        <th>Type</th>
-                        <th>Debit</th>
-                        <th>Credit</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngIf="receiptData.transactionLog.length == 0"
-                        class="text-center">
-                        <td colspan="4">{{ dataMessage }}</td>
-                      </tr>
-                      <tr *ngFor="let dt of receiptData.transactionLog">
-                        <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID]
-                            | titlecase}}</span>
-                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]
-                            | titlecase}}</span></td>
-                        <td>{{dt.type | titlecase}}</td>
-                        <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount |
-                            number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                        <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount |
-                            number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
-                      </tr>
-                      <tr *ngIf="receiptData.transactionLog.length> 0">
-                        <td colspan="2" class="font-weight-bold text-right">Total</td>
-                        <td>{{receiptData.recAmount | number : '1.2-2'}}
-                          {{receiptData.recAmountCur}}</td>
-                        <td>{{receiptData.recAmount | number : '1.2-2'}}
-                          {{receiptData.recAmountCur}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+
 
                 <div class="col-lg-6" *ngIf="receiptData.charges">
                   <div class="row">
@@ -240,6 +205,38 @@
                       </table>
                     </div>
                   </div>
+                </div>
+
+                <div class="col-lg-6" *ngIf="receiptData.transactionLog">
+                  <table class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Account Name</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="receiptData.transactionLog.length == 0"
+                        class="text-center">
+                        <td colspan="4">{{ dataMessage }}</td>
+                      </tr>
+                      <tr *ngFor="let dt of receiptData.transactionLog">
+                        <td><span *ngIf="dt.actIDType === 'actID'">{{ dt.accName
+                            | titlecase}}</span>
+                          <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID]
+                            | titlecase}}</span></td>
+                        <td>{{dt.type | titlecase}}</td>
+                        <td>{{dt.desc }}</td>
+                        <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount |
+                            number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                        <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount |
+                            number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
 
               </div>
