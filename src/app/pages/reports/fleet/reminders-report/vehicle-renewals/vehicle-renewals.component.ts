@@ -41,9 +41,8 @@ export class VehicleRenewalsComponent implements OnInit {
     this.fetchTasksList();
     this.fetchReminderCount();
     this.fetchVehiclesdata();
-    this.fetchServiceTask();
     this.fetchVehicleIDs();
-    // this.fetchAllExport();
+
   }
   setFilterStatus(val) {
     this.filterStatus = val;
@@ -53,12 +52,7 @@ export class VehicleRenewalsComponent implements OnInit {
       this.count = result;
     })
   }
-  fetchServiceTask() {
-    this.apiService.getData('tasks?type=vehicle').subscribe((result: any) => {
-      this.serviceTasks = result;
 
-    });
-  }
   fetchVehiclesdata() {
     if (this.lastItemSK !== 'end')
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=vehicle`).subscribe((result: any) => {
@@ -98,7 +92,7 @@ export class VehicleRenewalsComponent implements OnInit {
   }
 
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => { //this is for service task listing
+    this.apiService.getData('tasks/get/list?type=vehicle').subscribe((result: any) => { //this is for service task listing
       this.tasksData = result;
     });
   }
