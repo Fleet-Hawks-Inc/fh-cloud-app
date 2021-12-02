@@ -95,6 +95,9 @@ export class IssueDetailComponent implements OnInit {
         this.odometer = result.odometer;
         this.reportedBy = result.reportedBy;
         this.assignedTo = result.assignedTo;
+        this.issueImages = result.uploadedPics;
+        this.issueDocs = result.uploadDocument;
+        /*
         if (result.uploadedPhotos !== undefined && result.uploadedPhotos.length > 0) {
           this.issueImages = result.uploadedPhotos.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
@@ -102,6 +105,7 @@ export class IssueDetailComponent implements OnInit {
         if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
           this.issueDocs = result.uploadedDocs.map((x: any) => ({path: `${this.Asseturl}/${result.carrierID}/${x}`, name: x}));
         }
+        */
       });
   }
 

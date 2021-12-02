@@ -6,11 +6,13 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { HereMapService } from "../../../../services/here-map.service";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
+import * as html2pdf from "html2pdf.js";
 
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 declare var $: any;
 import { environment } from "src/environments/environment";
 import Constants from "src/app/pages/fleet/constants";
+import { Location } from "@angular/common";
 @Component({
   selector: "app-trip-detail",
   templateUrl: "./trip-detail.component.html",
@@ -19,6 +21,7 @@ import Constants from "src/app/pages/fleet/constants";
 export class TripDetailComponent implements OnInit {
   @ViewChild("tripInfoModal", { static: true })
   tripInfoModal: TemplateRef<any>;
+  tripInfoRef: any;
 
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
@@ -29,7 +32,8 @@ export class TripDetailComponent implements OnInit {
     private accountService: AccountService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private hereMap: HereMapService
+    private hereMap: HereMapService,
+    private location: Location
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -51,6 +55,7 @@ export class TripDetailComponent implements OnInit {
     bol: "",
     dateCreated: "",
   };
+  orderType: string;
   tripID = "";
   allAssetName = "";
   errors: {};
@@ -76,7 +81,7 @@ export class TripDetailComponent implements OnInit {
   documentID = [];
   allFetchedOrders = [];
   customersObjects = [];
-  orderNumbers = "-";
+  orderNumbers = "";
   routeName = "-";
   plannedMiles = 0;
   uploadedDocs = [];
@@ -93,9 +98,13 @@ export class TripDetailComponent implements OnInit {
   categories = [];
   splitArr = [];
   showEdit = false;
+  showTripInfo = false;
   tripStatus = "";
   recallStatus = false;
+  ordersData: any = [];
 
+  customerData = [];
+  isEmail: boolean = false;
   ngOnInit() {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetIDs();
@@ -226,14 +235,18 @@ export class TripDetailComponent implements OnInit {
         this.categories = result;
       });
   }
-  fetchTripDetail() {
-    this.spinner.show();
+  async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
     this.apiService
       .getData("trips/" + this.tripID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
+
+        if (result.orderId.length > 0) {
+          await this.fetchOrderDetails(result.orderId);
+          await this.fetchCustomerDetails(result.orderId)
+        }
         if (result.settlmnt) {
           this.tripStatus = "Settled";
         } else {
@@ -250,15 +263,15 @@ export class TripDetailComponent implements OnInit {
           this.showEdit = false;
         } else {
           this.showEdit = true;
+
         }
+        this.showTripInfo = true;
         if (result.documents == undefined) {
           result.documents = [];
         }
         this.tripData = result;
+        this.orderType = result.orderType;
         let tripPlanning = result.tripPlanning;
-        if (result.orderId.length > 0) {
-          this.fetchOrderDetails(result.orderId);
-        }
 
         if (result.routeID != "" && result.routeID != undefined) {
           this.apiService
@@ -303,7 +316,6 @@ export class TripDetailComponent implements OnInit {
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
-
           let obj = {
             planID: element.planID,
             assetID: element.assetID,
@@ -336,6 +348,8 @@ export class TripDetailComponent implements OnInit {
             dropTime: element.dropTime,
             time: element.time,
             pickupTime: element.pickupTime,
+            commodity: element.commodity ? element.commodity : "",
+            orderID: element.orderID ? element.orderID : "",
           };
 
           if (element.type == "Delivery") {
@@ -367,7 +381,6 @@ export class TripDetailComponent implements OnInit {
         if (this.newCoords.length > 0) {
           this.getCoords();
         }
-        this.spinner.hide();
       });
   }
 
@@ -556,20 +569,32 @@ export class TripDetailComponent implements OnInit {
     ];
   }
 
-  fetchOrderDetails(orderIds) {
+  async fetchOrderDetails(orderIds) {
     orderIds = JSON.stringify(orderIds);
-    this.apiService
+    let result: any = await this.apiService
       .getData("orders/fetch/selectedOrders?orderIds=" + orderIds)
-      .subscribe((result: any) => {
-        for (let i = 0; i < result.length; i++) {
-          const element = result[i];
+      .toPromise();
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
 
-          this.orderNumbers = element.orderNumber;
-          if (i > 0 && i < result.length - 1) {
-            this.orderNumbers = this.orderNumbers + ", ";
-          }
-        }
-      });
+      this.orderNumbers += element.orderNumber;
+      if (i < result.length - 1) {
+        this.orderNumbers = this.orderNumbers + ", ";
+      }
+    }
+
+    this.ordersData = result.reduce((a: any, b: any) => {
+      return (a[b["orderID"]] = b["orderNumber"]), a;
+    }, {});
+  }
+
+  async fetchCustomerDetails(orderIds) {
+    orderIds = JSON.stringify(orderIds);
+    let result: any = await this.apiService
+      .getData("orders/fetch/customerInfo/orders?orderIds=" + orderIds)
+      .toPromise();
+    this.customerData = result;
+
   }
 
   /*
@@ -616,7 +641,7 @@ export class TripDetailComponent implements OnInit {
       this.apiService
         .postData("trips/update/bol/" + this.tripID, formData, true)
         .subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -630,8 +655,8 @@ export class TripDetailComponent implements OnInit {
                 complete: () => {
                   this.spinner.hide();
                 },
-                error: () => {},
-                next: () => {},
+                error: () => { },
+                next: () => { },
               });
           },
           next: (res: any) => {
@@ -710,6 +735,41 @@ export class TripDetailComponent implements OnInit {
       keyboard: false,
       windowClass: "trip--info__main",
     };
-    this.modalService.open(this.tripInfoModal, ngbModalOptions);
+    this.tripInfoRef = this.modalService.open(this.tripInfoModal, ngbModalOptions);
+  }
+
+  async generate() {
+    var data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0.15,
+      filename: "trip-information.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
+    });
+
+    this.tripInfoRef.close();
+  }
+
+  async driverEmail() {
+    this.isEmail = true;
+    let result = await this.apiService
+      .getData(`trips/send/emailDriver/${this.tripID}`).toPromise();
+    if (result === null) {
+      this.tripInfoRef.close();
+      this.toastr.success("Email send successfully");
+      this.isEmail = false;
+    } else {
+      this.isEmail = false;
+    }
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 }

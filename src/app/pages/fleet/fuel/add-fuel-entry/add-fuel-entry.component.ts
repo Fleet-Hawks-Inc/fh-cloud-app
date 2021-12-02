@@ -30,6 +30,7 @@ export class AddFuelEntryComponent implements OnInit {
   /********** Form Fields ***********/
 
   fuelData = {
+    timeCreated: 0,
     unitID: "",
     driverID: "",
     fuelProvider: "Manual",
@@ -334,10 +335,12 @@ export class AddFuelEntryComponent implements OnInit {
     if (this.fuelData.data.useType == "def") {
       this.fuelData.data.type = "DEF";
     }
-
+    this.fuelData.timeCreated = new Date(
+      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+    ).getTime();
     // append other fields
     this.apiService.postData("fuelEntries", this.fuelData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -354,7 +357,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -371,12 +374,12 @@ export class AddFuelEntryComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -428,8 +431,8 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.date = result.data.date;
     this.fuelData.data.time = result.data.time;
     this.fuelData.data.type = result.data.type;
-    this.fuelData.data.rPpu = result.data.rPpu
-    this.fuelData.data.rAmt = result.data.rAmt
+    this.fuelData.data.rPpu = result.data.rPpu;
+    this.fuelData.data.rAmt = result.data.rAmt;
 
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
@@ -449,8 +452,11 @@ export class AddFuelEntryComponent implements OnInit {
   updateFuelEntry() {
     this.submitDisabled = true;
     this.hideErrors();
+    this.fuelData.timeCreated = new Date(
+      `${this.fuelData.data.date}T${this.fuelData.data.time}`
+    ).getTime();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -467,7 +473,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {

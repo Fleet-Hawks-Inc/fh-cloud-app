@@ -1,23 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService, ListService } from "../../../../services";
-import { Router, ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, from, Subject, throwError } from "rxjs";
-import * as _ from "lodash";
-import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
-import { map } from "rxjs/operators";
-import { HereMapService } from "../../../../services";
-import { environment } from "../../../../../environments/environment.prod";
-import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
-import { NgForm } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer } from "@angular/platform-browser";
-
-import { Auth } from "aws-amplify";
 import { Location } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import { NgbCalendar, NgbDateAdapter, NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
+import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
+import { BehaviorSubject, from, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-import { element } from "protractor";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { v4 as uuidv4 } from 'uuid';
+import { environment } from "../../../../../environments/environment.prod";
+import { ApiService, HereMapService, ListService } from "../../../../services";
+import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
+
 
 declare var $: any;
 declare var H: any;
@@ -335,7 +333,7 @@ export class AddOrdersComponent implements OnInit {
   singleDatePickerOptions;
 
   stateShipperIndex: any;
-  stateReceiverIndex: number;
+  stateReceiverIndex: any;
   uploadedDocs = [];
   existingUploadedDocs = [];
   packagingUnitsList: any = [];
@@ -370,7 +368,8 @@ export class AddOrdersComponent implements OnInit {
     private listService: ListService,
     private domSanitizer: DomSanitizer,
     private location: Location,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagement: RouteManagementServiceService
   ) {
     const current = new Date();
 
@@ -443,7 +442,12 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+
+    this.location.back();
+  }
+  goBack() {
+
+    this.router.navigate([`/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`])// <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -1534,7 +1538,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -1928,7 +1932,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.save = false;
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
-      this.stateShipperIndex = i;
+      this.stateReceiverIndex = i;
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
@@ -1936,6 +1940,7 @@ export class AddOrdersComponent implements OnInit {
 
   async updateShipperReceiver(obj, i) {
     if (obj === "shipper") {
+      // for shipper
       $("#poErr_" + i).hide();
       let newPicks = this.shippersReceivers[i].shippers;
       if (!newPicks.shipperID) {
@@ -2049,6 +2054,7 @@ export class AddOrdersComponent implements OnInit {
       }, 500);
       this.emptyShipper(i);
     } else {
+      // for receiver
       let newDrops = this.shippersReceivers[i].receivers;
       if (!newDrops.receiverID) {
         this.toastr.error("Please select receiver");
@@ -2081,20 +2087,20 @@ export class AddOrdersComponent implements OnInit {
       }
       let data = this.shippersReceivers[i].receivers;
 
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffDate;
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffTime;
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].receiverID = data.receiverID;
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].dropPoint = data.dropPoint;
       let location: any;
       let allDropPoints =
-        this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+        this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
           .dropPoint;
       for (let index = 0; index < allDropPoints.length; index++) {
         const element = this.shippersReceivers[i].receivers.dropPoint[index];
@@ -2127,7 +2133,7 @@ export class AddOrdersComponent implements OnInit {
       }
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
 
@@ -2147,7 +2153,6 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
-    this.stateShipperIndex = "";
   }
 
   addShipReceiver(obj: string, i: any) {
@@ -2194,6 +2199,9 @@ export class AddOrdersComponent implements OnInit {
           (o) => o.stateTaxID == result.stateTaxID
         );
 
+        if (result.recptStat) {
+          this.recalledState = false;
+        }
         this.orderData.taxesInfo = [
           {
             name: "GST",
@@ -2208,6 +2216,9 @@ export class AddOrdersComponent implements OnInit {
             amount: state ? state.PST : "",
           },
         ];
+        this.orderData["recptStat"] = result.recptStat
+          ? result.recptStat
+          : false;
         this.orderData["customerID"] = result.customerID;
         this.orderData.cusConfirmation = result.cusConfirmation;
         this.selectedCustomer(result.customerID);
@@ -2226,6 +2237,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
         this.isInvoiceGenerated = result.invoiceGenerate;
+        this.orderData["invoiceGenerate"] = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -2254,6 +2266,10 @@ export class AddOrdersComponent implements OnInit {
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
+
+        if (result.invData) {
+          this.orderData["invData"] = result.invData;
+        }
 
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
         let shimentLength = result.shippersReceiversInfo.length;
@@ -2577,7 +2593,7 @@ export class AddOrdersComponent implements OnInit {
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }

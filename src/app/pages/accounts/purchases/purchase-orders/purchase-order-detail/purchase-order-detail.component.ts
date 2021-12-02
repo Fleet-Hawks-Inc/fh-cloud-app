@@ -15,6 +15,7 @@ export class PurchaseOrderDetailComponent implements OnInit {
     refNo: "",
     orderNo: "",
     currency: "CAD",
+    poType: "",
     vendorID: null,
     detail: [
       {
@@ -28,6 +29,9 @@ export class PurchaseOrderDetailComponent implements OnInit {
     ],
     charges: {
       remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       accFee: [
         {
           name: "",

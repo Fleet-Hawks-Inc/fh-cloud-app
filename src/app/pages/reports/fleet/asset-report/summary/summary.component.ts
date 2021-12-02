@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { timeStamp } from 'console';
 import { ApiService } from 'src/app/services';
 import Constants from 'src/app/pages/fleet/constants';
 import { environment } from '../../../../../../environments/environment';
@@ -25,7 +24,9 @@ export class SummaryComponent implements OnInit {
   assetIdentification = '';
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
+  lastEvaluatedKey = ''
   loaded = false;
+  data = [];
 
   suggestedAssets = [];
   constructor(private apiService: ApiService, private toastr: ToastrService) {
@@ -122,12 +123,29 @@ export class SummaryComponent implements OnInit {
       return false;
     }
   }
+  fetchExportfullList() {
+    this.apiService.getData('assets/fetch/assetList').subscribe((result: any) => {
+      this.data = result.Items;
+      this.generateCSV();
+    })
+
+  }
+
+  csv() {
+    if (this.assetIdentification !== '' || this.assetType != null) {
+      this.data = this.allData
+      this.generateCSV();
+    }
+    else {
+      this.fetchExportfullList()
+    }
+  }
 
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.data.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.data.forEach(element => {
         let obj = {}
         obj["Asset Name/Number"] = element.assetIdentification
         obj["VIN"] = element.VIN

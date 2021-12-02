@@ -18,6 +18,7 @@ import { TripListComponent } from './trip-list/trip-list.component';
 import { TripDetailComponent } from './trip-detail/trip-detail.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -83,7 +84,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
 }
 
 const routes: Routes = [
-  { path: 'trip-list', component: TripListComponent },
+  {
+    path: 'trip-list/:sessionID', component: TripListComponent, data: {
+      reuseRoute: true
+    }
+  },
   { path: 'add-trip', component: AddTripComponent },
   { path: 'trip-details/:tripID', component: TripDetailComponent },
   { path: 'edit-trip/:tripID', component: AddTripComponent },
@@ -107,7 +112,8 @@ const routes: Routes = [
     ChartsModule,
     DragDropModule,
     MatExpansionModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

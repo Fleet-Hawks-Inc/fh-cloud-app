@@ -20,6 +20,7 @@ import { PdfViewerComponent } from "ng2-pdf-viewer";
 import autoTable from "jspdf-autotable";
 import * as moment from "moment";
 import Constants from "src/app/pages/fleet/constants";
+import { Location } from "@angular/common";
 declare var $: any;
 
 @Component({
@@ -49,8 +50,6 @@ export class OrderDetailComponent implements OnInit {
   docs = [];
   attachments = [];
   tripDocs = [];
-
-  emailBtn = false;
 
   localPhotos = [];
   uploadedDocs = [];
@@ -186,6 +185,8 @@ export class OrderDetailComponent implements OnInit {
   isInvoice = false;
   taxableAmount: any;
   invoiceData: any;
+  vehicles = [];
+  assets = []
   newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
@@ -204,10 +205,13 @@ export class OrderDetailComponent implements OnInit {
   previewRef: any;
   generateRef: any;
   emailRef: any;
+  emailCopyRef: any;
 
   emailData = {
     emails: [],
   };
+
+  subject = '';
 
   hideEdit: boolean = false;
   tripData: {
@@ -216,12 +220,8 @@ export class OrderDetailComponent implements OnInit {
   };
 
   emailDocs = [];
-  slides = [
-    { img: "http://placehold.it/350x150/000000" },
-    { img: "http://placehold.it/350x150/111111" },
-    { img: "http://placehold.it/350x150/333333" },
-    { img: "http://placehold.it/350x150/666666" },
-  ];
+  isEmail = false;
+
   slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
 
   brokerage = {
@@ -243,6 +243,8 @@ export class OrderDetailComponent implements OnInit {
 
   showModal = false;
   showBolModal = false;
+
+  userEmails = [];
 
   orderInvData = {
     additionalContact: <any>null,
@@ -285,6 +287,8 @@ export class OrderDetailComponent implements OnInit {
   orderLogs = [];
   recallStatus = false;
 
+  isFlag = true;
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
@@ -292,7 +296,8 @@ export class OrderDetailComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private toastr: ToastrService,
-    private listService: ListService
+    private listService: ListService,
+    private location: Location,
   ) {
     this.today = new Date();
   }
@@ -311,7 +316,7 @@ export class OrderDetailComponent implements OnInit {
    */
   async fetchOrder() {
     this.docs = [];
-    this.apiService.getData(`orders/${this.orderID}`).subscribe(
+    this.apiService.getData(`orders/detail/${this.orderID}`).subscribe(
       async (result: any) => {
         this.newOrderData = result;
         result = result.Items[0];
@@ -670,16 +675,28 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async openEmailInv() {
+    // let ngbModalOptions: NgbModalOptions = {
+    //   keyboard: true,
+    //   windowClass: "send-email--modal",
+    // };
+    // this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
+    this.openEmailModal();
+  }
+
+  openEmailModal() {
+    // this.emailRef.close();
     let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "send-email--modal",
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "order-send__email",
     };
-    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
-    // this.emailData.emails.push({ label: this.customerEmail });
+    this.emailCopyRef = this.modalService.open(
+      this.emailInvoiceModal,
+      ngbModalOptions
+    );
   }
 
   async sendEmailInv() {
-    this.emailBtn = true;
     let newDocs = [];
 
     for (const item of this.emailDocs) {
@@ -689,19 +706,29 @@ export class OrderDetailComponent implements OnInit {
       });
     }
 
+    const data = {
+      docs: newDocs,
+      emails: this.userEmails,
+      subject: this.subject
+    };
+
     let result = await this.apiService
       .getData(
-        `orders/emailInvoice/${this.orderID}?docs=${encodeURIComponent(
-          JSON.stringify(newDocs)
+        `orders/emailInvoice/${this.orderID}?data=${encodeURIComponent(
+          JSON.stringify(data)
         )}`
       )
       .toPromise();
     if (result) {
-      this.emailRef.close();
+      // this.emailRef.close();
+      this.emailCopyRef.close();
       this.toastr.success("Email send successfully!");
-      this.emailBtn = false;
+      this.isEmail = false;
+      this.userEmails = [];
+      this.emailData.emails = [];
+      this.subject = '';
     } else {
-      this.emailBtn = false;
+      this.isEmail = false;
     }
   }
 
@@ -716,14 +743,44 @@ export class OrderDetailComponent implements OnInit {
     );
   }
 
-  sendInvEmail() {
+  addEmails() {
+    this.isFlag = true;
+    this.isEmail = true;
+    if (this.emailData.emails.length === 0) {
+      this.toastr.error("Please enter at least one email");
+      this.isEmail = false;
+      return;
+    }
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     this.emailData.emails.forEach((elem) => {
       let result = re.test(String(elem.label).toLowerCase());
-      if (!result) this.toastr.error("Please enter valid email(s)");
-      return;
+      if (!result) {
+        this.toastr.error("Please enter valid email(s)");
+        this.isFlag = false;
+        this.isEmail = false;
+
+        return;
+      } else {
+        if (!this.userEmails.includes(elem.label)) {
+          this.userEmails.push(elem.label);
+        }
+      }
     });
+    if (this.subject == '') {
+      this.toastr.error("Please enter subject");
+      this.isEmail = false;
+      return;
+    }
+
+    if (this.isFlag) {
+      this.sendEmailInv();
+    }
+  }
+
+  sendEmailOnly() {
+    this.isEmail = true;
+    this.sendEmailInv();
   }
 
   async generate() {
@@ -746,9 +803,12 @@ export class OrderDetailComponent implements OnInit {
     $("#previewInvoiceModal").modal("hide");
   }
 
+  cancel() {
+    this.location.back();
+  }
   async generatePDF() {
     this.isShow = true;
-
+    await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0.15,
@@ -762,9 +822,9 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-    await this.saveInvoice();
-    await this.invoiceGenerated();
-    await this.fetchOrder();
+    // await this.saveInvoice();
+    // await this.invoiceGenerated();
+    // await this.fetchOrder();
     this.previewRef.close();
   }
 
@@ -781,10 +841,11 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`amountReceived`] = 0;
     this.invoiceData[`amountPaid`] = 0;
     this.invoiceData[`fullPayment`] = false;
-    this.invoiceData[`balance`] = this.invoiceData.finalAmount;
+    this.invoiceData[`balance`] = this.totalCharges;
     this.invoiceData[`txnDate`] = new Date().toISOString().slice(0, 10);
     this.invoiceData[`orderID`] = this.orderID;
     this.invoiceData[`zeroRated`] = this.zeroRated;
+    this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
       complete: () => { },
@@ -809,6 +870,7 @@ export class OrderDetailComponent implements OnInit {
           });
       },
       next: (res) => {
+        this.isInvoiced = true;
         this.generateBtnDisabled = false;
         this.toastr.success("Invoice Added Successfully.");
         $("#previewInvoiceModal").modal("hide");
@@ -816,15 +878,15 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  async invoiceGenerated() {
-    this.invGenStatus = true;
-    let result = await this.apiService
-      .getData(
-        `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
-      )
-      .toPromise();
-    this.isInvoice = result.Attributes.invoiceGenerate;
-  }
+  // async invoiceGenerated() {
+  //   this.invGenStatus = true;
+  //   let result = await this.apiService
+  //     .getData(
+  //       `orders/invoiceStatus/${this.orderID}/${this.orderNumber}/${this.invGenStatus}`
+  //     )
+  //     .toPromise();
+  //   this.isInvoice = result.Attributes.invoiceGenerate;
+  // }
 
   previewModal() {
     $("#templateSelectionModal").modal("hide");
@@ -1003,6 +1065,13 @@ export class OrderDetailComponent implements OnInit {
         if (this.orderInvData.carrierData.logo != "") {
           this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
         }
+        if (this.invoiceData.assets != undefined) {
+          this.assets = this.invoiceData.assets;
+        }
+        if (this.invoiceData.vehicles != undefined) {
+          this.vehicles = this.invoiceData.vehicles;
+        }
+
       });
   }
 
@@ -1037,14 +1106,15 @@ export class OrderDetailComponent implements OnInit {
   }
 
   async downloadBolPdf() {
-    this.showBolModal = true;
-    let data = {
-      carrierData: this.carrierData,
-      orderData: this.orderInvData,
-      showModal: this.showBolModal,
-      companyLogo: this.companyLogoSrc,
-    };
-    this.listService.triggerBolPdf(data);
+    await this.fetchBOLDetails();
+    // this.showBolModal = true;
+    // let data = {
+    //   carrierData: this.carrierData,
+    //   orderData: this.orderInvData,
+    //   showModal: this.showBolModal,
+    //   companyLogo: this.companyLogoSrc,
+    // };
+    // this.listService.triggerBolPdf(data);
   }
 
   fetchOrderLogs() {
@@ -1080,5 +1150,23 @@ export class OrderDetailComponent implements OnInit {
           });
         }
       });
+  }
+
+  async fetchBOLDetails() {
+    let result: any = await this.apiService
+      .getData(`orders/get/bol/data/${this.orderID}`)
+      .toPromise();
+    result = result.Items[0];
+  }
+
+  sendEmailCopy(value) {
+    if (value) {
+      let ngbModalOptions: NgbModalOptions = {
+        keyboard: false,
+        backdrop: "static",
+        windowClass: "order-send__email",
+      };
+      this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
+    }
   }
 }
