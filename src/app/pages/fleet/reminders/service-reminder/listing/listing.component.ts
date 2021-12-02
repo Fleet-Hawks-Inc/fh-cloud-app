@@ -56,11 +56,11 @@ export class ListingComponent implements OnInit {
   serviceEndPoint = this.pageLength;
   allVehicles: any = [];
   users = [];
-
+  loaded = false
   constructor(private apiService: ApiService, private router: Router, private toastr: ToastrService, private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
-    this.getRemindersCount();
+    this.initDataTable();
     this.fetchTasksList();
     this.fetchVehicleList();
 
@@ -113,103 +113,70 @@ export class ListingComponent implements OnInit {
         this.serviceDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.getRemindersCount();
+        this.initDataTable();
         this.toastr.success('Service Reminder Deleted Successfully!');
       });
     }
   }
 
-  getRemindersCount() {
-    this.apiService.getData('reminders/get/count?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service').subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-
-        if (this.vehicleID != null || this.searchServiceTask != null) {
-          this.serviceEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
-
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('reminders/fetch/records?reminderIdentification=' + this.vehicleID + '&serviceTask=' + this.searchServiceTask + '&status=' + this.filterStatus + '&reminderType=service' + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
 
-        if (result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedVehicles = [];
-        this.getStartandEndVal();
-        this.remindersData = result[`Items`];
+          if (result.Items.length === 0) {
 
-        if (this.vehicleID != null || this.searchServiceTask != null) {
-          this.serviceStartPoint = 1;
-          this.serviceEndPoint = this.totalRecords;
-        }
-
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].reminderSK.replace(/#/g, '--');
-
-          this.serviceNext = false;
-          // for prev button
-          if (!this.servicePrevEvauatedKeys.includes(lastEvalKey)) {
-            this.servicePrevEvauatedKeys.push(lastEvalKey);
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          this.lastEvaluatedKey = lastEvalKey;
+          if (result.Items.length > 0) {
 
-        } else {
-          this.serviceNext = true;
-          this.lastEvaluatedKey = '';
-          this.serviceEndPoint = this.totalRecords;
-        }
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].reminderSK);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.remindersData = this.remindersData.concat(result.Items)
 
-        if (this.totalRecords < this.serviceEndPoint) {
-          this.serviceEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.serviceDraw > 0) {
-          this.servicePrev = false;
-        } else {
-          this.servicePrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+            this.loaded = true;
+          }
+        });
+    }
   }
-
-  searchFilter() {
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
+  }
+  searchData() {
     if (this.searchServiceTask !== null || this.filterStatus !== null || this.vehicleID !== null) {
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
+      this.lastEvaluatedKey = ''
+      this.initDataTable();
     } else {
       return false;
     }
   }
 
-  resetFilter() {
+  resetData() {
     if (this.searchServiceTask !== null || this.filterStatus !== null || this.vehicleID !== null) {
       this.vehicleID = null;
       this.vehicleIdentification = '';
       this.searchServiceTask = null;
+      this.lastEvaluatedKey = ''
       this.filterStatus = null;
       this.remindersData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.getRemindersCount();
-      this.resetCountResult();
+      this.initDataTable();
     } else {
       return false;
     }
   }
 
   sendEmailNotification(value) {
+
     if (value.status !== undefined && value.status !== '') {
       this.apiService.getData(`reminders/send/email-notification/${value.reminderID}?status=${value.status}`).subscribe((result) => {
         this.toastr.success('Email sent successfully');
@@ -220,34 +187,6 @@ export class ListingComponent implements OnInit {
     }
   }
 
-  getStartandEndVal() {
-    this.serviceStartPoint = this.serviceDraw * this.pageLength + 1;
-    this.serviceEndPoint = this.serviceStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.serviceNext = true;
-    this.servicePrev = true;
-    this.serviceDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.serviceNext = true;
-    this.servicePrev = true;
-    this.serviceDraw -= 1;
-    this.lastEvaluatedKey = this.servicePrevEvauatedKeys[this.serviceDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.serviceStartPoint = 1;
-    this.serviceEndPoint = this.pageLength;
-    this.serviceDraw = 0;
-  }
-
   refreshData() {
     this.vehicleID = null;
     this.vehicleIdentification = '';
@@ -256,7 +195,6 @@ export class ListingComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.remindersData = [];
     this.dataMessage = Constants.FETCHING_DATA;
-    this.getRemindersCount();
-    this.resetCountResult();
+    this.initDataTable();
   }
 }
