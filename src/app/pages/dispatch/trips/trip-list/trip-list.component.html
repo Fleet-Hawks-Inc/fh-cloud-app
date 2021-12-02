@@ -81,18 +81,9 @@
                             </div>
 
                             <input *ngIf="tripsFiltr.category == 'orderNo'" type="text" autocomplete="off"
-                                placeholder="Search By Order" [(ngModel)]="orderValue" name="orderValue"
-                                class="form-control" (input)="getOrdersSuggestions($event.target.value)" />
-                            <div *ngIf="tripsFiltr.category == 'orderNo' && suggestions?.length > 0"
-                                class="result-suggestions text-capitalize" style="max-height: 150px;
-                                overflow-y: auto;">
-                                <ul class="m-0">
-                                    <li *ngFor="let suggestedUser of suggestions" style="cursor: pointer"
-                                        (click)="setSearchValues(suggestedUser.orderNumber, suggestedUser.orderID)">
-                                        {{ suggestedUser.orderNumber }}
-                                    </li>
-                                </ul>
-                            </div>
+                                placeholder="Search By Order" [(ngModel)]="tripsFiltr.searchValue" name="searchValue"
+                                class="form-control" />
+
 
                         </div>
 
@@ -122,8 +113,9 @@
 
                         <div class="col-md-2 col-lg-2">
                             <button type="submit" class="btn btn-sm btn-success
-                                mr-3" (click)="filterTrips()">Search</button>
-                            <button type="submit" class="btn btn-sm btn-success" (click)="resetFilter()">Reset</button>
+                                mr-3" [disabled]="isSearch" (click)="filterTrips()">Search</button>
+                            <button [disabled]="isSearch" type="submit" class="btn btn-sm btn-success"
+                                (click)="resetFilter()">Reset</button>
                         </div>
 
                         <div class="col-md-3 col-lg-3 pr-1 text-right">

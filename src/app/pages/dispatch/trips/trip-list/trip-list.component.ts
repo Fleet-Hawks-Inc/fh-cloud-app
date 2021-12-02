@@ -713,8 +713,9 @@ export class TripListComponent implements OnInit {
       this.orderValue != ''
     ) {
 
-      if (this.tripsFiltr.category === 'orderNo' && !this.searchFlag) {
-        this.toastr.error("Please select order from suggestions");
+      if (this.tripsFiltr.category === 'orderNo' &&
+        (this.tripsFiltr.searchValue == null || this.tripsFiltr.searchValue == '')) {
+        this.toastr.error("Please enter order number");
         return false;
       }
       if (this.tripsFiltr.category === 'asset' && !this.searchFlag) {
