@@ -13,7 +13,7 @@ import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { AddFuelEntryComponent } from './add-fuel-entry/add-fuel-entry.component';
 import { FuelEntryListComponent } from './fuel-entry-list/fuel-entry-list.component'
 import { FuelEntryDetailsComponent } from './fuel-entry-details/fuel-entry-details.component'
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -100,7 +100,7 @@ const routes: Routes = [
     NgSelectModule,
     NgxSpinnerModule,
     ChartsModule,
-    NgxDatatableModule
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService, ApiService } from 'src/app/services';
-
+import * as html2pdf from "html2pdf.js";
 @Component({
   selector: 'app-sales-order-detail',
   templateUrl: './sales-order-detail.component.html',
   styleUrls: ['./sales-order-detail.component.css']
 })
 export class SalesOrderDetailComponent implements OnInit {
+  @ViewChild("previewSaleOrder", { static: true })
+  previewSaleOrder: TemplateRef<any>;
+
   saleID: any;
 
   txnDate: string;
@@ -29,7 +33,10 @@ export class SalesOrderDetailComponent implements OnInit {
   customersObjects: any = {};
   emailDisabled = false;
 
-  constructor(public accountService: AccountService, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute) { }
+  isPDF: boolean = false;
+  salePrev: any;
+
+  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -58,6 +65,7 @@ export class SalesOrderDetailComponent implements OnInit {
       this.taxes = result.charges.taxes;
       this.accFees = result.charges.accFee;
       this.accDed = result.charges.accDed;
+      this.isPDF = true;
     });
   }
 
@@ -81,6 +89,36 @@ export class SalesOrderDetailComponent implements OnInit {
     } else {
       this.toaster.error("Something went wrong.");
     }
+  }
+
+  generatePDF() {
+
+    var data = document.getElementById("print_sale");
+    html2pdf(data, {
+      margin: 0.15,
+      filename: "sale-order.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    });
+
+    // this.salePrev.close();
+
+  }
+
+  openModal() {
+    // let ngbModalOptions: NgbModalOptions = {
+    //   keyboard: false,
+    //   backdrop: "static",
+    //   windowClass: "preview-sale-order",
+    // };
+    // this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
+    this.generatePDF();
   }
 
 }
