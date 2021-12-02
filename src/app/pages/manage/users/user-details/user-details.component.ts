@@ -39,7 +39,6 @@ export class UserDetailsComponent implements OnInit {
       WCB: '',
       healthCare: ''
     },
-    
     adrs: [{
       aType: null,
       cCode: null,
