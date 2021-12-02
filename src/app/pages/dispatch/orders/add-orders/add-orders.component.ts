@@ -4,18 +4,21 @@ import { Component, OnInit } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { DomSanitizer } from "@angular/platform-browser";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NgbCalendar, NgbDateAdapter, NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbCalendar,
+  NgbDateAdapter,
+  NgbTimeStruct,
+} from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { ToastrService } from "ngx-toastr";
 import { BehaviorSubject, from, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { environment } from "../../../../../environments/environment.prod";
 import { ApiService, HereMapService, ListService } from "../../../../services";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
-
 
 declare var $: any;
 declare var H: any;
@@ -157,6 +160,10 @@ export class AddOrdersComponent implements OnInit {
     },
     remarks: "",
     loc: "",
+    tripData: {
+      tripID: "",
+      tripNo: "",
+    },
   };
   response: any = "";
   hasError: boolean = false;
@@ -442,12 +449,12 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-
     this.location.back();
   }
   goBack() {
-
-    this.router.navigate([`/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`])// <-- go back to previous location on cancel
+    this.router.navigate([
+      `/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`,
+    ]); // <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -2232,6 +2239,7 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["attachments"] = result.attachments;
         this.ifStatus = result.orderStatus;
         this.orderData.orderStatus = result.orderStatus;
+        this.orderData.tripData = result.tripData;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
