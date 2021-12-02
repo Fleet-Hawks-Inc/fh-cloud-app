@@ -1,51 +1,55 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services";
+import { ApiService } from 'src/app/services';
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
-import { HereMapService } from "../../../../services/here-map.service";
+import { HereMapService } from "src/app/services/here-map.service";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import Constants from "../../constants";
-import { environment } from "../../../../../environments/environment";
+import Constants from 'src/app/pages/fleet/constants';
+import { environment } from 'src/environments/environment';
 
 import * as _ from "lodash";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 declare var $: any;
 
 @Component({
-    selector: "app-driver-list",
-    templateUrl: "./driver-list.component.html",
-    styleUrls: ["./driver-list.component.css"],
+    selector: 'app-driver-report',
+    templateUrl: './driver-report.component.html',
+    styleUrls: ['./driver-report.component.css']
 })
-export class DriverListComponent implements OnInit {
+export class DriverReportComponent implements OnInit {
     environment = environment.isFeatureEnabled;
     allDocumentsTypes: any;
     documentsTypesObects: any = {};
+
     title = "Driver List";
     mapView = false;
     listView = true;
     visible = true;
     dataMessage: string = Constants.FETCHING_DATA;
+
     driverCheckCount;
     selectedDriverID;
     drivers = [];
+
     statesObject: any = {};
     countriesObject: any = {};
     citiesObject: any = {};
     vehiclesObject: any = {};
     groupssObject: any = {};
-    driverID = '';
-    driverName = '';
-    dutyStatus = '';
+
+    driverID = "";
+    driverName = "";
+    dutyStatus = "";
     driverType = null;
     suggestedDrivers = [];
-    //homeworld: Observable<{}>;
-    //totalRecords = 10;
-    //pageLength = 10;
-    lastEvaluatedKey = '';
+    homeworld: Observable<{}>;
+
+    totalRecords = 10;
+    pageLength = 10;
+    lastEvaluatedKey = "";
     currentStatus: any;
-    loaded = false;
     hideShow = {
         name: true,
         dutyStatus: true,
@@ -72,12 +76,13 @@ export class DriverListComponent implements OnInit {
         licenceExpiry: true,
         licStateName: true,
     };
-    //driverNext = false;
-    //driverPrev = true;
-    //driverDraw = 0;
-    //driverPrevEvauatedKeys = [""];
-    //driverStartPoint = 1;
-    //driverEndPoint = this.pageLength;
+
+    driverNext = false;
+    driverPrev = true;
+    driverDraw = 0;
+    driverPrevEvauatedKeys = [""];
+    driverStartPoint = 1;
+    driverEndPoint = this.pageLength;
 
     constructor(
         private apiService: ApiService,
@@ -91,10 +96,9 @@ export class DriverListComponent implements OnInit {
 
     ngOnInit(): void {
         this.fetchAllDocumentsTypes();
-        //this.fetchDriversCount();
+        this.fetchDriversCount();
         this.fetchAllVehiclesIDs();
         this.fetchAllGrorups();
-        this.initDataTable();
         $(document).ready(() => {
             setTimeout(() => {
                 $("#DataTables_Table_0_wrapper .dt-buttons")
@@ -103,6 +107,7 @@ export class DriverListComponent implements OnInit {
             }, 1800);
         });
     }
+
     fetchAllDocumentsTypes() {
         this.httpClient
             .get(`assets/travelDocumentType.json`)
@@ -113,6 +118,7 @@ export class DriverListComponent implements OnInit {
                 }, {});
             });
     }
+
     jsTree() {
         $(".treeCheckbox").jstree({
             core: {
@@ -135,6 +141,7 @@ export class DriverListComponent implements OnInit {
     export() {
         $(".buttons-excel").trigger("click");
     }
+
     getSuggestions = _.debounce(function (value) {
         this.driverID = "";
         value = value.toLowerCase();
@@ -154,6 +161,7 @@ export class DriverListComponent implements OnInit {
             this.suggestedDrivers = [];
         }
     }, 800);
+
     setDriver(driverID, firstName = "", lastName = "", middleName = "") {
         if (middleName !== "") {
             this.driverName = `${firstName} ${middleName} ${lastName}`;
@@ -163,7 +171,27 @@ export class DriverListComponent implements OnInit {
             this.driverName = `${firstName} ${lastName}`;
             this.driverID = `${firstName}-${lastName}`;
         }
+
         this.suggestedDrivers = [];
+    }
+
+    fetchDriversCount() {
+        this.apiService
+            .getData(
+                `drivers/get/count?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}`
+            )
+            .subscribe({
+                complete: () => { },
+                error: () => { },
+                next: (result: any) => {
+                    this.totalRecords = result.Count;
+
+                    if (this.driverID != "") {
+                        this.driverEndPoint = this.totalRecords;
+                    }
+                    this.initDataTable();
+                },
+            });
     }
     fetchAllGrorups() {
         this.apiService.getData("groups/get/list").subscribe((result: any) => {
@@ -180,6 +208,7 @@ export class DriverListComponent implements OnInit {
             this.vehiclesObject = result;
         });
     }
+
     checkboxCount = () => {
         this.driverCheckCount = 0;
         this.drivers.forEach((item) => {
@@ -189,15 +218,9 @@ export class DriverListComponent implements OnInit {
             }
         });
     };
-    editDriver = () => {
-        if (this.driverCheckCount === 1) {
-            this.router.navigateByUrl(
-                "/fleet/drivers/edit-driver/" + this.selectedDriverID
-            );
-        } else {
-            this.toastr.error("Please select only one asset!");
-        }
-    };
+
+
+
     mapShow() {
         this.mapView = true;
         this.listView = false;
@@ -206,58 +229,65 @@ export class DriverListComponent implements OnInit {
             this.hereMap.mapInit();
         }, 200);
     }
+
     valuechange() {
         this.visible = !this.visible;
     }
-    deactivateDriver(eventData) {
-        if (confirm("Are you sure you want to delete?") === true) {
-            // let record = {
-            //   date: eventData.createdDate,
-            //   time: eventData.createdTime,
-            //   eventID: eventData.driverID,
-            //   status: eventData.driverStatus
-            // }
-            this.apiService
-                .deleteData(
-                    `drivers/delete/${eventData.driverID}/${eventData.firstName}/${eventData.lastName}/${eventData.userName}`
-                )
-                .subscribe((result: any) => {
-                    this.drivers = [];
-                    // this.driverDraw = 0;
-                    this.dataMessage = Constants.FETCHING_DATA;
-                    this.lastEvaluatedKey = "";
-                    // this.fetchDriversCount();
-                    this.toastr.success("Driver is deleted!");
-                });
-        }
-    }
-    async initDataTable() {
-        if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
-            if (result.Items.length === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
-            }
-            result.Items.map((v) => {
-                v.url = `/fleet/drivers/detail/${v.driverID}`;
-            });
-            this.suggestedDrivers = [];
-            if (result.Items.length > 0) {
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+
+
+    initDataTable() {
+        this.spinner.show();
+        this.apiService
+            .getData(
+                `drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`
+            )
+            .subscribe(
+                (result: any) => {
+                    if (result.Items.length === 0) {
+                        this.dataMessage = Constants.NO_RECORDS_FOUND;
+                    }
+                    result.Items.map((v) => {
+                        v.url = `/fleet/drivers/detail/${v.driverID}`;
+                    });
+                    this.suggestedDrivers = [];
+                    this.getStartandEndVal();
+                    this.drivers = result[`Items`];
+                    // this.fetchAddress(this.drivers); // function converts country code, stateCode into country name and state name
+                    if (this.driverID !== "") {
+                        this.driverStartPoint = 1;
+                        this.driverEndPoint = this.totalRecords;
+                    }
+                    if (result[`LastEvaluatedKey`] !== undefined) {
+                        const lastEvalKey = result[`LastEvaluatedKey`].driverSK.replace(
+                            /#/g,
+                            "--"
+                        );
+                        this.driverNext = false;
+                        // for prev button
+                        if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
+                            this.driverPrevEvauatedKeys.push(lastEvalKey);
+                        }
+                        this.lastEvaluatedKey = lastEvalKey;
+                    } else {
+                        this.driverNext = true;
+                        this.lastEvaluatedKey = "";
+                        this.driverEndPoint = this.totalRecords;
+                    }
+                    if (this.totalRecords < this.driverEndPoint) {
+                        this.driverEndPoint = this.totalRecords;
+                    }
+                    // disable prev btn
+                    if (this.driverDraw > 0) {
+                        this.driverPrev = false;
+                    } else {
+                        this.driverPrev = true;
+                    }
+                    this.spinner.hide();
+                },
+                (err) => {
+                    this.spinner.hide();
                 }
-                else {
-                    this.lastEvaluatedKey = 'end'
-                }
-                this.drivers = this.drivers.concat(result.Items);
-                this.loaded = true;
-            }
-        }
-    }
-    onScroll() {
-        if (this.loaded) {
-            this.initDataTable();
-        }
-        this.loaded = false;
+            );
     }
     fetchAddress(drivers: any) {
         for (let d = 0; d < drivers.length; d++) {
@@ -282,50 +312,49 @@ export class DriverListComponent implements OnInit {
                     }
                 });
             }
+
             // }
         }
     }
-
     searchFilter() {
         if (
-            this.driverName !== '' ||
-            this.dutyStatus !== '' ||
+            this.driverName !== "" ||
+            this.dutyStatus !== "" ||
             this.driverType !== null
         ) {
             this.driverName = this.driverName.toLowerCase();
-            if (this.driverID == '') {
+            if (this.driverID == "") {
                 this.driverID = this.driverName;
             }
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
-            this.lastEvaluatedKey = '';
             this.suggestedDrivers = [];
-            this.initDataTable();
-            // this.fetchDriversCount();
+            this.fetchDriversCount();
         } else {
             return false;
         }
     }
+
     resetFilter() {
         if (
-            this.driverName !== '' ||
-            this.dutyStatus !== '' ||
+            this.driverName !== "" ||
+            this.dutyStatus !== "" ||
             this.driverType !== null
         ) {
-            this.driverID = '';
-            this.dutyStatus = '';
-            this.driverName = '';
-            this.driverType = null;
             this.drivers = [];
+            this.driverID = "";
+            this.dutyStatus = "";
+            this.driverName = "";
+            this.driverType = null;
             this.dataMessage = Constants.FETCHING_DATA;
-
-            this.lastEvaluatedKey = '';
-            this.initDataTable();
-
+            this.fetchDriversCount();
+            this.driverDraw = 0;
+            this.resetCountResult();
         } else {
             return false;
         }
     }
+
     hideShowColumn() {
         //for headers
         if (this.hideShow.name == false) {
@@ -464,16 +493,44 @@ export class DriverListComponent implements OnInit {
         }
     }
 
+    getStartandEndVal() {
+        this.driverStartPoint = this.driverDraw * this.pageLength + 1;
+        this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
+    }
+
+    // next button func
+    nextResults() {
+        this.driverNext = true;
+        this.driverPrev = true;
+        this.driverDraw += 1;
+        this.initDataTable();
+    }
+
+    // prev button func
+    prevResults() {
+        this.driverNext = true;
+        this.driverPrev = true;
+        this.driverDraw -= 1;
+        this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
+        this.initDataTable();
+    }
+
+    resetCountResult() {
+        this.driverStartPoint = 1;
+        this.driverEndPoint = this.pageLength;
+        this.driverDraw = 0;
+    }
 
     refreshData() {
         this.drivers = [];
-        this.driverID = '';
-        this.dutyStatus = '';
-        this.driverName = '';
+        this.driverID = "";
+        this.dutyStatus = "";
+        this.driverName = "";
         this.driverType = null;
-        this.lastEvaluatedKey = '';
-        this.initDataTable();
+        this.lastEvaluatedKey = "";
         this.dataMessage = Constants.FETCHING_DATA;
-
+        this.fetchDriversCount();
+        this.driverDraw = 0;
+        this.resetCountResult();
     }
 }

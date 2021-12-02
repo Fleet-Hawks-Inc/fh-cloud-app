@@ -1187,7 +1187,7 @@ export class AddOrdersComponent implements OnInit {
               }
             },
             (err) => {
-              console.log("pc miles", err);
+              // console.log("pc miles", err);
             }
           );
       } else {
@@ -2236,6 +2236,7 @@ export class AddOrdersComponent implements OnInit {
             name: x,
           }));
         }
+        this.orderData.tripData = result.tripData;
         this.orderData["attachments"] = result.attachments;
         this.ifStatus = result.orderStatus;
         this.orderData.orderStatus = result.orderStatus;

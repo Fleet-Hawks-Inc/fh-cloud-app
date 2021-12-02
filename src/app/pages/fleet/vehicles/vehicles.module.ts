@@ -10,6 +10,7 @@ import { AddVehicleComponent } from './add-vehicle/add-vehicle.component';
 import { VehicleListComponent } from './vehicle-list/vehicle-list.component';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { VehicleDetailComponent } from './vehicle-detail/vehicle-detail.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 const routes: Routes = [
@@ -84,7 +85,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     ReactiveFormsModule,
     NgbModule,
     NgSelectModule,
-    SlickCarouselModule
+    SlickCarouselModule,
+    InfiniteScrollModule
   ],
   exports: [],
   providers: [{ provide: NgbDateAdapter, useClass: CustomAdapter },
