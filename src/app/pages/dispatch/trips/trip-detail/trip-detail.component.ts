@@ -245,15 +245,19 @@ export class TripDetailComponent implements OnInit {
 
         if (result.orderId.length > 0) {
           await this.fetchOrderDetails(result.orderId);
-          await this.fetchCustomerDetails(result.orderId)
+          await this.fetchCustomerDetails(result.orderId);
         }
         if (result.settlmnt) {
           this.tripStatus = "Settled";
+          this.recallStatus = false;
         } else {
-          this.tripStatus = result.tripStatus;
-        }
-        if (result.recall) {
-          this.recallStatus = true;
+          if (result.tripStatus === "delivered") {
+            this.tripStatus = `${result.tripStatus} (R)`;
+            this.recallStatus = true;
+          } else {
+            this.tripStatus = result.tripStatus;
+            this.recallStatus = false;
+          }
         }
         if (
           result.tripStatus === "delivered" ||
@@ -263,7 +267,6 @@ export class TripDetailComponent implements OnInit {
           this.showEdit = false;
         } else {
           this.showEdit = true;
-
         }
         this.showTripInfo = true;
         if (result.documents == undefined) {
@@ -594,7 +597,6 @@ export class TripDetailComponent implements OnInit {
       .getData("orders/fetch/customerInfo/orders?orderIds=" + orderIds)
       .toPromise();
     this.customerData = result;
-
   }
 
   /*
@@ -641,7 +643,7 @@ export class TripDetailComponent implements OnInit {
       this.apiService
         .postData("trips/update/bol/" + this.tripID, formData, true)
         .subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -655,8 +657,8 @@ export class TripDetailComponent implements OnInit {
                 complete: () => {
                   this.spinner.hide();
                 },
-                error: () => { },
-                next: () => { },
+                error: () => {},
+                next: () => {},
               });
           },
           next: (res: any) => {
@@ -735,7 +737,10 @@ export class TripDetailComponent implements OnInit {
       keyboard: false,
       windowClass: "trip--info__main",
     };
-    this.tripInfoRef = this.modalService.open(this.tripInfoModal, ngbModalOptions);
+    this.tripInfoRef = this.modalService.open(
+      this.tripInfoModal,
+      ngbModalOptions
+    );
   }
 
   async generate() {
@@ -759,7 +764,8 @@ export class TripDetailComponent implements OnInit {
   async driverEmail() {
     this.isEmail = true;
     let result = await this.apiService
-      .getData(`trips/send/emailDriver/${this.tripID}`).toPromise();
+      .getData(`trips/send/emailDriver/${this.tripID}`)
+      .toPromise();
     if (result === null) {
       this.tripInfoRef.close();
       this.toastr.success("Email send successfully");
