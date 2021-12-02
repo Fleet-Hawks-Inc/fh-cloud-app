@@ -8,6 +8,10 @@ td {
   padding: 5px;
 }
 
+#print_wrap td {
+  padding: 0;
+}
+
 /* .ngx-datatable {
   max-height: 70vh;
   width: 100%;
