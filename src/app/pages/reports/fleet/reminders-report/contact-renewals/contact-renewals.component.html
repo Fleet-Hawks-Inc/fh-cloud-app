@@ -4,42 +4,24 @@
       <header class="page-header pr19 pl11">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select
-              [(ngModel)]="entityID"
-              name="entityID"
-              style="width: 100% !important"
-              placeholder="Contact"
-            >
-              <ng-option
-                *ngFor="let data of record"
-                value="{{ data.contactID }}"
-                >{{ data.firstName }} {{ data.lastName }}
+            <ng-select [(ngModel)]="entityID" name="entityID" style="width: 100% !important" placeholder="Contact">
+              <ng-option *ngFor="let data of record" value="{{ data.contactID }}">{{ data.firstName }} {{ data.lastName
+                }}
               </ng-option>
             </ng-select>
           </div>
 
           <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select
-              [(ngModel)]="searchServiceTask"
-              name="searchServiceTask"
-              style="width: 100% !important"
-              placeholder="Contact Renewal Type"
-            >
-              <ng-option
-                *ngFor="let task of serviceTasks"
-                [value]="task.taskID"
-              >
-                {{ task.taskName }}
+            <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask" style="width: 100% !important"
+              placeholder="Contact Renewal Type">
+              <ng-option *ngFor="let data of tasks | keyvalue" value="{{ data.key }}">
+                {{ data.value }}
               </ng-option>
             </ng-select>
           </div>
           <div class="col-md-2 col-lg-2 pr-0">
-            <ng-select
-              [(ngModel)]="filterStatus"
-              name="filterStatus"
-              style="width: 100%"
-              placeholder="Select Reminder Status"
-            >
+            <ng-select [(ngModel)]="filterStatus" name="filterStatus" style="width: 100%"
+              placeholder="Select Reminder Status">
               <optgroup label="Select Reminder Status">
                 <ng-option value="all">ALL</ng-option>
                 <ng-option value="overdue">OVERDUE</ng-option>
@@ -49,44 +31,27 @@
           </div>
 
           <div class="col-md-2 col-lg-2">
-            <button
-              type="button"
-              (click)="searchData()"
-              class="btn btn-sm btn-success mr-3"
-            >
+            <button type="button" (click)="searchData()" class="btn btn-sm btn-success mr-3">
               Search
             </button>
-            <button
-              class="btn btn-sm btn-success"
-              type="button"
-              (click)="resetData()"
-            >
+            <button class="btn btn-sm btn-success" type="button" (click)="resetData()">
               Reset
             </button>
           </div>
 
           <div class="col-md-4 col-lg-4 text-right pr-1">
             <div class="btn-group flex-wrap ml-2">
-              <button
-                type="button"
-                class="btn btn-success btn-sm dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false"
-              >
+              <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown"
+                aria-expanded="false">
                 <i class="fas fa-upload"></i> Export<span class="caret"></span>
               </button>
-              <div
-                class="dropdown-menu"
-                role="menu"
-                x-placement="bottom-start"
-                style="
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="
                   position: absolute;
                   will-change: transform;
                   top: 0px;
                   left: 0px;
                   transform: translate3d(0px, 38px, 0px);
-                "
-              >
+                ">
                 <a class="dropdown-item text-1" (click)="csvData()">CSV</a>
               </div>
             </div>
@@ -136,13 +101,8 @@
           <div class="col">
             <div class="card">
               <div class="col-lg-12 pl-0 pr-0">
-                <div
-                  infiniteScroll
-                  [infiniteScrollDistance]="1"
-                  [infiniteScrollUpDistance]="1"
-                  [infiniteScrollThrottle]="5"
-                  (scrolled)="onScroll()"
-                >
+                <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                  [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                   <div class="card-body bor-radius0px p-3">
                     <section class="reports_div">
                       <table class="table reports_small_div">
@@ -166,29 +126,18 @@
                               </span>
                             </td>
                             <td>
-                              <span
-                                class="
+                              <span class="
                                   text-warning
                                   font-weight-bold font-size-12
                                   text-uppercase
-                                "
-                                *ngIf="item.status === 'dueSoon'"
-                                >{{ item.status }}<br
-                              /></span>
-                              <span
-                                class="
+                                " *ngIf="item.status === 'dueSoon'">{{ item.status }}<br /></span>
+                              <span class="
                                   text-danger
                                   font-weight-bold font-size-12
                                   text-uppercase
-                                "
-                                *ngIf="item.status === 'overdue'"
-                                >{{ item.status }}<br
-                              /></span>
-                              <span
-                                class="font-weight-bold text-capitalize"
-                                title="Task"
-                                >{{ tasks[item.tasks.taskID] }}</span
-                              >
+                                " *ngIf="item.status === 'overdue'">{{ item.status }}<br /></span>
+                              <span class="font-weight-bold text-capitalize" title="Task">{{ tasks[item.tasks.taskID]
+                                }}</span>
                             </td>
                             <td>
                               Every {{ item.tasks.time }}
@@ -203,15 +152,8 @@
                       </table>
                     </section>
                   </div>
-                  <div
-                    class="col-lg-12 mt-3 text-center"
-                    *ngIf="lastItemSK !== 'end' && empData.length !== 0"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm text-light"
-                      (click)="onScroll()"
-                    >
+                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && empData.length !== 0">
+                    <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
                       Load More..
                     </button>
                   </div>
