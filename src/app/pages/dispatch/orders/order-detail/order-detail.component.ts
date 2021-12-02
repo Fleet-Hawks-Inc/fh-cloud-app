@@ -44,7 +44,7 @@ export class OrderDetailComponent implements OnInit {
 
   noLogsMsg = Constants.NO_RECORDS_FOUND;
 
-  carrierEmail: string = '';
+  carrierEmail: string = "";
   isCopy: boolean = false;
 
   docs = [];
@@ -186,7 +186,7 @@ export class OrderDetailComponent implements OnInit {
   taxableAmount: any;
   invoiceData: any;
   vehicles = [];
-  assets = []
+  assets = [];
   newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
@@ -211,7 +211,7 @@ export class OrderDetailComponent implements OnInit {
     emails: [],
   };
 
-  subject = '';
+  subject = "";
 
   hideEdit: boolean = false;
   tripData: {
@@ -288,6 +288,7 @@ export class OrderDetailComponent implements OnInit {
   recallStatus = false;
 
   isFlag = true;
+  showBtns = false;
 
   constructor(
     private apiService: ApiService,
@@ -297,7 +298,7 @@ export class OrderDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private listService: ListService,
-    private location: Location,
+    private location: Location
   ) {
     this.today = new Date();
   }
@@ -314,7 +315,7 @@ export class OrderDetailComponent implements OnInit {
   getCurrentUser = async () => {
     let currentUser = (await Auth.currentSession()).getIdToken().payload;
     this.carrierEmail = currentUser.email;
-  }
+  };
 
   /**
    * fetch order data
@@ -410,10 +411,9 @@ export class OrderDetailComponent implements OnInit {
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
 
-          this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`
+          this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
 
           this.milesArr = [];
-
         }
         for (let i = 0; i < this.taxesInfo.length; i++) {
           if (this.taxesInfo[i].amount) {
@@ -499,20 +499,16 @@ export class OrderDetailComponent implements OnInit {
               this.docs.push(obj);
             }
           });
-
         }
 
         this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
-
       },
 
-      (err) => { }
+      (err) => {}
     );
   }
 
-
   async openEmailInv() {
-
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
@@ -538,7 +534,7 @@ export class OrderDetailComponent implements OnInit {
       docs: newDocs,
       emails: this.userEmails,
       subject: this.subject,
-      sendCopy: this.isCopy
+      sendCopy: this.isCopy,
     };
 
     let result = await this.apiService
@@ -555,7 +551,7 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
-      this.subject = '';
+      this.subject = "";
     } else {
       this.isEmail = false;
     }
@@ -596,7 +592,7 @@ export class OrderDetailComponent implements OnInit {
         }
       }
     });
-    if (this.subject == '') {
+    if (this.subject == "") {
       this.toastr.error("Please enter subject");
       this.isEmail = false;
       return;
@@ -677,7 +673,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -695,7 +691,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -835,7 +831,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() { }
+  setSrcValue() {}
 
   caretClickShipper(i, j) {
     if (
@@ -886,7 +882,6 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
-
         this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
 
         this.orderInvData = result[0];
@@ -900,21 +895,22 @@ export class OrderDetailComponent implements OnInit {
         if (this.invoiceData.vehicles != undefined) {
           this.vehicles = this.invoiceData.vehicles;
         }
-
+        this.showBtns = true;
       });
   }
 
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
-    this.showModal = true;
-    let data = {
-      carrierData: this.carrierData,
-      brokerage: this.brokerage,
-      orderData: this.orderInvData,
-      showModal: this.showModal,
-      companyLogo: this.companyLogoSrc,
-    };
-    this.listService.triggerBrokeragePdf(data);
+    // this.showModal = true;
+    // let data = {
+    //   carrierData: this.carrierData,
+    //   brokerage: this.brokerage,
+    //   orderData: this.orderInvData,
+    //   showModal: this.showModal,
+    //   companyLogo: this.companyLogoSrc,
+    // };
+    // console.log("bro data", data);
+    // this.listService.triggerBrokeragePdf(data);
   }
 
   async fetchCarrierDetails() {
@@ -932,6 +928,17 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.carrierData.address = result.adrs[0].userLoc;
     }
+
+    this.showModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      brokerage: this.brokerage,
+      orderData: this.orderInvData,
+      showModal: this.showModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    console.log("bro data", data);
+    this.listService.triggerBrokeragePdf(data);
   }
 
   async downloadBolPdf() {
@@ -994,6 +1001,5 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.isCopy = false;
     }
-
   }
 }

@@ -505,8 +505,9 @@
                         <div class="row" *ngIf="receiptData.currency !==
                           receiptData.recAmountCur">
                           <div class="col-lg-12">
-                            <p>1 {{currency}} = {{rate}}
-                              {{this.receiptData.recAmountCur}}</p>
+                            {{ convertedText }}
+                            <!-- <p>1 {{currency}} = {{rate}}
+                              {{this.receiptData.recAmountCur}}</p> -->
                           </div>
                         </div>
 
@@ -556,7 +557,7 @@
                                 </span>
                                 <span *ngIf="data.type !== 'credit'">
                                   0.00
-                                </span> {{ receiptData.currency }}
+                                </span> {{ receiptData.recAmountCur }}
                               </td>
                               <td>
                                 <span *ngIf="data.type === 'debit'">
@@ -564,7 +565,7 @@
                                 </span>
                                 <span *ngIf="data.type !== 'debit'">
                                   0.00
-                                </span> {{ receiptData.currency }}
+                                </span> {{ receiptData.recAmountCur }}
                               </td>
                             </tr>
                           </tbody>

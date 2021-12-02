@@ -110,6 +110,7 @@ export class AddReceiptComponent implements OnInit {
     amount: 0,
   };
   journalPrev = [];
+  convertedText = "";
 
   constructor(
     private listService: ListService,
@@ -219,16 +220,26 @@ export class AddReceiptComponent implements OnInit {
         });
     }
   }
-  getConvertedCur(e) {
-    this.accountService
-      .getData(
-        `receipts/convert/${this.currency}/${e}/${this.receiptData.recAmount}`
-      )
-      .subscribe((res) => {
-        this.rate = res.rate.toFixed(2);
-        this.receiptData.recAmount = res.result.toFixed(2);
-      });
+  getConvertedCur(convertCurr) {
+    if (this.currency !== convertCurr) {
+      this.convertedText = "Fetching...";
+      this.accountService
+        .getData(
+          `receipts/convert/${this.currency}/${convertCurr}/${this.receiptData.recAmount}`
+        )
+        .subscribe((res) => {
+          this.rate = res.rate.toFixed(2);
+          this.receiptData.recAmount = res.result.toFixed(2);
+
+          this.convertedText = `1 ${this.currency} = ${this.rate} ${convertCurr}`;
+          this.getJournalPreview();
+        });
+    } else {
+      this.getJournalPreview();
+      this.findReceivedAmtFn();
+    }
   }
+
   refreshAccount() {
     this.listService.fetchChartAccounts();
   }
