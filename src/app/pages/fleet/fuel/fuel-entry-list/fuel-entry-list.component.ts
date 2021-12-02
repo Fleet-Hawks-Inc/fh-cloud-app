@@ -94,6 +94,7 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
+
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
@@ -238,7 +239,12 @@ export class FuelEntryListComponent implements OnInit {
       });
     }
   }
-
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
+  }
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end')
       this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
@@ -290,12 +296,7 @@ export class FuelEntryListComponent implements OnInit {
 
       })
   }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
-  }
+
 
   searchFilter() {
     if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
