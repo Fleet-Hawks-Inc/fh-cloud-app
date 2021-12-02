@@ -99,10 +99,14 @@
                                                     <tr>
                                                         <th id="" class="col1 minWidth200">Name</th>
                                                         <th id="" class="minWidth120">Email</th>
+                                                        <th id="" class="minWidth120">UserName</th>
                                                         <th id="" class="minwidth120">Driver Type</th>
+                                                        <th id="" class="minwidth120">Start Date</th>
                                                         <th id="" class="col12 extra">Date of Birth</th>
                                                         <th id="" class="col12 extra">Gender</th>
                                                         <th id="" class="col12 extra">CDL#</th>
+                                                        <th id="" class="col12 extra">Licence Expiry</th>
+                                                        <th id="" class="col12 extra">Licence Province</th>
                                                         <th id="" class="col5 extra">Phone</th>
                                                         <th id="" class="col5 extra">Status</th>
                                                     </tr>
@@ -119,11 +123,14 @@
                                                                 {{driver.lastName}}</span>
                                                         </td>
                                                         <td class="cursorpoint">{{driver.email}} </td>
-                                                        <td class="cursorpoint text-capitalize">{{driver.driverType}}
-                                                        </td>
+                                                        <td class="cursorpoint">{{driver.userName}} </td>
+                                                        <td class="cursorpoint text-capitalize">{{driver.driverType}}</td>
+                                                        <td class="cursorpoint text-capitalize">{{driver.startDate ? driver.startDate : '--'}}</td>
                                                         <td class="cursorpoint">{{driver.DOB}}</td>
                                                         <td class="cursorpoint">{{driver.gender === "M" ? 'Male' : 'Female'}}</td>
                                                         <td class="cursorpoint">{{driver.CDL_Number}}</td>
+                                                        <td class="cursorpoint">{{driver.licenceDetails.licenceExpiry}}</td>
+                                                        <td class="cursorpoint">{{driver.licenceDetails.licStateName }}</td>
                                                         <td class="cursorpoint">{{driver.phone}}</td>
                                                         <td class="cursorpoint"><span
                                                         class="badge badge-dark p-1 text-uppercase">{{driver.driverStatus}}</span>

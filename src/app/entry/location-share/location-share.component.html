@@ -1,0 +1,12 @@
+<section class="body" style="background:#dddddd;">
+    <div style="height: calc(110vh - 100px);width: 100%;">
+        <google-map  [width]="width" [height]="height" [center]="center" [options]="mapOptions"  [zoom]="zoom">
+            <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
+            <map-marker #marker="mapMarker" 
+            [position]="center" [options]="vehicleMarkerOptions"
+            (mapClick)="openInfoWindow(marker)"
+            ></map-marker> 
+            <map-info-window [innerHTML]="infoDetail"></map-info-window>
+        </google-map>
+      </div>
+</section>

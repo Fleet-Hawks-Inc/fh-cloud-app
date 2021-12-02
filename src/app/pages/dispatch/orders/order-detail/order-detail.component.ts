@@ -8,8 +8,6 @@ import {
 import { AccountService, ApiService, ListService } from "../../../../services";
 import { ActivatedRoute } from "@angular/router";
 import { DomSanitizer } from "@angular/platform-browser";
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
 import { environment } from "src/environments/environment";
 import { ToastrService } from "ngx-toastr";
 import * as html2pdf from "html2pdf.js";
@@ -17,10 +15,10 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { PdfViewerComponent } from "ng2-pdf-viewer";
-import autoTable from "jspdf-autotable";
 import * as moment from "moment";
 import Constants from "src/app/pages/fleet/constants";
 import { Location } from "@angular/common";
+import { Auth } from "aws-amplify";
 declare var $: any;
 
 @Component({
@@ -30,8 +28,7 @@ declare var $: any;
 })
 export class OrderDetailComponent implements OnInit {
   environment = environment.isFeatureEnabled;
-  @ViewChild("generateInvoiceModal", { static: true })
-  generateInvoiceModal: TemplateRef<any>;
+
   @ViewChild("previewInvoiceModal", { static: true })
   previewInvoiceModal: TemplateRef<any>;
   @ViewChild("emailInvoiceModal", { static: true })
@@ -46,6 +43,9 @@ export class OrderDetailComponent implements OnInit {
   private pdfComponent: PdfViewerComponent;
 
   noLogsMsg = Constants.NO_RECORDS_FOUND;
+
+  carrierEmail: string = "";
+  isCopy: boolean = false;
 
   docs = [];
   attachments = [];
@@ -106,7 +106,7 @@ export class OrderDetailComponent implements OnInit {
   showInvBtn: boolean = false;
   customerName = "";
   customerAddress = "";
-  customerCityName = "";
+  cityAndState = "";
   customerStateName = "";
   customerCountryName = "";
   customerPhone = "";
@@ -186,7 +186,7 @@ export class OrderDetailComponent implements OnInit {
   taxableAmount: any;
   invoiceData: any;
   vehicles = [];
-  assets = []
+  assets = [];
   newInvoiceDocs: [];
   today: any;
   cusAddressID: string;
@@ -210,6 +210,8 @@ export class OrderDetailComponent implements OnInit {
   emailData = {
     emails: [],
   };
+
+  subject = "";
 
   hideEdit: boolean = false;
   tripData: {
@@ -286,6 +288,7 @@ export class OrderDetailComponent implements OnInit {
   recallStatus = false;
 
   isFlag = true;
+  showBtns = false;
 
   constructor(
     private apiService: ApiService,
@@ -295,22 +298,27 @@ export class OrderDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private toastr: ToastrService,
     private listService: ListService,
-    private location: Location,
+    private location: Location
   ) {
     this.today = new Date();
   }
 
   ngOnInit() {
     this.orderID = this.route.snapshot.params["orderID"];
+
     this.fetchOrder();
-    this.fetchShippersByIDs();
-    this.fetchReceiversByIDs();
     this.fetchInvoiceData();
     this.fetchOrderLogs();
+    this.getCurrentUser();
   }
 
+  getCurrentUser = async () => {
+    let currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.carrierEmail = currentUser.email;
+  };
+
   /**
-   * fetch Asset data
+   * fetch order data
    */
   async fetchOrder() {
     this.docs = [];
@@ -335,14 +343,8 @@ export class OrderDetailComponent implements OnInit {
         this.brokerage.miles = result.milesInfo.totalMiles;
         this.brokerage.currency = result.charges.freightFee.currency;
 
-        if (result.stateTaxID != undefined) {
-          if (result.stateTaxID != "") {
-            this.apiService
-              .getData("stateTaxes/" + result.stateTaxID)
-              .subscribe((result) => {
-                this.stateCode = result.Items[0].stateCode;
-              });
-          }
+        if (result.stateTaxID != undefined && result.stateTaxID != "") {
+          this.stateCode = result.stateCode;
         }
 
         if (result.tripData) {
@@ -360,7 +362,14 @@ export class OrderDetailComponent implements OnInit {
         }
         this.orderStatus = result.orderStatus;
         this.cusAddressID = result.cusAddressID;
-        await this.fetchCustomersByID();
+        this.customerAddress = result.customerAddress;
+        this.customerName = result.customerName;
+        this.cityAndState = result.cityAndState;
+        this.customerCountryName = result.customerCountryName;
+        this.customerPhone = result.customerPhone;
+        this.customerEmail = result.customerEmail;
+        this.showInvBtn = true;
+
         this.reference = result.reference;
         this.cusConfirmation = result.cusConfirmation;
         this.createdDate = result.createdDate;
@@ -381,20 +390,6 @@ export class OrderDetailComponent implements OnInit {
 
         for (let u = 0; u < this.shipperReceiversInfos.length; u++) {
           const element = this.shipperReceiversInfos[u];
-          // for (let k = 0; k < element.shippers.length; k++) {
-          //   const element1 = element.shippers[k];
-          //   element1.date = '';
-          //   element1.time = '';
-
-          //   let datetime = element1.dateAndTime.split(' ');
-          //   if(datetime[0] != undefined) {
-          //     element1.date = datetime[0];
-          //   }
-          //   if(datetime[1] != undefined) {
-          //     element1.time = datetime[1];
-          //   }
-
-          // }
 
           this.additionalDetails.sealType = result.additionalDetails.sealType
             ? result.additionalDetails.sealType.replace("_", " ")
@@ -416,21 +411,9 @@ export class OrderDetailComponent implements OnInit {
           this.orderNumber = result.orderNumber;
           this.orderMode = result.orderMode;
 
+          this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
+
           this.milesArr = [];
-          // for (let k = 0; k < element.receivers.length; k++) {
-          //   const element2 = element.receivers[k];
-          //   element2.date = '';
-          //   element2.time = '';
-
-          //   let datetime = element2.dateAndTime.split(' ');
-          //   if(datetime[0] != undefined) {
-          //     element2.date = datetime[0];
-          //   }
-          //   if(datetime[1] != undefined) {
-          //     element2.time = datetime[1];
-          //   }
-
-          // }
         }
         for (let i = 0; i < this.taxesInfo.length; i++) {
           if (this.taxesInfo[i].amount) {
@@ -516,172 +499,16 @@ export class OrderDetailComponent implements OnInit {
               this.docs.push(obj);
             }
           });
-
-          // this.docs = result.uploadedDocs.map(x => ({
-          //   path: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-          //   displayName: x.displayName,
-          //   name: x.storedName,
-          //   ext: (x.storedName).split('.')[1]
-          // }));
         }
 
         this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
-
-        // if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-        //   obj = {
-        //     imgPath: `${this.Asseturl}/${result.carrierID}/${element}`,
-        //     docPath: `${this.Asseturl}/${result.carrierID}/${element}`
-        //   }
-        // } else {
-        //   obj = {
-        //     imgPath: 'assets/img/icon-pdf.png',
-        //     docPath: `${this.Asseturl}/${result.carrierID}/${element}`
-        //   }
-        // }
-        // if (
-        //   result.uploadedDocs != undefined &&
-        //   result.uploadedDocs.length > 0
-        // ) {
-        //   // this.docs = result.uploadedDocs.map(
-        //   //   (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-        //   // );
-        //   result.uploadedDocs.map((x) => {
-        //     let name = x.split('.');
-        //     let ext = name[name.length-1];
-        //     let obj = {
-        //       imgPath: '',
-        //       docPath:''
-        //     }
-        //     if(ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
-        //       obj = {
-        //         imgPath: `${this.Asseturl}/${result.carrierID}/${x}`,
-        //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-        //       }
-        //     } else {
-        //       obj = {
-        //         imgPath: 'assets/img/icon-pdf.png',
-        //         docPath:`${this.Asseturl}/${result.carrierID}/${x}`
-        //       }
-        //     }
-        //     this.docs.push(obj);
-        //   });
-        //   this.allPhotos = result.uploadedDocs;
-        // }
-        // this.orderData = result['Items'];
-
-        // this.shipperReceiversInfo = this.orderData[0].shippersReceiversInfo;
-
-        // this.shipperReceiversInfo.forEach(element => {
-        //   element.shippers.forEach(item => {
-        //     this.totalPickups++;
-        //   });
-        //   element.receivers.forEach(item1 => {
-        //     this.totalDrops++;
-        //   });
-        // });
-
-        // let originLength = this.orderData[0].shippersReceiversInfo[0].shippers.length - 1;
-        // this.firstPickupPoint = this.orderData[0].shippersReceiversInfo[0].shippers[originLength].pickupLocation;
-
-        // let lastParentLength = this.orderData[0].shippersReceiversInfo.length - 1;
-        // this.lastDropPoint = this.orderData[0].shippersReceiversInfo[lastParentLength].receivers[this.orderData[0].shippersReceiversInfo[lastParentLength].receivers.length - 1].dropOffLocation;
-
-        // this.totalMiles = this.orderData[0].milesInfo.totalMiles;
-        // this.calculateBy = this.orderData[0].milesInfo.calculateBy;
-
-        // this.charges = this.orderData[0].charges;
-        // this.accessrialData = this.charges.accessorialFeeInfo.accessorialFee;
-        // this.deductionsData = this.charges.accessorialDeductionInfo.accessorialDeduction;
-        // this.totalFreightFee = this.orderData[0].charges.freightFee.amount;
-
-        // this.getCurrency = this.orderData[0].charges.freightFee.currency;
-
-        // this.totalFuelSurcharge = this.orderData[0].charges.fuelSurcharge.amount;
-        // this.totalAccessotial = this.orderData[0].charges.accessorialFeeInfo.total;
-        // this.totalAccessDeductions = this.orderData[0].charges.accessorialDeductionInfo.total
-        // this.discountAmount = this.orderData[0].discount.amount;
-        // this.discountAmtUnit = this.orderData[0].discount.unit;
-
-        // this.orderData[0].taxesInfo.forEach(item => {
-        //   this.totalTax += parseFloat(item.amount);
-        // });
-        // this.taxesData = this.orderData[0].taxesInfo;
-        // this.totalAmount = this.orderData[0].totalAmount;
-
-        // if(this.orderData[0].uploadedDocs != undefined && this.orderData[0].uploadedDocs.length > 0){
-        //   this.orderDocs = this.orderData[0].uploadedDocs.map(x => ({path: `${this.Asseturl}/${this.orderData[0].carrierID}/${x}`, name: x}));
-        // }
       },
 
       (err) => {}
     );
   }
 
-  /*
-   * Get all shippers's IDs of names from api
-   */
-  fetchShippersByIDs() {
-    this.apiService
-      .getData("contacts/get/list/consignor")
-      .subscribe((result: any) => {
-        this.shippersObjects = result;
-      });
-  }
-
-  /*
-   * Get all receivers's IDs of names from api
-   */
-  fetchReceiversByIDs() {
-    this.apiService
-      .getData("contacts/get/list/consignee")
-      .subscribe((result: any) => {
-        this.receiversObjects = result;
-      });
-  }
-
-  /*
-   * Get all customers's IDs of names from api
-   */
-  async fetchCustomersByID() {
-    this.apiService
-      .getData(`contacts/detail/${this.customerID}`)
-      .subscribe((result: any) => {
-        if (result.Items.length > 0) {
-          result = result.Items[0];
-          this.customerName = `${result.cName}`;
-          let newCusAddress = result.adrs.filter((elem: any) => {
-            if (elem.addressID === this.cusAddressID) {
-              this.showInvBtn = true;
-              return elem;
-            }
-          });
-          newCusAddress = newCusAddress[0];
-          if (result.adrs.length > 0) {
-            if (newCusAddress.manual) {
-              this.customerAddress = newCusAddress.add1;
-            } else {
-              this.customerAddress = newCusAddress.userLoc;
-            }
-            this.customerCityName = newCusAddress.ctyName;
-            this.customerStateName = newCusAddress.sName;
-            this.customerCountryName = newCusAddress.cName;
-            this.customerPhone = result.workPhone;
-            this.customerEmail = result.workEmail;
-          }
-        }
-      });
-  }
-
   async openEmailInv() {
-    let ngbModalOptions: NgbModalOptions = {
-      keyboard: true,
-      windowClass: "send-email--modal",
-    };
-    this.emailRef = this.modalService.open(this.emailInvoice, ngbModalOptions);
-  }
-
-  openEmailModal() {
-    this.emailRef.close();
     let ngbModalOptions: NgbModalOptions = {
       keyboard: false,
       backdrop: "static",
@@ -706,6 +533,8 @@ export class OrderDetailComponent implements OnInit {
     const data = {
       docs: newDocs,
       emails: this.userEmails,
+      subject: this.subject,
+      sendCopy: this.isCopy,
     };
 
     let result = await this.apiService
@@ -716,12 +545,13 @@ export class OrderDetailComponent implements OnInit {
       )
       .toPromise();
     if (result) {
-      this.emailRef.close();
+      // this.emailRef.close();
       this.emailCopyRef.close();
       this.toastr.success("Email send successfully!");
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
+      this.subject = "";
     } else {
       this.isEmail = false;
     }
@@ -762,6 +592,11 @@ export class OrderDetailComponent implements OnInit {
         }
       }
     });
+    if (this.subject == "") {
+      this.toastr.error("Please enter subject");
+      this.isEmail = false;
+      return;
+    }
 
     if (this.isFlag) {
       this.sendEmailInv();
@@ -1047,7 +882,6 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
-
         this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
 
         this.orderInvData = result[0];
@@ -1061,21 +895,22 @@ export class OrderDetailComponent implements OnInit {
         if (this.invoiceData.vehicles != undefined) {
           this.vehicles = this.invoiceData.vehicles;
         }
-
+        this.showBtns = true;
       });
   }
 
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
-    this.showModal = true;
-    let data = {
-      carrierData: this.carrierData,
-      brokerage: this.brokerage,
-      orderData: this.orderInvData,
-      showModal: this.showModal,
-      companyLogo: this.companyLogoSrc,
-    };
-    this.listService.triggerBrokeragePdf(data);
+    // this.showModal = true;
+    // let data = {
+    //   carrierData: this.carrierData,
+    //   brokerage: this.brokerage,
+    //   orderData: this.orderInvData,
+    //   showModal: this.showModal,
+    //   companyLogo: this.companyLogoSrc,
+    // };
+    // console.log("bro data", data);
+    // this.listService.triggerBrokeragePdf(data);
   }
 
   async fetchCarrierDetails() {
@@ -1093,6 +928,17 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.carrierData.address = result.adrs[0].userLoc;
     }
+
+    this.showModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      brokerage: this.brokerage,
+      orderData: this.orderInvData,
+      showModal: this.showModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    console.log("bro data", data);
+    this.listService.triggerBrokeragePdf(data);
   }
 
   async downloadBolPdf() {
@@ -1151,12 +997,9 @@ export class OrderDetailComponent implements OnInit {
 
   sendEmailCopy(value) {
     if (value) {
-      let ngbModalOptions: NgbModalOptions = {
-        keyboard: false,
-        backdrop: "static",
-        windowClass: "order-send__email",
-      };
-      this.modalService.open(this.emailInvoiceModal, ngbModalOptions);
+      this.isCopy = true;
+    } else {
+      this.isCopy = false;
     }
   }
 }

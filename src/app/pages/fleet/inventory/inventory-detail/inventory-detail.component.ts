@@ -113,6 +113,14 @@ export class InventoryDetailComponent implements OnInit {
       this.warrantyUnit = result.warrantyUnit;
       this.uploadedPhotos = result.uploadedPhotos;
       this.uploadedDocs = result.uploadedDocs;
+     
+     
+     //AWS S3
+          this.photos = result.uploadedPics;
+          this.documents = result.uploadDocument;
+     
+     
+     /*
       if (
         result.uploadedPhotos != undefined &&
         result.uploadedPhotos.length > 0
@@ -129,6 +137,7 @@ export class InventoryDetailComponent implements OnInit {
           name: x,
         }));
       }
+      */
       this.fetchWarehouses();
     });
   }

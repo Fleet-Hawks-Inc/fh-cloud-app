@@ -23,7 +23,6 @@ export class ContactRenewalsComponent implements OnInit {
   loaded = false
   empName = [];
   status = null;
-  serviceTasks = [];
   count = {
     total: '',
     overdue: '',
@@ -37,12 +36,11 @@ export class ContactRenewalsComponent implements OnInit {
     this.fetchallitems();
     this.fectchTasks();
     this.fetchEmployees();
-    this.fetchServiceTask();
     this.fetchReminderCount();
     this.fetchVehicleIDs();
   }
   fectchTasks() {
-    this.apiService.getData("tasks/get/list").subscribe((result: any) => {
+    this.apiService.getData("tasks/get/list?type=contact").subscribe((result: any) => {
       this.tasks = result;
     })
   }
@@ -65,11 +63,7 @@ export class ContactRenewalsComponent implements OnInit {
       this.empName = res;
     });
   }
-  fetchServiceTask() {
-    this.apiService.getData('tasks?type=contact').subscribe((result: any) => {
-      this.serviceTasks = result;
-    });
-  }
+
   fetchallitems() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`reminders/fetch/records?reminderIdentification=${this.entityID}&serviceTask=${this.searchServiceTask}&status=${this.filterStatus}&lastKey=${this.lastItemSK}&reminderType=contact`)

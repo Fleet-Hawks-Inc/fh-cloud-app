@@ -50,7 +50,6 @@ export class ServicelogsComponent implements OnInit {
     this.fetchAllVehiclesIDs();
     this.fetchAllAssetsIDs();
     this.fetchTasks();
-    // this.fetchServiceLogsList()
   }
   onScroll() {
     if (this.loaded) {
@@ -123,6 +122,7 @@ export class ServicelogsComponent implements OnInit {
     this.apiService.getData('assets/get/minor/details')
       .subscribe((result: any) => {
         this.assetsData = result.Items;
+
       })
 
   }
@@ -141,6 +141,9 @@ export class ServicelogsComponent implements OnInit {
         return false;
       } else if (this.start > this.end) {
         this.toastr.error('Start Date should be less then end date.');
+        return false;
+      } else if (this.category != null && this.searchValue == null) {
+        this.toastr.error('Plese enter search value.');
         return false;
       }
       else {
@@ -170,29 +173,50 @@ export class ServicelogsComponent implements OnInit {
       return false;
     }
   }
-  // fetchServiceLogsList() {
-  //   this.apiService.getData('serviceLogs/fetch/ServiceLogList')
-  //     .subscribe((result: any) => {
-  //       this.data = result.Items;
-  //       console.log('data', this.data)
-  //     })
-  //   this.generateCSV();
-  // }
+  fetchExportList() {
+    this.apiService.getData('serviceLogs/fetch/ServiceLogList')
+      .subscribe((result: any) => {
+        this.data = result.Items;
+        if (result.Items.length > 0) {
+          result['Items'].map((v: any) => {
+            if (v.isDeleted === 0) {
+              v.entityStatus = 'Active';
+              if (v.currentStatus === 'outOfService') {
+                v.entityStatus = 'Out of service';
+              } else if (v.currentStatus === 'active') {
+                v.entityStatus = 'Active';
+              } else if (v.currentStatus === 'inactive') {
+                v.entityStatus = 'In-active';
+              } else if (v.currentStatus === 'inActive') {
+                v.entityStatus = 'In-active';
+              } else if (v.currentStatus === 'sold') {
+                v.entityStatus = 'Sold';
+              }
+              this.data.push(v);
+            }
 
-  // csv() {
-  //   if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
-  //     this.allData = this.data;
-  //     this.generateCSV();
-  //   }
-  //   else {
-  //     this.fetchServiceLogsList();
-  //   }
-  // }
+          })
+        }
+        this.generateCSV();
+      })
+
+
+  }
+
+  csv() {
+    if (this.searchValue != null || this.category != null || this.taskID != null || this.start !== null || this.end !== null) {
+      this.data = this.allData;
+      this.generateCSV();
+    }
+    else {
+      this.fetchExportList();
+    }
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.data.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.data.forEach(element => {
         let taskName = '';
         for (let i = 0; i < element.allServiceTasks.serviceTaskList.length; i++) {
           const element2 = element.allServiceTasks.serviceTaskList[i];
