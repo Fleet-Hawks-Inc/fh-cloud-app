@@ -46,18 +46,10 @@ export class AddSalesOrderComponent implements OnInit {
       },
     ],
     charges: {
-      accFee: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
-      accDed: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
+      remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
       taxes: [
         {
           name: "GST",
@@ -271,50 +263,14 @@ export class AddSalesOrderComponent implements OnInit {
     this.calculateFinalTotal();
   }
 
-  addAccessorialArr(type) {
-    let obj = {
-      name: "",
-      amount: 0,
-    };
-    if (type === "fee") {
-      const lastAdded =
-        this.salesData.charges.accFee[this.salesData.charges.accFee.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.salesData.charges.accFee.push(obj);
-      }
-    } else if (type === "ded") {
-      const lastAdded =
-        this.salesData.charges.accDed[this.salesData.charges.accDed.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.salesData.charges.accDed.push(obj);
-      }
-    }
-  }
 
-  dedAccessorialArr(type, index) {
-    if (type === "fee") {
-      this.salesData.charges.accFee.splice(index, 1);
-      this.accessorialFeeTotal();
-    } else if (type === "ded") {
-      this.salesData.charges.accDed.splice(index, 1);
-      this.accessorialDedTotal();
-      this.calculateFinalTotal();
-    }
-  }
 
   accessorialFeeTotal() {
-    this.salesData.total.feeTotal = 0;
-    this.salesData.charges.accFee.forEach((element) => {
-      this.salesData.total.feeTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
-
-  accessorialDedTotal() {
-    this.salesData.total.dedTotal = 0;
-    this.salesData.charges.accDed.forEach((element) => {
-      this.salesData.total.dedTotal += Number(element.amount);
-    });
+    if (this.salesData.charges.cType === "add") {
+      this.salesData.total.feeTotal = Number(this.salesData.charges.cAmount);
+    } else if (this.salesData.charges.cType === "ded") {
+      this.salesData.total.feeTotal = -Number(this.salesData.charges.cAmount);
+    }
     this.calculateFinalTotal();
   }
 
@@ -441,7 +397,7 @@ export class AddSalesOrderComponent implements OnInit {
       delete this.salesData.created
       delete this.salesData.updated
     }
-    console.log('this.salesData*******', this.salesData)
+
     // create form data instance
     const formData = new FormData();
 
