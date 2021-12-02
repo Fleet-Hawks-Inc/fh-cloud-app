@@ -17,7 +17,8 @@
                         <ng-select [(ngModel)]="searchServiceTask" name="searchServiceTask"
                             style="width: 100% !important;" placeholder="Search task">
                             <optgroup label="Select Service Task">
-                                <ng-option *ngFor="let task of serviceTasks" [value]="task.taskID">{{task.taskName}}
+                                <ng-option *ngFor="let data of tasksList | keyvalue" value="{{ data.key }}">
+                                    {{ data.value }}
                                 </ng-option>
                             </optgroup>
                         </ng-select>
