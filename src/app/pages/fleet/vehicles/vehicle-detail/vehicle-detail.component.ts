@@ -534,6 +534,13 @@ export class VehicleDetailComponent implements OnInit {
           measurmentUnit: result.settings.measurmentUnit,
         };
 
+
+          this.slides = result.uploadedPics;
+          this.pDocs = result.purchaseDocsUpload;
+          this.lDocs = result.loanDocsUpload;
+          this.docs = result.uploadDocument;
+
+/*
         if (
           result.uploadedPhotos != undefined &&
           result.uploadedPhotos.length > 0
@@ -593,8 +600,9 @@ export class VehicleDetailComponent implements OnInit {
           this.settings.hardAccelrationParams
         );
         $("#turningParametersValue").html(this.settings.turningParams);
+      */
       });
-  }
+        }
 
   deleteVehicle() {
     this.apiService

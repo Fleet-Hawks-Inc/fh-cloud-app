@@ -22,7 +22,7 @@ export class SremindersComponent implements OnInit {
   lastEvaluatedKey = "";
   vehiclesList = [];
   taskfunction = [];
-  tasksData = [];
+  tasksData = {};
   serviceList = [];
   loaded = false
   filterStatus = null;
@@ -35,7 +35,7 @@ export class SremindersComponent implements OnInit {
   record = [];
   export = [];
   data = [];
-  serviceTasks = [];
+
   constructor(private apiService: ApiService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class SremindersComponent implements OnInit {
     this.fetchvehiclesList();
     this.fetchTasksList();
     this.fetchReminderCount();
-    this.fetchTaskData();
+
     this.fetchVehicleIDs();
   }
   setFilterStatus(val) {
@@ -116,15 +116,12 @@ export class SremindersComponent implements OnInit {
     });
   }
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+    this.apiService.getData('tasks/get/list?type=service').subscribe((result: any) => {
       this.tasksData = result;
+      console.log('tasksData', this.tasksData)
     });
   }
-  fetchTaskData() {
-    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
-      this.serviceTasks = result;
-    });
-  }
+
   fetchVehicleIDs() {
     this.apiService.getData('vehicles/list/minor').subscribe((result: any) => {
       result["Items"].map((r: any) => {

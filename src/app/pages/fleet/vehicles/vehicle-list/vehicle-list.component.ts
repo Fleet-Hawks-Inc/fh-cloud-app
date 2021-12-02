@@ -74,6 +74,8 @@ export class VehicleListComponent implements OnInit {
   vehicleStartPoint = 1;
   vehicleEndPoint = this.pageLength;
   vehicleTypeObects: any = {};
+  lastItemSK = ''
+  loaded = false
 
   constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
     private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
@@ -84,12 +86,12 @@ export class VehicleListComponent implements OnInit {
 
     this.onboard.checkInspectionForms();
     this.fetchGroups();
-    this.fetchVehiclesCount();
     // this.fetchVehicleModelList();
     // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
     this.fetchServiceProgramsList();
     this.fetchVendorList();
+    this.initDataTable()
     $(document).ready(() => {
       setTimeout(() => {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
@@ -155,21 +157,6 @@ export class VehicleListComponent implements OnInit {
     });
   }
 
-  fetchVehiclesCount() {
-    this.apiService.getData('vehicles/get/count?vehicle=' + this.vehicleID + '&status=' + this.currentStatus).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.vehicleID != '' || this.currentStatus != null) {
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-        this.initDataTable();
-      },
-    });
-  }
-
   setVehicle(vehicleID, vehicleIdentification) {
     this.vehicleIdentification = vehicleIdentification;
     this.vehicleID = vehicleIdentification;
@@ -198,56 +185,36 @@ export class VehicleListComponent implements OnInit {
   }
 
 
+
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe(async (result: any) => {
-        if (result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedVehicles = [];
-        this.getStartandEndVal();
-        result['Items'].map((v) => {
-          v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
-        })
-        this.vehicles = result['Items'];
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('vehicles/fetch/records?vehicle=' + this.vehicleID + '&status=' + this.currentStatus + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe(async (result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA
+          if (result.Items.length === 0) {
 
-        if (this.vehicleID != '') {
-          this.vehicleStartPoint = 1;
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-
-        if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].vehicleSK.replace(/#/g, '--');
-          this.vehicleNext = false;
-          // for prev button
-          if (!this.vehiclePrevEvauatedKeys.includes(lastEvalKey)) {
-            this.vehiclePrevEvauatedKeys.push(lastEvalKey);
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-          this.lastEvaluatedKey = lastEvalKey;
+          if (result.Items.length > 0) {
 
-        } else {
-          this.vehicleNext = true;
-          this.lastEvaluatedKey = '';
-          this.vehicleEndPoint = this.totalRecords;
-        }
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.vehicles = this.vehicles.concat(result.Items)
 
-        if (this.totalRecords < this.vehicleEndPoint) {
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.vehicleDraw > 0) {
-          this.vehiclePrev = false;
-        } else {
-          this.vehiclePrev = true;
-        }
-
-        this.spinner.hide();
-        await this.getDashCamConnection(this.vehicles);
-        await this.getDashCamStatus(this.vehicles);
-      });
+            this.loaded = true;
+          }
+        });
+    }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
   }
 
   /**
@@ -292,9 +259,9 @@ export class VehicleListComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.vehicles = [];
+      this.lastEvaluatedKey = ''
       this.suggestedVehicles = [];
-      this.fetchVehiclesCount();
-      // this.initDataTable();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -306,11 +273,10 @@ export class VehicleListComponent implements OnInit {
       this.suggestedVehicles = [];
       this.vehicleIdentification = '';
       this.currentStatus = null;
+      this.lastEvaluatedKey = ''
       this.vehicles = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchVehiclesCount();
-      // this.initDataTable();
-      this.resetCountResult();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -330,8 +296,8 @@ export class VehicleListComponent implements OnInit {
         this.vehicleDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.fetchVehiclesCount();
-        // this.initDataTable();
+        // this.fetchVehiclesCount();
+        this.initDataTable();
         this.toastr.success('Vehicle Deleted Successfully!');
       });
     }
@@ -485,36 +451,6 @@ export class VehicleListComponent implements OnInit {
     }
   }
 
-  getStartandEndVal() {
-    this.vehicleStartPoint = this.vehicleDraw * this.pageLength + 1;
-    this.vehicleEndPoint = this.vehicleStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.vehicleNext = true;
-    this.vehiclePrev = true;
-    this.vehicleDraw += 1;
-    this.initDataTable();
-
-  }
-
-  // prev button func
-  prevResults() {
-    this.vehicleNext = true;
-    this.vehiclePrev = true;
-    this.vehicleDraw -= 1;
-    this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
-    this.initDataTable();
-
-  }
-
-  resetCountResult() {
-    this.vehicleStartPoint = 1;
-    this.vehicleEndPoint = this.pageLength;
-    this.vehicleDraw = 0;
-  }
-
   refreshData() {
     this.vehicleID = '';
     this.suggestedVehicles = [];
@@ -523,8 +459,7 @@ export class VehicleListComponent implements OnInit {
     this.vehicles = [];
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchVehiclesCount();
-    this.resetCountResult();
+    this.initDataTable();
   }
 
 

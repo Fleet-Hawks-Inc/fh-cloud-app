@@ -148,10 +148,14 @@ export class DriverSummaryComponent implements OnInit {
                 let obj = {}
                 obj["Name"] = element.firstName + "  " + element.middleName + " " + element.lastName
                 obj["Email"] = element.email
+                obj["UserName"] = element.userName
                 obj["driverType"] = element.driverType
+                obj["Start Date"] = element.startDate ? element.startDate : '--'
                 obj["Date of Birth"] = element.DOB
                 obj["Gender"] = element.gender === "M" ? 'Male' : 'Female'
                 obj["CDL#"] = element.CDL_Number
+                obj["Licence Expiry"] = element.licenceDetails.licenceExpiry
+                obj["Licence Province"] = element.licenceDetails.licStateName
                 obj["Phone"] = element.phone
                 obj["Status"] = element.driverStatus
                 dataObject.push(obj)
