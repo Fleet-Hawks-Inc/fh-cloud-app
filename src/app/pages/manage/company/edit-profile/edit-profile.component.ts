@@ -109,6 +109,15 @@ export class EditProfileComponent implements OnInit {
       bankCities: []
     }]
   }];
+
+  termsCondition = {
+    truckDispatch: "",
+    carrier: "",
+    factorInvoice: "",
+    bol: "",
+    customInvoice: "",
+    Driver: ""
+  }
   yardDefault = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
