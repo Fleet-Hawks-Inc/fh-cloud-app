@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { ApiService } from '../../../../services/api.service';
 import { DatePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,7 @@ import Constants from '../../constants';
 import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
+import * as _ from 'lodash'
 declare var $: any;
 
 @Component({
@@ -50,7 +51,7 @@ export class FuelEntryListComponent implements OnInit {
   unitName: string;
   start: any = '';
   end: any = '';
-
+  lastTimeCreated = ''
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -67,17 +68,21 @@ export class FuelEntryListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  loaded = false
-  lastItemSK = ''
+  readonly rowHeight = 70;
+  readonly headerHeight = 70;
+  pageLimit = 10
+  loaded = false;
 
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
-    private httpClient: HttpClient) {
+    private httpClient: HttpClient,
+    private el: ElementRef) {
   }
   ngOnInit() {
     this.fetchVendorList();
+    // this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -93,6 +98,25 @@ export class FuelEntryListComponent implements OnInit {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+  }
+  onScroll(offsetY) {
+    const viewHeight =
+      this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+
+    if (
+      offsetY + viewHeight + this.fuelList.length * this.rowHeight
+    ) {
+      let limit = this.pageLimit;
+      if (this.fuelList.length === 0) {
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        limit = Math.max(pageSize, this.pageLimit);
+      }
+      if (this.loaded) {
+        this.initDataTable();
+      }
+      this.loaded = false;
+    }
   }
   setUnit(unitID, unitName) {
     this.unitName = unitName;
@@ -195,6 +219,21 @@ export class FuelEntryListComponent implements OnInit {
       });
     });
   }
+  // fuelEntriesCount() {
+  //   this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
+  //     complete: () => { },
+  //     error: () => { },
+  //     next: (result: any) => {
+  //       this.totalRecords = result.Count;
+
+  //       if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
+  //         this.fuelEndPoint = this.totalRecords;
+  //       }
+
+  //       this.initDataTable();
+  //     },
+  //   });
+  // }
 
   showTopValues() {
 
@@ -233,68 +272,56 @@ export class FuelEntryListComponent implements OnInit {
         this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.initDataTable();
+        //this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
-
   initDataTable() {
-    if (this.lastEvaluatedKey !== 'end')
-      this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey).subscribe((result: any) => {
-        this.dataMessage = Constants.FETCHING_DATA
-        if (result.Items.length === 0) {
+    this.spinner.show();
+    this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
+      if (result.Items.length == 0) {
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+      this.suggestedUnits = [];
+      // this.getStartandEndVal();
+      result[`Items`].forEach(element => {
 
-          this.dataMessage = Constants.NO_RECORDS_FOUND
+
+        let date: any = moment(element.data.date)
+        if (element.data.time) {
+          let time = moment(element.data.time, 'h mm a')
+          date.set({
+            hour: time.get('hour'),
+            minute: time.get('minute')
+          })
+          date = date.format('MMM Do YYYY, h:mm a')
         }
-        if (result.Items.length > 0) {
-
-          if (result.LastEvaluatedKey !== undefined) {
-            this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].fuelSK);
-          }
-          else {
-            this.lastEvaluatedKey = 'end'
-          }
-          this.fuelList = this.fuelList.concat(result.Items)
-
-          this.loaded = true;
+        else {
+          date = date.format('MMM Do YYYY')
         }
+        element.dateTime = date
 
-        this.suggestedUnits = [];
+        // element.fuelTime=moment(element.fuelTime).format('h:mm a')
 
-        result[`Items`].forEach(element => {
-
-          if (element.fuelProvider == "WEX") {
-            element.dateTime = moment(element.transactionDateTime).format('MMM Do YYYY, h:mm a')
-          }
-          else {
-            let date: any = moment(element.data.date)
-            if (element.data.time) {
-              let time = moment(element.data.time, 'h mm a')
-              date.set({
-                hour: time.get('hour'),
-                minute: time.get('minute')
-              })
-              date = date.format('MMM Do YYYY, h:mm a')
-            }
-            else {
-              date = date.format('MMM Do YYYY')
-            }
-            element.dateTime = date
-
-            // element.fuelTime=moment(element.fuelTime).format('h:mm a')
-
-          }
-        });
+      });
 
 
-      })
-  }
-  onScroll() {
-    if (this.loaded) {
-      this.initDataTable();
-    }
-    this.loaded = false;
+
+      this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
+
+
+      if (result.LastEvaluatedKey.fuelSK !== undefined) {
+        // for prev button
+        this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
+        if (result.LastEvaluatedKey.timeCreated !== undefined) {
+          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+        }
+        this.loaded = true
+      } else {
+        this.lastEvaluatedKey = '';
+      }
+    })
   }
 
   searchFilter() {
@@ -309,27 +336,55 @@ export class FuelEntryListComponent implements OnInit {
       this.fuelList = [];
       this.lastEvaluatedKey = ''
       this.initDataTable();
-
+      //this.fuelEntriesCount();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.fromDate !== '' || this.toDate !== '' || this.unitID !== null || this.assetUnitID !== null) {
-      this.unitID = null;
-      this.fromDate = '';
-      this.toDate = '';
-      this.assetUnitID = null;
-      this.start = '';
-      this.end = '';
-      this.lastEvaluatedKey = ''
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fuelList = [];
-      this.initDataTable();
-    } else {
-      return false;
-    }
+    this.unitID = null;
+    this.fromDate = '';
+    this.toDate = '';
+    this.assetUnitID = null;
+    this.start = '';
+    this.end = '';
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.fuelList = [];
+    this.initDataTable();
+    //this.fuelEntriesCount();
+    //this.resetCountResult();
+
+  }
+
+  // getStartandEndVal() {
+  //   this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
+  //   this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
+  // }
+
+  // next button func
+  nextResults() {
+    this.fuelNext = true;
+    this.fuelPrev = true;
+    this.fuelDraw += 1;
+    this.initDataTable();
+    //this.getStartandEndVal();
+  }
+
+  // prev button func
+  prevResults() {
+    this.fuelNext = true;
+    this.fuelPrev = true;
+    this.fuelDraw -= 1;
+    this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
+    this.initDataTable();
+    //this.getStartandEndVal();
+  }
+
+  resetCountResult() {
+    this.fuelStartPoint = 1;
+    this.fuelEndPoint = this.pageLength;
+    this.fuelDraw = 0;
   }
 
   fetchAllVehicles() {
@@ -362,8 +417,7 @@ export class FuelEntryListComponent implements OnInit {
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
     this.fuelList = [];
-    this.initDataTable();
-
-
+    // this.fuelEntriesCount();
+    this.resetCountResult();
   }
 }
