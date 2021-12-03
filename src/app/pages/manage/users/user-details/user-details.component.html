@@ -8,6 +8,8 @@
               <h4 class="font-weight-bold text-4 mt-0 mb-0 text-dark">User Details</h4>
             </div>
             <div class="col-md-11 col-lg-11 pr-1 text-right">
+               <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal"
+              data-target="#userPasswordModal" href="javascript:;">Change Password</a>
               <a [routerLink]="['/manage','users','list']" class="btn btn-default btn-sm"><i class="fas fa-list"></i>
                 Users List</a>
             </div>
@@ -297,7 +299,6 @@
                       <p class="text-dark pt-2 mb-0"><span class="pr-1"
                           [ngClass]="[passwordValidation.specialCharacters ? 'green1': 'red1']"> <i
                             [ngClass]="[passwordValidation.specialCharacters ? 'fas fa-check': 'fas fa-times']"></i></span> atleast 1 special character(!@#$%^&*.-)</p>
-
                     </div>
                   </div>
                 </div>
@@ -338,7 +339,6 @@
           </div>
         </div>
         </form>
-
       </div>
     </div>
   </div>

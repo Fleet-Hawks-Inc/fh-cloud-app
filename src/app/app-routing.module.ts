@@ -23,6 +23,7 @@ import { CheckProfileServiceService } from './services/check-profile-service.ser
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
+import { LocationShareComponent } from './entry/location-share/location-share.component';
 
 
 const routes: Routes = [
@@ -31,10 +32,15 @@ const routes: Routes = [
   { path: 'onboard', component: AddAccountComponent },
   { path: 'forgotPassword', component: ForgotPasswordComponent },
   {
+    path: 'location-share/:token',
+    component: LocationShareComponent
+  },
+  {
     path: 'Dashboard',
     component: DashboardComponent,
     canActivate: [AuthService, CheckProfileServiceService],
   },
+
   {
     path: 'Map-Dashboard',
     component: MapDashboardComponent,

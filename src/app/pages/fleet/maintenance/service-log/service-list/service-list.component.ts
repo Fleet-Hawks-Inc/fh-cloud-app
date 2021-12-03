@@ -51,6 +51,7 @@ export class ServiceListComponent implements OnInit {
   allVehicles = [];
   allAssets = [];
   assetID = null;
+  loaded = false
 
   constructor(
     private apiService: ApiService,
@@ -60,7 +61,7 @@ export class ServiceListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.fetchLogsCount();
+    this.initDataTable();
     this.fetchTasks();
     this.fetchAllVehiclesIDs();
     this.fetchAllVendorsIDs();
@@ -116,25 +117,12 @@ export class ServiceListComponent implements OnInit {
    * Get all tasks from api
    */
   fetchTasks() {
-    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
-      this.tasks = result;
+    this.apiService.getData('tasks').subscribe((result: any) => {
+      this.tasks = result.Items;
     });
   }
 
-  fetchLogsCount() {
-    this.apiService.getData('serviceLogs/get/count?vehicleID=' + this.vehicleID + '&asset=' + this.assetID + '&taskID=' + this.taskID).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
-          this.serviceLogEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
-  }
 
   gotoIssue(issue) {
     localStorage.setItem('issueID', issue);
@@ -154,68 +142,47 @@ export class ServiceListComponent implements OnInit {
       this.vendorAddress = res.Items[0].adrs;
     })
   }
+
   initDataTable() {
+    if (this.lastEvaluatedKey !== 'end') {
+      this.apiService.getData('serviceLogs/fetch/records?vehicleID=' + this.vehicleID + '&taskID=' + this.taskID + '&asset=' + this.assetID + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
 
-    this.apiService.getData('serviceLogs/fetch/records?vehicleID=' + this.vehicleID + '&taskID=' + this.taskID + '&asset=' + this.assetID + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if (result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedVehicles = [];
-        this.getStartandEndVal();
-
-        result['Items'].map((v: any) => {
-          v.entityStatus = 'Active';
-          if (v.currentStatus === 'outOfService') {
-            v.entityStatus = 'Out of service';
-          } else if (v.currentStatus === 'active') {
-            v.entityStatus = 'Active';
-          } else if (v.currentStatus === 'inActive') {
-            v.entityStatus = 'In-active';
+            this.dataMessage = Constants.NO_RECORDS_FOUND
           }
-        })
-        this.logs = result['Items'];
-        if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
-          this.serviceLogStartPoint = 1;
-          this.serviceLogEndPoint = this.totalRecords;
-        }
 
-        if (result['LastEvaluatedKey'] !== undefined) {
-          this.serviceLogNext = false;
-          let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
-          // for prev button
-          if (!this.serviceLogPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.serviceLogPrevEvauatedKeys.push(lastEvalKey);
+          if (result.Items.length > 0) {
+
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+              let lastEvalKey = result[`LastEvaluatedKey`].logSK.replace(/#/g, '--');
+              this.lastEvaluatedKey = lastEvalKey;
+            }
+
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.logs = this.logs.concat(result.Items)
+
+            this.loaded = true;
           }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.serviceLogNext = true;
-          this.lastEvaluatedKey = '';
-          this.serviceLogEndPoint = this.totalRecords;
-        }
-
-        if (this.totalRecords < this.serviceLogEndPoint) {
-          this.serviceLogEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.serviceLogDraw > 0) {
-          this.serviceLogPrev = false;
-        } else {
-          this.serviceLogPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-
-      });
+        });
+    }
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
   }
 
   searchFilter() {
     if (this.vehicleID != null || this.assetID != null || this.taskID != null) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.logs = [];
-      this.fetchLogsCount();
+      this.lastEvaluatedKey = ''
+      this.initDataTable();
     } else {
       return false;
     }
@@ -228,9 +195,10 @@ export class ServiceListComponent implements OnInit {
       this.vehicleIdentification = '';
       this.assetID = null;
       this.taskID = null;
+      this.lastEvaluatedKey = ''
       this.logs = [];
-      this.fetchLogsCount();
-      this.resetCountResult();
+      this.initDataTable();
+      // this.resetCountResult();
     } else {
       return false;
     }
@@ -247,39 +215,12 @@ export class ServiceListComponent implements OnInit {
         this.serviceLogDraw = 0;
         this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchLogsCount();
+        this.initDataTable();
         this.toastr.success('Service log deleted successfully!');
       });
     }
   }
 
-  getStartandEndVal() {
-    this.serviceLogStartPoint = this.serviceLogDraw * this.pageLength + 1;
-    this.serviceLogEndPoint = this.serviceLogStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.serviceLogNext = true;
-    this.serviceLogPrev = true;
-    this.serviceLogDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.serviceLogNext = true;
-    this.serviceLogPrev = true;
-    this.serviceLogDraw -= 1;
-    this.lastEvaluatedKey = this.serviceLogPrevEvauatedKeys[this.serviceLogDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.serviceLogStartPoint = 1;
-    this.serviceLogEndPoint = this.pageLength;
-    this.serviceLogDraw = 0;
-  }
 
   refreshData() {
     this.vehicleID = null;
@@ -289,7 +230,7 @@ export class ServiceListComponent implements OnInit {
     this.taskID = null;
     this.logs = [];
     this.lastEvaluatedKey = '';
-    this.fetchLogsCount();
-    this.resetCountResult();
+    this.initDataTable();
+
   }
 }

@@ -12,7 +12,7 @@ export const environment = {
   // SafetyServiceUrl: 'http://localhost:4000/api/v1/',
   // BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   // AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
-  SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
+  SafetyServiceUrl: 'http://localhost:3000/api/',
 
 
   // AccountServiceUrl: "http://localhost:4002/api/v1/",
@@ -64,6 +64,7 @@ export const environment = {
   googleConfig: {
     apiKey: "AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI",
   },
+  VSSServerWSS: 'ws://18.223.121.29:36300/ws'
 };
 
 /*

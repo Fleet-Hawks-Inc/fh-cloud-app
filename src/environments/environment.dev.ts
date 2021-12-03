@@ -44,6 +44,7 @@ export const environment = {
   },
   googleConfig: {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
-  }
+  },
+  VSSServerWSS: 'ws://18.223.121.29:36300/ws'
 
 };

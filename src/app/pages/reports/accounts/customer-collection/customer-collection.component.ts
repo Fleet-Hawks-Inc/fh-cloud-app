@@ -1,9 +1,13 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { ApiService } from 'src/app/services/api.service'
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import Constant from "src/app/pages/fleet/constants";
 import { ToastrService } from 'ngx-toastr';
+import * as html2pdf from "html2pdf.js";
 import * as moment from 'moment'
+declare var $: any;
+
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-customer-collection',
   templateUrl: './customer-collection.component.html',
@@ -11,7 +15,10 @@ import * as moment from 'moment'
 })
 export class CustomerCollectionComponent implements OnInit {
   @ViewChild('myTable') table: any;
-  constructor(private apiService: ApiService, private el: ElementRef, private toastr: ToastrService) { }
+  @ViewChild("previewReportModal", { static: true })
+  previewReportModal: TemplateRef<any>;
+  constructor(private apiService: ApiService, private el: ElementRef, private toastr: ToastrService,
+    private modalService: NgbModal,) { }
   public customerCollection = []
   SelectionType = SelectionType;
   ColumnMode = ColumnMode;
@@ -25,10 +32,12 @@ export class CustomerCollectionComponent implements OnInit {
   isLoading = false
   pageLimit = 10
   customer = ""
+  previewRef: any;
   customerFiltr = {
     startDate: '',
     endDate: ''
   }
+  printData: any = {}
   date = new Date();
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
@@ -123,6 +132,36 @@ export class CustomerCollectionComponent implements OnInit {
 
     this.fetchCustomerCollection();
 
+  }
+
+  async showReport(data: any) {
+    this.printData = data
+
+    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.printData.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    this.printData.orders = result.Items[0].orders
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "preview--report"
+    };
+    this.previewRef = this.modalService.open(this.previewReportModal,
+      ngbModalOptions
+    )
+  }
+  async generatePDF() {
+    let data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0.15,
+      filename: "customerReport.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2Canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
+    })
+    $("#previewReportModal").modal("hide");
   }
   async generateCSV() {
     let dataObject = []

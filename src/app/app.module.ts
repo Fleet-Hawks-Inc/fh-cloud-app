@@ -48,6 +48,7 @@ import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password
 import { GoogleMapsModule } from '@angular/google-maps';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/customRouteReuseService';
+import { LocationShareComponent } from './entry/location-share/location-share.component';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -69,6 +70,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     UnsavedChangesComponent,
     AddAccountComponent,
     ForgotPasswordComponent,
+    LocationShareComponent
   ],
   imports: [
     CommonModule,
