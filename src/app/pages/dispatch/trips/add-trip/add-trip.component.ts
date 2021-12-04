@@ -2232,11 +2232,11 @@ export class AddTripComponent implements OnInit {
             orderNo: "",
             planID: element.planID,
             carrierID: element.carrierID ? element.carrierID : null,
-            carrierName: element.carrierID
-              ? this.carriersObject[element.carrierID]
+            carrierName: element.carrierName
+              ? element.carrierName
               : "",
-            coDriverName: element.coDriverID
-              ? this.driversObjects[element.coDriverID]
+            coDriverName: element.coDriverName
+              ? element.coDriverName
               : "",
             coDriverUsername: element.codriverUsername
               ? element.codriverUsername
@@ -2251,17 +2251,17 @@ export class AddTripComponent implements OnInit {
             actualDropTime: element.actualDropTime
               ? element.actualDropTime
               : "",
-            driverName: element.driverID
-              ? this.driversObjects[element.driverID]
+            driverName: element.driverName
+              ? element.driverName
               : "",
             driverUsername: element.driverUsername
               ? element.driverUsername
               : "",
-            driverStatus: element.driverID
-              ? await this.fetchDriverStatus(element.driverID)
+            driverStatus: element.driverStatus
+              ? element.driverStatus
               : "",
-            coDriverStatus: element.coDriverID
-              ? await this.fetchDriverStatus(element.coDriverID)
+            coDriverStatus: element.coDriverStatus
+              ? element.coDriverStatus
               : "",
             // location: element.location,
             driverID: element.driverID ? element.driverID : null,
@@ -2274,8 +2274,8 @@ export class AddTripComponent implements OnInit {
             trailerID: element.assetID,
             type: element.type,
             vehicleID: element.vehicleID ? element.vehicleID : "",
-            vehicleName: element.vehicleID
-              ? this.vehiclesObjects[element.vehicleID]
+            vehicleName: element.vehicleName
+              ? element.vehicleName
               : "",
             lat: element.lat,
             lng: element.lng,
