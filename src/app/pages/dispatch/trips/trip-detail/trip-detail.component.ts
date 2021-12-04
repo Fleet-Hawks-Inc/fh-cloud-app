@@ -106,11 +106,7 @@ export class TripDetailComponent implements OnInit {
   customerData = [];
   isEmail: boolean = false;
   ngOnInit() {
-    this.fetchAllVehiclesIDs();
-    this.fetchAllAssetIDs();
-    this.fetchAllCarrierIDs();
-    this.fetchAllDriverIDs();
-    this.fetchCustomersByIDs();
+
     this.tripID = this.route.snapshot.params["tripID"];
     this.fetchTripDetail();
     this.mapShow();
@@ -211,13 +207,6 @@ export class TripDetailComponent implements OnInit {
     this.hereMap.mapInit();
   }
 
-  fetchCustomersByIDs() {
-    this.apiService
-      .getData("contacts/get/list/customer")
-      .subscribe((result: any) => {
-        this.customersObjects = result;
-      });
-  }
   fetchExpenses() {
     this.accountService.getData(`expense`).subscribe((result: any) => {
       this.expenses = result.filter((e: any) => {
@@ -244,7 +233,7 @@ export class TripDetailComponent implements OnInit {
         result = result.Items[0];
 
         if (result.orderId.length > 0) {
-          await this.fetchOrderDetails(result.orderId);
+          // await this.fetchOrderDetails(result.orderId);
           await this.fetchCustomerDetails(result.orderId);
         }
         if (result.settlmnt) {
@@ -322,12 +311,13 @@ export class TripDetailComponent implements OnInit {
           let obj = {
             planID: element.planID,
             assetID: element.assetID,
+            assetNames: element.assetNames,
             carrierID: element.carrierID,
-            carrierName: "",
-            coDriverName: "",
+            carrierName: element.carrierName,
+            coDriverName: element.coDriverName,
             coDriverUsername: element.codriverUsername,
             date: element.date,
-            driverName: "",
+            driverName: element.driverName,
             driverID: element.driverID,
             driverStatus: element.driverID
               ? await this.fetchDriverStatus(element.driverID)
@@ -345,7 +335,7 @@ export class TripDetailComponent implements OnInit {
             trailerName: "",
             type: element.type,
             vehicleID: element.vehicleID,
-            vehicleName: "",
+            vehicleName: element.vehicleName,
             // actualDropTime: element.actualDropTime,
             // actualPickupTime: element.actualPickupTime,
             dropTime: element.dropTime,
@@ -353,6 +343,7 @@ export class TripDetailComponent implements OnInit {
             pickupTime: element.pickupTime,
             commodity: element.commodity ? element.commodity : "",
             orderID: element.orderID ? element.orderID : "",
+            orderNumber: element.orderNumber
           };
 
           if (element.type == "Delivery") {
@@ -643,7 +634,7 @@ export class TripDetailComponent implements OnInit {
       this.apiService
         .postData("trips/update/bol/" + this.tripID, formData, true)
         .subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -657,8 +648,8 @@ export class TripDetailComponent implements OnInit {
                 complete: () => {
                   this.spinner.hide();
                 },
-                error: () => {},
-                next: () => {},
+                error: () => { },
+                next: () => { },
               });
           },
           next: (res: any) => {
