@@ -934,14 +934,14 @@ export class OrderDetailComponent implements OnInit {
 
   async downloadBolPdf() {
     await this.fetchBOLDetails();
-    // this.showBolModal = true;
-    // let data = {
-    //   carrierData: this.carrierData,
-    //   orderData: this.orderInvData,
-    //   showModal: this.showBolModal,
-    //   companyLogo: this.companyLogoSrc,
-    // };
-    // this.listService.triggerBolPdf(data);
+    this.showBolModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      orderData: this.orderInvData,
+      showModal: this.showBolModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    this.listService.triggerBolPdf(data);
   }
 
   fetchOrderLogs() {
