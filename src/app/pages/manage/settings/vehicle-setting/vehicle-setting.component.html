@@ -14,6 +14,7 @@
       </header>
 
       <div class="routing-overview__wrapper m-3">
+                        <form class="form-horizontal" method="get">
         <div class="row">
           <div class="col-lg-12 col-xl-12 mb-4">
             <div class=" ">
@@ -158,7 +159,7 @@
                            </div>
                       </div>
                       <div class="col-md-2 col-lg-2 pl-2">
-                          <button type="button" (click)="searchFilter()"
+                          <button type="submit" (click)="searchFilter()"
                               class="btn btn-sm btn-success mr-3">Search</button>
                           <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                       </div>
@@ -240,6 +241,7 @@
             </div>
           </div>
         </div>
+        </form>
       </div>
     </section>
   </div>
