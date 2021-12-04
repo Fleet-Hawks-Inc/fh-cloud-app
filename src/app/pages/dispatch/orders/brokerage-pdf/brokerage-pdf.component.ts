@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
-import { ApiService, ListService } from "src/app/services";
+import { ListService } from "src/app/services";
 import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-brokerage-pdf",
@@ -9,9 +10,11 @@ import * as html2pdf from "html2pdf.js";
   styleUrls: ["./brokerage-pdf.component.css"],
 })
 export class BrokeragePdfComponent implements OnInit {
+  @ViewChild("ordBrokeragePrev", { static: true })
+  modalContent: TemplateRef<any>;
   constructor(
     private listService: ListService,
-    private apiService: ApiService
+    private modalService: NgbModal
   ) {}
   subscription: Subscription;
   brokerage = {
@@ -83,7 +86,19 @@ export class BrokeragePdfComponent implements OnInit {
           this.orderData = res.orderData;
           this.carrierData = res.carrierData;
           this.companyLogo = res.companyLogo;
-          this.generatePDF();
+
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "ordBrokeragePrev-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => {},
+              (reason) => {}
+            );
         }
       }
     );
@@ -91,15 +106,22 @@ export class BrokeragePdfComponent implements OnInit {
 
   async generatePDF() {
     var data = document.getElementById("print_brokerage");
-    html2pdf(data, {
-      margin: 0,
-      filename: `Carrier Confirmation (${
-        this.brokerage.orderNo
-      })${new Date().getTime()}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    });
+    setTimeout(() => {
+      html2pdf(data, {
+        margin: 0,
+        filename: `Carrier Confirmation (${
+          this.brokerage.orderNo
+        })${new Date().getTime()}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          logging: true,
+          dpi: 192,
+          letterRendering: true,
+        },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      });
+    }, 0);
   }
 
   ngOnDestroy() {
