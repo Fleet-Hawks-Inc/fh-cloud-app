@@ -13,9 +13,8 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <a *ngIf="recallStatus"
-              routerLink="/dispatch/trips/edit-trip/{{tripID}}"
-              [queryParams]="{state:'recall'}" title="Recall" class="btn btn-sm
+            <a *ngIf="recallStatus" routerLink="/dispatch/trips/edit-trip/{{tripID}}" [queryParams]="{state:'recall'}"
+              title="Recall" class="btn btn-sm
               mr-2
               btn-success">
               <i class="fas fa-redo"></i>
@@ -24,8 +23,7 @@
               btn-sm btn-success mr-2">
               Trip Info
             </button>
-            <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}"
-              *ngIf="showEdit"
+            <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit"
               class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i>
               Edit Trip</a>
             <!-- <a href="javascript:;" data-toggle="modal" data-target="#splitpopup" class="mb-1 modal-with-form  btn btn-sm btn-success">Split Trip</a> -->
@@ -230,8 +228,7 @@
                             </div>
                             <div class="col-lg-7">
                               <input type="file" id="bolUpload" class="p-0
-                                form-control border-0 mb-2"
-                                (change)="selectDocuments($event)" multiple />
+                                form-control border-0 mb-2" (change)="selectDocuments($event)" multiple />
                             </div>
                           </div>
 
@@ -240,8 +237,7 @@
                               uploadedDocSrc">
                               <a class="image-popup-no-margins" href="{{
                                 docs.docPath }}" target="_blank">
-                                <img class="thumbnail" src="{{ docs.imgPath }}"
-                                  />
+                                <img class="thumbnail" src="{{ docs.imgPath }}" />
                               </a>
                             </div>
                           </div>
@@ -307,7 +303,7 @@
                             </tr>
                             <tr *ngFor="let trip of trips">
                               <td>{{ trip.type }}</td>
-                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                              <td>{{ trip.orderNumber ? trip.orderNumber :
                                 '' }}</td>
                               <td>
                                 <span *ngIf="trip.commodity">
@@ -330,23 +326,22 @@
                               <td>{{ trip.locationName }}</td>
                               <td>
                                 <span class="badge badge-dark p-1
-                                  text-uppercase" title=""
-                                  data-original-title="Empty Miles"
+                                  text-uppercase" title="" data-original-title="Empty Miles"
                                   *ngIf="trip.mileType != ''">{{ trip.mileType
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ trip.vehicleID ?
-                                vehiclesObject[trip.vehicleID] : '' }}</td>
+                              <td>{{ trip.vehicleName ?
+                                trip.vehicleName : '' }}</td>
                               <td>
-                                <span *ngFor="let asst of trip.assetID">
-                                  {{ assetsObject[asst] }}
+                                <span *ngFor="let asst of trip.assetNames">
+                                  {{ asst }}
                                   <br />
                                 </span>
                               </td>
                               <td>
-                                {{ (trip.driverID) ?
-                                driversObject[trip.driverID] : '' }}
+                                {{ trip.driverName ?
+                                trip.driverName : '' }}
                                 <span *ngIf="trip.driverStatus &&
                                   trip.driverStatus == 'STARTED'" class="badge
                                   badge-success">{{ trip.driverStatus }}</span>
@@ -364,30 +359,26 @@
                                   bg-blue">{{ trip.driverStatus }}</span>
                               </td>
                               <td>
-                                {{ (trip.coDriverID) ?
-                                driversObject[trip.coDriverID] : '' }}
+                                {{ trip.coDriverName ?
+                                trip.coDriverName : '' }}
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'REJECTED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'REJECTED'" class="badge
                                   badge-danger">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
                                   trip.coDriverStatus == 'STARTED'" class="badge
                                   badge-success">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'DELIVERED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'DELIVERED'" class="badge
                                   badge-primary">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ACCEPTED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'ACCEPTED'" class="badge
                                   badge-success">{{ trip.coDriverStatus }}</span>
                                 <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ASSIGNED'"
-                                  class="badge
+                                  trip.coDriverStatus == 'ASSIGNED'" class="badge
                                   bg-blue">{{ trip.coDriverStatus }}</span>
                               </td>
-                              <td>{{ (trip.carrierID) ?
-                                carriersObject[trip.carrierID] : '' }}</td>
+                              <td>{{ (trip.carrierName) ?
+                                trip.carrierName : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -449,7 +440,7 @@
                           <tbody>
                             <tr *ngFor="let trip of data">
                               <td>{{ trip.type }}</td>
-                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                              <td>{{ trip.orderNumber ? trip.orderNumber :
                                 '' }}</td>
                               <td>
                                 <span *ngIf="trip.commodity">
@@ -472,26 +463,25 @@
                               <td>{{ trip.locationName }}</td>
                               <td>
                                 <span class="badge badge-dark p-1
-                                  text-uppercase" title=""
-                                  data-original-title="Empty Miles"
+                                  text-uppercase" title="" data-original-title="Empty Miles"
                                   *ngIf="trip.mileType != ''">{{ trip.mileType
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ trip.vehicleID ?
-                                vehiclesObject[trip.vehicleID] : '' }}</td>
+                              <td>{{ trip.vehicleName ?
+                                trip.vehicleName : '' }}</td>
                               <td>
                                 <span *ngFor="let asst of trip.assetID">
                                   {{ assetsObject[asst] }}
                                   <br />
                                 </span>
                               </td>
-                              <td>{{ trip.driverID ?
-                                driversObject[trip.driverID] : '' }}</td>
-                              <td>{{ trip.coDriverID ?
-                                driversObject[trip.coDriverID] : '' }}</td>
-                              <td>{{ trip.carrierID ?
-                                carriersObject[trip.carrierID] : '' }}</td>
+                              <td>{{ trip.driverName ?
+                                trip.driverName : '' }}</td>
+                              <td>{{ trip.coDriverName ?
+                                trip.coDriverName : '' }}</td>
+                              <td>{{ trip.carrierName ?
+                                trip.carrierName : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -527,8 +517,7 @@
                       <div class="text-center" *ngFor="let trip of trips">
                         <div class="tripcirclen" data-toggle="tooltip" title="{{
                           trip.locationName }}"></div>
-                        <div class="tripcontentn" data-toggle="tooltip"
-                          title="{{ trip.locationName }}">
+                        <div class="tripcontentn" data-toggle="tooltip" title="{{ trip.locationName }}">
                           <p class="font-weight-bold
                             text-dark text-2
                             line-height-xs">
@@ -645,8 +634,7 @@
                           </div>
                           <div class="col-lg-4 text-right mt-2">
                             <a routerLink="/accounts/expense/add" class="btn
-                              btn-success btn-xs" style="color: white"><i
-                                class="fas fa-plus"></i> Add Expense
+                              btn-success btn-xs" style="color: white"><i class="fas fa-plus"></i> Add Expense
                             </a>
                             <!-- <a href="javascript:;" class=" btn btn-xs btn-dark"> Fuel
                                                         Expenses</a>
@@ -675,7 +663,7 @@
                           </tr>
                           <tr *ngFor="let expense of expenses">
                             <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
-                            <td>{{ categories[expense.categoryID] }}</td>
+                            <td>{{ expense.catName }}</td>
                             <td>Other Expense</td>
                             <td>{{ expense.amount }} {{ expense.currency }}</td>
                           </tr>
@@ -866,16 +854,14 @@
           <div class="form-row">
             <div class="form-group col-lg-3 col-md-12">
               <div class="radio">
-                <label><input type="radio" name="split-stop" value="split_stop"
-                    id="stop" onclick="show_stop_dropdown()"
+                <label><input type="radio" name="split-stop" value="split_stop" id="stop" onclick="show_stop_dropdown()"
                     checked="checked" />
                   Stop</label>
               </div>
             </div>
             <div class="form-group col-lg-3 col-md-12">
               <div class="radio">
-                <label><input type="radio" name="split-stop" value="split_yard"
-                    id="yard"
+                <label><input type="radio" name="split-stop" value="split_yard" id="yard"
                     onclick="show_yard_dropdown()" />
                   Location</label>
               </div>
@@ -894,8 +880,7 @@
                 <option value="2">Truck AtoZ | 1818 Weston Row</option>
               </select>
             </div>
-            <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown"
-              style="display: none">
+            <div class="form-group col-lg-6 col-md-12" id="split_yard_dropdown" style="display: none">
               <label class="control-label
                 font-weight-semibold
                 labelmt
@@ -910,16 +895,14 @@
                 labelmt
                 text-3 text-dark">Stop Arrival Date
               </label>
-              <input type="date" data-plugin-datepicker="" class="form-control"
-                placeholder="3/4/2020" />
+              <input type="date" data-plugin-datepicker="" class="form-control" placeholder="3/4/2020" />
             </div>
             <div class="form-group col-lg-6 col-md-12">
               <label class="control-label
                 font-weight-semibold
                 labelmt
                 text-3 text-dark">Stop Departure Date</label>
-              <input type="date" data-plugin-datepicker="" class="form-control"
-                placeholder="select date" />
+              <input type="date" data-plugin-datepicker="" class="form-control" placeholder="select date" />
             </div>
           </div>
         </div>
@@ -940,14 +923,12 @@
 <ng-template #tripInfoModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">Trip Information</h5>
-    <button type="button" (click)="modal.dismiss()" class="close"
-      data-dismiss="modal" aria-label="Close">
+    <button type="button" (click)="modal.dismiss()" class="close" data-dismiss="modal" aria-label="Close">
       <i class="far fa-window-close modal-dismiss" style="font-size: 25px"> </i>
     </button>
   </div>
   <div class="modal-body text-dark px-4">
-    <table width="100%" border="0" align="center" cellpadding="0"
-      cellspacing="0" id="print_wrap">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" id="print_wrap">
       <tbody>
         <tr>
           <td width="50%">
@@ -990,8 +971,7 @@
                 <tr>
                   <td valign="top">
                     <h2 class="m-0" style="font-size: 16px"><strong>Customer:
-                      </strong> <span
-                        class="text-capitalize text-dark">{{item.cName}}</span></h2>
+                      </strong> <span class="text-capitalize text-dark">{{item.cName}}</span></h2>
                   </td>
                   <td valign="top" align="right" style="line-height: 42px;"><strong>Order(s)#:</strong>
                     <span *ngFor="let ord of item.orderNo; last as isLast">
@@ -1003,12 +983,10 @@
                   <td colspan="2" valign="top">
                     <table width="100%" style="border: 1px solid #adadad;
                       font-size: 13px;
-                      margin-bottom: 10px;" cellpadding="0" cellspacing="0"
-                      bordercolor="#adadad">
+                      margin-bottom: 10px;" cellpadding="0" cellspacing="0" bordercolor="#adadad">
                       <tbody>
                         <tr>
-                          <td colspan="4" class="text-dark"
-                            style="border-bottom: 1px solid #adadad;
+                          <td colspan="4" class="text-dark" style="border-bottom: 1px solid #adadad;
                             padding: 10px;font-size: 14px;;">
                             <p class="m-0 text-dark"><strong>Address: </strong>{{item.address
                               ? item.address : 'NA'}}
@@ -1016,8 +994,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td width="25%" class="text-dark" bgcolor="#f3f3f3"
-                            style="border-right: 1px
+                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="border-right: 1px
                             solid #adadad; padding: 10px">
                             <p class="m-0 text-dark" style="font-weight: 600">Phone</p>
                           </td>
@@ -1027,8 +1004,7 @@
                             <p class="m-0 text-dark">{{item.workPhone ?
                               item.workPhone : 'NA'}}</p>
                           </td>
-                          <td width="25%" class="text-dark" bgcolor="#f3f3f3"
-                            style="padding: 10px;
+                          <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="padding: 10px;
                             border-right: 1px solid #adadad">
                             <p class="m-0 text-dark" style="font-weight: 600">Email</p>
                           </td>
@@ -1100,8 +1076,8 @@
                   <td>{{ trip.locationName }}</td>
                   <td>
                     <span class="badge badge-dark p-1
-                      text-uppercase" title="" data-original-title="Empty Miles"
-                      *ngIf="trip.mileType != ''">{{ trip.mileType
+                      text-uppercase" title="" data-original-title="Empty Miles" *ngIf="trip.mileType != ''">{{
+                      trip.mileType
                       }}</span>
                   </td>
                   <td>{{ trip.miles }}</td>
@@ -1201,8 +1177,7 @@
                 <tr>
                   <td align="center">
                     <h2 style="font-size: 13px">Powered By</h2>
-                    <img src="../../../../../assets/img/logo.png" width="207"
-                      height="28" />
+                    <img src="../../../../../assets/img/logo.png" width="207" height="28" />
                   </td>
                 </tr>
               </tbody>
@@ -1219,8 +1194,7 @@
     <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
       Cancel
     </button>
-    <button class="btn btn-success" [disabled]="isEmail"
-      (click)="driverEmail()">Email to Driver</button>
+    <button class="btn btn-success" [disabled]="isEmail" (click)="driverEmail()">Email to Driver</button>
     <button class="btn btn-success" (click)="generate()">Print</button>
   </div>
 </ng-template>

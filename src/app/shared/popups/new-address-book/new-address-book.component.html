@@ -122,8 +122,8 @@
                         {{ customer.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, customer, 'Customer')">{{customer.firstName}} {{customer.lastName}}</td> -->
-                      <td class="text-lowercase">{{ customer.workEmail }}</td>
-                      <td>{{ customer.workPhone }}</td>
+                      <td class="text-lowercase">{{ customer.workEmail ? customer.workEmail : '-' }}</td>
+                      <td>{{ customer.workPhone ? customer.workPhone : '-' }}</td>
                       <td *ngIf="customer.address[0]">
                         <span *ngIf="customer.address[0].manual">
                           {{
@@ -208,8 +208,8 @@
                           item.cName != "" ? item.cName : item.fn + item.ln
                           }}
                         </td>
-                        <td class="text-lowercase">{{ item.workEmail }}</td>
-                        <td>{{ item.workPhone }}</td>
+                        <td class="text-lowercase">{{ item.workEmail ? item.workEmail : '-' }}</td>
+                        <td>{{ item.workPhone ? item.workPhone : '-' }}</td>
                         <td *ngIf="item.address[0] != undefined" class="text-capitalize">
                           <span *ngIf="item.address[0].manual">
                             {{
@@ -295,8 +295,8 @@
                         }}
                       </td>
                       <!-- <td (click)="openDetail(content, broker,'Broker')">{{broker.firstName}} {{broker.lastName}}</td> -->
-                      <td class="text-lowercase">{{ broker.workEmail }}</td>
-                      <td>{{ broker.workPhone }}</td>
+                      <td class="text-lowercase">{{ broker.workEmail ? broker.workEmail : '-' }}</td>
+                      <td>{{ broker.workPhone ? broker.workPhone : '-' }}</td>
                       <td *ngIf="broker.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="broker.address[0].manual">
                           {{
@@ -376,8 +376,8 @@
                         {{ vendor.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, vendor, 'Vendor')">{{vendor.firstName}} {{vendor.lastName}}</td> -->
-                      <td class="text-lowercase">{{ vendor.workEmail }}</td>
-                      <td>{{ vendor.workPhone }}</td>
+                      <td class="text-lowercase">{{ vendor.workEmail ? vendor.workEmail : '-' }}</td>
+                      <td>{{ vendor.workPhone ? vendor.workPhone : '-' }}</td>
                       <td *ngIf="vendor.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="vendor.address[0].manual">
                           {{
@@ -457,8 +457,8 @@
                         {{ carrier.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, carrier, 'Carrier')">{{carrier.firstName}} {{carrier.lastName}}</td> -->
-                      <td class="text-lowercase">{{ carrier.workEmail }}</td>
-                      <td>{{ carrier.workPhone }}</td>
+                      <td class="text-lowercase">{{ carrier.workEmail ? carrier.workEmail : '-' }}</td>
+                      <td>{{ carrier.workPhone ? carrier.workPhone : '-' }}</td>
                       <td *ngIf="carrier.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="carrier.address[0].manual">
                           {{
@@ -539,8 +539,8 @@
                         {{ operator.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, operator, 'Owner operator')">{{operator.firstName}} {{operator.lastName}}</td> -->
-                      <td class="text-lowercase">{{ operator.workEmail }}</td>
-                      <td>{{ operator.workPhone }}</td>
+                      <td class="text-lowercase">{{ operator.workEmail ? operator.workEmail : '-' }}</td>
+                      <td>{{ operator.workPhone ? operator.workPhone : '-' }}</td>
                       <td *ngIf="operator.address[0] != undefined" class="text-capitalize">
                         <span *ngIf="operator.address[0].manual">
                           {{
@@ -620,8 +620,8 @@
                         {{ shipper.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, shipper, 'Consignor')">{{shipper.firstName}} {{shipper.lastName}}</td> -->
-                      <td class="text-lowercase">{{ shipper.workEmail }}</td>
-                      <td>{{ shipper.workPhone }}</td>
+                      <td class="text-lowercase">{{ shipper.workEmail ? shipper.workEmail : '-' }}</td>
+                      <td>{{ shipper.workPhone ? shipper.workPhone : '-' }}</td>
                       <td *ngIf="shipper.address[0] != undefined">
                         <span *ngIf="shipper.address[0].manual">
                           {{
@@ -702,8 +702,8 @@
                         {{ receiver.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, receiver, 'Consignee')">{{receiver.firstName}} {{receiver.lastName}}</td> -->
-                      <td class="text-lowercase">{{ receiver.workEmail }}</td>
-                      <td>{{ receiver.workPhone }}</td>
+                      <td class="text-lowercase">{{ receiver.workEmail ? receiver.workEmail : '-' }}</td>
+                      <td>{{ receiver.workPhone ? receiver.workPhone : '-' }}</td>
                       <td *ngIf="receiver.address[0] != undefined">
                         <span *ngIf="receiver.address[0].manual">
                           {{
@@ -784,8 +784,8 @@
                         {{ company.cName }}
                       </td>
                       <!-- <td (click)="openDetail(content, company, 'Factoring Company')">{{company.firstName}} {{company.lastName}}</td> -->
-                      <td class="text-lowercase">{{ company.workEmail }}</td>
-                      <td>{{ company.workPhone }}</td>
+                      <td class="text-lowercase">{{ company.workEmail ? company.workEmail : '-' }}</td>
+                      <td>{{ company.workPhone ? company.workPhone : '-' }}</td>
                       <td *ngIf="company.address[0] != undefined">
                         <span *ngIf="company.address[0].manual">
                           {{
@@ -952,18 +952,13 @@
 
                 <div class="col-lg-6">
                   <label class="control-label font-weight-bold text-lg-right pt-2">
-                    Email
-                    <span class="mandfield text-2 ml-1"><sup>*</sup></span>
-                  </label>
+                    Email </label>
                   <input [(ngModel)]="unitData.workEmail" name="workEmail" type="text"
                     class="form-control text-lowercase" placeholder="eg. johnsmith@gmail.com " #customerem="ngModel"
                     [ngClass]="{
                       error: contactForm.submitted && customerem.invalid
-                    }" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$" />
+                    }" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$" />
                   <div *ngIf="customerem.invalid && contactForm.submitted" class="text-danger">
-                    <div *ngIf="customerem.errors.required">
-                      Email is required.
-                    </div>
                     <div *ngIf="customerem.errors.pattern">
                       Enter valid email eg. johnsmith@gmail.com .
                     </div>

@@ -505,7 +505,7 @@ export class OrderDetailComponent implements OnInit {
         this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -674,7 +674,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -692,7 +692,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -832,7 +832,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
@@ -929,19 +929,21 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.carrierData.address = result.adrs[0].userLoc;
     }
+
     this.brokerageDisabled = false;
+
   }
 
   async downloadBolPdf() {
     await this.fetchBOLDetails();
-    // this.showBolModal = true;
-    // let data = {
-    //   carrierData: this.carrierData,
-    //   orderData: this.orderInvData,
-    //   showModal: this.showBolModal,
-    //   companyLogo: this.companyLogoSrc,
-    // };
-    // this.listService.triggerBolPdf(data);
+    this.showBolModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      orderData: this.orderInvData,
+      showModal: this.showBolModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    this.listService.triggerBolPdf(data);
   }
 
   fetchOrderLogs() {
