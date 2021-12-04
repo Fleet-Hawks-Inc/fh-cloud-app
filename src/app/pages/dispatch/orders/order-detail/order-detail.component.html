@@ -18,8 +18,10 @@
             <button *ngIf="showInvBtn" (click)="showInv(); isModalShow= true" class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
-            <button *ngIf="orderStatus === 'brokerage'" (click)="downloadBrokeragePdf();" class="btn
-              btn-success btn-sm mr-2">
+
+            <button *ngIf="orderStatus === 'brokerage'"
+              (click)="downloadBrokeragePdf();" [disabled]="brokerageDisabled"
+              class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               Brokerage</button>
             <!-- <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
