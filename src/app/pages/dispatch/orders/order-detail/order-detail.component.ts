@@ -289,6 +289,7 @@ export class OrderDetailComponent implements OnInit {
 
   isFlag = true;
   showBtns = false;
+  brokerageDisabled = false;
 
   constructor(
     private apiService: ApiService,
@@ -901,19 +902,19 @@ export class OrderDetailComponent implements OnInit {
 
   async downloadBrokeragePdf() {
     await this.fetchCarrierDetails();
-    // this.showModal = true;
-    // let data = {
-    //   carrierData: this.carrierData,
-    //   brokerage: this.brokerage,
-    //   orderData: this.orderInvData,
-    //   showModal: this.showModal,
-    //   companyLogo: this.companyLogoSrc,
-    // };
-    // console.log("bro data", data);
-    // this.listService.triggerBrokeragePdf(data);
+    this.showModal = true;
+    let data = {
+      carrierData: this.carrierData,
+      brokerage: this.brokerage,
+      orderData: this.orderInvData,
+      showModal: this.showModal,
+      companyLogo: this.companyLogoSrc,
+    };
+    this.listService.triggerBrokeragePdf(data);
   }
 
   async fetchCarrierDetails() {
+    this.brokerageDisabled = true;
     let result: any = await this.apiService
       .getData(`contacts/detail/${this.brokerage.carrierID}`)
       .toPromise();
@@ -928,17 +929,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.carrierData.address = result.adrs[0].userLoc;
     }
-
-    this.showModal = true;
-    let data = {
-      carrierData: this.carrierData,
-      brokerage: this.brokerage,
-      orderData: this.orderInvData,
-      showModal: this.showModal,
-      companyLogo: this.companyLogoSrc,
-    };
-    console.log("bro data", data);
-    this.listService.triggerBrokeragePdf(data);
+    this.brokerageDisabled = false;
   }
 
   async downloadBolPdf() {
