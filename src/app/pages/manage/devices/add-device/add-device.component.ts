@@ -4,7 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { Location } from "@angular/common";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: "app-add-device",
@@ -18,8 +18,9 @@ export class AddDeviceComponent implements OnInit {
     private apiService: ApiService,
     private toastr: ToastrService,
     private location: Location,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   public device: any = {
     deviceName: "",
@@ -200,8 +201,8 @@ export class AddDeviceComponent implements OnInit {
 
       try {
         this.apiService.postData("devices", this.device).subscribe({
-          complete: () => {},
-          error: (err: any) => {},
+          complete: () => { },
+          error: (err: any) => { },
           next: (res) => {
             this.toastr.success("Device Created successfully");
             this.location.back();
@@ -228,7 +229,7 @@ export class AddDeviceComponent implements OnInit {
     this.device.asset = undefined;
     try {
       this.apiService.putData("devices", this.device).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           console.log(err);
           from(err.error)
@@ -238,14 +239,14 @@ export class AddDeviceComponent implements OnInit {
               })
             )
             .subscribe({
-              complete: () => {},
-              error: () => {},
-              next: () => {},
+              complete: () => { },
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
           this.toastr.success("Device Updated successfully");
-          this.location.back();
+          this.router.navigate(['manage/devices/list']);
         },
       });
     } catch (error) {

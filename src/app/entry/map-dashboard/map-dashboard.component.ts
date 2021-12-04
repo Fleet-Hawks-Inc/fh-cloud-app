@@ -44,7 +44,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
   assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
   vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
-  markerPositions = [];
+  driverPositions = [];
   assetPositions = [];
   vehicleDashPositions = [];
 
@@ -74,11 +74,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
     this.apiService.getData('dashboard/drivers/getCurrentDriverLocation').subscribe((data) => {
       if (data) {
-        this.markerPositions = [];
+        this.driverPositions = [];
         for (const key in data) {
           const value = data[key]
           const speedVal = parseInt(value.speed) / 3.6;
-          this.markerPositions.push({
+          this.driverPositions.push({
             position: { lng: parseFloat(value.lng), lat: parseFloat(value.lat) },
             data: {
               userId: value.userId,
@@ -201,7 +201,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   prepareVehicleInfoTemplate(data: any) {
     return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
     Speed: ${data.speed} KM/H 
-    Time : ${data.time}<br/> <br/>   
+    Time : ${data.time}<br/> <br/>  <span (click)='open()'> hello</span>   
      `;
   }
 
