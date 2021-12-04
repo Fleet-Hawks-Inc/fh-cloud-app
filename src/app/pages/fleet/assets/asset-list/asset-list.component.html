@@ -258,130 +258,139 @@
          <section class="m-2">
             <div class="row mb-3">
                <div class="col-lg-12">
-                  <div class="bg-white p-3 text-dark">
-                     <div class="form-group row pt-3">
-                        <div class="col-lg-12">
-                           <!-- LIST VIEW OF ASSETS  -->
-                           <div class="table-responsive">
-                              <table class="row-border hover table table-bordered table-striped mb-0">
-                                 <thead>
-                                    <tr>
-                                       <th class="col1">Asset Name/Number</th>
-                                       <th class="col0">VIN</th>
-                                       <th class="col2">Asset Type</th>
-                                       <th class="col6">Make</th>
-                                       <!-- <th class="col4">Last Location</th> -->
-                                       <th class="col3"> Licence Plate Number</th>
-                                       <th class="col5">Year</th>
-                                       <th class="col7 extra">Model</th>
-                                       <th class="col8">Ownership</th>
-                                       <th class="col15">Company Name</th>
-                                       <th class="col16">Annual Safety Date</th>
-                                       <th class="col10 extra">Group</th>
-                                       <th class="col11 extra">ACE ID</th>
-                                       <th class="col12 extra">ACI ID</th>
-                                       <th class="col13 extra">GVWR</th>
-                                       <th class="col14 extra">GAWR</th>
-                                       <th class="col9 ">Status</th>
-                                       <th class="minWidth50">Actions</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                    <tr *ngIf="allData.length == 0" class="text-center">
-                                       <td colspan="15">{{ dataMessage }}</td>
-                                    </tr>
-                                    <tr class="cursorpoint text-capitalize" *ngFor="let item of allData;let i = index">
-                                       <td *ngIf="hideShow.assetName" [routerLink]="item.url">
-                                          <span
-                                             class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
-                                       </td>
-
-                                       <td *ngIf="hideShow.vin" [routerLink]="item.url">{{item.assetDetails.ownerShip
-                                          !=='interchange' ? item.VIN : '-'}}</td>
-                                       <td *ngIf="hideShow.type" [routerLink]="item.url">{{item.assetType | titlecase}}
-                                       </td>
-                                       <td *ngIf="hideShow.make && item.assetDetails.manufacturer"
-                                          [routerLink]="item.url">{{item.assetDetails.manufacturer}}</td>
-                                       <td *ngIf="hideShow.make && !item.assetDetails.manufacturer"
-                                          [routerLink]="item.url">-</td>
-
-                                       <td *ngIf="hideShow.plateNo" [routerLink]="item.url">
-                                          {{item.assetDetails.licencePlateNumber}}</td>
-                                       <td *ngIf="hideShow.year" [routerLink]="item.url">{{ item.assetDetails.ownerShip
-                                          !=='interchange' ? item.assetDetails.year : '-'}}</td>
-                                       <td *ngIf="hideShow.model" [routerLink]="item.url">{{item.assetDetails.model ?
-                                          modelsObjects[item.assetDetails.model] : '-'}}</td>
-                                       <td *ngIf="hideShow.ownership" [routerLink]="item.url">
-                                          {{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
-                                       <td *ngIf="hideShow.companyName" [routerLink]="item.url">
-                                          <span
-                                             *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator
-                                             ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</span>
-                                          <span
-                                             *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.ownCname
-                                             ? item.assetDetails.ownCname : '-'}}
-                                             </span>
-                                          <span
-                                             *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'"></span>
+                  <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                     [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                     <div class="bg-white p-3 text-dark">
+                        <div class="form-group row pt-3">
+                           <div class="col-lg-12">
+                              <!-- LIST VIEW OF ASSETS  -->
+                              <div class="table-responsive">
+                                 <table class="row-border hover table table-bordered table-striped mb-0">
+                                    <thead>
+                                       <tr>
+                                          <th class="col1">Asset Name/Number</th>
+                                          <th class="col0">VIN</th>
+                                          <th class="col2">Asset Type</th>
+                                          <th class="col6">Make</th>
+                                          <!-- <th class="col4">Last Location</th> -->
+                                          <th class="col3"> Licence Plate Number</th>
+                                          <th class="col5">Year</th>
+                                          <th class="col7 extra">Model</th>
+                                          <th class="col8">Ownership</th>
+                                          <th class="col15">Company Name</th>
+                                          <th class="col16">Annual Safety Date</th>
+                                          <th class="col10 extra">Group</th>
+                                          <th class="col11 extra">ACE ID</th>
+                                          <th class="col12 extra">ACI ID</th>
+                                          <th class="col13 extra">GVWR</th>
+                                          <th class="col14 extra">GAWR</th>
+                                          <th class="col9 ">Status</th>
+                                          <th class="minWidth50">Actions</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr *ngIf="allData.length == 0" class="text-center">
+                                          <td colspan="15">{{ dataMessage }}</td>
+                                       </tr>
+                                       <tr class="cursorpoint text-capitalize"
+                                          *ngFor="let item of allData;let i = index">
+                                          <td *ngIf="hideShow.assetName" [routerLink]="item.url">
                                              <span
+                                                class="font-weight-bold line-height-lg text-capitalize">{{item.assetIdentification}}</span>
+                                          </td>
+
+                                          <td *ngIf="hideShow.vin" [routerLink]="item.url">{{item.assetDetails.ownerShip
+                                             !=='interchange' ? item.VIN : '-'}}</td>
+                                          <td *ngIf="hideShow.type" [routerLink]="item.url">{{item.assetType |
+                                             titlecase}}
+                                          </td>
+                                          <td *ngIf="hideShow.make && item.assetDetails.manufacturer"
+                                             [routerLink]="item.url">{{item.assetDetails.manufacturer}}</td>
+                                          <td *ngIf="hideShow.make && !item.assetDetails.manufacturer"
+                                             [routerLink]="item.url">-</td>
+
+                                          <td *ngIf="hideShow.plateNo" [routerLink]="item.url">
+                                             {{item.assetDetails.licencePlateNumber}}</td>
+                                          <td *ngIf="hideShow.year" [routerLink]="item.url">{{
+                                             item.assetDetails.ownerShip
+                                             !=='interchange' ? item.assetDetails.year : '-'}}</td>
+
+
+                                          <td *ngIf="hideShow.model" [routerLink]="item.url">{{item.assetDetails.model ?
+                                             modelsObjects[item.assetDetails.model] : '-'}}</td>
+                                          <td *ngIf="hideShow.ownership" [routerLink]="item.url">
+                                             {{item.assetDetails.ownerShip ? item.assetDetails.ownerShip : '-'}}</td>
+                                          <td *ngIf="hideShow.companyName" [routerLink]="item.url">
+                                             <span
+                                                *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator
+                                                ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</span>
+                                             <span
+                                                *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.ownCname
+                                                ? item.assetDetails.ownCname: '-'}}</span>
+                                             <span
+                                                *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'"></span>
+                                                  <span
                                              *ngIf="item.assetDetails.ownerShip === 'leased'">{{item.assetDetails.ownCname
                                              ? item.assetDetails.ownCname : '-'}}
                                              </span>
-                                       </td>
-                                       <td *ngIf="hideShow.safetyDate" [routerLink]="item.url">{{
-                                          item.assetDetails.ownerShip !=='interchange' ?
-                                          (item.assetDetails.annualSafetyDate | date:"yyyy/MM/dd") : '-' }}</td>
-                                       <!-- extra columns -->
-                                       <td *ngIf="hideShow.group" [routerLink]="item.url">{{item.groupID ?
-                                          groupsList[item.groupID] : '-'}}</td>
-                                       <td *ngIf="hideShow.aceID" [routerLink]="item.url">
-                                          {{item.crossBorderDetails.ACE_ID ? item.crossBorderDetails.ACE_ID : '-'}}</td>
-                                       <td *ngIf="hideShow.aciID" [routerLink]="item.url">
-                                          {{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}</td>
-                                       <td *ngIf="hideShow.gvwr" [routerLink]="item.url">{{item.assetDetails.GVWR ?
-                                          item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
-                                       <td *ngIf="hideShow.gawr" [routerLink]="item.url">{{item.assetDetails.GAWR ?
-                                          item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
-                                       <td *ngIf="hideShow.currentStatus" [routerLink]="item.url"><span
-                                             class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
-                                       </td>
-                                       <td>
-                                          <div class="dropdown dropright">
-                                             <button class="bg-transparent border-0" type="button"
-                                                id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
-                                                aria-haspopup="true" aria-expanded="false">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                             </button>
-                                             <div class="dropdown-menu" attr.aria-labelledby="dropdownMenuButton-{{i}}">
-                                                <a class="dropdown-item"
-                                                   routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
-                                                <a class="dropdown-item" href="javascript:;"
-                                                   (click)="deleteAsset(item)">Delete</a>
+                                          </td>
+                                          <td *ngIf="hideShow.safetyDate" [routerLink]="item.url">{{
+                                             item.assetDetails.ownerShip !=='interchange' ?
+                                             (item.assetDetails.annualSafetyDate | date:"yyyy/MM/dd") : '-' }}</td>
+                                          <!-- extra columns -->
+                                          <td *ngIf="hideShow.group" [routerLink]="item.url">{{item.groupID ?
+                                             groupsList[item.groupID] : '-'}}</td>
+                                          <td *ngIf="hideShow.aceID" [routerLink]="item.url">
+                                             {{item.crossBorderDetails.ACE_ID ? item.crossBorderDetails.ACE_ID : '-'}}
+                                          </td>
+                                          <td *ngIf="hideShow.aciID" [routerLink]="item.url">
+                                             {{item.crossBorderDetails.ACI_ID ? item.crossBorderDetails.ACI_ID : '-'}}
+                                          </td>
+                                          <td *ngIf="hideShow.gvwr" [routerLink]="item.url">{{item.assetDetails.GVWR ?
+                                             item.assetDetails.GVWR : '-'}} {{item.assetDetails.GVWR_Unit}}</td>
+                                          <td *ngIf="hideShow.gawr" [routerLink]="item.url">{{item.assetDetails.GAWR ?
+                                             item.assetDetails.GAWR : '-'}} {{item.assetDetails.GAWR_Unit}}</td>
+                                          <td *ngIf="hideShow.currentStatus" [routerLink]="item.url"><span
+                                                class="badge badge-dark p-1 text-uppercase">{{item.currentStatus}}</span>
+                                          </td>
+                                          <td>
+                                             <div class="dropdown dropright">
+                                                <button class="bg-transparent border-0" type="button"
+                                                   id="dropdownMenuButton-{{i}}" data-toggle="dropdown"
+                                                   aria-haspopup="true" aria-expanded="false">
+                                                   <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div class="dropdown-menu"
+                                                   attr.aria-labelledby="dropdownMenuButton-{{i}}">
+                                                   <a class="dropdown-item"
+                                                      routerLink="/fleet/assets/edit/{{item.assetID}}">Edit</a>
+                                                   <a class="dropdown-item" href="javascript:;"
+                                                      (click)="deleteAsset(item)">Delete</a>
+                                                </div>
                                              </div>
-                                          </div>
-                                       </td>
-                                    </tr>
-                                 </tbody>
-                              </table>
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+
+                              </div>
 
                            </div>
-                           <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
-                              <div class="col-6">
-                                 Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
-                              </div>
-                              <div class="col-6 text-right">
-                                 <button type="button" class="btn btn-default mr-2" (click)="prevResults()"
-                                    [disabled]="assetPrev">Prev</button>
-                                 <button type="button" class="btn btn-default" (click)="nextResults()"
-                                    [disabled]="assetNext">Next</button>
-                              </div>
-                           </div>
+
                         </div>
+
                      </div>
                   </div>
                </div>
             </div>
          </section>
+
+         <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0">
+            <button type="button" class="btn btn-success btn-sm text-light" (click)=" onScroll()">Load
+               More..</button>
+         </div>
+
+
       </section>
    </div>
 </section>
