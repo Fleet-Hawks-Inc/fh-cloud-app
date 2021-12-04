@@ -60,7 +60,12 @@ export class AssetDetailComponent implements OnInit {
   GVWR_Unit: string;
   ownerShip: string;
   remarks: string;
-  rentCompany: string;
+  ownCname: string;
+  ownAmt: string;
+  ownCurr: string;
+  ownDate: string;
+  ownRec: string;
+  ownFrq: string;
   startDate: string;
   currentStatus: string;
   annualSafetyDate: string;
@@ -211,7 +216,6 @@ export class AssetDetailComponent implements OnInit {
 
   manufacturersObjects: any = {};
   modelsObjects: any = {};
-  vertices: google.maps.LatLngLiteral[] = [];
 
   constructor(
     private toastr: ToastrService,
@@ -220,7 +224,7 @@ export class AssetDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private countryStateCity: CountryStateCityService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
@@ -308,7 +312,12 @@ export class AssetDetailComponent implements OnInit {
           this.GVWR = result.assetDetails.GVWR;
           this.GVWR_Unit = result.assetDetails.GVWR_Unit;
           this.ownerShip = result.assetDetails.ownerShip;
-          this.rentCompany = result.assetDetails.rentCompany;
+          this.ownCname = result.assetDetails.ownCname;
+          this.ownAmt = result.assetDetails.ownAmt;    
+          this.ownCurr = result.assetDetails.ownCurr;
+          this.ownDate = result.assetDetails.ownDate;
+          this.ownRec = result.assetDetails.ownRec;
+          this.ownFrq = result.assetDetails.ownFrq;
           this.remarks = result.assetDetails.remarks;
           this.dateOfIssue = result.insuranceDetails.dateOfIssue;
           this.dateOfExpiry = result.insuranceDetails.dateOfExpiry;
@@ -408,7 +417,7 @@ export class AssetDetailComponent implements OnInit {
         // Load devices information
         this.getDeviceEventsFor24Hours(this.assetIdentification);
       },
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -419,7 +428,7 @@ export class AssetDetailComponent implements OnInit {
           this.deviceData = result[`Items`];
         }
       },
-      (err) => { }
+      (err) => {}
     );
   };
   fetchGroups() {
@@ -464,7 +473,7 @@ export class AssetDetailComponent implements OnInit {
     this.apiService
       .postData("assets/" + this.assetID, this.assetData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -478,8 +487,8 @@ export class AssetDetailComponent implements OnInit {
                 this.spinner.hide(); // loader hide
                 this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
@@ -498,12 +507,12 @@ export class AssetDetailComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -520,7 +529,43 @@ export class AssetDetailComponent implements OnInit {
     this.errors = {};
   }
 
+  // delete uploaded images and documents
+  // delete(type: string, name: string, index: any) {
 
+  //   delete this.assetDataDetail.carrierID;
+  //   delete this.assetDataDetail.timeModified;
+  //   delete this.assetDataDetail.isDelActiveSK;
+  //   delete this.assetDataDetail.assetSK;
+  //   delete this.assetDataDetail.carrierID;
+  //   delete this.assetDataDetail.timeModified;
+  //   if (type === 'doc') {
+  //     this.assetsDocs.splice(index, 1);
+  //     this.assetDataDetail.uploadedDocs.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('data', JSON.stringify(this.assetDataDetail));
+  //       this.apiService.putData('assets', formData, true).subscribe({
+  //         complete: () => { this.fetchAsset(); }
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   } else {
+  //     this.assetsImages.splice(index, 1);
+  //     this.assetDataDetail.uploadedPhotos.splice(index, 1);
+  //     this.deleteUploadedFile(type, name);
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append('data', JSON.stringify(this.assetDataDetail));
+  //       this.apiService.putData('assets', formData, true).subscribe({
+  //         complete: () => { this.fetchAsset(); }
+  //       });
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   }
+  // }
   deleteDocument(type: string, name: string) {
     // delete from aws
     this.apiService
@@ -599,19 +644,11 @@ export class AssetDetailComponent implements OnInit {
               .local()
               .format("YYYY-MM-DD HH:mm:ss");
             item.time = localTime;
-            const cords = item.cords.split(",");
-            const vertice = {
-              lat: parseFloat(cords[1]),
-              lng: parseFloat(cords[0]),
-
-            };
-            this.vertices.push(vertice)
           }
           this.rows = data;
-
-
           this.loadingIndicator = false;
           const cords = data[0].cords.split(",");
+
           this.center = {
             lng: parseFloat(cords[0]),
             lat: parseFloat(cords[1]),
@@ -623,7 +660,6 @@ export class AssetDetailComponent implements OnInit {
         } else {
           this.noDevices = true;
         }
-
       });
   }
 

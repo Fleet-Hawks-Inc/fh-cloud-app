@@ -58,7 +58,12 @@ export class AddAssetsComponent implements OnInit {
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
-      rentCompany: "",
+      ownCname: "",
+      ownAmt: "",
+      ownCurr: "",
+      ownDate: "",
+      ownRec: true,
+      ownFrq: "",
       licenceCountryCode: null,
       licenceStateCode: null,
       licencePlateNumber: "",
@@ -161,9 +166,37 @@ export class AddAssetsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
+  companyLabel = "";
 
   isEdit: boolean = false;
-
+  
+   retInterval = [
+    {
+      value: 'weekly',
+      name: 'Weekly'
+    },
+    {
+      value: 'biweekly',
+      name: 'Biweekly'
+    },
+    {
+      value: 'monthly',
+      name: 'Monthly'
+    },
+    {
+      value: 'quarterly',
+      name: 'Quarterly'
+    },
+    {
+      value: 'annually',
+      name: 'Annually'
+    },
+     {
+      value: 'semi-monthly',
+      name: 'Semi-Monthly'
+    },
+  ];
+  
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -375,6 +408,11 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     }
+     if(value === 'rented') {
+        this.companyLabel = 'Rented';
+      }  else if(value === 'leased') {
+      this.companyLabel = 'Leased';
+      }
   }
 
   /*
@@ -411,7 +449,12 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
-        rentCompany: this.assetsData.assetDetails.rentCompany,
+        ownCname: this.assetsData.assetDetails.ownCname,
+        ownAmt: this.assetsData.assetDetails.ownAmt,
+        ownCurr:this.assetsData.assetDetails.ownCurr,
+        ownDate:this.assetsData.assetDetails.ownDate,
+        ownRec:this.assetsData.assetDetails.ownRec,
+        ownFrq:this.assetsData.assetDetails.ownFrq,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -611,11 +654,31 @@ export class AddAssetsComponent implements OnInit {
           this.assetsData.assetDetails.ownerOperator =
             result.assetDetails.ownerOperator;
         }
-        if (result.assetDetails.ownerShip === "rented") {
-          this.assetsData.assetDetails.rentCompany =
-            result.assetDetails.rentCompany;
+        if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownCname =
+            result.assetDetails.ownCname;
         }
-        if (result.assetDetails.ownerShip === "interchange") {
+         if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownAmt =
+            result.assetDetails.ownAmt;
+        }
+         if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownCurr =
+            result.assetDetails.ownCurr;
+        }
+        if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownDate =
+            result.assetDetails.ownDate;
+        }
+        if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownRec =
+            result.assetDetails.ownRec;
+        }
+         if (result.assetDetails.ownerShip === "rented" || "leased") {
+          this.assetsData.assetDetails.ownFrq =
+            result.assetDetails.ownFrq;
+        }
+         if (result.assetDetails.ownerShip === "interchange") {
           this.isRequired = false;
           this.isEdit = true;
         } else {
@@ -772,7 +835,12 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
-        rentCompany: this.assetsData.assetDetails.rentCompany,
+        ownCname: this.assetsData.assetDetails.ownCname,
+        ownAmt: this.assetsData.assetDetails.ownAmt,
+        ownCurr: this.assetsData.assetDetails.ownCurr,
+        ownDate: this.assetsData.assetDetails.ownDate,
+        ownRec: this.assetsData.assetDetails.ownRec,
+        ownFrq: this.assetsData.assetDetails.ownFrq,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
