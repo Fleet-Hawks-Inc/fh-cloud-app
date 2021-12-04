@@ -119,12 +119,13 @@
                         <td class="back-color-gray">Business Country</td>
                         <td><span *ngIf="carriers.bizCountry == 'CA'">Canada</span>
                           <span *ngIf="carriers.bizCountry == 'US'">United States of America</span>
-                          <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span></td>
+                          <span *ngIf="carriers.bizCountry != 'US' && carriers.bizCountry != 'CA'">-</span>
+                        </td>
                       </tr>
                       <tr>
                         <td class="back-color-gray">Curtainside(s)</td>
-                        <td><span
-                            *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide ? carriers.fleets.curtainSide : '-'}}</span>
+                        <td><span *ngIf="carriers.fleets != undefined">{{carriers.fleets.curtainSide ?
+                            carriers.fleets.curtainSide : '-'}}</span>
                         </td>
                         <td class="back-color-gray">CSA</td>
                         <td><span *ngIf="carriers.CSA == false">NO</span><span *ngIf="carriers.CSA == true">YES</span>
@@ -182,27 +183,27 @@
                     <tbody>
                       <tr class="text-capitalize">
                         <td width="20%" class="back-color-gray">Bank Name</td>
-                        <td width="30%"><span
-                            *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName  : '-'}}</span></td>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName :
+                            '-'}}</span></td>
                         <td width="20%" class="back-color-gray">Routing#</td>
-                        <td width="30%"><span
-                            *ngIf="carriers.banks != undefined">{{bank.routingNumber ? bank.routingNumber : '-'}}</span>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ?
+                            bank.routingNumber : '-'}}</span>
                         </td>
                       </tr>
                       <tr class="text-capitalize">
                         <td class="back-color-gray">Account#</td>
-                        <td><span
-                            *ngIf="carriers.banks != undefined">{{bank.accountNumber ?  bank.accountNumber : '-'}}</span>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber ? bank.accountNumber :
+                            '-'}}</span>
                         </td>
                         <td class="back-color-gray">Transit#</td>
-                        <td><span
-                            *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber : '-'}}</span>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber :
+                            '-'}}</span>
                         </td>
                       </tr>
                       <tr class="text-capitalize">
                         <td class="back-color-gray">Institution#</td>
-                        <td><span
-                            *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber : '-'}}</span>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber
+                            : '-'}}</span>
                         </td>
                       </tr>
                     </tbody>
@@ -214,7 +215,7 @@
                         <td width="20%" class="back-color-gray">Address Type</td>
                         <td width="30%">{{address.addressType ? address.addressType : '-'}}</td>
                         <td width="20%" class="back-color-gray">Address</td>
-                        <td width="30%">{{address.address  ? address.address :'-'}}</td>
+                        <td width="30%">{{address.address ? address.address :'-'}}</td>
                       </tr>
                       <tr class="text-capitalize">
                         <td class="back-color-gray">Country</td>
@@ -224,9 +225,68 @@
                       </tr>
                       <tr class="text-capitalize">
                         <td class="back-color-gray">City</td>
-                        <td>{{address.cityName ? address.cityName : '-'}}</td>
+                        <td>{{address.cityName ? address.cityName : '-'}}
+                          {{carriers.Driver}}
+                        </td>
                         <td class="back-color-gray">Zip Code</td>
                         <td>{{address.zipCode ? address.zipCode : '-'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="col-lg-12">
+                  <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Bank Details</h2>
+                  <table class="table table-bordered table-responsive-lg" *ngFor="let bank of carriers.banks">
+                    <tbody>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Bank Name</td>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.branchName ? bank.branchName :
+                            '-'}}</span></td>
+                        <td width="20%" class="back-color-gray">Routing#</td>
+                        <td width="30%"><span *ngIf="carriers.banks != undefined">{{bank.routingNumber ?
+                            bank.routingNumber : '-'}}</span>
+                        </td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Account#</td>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.accountNumber ? bank.accountNumber :
+                            '-'}}</span>
+                        </td>
+                        <td class="back-color-gray">Transit#</td>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.transitNumber ? bank.transitNumber :
+                            '-'}}</span>
+                        </td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Institution#</td>
+                        <td><span *ngIf="carriers.banks != undefined">{{bank.institutionNumber ? bank.institutionNumber
+                            : '-'}}</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr>
+                        <h2 class="font-weight-normal text-dark text-5 mt-0 mb-1">Terms and Conditions</h2>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td width="20%" class="back-color-gray">Terms For Customer on Invoice</td>
+                        <td width="30%"> {{carriers.termsTruck}}</td>
+                        <td width="20%" class="back-color-gray">Terms and Conditions For Carrier</td>
+                        <td width="30%">{{carriers.termsCarrier}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Terms and Conditions For Truck Dispatch</td>
+                        <td>{{carriers.notesFactor}}</td>
+                        <td class="back-color-gray">Notes For B.O.L</td>
+                        <td>{{carriers.notesBol}}</td>
+                      </tr>
+                      <tr class="text-capitalize">
+                        <td class="back-color-gray">Dispatch Notes For Driver</td>
+                        <td>{{carriers.termsCustom}}
+
+                        </td>
+                        <td class="back-color-gray">Notes For Factor Invoice</td>
+                        <td>{{carriers.notesDriver}}</td>
                       </tr>
                     </tbody>
                   </table>

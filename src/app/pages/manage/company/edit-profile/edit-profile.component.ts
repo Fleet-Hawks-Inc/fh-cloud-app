@@ -110,14 +110,14 @@ export class EditProfileComponent implements OnInit {
     }]
   }];
 
-  termsCondition = {
-    truckDispatch: "",
-    carrier: "",
-    factorInvoice: "",
-    bol: "",
-    customInvoice: "",
-    Driver: ""
-  }
+
+  termsTruck: ""
+  termsCarrier: ""
+  notesFactor: ""
+  notesBol: ""
+  termsCustom: ""
+  notesDriver: ""
+
   yardDefault = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -180,6 +180,8 @@ export class EditProfileComponent implements OnInit {
         this.EIN = this.carriers.EIN;
         this.MC = this.carriers.MC;
         this.SCAC = this.carriers.SCAC;
+
+
         this.CSA = this.carriers.CSA;
         this.CTPAT = this.carriers.CTPAT;
         this.PIP = this.carriers.PIP;
@@ -207,6 +209,7 @@ export class EditProfileComponent implements OnInit {
           trailers: this.carriers.fleets.trailers,
           trucks: this.carriers.fleets.trucks,
         };
+
         this.addressDetails = this.carriers.addressDetails;
         if (this.carriers.referral) {
           this.referral.name = this.carriers.referral.name;
@@ -564,6 +567,12 @@ export class EditProfileComponent implements OnInit {
         addressDetails: this.addressDetails,
         phone: this.phone,
         fax: this.fax,
+        termsTruck: this.carriers.termsTruck,
+        termsCarrier: this.carriers.termsCarrier,
+        notesFactor: this.carriers.notesFactor,
+        notesBol: this.carriers.notesBol,
+        termsCustom: this.carriers.termsCustom,
+        notesDriver: this.carriers.notesDriver,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,

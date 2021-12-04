@@ -51,25 +51,31 @@
                     </div>
                 </form>
             </header>
-            <div class="col-6 mb-2 mt-0">
-                <div>
-                    <div class="row text-dark col-lg-8 p-3">
-                        <div class="col">
-                            <div class="maindriverbox" style="box-shadow: 3px 3px
-                              5px;">
-                                <div class="col-8">
-                                    <div>
-                                        <h2 class="mt-0 mb-4 font-weight-bold">Driver Name</h2>
-                                        <h3 class="text-capitalize"><span *ngFor="let item of DrivN">{{item.firstName}}
-                                                {{item.middleName}}
-                                                {{item.lastName}}</span></h3>
+            <section class="m-2">
+                <div class="row mb-0">
+                    <div class="col-12 mb-4 ">
+                        <div class="bg-white p-3">
+                            <div class="row text-dark col-lg-3">
+                                <div class="col">
+                                    <div class="maindriverbox" style="box-shadow: 3px 3px 5px;">
+                                        <div class="col-8">
+
+                                            <div>
+                                                <h2 class="mt-0 mb-4 font-weight-bold">Driver Name</h2>
+                                                <h3 class="text-capitalize"><span
+                                                        *ngFor="let item of DrivN">{{item.firstName}}
+                                                        {{item.middleName}}
+                                                        {{item.lastName}}</span></h3>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
             <div class="bg-white p-3 text-dark">
                 <div class="row text-dark">
                     <div class="col pr-0">
