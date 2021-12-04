@@ -16,56 +16,54 @@ import * as _ from 'lodash';
 export class ActivityComponent implements OnInit {
   allData = [];
   vehicleData = []
+  startDate = '';
+  endDate = '';
   start = null;
   end = null;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public vehicleId;
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
 
 
   ngOnInit(): void {
-    // this.fetchVehicle()
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchVehicleListing();
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
   }
 
-  // fetchVehicle() {
-  //   this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
-  //     this.vehicleData = result.Items;
-  //     console.log('vehicles', this.vehicleData)
-  //   });
-  // }
+
 
   fetchVehicleListing() {
     this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.allData = result.Items;
-      console.log('allData', this.allData)
+    
     });
   }
 
-  // searchFilter() {
-  //   if (this.start != null && this.end != null) {
-  //     if (this.start != null && this.end == null) {
-  //       this.toastr.error('Please select both start and end dates.');
-  //       return false;
-  //     } else if (this.start == null && this.end != null) {
-  //       this.toastr.error('Please select both start and end dates.');
-  //       return false;
-  //     } else if (this.start > this.end) {
-  //       this.toastr.error('Start Date should be less then end date.');
-  //       return false;
-  //     }
-  //     else {
-  //       // this.lastItemSK = '';
-  //       this.allData = []
-  //       // this.dataMessage = Constants.FETCHING_DATA
-  //       // this.fetchAssetActivity()
-  //     }
-  //   }
-  //   else {
-  //     return false;
-  //   }
-  // }
+  searchFilter() {
+    if (this.start != null && this.end != null) {
+      if (this.start != null && this.end == null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start == null && this.end != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start > this.end) {
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else {
+  
+        this.allData = []
+        this.fetchVehicleListing()
+      }
+    }
+    else {
+      return false;
+    }
+  }
 
 }
