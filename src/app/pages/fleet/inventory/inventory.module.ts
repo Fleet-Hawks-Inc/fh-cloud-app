@@ -13,6 +13,7 @@ import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { AddInventoryComponent } from './add-inventory/add-inventory.component';
 import { InventoryListComponent } from './inventory-list/inventory-list.component';
 import { InventoryDetailComponent } from './inventory-detail/inventory-detail.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   { path: 'add', component: AddInventoryComponent },
@@ -87,10 +88,11 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
-    {provide: NgbDateAdapter, useClass: CustomAdapter},
-    {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter},]
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },]
 })
 export class InventoryModule { }
