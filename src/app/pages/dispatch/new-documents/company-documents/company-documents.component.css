@@ -1,4 +1,8 @@
-.dropdown-item.active, .dropdown-item:active {
-    color: #fff !important;
-    
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff !important;
+}
+.img_thumbnail {
+  width: 90px;
+  height: 70px;
 }
