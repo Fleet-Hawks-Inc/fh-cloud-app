@@ -1,0 +1,27 @@
+<p *ngIf="!loaded">Please wait loading....</p>
+<section *ngIf="loaded" class="body" style="background:white;height: 100%;color: black;" class="contianer-fluid">
+    <div class="row">
+        <div class="col-md-2">
+           
+        </div>
+        
+    </div>
+    <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10" style="height: 70vh;width: 100vh;" >
+        <h3>Truck : {{ apiResponse.vehicleName }}</h3>
+        <p>{{ apiResponse.lastLocation}}</p>
+        <google-map  [width]="width" [height]="height" [center]="center" [options]="mapOptions"  [zoom]="zoom">
+            <map-traffic-layer [autoRefresh]="true"></map-traffic-layer>
+            <map-marker #marker="mapMarker" 
+            [position]="center" [options]="vehicleMarkerOptions"
+            (mapClick)="openInfoWindow(marker)"
+            ></map-marker> 
+            <map-info-window [innerHTML]="infoDetail"></map-info-window>
+        </google-map>
+       <a href='https://fleethawks.com' target="_blank"> <h3 class="pull-right">Powered by Fleet Hawks Inc. <i class="fas fa-angle-double-right"></i></h3></a>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+   
+</section>

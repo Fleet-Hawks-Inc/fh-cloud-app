@@ -15,6 +15,7 @@ import { ChartsModule } from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { Injectable } from '@angular/core';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   { path: 'add', component: AddAssetsComponent, canDeactivate: [unsavedChangesGuard] },
@@ -94,7 +95,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgxSpinnerModule,
     ChartsModule,
     NgxDatatableModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

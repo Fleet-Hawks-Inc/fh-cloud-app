@@ -4,6 +4,7 @@
 
         <section role="main" class="content-body">
             <header class="page-header pr8 pl11">
+                                <form class="form-horizontal" method="get">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <ng-select [(ngModel)]="filter.driverID" class="text-capitalize" name="driverID" placeholder="Search by Driver">
@@ -27,9 +28,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2">
-                        <a href="javascript:;" (click)="searchEvent()"
-                            class="btn btn-success btn-sm mr-1" style="color:white;"> Search
-                        </a>
+                    <button type="submit" (click)="searchEvent()"class="btn btn-sm btn-success mr-3">Search</button>
                         <a href="javascript:;" (click)="resetFilter()"
                             class="btn btn-success btn-sm" style="color:white;"> Reset
                         </a>
@@ -45,6 +44,7 @@
 
                     </div>
                 </div>
+                </form>
             </header>
 
             <section class="m-2">

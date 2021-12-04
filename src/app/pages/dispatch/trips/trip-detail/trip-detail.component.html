@@ -9,13 +9,19 @@
             <span *ngIf="tripStatus" class="badge p-1 badge-dark mt-2 mb-0
               text-uppercase">{{
               tripStatus }}
-              <span *ngIf="recallStatus">(R) </span>
             </span>
           </div>
 
           <div class="col-md-8 col-lg-8 text-right pr-1">
-            <button (click)="openTripInfo()" *ngIf="showTripInfo" class="btn btn-sm btn-success mr-2">
-              Trip Info.
+            <a *ngIf="recallStatus" routerLink="/dispatch/trips/edit-trip/{{tripID}}" [queryParams]="{state:'recall'}"
+              title="Recall" class="btn btn-sm
+              mr-2
+              btn-success">
+              <i class="fas fa-redo"></i>
+            </a>
+            <button (click)="openTripInfo()" *ngIf="showTripInfo" class="btn
+              btn-sm btn-success mr-2">
+              Trip Info
             </button>
             <a routerLink="/dispatch/trips/edit-trip/{{ tripID }}" *ngIf="showEdit"
               class="btn btn-default btn-sm mr-2"><i class="fas fa-pencil-alt"></i>
@@ -41,8 +47,9 @@
                                <a class="dropdown-item text-1" routerLink="/dispatch/trips/edit-trip/{{tripID}}" href="javascript:;">Edit</a>
                             </div>
                          </div> -->
-            <a href="javascript:;" (click)="cancel()" class="btn btn-default btn-sm"><i
-                class="fas fa-list"></i> All Trips
+            <a href="javascript:;" (click)="cancel()" class="btn btn-default
+              btn-sm"><i class="fas fa-list"></i> All
+              Trips
             </a>
           </div>
         </div>
@@ -296,7 +303,7 @@
                             </tr>
                             <tr *ngFor="let trip of trips">
                               <td>{{ trip.type }}</td>
-                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                              <td>{{ trip.orderNumber ? trip.orderNumber :
                                 '' }}</td>
                               <td>
                                 <span *ngIf="trip.commodity">
@@ -324,17 +331,17 @@
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ trip.vehicleID ?
-                                vehiclesObject[trip.vehicleID] : '' }}</td>
+                              <td>{{ trip.vehicleName ?
+                                trip.vehicleName : '' }}</td>
                               <td>
-                                <span *ngFor="let asst of trip.assetID">
-                                  {{ assetsObject[asst] }}
+                                <span *ngFor="let asst of trip.assetNames">
+                                  {{ asst }}
                                   <br />
                                 </span>
                               </td>
                               <td>
-                                {{ (trip.driverID) ?
-                                driversObject[trip.driverID] : '' }}
+                                {{ trip.driverName ?
+                                trip.driverName : '' }}
                                 <span *ngIf="trip.driverStatus &&
                                   trip.driverStatus == 'STARTED'" class="badge
                                   badge-success">{{ trip.driverStatus }}</span>
@@ -352,8 +359,8 @@
                                   bg-blue">{{ trip.driverStatus }}</span>
                               </td>
                               <td>
-                                {{ (trip.coDriverID) ?
-                                driversObject[trip.coDriverID] : '' }}
+                                {{ trip.coDriverName ?
+                                trip.coDriverName : '' }}
                                 <span *ngIf="trip.coDriverStatus &&
                                   trip.coDriverStatus == 'REJECTED'" class="badge
                                   badge-danger">{{ trip.coDriverStatus }}</span>
@@ -370,8 +377,8 @@
                                   trip.coDriverStatus == 'ASSIGNED'" class="badge
                                   bg-blue">{{ trip.coDriverStatus }}</span>
                               </td>
-                              <td>{{ (trip.carrierID) ?
-                                carriersObject[trip.carrierID] : '' }}</td>
+                              <td>{{ (trip.carrierName) ?
+                                trip.carrierName : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -433,7 +440,7 @@
                           <tbody>
                             <tr *ngFor="let trip of data">
                               <td>{{ trip.type }}</td>
-                              <td>{{ trip.orderID ? ordersData[trip.orderID] :
+                              <td>{{ trip.orderNumber ? trip.orderNumber :
                                 '' }}</td>
                               <td>
                                 <span *ngIf="trip.commodity">
@@ -461,20 +468,20 @@
                                   }}</span>
                               </td>
                               <td>{{ trip.miles }}</td>
-                              <td>{{ trip.vehicleID ?
-                                vehiclesObject[trip.vehicleID] : '' }}</td>
+                              <td>{{ trip.vehicleName ?
+                                trip.vehicleName : '' }}</td>
                               <td>
                                 <span *ngFor="let asst of trip.assetID">
                                   {{ assetsObject[asst] }}
                                   <br />
                                 </span>
                               </td>
-                              <td>{{ trip.driverID ?
-                                driversObject[trip.driverID] : '' }}</td>
-                              <td>{{ trip.coDriverID ?
-                                driversObject[trip.coDriverID] : '' }}</td>
-                              <td>{{ trip.carrierID ?
-                                carriersObject[trip.carrierID] : '' }}</td>
+                              <td>{{ trip.driverName ?
+                                trip.driverName : '' }}</td>
+                              <td>{{ trip.coDriverName ?
+                                trip.coDriverName : '' }}</td>
+                              <td>{{ trip.carrierName ?
+                                trip.carrierName : '' }}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -656,7 +663,7 @@
                           </tr>
                           <tr *ngFor="let expense of expenses">
                             <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
-                            <td>{{ categories[expense.categoryID] }}</td>
+                            <td>{{ expense.catName }}</td>
                             <td>Other Expense</td>
                             <td>{{ expense.amount }} {{ expense.currency }}</td>
                           </tr>
@@ -936,10 +943,11 @@
         </tr>
         <tr>
           <td valign="top" class="text-dark">
-            <h2 style="font-size: 20px; margin-bottom: 0px"><strong>Trip#</strong> {{ tripData.tripNo }}</h2>
+            <h2 style="font-size: 20px; margin-bottom: 0px"><strong>Trip#</strong>
+              {{ tripData.tripNo }}</h2>
             <p class="text-dark" style="font-size: 13px; margin-bottom: 15px;
-            margin-top: 0px;
-            display: inline-block;">
+              margin-top: 0px;
+              display: inline-block;">
               <strong>Trip Type:</strong> {{orderType}}
             </p>
 
@@ -958,12 +966,12 @@
         </tr>
         <tr class="text-dark" *ngFor="let item of customerData;">
           <td colspan="2">
-            <table class=" w-100">
+            <table class="w-100">
               <tbody>
                 <tr>
                   <td valign="top">
-                    <h2 class="m-0" style="font-size: 16px"><strong>Customer: </strong> <span
-                        class="text-capitalize text-dark">{{item.cName}}</span></h2>
+                    <h2 class="m-0" style="font-size: 16px"><strong>Customer:
+                      </strong> <span class="text-capitalize text-dark">{{item.cName}}</span></h2>
                   </td>
                   <td valign="top" align="right" style="line-height: 42px;"><strong>Order(s)#:</strong>
                     <span *ngFor="let ord of item.orderNo; last as isLast">
@@ -980,7 +988,8 @@
                         <tr>
                           <td colspan="4" class="text-dark" style="border-bottom: 1px solid #adadad;
                             padding: 10px;font-size: 14px;;">
-                            <p class="m-0 text-dark"><strong>Address: </strong>{{item.address ? item.address : 'NA'}}
+                            <p class="m-0 text-dark"><strong>Address: </strong>{{item.address
+                              ? item.address : 'NA'}}
                             </p>
                           </td>
                         </tr>
@@ -989,16 +998,19 @@
                             solid #adadad; padding: 10px">
                             <p class="m-0 text-dark" style="font-weight: 600">Phone</p>
                           </td>
-                          <td width="25%" class="text-dark" style="border-right: 1px solid #adadad;
+                          <td width="25%" class="text-dark" style="border-right:
+                            1px solid #adadad;
                             padding: 10px">
-                            <p class="m-0 text-dark">{{item.workPhone ? item.workPhone : 'NA'}}</p>
+                            <p class="m-0 text-dark">{{item.workPhone ?
+                              item.workPhone : 'NA'}}</p>
                           </td>
                           <td width="25%" class="text-dark" bgcolor="#f3f3f3" style="padding: 10px;
                             border-right: 1px solid #adadad">
                             <p class="m-0 text-dark" style="font-weight: 600">Email</p>
                           </td>
                           <td style="padding: 10px">
-                            <p class="m-0 text-dark">{{item.workEmail ? item.workEmail : 'NA'}}</p>
+                            <p class="m-0 text-dark">{{item.workEmail ?
+                              item.workEmail : 'NA'}}</p>
                           </td>
                         </tr>
                       </tbody>
@@ -1013,7 +1025,7 @@
         <tr>
           <td colspan="2">
             <table class="table table-sm table-bordered
-                          table-striped text-capitalize " id="locationTable">
+              table-striped text-capitalize" id="locationTable">
               <thead>
                 <tr>
                   <th>Type</th>
@@ -1048,7 +1060,7 @@
                   <td>
                     <span *ngIf="trip.commodity">
                       <span *ngFor="let data of trip.commodity; let
-                                    d=index;">
+                        d=index;">
                         {{ data }}
                         <span *ngIf="d<trip.commodity.length-1">,
                         </span>
@@ -1064,8 +1076,8 @@
                   <td>{{ trip.locationName }}</td>
                   <td>
                     <span class="badge badge-dark p-1
-                                  text-uppercase" title="" data-original-title="Empty Miles"
-                      *ngIf="trip.mileType != ''">{{ trip.mileType
+                      text-uppercase" title="" data-original-title="Empty Miles" *ngIf="trip.mileType != ''">{{
+                      trip.mileType
                       }}</span>
                   </td>
                   <td>{{ trip.miles }}</td>
@@ -1081,39 +1093,39 @@
                     {{ (trip.driverID) ?
                     driversObject[trip.driverID] : '' }}
                     <span *ngIf="trip.driverStatus &&
-                                  trip.driverStatus == 'STARTED'" class="badge
-                                  badge-success">{{ trip.driverStatus }}</span>
+                      trip.driverStatus == 'STARTED'" class="badge
+                      badge-success">{{ trip.driverStatus }}</span>
                     <span *ngIf="trip.driverStatus &&
-                                  trip.driverStatus == 'DELIVERED'" class="badge
-                                  badge-primary">{{ trip.driverStatus }}</span>
+                      trip.driverStatus == 'DELIVERED'" class="badge
+                      badge-primary">{{ trip.driverStatus }}</span>
                     <span *ngIf="trip.driverStatus &&
-                                  trip.driverStatus == 'REJECTED'" class="badge
-                                  badge-danger">{{ trip.driverStatus }}</span>
+                      trip.driverStatus == 'REJECTED'" class="badge
+                      badge-danger">{{ trip.driverStatus }}</span>
                     <span *ngIf="trip.driverStatus &&
-                                  trip.driverStatus == 'ACCEPTED'" class="badge
-                                  badge-success">{{ trip.driverStatus }}</span>
+                      trip.driverStatus == 'ACCEPTED'" class="badge
+                      badge-success">{{ trip.driverStatus }}</span>
                     <span *ngIf="trip.driverStatus &&
-                                  trip.driverStatus == 'ASSIGNED'" class="badge
-                                  bg-blue">{{ trip.driverStatus }}</span>
+                      trip.driverStatus == 'ASSIGNED'" class="badge
+                      bg-blue">{{ trip.driverStatus }}</span>
                   </td>
                   <td>
                     {{ (trip.coDriverID) ?
                     driversObject[trip.coDriverID] : '' }}
                     <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'REJECTED'" class="badge
-                                  badge-danger">{{ trip.coDriverStatus }}</span>
+                      trip.coDriverStatus == 'REJECTED'" class="badge
+                      badge-danger">{{ trip.coDriverStatus }}</span>
                     <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'STARTED'" class="badge
-                                  badge-success">{{ trip.coDriverStatus }}</span>
+                      trip.coDriverStatus == 'STARTED'" class="badge
+                      badge-success">{{ trip.coDriverStatus }}</span>
                     <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'DELIVERED'" class="badge
-                                  badge-primary">{{ trip.coDriverStatus }}</span>
+                      trip.coDriverStatus == 'DELIVERED'" class="badge
+                      badge-primary">{{ trip.coDriverStatus }}</span>
                     <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ACCEPTED'" class="badge
-                                  badge-success">{{ trip.coDriverStatus }}</span>
+                      trip.coDriverStatus == 'ACCEPTED'" class="badge
+                      badge-success">{{ trip.coDriverStatus }}</span>
                     <span *ngIf="trip.coDriverStatus &&
-                                  trip.coDriverStatus == 'ASSIGNED'" class="badge
-                                  bg-blue">{{ trip.coDriverStatus }}</span>
+                      trip.coDriverStatus == 'ASSIGNED'" class="badge
+                      bg-blue">{{ trip.coDriverStatus }}</span>
                   </td>
                   <td>{{ (trip.carrierID) ?
                     carriersObject[trip.carrierID] : '-' }}</td>
@@ -1133,7 +1145,7 @@
               <tbody>
                 <tr>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark ">
+                    <p style="font-size: 13px" class="text-dark">
                       <strong>Accepted By: </strong>
                     </p>
                   </td>
@@ -1182,7 +1194,7 @@
     <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
       Cancel
     </button>
-    <button class="btn btn-success" (click)="driverEmail()">Email to Driver</button>
+    <button class="btn btn-success" [disabled]="isEmail" (click)="driverEmail()">Email to Driver</button>
     <button class="btn btn-success" (click)="generate()">Print</button>
   </div>
 </ng-template>

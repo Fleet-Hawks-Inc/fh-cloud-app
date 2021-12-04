@@ -2,6 +2,7 @@
   <div class="inner-wrapper">
     <section role="main" class="content-body pr-0 pt-0 pl-0">
       <header class="page-header">
+                        <form class="form-horizontal" method="get">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-2 col-lg-2">
             <ng-select
@@ -35,14 +36,7 @@
             </div>
           </div>
           <div class="col-md-2 col-lg-2">
-            <a
-              href="javascript:;"
-              (click)="searchEvents()"
-              class="btn btn-success btn-sm mr-1"
-              style="color: white"
-            >
-              Search
-            </a>
+                                <button type="submit" (click)="searchEvents()"class="btn btn-sm btn-success mr-3">Search</button>
             <a
               href="javascript:;"
               (click)="resetFilter()"
@@ -73,6 +67,7 @@
             >
           </div>
         </div>
+        </form>
       </header>
 
       <section class="m-2">

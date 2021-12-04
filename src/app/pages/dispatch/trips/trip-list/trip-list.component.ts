@@ -1,14 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services";
-import { Router } from "@angular/router";
+import { ApiService, DashboardUtilityService } from "../../../../services";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
 import Constants from "../../../fleet/constants";
 import { environment } from "src/environments/environment";
 declare var $: any;
-import * as moment from "moment";
+import * as _ from "lodash";
 
 @Component({
   selector: "app-trip-list",
@@ -91,6 +88,7 @@ export class TripListComponent implements OnInit {
     value1: "",
   };
   totalRecords = 20;
+  suggestions = [];
   confirmedTotalRecords = 20;
   categoryFilter = [
     {
@@ -138,6 +136,12 @@ export class TripListComponent implements OnInit {
     end: "",
   };
 
+  orderValue = null;
+
+  loaded = false;
+  isLoad: boolean = false;
+  isLoadText = "Load More...";
+
   vehiclesObject: any = {};
   assetsObject: any = {};
   carriersObject: any = {};
@@ -146,12 +150,6 @@ export class TripListComponent implements OnInit {
   activeTab = "all";
 
   // manual pagination
-  tripNext = false;
-  tripPrev = true;
-  tripDraw = 0;
-  tripPrevEvauatedKeys = [""];
-  tripStartPoint = 1;
-  tripEndPoint = this.pageLength;
   lastEvaluatedKey = "";
   driversIDSObject = [];
   tripDate = "";
@@ -172,22 +170,19 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
-  ) { }
+    private spinner: NgxSpinnerService,
+    private dashboardUtilityService: DashboardUtilityService
+  ) {}
 
-  ngOnInit(): void {
-    this.fetchAllTripsCount();
-    this.fetchAllVehiclesIDs();
-    this.fetchAllAssetIDs();
-    this.fetchAllCarrierIDs();
-    this.fetchAllOrderIDs();
-    this.fetchAllDrivers();
+  async ngOnInit() {
+    this.initDataTable();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.assetsObject = await this.dashboardUtilityService.getAssets();
+    this.vehiclesObject = await this.dashboardUtilityService.getVehicles();
   }
 
   async fetchTrips(result, type = null) {
-    let trpArr = [];
     for (let i = 0; i < result.Items.length; i++) {
       result.Items[i].pickupLocation = "";
       result.Items[i].pickupLocationCount = 0;
@@ -204,8 +199,22 @@ export class TripListComponent implements OnInit {
 
       const element = result.Items[i];
       element.newStatus = element.tripStatus;
-      if (element.recall) {
-        element.newStatus = `${element.tripStatus} (R)`;
+      element.canRecall = false;
+      element.disabledEdit = false;
+      if (element.settlmnt) {
+        element.newStatus = "Settled";
+        element.canRecall = false;
+        element.disabledEdit = true;
+      } else {
+        if (element.recall) {
+          element.newStatus = `${element.tripStatus} (R)`;
+          element.canRecall = true;
+        } else {
+          element.newStatus = element.tripStatus;
+          if (element.tripStatus === "delivered") {
+            element.canRecall = true;
+          }
+        }
       }
 
       for (let j = 0; j < result.Items[i].tripPlanning.length; j++) {
@@ -290,9 +299,10 @@ export class TripListComponent implements OnInit {
         element.stlLink
       ) {
         element.disabledEdit = true;
-      } else {
-        element.disabledEdit = false;
       }
+      // else {
+      //   element.disabledEdit = false;
+      // }
 
       if (element.tripStatus == "confirmed") {
         element.showStatus = true;
@@ -318,44 +328,8 @@ export class TripListComponent implements OnInit {
         this.tonuTrips.push(result.Items[i]);
       }
 
-      trpArr.push(result.Items[i]);
+      this.trips.push(result.Items[i]);
     }
-    this.trips.push(trpArr);
-  }
-
-  fetchAllTripsCount() {
-    this.allTripsCount = 0;
-
-    this.apiService
-      .getData("trips/get/allTypes/count")
-      .subscribe(async (result: any) => {
-        this.allTripsCount = result.allCount;
-        this.totalRecords = result.allCount;
-
-        this.initDataTable();
-      });
-  }
-
-  fetchTripsCount() {
-    this.apiService
-      .getData(
-        "trips/get/count?searchValue=" +
-        this.tripsFiltr.searchValue +
-        "&startDate=" +
-        this.tripsFiltr.start +
-        "&endDate=" +
-        this.tripsFiltr.end +
-        "&category=" +
-        this.tripsFiltr.category
-      )
-      .subscribe({
-        complete: () => { },
-        error: () => { },
-        next: (result: any) => {
-          this.totalRecords = result.Count;
-          this.initDataTable();
-        },
-      });
   }
 
   openStatusModal(tripId, index) {
@@ -376,8 +350,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => { },
-          error: () => { },
+          complete: () => {},
+          error: () => {},
           next: (result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -389,10 +363,8 @@ export class TripListComponent implements OnInit {
             this.tonuTrips = [];
 
             this.hasSuccess = true;
-            this.tripDraw = 0;
             this.lastEvaluatedKey = "";
             this.records = false;
-            this.fetchAllTripsCount();
 
             this.toastr.success("Trip deleted successfully");
           },
@@ -591,16 +563,13 @@ export class TripListComponent implements OnInit {
             this.tripStatus === "delivered" ||
             this.tripStatus === "tonu"
           ) {
-            this.trips[this.tripDraw][this.recIndex].canEdit = true;
+            this.trips[this.recIndex].canEdit = true;
           }
           if (this.activeTab == "all") {
-            this.trips[this.tripDraw][this.recIndex].newStatus =
-              this.tripStatus;
+            this.trips[this.recIndex].newStatus = this.tripStatus;
             if (this.tripStatus === "tonu") {
-              this.trips[this.tripDraw][this.recIndex].newStatus =
-                this.trips[this.tripDraw][
-                  this.recIndex
-                ].newStatus.toUpperCase();
+              this.trips[this.recIndex].newStatus =
+                this.trips[this.recIndex].newStatus.toUpperCase();
             }
             // this.trips[this.tripDraw][this.recIndex].showStatus = false;
             this.resetMainTabValues();
@@ -640,99 +609,81 @@ export class TripListComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
 
-  initDataTable() {
+  initDataTable(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastEvaluatedKey = "";
+      this.trips = [];
+    }
     this.spinner.show();
-    this.apiService
-      .getData(
-        "trips/fetch/records/all?searchValue=" +
-        this.tripsFiltr.searchValue +
-        "&startDate=" +
-        this.tripsFiltr.start +
-        "&endDate=" +
-        this.tripsFiltr.end +
-        "&category=" +
-        this.tripsFiltr.category +
-        "&lastKey=" +
-        this.lastEvaluatedKey
-      )
-      .subscribe(
-        (result: any) => {
-          // this.trips = [];
-          if (result.Items.length == 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND;
-            this.records = false;
-          } else {
-            this.records = true;
-          }
-          result.Items.map((v) => {
-            v.url = `/dispatch/trips/trip-details/${v.tripID}`;
-          });
-          this.fetchedRecordsCount += result.Count;
-          this.getStartandEndVal("all");
-
-          this.fetchTrips(result, "all");
-          if (
-            this.tripsFiltr.searchValue !== "" ||
-            this.tripsFiltr.start !== ""
-          ) {
-            this.tripStartPoint = 1;
-            this.tripEndPoint = this.totalRecords;
-          }
-
-          if (result["LastEvaluatedKey"] !== undefined) {
-            let lastEvalKey = result[`LastEvaluatedKey`].tripSK.replace(
-              /#/g,
-              "--"
-            );
-            this.tripNext = false;
-            // for prev button
-            if (!this.tripPrevEvauatedKeys.includes(lastEvalKey)) {
-              this.tripPrevEvauatedKeys.push(lastEvalKey);
+    // this.orders = [];
+    if (this.lastEvaluatedKey !== "end") {
+      this.apiService
+        .getData(
+          "trips/fetch/records/all?searchValue=" +
+            this.tripsFiltr.searchValue +
+            "&startDate=" +
+            this.tripsFiltr.start +
+            "&endDate=" +
+            this.tripsFiltr.end +
+            "&category=" +
+            this.tripsFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
+        )
+        .subscribe(
+          (result: any) => {
+            // this.trips = [];
+            if (result.Items.length == 0) {
+              this.dataMessage = Constants.NO_RECORDS_FOUND;
+              this.records = false;
+            } else {
+              this.records = true;
             }
-            this.lastEvaluatedKey = lastEvalKey;
-          } else {
-            this.tripNext = true;
-            this.lastEvaluatedKey = "";
-            this.tripEndPoint = this.totalRecords;
-          }
+            result.Items.map((v) => {
+              v.url = `/dispatch/trips/trip-details/${v.tripID}`;
+            });
+            this.fetchedRecordsCount += result.Count;
 
-          if (this.totalRecords < this.tripEndPoint) {
-            this.tripEndPoint = this.totalRecords;
-          }
+            this.fetchTrips(result, "all");
+            this.loaded = true;
 
-          // disable prev btn
-          if (this.tripDraw == 0) {
-            this.tripPrev = true;
+            if (result["LastEvaluatedKey"] !== undefined) {
+              let lastEvalKey = result[`LastEvaluatedKey`].tripSK.replace(
+                /#/g,
+                "--"
+              );
+              this.lastEvaluatedKey = lastEvalKey;
+            } else {
+              this.lastEvaluatedKey = "end";
+            }
+            this.isLoad = false;
+            this.spinner.hide();
+          },
+          (err) => {
+            this.spinner.hide();
           }
-
-          // disable next btn when no records at last
-          if (this.fetchedRecordsCount < this.totalRecords) {
-            this.tripNext = false;
-          } else if (this.fetchedRecordsCount === this.totalRecords) {
-            this.tripNext = true;
-          }
-          this.lastFetched = {
-            draw: this.tripDraw,
-            status: this.tripNext,
-          };
-          this.spinner.hide();
-        },
-        (err) => {
-          this.spinner.hide();
-        }
-      );
+        );
+    }
   }
 
   filterTrips() {
     if (this.tripsFiltr.startDate === null) this.tripsFiltr.startDate = "";
     if (this.tripsFiltr.endDate === null) this.tripsFiltr.endDate = "";
-
     if (
       this.tripsFiltr.searchValue !== "" ||
       this.tripsFiltr.startDate !== "" ||
       this.tripsFiltr.endDate !== "" ||
-      this.tripsFiltr.category !== null
+      this.tripsFiltr.category !== null ||
+      this.orderValue !== null
     ) {
+      if (
+        this.tripsFiltr.category === "orderNo" &&
+        (this.tripsFiltr.searchValue == null ||
+          this.tripsFiltr.searchValue == "")
+      ) {
+        this.toastr.error("Please enter order number");
+        return false;
+      }
       if (this.tripsFiltr.startDate != "" && this.tripsFiltr.endDate == "") {
         this.toastr.error("Please select both start and end dates.");
         return false;
@@ -756,7 +707,6 @@ export class TripListComponent implements OnInit {
           this.tripsFiltr.searchValue =
             this.tripsFiltr.searchValue.toLowerCase();
         }
-        this.tripDraw = 0;
         this.trips = [];
         this.confirmedTrips = [];
         this.dispatchedTrips = [];
@@ -777,7 +727,8 @@ export class TripListComponent implements OnInit {
         this.totalRecords = this.allTripsCount;
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
-        this.fetchTripsCount();
+        this.lastEvaluatedKey = "";
+        this.initDataTable();
       }
     } else {
       return false;
@@ -788,7 +739,8 @@ export class TripListComponent implements OnInit {
     if (
       this.tripsFiltr.startDate !== "" ||
       this.tripsFiltr.endDate !== "" ||
-      this.tripsFiltr.searchValue !== ""
+      this.tripsFiltr.searchValue !== "" ||
+      this.orderValue !== null
     ) {
       this.trips = [];
       this.tripsFiltr = {
@@ -802,7 +754,7 @@ export class TripListComponent implements OnInit {
       this.records = false;
       this.dataMessage = Constants.FETCHING_DATA;
       $("#categorySelect").text("Search by category");
-      this.tripDraw = 0;
+      this.orderValue = null;
       this.activeTab = "all";
       this.confirmedTrips = [];
       this.dispatchedTrips = [];
@@ -811,105 +763,11 @@ export class TripListComponent implements OnInit {
       this.cancelledTrips = [];
       this.deliveredTrips = [];
       this.tonuTrips = [];
-      this.fetchTripsCount();
-      this.getStartandEndVal("all");
+      this.lastEvaluatedKey = "";
+      this.initDataTable();
     } else {
       return false;
     }
-  }
-
-  fetchAllVehiclesIDs() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehiclesObject = result;
-    });
-  }
-
-  fetchAllAssetIDs() {
-    this.apiService.getData("assets/get/list").subscribe((result: any) => {
-      this.assetsObject = result;
-    });
-  }
-
-  fetchAllCarrierIDs() {
-    this.apiService
-      .getData("contacts/get/list/carrier")
-      .subscribe((result: any) => {
-        this.carriersObject = result;
-      });
-  }
-
-  fetchAllDrivers() {
-    this.apiService.getData("drivers/get/list").subscribe((result: any) => {
-      this.driversIDSObject = result;
-    });
-  }
-
-  fetchAllOrderIDs() {
-    this.apiService.getData("orders/get/list").subscribe((result: any) => {
-      this.ordersObject = result;
-    });
-  }
-
-  getStartandEndVal(type) {
-    if (type == "all") {
-      this.tripStartPoint = this.tripDraw * this.pageLength + 1;
-      this.tripEndPoint = this.tripStartPoint + this.pageLength - 1;
-    }
-  }
-
-  // next button func
-  nextResults(type) {
-    if (type == "all") {
-      this.tripNext = true;
-      this.tripDraw += 1;
-
-      if (this.trips[this.tripDraw] == undefined) {
-        this.records = false;
-        this.initDataTable();
-        this.tripPrev = false;
-      } else {
-        if (this.tripDraw <= 0) {
-          this.tripPrev = true;
-        } else {
-          this.tripPrev = false;
-        }
-        if (this.tripDraw < this.lastFetched.draw) {
-          this.tripNext = false;
-        } else {
-          this.tripNext = this.lastFetched.status;
-        }
-        this.getStartandEndVal("all");
-        this.tripEndPoint =
-          this.tripStartPoint + this.trips[this.tripDraw].length - 1;
-      }
-    }
-  }
-
-  // prev button func
-  prevResults(type) {
-    if (type == "all") {
-      this.tripNext = true;
-      this.tripPrev = true;
-      this.tripDraw -= 1;
-
-      if (this.trips[this.tripDraw] == undefined) {
-        this.initDataTable();
-      } else {
-        if (this.tripDraw <= 0) {
-          this.tripPrev = true;
-        } else {
-          this.tripPrev = false;
-        }
-        this.tripNext = false;
-        this.getStartandEndVal("all");
-      }
-    }
-  }
-
-  resetCountResult() {
-    this.tripStartPoint = 1;
-    this.tripEndPoint = this.pageLength;
-    this.tripDraw = 0;
   }
 
   setActiveDiv(type) {
@@ -926,6 +784,7 @@ export class TripListComponent implements OnInit {
       event == "tripStatus"
     ) {
       this.tripsFiltr.searchValue = null;
+      this.orderValue = null;
     } else {
       this.tripsFiltr.searchValue = "";
     }
@@ -983,7 +842,6 @@ export class TripListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.lastEvaluatedKey = "";
     $("#categorySelect").text("Search by category");
-    this.tripDraw = 0;
     this.activeTab = "all";
     this.confirmedTrips = [];
     this.dispatchedTrips = [];
@@ -992,7 +850,15 @@ export class TripListComponent implements OnInit {
     this.cancelledTrips = [];
     this.deliveredTrips = [];
     this.tonuTrips = [];
-    this.fetchTripsCount();
-    this.getStartandEndVal("all");
+    this.initDataTable();
+  }
+
+  onScroll() {
+    if (this.loaded) {
+      this.isLoad = true;
+      this.isLoadText = "Loading";
+      this.initDataTable();
+    }
+    this.loaded = false;
   }
 }

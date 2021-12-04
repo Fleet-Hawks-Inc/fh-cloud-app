@@ -16,6 +16,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ChartsModule } from 'ng2-charts';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -112,7 +113,8 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
-    ChartsModule
+    ChartsModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

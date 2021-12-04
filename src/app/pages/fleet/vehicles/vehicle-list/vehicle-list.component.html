@@ -1,8 +1,8 @@
 <style>
     .extra {
-       display: none;
+        display: none;
     }
- </style>
+</style>
 
 <section class="body">
     <div class="inner-wrapper">
@@ -13,21 +13,22 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-2 col-lg-2">
                             <div class="input-group input-group-md mb-3">
-                                <input type="text" autocomplete="off" name="vehicleIdentification" placeholder="Search vehicle by name"
-                                    [(ngModel)]="vehicleIdentification" class="form-control"
-                                    (input)="getSuggestions($event.target.value)" />
+                                <input type="text" autocomplete="off" name="vehicleIdentification"
+                                    placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
+                                    class="form-control" (input)="getSuggestions($event.target.value)" />
                             </div>
                             <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
                                 <ul class="text-capitalize">
-                                   <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;" (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)"
-                                   > {{ suggestedVehicle.vehicleIdentification }}</li>
+                                    <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
+                                        (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)">
+                                        {{ suggestedVehicle.vehicleIdentification }}</li>
                                 </ul>
-                             </div>
+                            </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2 pl-0 pr-2">
-                            <ng-select class="form-control bgnone populate" name="currentStatus" [(ngModel)]="currentStatus"
-                                placeholder="Select status">
+                            <ng-select class="form-control bgnone populate" name="currentStatus"
+                                [(ngModel)]="currentStatus" placeholder="Select status">
                                 <ng-option value="active">Active</ng-option>
                                 <ng-option value="inActive">Inactive</ng-option>
                                 <ng-option value="outOfService">Out of Service</ng-option>
@@ -42,75 +43,86 @@
                         </div>
                         <div class="col-md-6 col-lg-6 text-right pr-1 page-buttons">
                             <div class="btn-group flex-wrap" style="min-width:190px;" *ngIf="!environment">
-                                <button type="button" class="mr15 {margin-right:50px !important;} driverbtn btn btn-default btn-md dropdown-toggle toggleright" data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
-                                <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin"
-                                      name="vin" (change)="hideShowColumn()"> VIN </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.vehicleName"
-                                      name="vehicleName" (change)="hideShowColumn()"> Vehicle Name/Number </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.startDate"
-                                      name="startDate" (change)="hideShowColumn()"> Start Date </label>
-                                   </a>
+                                <button type="button"
+                                    class="mr15 {margin-right:50px !important;} driverbtn btn btn-default btn-md dropdown-toggle toggleright"
+                                    data-toggle="dropdown">Column Visibility <span class="caret"></span></button>
+                                <div class="dropdown-menu dutystatwd colvisi-scrollbar" role="menu"
+                                    x-placement="bottom-start"
+                                    style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
                                     <a class="dropdown-item text-1" href="javascript:;">
-                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.make"
-                                        name="make" (change)="hideShowColumn()"> Make </label>
-                                    </a>                                    
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.vin" name="vin"
+                                                (change)="hideShowColumn()"> VIN </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.vehicleName"
+                                                name="vehicleName" (change)="hideShowColumn()"> Vehicle Name/Number
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.startDate"
+                                                name="startDate" (change)="hideShowColumn()"> Start Date </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.make" name="make"
+                                                (change)="hideShowColumn()"> Make </label>
+                                    </a>
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.annualSafety"
-                                        name="annualSafety" (change)="hideShowColumn()"> Annual Safety Date </label>
+                                                name="annualSafety" (change)="hideShowColumn()"> Annual Safety Date
+                                        </label>
                                     </a>
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.ownership"
-                                       name="ownership" (change)="hideShowColumn()"> Ownership </label>
+                                                name="ownership" (change)="hideShowColumn()"> Ownership </label>
                                     </a>
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.driver"
-                                        name="driver" (change)="hideShowColumn()"> Assigned Driver </label>
+                                                name="driver" (change)="hideShowColumn()"> Assigned Driver </label>
                                     </a>
                                     <a class="dropdown-item text-1" href="javascript:;">
                                         <label><input type="checkbox" disabled [(ngModel)]="hideShow.teamDriver"
-                                        name="teamDriver" (change)="hideShowColumn()"> Team Driver Assigned </label>
+                                                name="teamDriver" (change)="hideShowColumn()"> Team Driver Assigned
+                                        </label>
                                     </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.plateNo"
-                                      name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
-                                         name="status" (change)="hideShowColumn()"> Status </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.group"
-                                         name="group" (change)="hideShowColumn()"> Group </label>
-                                   </a>
-                                   
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.serviceProgram"
-                                         name="serviceProgram" (change)="hideShowColumn()"> Service Program </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.serviceDate"
-                                         name="serviceDate" (change)="hideShowColumn()"> Start Date </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.insuranceVendor"
-                                         name="insuranceVendor" (change)="hideShowColumn()"> Insurance Vendor </label>
-                                   </a>
-                                   <a class="dropdown-item text-1" href="javascript:;">
-                                      <label><input type="checkbox" [(ngModel)]="hideShow.insuranceAmount"
-                                         name="insuranceAmount" (change)="hideShowColumn()"> Insurance Amount </label>
-                                   </a>
                                     <a class="dropdown-item text-1" href="javascript:;">
-                                        <label><input type="checkbox" [(ngModel)]="hideShow.engineSummary" name="engineSummary"
-                                                (change)="hideShowColumn()"> Engine Summary </label>
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.plateNo"
+                                                name="plateNo" (change)="hideShowColumn()"> Plate Number </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" disabled [(ngModel)]="hideShow.status"
+                                                name="status" (change)="hideShowColumn()"> Status </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.group" name="group"
+                                                (change)="hideShowColumn()"> Group </label>
+                                    </a>
+
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.serviceProgram"
+                                                name="serviceProgram" (change)="hideShowColumn()"> Service Program
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.serviceDate"
+                                                name="serviceDate" (change)="hideShowColumn()"> Start Date </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.insuranceVendor"
+                                                name="insuranceVendor" (change)="hideShowColumn()"> Insurance Vendor
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.insuranceAmount"
+                                                name="insuranceAmount" (change)="hideShowColumn()"> Insurance Amount
+                                        </label>
+                                    </a>
+                                    <a class="dropdown-item text-1" href="javascript:;">
+                                        <label><input type="checkbox" [(ngModel)]="hideShow.engineSummary"
+                                                name="engineSummary" (change)="hideShowColumn()"> Engine Summary
+                                        </label>
                                     </a>
                                 </div>
-                             </div>
+                            </div>
                             <button type="button" *ngIf="!environment" id="map_view_btn"
                                 [ngClass]="(currentView=='map')?'btn-success':'btn-default'" class="btn btn-sm mr-2"
                                 (click)="changeView()">
@@ -137,12 +149,13 @@
                                     <a class="dropdown-item text-1" (click)="export()">Export</a>
                                 </div>
                             </div>
-                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                            <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
+                                class="btn btn-success btn-sm modal-with-form mr-2">
                                 <i class="fas fa-sync"></i>
                             </a>
 
-                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm"
-                                style="color: white"><i class="fas fa-plus"></i> Add Vehicle</a>
+                            <a routerLink="/fleet/vehicles/add" class="btn btn-success btn-sm" style="color: white"><i
+                                    class="fas fa-plus"></i> Add Vehicle</a>
                         </div>
                     </div>
                 </form>
@@ -150,139 +163,176 @@
 
             <section class="m-2">
                 <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row pt-3">
-                            <div class="col-lg-12">
-                                <div class="table-responsive">
-                                    <table class="row-border hover table table-bordered table-striped mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th class="col2 ">Vehicle Name/Number</th>
-                                                <th class="col1 ">VIN</th>
-                                                <th class="">Start Date</th>
-                                                <th class="col4 ">Make</th>
-                                                <th class="">Model</th>
-                                                <th class="">Year</th>
-                                                <th class="">Annual Safety Date</th>
-                                                <th class="">Ownership</th>
-                                                <th class="">Driver Assigned</th>
-                                                <th class="">Team Driver Assigned</th>
-                                                <th class="col7 extra">Trip</th>
-                                                <th class="col8 ">Plate Number</th>
-                                                <th class="col8 ">DashCam</th>
-                                                <th class="col10 minWidth120">Status</th>
-                                                <th class="col11 extra">Group</th>
-                                                <th class="col14 extra">Service Program</th>
-                                                <th class="col16 extra">Insurance Vendor</th>
-                                                <th class="col17 extra">Insurance Amount</th>
-                                                <th class="col18 extra">Engine Summary</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngIf="vehicles.length == 0" class="text-center">
-                                                <td colspan="13">{{ dataMessage }}</td>
-                                            </tr>
-                                            <tr *ngFor="let vehicle of vehicles; let i = index" class="text-capitalize">
-                                                <td class="cursorpoint" *ngIf="hideShow.vehicleName" [routerLink]="vehicle.url">
-                                                    <span class="font-weight-bold line-height-lg text-capitalize">{{ vehicle.vehicleIdentification }}</span>
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.vin" [routerLink]="vehicle.url">
-                                                    {{ vehicle.VIN }}
-                                                </td>
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table class="row-border hover table table-bordered table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col2 ">Vehicle Name/Number</th>
+                                                        <th class="col1 ">VIN</th>
+                                                        <th class="">Start Date</th>
+                                                        <th class="col4 ">Make</th>
+                                                        <th class="">Model</th>
+                                                        <th class="">Year</th>
+                                                        <th class="">Annual Safety Date</th>
+                                                        <th class="">Ownership</th>
+                                                        <th class="">Driver Assigned</th>
+                                                        <th class="">Team Driver Assigned</th>
+                                                        <th class="col7 extra">Trip</th>
+                                                        <th class="col8 ">Plate Number</th>
+                                                        <th class="col8 ">DashCam</th>
+                                                        <th class="col10 minWidth120">Status</th>
+                                                        <th class="col11 extra">Group</th>
+                                                        <th class="col14 extra">Service Program</th>
+                                                        <th class="col16 extra">Insurance Vendor</th>
+                                                        <th class="col17 extra">Insurance Amount</th>
+                                                        <th class="col18 extra">Engine Summary</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="vehicles.length == 0" class="text-center">
+                                                        <td colspan="13">{{ dataMessage }}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let vehicle of vehicles; let i = index"
+                                                        class="text-capitalize">
+                                                        <td class="cursorpoint" *ngIf="hideShow.vehicleName"
+                                                            [routerLink]="vehicle.url">
+                                                            <span
+                                                                class="font-weight-bold line-height-lg text-capitalize">{{
+                                                                vehicle.vehicleIdentification }}</span>
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.vin"
+                                                            [routerLink]="vehicle.url">
+                                                            {{ vehicle.VIN }}
+                                                        </td>
 
-                                                <td class="cursorpoint" [routerLink]="vehicle.url">{{ vehicle.lifeCycle.startDate | date:"yyyy/MM/dd" }}</td>
-                                                <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="cursorpoint" [routerLink]="vehicle.url">
-                                                    {{vehicleManufacturersList[vehicle.manufacturerID] | titlecase}}
-                                                </td>
-                                                <td *ngIf="!vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make " class="cursorpoint" [routerLink]="vehicle.url">
-                                                    {{vehicle.manufacturerID | titlecase}}
-                                                </td>
-                                                <td *ngIf="vehicleModelList[vehicle.modelID] && hideShow.model" class="cursorpoint" [routerLink]="vehicle.url">
-                                                    {{vehicleModelList[vehicle.modelID] | titlecase}}
-                                                </td>
-                                                <td *ngIf="!vehicleModelList[vehicle.modelID] && hideShow.model" class="cursorpoint" [routerLink]="vehicle.url">
-                                                    {{vehicle.modelID | titlecase}}
-                                                </td>
-                                                <td class="cursorpoint" [routerLink]="vehicle.url">{{ vehicle.year }}</td>
-                                                <td class="cursorpoint" [routerLink]="vehicle.url">{{ vehicle.annualSafetyDate | date: "yyyy/MM/dd" }}</td>
-                                                <td class="cursorpoint" [routerLink]="vehicle.url">{{ (vehicle.ownership) ? vehicle.ownership : '-'}}</td>
-                                                <td class="cursorpoint" [routerLink]="vehicle.url"> {{ (driversList[vehicle.driverID]) ? driversList[vehicle.driverID] : '-' }}</td>
-                                                <td class="cursorpoint" [routerLink]="vehicle.url"> {{ (driversList[vehicle.teamDriverID]) ? driversList[vehicle.teamDriverID]: '-' }}</td>
-                                                <td class="cursorpoint" *ngIf="hideShow.plateNo" [routerLink]="vehicle.url">
-                                                    {{(vehicle.plateNumber) ? vehicle.plateNumber : '-'}}
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.status">
-                                                   
-                                                    <span class="badge  p-1 text-uppercase" (click)="openLiveView(dashCamModel,vehicle.vehicleIdentification,vehicle.deviceInfo)"
-                                                    *ngIf="vehicle.isDashCam" dhref="javascript:;"  [ngClass]="{'badge-success':vehicle.isDashOnline,'badge-primary':!vehicle.isDashOnline}">{{ vehicle.isDashOnline === true ? "Live View" : "Offline"}}</span>
-                                                    <span class="badge  p-1 text-uppercase" 
-                                                    *ngIf="!vehicle.isDashCam"  href="javascript:;" [ngClass]="{'badge-primary':true}">NO CAM</span>
-                                                    
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-dark p-1 text-uppercase">{{vehicle.currentStatus}}</span>
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.group" [routerLink]="vehicle.url">
-                                                    {{ (vehicle.groupID) ? groupsList[vehicle.groupID] : '-'}}
-                                                </td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url">{{
+                                                            vehicle.lifeCycle.startDate | date:"yyyy/MM/dd" }}</td>
+                                                        <td *ngIf="vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make "
+                                                            class="cursorpoint" [routerLink]="vehicle.url">
+                                                            {{vehicleManufacturersList[vehicle.manufacturerID] |
+                                                            titlecase}}
+                                                        </td>
+                                                        <td *ngIf="!vehicleManufacturersList[vehicle.manufacturerID] && hideShow.make "
+                                                            class="cursorpoint" [routerLink]="vehicle.url">
+                                                            {{vehicle.manufacturerID | titlecase}}
+                                                        </td>
+                                                        <td *ngIf="vehicleModelList[vehicle.modelID] && hideShow.model"
+                                                            class="cursorpoint" [routerLink]="vehicle.url">
+                                                            {{vehicleModelList[vehicle.modelID] | titlecase}}
+                                                        </td>
+                                                        <td *ngIf="!vehicleModelList[vehicle.modelID] && hideShow.model"
+                                                            class="cursorpoint" [routerLink]="vehicle.url">
+                                                            {{vehicle.modelID | titlecase}}
+                                                        </td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url">{{
+                                                            vehicle.year
+                                                            }}</td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url">{{
+                                                            vehicle.annualSafetyDate | date: "yyyy/MM/dd" }}</td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url">{{
+                                                            (vehicle.ownership) ? vehicle.ownership : '-'}}</td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url"> {{
+                                                            (driversList[vehicle.driverID]) ?
+                                                            driversList[vehicle.driverID]
+                                                            : '-' }}</td>
+                                                        <td class="cursorpoint" [routerLink]="vehicle.url"> {{
+                                                            (driversList[vehicle.teamDriverID]) ?
+                                                            driversList[vehicle.teamDriverID]: '-' }}</td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.plateNo"
+                                                            [routerLink]="vehicle.url">
+                                                            {{(vehicle.plateNumber) ? vehicle.plateNumber : '-'}}
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.status">
 
-                                                <!-- extra columns -->
-                                                <td class="cursorpoint" *ngIf="hideShow.serviceProgram" [routerLink]="vehicle.url">
-                                                    <span *ngIf="vehicle.servicePrograms.length ===0">-</span>
-                                                    <span *ngFor="let prog of vehicle.servicePrograms; let p=index">
-                                                        {{ p+1 }}) {{ serviceProgramsList[prog] }}
-                                                        <br>
-                                                    </span>
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.insuranceVendor" [routerLink]="vehicle.url">
-                                                    {{(vendorsList[vehicle.insurance.vendorID]) ? vehicle.insurance.vendorID : '-'}}
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.insuranceAmount" [routerLink]="vehicle.url">
-                                                    <span *ngIf="vehicle.insurance.amount">
-                                                        {{vehicle.insurance.amount}} {{ vehicle.insurance.amountCurrency }}   
-                                                    </span>
-                                                    <span *ngIf="!vehicle.insurance.amount">-</span>
-                                                </td>
-                                                <td class="cursorpoint" *ngIf="hideShow.engineSummary" [routerLink]="vehicle.url">
-                                                    {{(vehicle.engine.engineSummary) ? vehicle.engine.engineSummary : '-'}}
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown dropright">
-                                                        <button class="bg-transparent border-0" type="button"
-                                                            id="dropdownMenuButton-{{ i }}" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false" [routerLink]="">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu"
-                                                            attr.aria-labelledby="dropdownMenuButton-{{ i }}">
-                                                            <a class="dropdown-item" routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}">Edit</a>
-                                                            <a class="dropdown-item" href="javascript:;"
-                                                                (click)="deleteVehicle(vehicle)">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="row mt-3 dtPaginate" *ngIf="vehicles.length > 0">
-                                    <div class="col-6">
-                                        Showing {{ vehicleStartPoint }} to {{ vehicleEndPoint }} of {{ totalRecords }} entries.
-                                    </div>
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="vehiclePrev">Prev</button>
-                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="vehicleNext">Next</button>
+                                                            <span class="badge  p-1 text-uppercase"
+                                                                (click)="openLiveView(dashCamModel,vehicle.vehicleIdentification,vehicle.deviceInfo)"
+                                                                *ngIf="vehicle.isDashCam" dhref="javascript:;"
+                                                                [ngClass]="{'badge-success':vehicle.isDashOnline,'badge-primary':!vehicle.isDashOnline}">{{
+                                                                vehicle.isDashOnline === true ? "Live View" :
+                                                                "Offline"}}</span>
+                                                            <span class="badge  p-1 text-uppercase"
+                                                                *ngIf="!vehicle.isDashCam" href="javascript:;"
+                                                                [ngClass]="{'badge-primary':true}">NO CAM</span>
+
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                class="badge badge-dark p-1 text-uppercase">{{vehicle.currentStatus}}</span>
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.group"
+                                                            [routerLink]="vehicle.url">
+                                                            {{ (vehicle.groupID) ? groupsList[vehicle.groupID] : '-'}}
+                                                        </td>
+
+                                                        <!-- extra columns -->
+                                                        <td class="cursorpoint" *ngIf="hideShow.serviceProgram"
+                                                            [routerLink]="vehicle.url">
+                                                            <span *ngIf="vehicle.servicePrograms.length ===0">-</span>
+                                                            <span
+                                                                *ngFor="let prog of vehicle.servicePrograms; let p=index">
+                                                                {{ p+1 }}) {{ serviceProgramsList[prog] }}
+                                                                <br>
+                                                            </span>
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.insuranceVendor"
+                                                            [routerLink]="vehicle.url">
+                                                            {{(vendorsList[vehicle.insurance.vendorID]) ?
+                                                            vehicle.insurance.vendorID : '-'}}
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.insuranceAmount"
+                                                            [routerLink]="vehicle.url">
+                                                            <span *ngIf="vehicle.insurance.amount">
+                                                                {{vehicle.insurance.amount}} {{
+                                                                vehicle.insurance.amountCurrency }}
+                                                            </span>
+                                                            <span *ngIf="!vehicle.insurance.amount">-</span>
+                                                        </td>
+                                                        <td class="cursorpoint" *ngIf="hideShow.engineSummary"
+                                                            [routerLink]="vehicle.url">
+                                                            {{(vehicle.engine.engineSummary) ?
+                                                            vehicle.engine.engineSummary
+                                                            : '-'}}
+                                                        </td>
+                                                        <td>
+                                                            <div class="dropdown dropright">
+                                                                <button class="bg-transparent border-0" type="button"
+                                                                    id="dropdownMenuButton-{{ i }}"
+                                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                                    aria-expanded="false" [routerLink]="">
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu"
+                                                                    attr.aria-labelledby="dropdownMenuButton-{{ i }}">
+                                                                    <a class="dropdown-item"
+                                                                        routerLink="/fleet/vehicles/edit/{{vehicle.vehicleID}}">Edit</a>
+                                                                    <a class="dropdown-item" href="javascript:;"
+                                                                        (click)="deleteVehicle(vehicle)">Delete</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
-                         </div>
-                      </div>
-                   </div>
+                        </div>
+                    </div>
                 </div>
-             </section>
-
+            </section>
+            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && vehicles.length !== 0">
+                <button type="button" class="btn btn-success btn-sm text-light" (click)="initDataTable()">Load
+                    More..</button>
+            </div>
 
 
 
@@ -583,9 +633,9 @@
                     </div>
                 </div>
             </div>
-           
+
         </section>
-       
+
     </div>
 </section>
 
@@ -594,25 +644,25 @@
 <!--Modal: Name-->
 <ng-template #dashCamModel let-modal>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{liveStreamVehicle}}</h4>
-      
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+        <h4 class="modal-title" id="modal-dash-cam">Dash Cam Live Feed {{liveStreamVehicle}}</h4>
+
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
     <div class="modal-body">
-        <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>       
-      
+        <b>Warning: To save data consumption this window will close automatically after 1 minute of streaming. </b>
+
         <div class="embed-responsive z-depth-1-half" style="height: 600px;width: 100%;">
-            <iframe id="videoIframe" height="600px" width="100%"  [src]="url"></iframe>          
-          </div><br>
-          
+            <iframe id="videoIframe" height="600px" width="100%" [src]="url"></iframe>
+        </div><br>
+
     </div>
     <!-- <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Close</button>
    
     </div> -->
-    
-  </ng-template>
 
-  <!--Modal: Name--> 
+</ng-template>
+
+<!--Modal: Name--> 

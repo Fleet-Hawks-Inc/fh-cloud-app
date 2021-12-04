@@ -339,8 +339,9 @@ export class AddFuelEntryComponent implements OnInit {
       `${this.fuelData.data.date}T${this.fuelData.data.time}`
     ).getTime();
     // append other fields
+    console.log(this.fuelData)
     this.apiService.postData("fuelEntries", this.fuelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -357,7 +358,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -374,12 +375,12 @@ export class AddFuelEntryComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -456,7 +457,7 @@ export class AddFuelEntryComponent implements OnInit {
       `${this.fuelData.data.date}T${this.fuelData.data.time}`
     ).getTime();
     this.apiService.putData("fuelEntries", this.fuelData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -473,7 +474,7 @@ export class AddFuelEntryComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {

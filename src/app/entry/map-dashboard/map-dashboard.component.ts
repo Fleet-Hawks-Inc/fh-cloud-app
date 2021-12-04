@@ -37,15 +37,16 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   public searchResults: any;
   driverData: any;
   // Google Maps
-  zoom: 3;
+  zoom = 3;
   lat = -104.618896;
   lng = 50.44521;
   center = { lat: 48.48248695279594, lng: -99.0688673798094 };
-  markerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
+  driverMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/driver-marker.png' };
   assetMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/asset-marker.png' };
-  markerPositions = [];
+  vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/vehicle-marker.png' };
+  driverPositions = [];
   assetPositions = [];
-
+  vehicleDashPositions = [];
 
   isControlAdded = false;
   frontEndData = {
@@ -61,6 +62,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     await this.getCurrentDriverLocation();
     await this.getCurrentAssetLocation();
+    await this.getVehicleLocationByDashCam();
 
 
   }
@@ -72,11 +74,11 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
     this.apiService.getData('dashboard/drivers/getCurrentDriverLocation').subscribe((data) => {
       if (data) {
-        this.markerPositions = [];
+        this.driverPositions = [];
         for (const key in data) {
           const value = data[key]
           const speedVal = parseInt(value.speed) / 3.6;
-          this.markerPositions.push({
+          this.driverPositions.push({
             position: { lng: parseFloat(value.lng), lat: parseFloat(value.lat) },
             data: {
               userId: value.userId,
@@ -120,10 +122,39 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             }
           });
         }
-        console.log(this.assetPositions)
 
       } else {
         // console.log('No data');
+      }
+
+
+    })
+
+  }
+
+  /**
+ * Get vehicle location by dashCam
+ */
+  async getVehicleLocationByDashCam() {
+    this.apiService.getData('dashboard/vehicle/getLocationViaDashCam').subscribe((data) => {
+      if (data) {
+        this.vehicleDashPositions = [];
+        for (const devices of data) {
+          this.vehicleDashPositions.push({
+            position: { lng: parseFloat(devices.location.lng), lat: parseFloat(devices.location.lat) },
+            data: {
+              vehicleIdentification: devices.vehicleIdentification,
+              time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
+              speed: devices.location.speed,
+              vehicleID: devices.vehicleID,
+              location: devices.location.label
+            }
+          });
+        }
+
+
+      } else {
+        // Do nothing
       }
 
 
@@ -138,6 +169,9 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
         break;
       case 'asset':
         this.infoDetail = this.prepareAssetInfoTemplate(data);
+        break;
+      case 'vehicle':
+        this.infoDetail = this.prepareVehicleInfoTemplate(data);
         break;
       default:
         throw new Error('Unable to get Marker type info');
@@ -156,11 +190,18 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
     `;
   }
   prepareAssetInfoTemplate(data: any) {
-    console.log('data', data);
+    // console.log('data', data);
     return `<a href='#/fleet/assets/detail/${data.assetID}' target=_blank'><h4> Asset: ${data.assetIdentification}</h4></a>
     Speed: ${data.speed} KM/H | Altitude: ${data.altitude} <br/> <br/>
     Time : ${data.time}<br/> <br/>
     Temp. : ${data.temp} | Battery : ${data.battery}
+     `;
+  }
+
+  prepareVehicleInfoTemplate(data: any) {
+    return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
+    Speed: ${data.speed} KM/H 
+    Time : ${data.time}<br/> <br/>  <span (click)='open()'> hello</span>   
      `;
   }
 

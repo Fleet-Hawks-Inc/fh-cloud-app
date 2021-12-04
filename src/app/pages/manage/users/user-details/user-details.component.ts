@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services';
 import { ToastrService } from 'ngx-toastr';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { passwordStrength } from 'check-password-strength';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-user-details',
@@ -10,6 +15,7 @@ import { CountryStateCityService } from 'src/app/services/country-state-city.ser
   styleUrls: ['./user-details.component.css']
 })
 export class UserDetailsComponent implements OnInit {
+  @ViewChild('driverF') driverF: NgForm;
   Asseturl = this.apiService.AssetUrl;
   contactID = '';
   profilePath = '';
@@ -33,6 +39,7 @@ export class UserDetailsComponent implements OnInit {
       WCB: '',
       healthCare: ''
     },
+    
     adrs: [{
       aType: null,
       cCode: null,
@@ -68,7 +75,22 @@ export class UserDetailsComponent implements OnInit {
       confirmPassword: ''
     }
   };
+    user = { password: '', confirmPassword: '' };
+    userName: any = '';
+    passwordValidation = {
+    upperCase: false,
+    lowerCase: false,
+    number: false,
+    specialCharacters: false,
+    length: false
+  };
   newRoles = [];
+    fieldTextType: boolean;
+    cpwdfieldTextType: boolean;
+    errors: {};
+    submitDisabled: boolean = false;
+    hasSuccess: boolean;
+    response:any ='';
   public userProfileSrc: any = 'assets/img/driver/driver.png';
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, private toastr: ToastrService,
               private countryStateCity: CountryStateCityService) { }
@@ -77,6 +99,124 @@ export class UserDetailsComponent implements OnInit {
     this.contactID = this.route.snapshot.params[`contactID`];
     this.fetchUserByID();
   }
+  
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+  
+  togglecpwdfieldTextType() {
+    this.cpwdfieldTextType = !this.cpwdfieldTextType;
+  }
+  
+    pwdModalClose(){
+    $('#userPasswordModal').modal('hide');
+        this.user = {
+          password: '',
+          confirmPassword: '',
+        }
+   }
+  
+  onChangeHideErrors(fieldname = '') {
+    $('[name="' + fieldname + '"]')
+      .removeClass('error')
+      .next()
+      .remove('label');
+  }
+  
+  hideErrors() {
+        from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .removeClass('error')
+          .next()
+          .remove('label')
+      });
+    this.errors = {};
+    }
+    throwErrors() {
+        from(Object.keys(this.errors))
+      .subscribe((v) => {
+        $('[name="' + v + '"]')
+          .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
+          .addClass('error');
+      });
+    }
+  
+  validatePassword(password) {
+    let passwordVerify = passwordStrength(password)
+    if (passwordVerify.contains.includes('lowercase')) {
+      this.passwordValidation.lowerCase = true;
+    } else {
+      this.passwordValidation.lowerCase = false;
+    }
+
+    if (passwordVerify.contains.includes('uppercase')) {
+      this.passwordValidation.upperCase = true;
+    } else {
+      this.passwordValidation.upperCase = false;
+    }
+    if (passwordVerify.contains.includes('symbol')) {
+      this.passwordValidation.specialCharacters = true;
+    } else {
+      this.passwordValidation.specialCharacters = false;
+    }
+    if (passwordVerify.contains.includes('number')) {
+      this.passwordValidation.number = true;
+    } else {
+      this.passwordValidation.number = false;
+    }
+    if (passwordVerify.length >= 8) {
+      this.passwordValidation.length = true
+    } else {
+      this.passwordValidation.length = false;
+    }
+    if (password.includes('.') || password.includes('-')) {
+      this.passwordValidation.specialCharacters = true;
+    }
+  }
+  
+    onChangePassword() {
+      this.submitDisabled = false;
+      const data = {
+      userName: this.userName,
+      password: this.user.password
+      };
+      this.apiService.postData('drivers/password', data).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error)
+          .pipe(
+            map((val: any) => {
+              val.message = val.message.replace(/".*"/, 'This Field');
+              this.errors[val.context.label] = val.message;
+            })
+          )
+          .subscribe({
+            complete: () => {
+              this.throwErrors();
+              this.submitDisabled = false;
+            },
+            error: () => {
+              this.submitDisabled = false;
+            },
+            next: () => { },
+          });
+      },
+      next: (res) => {
+        this.response = res;
+        this.hasSuccess = true;
+        this.submitDisabled = false;
+        this.toastr.success('Password updated successfully');
+        $('#userPasswordModal').modal('hide');
+        this.user = {
+          password: '',
+          confirmPassword: '',
+        }
+      },
+    });
+    
+  }
+
   fetchUserByID() {
     this.apiService.getData('contacts/detail/' + this.contactID).subscribe((result: any) => {
       result = result.Items[0];
@@ -119,6 +259,7 @@ export class UserDetailsComponent implements OnInit {
           confirmPassword: ''
         }
       };
+      this.userName = result.userLoginData.userName;
       this.userData[`timeCreated`] = result.timeCreated;
       this.userData[`createdDate`] = result.createdDate;
       this.userData[`createdTime`] = result.createdTime;
@@ -130,4 +271,6 @@ export class UserDetailsComponent implements OnInit {
       }
     });
   }
+  
+    
 }

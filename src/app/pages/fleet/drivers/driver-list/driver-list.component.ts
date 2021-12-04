@@ -233,7 +233,7 @@ export class DriverListComponent implements OnInit {
     }
     async initDataTable() {
         if (this.lastEvaluatedKey !== 'end') {
-            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`).toPromise();
+            const result = await this.apiService.getData(`drivers/fetch/records?driver=${this.driverID}&dutyStatus=${this.dutyStatus}&type=${this.driverType}&lastKey=${this.lastEvaluatedKey}`).toPromise();
             if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
@@ -319,11 +319,9 @@ export class DriverListComponent implements OnInit {
             this.drivers = [];
             this.dataMessage = Constants.FETCHING_DATA;
 
-            //this.lastEvaluatedKey = '';
+            this.lastEvaluatedKey = '';
             this.initDataTable();
-            //this.fetchDriversCount();
-            //this.driverDraw = 0;
-            //this.resetCountResult();
+
         } else {
             return false;
         }
@@ -466,32 +464,7 @@ export class DriverListComponent implements OnInit {
         }
     }
 
-    /*
-    getStartandEndVal() {
-      this.driverStartPoint = this.driverDraw * this.pageLength + 1;
-      this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
-    }
-    // next button func
-    nextResults() {
-      this.driverNext = true;
-      this.driverPrev = true;
-      this.driverDraw += 1;
-      this.initDataTable();
-    }
-    // prev button func
-    prevResults() {
-      this.driverNext = true;
-      this.driverPrev = true;
-      this.driverDraw -= 1;
-      this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
-      this.initDataTable();
-    }
-    resetCountResult() {
-      this.driverStartPoint = 1;
-      this.driverEndPoint = this.pageLength;
-      this.driverDraw = 0;
-    }
-    */
+
     refreshData() {
         this.drivers = [];
         this.driverID = '';
@@ -501,8 +474,6 @@ export class DriverListComponent implements OnInit {
         this.lastEvaluatedKey = '';
         this.initDataTable();
         this.dataMessage = Constants.FETCHING_DATA;
-        //this.fetchDriversCount();
-        // this.driverDraw = 0;
-        // this.resetCountResult();
+
     }
 }

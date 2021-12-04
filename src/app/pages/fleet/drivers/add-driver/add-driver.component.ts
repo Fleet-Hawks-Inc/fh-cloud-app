@@ -9,6 +9,7 @@ import {
   NgbCalendar,
   NgbDateAdapter,
   NgbModal,
+  NgbModalOptions,
 } from "@ng-bootstrap/ng-bootstrap";
 import { Auth } from "aws-amplify";
 import { passwordStrength } from "check-password-strength";
@@ -28,9 +29,15 @@ import { CanComponentDeactivate } from "src/app/guards/unsaved-changes.guard";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
-import { ApiService, HereMapService, ListService } from "../../../../services";
+import {
+  ApiService,
+  DashboardUtilityService,
+  HereMapService,
+  ListService,
+} from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
+
 declare var $: any;
 @Component({
   selector: "app-add-driver",
@@ -325,7 +332,8 @@ export class AddDriverComponent
     private dateAdapter: NgbDateAdapter<string>,
     private router: Router,
     private listService: ListService,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -382,7 +390,12 @@ export class AddDriverComponent
   canLeave(): boolean {
     if (this.driverF.dirty && !this.isSubmitted) {
       if (!this.modalService.hasOpenModals()) {
-        this.modalService.open(UnsavedChangesComponent, { size: "sm" });
+        let ngbModalOptions: NgbModalOptions = {
+          backdrop: "static",
+          keyboard: false,
+          size: "sm",
+        };
+        this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
       }
       return false;
     }
@@ -965,6 +978,7 @@ export class AddDriverComponent
           next: (res) => {
             // this.response = res;
             // this.hasSuccess = true;
+            this.dashboardUtilityService.refreshDrivers = true;
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.isSubmitted = true;
@@ -1416,6 +1430,7 @@ export class AddDriverComponent
             this.hasSuccess = true;
             this.isSubmitted = true;
             this.submitDisabled = false;
+            this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
             this.cancel();
           },
@@ -1709,7 +1724,7 @@ export class AddDriverComponent
         });
     }
   }
-  
+
   validateCDL() {
     this.hideVal();
     if (this.driverData.CDL_Number !== "") {

@@ -26,7 +26,9 @@ export class AddReceiptComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  totalAmount = 0;
   receiptData = {
+    currency: "CAD",
     customerID: [],
     txnDate: moment().format("YYYY-MM-DD"),
     recNo: null,
@@ -35,8 +37,6 @@ export class AddReceiptComponent implements OnInit {
     discount: 0,
     recAmountCur: "CAD",
     accountID: null,
-    // advAmt: 0,
-    // advAmtCur: null,
     paymentMode: null,
     paymentModeNo: null,
     paymentModeDate: null,
@@ -50,6 +50,7 @@ export class AddReceiptComponent implements OnInit {
     },
     paidInvoices: [],
     transactionLog: [],
+    invAmount: 0,
   };
   paymentMode = [
     {
@@ -108,6 +109,9 @@ export class AddReceiptComponent implements OnInit {
     desc: "",
     amount: 0,
   };
+  journalPrev = [];
+  convertedText = "";
+
   constructor(
     private listService: ListService,
     private accountService: AccountService,
@@ -119,10 +123,8 @@ export class AddReceiptComponent implements OnInit {
 
   ngOnInit() {
     this.listService.fetchCustomers();
-    // this.customers = this.listService.customersList;
     this.fetchCustomersByIDs();
-    this.listService.fetchChartAccounts();
-    this.accounts = this.listService.accountsList;
+    this.fetchAccounts();
     this.recID = this.route.snapshot.params[`recID`];
     if (this.recID) {
       this.pageTitle = "Edit Receipt";
@@ -133,6 +135,14 @@ export class AddReceiptComponent implements OnInit {
     let customerList = new Array<any>();
     this.getValidCustomers(customerList);
     this.customers = customerList;
+  }
+
+  fetchAccounts() {
+    this.accountService
+      .getData(`chartAc/get/all/list`)
+      .subscribe((result: any) => {
+        this.accounts = result;
+      });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -154,6 +164,9 @@ export class AddReceiptComponent implements OnInit {
     if (this.receiptData.customerID.length > 0) {
       this.searchDisabled = true;
       this.newTotal = 0;
+      this.receiptData.totalAmount = 0;
+      this.receiptData.discount = 0;
+      this.receiptData.recAmount = 0;
       this.advancePayments = [];
       this.orderInvoices = [];
       this.invoices = [];
@@ -164,7 +177,7 @@ export class AddReceiptComponent implements OnInit {
       );
       this.accountService
         .getData(
-          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
+          `order-invoice/customer/${customerIDs}?currency=${this.receiptData.currency}`
         )
         .subscribe((res: any) => {
           if (res.length === 0) {
@@ -175,21 +188,17 @@ export class AddReceiptComponent implements OnInit {
             this.orderInvoices.map((v: any) => {
               v.payDisable = false;
               v.discount = 0;
-              v.invStatus = v.invStatus.replace("_", " ");
+              v.invStatus = v.invStatus ? v.invStatus.replace("_", " ") : "";
             });
-            // if (this.orderInvoices.length > 0) {
-            //   this.receiptData.recAmountCur =
-            //     this.orderInvoices[0].charges.freightFee.currency;
-            // }
             for (const op of this.orderInvoices) {
               this.newTotal += op.balance;
-              this.receiptData.totalAmount = this.newTotal;
+              this.totalAmount = Number(this.newTotal.toFixed(2));
             }
           }
         });
       this.accountService
         .getData(
-          `invoices/customer/${customerIDs}?currency=${this.receiptData.recAmountCur}`
+          `invoices/customer/${customerIDs}?currency=${this.receiptData.currency}`
         )
         .subscribe((result) => {
           this.searchDisabled = false;
@@ -203,28 +212,34 @@ export class AddReceiptComponent implements OnInit {
               v.discount = 0;
               v.invStatus = v.invStatus.replace("_", " ");
             });
-            // if (this.invoices.length > 0) {
-            //   this.receiptData.recAmountCur = this.invoices[0].invCur;
-            //   // this.receiptData.advAmtCur = this.invoices[0].invCur;
-            // }
             for (const op of this.invoices) {
               this.newTotal += op.balance;
-              this.receiptData.totalAmount = this.newTotal;
+              this.totalAmount = Number(this.newTotal.toFixed(2));
             }
           }
         });
     }
   }
-  getConvertedCur(e) {
-    this.accountService
-      .getData(
-        `receipts/convert/${this.currency}/${e}/${this.receiptData.recAmount}`
-      )
-      .subscribe((res) => {
-        this.rate = res.rate.toFixed(2);
-        this.receiptData.recAmount = res.result.toFixed(2);
-      });
+  getConvertedCur(convertCurr) {
+    if (this.currency !== convertCurr) {
+      this.convertedText = "Fetching...";
+      this.accountService
+        .getData(
+          `receipts/convert/${this.currency}/${convertCurr}/${this.receiptData.recAmount}`
+        )
+        .subscribe((res) => {
+          this.rate = res.rate.toFixed(2);
+          this.receiptData.recAmount = res.result.toFixed(2);
+
+          this.convertedText = `1 ${this.currency} = ${this.rate} ${convertCurr}`;
+          this.getJournalPreview();
+        });
+    } else {
+      this.getJournalPreview();
+      this.findReceivedAmtFn();
+    }
   }
+
   refreshAccount() {
     this.listService.fetchChartAccounts();
   }
@@ -288,29 +303,19 @@ export class AddReceiptComponent implements OnInit {
     if (this.orderInvoices[j].fullPayment === true) {
       this.orderInvoices[j].payDisable = true;
       this.orderInvoices[j].amountPaid =
-        Number(this.orderInvoices[j].balance) -
-        Number(this.orderInvoices[j].discount);
+        Number(this.orderInvoices[j].balance.toFixed(2)) -
+        Number(this.orderInvoices[j].discount.toFixed(2));
     } else {
       this.orderInvoices[j].payDisable = false;
       this.orderInvoices[j].amountPaid = 0;
     }
 
     this.applyDiscount(j, "order");
-
-    // if (this.orderInvoices[j].fullPayment === true) {
-    //   this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    // } else if (
-    //   this.orderInvoices[j].fullPayment === true &&
-    //   this.orderInvoices[j].invStatus === "partially_paid"
-    // ) {
-    //   this.orderInvoices[j].amountPaid = this.orderInvoices[j].balance;
-    // } else {
-    //   this.orderInvoices[j].amountPaid = 0;
-    // }
-
     this.findReceivedAmtFn();
   }
   getAmountManual(k: any) {
+    this.invoices[k].balance = Number(this.invoices[k].balance.toFixed(2));
+    this.invoices[k].discount = Number(this.invoices[k].discount.toFixed(2));
     if (this.invoices[k].fullPayment === true) {
       this.invoices[k].amountPaid =
         Number(this.invoices[k].balance) - Number(this.invoices[k].discount);
@@ -318,27 +323,15 @@ export class AddReceiptComponent implements OnInit {
       this.invoices[k].amountPaid = 0;
     }
     this.applyDiscount(k, "inv");
-    // if (this.invoices[k].fullPayment === true) {
-    //   this.invoices[k].amountPaid = this.invoices[k].balance;
-    // } else if (
-    //   this.invoices[k].fullPayment === true &&
-    //   this.invoices[k].invStatus === "partially_paid"
-    // ) {
-    //   this.invoices[k].amountPaid = this.invoices[k].balance;
-    // } else {
-    //   this.invoices[k].amountPaid = 0;
-    // }
     this.findReceivedAmtFn();
   }
   async getPaidInvoices() {
     const paidInvoices = [];
     for (const element of this.orderInvoices) {
-      // console.log("order element", element);
       if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
-          // amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: "orderInvoice",
           amountPaid: element.amountPaid,
@@ -351,12 +344,10 @@ export class AddReceiptComponent implements OnInit {
       }
     }
     for (const element of this.invoices) {
-      // console.log("inv element", element);
       if (element.amountPaid !== 0 && element.amountPaid !== undefined) {
         const obj = {
           invID: element.invID,
           invNo: element.invNo,
-          // amountReceived: element.amountReceived,
           fullPayment: element.fullPayment,
           invType: "manual",
           amountPaid: element.amountPaid,
@@ -388,16 +379,40 @@ export class AddReceiptComponent implements OnInit {
     }
   }
 
+  getInvoiceArr() {
+    this.getPaidInvoices();
+    this.receiptData.totalAmount = 0;
+    this.receiptData.paidInvoices.map((v) => {
+      this.receiptData.totalAmount += Number(v.amountPaid);
+    });
+  }
+
   async addReceipt() {
     if (this.receiptData.recAmount === 0) {
       this.toastr.error("Select invoice");
     } else {
+      if (
+        this.receiptData.charges.addTotal > 0 &&
+        this.receiptData.charges.addAccountID === null
+      ) {
+        this.toastr.error("Please select addition account");
+        return false;
+      }
+
+      if (
+        this.receiptData.charges.dedTotal > 0 &&
+        this.receiptData.charges.dedAccountID === null
+      ) {
+        this.toastr.error("Please select deduction account");
+        return false;
+      }
+
       this.submitDisabled = true;
       this.errors = {};
       this.hasError = false;
       this.hasSuccess = false;
-      await this.getPaidInvoices();
-      console.log("this.receiptData", this.receiptData);
+      this.getInvoiceArr();
+      this.receiptData.invAmount = this.totalReceivedAmt;
       this.accountService.postData("receipts", this.receiptData).subscribe({
         complete: () => {},
         error: (err: any) => {
@@ -437,12 +452,32 @@ export class AddReceiptComponent implements OnInit {
     for (const element of this.orderInvoices) {
       this.totalReceivedAmt += element.amountPaid;
     }
-    this.receiptData.recAmount = this.totalReceivedAmt;
-    if (this.receiptData.recAmount > this.receiptData.totalAmount) {
+
+    this.receiptData.recAmount =
+      this.totalReceivedAmt +
+      this.receiptData.charges.addTotal -
+      this.receiptData.charges.dedTotal;
+
+    this.limitDecimals();
+    if (this.receiptData.recAmount > this.totalAmount) {
       this.totalErr = true;
     } else {
       this.totalErr = false;
     }
+    this.getJournalPreview();
+  }
+
+  limitDecimals() {
+    this.totalReceivedAmt = Number(this.totalReceivedAmt.toFixed(2));
+    this.receiptData.charges.addTotal = Number(
+      this.receiptData.charges.addTotal.toFixed(2)
+    );
+    this.receiptData.discount = Number(this.receiptData.discount.toFixed(2));
+    this.receiptData.charges.dedTotal = Number(
+      this.receiptData.charges.dedTotal.toFixed(2)
+    );
+    this.receiptData.recAmount = Number(this.receiptData.recAmount.toFixed(2));
+    this.totalAmount = Number(this.totalAmount.toFixed(2));
   }
 
   addAdditionRow() {
@@ -462,6 +497,7 @@ export class AddReceiptComponent implements OnInit {
     this.receiptData.charges.addition.forEach((element) => {
       this.receiptData.charges.addTotal += Number(element.amount);
     });
+    this.findReceivedAmtFn();
   }
 
   delAddData(index) {
@@ -486,6 +522,7 @@ export class AddReceiptComponent implements OnInit {
     this.receiptData.charges.deduction.forEach((element) => {
       this.receiptData.charges.dedTotal += Number(element.amount);
     });
+    this.findReceivedAmtFn();
   }
 
   delDedData(index) {
@@ -507,20 +544,12 @@ export class AddReceiptComponent implements OnInit {
         this.receiptData.discount += Number(v.discount);
       }
     });
+
+    this.findReceivedAmtFn();
   }
 
   applyDiscount(index, type) {
-    console.log("index", index);
-    console.log("type", type);
     if (type === "order") {
-      console.log(
-        "this.orderInvoices[index].discount",
-        this.orderInvoices[index].discount
-      );
-      console.log(
-        "this.orderInvoices[index].amountPaid",
-        this.orderInvoices[index].amountPaid
-      );
       let userPay =
         Number(this.orderInvoices[index].discount) +
         Number(this.orderInvoices[index].amountPaid);
@@ -539,14 +568,6 @@ export class AddReceiptComponent implements OnInit {
         this.totalErr = false;
       }
     } else if (type === "inv") {
-      console.log(
-        "this.invoices[index].discount",
-        this.invoices[index].discount
-      );
-      console.log(
-        "this.invoices[index].amountPaid",
-        this.invoices[index].amountPaid
-      );
       let userPay =
         Number(this.invoices[index].discount) +
         Number(this.invoices[index].amountPaid);
@@ -570,5 +591,80 @@ export class AddReceiptComponent implements OnInit {
     }
 
     this.calDiscountTotal();
+  }
+
+  getJournalPreview() {
+    this.getInvoiceArr();
+    this.journalPrev = [];
+    let jtype = [];
+
+    if (this.receiptData.recAmount > 0) {
+      if (!jtype.includes("first")) {
+        let obj = {
+          accName: this.receiptData.accountID,
+          amount: this.receiptData.recAmount,
+          type: "debit",
+          jType: "receipt amount",
+          cType: "recpt",
+        };
+        jtype.push("first");
+        this.journalPrev.push(obj);
+      }
+
+      if (!jtype.includes("recv")) {
+        let obj = {
+          accName: "1200 - Accounts Receivable",
+          amount:
+            Number(this.totalReceivedAmt) + Number(this.receiptData.discount),
+          type: "credit",
+          jType: "accounts receivable",
+          cType: "recv",
+        };
+        jtype.push("recv");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.charges.dedTotal > 0) {
+      if (!jtype.includes("ded")) {
+        let obj = {
+          accName: this.receiptData.charges.dedAccountID,
+          amount: this.receiptData.charges.dedTotal,
+          type: "debit",
+          jType: "deduction charges",
+          cType: "ded",
+        };
+        jtype.push("ded");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.discount > 0) {
+      if (!jtype.includes("disc")) {
+        let obj = {
+          accName: "5240 - Early Payment Purchase Discount",
+          amount: this.receiptData.discount,
+          type: "debit",
+          jType: "discount",
+          cType: "dis",
+        };
+        jtype.push("disc");
+        this.journalPrev.push(obj);
+      }
+    }
+
+    if (this.receiptData.charges.addTotal > 0) {
+      if (!jtype.includes("add")) {
+        let obj = {
+          accName: this.receiptData.charges.addAccountID,
+          amount: this.receiptData.charges.addTotal,
+          type: "credit",
+          jType: "addition charges",
+          cType: "add",
+        };
+        jtype.push("add");
+        this.journalPrev.push(obj);
+      }
+    }
   }
 }
