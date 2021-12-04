@@ -7,8 +7,7 @@
             Order Details
           </div>
           <div class="col-md-8 col-lg-8 text-right" *ngIf="showBtns">
-            <a *ngIf="orderStatus === 'delivered'"
-              routerLink="/dispatch/orders/edit/{{orderID}}"
+            <a *ngIf="orderStatus === 'delivered'" routerLink="/dispatch/orders/edit/{{orderID}}"
               [queryParams]="{state: 'recall'}" title="Recall" class="btn btn-sm
               mr-2
               btn-success">
@@ -16,13 +15,13 @@
             </a>
             <button *ngIf="showInvBtn" (click)="openEmailInv()" class="btn
               btn-sm mr-2 btn-success">Email</button>
-            <button *ngIf="showInvBtn" (click)="showInv(); isModalShow= true"
-              class="btn btn-success btn-sm mr-2">
+            <button *ngIf="showInvBtn" (click)="showInv(); isModalShow= true" class="btn btn-success btn-sm mr-2">
               Invoice
             </button>
+
             <button *ngIf="orderStatus === 'brokerage'"
-              (click)="downloadBrokeragePdf();" class="btn
-              btn-success btn-sm mr-2">
+              (click)="downloadBrokeragePdf();" [disabled]="brokerageDisabled"
+              class="btn btn-success btn-sm mr-2">
               <i class="fas fa-download"> </i>
               Brokerage</button>
             <!-- <button (click)="downloadBolPdf();" class="btn btn-success btn-sm
@@ -30,8 +29,7 @@
               <i class="fas fa-download"> </i>
               BOL
             </button> -->
-            <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{ orderID }}"
-              class="btn btn-default btn-sm mr-2"><i
+            <a *ngIf="hideEdit" routerLink="/dispatch/orders/edit/{{ orderID }}" class="btn btn-default btn-sm mr-2"><i
                 class="fas fa-pencil-alt"></i>
               Edit Order</a>
             <a (click)="cancel()" class="btn btn-default btn-sm"><i class="fas
@@ -41,8 +39,7 @@
                 dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Actions<span class="caret"></span>
               </button>
-              <div class="dropdown-menu" role="menu" x-placement="bottom-start"
-                style="position: absolute;
+              <div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute;
                 will-change: transform;
                 top: 0px;
                 left: 0px;
@@ -71,8 +68,7 @@
               <div>
                 <h4 class="m-0 font-weight-bold">
                   {{ orderMode }} - ORD{{ orderNumber }}
-                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase"
-                    *ngIf="orderStatus">
+                  <span class="badge p-1 badge-dark mt-2 mb-0 text-uppercase" *ngIf="orderStatus">
                     {{ orderStatus }} <span *ngIf="recallStatus">(R) </span>
                   </span>
                 </h4>
@@ -83,7 +79,7 @@
                   <a routerLink="/dispatch/trips/trip-details/{{
                     tripData.tripID
                     }}">
-                    {{ tripData.tripNo }}
+                    {{ tripData.tripNo ? tripData.tripNo : 'NA' }}
                   </a>
                 </h4>
                 <!-- <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
@@ -271,15 +267,12 @@
                           <a class="accordion-toggle
                             cursorpoint
                             font-weight-bold
-                            text-4 text-dark" data-toggle="collapse"
-                            [attr.data-target]="'#collapse' + i"
-                            aria-expanded="true"
-                            [attr.aria-controls]="'collapse' + i">
+                            text-4 text-dark" data-toggle="collapse" [attr.data-target]="'#collapse' + i"
+                            aria-expanded="true" [attr.aria-controls]="'collapse' + i">
                             Shipment-{{ i + 1 }}</a>
                         </h4>
                       </div>
-                      <div id="collapse{{ i }}" class="collapse"
-                        [attr.aria-labelledby]="'collapse1Heading' + i">
+                      <div id="collapse{{ i }}" class="collapse" [attr.aria-labelledby]="'collapse1Heading' + i">
                         <div class="card-body">
                           <div class="form-group row divderrel">
                             <div class="midledriver"></div>
@@ -301,16 +294,14 @@
                               <div class="pl-0 pr-5" *ngFor="let shipper of
                                 shipperReceiversInfo.shippers;
                                 let j= index">
-                                <a data-toggle="collapse"
-                                  [attr.data-target]="'#collapseShipperArea-' +
+                                <a data-toggle="collapse" [attr.data-target]="'#collapseShipperArea-' +
                                   i + '-' + j" href="#collapseShipperArea-{{ i
                                   }}-{{ j }}" aria-expanded="false">
                                   <label style="background: #f4f4f4; width:
                                     100%" class="text-dark text-5
                                     mb-0
                                     font-weight-bold
-                                    btn" (click)="caretClickShipper(i, j)"
-                                    id="shipperArea-{{ i }}-{{ j }}">
+                                    btn" (click)="caretClickShipper(i, j)" id="shipperArea-{{ i }}-{{ j }}">
                                     <span class="pull-left">Shipper {{ j + 1 }}</span>
                                     <i class="fas
                                       fa-caret-right
@@ -321,8 +312,7 @@
                                 </a>
 
                                 <section>
-                                  <div id="collapseShipperArea-{{ i }}-{{ j }}"
-                                    class="collapse">
+                                  <div id="collapseShipperArea-{{ i }}-{{ j }}" class="collapse">
                                     <div style="border: 1px solid #efefef;
                                       padding: 10px;">
                                       <div class="row">
@@ -344,14 +334,12 @@
                                             </p>
                                             <p class="mb-0 text-dark">
                                               <strong>Pickup Location:</strong>
-                                              <span class="mb-0 text-dark"
-                                                *ngIf="!pick.address.manual">
+                                              <span class="mb-0 text-dark" *ngIf="!pick.address.manual">
                                                 {{
                                                 pick.address.pickupLocation
                                                 }}
                                               </span>
-                                              <span class="mb-0 text-dark"
-                                                *ngIf="pick.address.manual">
+                                              <span class="mb-0 text-dark" *ngIf="pick.address.manual">
                                                 {{ pick.address.address }},
                                                 {{ pick.address.city }},
                                                 {{ pick.address.state }},
@@ -481,15 +469,13 @@
                               <div class="pl-0 pr-5" *ngFor="let receiver of
                                 shipperReceiversInfo.receivers;
                                 let k= index">
-                                <a data-toggle="collapse"
-                                  [attr.data-target]="'#collapseReceiverArea-' +
+                                <a data-toggle="collapse" [attr.data-target]="'#collapseReceiverArea-' +
                                   i + '-' + k" href="#collapseReceiverArea-{{ i
                                   }}-{{ k }}" aria-expanded="false">
                                   <label style="background: #f4f4f4; width:
                                     100%" class="text-dark text-5
                                     font-weight-bold
-                                    btn" (click)="caretClickReceiver(i, k)"
-                                    id="receiverArea-{{ i }}-{{ k }}">
+                                    btn" (click)="caretClickReceiver(i, k)" id="receiverArea-{{ i }}-{{ k }}">
                                     <span class="pull-left">Receiver {{ k + 1 }}</span>
                                     <i class="fas
                                       fa-caret-right
@@ -501,8 +487,7 @@
                                 </a>
 
                                 <section>
-                                  <div id="collapseReceiverArea-{{ i }}-{{ k }}"
-                                    class="collapse">
+                                  <div id="collapseReceiverArea-{{ i }}-{{ k }}" class="collapse">
                                     <div style="border: 1px solid #efefef;
                                       padding: 10px;">
                                       <div class="row">
@@ -524,14 +509,12 @@
                                             </p>
                                             <p class="mb-0 text-dark">
                                               <strong>Drop Location:</strong>
-                                              <span class="mb-0 text-dark"
-                                                *ngIf="!drop.address.manual">
+                                              <span class="mb-0 text-dark" *ngIf="!drop.address.manual">
                                                 {{
                                                 drop.address.dropOffLocation
                                                 }}
                                               </span>
-                                              <span class="mb-0 text-dark"
-                                                *ngIf="drop.address.manual">
+                                              <span class="mb-0 text-dark" *ngIf="drop.address.manual">
                                                 {{ drop.address.address }},
                                                 {{ drop.address.city }},
                                                 {{ drop.address.state }},
@@ -861,8 +844,7 @@
 
                         <div class="widgetlinfo">
                           <div class="col-lg-2 pull-left">
-                            <img src="assets/img/icon-cur.png" class="img-fluid"
-                              alt="shipper" />
+                            <img src="assets/img/icon-cur.png" class="img-fluid" alt="shipper" />
                           </div>
                           <div class="col-lg-10 pull-left">
                             <p class="mb-0 text-dark">
@@ -953,19 +935,15 @@
                             <div class="row my-2 px-2" *ngFor="let item of
                               attachments; let d= index">
                               <div class="col-5">
-                                <a href="javascript:;" data-toggle="modal"
-                                  data-target="#viewDocModal"
+                                <a href="javascript:;" data-toggle="modal" data-target="#viewDocModal"
                                   (click)="setPDFSrc(item.docPath)">Document {{
                                   d +
                                   1 }}</a>
                               </div>
                               <div class="col- 3 text-right">
-                                <em class="far fa-file text-dak mr-1"
-                                  (click)="setPDFSrc(item.docPath)"
-                                  data-toggle="modal"
-                                  data-target="#viewDocModal"></em>
-                                <a href="javascript:;"
-                                  (click)="delete('attachment', item.name, d)"
+                                <em class="far fa-file text-dak mr-1" (click)="setPDFSrc(item.docPath)"
+                                  data-toggle="modal" data-target="#viewDocModal"></em>
+                                <a href="javascript:;" (click)="delete('attachment', item.name, d)"
                                   class="modal-with-form">
                                   <em class="fas fa-times text-danger"></em></a>
                               </div>
@@ -998,10 +976,8 @@
                               </h2>
                             </div>
                             <div class="col-6">
-                              <input type="file" #uploadBol
-                                (change)="selectDocuments($event)" multiple
-                                class="p-0 form-control pull-right mb-0"
-                                id="bolUpload" />
+                              <input type="file" #uploadBol (change)="selectDocuments($event)" multiple
+                                class="p-0 form-control pull-right mb-0" id="bolUpload" />
                             </div>
                           </div>
                         </div>
@@ -1032,8 +1008,7 @@
                                     </a>
                                   </td>
                                   <td class="cursorpoint text-center">
-                                    <a href="javascript:;"
-                                      (click)="delete('docs', doc.name, d)"
+                                    <a href="javascript:;" (click)="delete('docs', doc.name, d)"
                                       class="modal-with-form">
                                       <em class="fas fa-times text-danger"></em></a>
                                   </td>
@@ -1081,8 +1056,7 @@
                           </h2>
                         </div>
                       </div>
-                      <div class="timeline timeline-simple changelog"
-                        style="max-height: 497px; overflow-x: auto; width:
+                      <div class="timeline timeline-simple changelog" style="max-height: 497px; overflow-x: auto; width:
                         100%">
                         <div class="tm-body text-dark" *ngIf="orderLogs.length>
                           0">
@@ -1108,8 +1082,7 @@
                             </li>
                           </ol>
                         </div>
-                        <div class="mt-3 mb-3 text-center"
-                          *ngIf="orderLogs.length
+                        <div class="mt-3 mb-3 text-center" *ngIf="orderLogs.length
                           == 0">
                           {{ noLogsMsg }}
                         </div>
@@ -1137,8 +1110,7 @@
         <h5 class="modal-title" id="templateSelectionModalLabel">
           Select Invoice Template
         </h5>
-        <button type="button" class="close" data-dismiss="modal"
-          aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <i class="far fa-window-close modal-dismiss" style="font-size: 25px"></i>
         </button>
       </div>
@@ -1146,8 +1118,7 @@
         <div class="invoice-templates__listing">
           <ul class="m-0 p-0 d-flex flex-wrap">
             <li class="position-relative" *ngFor="let item of templateList; let
-              i= index" [ngClass]="{ active: selectedItem === i }"
-              (click)="selectedItem=
+              i= index" [ngClass]="{ active: selectedItem === i }" (click)="selectedItem=
               i">
               <img src="{{ item }}" class="img-fluid" />
               <div class="invoice-actions">
@@ -1300,8 +1271,7 @@
                           <span>
                             <b style="font-size: 12px">Vehicle(s):</b>
                           </span>
-                          <span style="text-transform: capitalize"
-                            *ngIf="vehicles.length === 0;">
+                          <span style="text-transform: capitalize" *ngIf="vehicles.length === 0;">
                             NA
                           </span>
                           <span style="text-transform: capitalize" *ngFor="let
@@ -1311,14 +1281,12 @@
                         </div>
                       </td>
 
-                      <td style="padding: 10px; font-size: 13px" valign="top"
-                        align="right">
+                      <td style="padding: 10px; font-size: 13px" valign="top" align="right">
                         <div>
                           <span>
                             <b style="font-size: 12px">Asset(s):</b>
                           </span>
-                          <span style="text-transform: capitalize"
-                            *ngIf="assets.length === 0;">
+                          <span style="text-transform: capitalize" *ngIf="assets.length === 0;">
                             NA
                           </span>
                           <span style="text-transform: capitalize" *ngFor="let
@@ -1337,15 +1305,13 @@
             <tr>
               <td>
                 <div class="p-2">
-                  <table width="100%" class="invoice-iner__wrapper"
-                    style="padding: 10px">
+                  <table width="100%" class="invoice-iner__wrapper" style="padding: 10px">
                     <tbody>
                       <tr>
                         <td valign="top" colspan="2">
                           <div *ngFor="let item of invoiceData.data; let m=
                             index">
-                            <div *ngFor="let ship of item.shippers"
-                              style="align-items: flex-start;
+                            <div *ngFor="let ship of item.shippers" style="align-items: flex-start;
                               flex-wrap: wrap;
                               display: flex;
                               width: 100%;
@@ -1382,8 +1348,7 @@
                                     }}
                                   </p>
 
-                                  <span *ngIf="pick.address.manual"
-                                    style="width: 220px;
+                                  <span *ngIf="pick.address.manual" style="width: 220px;
                                     display: inline-block;
                                     min-height: 45px;">
                                     {{ pick.address.address }}
@@ -1392,8 +1357,7 @@
                                     {{ pick.address.country }}
                                     {{ pick.address.zipCode }}
                                   </span>
-                                  <span *ngIf="!pick.address.manual"
-                                    style="width: 220px;
+                                  <span *ngIf="!pick.address.manual" style="width: 220px;
                                     display: inline-block;
                                     min-height: 45px;">
                                     {{ pick.address.pickupLocation }}
@@ -1409,31 +1373,141 @@
                                     <span *ngIf="pick.customerPO &&
                                       pick.customerPO.length>0">
                                       <span *ngFor="let po of pick.customerPO;
-                                        let i=index">{{i}}<span
-                                          *ngIf="po!=''">{{po}}</span><span
+                                        let i=index">{{i}}<span *ngIf="po!=''">{{po}}</span><span
                                           *ngIf="pick.customerPO.length>0 && i<pick.customerPO.length-1">,</span></span>
-                                      </span>
+                                    </span>
+                                  </p>
+
+
+                                  <table width="100%" style="border-top: none;
+                                      font-size: 12px">
+                                    <tbody>
+                                      <tr>
+                                        <td colspan="6" style="padding: 5px
+                                            0">
+                                          <table class="table-striped
+                                              table-bordered" width="100%">
+                                            <thead>
+                                              <tr style="font-size: 12px">
+                                                <td class="text-capitalize" colspan="2">
+                                                  COMMODITY
+                                                </td>
+                                                <td style="width: 80px">
+                                                  PICK#
+                                                </td>
+                                                <td style="width: 70px">QTY</td>
+                                                <td style="width: 70px">
+                                                  WEIGHT
+                                                </td>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr class="item" *ngFor="let
+                                                  commodity of
+                                                  pick.commodity">
+                                                <td colspan="2">
+                                                  {{ commodity.name }}
+                                                </td>
+                                                <td>
+                                                  {{
+                                                  commodity.pu
+                                                  ? commodity.pu
+                                                  : "NA"
+                                                  }}
+                                                </td>
+                                                <td>
+                                                  {{
+                                                  commodity.quantity
+                                                  ? commodity.quantity
+                                                  : "NA"
+                                                  }}
+                                                  {{
+                                                  commodity.quantity
+                                                  ? commodity.quantityUnit
+                                                  : ""
+                                                  }}
+                                                </td>
+                                                <td>
+                                                  {{
+                                                  commodity.weight
+                                                  ? commodity.weight
+                                                  : "NA"
+                                                  }}
+                                                  {{
+                                                  commodity.weight
+                                                  ? commodity.weightUnit
+                                                  : ""
+                                                  }}
+                                                </td>
+                                              </tr>
+                                            </tbody>
+                                          </table>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="receivement__wrap" style="width:
+                                  49.5%; float: left">
+                                <div *ngFor="let receive of ship.receivers" style="padding: 5px;
+                                    margin-bottom: 5px;
+                                    border: 1px dashed #8d8d8d;">
+                                  <b style="font-size: 12px">RECEIVER:</b>
+                                  <br />
+                                  <span class="text-capitalize">{{
+                                    receive.companyName
+                                    }}</span>
+                                  <br />
+                                  {{ receive.receiverAddress }}
+
+                                  <div *ngFor="let drop of receive.dropPoint;
+                                      let j= index" class="pickup-item mt-2">
+                                    <p class="m-0 text-dark">
+                                      <b>Drop: {{ j + 1 }}</b> -
+                                      {{
+                                      drop.dateAndTime
+                                      | date: "yyyy/MM/dd hh:mm a"
+                                      }}
                                     </p>
 
+                                    <span *ngIf="drop.address.manual" style="width: 220px;
+                                        display: inline-block;
+                                        min-height: 45px;">
+                                      {{ drop.address.address }}
+                                      {{ drop.address.city }}
+                                      {{ drop.address.state }}
+                                      {{ drop.address.country }}
+                                      {{ drop.address.zipCode }}
+                                    </span>
+                                    <span *ngIf="!drop.address.manual" style="width: 220px;
+                                        display: inline-block;
+                                        min-height: 45px;">
+                                      {{ drop.address.dropOffLocation }}
+                                    </span>
+                                    <p class="m-0 text-dark">
+                                      Contact Person:
+                                      <b>{{ drop.contactPerson }}</b>
+                                    </p>
 
-                                    <table width="100%" style="border-top: none;
-                                      font-size: 12px">
+                                    <table width="100%" style="border-top:
+                                        none;
+                                        font-size: 12px">
                                       <tbody>
                                         <tr>
                                           <td colspan="6" style="padding: 5px
-                                            0">
+                                              0">
                                             <table class="table-striped
-                                              table-bordered" width="100%">
+                                                table-bordered" width="100%">
                                               <thead>
                                                 <tr style="font-size: 12px">
-                                                  <td class="text-capitalize"
-                                                    colspan="2">
-                                                    COMMODITY
-                                                  </td>
+                                                  <td colspan="2">COMMODITY</td>
                                                   <td style="width: 80px">
-                                                    PICK#
+                                                    DEL#
                                                   </td>
-                                                  <td style="width: 70px">QTY</td>
+                                                  <td style="width: 70px">
+                                                    QTY
+                                                  </td>
                                                   <td style="width: 70px">
                                                     WEIGHT
                                                   </td>
@@ -1441,15 +1515,15 @@
                                               </thead>
                                               <tbody>
                                                 <tr class="item" *ngFor="let
-                                                  commodity of
-                                                  pick.commodity">
-                                                  <td colspan="2">
+                                                    commodity of
+                                                    drop.commodity">
+                                                  <td class="text-capitalize" colspan="2">
                                                     {{ commodity.name }}
                                                   </td>
                                                   <td>
                                                     {{
-                                                    commodity.pu
-                                                    ? commodity.pu
+                                                    commodity.del
+                                                    ? commodity.del
                                                     : "NA"
                                                     }}
                                                   </td>
@@ -1486,602 +1560,458 @@
                                     </table>
                                   </div>
                                 </div>
-                                <div class="receivement__wrap" style="width:
-                                  49.5%; float: left">
-                                  <div *ngFor="let receive of ship.receivers"
-                                    style="padding: 5px;
-                                    margin-bottom: 5px;
-                                    border: 1px dashed #8d8d8d;">
-                                    <b style="font-size: 12px">RECEIVER:</b>
-                                    <br />
-                                    <span class="text-capitalize">{{
-                                      receive.companyName
-                                      }}</span>
-                                    <br />
-                                    {{ receive.receiverAddress }}
-
-                                    <div *ngFor="let drop of receive.dropPoint;
-                                      let j= index" class="pickup-item mt-2">
-                                      <p class="m-0 text-dark">
-                                        <b>Drop: {{ j + 1 }}</b> -
-                                        {{
-                                        drop.dateAndTime
-                                        | date: "yyyy/MM/dd hh:mm a"
-                                        }}
-                                      </p>
-
-                                      <span *ngIf="drop.address.manual"
-                                        style="width: 220px;
-                                        display: inline-block;
-                                        min-height: 45px;">
-                                        {{ drop.address.address }}
-                                        {{ drop.address.city }}
-                                        {{ drop.address.state }}
-                                        {{ drop.address.country }}
-                                        {{ drop.address.zipCode }}
-                                      </span>
-                                      <span *ngIf="!drop.address.manual"
-                                        style="width: 220px;
-                                        display: inline-block;
-                                        min-height: 45px;">
-                                        {{ drop.address.dropOffLocation }}
-                                      </span>
-                                      <p class="m-0 text-dark">
-                                        Contact Person:
-                                        <b>{{ drop.contactPerson }}</b>
-                                      </p>
-
-                                      <table width="100%" style="border-top:
-                                        none;
-                                        font-size: 12px">
-                                        <tbody>
-                                          <tr>
-                                            <td colspan="6" style="padding: 5px
-                                              0">
-                                              <table class="table-striped
-                                                table-bordered" width="100%">
-                                                <thead>
-                                                  <tr style="font-size: 12px">
-                                                    <td colspan="2">COMMODITY</td>
-                                                    <td style="width: 80px">
-                                                      DEL#
-                                                    </td>
-                                                    <td style="width: 70px">
-                                                      QTY
-                                                    </td>
-                                                    <td style="width: 70px">
-                                                      WEIGHT
-                                                    </td>
-                                                  </tr>
-                                                </thead>
-                                                <tbody>
-                                                  <tr class="item" *ngFor="let
-                                                    commodity of
-                                                    drop.commodity">
-                                                    <td class="text-capitalize"
-                                                      colspan="2">
-                                                      {{ commodity.name }}
-                                                    </td>
-                                                    <td>
-                                                      {{
-                                                      commodity.del
-                                                      ? commodity.del
-                                                      : "NA"
-                                                      }}
-                                                    </td>
-                                                    <td>
-                                                      {{
-                                                      commodity.quantity
-                                                      ? commodity.quantity
-                                                      : "NA"
-                                                      }}
-                                                      {{
-                                                      commodity.quantity
-                                                      ? commodity.quantityUnit
-                                                      : ""
-                                                      }}
-                                                    </td>
-                                                    <td>
-                                                      {{
-                                                      commodity.weight
-                                                      ? commodity.weight
-                                                      : "NA"
-                                                      }}
-                                                      {{
-                                                      commodity.weight
-                                                      ? commodity.weightUnit
-                                                      : ""
-                                                      }}
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div *ngIf="m> 0" class="html2pdf__page-break"></div>
                               </div>
+                              <div *ngIf="m> 0" class="html2pdf__page-break"></div>
                             </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-
-                    <table class="invoice-iner__wrapper" width="100%"
-                      style="border-top: none">
-                      <tbody>
-                        <tr>
-                          <td colspan="6">
-                            <table class="table-striped table-bordered"
-                              width="100%">
-                              <thead>
-                                <tr style="font-size: 12px">
-                                  <td colspan="6">FEE METHOD</td>
-
-                                  <td style="width: 150px" align="right">
-                                    TOTAL
-                                  </td>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr *ngIf="invoiceData.charges.freightFee.type
-                                  !=
-                                  ''
-                                  &&
-                                  invoiceData.charges.freightFee.type != null">
-                                  <td colspan="8" style="padding: 0">
-                                    <table style="width: 100%">
-                                      <tbody>
-                                        <tr class="item">
-                                          <td colspan="6">
-                                            {{
-                                            invoiceData.charges.freightFee.type
-                                            }}
-                                            <small>(Freight Fees)</small>
-                                          </td>
-
-                                          <td align="right">
-                                            {{
-                                            invoiceData.charges.freightFee
-                                            .amount | number: "1.2-2"
-                                            }}
-                                            <small>{{
-                                              invoiceData.charges.freightFee
-                                              .currency
-                                              }}</small>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-
-                                <tr
-                                  *ngIf="invoiceData.charges.fuelSurcharge.type
-                                  !=
-                                  '' &&
-                                  invoiceData.charges.fuelSurcharge.type !=
-                                  null">
-                                  <td colspan="8" style="padding: 0">
-                                    <table style="width: 100%">
-                                      <tbody>
-                                        <tr>
-                                          <td colspan="6">
-                                            {{
-                                            invoiceData.charges.fuelSurcharge
-                                            .type
-                                            }}<small> (Fuel Surcharge)</small>
-                                          </td>
-
-                                          <td align="right">
-                                            {{
-                                            invoiceData.charges.fuelSurcharge
-                                            .amount | number: "1.2-2"
-                                            }}
-                                            <small>{{
-                                              invoiceData.charges.fuelSurcharge
-                                              .currency
-                                              }}</small>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-
-                                <tr
-                                  *ngIf="invoiceData.charges.accessorialFeeInfo
-                                  .accessorialFee[0].type != '' &&
-                                  invoiceData.charges.accessorialFeeInfo
-                                  .accessorialFee[0].type != null">
-                                  <td colspan="8" style="padding: 0">
-                                    <table style="width: 100%">
-                                      <tbody>
-                                        <tr *ngFor="let item of
-                                          invoiceData.charges
-                                          .accessorialFeeInfo.accessorialFee">
-                                          <td colspan="6">
-                                            {{ item.type }}
-                                            <small>(Accessorial Fee)</small>
-                                          </td>
-                                          <td align="right">
-                                            {{ item.amount | number: "1.2-2" }}
-                                            <small>{{ item.currency }}</small>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-                                <tr
-                                  *ngIf="invoiceData.charges.accessorialDeductionInfo
-                                  .accessorialDeduction[0].type != '' &&
-                                  invoiceData.charges.accessorialDeductionInfo
-                                  .accessorialDeduction[0].type != null">
-                                  <td colspan="8" style="padding: 0">
-                                    <table style="width: 100%">
-                                      <tbody>
-                                        <tr *ngFor="let item of
-                                          invoiceData.charges
-                                          .accessorialDeductionInfo
-                                          .accessorialDeduction">
-                                          <td colspan="6">
-                                            {{ item.type }}
-                                            <small>(Accessorial Deduction)</small>
-                                          </td>
-                                          <td align="right">
-                                            - {{ item.amount | number: "1.2-2"
-                                            }}
-                                            <small>{{ item.currency }}</small>
-                                          </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-
-                                <tr class="bg-transparent">
-                                  <td align="right" colspan="6">Sub Total</td>
-                                  <td align="right">
-                                    {{ invoiceData.subTotal | number: "1.2-2" }}
-                                    <small>{{ charges.freightFee.currency }}
-                                    </small>
-                                  </td>
-                                </tr>
-                                <tr class="bg-transparent">
-                                  <td colspan="6" align="right">Tax</td>
-                                  <td align="right">
-                                    {{ invoiceData.taxesAmt }}
-                                    <small>{{ charges.freightFee.currency }}
-                                    </small>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tfoot class="border-1">
-                                <tr>
-                                  <th colspan="6" align="right">
-                                    <div style="text-align: right">TOTAL</div>
-                                  </th>
-                                  <th align="right">
-                                    <div style="text-align: right">
-                                      {{
-                                      invoiceData.finalAmount | number: "1.2-2"
-                                      }}
-                                      <small>{{ charges.freightFee.currency }}
-                                      </small>
-                                    </div>
-                                  </th>
-                                </tr>
-                              </tfoot>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <table class="invoice-iner__wrapper" width="100%"
-                      style="border-top: none">
-                      <tbody>
-                        <tr *ngFor="let newDoc of docs">
-                          <td>
-                            <table>
-                              <tbody>
-                                <tr *ngIf="newDoc.ext === 'pdf'">
-                                  <td>
-                                    <div class="html2pdf__page-break"></div>
-                                    <pdf-viewer [src]="newDoc.docPath"
-                                      [fit-to-page]="false" [show-all]="true"
-                                      [render-text]="true"
-                                      [original-size]="false"
-                                      [autoresize]="true"
-                                      style="max-width: 700px; display: block">
-                                    </pdf-viewer>
-                                  </td>
-                                </tr>
-                                <tr *ngIf="newDoc.ext === 'jpg' ||
-                                  newDoc.ext === 'jpeg' ||
-                                  newDoc.ext === 'png'">
-                                  <td>
-                                    <div class="html2pdf__page-break"></div>
-                                    <img crossorigin="*" [src]="newDoc.docPath"
-                                      class="img-fluid rounded" height="200px"
-                                      width="100%" />
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="p-3">
-                  <p style="margin: 0; color: #000">
-                    Please include our Invoice number on the remittance. Remit
-                    address is provided above, kindly send all the accounting
-                    queries to
-                    <strong> {{ invoiceData.carrierData.email }}</strong>
-                  </p>
-                  <p style="margin: 0; color: #000">
-                    No Statement is issued on the payment of this invoice. Terms
-                    net 15 days
-                  </p>
-                </td>
-              </tr>
-
-              <tr>
-                <td colspan="2">
-                  <table border="0" align="center" cellpadding="0"
-                    cellspacing="0">
-                    <tbody>
-                      <tr>
-                        <td align="center">
-                          <h2 style="font-size: 13px; margin-top: 0">
-                            Powered By
-                          </h2>
-                          <img src="assets/img/logo.png" width="207" height="28"
-                            />
+                          </div>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
-          Cancel
-        </button>
-        <button class="btn btn-success" (click)="generate()">Print</button>
-        <button *ngIf="!isInvoiced && orderStatus != 'created'"
-          [disabled]="generateBtnDisabled" (click)="generatePDF()"
-          class="btn btn-success">
-          Generate & Print
-        </button>
-      </div>
-    </div>
-  </ng-template>
 
+                  <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
+                    <tbody>
+                      <tr>
+                        <td colspan="6">
+                          <table class="table-striped table-bordered" width="100%">
+                            <thead>
+                              <tr style="font-size: 12px">
+                                <td colspan="6">FEE METHOD</td>
 
-  <ng-template #emailInvoice let-modal>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
-        <button type="button" class="close" aria-label="Close"
-          (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body p-0">
-        <section class="invoice-wrapper p-2" style="background-color:
-          #fff;max-height: 650px;overflow-y: auto;
-          overflow-x: hidden;">
-          <div class="row">
+                                <td style="width: 150px" align="right">
+                                  TOTAL
+                                </td>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngIf="invoiceData.charges.freightFee.type
+                                  !=
+                                  ''
+                                  &&
+                                  invoiceData.charges.freightFee.type != null">
+                                <td colspan="8" style="padding: 0">
+                                  <table style="width: 100%">
+                                    <tbody>
+                                      <tr class="item">
+                                        <td colspan="6">
+                                          {{
+                                          invoiceData.charges.freightFee.type
+                                          }}
+                                          <small>(Freight Fees)</small>
+                                        </td>
 
-            <div class="col-12">
-              <ngx-slick-carousel class="carousel" #slickModal="slick-carousel"
-                [config]="slideConfig">
-                <table width="100%">
+                                        <td align="right">
+                                          {{
+                                          invoiceData.charges.freightFee
+                                          .amount | number: "1.2-2"
+                                          }}
+                                          <small>{{
+                                            invoiceData.charges.freightFee
+                                            .currency
+                                            }}</small>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+
+                              <tr *ngIf="invoiceData.charges.fuelSurcharge.type
+                                  !=
+                                  '' &&
+                                  invoiceData.charges.fuelSurcharge.type !=
+                                  null">
+                                <td colspan="8" style="padding: 0">
+                                  <table style="width: 100%">
+                                    <tbody>
+                                      <tr>
+                                        <td colspan="6">
+                                          {{
+                                          invoiceData.charges.fuelSurcharge
+                                          .type
+                                          }}<small> (Fuel Surcharge)</small>
+                                        </td>
+
+                                        <td align="right">
+                                          {{
+                                          invoiceData.charges.fuelSurcharge
+                                          .amount | number: "1.2-2"
+                                          }}
+                                          <small>{{
+                                            invoiceData.charges.fuelSurcharge
+                                            .currency
+                                            }}</small>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+
+                              <tr *ngIf="invoiceData.charges.accessorialFeeInfo
+                                  .accessorialFee[0].type != '' &&
+                                  invoiceData.charges.accessorialFeeInfo
+                                  .accessorialFee[0].type != null">
+                                <td colspan="8" style="padding: 0">
+                                  <table style="width: 100%">
+                                    <tbody>
+                                      <tr *ngFor="let item of
+                                          invoiceData.charges
+                                          .accessorialFeeInfo.accessorialFee">
+                                        <td colspan="6">
+                                          {{ item.type }}
+                                          <small>(Accessorial Fee)</small>
+                                        </td>
+                                        <td align="right">
+                                          {{ item.amount | number: "1.2-2" }}
+                                          <small>{{ item.currency }}</small>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                              <tr *ngIf="invoiceData.charges.accessorialDeductionInfo
+                                  .accessorialDeduction[0].type != '' &&
+                                  invoiceData.charges.accessorialDeductionInfo
+                                  .accessorialDeduction[0].type != null">
+                                <td colspan="8" style="padding: 0">
+                                  <table style="width: 100%">
+                                    <tbody>
+                                      <tr *ngFor="let item of
+                                          invoiceData.charges
+                                          .accessorialDeductionInfo
+                                          .accessorialDeduction">
+                                        <td colspan="6">
+                                          {{ item.type }}
+                                          <small>(Accessorial Deduction)</small>
+                                        </td>
+                                        <td align="right">
+                                          - {{ item.amount | number: "1.2-2"
+                                          }}
+                                          <small>{{ item.currency }}</small>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+
+                              <tr class="bg-transparent">
+                                <td align="right" colspan="6">Sub Total</td>
+                                <td align="right">
+                                  {{ invoiceData.subTotal | number: "1.2-2" }}
+                                  <small>{{ charges.freightFee.currency }}
+                                  </small>
+                                </td>
+                              </tr>
+                              <tr class="bg-transparent">
+                                <td colspan="6" align="right">Tax</td>
+                                <td align="right">
+                                  {{ invoiceData.taxesAmt }}
+                                  <small>{{ charges.freightFee.currency }}
+                                  </small>
+                                </td>
+                              </tr>
+                            </tbody>
+                            <tfoot class="border-1">
+                              <tr>
+                                <th colspan="6" align="right">
+                                  <div style="text-align: right">TOTAL</div>
+                                </th>
+                                <th align="right">
+                                  <div style="text-align: right">
+                                    {{
+                                    invoiceData.finalAmount | number: "1.2-2"
+                                    }}
+                                    <small>{{ charges.freightFee.currency }}
+                                    </small>
+                                  </div>
+                                </th>
+                              </tr>
+                            </tfoot>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
+                    <tbody>
+                      <tr *ngFor="let newDoc of docs">
+                        <td>
+                          <table>
+                            <tbody>
+                              <tr *ngIf="newDoc.ext === 'pdf'">
+                                <td>
+                                  <div class="html2pdf__page-break"></div>
+                                  <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
+                                    [render-text]="true" [original-size]="false" [autoresize]="true"
+                                    style="max-width: 700px; display: block">
+                                  </pdf-viewer>
+                                </td>
+                              </tr>
+                              <tr *ngIf="newDoc.ext === 'jpg' ||
+                                  newDoc.ext === 'jpeg' ||
+                                  newDoc.ext === 'png'">
+                                <td>
+                                  <div class="html2pdf__page-break"></div>
+                                  <img crossorigin="*" [src]="newDoc.docPath" class="img-fluid rounded" height="200px"
+                                    width="100%" />
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="p-3">
+                <p style="margin: 0; color: #000">
+                  Please include our Invoice number on the remittance. Remit
+                  address is provided above, kindly send all the accounting
+                  queries to
+                  <strong> {{ invoiceData.carrierData.email }}</strong>
+                </p>
+                <p style="margin: 0; color: #000">
+                  No Statement is issued on the payment of this invoice. Terms
+                  net 15 days
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td colspan="2">
+                <table border="0" align="center" cellpadding="0" cellspacing="0">
                   <tbody>
                     <tr>
-                      <td>
-                        <table width="100%" style="margin-top: 0px;
+                      <td align="center">
+                        <h2 style="font-size: 13px; margin-top: 0">
+                          Powered By
+                        </h2>
+                        <img src="assets/img/logo.png" width="207" height="28" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-default" (click)="modal.dismiss('Cross click')">
+        Cancel
+      </button>
+      <button class="btn btn-success" (click)="generate()">Print</button>
+      <button *ngIf="!isInvoiced && orderStatus != 'created'" [disabled]="generateBtnDisabled" (click)="generatePDF()"
+        class="btn btn-success">
+        Generate & Print
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #emailInvoice let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body p-0">
+      <section class="invoice-wrapper p-2" style="background-color:
+          #fff;max-height: 650px;overflow-y: auto;
+          overflow-x: hidden;">
+        <div class="row">
+
+          <div class="col-12">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+              <table width="100%">
+                <tbody>
+                  <tr>
+                    <td>
+                      <table width="100%" style="margin-top: 0px;
                           border-bottom:
                           1px solid #cdcdcd">
-                          <tbody>
-                            <tr>
-                              <td width="60%" class="title" valign="top"
-                                style="padding: 10px; text-align: left">
-                                <h4 style="margin: 0 0 15px;
+                        <tbody>
+                          <tr>
+                            <td width="60%" class="title" valign="top" style="padding: 10px; text-align: left">
+                              <h4 style="margin: 0 0 15px;
                                   font-size: 37px;
                                   color: #040404;
                                   font-weight: 700;
                                   text-transform: capitalize;">
-                                  INVOICE
-                                </h4>
-                                <p style="margin: 0; color: #000">
-                                  <span style="font-size: 12px">
-                                    <b>Invoice#</b>
-                                  </span>
-                                  {{ orderNumber }}
-                                </p>
-                                <p style="margin: 0; color: #000">
-                                  <span style="font-size: 12px">
-                                    <b>Invoice Date</b>
-                                  </span>
-                                  {{ today | date: "yyyy/MM/dd" }}
-                                </p>
-                                <p style="margin: 0; color: #000">
-                                  <span style="font-size: 12px">
-                                    <b>Order#</b>
-                                  </span>
-                                  {{ orderNumber }}
-                                </p>
-                                <p style="margin: 0; color: #000">
-                                  <span style="font-size: 12px">
-                                    <b>Customer Confirmation#: </b>
-                                  </span>
-                                  {{ invoiceData.cusConfirmation }}
-                                </p>
-                              </td>
-                              <td width="60%" class="title" valign="top"
-                                style="padding: 10px; text-align: right">
-                                <h4 style="margin: 0;
+                                INVOICE
+                              </h4>
+                              <p style="margin: 0; color: #000">
+                                <span style="font-size: 12px">
+                                  <b>Invoice#</b>
+                                </span>
+                                {{ orderNumber }}
+                              </p>
+                              <p style="margin: 0; color: #000">
+                                <span style="font-size: 12px">
+                                  <b>Invoice Date</b>
+                                </span>
+                                {{ today | date: "yyyy/MM/dd" }}
+                              </p>
+                              <p style="margin: 0; color: #000">
+                                <span style="font-size: 12px">
+                                  <b>Order#</b>
+                                </span>
+                                {{ orderNumber }}
+                              </p>
+                              <p style="margin: 0; color: #000">
+                                <span style="font-size: 12px">
+                                  <b>Customer Confirmation#: </b>
+                                </span>
+                                {{ invoiceData.cusConfirmation }}
+                              </p>
+                            </td>
+                            <td width="60%" class="title" valign="top" style="padding: 10px; text-align: right">
+                              <h4 style="margin: 0;
                                   font-size: 20px;
                                   color: #040404;
                                   font-weight: 700;
                                   text-transform: capitalize;">
-                                  {{ invoiceData.carrierData.companyName }}
-                                </h4>
-                                <h6 style="color: #040404;
+                                {{ invoiceData.carrierData.companyName }}
+                              </h4>
+                              <h6 style="color: #040404;
                                   font-weight: 500;
                                   font-size: 13px;
                                   width: 300px;
                                   float: right;" class="m-0">
-                                  {{ invoiceData.carrierData.address }}
-                                </h6>
-                                <h6 style="color: #040404;
+                                {{ invoiceData.carrierData.address }}
+                              </h6>
+                              <h6 style="color: #040404;
                                   font-weight: 500;
                                   font-size: 13px;
                                   float: right;
                                   line-height: 24px;" class="m-0">
-                                  <strong>Phone: </strong>
-                                  {{ invoiceData.carrierData.phone }}
-                                </h6>
-                                <h6 style="color: #040404;
+                                <strong>Phone: </strong>
+                                {{ invoiceData.carrierData.phone }}
+                              </h6>
+                              <h6 style="color: #040404;
                                   font-weight: 500;
                                   font-size: 13px;
                                   float: right;
                                   line-height: 24px;" class="m-0">
-                                  <strong>Email: </strong>
-                                  {{ invoiceData.carrierData.email }}
-                                </h6>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                        <table width="100%" style="margin-top: 0px;
+                                <strong>Email: </strong>
+                                {{ invoiceData.carrierData.email }}
+                              </h6>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <table width="100%" style="margin-top: 0px;
                           border-bottom:
                           1px solid #cdcdcd">
-                          <tbody>
-                            <tr>
-                              <td style="color: #040404;padding: 10px;
+                        <tbody>
+                          <tr>
+                            <td style="color: #040404;padding: 10px;
                                 font-size: 13px" valign="top">
-                                <b style="font-size: 12px">Customer:</b> <br />
-                                <span style="text-transform: capitalize">
-                                  {{
-                                  invoiceData.data[0].customerData.companyName
-                                  }}
-                                  <br /></span>
-                                {{ invoiceData.data[0].customerData.address }}
-                                <br />
-                              </td>
-                              <td style="color: #040404;padding: 10px;
+                              <b style="font-size: 12px">Customer:</b> <br />
+                              <span style="text-transform: capitalize">
+                                {{
+                                invoiceData.data[0].customerData.companyName
+                                }}
+                                <br /></span>
+                              {{ invoiceData.data[0].customerData.address }}
+                              <br />
+                            </td>
+                            <td style="color: #040404;padding: 10px;
                                 text-align: right; font-size: 13px">
-                                <div>
-                                  <b>Phone:</b>
-                                  {{
-                                  invoiceData.data[0].customerData.phone
-                                  ? invoiceData.data[0].customerData.phone
-                                  : "NA"
-                                  }}
-                                </div>
-                                <div>
-                                  <b>Email:</b>
-                                  {{
-                                  invoiceData.data[0].customerData.email
-                                  ? invoiceData.data[0].customerData.email
-                                  : "NA"
-                                  }}
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                              <div>
+                                <b>Phone:</b>
+                                {{
+                                invoiceData.data[0].customerData.phone
+                                ? invoiceData.data[0].customerData.phone
+                                : "NA"
+                                }}
+                              </div>
+                              <div>
+                                <b>Email:</b>
+                                {{
+                                invoiceData.data[0].customerData.email
+                                ? invoiceData.data[0].customerData.email
+                                : "NA"
+                                }}
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
 
-                        <table width="100%" style="color: #040404;margin-top:
+                      <table width="100%" style="color: #040404;margin-top:
                           0px; border-bottom: 1px
                           solid #cdcdcd">
+                        <tbody>
+                          <tr>
+                            <td style="padding: 10px; font-size: 13px" valign="top">
+                              <div>
+                                <span>
+                                  <b style="font-size: 12px">Vehicle(s):</b>
+                                </span>
+                                <span style="text-transform: capitalize" *ngIf="vehicles.length === 0;">
+                                  NA
+                                </span>
+                                <span style="text-transform: capitalize" *ngFor="let veh of vehicles; let
+                                    isLast=last">
+                                  {{veh.vehicleIdentification}} <span *ngIf="!isLast">,</span>
+                                </span>
+                              </div>
+                            </td>
+
+                            <td style="padding: 10px; font-size: 13px" valign="top" align="right">
+                              <div>
+                                <span>
+                                  <b style="font-size: 12px">Asset(s):</b>
+                                </span>
+                                <span style="text-transform: capitalize" *ngIf="assets.length === 0;">
+                                  NA
+                                </span>
+                                <span style="text-transform: capitalize" *ngFor="let ast of assets; let isLast=last">
+                                  {{ast.assetIdentification}} <span *ngIf="!isLast">,</span>
+                                </span>
+                              </div>
+                            </td>
+
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>
+                      <div class="p-2">
+                        <table width="100%" class="invoice-iner__wrapper" style="color: #040404;padding: 10px">
                           <tbody>
                             <tr>
-                              <td style="padding: 10px; font-size: 13px"
-                                valign="top">
-                                <div>
-                                  <span>
-                                    <b style="font-size: 12px">Vehicle(s):</b>
-                                  </span>
-                                  <span style="text-transform: capitalize"
-                                    *ngIf="vehicles.length === 0;">
-                                    NA
-                                  </span>
-                                  <span style="text-transform: capitalize"
-                                    *ngFor="let veh of vehicles; let
-                                    isLast=last">
-                                    {{veh.vehicleIdentification}} <span
-                                      *ngIf="!isLast">,</span>
-                                  </span>
-                                </div>
-                              </td>
-
-                              <td style="padding: 10px; font-size: 13px"
-                                valign="top" align="right">
-                                <div>
-                                  <span>
-                                    <b style="font-size: 12px">Asset(s):</b>
-                                  </span>
-                                  <span style="text-transform: capitalize"
-                                    *ngIf="assets.length === 0;">
-                                    NA
-                                  </span>
-                                  <span style="text-transform: capitalize"
-                                    *ngFor="let ast of assets; let isLast=last">
-                                    {{ast.assetIdentification}} <span
-                                      *ngIf="!isLast">,</span>
-                                  </span>
-                                </div>
-                              </td>
-
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <div class="p-2">
-                          <table width="100%" class="invoice-iner__wrapper"
-                            style="color: #040404;padding: 10px">
-                            <tbody>
-                              <tr>
-                                <td valign="top" colspan="2">
-                                  <div *ngFor="let item of invoiceData.data; let
+                              <td valign="top" colspan="2">
+                                <div *ngFor="let item of invoiceData.data; let
                                     m= index">
-                                    <div *ngFor="let ship of item.shippers"
-                                      style="align-items: flex-start;
+                                  <div *ngFor="let ship of item.shippers" style="align-items: flex-start;
                                       flex-wrap: wrap;
                                       display: flex;
                                       width: 100%;
                                       float: left;
                                       justify-content: space-between;">
-                                      <p style="width: 100%;
+                                    <p style="width: 100%;
                                         font-weight: 600;
                                         color: #000;
                                         margin: 0;
                                         text-transform: uppercase;">
-                                        Shipment - {{ m + 1 }}
-                                      </p>
-                                      <div class="shipment__wrap"
-                                        style="padding:
+                                      Shipment - {{ m + 1 }}
+                                    </p>
+                                    <div class="shipment__wrap" style="padding:
                                         5px;
                                         float: left;
                                         margin-bottom: 5px;
@@ -2089,87 +2019,200 @@
                                         border-style: dashed;
                                         border-width: 1px;
                                         border-color: #8d8d8d;">
-                                        <b style="font-size: 12px">SHIPPER:</b>
-                                        <br />
-                                        <span class="text-capitalize">{{
-                                          ship.companyName
-                                          }}</span>
-                                        <br />
-                                        {{ ship.shipAddress }}
+                                      <b style="font-size: 12px">SHIPPER:</b>
+                                      <br />
+                                      <span class="text-capitalize">{{
+                                        ship.companyName
+                                        }}</span>
+                                      <br />
+                                      {{ ship.shipAddress }}
 
-                                        <div *ngFor="let pick of
+                                      <div *ngFor="let pick of
                                           ship.pickupPoint;
                                           let i= index" class="pickup-item
                                           mt-2">
+                                        <p class="m-0 text-dark">
+                                          <b>Pickup: {{ i + 1 }}</b> -
+                                          {{
+                                          pick.dateAndTime
+                                          | date: "yyyy/MM/dd hh:mm a"
+                                          }}
+                                        </p>
+
+                                        <span *ngIf="pick.address.manual" style="width: 220px;
+                                            display: inline-block;
+                                            min-height: 45px;">
+                                          {{ pick.address.address }}
+                                          {{ pick.address.city }}
+                                          {{ pick.address.state }}
+                                          {{ pick.address.country }}
+                                          {{ pick.address.zipCode }}
+                                        </span>
+                                        <span *ngIf="!pick.address.manual" style="width: 220px;
+                                            display: inline-block;
+                                            min-height: 45px;">
+                                          {{ pick.address.pickupLocation }}
+                                        </span>
+                                        <p class="m-0 text-dark">
+                                          Contact Person:
+                                          <b class="text-capitalize">{{
+                                            pick.contactPerson
+                                            }}</b>
+                                        </p>
+
+                                        <table width="100%" style="border-top:
+                                            none; font-size: 12px">
+                                          <tbody>
+                                            <tr>
+                                              <td colspan="6" style="padding:
+                                                  5px 0">
+                                                <table class="table-striped
+                                                    table-bordered" width="100%">
+                                                  <thead>
+                                                    <tr style="font-size:
+                                                        12px">
+                                                      <td class="text-capitalize" colspan="2">
+                                                        COMMODITY
+                                                      </td>
+                                                      <td style="width: 80px">
+                                                        PICK#
+                                                      </td>
+                                                      <td style="width: 70px">QTY</td>
+                                                      <td style="width: 70px">
+                                                        WEIGHT
+                                                      </td>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr class="item" *ngFor="let
+                                                        commodity of
+                                                        pick.commodity">
+                                                      <td colspan="2">
+                                                        {{ commodity.name }}
+                                                      </td>
+                                                      <td>
+                                                        {{
+                                                        commodity.pu
+                                                        ? commodity.pu
+                                                        : "NA"
+                                                        }}
+                                                      </td>
+                                                      <td>
+                                                        {{
+                                                        commodity.quantity
+                                                        ? commodity.quantity
+                                                        : "NA"
+                                                        }}
+                                                        {{
+                                                        commodity.quantity
+                                                        ?
+                                                        commodity.quantityUnit
+                                                        : ""
+                                                        }}
+                                                      </td>
+                                                      <td>
+                                                        {{
+                                                        commodity.weight
+                                                        ? commodity.weight
+                                                        : "NA"
+                                                        }}
+                                                        {{
+                                                        commodity.weight
+                                                        ? commodity.weightUnit
+                                                        : ""
+                                                        }}
+                                                      </td>
+                                                    </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                                    <div class="receivement__wrap" style="width:
+                                        49.5%; float: left">
+                                      <div *ngFor="let receive of
+                                          ship.receivers" style="padding: 5px;
+                                          margin-bottom: 5px;
+                                          border: 1px dashed #8d8d8d;">
+                                        <b style="font-size: 12px">RECEIVER:</b>
+                                        <br />
+                                        <span class="text-capitalize">{{
+                                          receive.companyName
+                                          }}</span>
+                                        <br />
+                                        {{ receive.receiverAddress }}
+
+                                        <div *ngFor="let drop of
+                                            receive.dropPoint;
+                                            let j= index" class="pickup-item
+                                            mt-2">
                                           <p class="m-0 text-dark">
-                                            <b>Pickup: {{ i + 1 }}</b> -
+                                            <b>Drop: {{ j + 1 }}</b> -
                                             {{
-                                            pick.dateAndTime
+                                            drop.dateAndTime
                                             | date: "yyyy/MM/dd hh:mm a"
                                             }}
                                           </p>
 
-                                          <span *ngIf="pick.address.manual"
-                                            style="width: 220px;
-                                            display: inline-block;
-                                            min-height: 45px;">
-                                            {{ pick.address.address }}
-                                            {{ pick.address.city }}
-                                            {{ pick.address.state }}
-                                            {{ pick.address.country }}
-                                            {{ pick.address.zipCode }}
+                                          <span *ngIf="drop.address.manual" style="width: 220px;
+                                              display: inline-block;
+                                              min-height: 45px;">
+                                            {{ drop.address.address }}
+                                            {{ drop.address.city }}
+                                            {{ drop.address.state }}
+                                            {{ drop.address.country }}
+                                            {{ drop.address.zipCode }}
                                           </span>
-                                          <span *ngIf="!pick.address.manual"
-                                            style="width: 220px;
-                                            display: inline-block;
-                                            min-height: 45px;">
-                                            {{ pick.address.pickupLocation }}
+                                          <span *ngIf="!drop.address.manual" style="width: 220px;
+                                              display: inline-block;
+                                              min-height: 45px;">
+                                            {{ drop.address.dropOffLocation }}
                                           </span>
                                           <p class="m-0 text-dark">
                                             Contact Person:
-                                            <b class="text-capitalize">{{
-                                              pick.contactPerson
-                                              }}</b>
+                                            <b>{{ drop.contactPerson }}</b>
                                           </p>
 
                                           <table width="100%" style="border-top:
-                                            none; font-size: 12px">
+                                              none; font-size: 12px">
                                             <tbody>
                                               <tr>
                                                 <td colspan="6" style="padding:
-                                                  5px 0">
+                                                    5px 0">
                                                   <table class="table-striped
-                                                    table-bordered"
-                                                    width="100%">
+                                                      table-bordered" width="100%">
                                                     <thead>
                                                       <tr style="font-size:
-                                                        12px">
-                                                        <td
-                                                          class="text-capitalize"
-                                                          colspan="2">
-                                                          COMMODITY
+                                                          12px">
+                                                        <td colspan="2">COMMODITY</td>
+                                                        <td style="width:
+                                                            80px">
+                                                          DEL#
                                                         </td>
-                                                        <td style="width: 80px">
-                                                          PICK#
+                                                        <td style="width:
+                                                            70px">
+                                                          QTY
                                                         </td>
-                                                        <td style="width: 70px">QTY</td>
-                                                        <td style="width: 70px">
+                                                        <td style="width:
+                                                            70px">
                                                           WEIGHT
                                                         </td>
                                                       </tr>
                                                     </thead>
                                                     <tbody>
-                                                      <tr class="item"
-                                                        *ngFor="let
-                                                        commodity of
-                                                        pick.commodity">
-                                                        <td colspan="2">
+                                                      <tr class="item" *ngFor="let commodity
+                                                          of
+                                                          drop.commodity">
+                                                        <td class="text-capitalize" colspan="2">
                                                           {{ commodity.name }}
                                                         </td>
                                                         <td>
                                                           {{
-                                                          commodity.pu
-                                                          ? commodity.pu
+                                                          commodity.del
+                                                          ? commodity.del
                                                           : "NA"
                                                           }}
                                                         </td>
@@ -2194,7 +2237,8 @@
                                                           }}
                                                           {{
                                                           commodity.weight
-                                                          ? commodity.weightUnit
+                                                          ?
+                                                          commodity.weightUnit
                                                           : ""
                                                           }}
                                                         </td>
@@ -2207,391 +2251,251 @@
                                           </table>
                                         </div>
                                       </div>
-                                      <div class="receivement__wrap"
-                                        style="width:
-                                        49.5%; float: left">
-                                        <div *ngFor="let receive of
-                                          ship.receivers" style="padding: 5px;
-                                          margin-bottom: 5px;
-                                          border: 1px dashed #8d8d8d;">
-                                          <b style="font-size: 12px">RECEIVER:</b>
-                                          <br />
-                                          <span class="text-capitalize">{{
-                                            receive.companyName
-                                            }}</span>
-                                          <br />
-                                          {{ receive.receiverAddress }}
-
-                                          <div *ngFor="let drop of
-                                            receive.dropPoint;
-                                            let j= index" class="pickup-item
-                                            mt-2">
-                                            <p class="m-0 text-dark">
-                                              <b>Drop: {{ j + 1 }}</b> -
-                                              {{
-                                              drop.dateAndTime
-                                              | date: "yyyy/MM/dd hh:mm a"
-                                              }}
-                                            </p>
-
-                                            <span *ngIf="drop.address.manual"
-                                              style="width: 220px;
-                                              display: inline-block;
-                                              min-height: 45px;">
-                                              {{ drop.address.address }}
-                                              {{ drop.address.city }}
-                                              {{ drop.address.state }}
-                                              {{ drop.address.country }}
-                                              {{ drop.address.zipCode }}
-                                            </span>
-                                            <span *ngIf="!drop.address.manual"
-                                              style="width: 220px;
-                                              display: inline-block;
-                                              min-height: 45px;">
-                                              {{ drop.address.dropOffLocation }}
-                                            </span>
-                                            <p class="m-0 text-dark">
-                                              Contact Person:
-                                              <b>{{ drop.contactPerson }}</b>
-                                            </p>
-
-                                            <table width="100%"
-                                              style="border-top:
-                                              none; font-size: 12px">
-                                              <tbody>
-                                                <tr>
-                                                  <td colspan="6"
-                                                    style="padding:
-                                                    5px 0">
-                                                    <table class="table-striped
-                                                      table-bordered"
-                                                      width="100%">
-                                                      <thead>
-                                                        <tr style="font-size:
-                                                          12px">
-                                                          <td colspan="2">COMMODITY</td>
-                                                          <td style="width:
-                                                            80px">
-                                                            DEL#
-                                                          </td>
-                                                          <td style="width:
-                                                            70px">
-                                                            QTY
-                                                          </td>
-                                                          <td style="width:
-                                                            70px">
-                                                            WEIGHT
-                                                          </td>
-                                                        </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                        <tr class="item"
-                                                          *ngFor="let commodity
-                                                          of
-                                                          drop.commodity">
-                                                          <td
-                                                            class="text-capitalize"
-                                                            colspan="2">
-                                                            {{ commodity.name }}
-                                                          </td>
-                                                          <td>
-                                                            {{
-                                                            commodity.del
-                                                            ? commodity.del
-                                                            : "NA"
-                                                            }}
-                                                          </td>
-                                                          <td>
-                                                            {{
-                                                            commodity.quantity
-                                                            ? commodity.quantity
-                                                            : "NA"
-                                                            }}
-                                                            {{
-                                                            commodity.quantity
-                                                            ?
-                                                            commodity.quantityUnit
-                                                            : ""
-                                                            }}
-                                                          </td>
-                                                          <td>
-                                                            {{
-                                                            commodity.weight
-                                                            ? commodity.weight
-                                                            : "NA"
-                                                            }}
-                                                            {{
-                                                            commodity.weight
-                                                            ?
-                                                            commodity.weightUnit
-                                                            : ""
-                                                            }}
-                                                          </td>
-                                                        </tr>
-                                                      </tbody>
-                                                    </table>
-                                                  </td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </div>
-                                        </div>
-                                      </div>
-                                      <div *ngIf="m> 0"
-                                        class="html2pdf__page-break"></div>
                                     </div>
+                                    <div *ngIf="m> 0" class="html2pdf__page-break"></div>
                                   </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
 
-                          <table class="invoice-iner__wrapper" width="100%"
-                            style="color: #040404;border-top: none">
-                            <tbody>
-                              <tr>
-                                <td colspan="6">
-                                  <table class="table-striped table-bordered"
-                                    width="100%">
-                                    <thead>
-                                      <tr style="font-size: 12px">
-                                        <td colspan="6">FEE METHOD</td>
+                        <table class="invoice-iner__wrapper" width="100%" style="color: #040404;border-top: none">
+                          <tbody>
+                            <tr>
+                              <td colspan="6">
+                                <table class="table-striped table-bordered" width="100%">
+                                  <thead>
+                                    <tr style="font-size: 12px">
+                                      <td colspan="6">FEE METHOD</td>
 
-                                        <td style="width: 150px" align="right">
-                                          TOTAL
-                                        </td>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr
-                                        *ngIf="invoiceData.charges.freightFee.type
+                                      <td style="width: 150px" align="right">
+                                        TOTAL
+                                      </td>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngIf="invoiceData.charges.freightFee.type
                                         != ''
                                         &&
                                         invoiceData.charges.freightFee.type !=
                                         null">
-                                        <td colspan="8" style="padding: 0">
-                                          <table style="width: 100%">
-                                            <tbody>
-                                              <tr class="item">
-                                                <td colspan="6">
-                                                  {{
-                                                  invoiceData.charges.freightFee.type
-                                                  }}
-                                                  <small>(Freight Fees)</small>
-                                                </td>
+                                      <td colspan="8" style="padding: 0">
+                                        <table style="width: 100%">
+                                          <tbody>
+                                            <tr class="item">
+                                              <td colspan="6">
+                                                {{
+                                                invoiceData.charges.freightFee.type
+                                                }}
+                                                <small>(Freight Fees)</small>
+                                              </td>
 
-                                                <td align="right">
-                                                  {{
+                                              <td align="right">
+                                                {{
+                                                invoiceData.charges.freightFee
+                                                .amount | number: "1.2-2"
+                                                }}
+                                                <small>{{
                                                   invoiceData.charges.freightFee
-                                                  .amount | number: "1.2-2"
-                                                  }}
-                                                  <small>{{
-                                                    invoiceData.charges.freightFee
-                                                    .currency
-                                                    }}</small>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
-                                      </tr>
+                                                  .currency
+                                                  }}</small>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
 
-                                      <tr
-                                        *ngIf="invoiceData.charges.fuelSurcharge.type
+                                    <tr *ngIf="invoiceData.charges.fuelSurcharge.type
                                         !=
                                         '' &&
                                         invoiceData.charges.fuelSurcharge.type
                                         !=
                                         null">
-                                        <td colspan="8" style="padding: 0">
-                                          <table style="width: 100%">
-                                            <tbody>
-                                              <tr>
-                                                <td colspan="6">
-                                                  {{
-                                                  invoiceData.charges.fuelSurcharge
-                                                  .type
-                                                  }}<small> (Fuel Surcharge)</small>
-                                                </td>
+                                      <td colspan="8" style="padding: 0">
+                                        <table style="width: 100%">
+                                          <tbody>
+                                            <tr>
+                                              <td colspan="6">
+                                                {{
+                                                invoiceData.charges.fuelSurcharge
+                                                .type
+                                                }}<small> (Fuel Surcharge)</small>
+                                              </td>
 
-                                                <td align="right">
-                                                  {{
+                                              <td align="right">
+                                                {{
+                                                invoiceData.charges.fuelSurcharge
+                                                .amount | number: "1.2-2"
+                                                }}
+                                                <small>{{
                                                   invoiceData.charges.fuelSurcharge
-                                                  .amount | number: "1.2-2"
-                                                  }}
-                                                  <small>{{
-                                                    invoiceData.charges.fuelSurcharge
-                                                    .currency
-                                                    }}</small>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
-                                      </tr>
+                                                  .currency
+                                                  }}</small>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
 
-                                      <tr
-                                        *ngIf="invoiceData.charges.accessorialFeeInfo
+                                    <tr *ngIf="invoiceData.charges.accessorialFeeInfo
                                         .accessorialFee[0].type != '' &&
                                         invoiceData.charges.accessorialFeeInfo
                                         .accessorialFee[0].type != null">
-                                        <td colspan="8" style="padding: 0">
-                                          <table style="width: 100%">
-                                            <tbody>
-                                              <tr *ngFor="let item of
+                                      <td colspan="8" style="padding: 0">
+                                        <table style="width: 100%">
+                                          <tbody>
+                                            <tr *ngFor="let item of
                                                 invoiceData.charges
                                                 .accessorialFeeInfo.accessorialFee">
-                                                <td colspan="6">
-                                                  {{ item.type }}
-                                                  <small>(Accessorial Fee)</small>
-                                                </td>
-                                                <td align="right">
-                                                  {{ item.amount | number:
-                                                  "1.2-2"
-                                                  }}
-                                                  <small>{{ item.currency }}</small>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
-                                      </tr>
-                                      <tr
-                                        *ngIf="invoiceData.charges.accessorialDeductionInfo
+                                              <td colspan="6">
+                                                {{ item.type }}
+                                                <small>(Accessorial Fee)</small>
+                                              </td>
+                                              <td align="right">
+                                                {{ item.amount | number:
+                                                "1.2-2"
+                                                }}
+                                                <small>{{ item.currency }}</small>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
+                                    <tr *ngIf="invoiceData.charges.accessorialDeductionInfo
                                         .accessorialDeduction[0].type != '' &&
                                         invoiceData.charges.accessorialDeductionInfo
                                         .accessorialDeduction[0].type != null">
-                                        <td colspan="8" style="padding: 0">
-                                          <table style="width: 100%">
-                                            <tbody>
-                                              <tr *ngFor="let item of
+                                      <td colspan="8" style="padding: 0">
+                                        <table style="width: 100%">
+                                          <tbody>
+                                            <tr *ngFor="let item of
                                                 invoiceData.charges
                                                 .accessorialDeductionInfo
                                                 .accessorialDeduction">
-                                                <td colspan="6">
-                                                  {{ item.type }}
-                                                  <small>(Accessorial Deduction)</small>
-                                                </td>
-                                                <td align="right">
-                                                  - {{ item.amount | number:
-                                                  "1.2-2" }}
-                                                  <small>{{ item.currency }}</small>
-                                                </td>
-                                              </tr>
-                                            </tbody>
-                                          </table>
-                                        </td>
-                                      </tr>
+                                              <td colspan="6">
+                                                {{ item.type }}
+                                                <small>(Accessorial Deduction)</small>
+                                              </td>
+                                              <td align="right">
+                                                - {{ item.amount | number:
+                                                "1.2-2" }}
+                                                <small>{{ item.currency }}</small>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                      </td>
+                                    </tr>
 
-                                      <tr class="bg-transparent">
-                                        <td align="right" colspan="6">Sub Total</td>
-                                        <td align="right">
-                                          {{ invoiceData.subTotal | number:
-                                          "1.2-2" }}
-                                          <small>{{ charges.freightFee.currency
+                                    <tr class="bg-transparent">
+                                      <td align="right" colspan="6">Sub Total</td>
+                                      <td align="right">
+                                        {{ invoiceData.subTotal | number:
+                                        "1.2-2" }}
+                                        <small>{{ charges.freightFee.currency
+                                          }}
+                                        </small>
+                                      </td>
+                                    </tr>
+                                    <tr class="bg-transparent">
+                                      <td colspan="6" align="right">Tax</td>
+                                      <td align="right">
+                                        {{ invoiceData.taxesAmt }}
+                                        <small>{{ charges.freightFee.currency
+                                          }}
+                                        </small>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  <tfoot class="border-1">
+                                    <tr>
+                                      <th colspan="6" align="right">
+                                        <div style="text-align: right">TOTAL</div>
+                                      </th>
+                                      <th align="right">
+                                        <div style="text-align: right">
+                                          {{
+                                          invoiceData.finalAmount | number:
+                                          "1.2-2"
+                                          }}
+                                          <small>{{
+                                            charges.freightFee.currency
                                             }}
                                           </small>
-                                        </td>
-                                      </tr>
-                                      <tr class="bg-transparent">
-                                        <td colspan="6" align="right">Tax</td>
-                                        <td align="right">
-                                          {{ invoiceData.taxesAmt }}
-                                          <small>{{ charges.freightFee.currency
-                                            }}
-                                          </small>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                    <tfoot class="border-1">
-                                      <tr>
-                                        <th colspan="6" align="right">
-                                          <div style="text-align: right">TOTAL</div>
-                                        </th>
-                                        <th align="right">
-                                          <div style="text-align: right">
-                                            {{
-                                            invoiceData.finalAmount | number:
-                                            "1.2-2"
-                                            }}
-                                            <small>{{
-                                              charges.freightFee.currency
-                                              }}
-                                            </small>
-                                          </div>
-                                        </th>
-                                      </tr>
-                                    </tfoot>
-                                  </table>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" class="p-3">
-                        <p style="margin: 0; color: #000">
-                          Please include our Invoice number on the remittance.
-                          Remit
-                          address is provided above, kindly send all the
-                          accounting
-                          queries to
-                          <strong> {{ invoiceData.carrierData.email }}</strong>
-                        </p>
-                        <p style="margin: 0; color: #000">
-                          No Statement is issued on the payment of this invoice.
-                          Terms
-                          net 15 days
-                        </p>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td colspan="2">
-                        <table border="0" align="center" cellpadding="0"
-                          cellspacing="0">
-                          <tbody>
-                            <tr>
-                              <td align="center">
-                                <h2 style="font-size: 13px; margin-top: 0">
-                                  Powered By
-                                </h2>
-                                <img src="assets/img/logo.png" width="207"
-                                  height="28" />
+                                        </div>
+                                      </th>
+                                    </tr>
+                                  </tfoot>
+                                </table>
                               </td>
                             </tr>
                           </tbody>
                         </table>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div ngxSlickItem *ngFor="let item of emailDocs" class="slide">
-                  <div *ngIf="item.ext === 'pdf'">
-                    <pdf-viewer [src]="item.docPath" [fit-to-page]="false"
-                      [show-all]="true" [render-text]="true"
-                      [original-size]="false" [autoresize]="true"
-                      style="max-width: 100%; display: block">
-                    </pdf-viewer>
-                  </div>
 
-                  <div *ngIf="item.ext === 'jpg' ||
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="p-3">
+                      <p style="margin: 0; color: #000">
+                        Please include our Invoice number on the remittance.
+                        Remit
+                        address is provided above, kindly send all the
+                        accounting
+                        queries to
+                        <strong> {{ invoiceData.carrierData.email }}</strong>
+                      </p>
+                      <p style="margin: 0; color: #000">
+                        No Statement is issued on the payment of this invoice.
+                        Terms
+                        net 15 days
+                      </p>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td colspan="2">
+                      <table border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tbody>
+                          <tr>
+                            <td align="center">
+                              <h2 style="font-size: 13px; margin-top: 0">
+                                Powered By
+                              </h2>
+                              <img src="assets/img/logo.png" width="207" height="28" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div ngxSlickItem *ngFor="let item of emailDocs" class="slide">
+                <div *ngIf="item.ext === 'pdf'">
+                  <pdf-viewer [src]="item.docPath" [fit-to-page]="false" [show-all]="true" [render-text]="true"
+                    [original-size]="false" [autoresize]="true" style="max-width: 100%; display: block">
+                  </pdf-viewer>
+                </div>
+
+                <div *ngIf="item.ext === 'jpg' ||
                     item.ext === 'jpeg' ||
                     item.ext === 'png'">
-                    <img src="{{ item.docPath }}" alt="" width="100%">
-                  </div>
-
+                  <img src="{{ item.docPath }}" alt="" width="100%">
                 </div>
-              </ngx-slick-carousel>
-            </div>
+
+              </div>
+            </ngx-slick-carousel>
           </div>
-        </section>
-      </div>
-      <div class="modal-footer">
-        <!-- <div>
+        </div>
+      </section>
+    </div>
+    <div class="modal-footer">
+      <!-- <div>
         <div class="form-check">
           <input class="form-check-input" (change)="sendEmailCopy($event.target.checked)" type="checkbox" value=""
             id="copy">
@@ -2600,115 +2504,104 @@
           </label>
         </div>
       </div> -->
-        <div>
-          <button type="button" (click)="modal.dismiss('Cross click')"
-            class="btn
-            btn-default">
-            Cancel
-          </button>
-          <button class="btn
-            btn-success ml-2">Send</button>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #emailInvoiceModal let-modal>
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
-      <button type="button" class="close" aria-label="Close"
-        (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <form>
-      <div class="modal-body">
-        <div class="email--invoice__main">
-          <div class="row align-items-center mb-2">
-
-            <div class="col-12">
-              <label class="control-label font-weight-bold mt-2 text-3
-                text-dark" for="inputDefault">Send To:
-                <small> You can add multiple email(s)</small> <span
-                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <ng-select multiple="true" notFoundText="Please type to add email"
-                [addTag]="true"
-                placeholder="eg. johnsmith@gmail.com"
-                [(ngModel)]="emailData.emails" name="emails" type="text"
-                class="form-control h-auto"
-                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
-              </ng-select>
-            </div>
-            <div class="col-12">
-              <label class="control-label font-weight-bold mt-2 text-3
-                text-dark" for="inputDefault">Subject line: <span
-                  class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-              <input type="text" [(ngModel)]="subject" class="form-control"
-                placeholder="Enter subject" name="subject">
-            </div>
-            <div class="col-12 mt-2">
-              <input class="form-check-input ml-0"
-                (change)="sendEmailCopy($event.target.checked)" type="checkbox"
-                value="" id="copy">
-              <label class="form-check-label pl-3" for="copy">
-                Send me a copy at <strong> {{carrierEmail}}</strong>
-              </label>
-            </div>
-            <div class="col-12 mt-3">
-              <p><strong>Note:</strong> All documents will be sent with this
-                email as attachments.</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer">
-        <!-- <button type="button" [disabled]="isEmail" (click)="sendEmailOnly()" class="btn
-        btn-default">
-        No
-      </button> -->
+      <div>
         <button type="button" (click)="modal.dismiss('Cross click')" class="btn
-          btn-default">
+            btn-default">
           Cancel
         </button>
-        <button type="submit" [disabled]="isEmail" (click)="addEmails()"
-          class="btn btn-success">Submit</button>
-      </div>
-    </form>
-  </ng-template>
-
-  <!-- VIEW DOCUMENT MODAL -->
-  <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog"
-    aria-labelledby="viewDocModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
-          <button type="button" class="close" data-dismiss="modal"
-            aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <div>
-                <iframe [src]="pdfSrc" frameborder="0" width="100%"
-                  height="400px">
-                </iframe>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">
-            Cancel
-          </button>
-        </div>
+        <button class="btn
+            btn-success ml-2">Send</button>
       </div>
     </div>
   </div>
+</ng-template>
 
-  <app-brokerage-pdf></app-brokerage-pdf>
-  <app-bol-pdf></app-bol-pdf>
+<ng-template #emailInvoiceModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Send Invoice</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form>
+    <div class="modal-body">
+      <div class="email--invoice__main">
+        <div class="row align-items-center mb-2">
+
+          <div class="col-12">
+            <label class="control-label font-weight-bold mt-2 text-3
+                text-dark" for="inputDefault">Send To:
+              <small> You can add multiple email(s)</small> <span
+                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+            <ng-select multiple="true" notFoundText="Please type to add email" [addTag]="true"
+              placeholder="eg. johnsmith@gmail.com" [(ngModel)]="emailData.emails" name="emails" type="text"
+              class="form-control h-auto" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+            </ng-select>
+          </div>
+          <div class="col-12">
+            <label class="control-label font-weight-bold mt-2 text-3
+                text-dark" for="inputDefault">Subject line: <span
+                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+            <input type="text" [(ngModel)]="subject" class="form-control" placeholder="Enter subject" name="subject">
+          </div>
+          <div class="col-12 mt-2">
+            <input class="form-check-input ml-0" (change)="sendEmailCopy($event.target.checked)" type="checkbox"
+              value="" id="copy">
+            <label class="form-check-label pl-3" for="copy">
+              Send me a copy at <strong> {{carrierEmail}}</strong>
+            </label>
+          </div>
+          <div class="col-12 mt-3">
+            <p><strong>Note:</strong> All documents will be sent with this
+              email as attachments.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" [disabled]="isEmail" (click)="sendEmailOnly()" class="btn
+        btn-default">
+        No
+      </button> -->
+      <button type="button" (click)="modal.dismiss('Cross click')" class="btn
+          btn-default">
+        Cancel
+      </button>
+      <button type="submit" [disabled]="isEmail" (click)="addEmails()" class="btn btn-success">Submit</button>
+    </div>
+  </form>
+</ng-template>
+
+<!-- VIEW DOCUMENT MODAL -->
+<div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewDocModalLabel">View Document</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <div>
+              <iframe [src]="pdfSrc" frameborder="0" width="100%" height="400px">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-brokerage-pdf></app-brokerage-pdf>
+<app-bol-pdf></app-bol-pdf>
