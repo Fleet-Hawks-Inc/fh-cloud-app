@@ -663,7 +663,7 @@
                           </tr>
                           <tr *ngFor="let expense of expenses">
                             <td>{{ expense.txnDate | date: "yyyy/MM/dd" }}</td>
-                            <td>{{ categories[expense.categoryID] }}</td>
+                            <td>{{ expense.catName }}</td>
                             <td>Other Expense</td>
                             <td>{{ expense.amount }} {{ expense.currency }}</td>
                           </tr>
