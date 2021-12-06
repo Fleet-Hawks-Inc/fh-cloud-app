@@ -21,54 +21,64 @@ export class DeviceListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   public devices: any = [];
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.next = 'null';
+    this.devices = [];
+    await this.fetchDevices();
+  }
 
+  refreshData() {
+    this.next = 'null';
+    this.devices = [];
     this.fetchDevices();
   }
-  private fetchDevices() {
+  private async fetchDevices() {
     try {
       if (this.next === 'end') {
         return;
       }
-      this.apiService.getData(`devices/getDevices/${this.next}`).subscribe((result) => {
-        if (result && result.length !== 0) {
-          //console.log(result)
-          result.data.forEach(device => {
-            let deviceItem: any = {
-              deviceName: device.deviceName,
-              deviceStatus: device.deviceStatus,
-              deviceSerialNo: device.deviceSerialNo,
-              description: device.description,
-              deviceType: device.deviceType,
-              deviceID: device.deviceID,
-              vehicle: {
-                vehicleID: '',
-                vehicleIdentification: ''
-              },
-              asset: {
-                assetID: '',
-                assetIdentification: ''
-              }
-            }
-            if (device.vehicleIdentification) {
-              deviceItem.vehicle.vehicleID = device.vehicleID;
-              deviceItem.vehicle.vehicleIdentification = device.vehicleIdentification;
-            }
-            if (device.assetIdentification) {
-              deviceItem.asset.assetID = device.assetID;
-              deviceItem.asset.assetIdentification = device.assetIdentification;
-            }
-            this.devices.push(deviceItem);
+      this.dataMessage = Constants.FETCHING_DATA;
+      const result: any = await this.apiService.getData(`devices/getDevices/${this.next}`).toPromise();
 
-          });
-          this.next = result.nextPage || 'end';
+      if (result && result.data.length > 0) {
+        result.data.forEach(device => {
+          let deviceItem: any = {
+            deviceName: device.deviceName,
+            deviceStatus: device.deviceStatus,
+            deviceSerialNo: device.deviceSerialNo,
+            description: device.description,
+            deviceType: device.deviceType,
+            deviceID: device.deviceID,
+            vehicle: {
+              vehicleID: '',
+              vehicleIdentification: ''
+            },
+            asset: {
+              assetID: '',
+              assetIdentification: ''
+            }
+          }
+          if (device.vehicleIdentification) {
+            deviceItem.vehicle.vehicleID = device.vehicleID;
+            deviceItem.vehicle.vehicleIdentification = device.vehicleIdentification;
+          }
+          if (device.assetIdentification) {
+            deviceItem.asset.assetID = device.assetID;
+            deviceItem.asset.assetIdentification = device.assetIdentification;
+          }
+          this.devices.push(deviceItem);
 
-        } else {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-      })
+        });
+        this.next = result.nextPage || 'end';
+
+      } else {
+        this.next = 'end'
+        this.dataMessage = Constants.NO_RECORDS_FOUND;
+      }
+
     }
     catch (error) {
+      this.dataMessage = Constants.NO_RECORDS_FOUND;
       console.error(error)
       throw new Error(error)
     }
@@ -85,6 +95,8 @@ export class DeviceListComponent implements OnInit {
         }
         this.apiService.putData(`devices/deactivate`, body).subscribe((result) => {
           if (result) {
+            this.devices = [];
+            this.next = 'null';
             this.fetchDevices();
             this.toastr.success("Device De-activated Successfully")
           }
@@ -97,8 +109,9 @@ export class DeviceListComponent implements OnInit {
     }
   }
 
-  onScroll() {
-    this.fetchDevices();
+  async onScroll() {
+
+    await this.fetchDevices();
 
   }
 }

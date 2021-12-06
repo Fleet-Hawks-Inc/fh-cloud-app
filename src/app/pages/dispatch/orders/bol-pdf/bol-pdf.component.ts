@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ListService } from "src/app/services";
 import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-bol-pdf",
@@ -9,7 +10,12 @@ import * as html2pdf from "html2pdf.js";
   styleUrls: ["./bol-pdf.component.css"],
 })
 export class BolPdfComponent implements OnInit {
-  constructor(private listService: ListService) {}
+  @ViewChild("ordBolPrev", { static: true })
+  modalContent: TemplateRef<any>;
+  constructor(
+    private listService: ListService,
+    private modalService: NgbModal
+  ) {}
   subscription: Subscription;
   orderData = {
     createdDate: null,
@@ -66,7 +72,20 @@ export class BolPdfComponent implements OnInit {
           this.orderData = res.orderData;
           this.carrierData = res.carrierData;
           this.companyLogo = res.companyLogo;
-          this.generatePDF();
+
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "ordBolPrev-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => {},
+              (reason) => {}
+            );
+          // this.generatePDF();
         }
       }
     );

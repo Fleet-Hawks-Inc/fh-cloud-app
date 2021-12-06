@@ -142,9 +142,6 @@ export class ServicelogsComponent implements OnInit {
       } else if (this.start > this.end) {
         this.toastr.error('Start Date should be less then end date.');
         return false;
-      } else if (this.category != null && this.searchValue == null) {
-        this.toastr.error('Plese enter search value.');
-        return false;
       }
       else {
         this.dataMessage = Constants.FETCHING_DATA

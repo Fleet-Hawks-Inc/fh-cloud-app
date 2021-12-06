@@ -46,73 +46,35 @@
                                 </ng-option>
                             </ng-select>
 
-                            <input *ngIf="tripsFiltr.category == 'driver'"
-                                type="text" autocomplete="off"
-                                placeholder="Search By Driver"
-                                [(ngModel)]="orderValue" name="orderValue"
-                                class="form-control"
-                                (input)="getDriversSuggestions($event.target.value)"
-                                />
-                            <div *ngIf="tripsFiltr.category == 'driver' &&
-                                suggestions?.length> 0"
-                                class="result-suggestions text-capitalize"
-                                style="max-height: 150px;
-                                overflow-y: auto;">
-                                <ul class="m-0">
-                                    <li *ngFor="let suggestedUser of
-                                        suggestions" style="cursor: pointer"
-                                        (click)="setSearchValues(suggestedUser.fullName,
-                                        suggestedUser.driverID)">
-                                        {{ suggestedUser.fullName }}
-                                    </li>
-                                </ul>
-                            </div>
+                            <ng-select [(ngModel)]="tripsFiltr.searchValue"
+                                name="searchValue"
+                                placeholder="Select Driver"
+                                *ngIf="tripsFiltr.category == 'driver'">
+                                <ng-option value="{{ data.key }}" *ngFor="let
+                                    data of driversObject | keyvalue"> {{
+                                    data.value }}
+                                </ng-option>
+                            </ng-select>
 
-                            <input *ngIf="tripsFiltr.category == 'vehicle'"
-                                type="text" autocomplete="off"
-                                placeholder="Search By Vehicle"
-                                [(ngModel)]="orderValue" name="orderValue"
-                                class="form-control"
-                                (input)="getVehiclesSuggestions($event.target.value)"
-                                />
-                            <div *ngIf="tripsFiltr.category == 'vehicle' &&
-                                suggestions?.length> 0"
-                                class="result-suggestions text-capitalize"
-                                style="max-height: 150px;
-                                overflow-y: auto;">
-                                <ul class="m-0">
-                                    <li *ngFor="let suggestedUser of
-                                        suggestions" style="cursor: pointer"
-                                        (click)="setSearchValues(suggestedUser.vehicleIdentification,
-                                        suggestedUser.vehicleID)">
-                                        {{ suggestedUser.vehicleIdentification
-                                        }}
-                                    </li>
-                                </ul>
-                            </div>
+                            <ng-select [(ngModel)]="tripsFiltr.searchValue"
+                                name="searchValue"
+                                placeholder="Select Vehicle"
+                                *ngIf="tripsFiltr.category == 'vehicle'">
+                                <ng-option value="{{ data.key }}" *ngFor="let
+                                    data of vehiclesObject | keyvalue"> {{
+                                    data.value }}
+                                </ng-option>
+                            </ng-select>
 
-
-                            <input *ngIf="tripsFiltr.category == 'asset'"
-                                type="text" autocomplete="off"
-                                placeholder="Search By Asset"
-                                [(ngModel)]="orderValue" name="orderValue"
-                                class="form-control"
-                                (input)="getAssetSuggestions($event.target.value)"
-                                />
-                            <div *ngIf="tripsFiltr.category == 'asset' &&
-                                suggestions?.length> 0"
-                                class="result-suggestions text-capitalize"
-                                style="max-height: 150px;
-                                overflow-y: auto;">
-                                <ul class="m-0">
-                                    <li *ngFor="let suggestedUser of
-                                        suggestions" style="cursor: pointer"
-                                        (click)="setSearchValues(suggestedUser.assetIdentification,
-                                        suggestedUser.assetID)">
-                                        {{ suggestedUser.assetIdentification }}
-                                    </li>
-                                </ul>
-                            </div>
+                            <ng-select [(ngModel)]="tripsFiltr.searchValue"
+                                name="searchValue"
+                                placeholder="Select Asset"
+                                *ngIf="tripsFiltr.category == 'asset'">
+                                <ng-option value="{{ data.key }}" *ngFor="let
+                                    data of assetsObject | keyvalue"> {{
+                                    data.value }}
+                                </ng-option>
+                            </ng-select>
 
                             <input *ngIf="tripsFiltr.category == 'orderNo'"
                                 type="text" autocomplete="off"
@@ -120,8 +82,6 @@
                                 [(ngModel)]="tripsFiltr.searchValue"
                                 name="searchValue"
                                 class="form-control" />
-
-
                         </div>
 
                         <div class="col-lg-3 col-md-3 pr-1">

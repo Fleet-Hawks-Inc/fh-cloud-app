@@ -78,7 +78,7 @@
                                                         <!-- <th class="col4">Last Location</th> -->
                                                         <th> Licence Plate Number</th>
                                                         <th>Year</th>
-                                                        <th>Model</th>
+
                                                         <th>Ownership</th>
                                                         <th>Company Name</th>
                                                         <th>Annual Safety Date</th>
@@ -113,10 +113,6 @@
                                                             item.assetDetails.ownerShip
                                                             !=='interchange' ? item.assetDetails.year : '-'}}</td>
 
-
-                                                        <td [routerLink]="item.url">
-                                                            {{item.assetDetails.model ?
-                                                            modelsObjects[item.assetDetails.model] : '-'}}</td>
                                                         <td [routerLink]="item.url">
                                                             {{item.assetDetails.ownerShip ? item.assetDetails.ownerShip
                                                             :

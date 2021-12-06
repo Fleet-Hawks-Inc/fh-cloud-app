@@ -29,9 +29,15 @@ import { CanComponentDeactivate } from "src/app/guards/unsaved-changes.guard";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 import { UnsavedChangesComponent } from "src/app/unsaved-changes/unsaved-changes.component";
-import { ApiService, HereMapService, ListService } from "../../../../services";
+import {
+  ApiService,
+  DashboardUtilityService,
+  HereMapService,
+  ListService,
+} from "../../../../services";
 import { ModalService } from "../../../../services/modal.service";
 import Constants from "../../constants";
+
 declare var $: any;
 @Component({
   selector: "app-add-driver",
@@ -39,7 +45,8 @@ declare var $: any;
   styleUrls: ["./add-driver.component.css"],
 })
 export class AddDriverComponent
-  implements OnInit, OnDestroy, CanComponentDeactivate {
+  implements OnInit, OnDestroy, CanComponentDeactivate
+{
   @ViewChild("driverF") driverF: NgForm;
   takeUntil$ = new Subject();
   Asseturl = this.apiService.AssetUrl;
@@ -325,7 +332,8 @@ export class AddDriverComponent
     private dateAdapter: NgbDateAdapter<string>,
     private router: Router,
     private listService: ListService,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     this.modalServiceOwn.triggerRedirect.next(false);
 
@@ -383,9 +391,9 @@ export class AddDriverComponent
     if (this.driverF.dirty && !this.isSubmitted) {
       if (!this.modalService.hasOpenModals()) {
         let ngbModalOptions: NgbModalOptions = {
-          backdrop: 'static',
+          backdrop: "static",
           keyboard: false,
-          size: "sm"
+          size: "sm",
         };
         this.modalService.open(UnsavedChangesComponent, ngbModalOptions);
       }
@@ -765,7 +773,7 @@ export class AddDriverComponent
     this.groupSubmitDisabled = true;
     this.hideErrors();
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -782,7 +790,7 @@ export class AddDriverComponent
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -945,7 +953,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.postData("drivers", formData, true).subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -964,12 +972,13 @@ export class AddDriverComponent
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => { },
+                next: () => {},
               });
           },
           next: (res) => {
             // this.response = res;
             // this.hasSuccess = true;
+            this.dashboardUtilityService.refreshDrivers = true;
             this.submitDisabled = false;
             this.toastr.success("Driver added successfully");
             this.isSubmitted = true;
@@ -1038,12 +1047,12 @@ export class AddDriverComponent
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+              v +
+              '-error" class="error" for="' +
+              v +
+              '">' +
+              this.errors[v] +
+              "</label>"
           )
           .addClass("error");
       }
@@ -1391,7 +1400,7 @@ export class AddDriverComponent
       this.submitDisabled = true;
       try {
         this.apiService.putData("drivers", formData, true).subscribe({
-          complete: () => { },
+          complete: () => {},
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1421,6 +1430,7 @@ export class AddDriverComponent
             this.hasSuccess = true;
             this.isSubmitted = true;
             this.submitDisabled = false;
+            this.dashboardUtilityService.refreshDrivers = true;
             this.toastr.success("Driver updated successfully");
             this.cancel();
           },

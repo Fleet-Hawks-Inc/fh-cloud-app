@@ -898,6 +898,7 @@
                         [center]="center"
                         [zoom]="zoom"
                       >
+                      <map-polyline [path]="vertices"></map-polyline>
                         <map-marker
                           *ngFor="let markerPosition of markerPositions"
                           [position]="markerPosition"

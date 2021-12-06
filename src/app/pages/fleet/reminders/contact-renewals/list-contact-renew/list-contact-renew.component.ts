@@ -30,7 +30,7 @@ export class ListContactRenewComponent implements OnInit {
   usersList: any = {};
   contactID = null;
   firstName = '';
-  serviceTasks = [];
+
   searchServiceTask = null;
   suggestedContacts = [];
   filterValue = "item.reminderTasks.reminderStatus == 'OVERDUE' || item.reminderTasks.reminderStatus == 'DUE SOON'";
@@ -59,7 +59,7 @@ export class ListContactRenewComponent implements OnInit {
 
   ngOnInit() {
     this.listService.fetchDrivers();
-    this.fetchServiceTaks();
+    // this.fetchServiceTaks();
     this.fetchTasksList();
     this.fetchEmployeeList();
     this.initDataTable();
@@ -102,17 +102,11 @@ export class ListContactRenewComponent implements OnInit {
     });
   }
   fetchTasksList() {
-    this.apiService.getData('tasks/get/list').subscribe((result: any) => {
+    this.apiService.getData('tasks/get/list?type=contact').subscribe((result: any) => {
       this.tasksList = result;
     });
   }
-  fetchServiceTaks() {
-    let test = [];
-    this.apiService.getData('tasks').subscribe((result: any) => {
-      test = result.Items;
-      this.serviceTasks = test.filter((s: any) => s.taskType === 'contact');
-    });
-  }
+
   setFilterStatus(val) {
     this.filterStatus = val;
   }
