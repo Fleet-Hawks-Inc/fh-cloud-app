@@ -67,7 +67,7 @@ export class DeviceDetailComponent implements OnInit {
       })
     }
     catch (error) {
-      console.error(error)
+
       throw new Error(error)
     }
   }

@@ -1,14 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services";
-import { Router } from "@angular/router";
+import { ApiService, DashboardUtilityService } from "../../../../services";
 import { ToastrService } from "ngx-toastr";
 import { NgxSpinnerService } from "ngx-spinner";
-import { map } from "rxjs/operators";
-import { from } from "rxjs";
 import Constants from "../../../fleet/constants";
 import { environment } from "src/environments/environment";
 declare var $: any;
-import * as moment from "moment";
 import * as _ from "lodash";
 
 @Component({
@@ -140,8 +136,7 @@ export class TripListComponent implements OnInit {
     end: "",
   };
 
-  orderValue = "";
-  searchFlag = false;
+  orderValue = null;
 
   loaded = false;
   isLoad: boolean = false;
@@ -155,12 +150,6 @@ export class TripListComponent implements OnInit {
   activeTab = "all";
 
   // manual pagination
-  tripNext = false;
-  tripPrev = true;
-  tripDraw = 0;
-  tripPrevEvauatedKeys = [""];
-  tripStartPoint = 1;
-  tripEndPoint = this.pageLength;
   lastEvaluatedKey = "";
   driversIDSObject = [];
   tripDate = "";
@@ -181,17 +170,19 @@ export class TripListComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private dashboardUtilityService: DashboardUtilityService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.initDataTable();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.assetsObject = await this.dashboardUtilityService.getAssets();
+    this.vehiclesObject = await this.dashboardUtilityService.getVehicles();
   }
 
   async fetchTrips(result, type = null) {
-    let trpArr = [];
     for (let i = 0; i < result.Items.length; i++) {
       result.Items[i].pickupLocation = "";
       result.Items[i].pickupLocationCount = 0;
@@ -339,7 +330,6 @@ export class TripListComponent implements OnInit {
 
       this.trips.push(result.Items[i]);
     }
-    // this.trips.push(trpArr);
   }
 
   openStatusModal(tripId, index) {
@@ -373,7 +363,6 @@ export class TripListComponent implements OnInit {
             this.tonuTrips = [];
 
             this.hasSuccess = true;
-            this.tripDraw = 0;
             this.lastEvaluatedKey = "";
             this.records = false;
 
@@ -654,54 +643,19 @@ export class TripListComponent implements OnInit {
               v.url = `/dispatch/trips/trip-details/${v.tripID}`;
             });
             this.fetchedRecordsCount += result.Count;
-            this.getStartandEndVal("all");
 
             this.fetchTrips(result, "all");
             this.loaded = true;
-            if (
-              this.tripsFiltr.searchValue !== "" ||
-              this.tripsFiltr.start !== ""
-            ) {
-              this.tripStartPoint = 1;
-              this.tripEndPoint = this.totalRecords;
-            }
 
             if (result["LastEvaluatedKey"] !== undefined) {
               let lastEvalKey = result[`LastEvaluatedKey`].tripSK.replace(
                 /#/g,
                 "--"
               );
-              this.tripNext = false;
-              // for prev button
-              if (!this.tripPrevEvauatedKeys.includes(lastEvalKey)) {
-                this.tripPrevEvauatedKeys.push(lastEvalKey);
-              }
               this.lastEvaluatedKey = lastEvalKey;
             } else {
-              this.tripNext = true;
               this.lastEvaluatedKey = "end";
-              this.tripEndPoint = this.totalRecords;
             }
-
-            if (this.totalRecords < this.tripEndPoint) {
-              this.tripEndPoint = this.totalRecords;
-            }
-
-            // disable prev btn
-            if (this.tripDraw == 0) {
-              this.tripPrev = true;
-            }
-
-            // disable next btn when no records at last
-            if (this.fetchedRecordsCount < this.totalRecords) {
-              this.tripNext = false;
-            } else if (this.fetchedRecordsCount === this.totalRecords) {
-              this.tripNext = true;
-            }
-            this.lastFetched = {
-              draw: this.tripDraw,
-              status: this.tripNext,
-            };
             this.isLoad = false;
             this.spinner.hide();
           },
@@ -720,7 +674,7 @@ export class TripListComponent implements OnInit {
       this.tripsFiltr.startDate !== "" ||
       this.tripsFiltr.endDate !== "" ||
       this.tripsFiltr.category !== null ||
-      this.orderValue != ""
+      this.orderValue !== null
     ) {
       if (
         this.tripsFiltr.category === "orderNo" &&
@@ -730,19 +684,6 @@ export class TripListComponent implements OnInit {
         this.toastr.error("Please enter order number");
         return false;
       }
-      if (this.tripsFiltr.category === "asset" && !this.searchFlag) {
-        this.toastr.error("Please select asset from suggestions");
-        return false;
-      }
-      if (this.tripsFiltr.category === "vehicle" && !this.searchFlag) {
-        this.toastr.error("Please select vehicle from suggestions");
-        return false;
-      }
-      if (this.tripsFiltr.category === "driver" && !this.searchFlag) {
-        this.toastr.error("Please select driver from suggestions");
-        return false;
-      }
-
       if (this.tripsFiltr.startDate != "" && this.tripsFiltr.endDate == "") {
         this.toastr.error("Please select both start and end dates.");
         return false;
@@ -766,7 +707,6 @@ export class TripListComponent implements OnInit {
           this.tripsFiltr.searchValue =
             this.tripsFiltr.searchValue.toLowerCase();
         }
-        this.tripDraw = 0;
         this.trips = [];
         this.confirmedTrips = [];
         this.dispatchedTrips = [];
@@ -800,7 +740,7 @@ export class TripListComponent implements OnInit {
       this.tripsFiltr.startDate !== "" ||
       this.tripsFiltr.endDate !== "" ||
       this.tripsFiltr.searchValue !== "" ||
-      this.orderValue != ""
+      this.orderValue !== null
     ) {
       this.trips = [];
       this.tripsFiltr = {
@@ -814,8 +754,7 @@ export class TripListComponent implements OnInit {
       this.records = false;
       this.dataMessage = Constants.FETCHING_DATA;
       $("#categorySelect").text("Search by category");
-      this.orderValue = "";
-      this.tripDraw = 0;
+      this.orderValue = null;
       this.activeTab = "all";
       this.confirmedTrips = [];
       this.dispatchedTrips = [];
@@ -826,23 +765,9 @@ export class TripListComponent implements OnInit {
       this.tonuTrips = [];
       this.lastEvaluatedKey = "";
       this.initDataTable();
-      this.getStartandEndVal("all");
     } else {
       return false;
     }
-  }
-
-  getStartandEndVal(type) {
-    if (type == "all") {
-      this.tripStartPoint = this.tripDraw * this.pageLength + 1;
-      this.tripEndPoint = this.tripStartPoint + this.pageLength - 1;
-    }
-  }
-
-  resetCountResult() {
-    this.tripStartPoint = 1;
-    this.tripEndPoint = this.pageLength;
-    this.tripDraw = 0;
   }
 
   setActiveDiv(type) {
@@ -859,8 +784,7 @@ export class TripListComponent implements OnInit {
       event == "tripStatus"
     ) {
       this.tripsFiltr.searchValue = null;
-      this.orderValue = "";
-      this.searchFlag = false;
+      this.orderValue = null;
     } else {
       this.tripsFiltr.searchValue = "";
     }
@@ -918,7 +842,6 @@ export class TripListComponent implements OnInit {
     this.dataMessage = Constants.FETCHING_DATA;
     this.lastEvaluatedKey = "";
     $("#categorySelect").text("Search by category");
-    this.tripDraw = 0;
     this.activeTab = "all";
     this.confirmedTrips = [];
     this.dispatchedTrips = [];
@@ -928,7 +851,6 @@ export class TripListComponent implements OnInit {
     this.deliveredTrips = [];
     this.tonuTrips = [];
     this.initDataTable();
-    this.getStartandEndVal("all");
   }
 
   onScroll() {
@@ -939,67 +861,4 @@ export class TripListComponent implements OnInit {
     }
     this.loaded = false;
   }
-
-  getOrdersSuggestions = _.debounce(function (value) {
-    if (value != "") {
-      value = value.toLowerCase();
-      this.apiService
-        .getData(`orders/suggestion/${value}`)
-        .subscribe((result) => {
-          this.suggestions = result.Items;
-          this.searchFlag = false;
-        });
-    } else {
-      this.suggestions = [];
-    }
-  }, 800);
-
-  setSearchValues(name, searchValue) {
-    this.orderValue = name;
-    this.tripsFiltr.searchValue = searchValue;
-    this.suggestions = [];
-    this.searchFlag = true;
-  }
-
-  getAssetSuggestions = _.debounce(function (value) {
-    value = value.toLowerCase();
-    if (value != "") {
-      this.apiService
-        .getData(`assets/suggestion/${value}`)
-        .subscribe((result) => {
-          this.suggestions = result;
-          this.searchFlag = false;
-        });
-    } else {
-      this.suggestions = [];
-    }
-  }, 800);
-
-  getVehiclesSuggestions = _.debounce(function (value) {
-    value = value.toLowerCase();
-    if (value != "") {
-      this.apiService
-        .getData(`vehicles/suggestion/${value}`)
-        .subscribe((result) => {
-          this.suggestions = result;
-          this.searchFlag = false;
-        });
-    } else {
-      this.suggestions = [];
-    }
-  }, 800);
-
-  getDriversSuggestions = _.debounce(function (value) {
-    value = value.toLowerCase();
-    if (value != "") {
-      this.apiService
-        .getData(`drivers/get/suggestions/${value}`)
-        .subscribe((result) => {
-          this.suggestions = result;
-          this.searchFlag = false;
-        });
-    } else {
-      this.suggestions = [];
-    }
-  }, 800);
 }

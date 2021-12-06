@@ -19,10 +19,24 @@ export class LocationShareComponent implements OnInit {
   lng = 50.44521;
   width = "100%";
   height = "100%";
-  zoom = 16;
+  zoom = 17;
   center = { lat: 48.48248695279594, lng: -99.0688673798094 };
   token = undefined;
-  apiResponse: any;
+  loaded = false;
+
+  apiResponse: {
+    usage: "",
+    token: "",
+    salt: "",
+    deviceID: "",
+    vehicleID: "",
+    vehicleName: "",
+    lastLocation: "",
+    lastReportedDate: "",
+    networkType: any,
+    speed: any,
+    errorCode: any
+  };
   infoDetail = 'Vehicle is Offline!!';
   vehicleMarkerOptions: google.maps.MarkerOptions = { draggable: false, icon: 'assets/live-location-icon.png' };
   mapOptions: google.maps.MapOptions = { clickableIcons: true, fullscreenControl: true, rotateControl: true, mapTypeControl: true };
@@ -40,29 +54,52 @@ export class LocationShareComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     // google.maps.geometry.spherical.computeHeading - for rotation of icon
     this.apiResponse = await this.validateAndGetLocation();
+
     if (this.apiResponse && this.apiResponse.errorCode) {
       this.toaster.error('This link has expired.');
+      this.loaded = false;
     }
-    if (this.apiResponse || this.apiResponse !== '') {
-      this.webSocket.connect(this.apiResponse.usage, this.apiResponse.salt, this.apiResponse.token).pipe(
-        takeUntil(this.destroyed$)
-      ).subscribe(messages => {
-        if (messages.action === '80000') {
-          this.toaster.success('Successfully Connected to Server..');
-        }
-        if (messages.action === "80003" && messages.payload.deviceID === this.apiResponse.deviceID) {
-          console.log(messages);
-          this.messages.push(messages);
-          if (this.messages.length === 1) {
-            this.toaster.success('Vehicle is online...');
-          }
-          this.center = { lat: parseFloat(messages.payload.location.latitude), lng: parseFloat(messages.payload.location.longitude) };
-          this.apiResponse.speed = parseFloat(messages.payload.location.speed).toFixed(2) || 0.0;
-          this.apiResponse.networkType = this.getNetwork(messages.payload.mobile.type);
-        }
-      });
+    if (this.apiResponse) {
+      this.loaded = true;
+      this.connectToWSServer();
+      this.updateLastLocation();
     }
 
+  }
+
+  private connectToWSServer() {
+    this.webSocket.connect(this.apiResponse.usage, this.apiResponse.salt, this.apiResponse.token).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(messages => {
+      if (messages.action === '80000') {
+        this.toaster.success('Successfully Connected to Server..');
+      }
+      if (messages.action === "80003" && messages.payload.deviceID === this.apiResponse.deviceID) {
+
+        this.messages.push(messages);
+        if (this.messages.length === 1) {
+          this.toaster.success('Vehicle is online...');
+        }
+        this.center = { lat: parseFloat(messages.payload.location.latitude), lng: parseFloat(messages.payload.location.longitude) };
+        this.apiResponse.speed = parseFloat(messages.payload.location.speed).toFixed(2) || 0.0;
+        this.apiResponse.networkType = this.getNetwork(messages.payload.mobile.type);
+      }
+    });
+  }
+
+  updateLastLocation() {
+    setInterval(async () => {
+
+      const response = await this.validateAndGetLocation();
+      if (this.apiResponse && this.apiResponse.errorCode) {
+        this.toaster.error('This link has expired.');
+      }
+      if (response) {
+        this.apiResponse.lastLocation = response.lastLocation;
+      }
+
+
+    }, 60000);
   }
 
   async validateAndGetLocation() {
@@ -84,8 +121,10 @@ export class LocationShareComponent implements OnInit {
     this.infoWindow.open(marker);
   }
 
+
+
   getNetwork(networkType: string) {
-    console.log(networkType);
+
     switch (networkType) {
       case '-1':
         return 'Offline';
