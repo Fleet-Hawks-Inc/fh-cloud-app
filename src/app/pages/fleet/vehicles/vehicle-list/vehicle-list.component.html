@@ -15,7 +15,8 @@
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" autocomplete="off" name="vehicleIdentification"
                                     placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
-                                    class="form-control" (input)="getSuggestions($event.target.value)" />
+                                    class="form-control"
+                                    (input)="getSuggestions($event.target.value); changeVehicleID()" />
                             </div>
                             <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
                                 <ul class="text-capitalize">
@@ -197,7 +198,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr *ngIf="vehicles.length == 0" class="text-center">
-                                                        <td colspan="13">{{ dataMessage }}</td>
+                                                        <td colspan="14">{{ dataMessage }}</td>
                                                     </tr>
                                                     <tr *ngFor="let vehicle of vehicles; let i = index"
                                                         class="text-capitalize">
