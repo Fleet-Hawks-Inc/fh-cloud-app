@@ -201,7 +201,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
   prepareVehicleInfoTemplate(data: any) {
     return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
     Speed: ${data.speed} KM/H 
-    Time : ${data.time}<br/> <br/>  <span (click)='open()'> hello</span>   
+    Time : ${data.time}<br/> <br/> 
      `;
   }
 
