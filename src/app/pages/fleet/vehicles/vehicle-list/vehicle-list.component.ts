@@ -206,6 +206,8 @@ export class VehicleListComponent implements OnInit {
             this.vehicles = this.vehicles.concat(result.Items)
 
             this.loaded = true;
+            await this.getDashCamConnection(this.vehicles);
+            await this.getDashCamStatus(this.vehicles);
           }
         });
     }
