@@ -139,7 +139,6 @@ export class SummaryComponent implements OnInit {
                 obj["Make"] = element.manufacturerID
                 obj["Model"] = element.modelID
                 obj["Plate#"] = element.plateNumber
-                obj["Last Drive Time"] = element.vehicle
                 obj["Ownership"] = element.ownership
                 obj["Status"] = element.currentStatus
                 dataObject.push(obj)
