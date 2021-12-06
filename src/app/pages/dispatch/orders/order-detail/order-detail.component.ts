@@ -505,7 +505,7 @@ export class OrderDetailComponent implements OnInit {
         this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
-      (err) => { }
+      (err) => {}
     );
   }
 
@@ -674,7 +674,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -692,7 +692,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -832,7 +832,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
-  setSrcValue() { }
+  setSrcValue() {}
 
   caretClickShipper(i, j) {
     if (
@@ -909,6 +909,9 @@ export class OrderDetailComponent implements OnInit {
       orderData: this.orderInvData,
       showModal: this.showModal,
       companyLogo: this.companyLogoSrc,
+      carrierEmail: this.carrierEmail,
+      orderID: this.orderID,
+      type: "detail",
     };
     this.listService.triggerBrokeragePdf(data);
   }
@@ -931,7 +934,6 @@ export class OrderDetailComponent implements OnInit {
     }
 
     this.brokerageDisabled = false;
-
   }
 
   async downloadBolPdf() {
