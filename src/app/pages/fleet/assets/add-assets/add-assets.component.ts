@@ -650,33 +650,15 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
         this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
         this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
+        this.assetsData.assetDetails.ownCname = result.assetDetails.ownCname;
+        this.assetsData.assetDetails.ownAmt = result.assetDetails.ownAmt;
+        this.assetsData.assetDetails.ownCurr = result.assetDetails.ownCurr;
+        this.assetsData.assetDetails.ownDate = result.assetDetails.ownDate;
+        this.assetsData.assetDetails.ownRec = result.assetDetails.ownRec;
+        this.assetsData.assetDetails.ownFrq = result.assetDetails.ownFrq;
         if (result.assetDetails.ownerShip === "ownerOperator") {
           this.assetsData.assetDetails.ownerOperator =
             result.assetDetails.ownerOperator;
-        }
-        if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownCname =
-            result.assetDetails.ownCname;
-        }
-         if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownAmt =
-            result.assetDetails.ownAmt;
-        }
-         if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownCurr =
-            result.assetDetails.ownCurr;
-        }
-        if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownDate =
-            result.assetDetails.ownDate;
-        }
-        if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownRec =
-            result.assetDetails.ownRec;
-        }
-         if (result.assetDetails.ownerShip === "rented" || "leased") {
-          this.assetsData.assetDetails.ownFrq =
-            result.assetDetails.ownFrq;
         }
          if (result.assetDetails.ownerShip === "interchange") {
           this.isRequired = false;
