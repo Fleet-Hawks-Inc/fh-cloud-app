@@ -34,7 +34,6 @@ export class AddressBookComponent implements OnInit {
     if (this.lastItemSK !== 'end'){
     const result = await this.apiService.getData(`contacts/fetch/addressbookrecords?company=${this.company}&type=${this.type}&lastKey=${this.lastItemSK}`).toPromise();
       this.dataMessage = Constants.FETCHING_DATA
-      console.log('abc', result)
       if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
