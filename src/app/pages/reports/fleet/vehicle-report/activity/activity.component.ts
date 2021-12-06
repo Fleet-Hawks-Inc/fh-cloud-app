@@ -26,6 +26,7 @@ export class ActivityComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   dataMessage = Constants.FETCHING_DATA;
   date = new Date();
+  exportData = [];
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public vehicleId;
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
@@ -37,9 +38,7 @@ export class ActivityComponent implements OnInit {
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
     this.fetchVehicleListing();
     this.fetchVehicleName();
-
   }
-
   fetchVehicleName() {
     this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
       this.vehicleData = result.Items;
@@ -102,12 +101,25 @@ export class ActivityComponent implements OnInit {
       return false;
     }
   }
+  fetchFullExport() {
+    this.apiService.getData(`vehicles/fetch/vehicelActivity/list?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      this.exportData = result.Items;
+      for (let veh of this.exportData) {
+        let dataa = veh
+        veh.miles = 0
+        for (let element of dataa.tripPlanning) {
+          veh.miles += Number(element.miles);
+        }
+      }
+      this.generateCSV();
+    });
 
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.exportData.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.exportData.forEach(element => {
         let location = ''
         let date = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
