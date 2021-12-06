@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService } from "../../../../services";
+import { ApiService, DashboardUtilityService } from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { formatDate } from "@angular/common";
 import { map } from "rxjs/operators";
@@ -209,7 +209,8 @@ export class AddAssetsComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private domSanitizer: DomSanitizer,
     private httpClient: HttpClient,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     this.selectedFileNames = new Map<any, any>();
   }
@@ -582,6 +583,7 @@ export class AddAssetsComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toastr.success("Asset added successfully.");
+        this.dashboardUtilityService.refreshAssets = true;
         this.cancel();
       },
     });
@@ -950,6 +952,7 @@ export class AddAssetsComponent implements OnInit {
         this.response = res;
         this.hasSuccess = true;
         this.toastr.success("Asset updated successfully.");
+        this.dashboardUtilityService.refreshAssets = true;
         this.cancel();
         this.Success = "";
       },

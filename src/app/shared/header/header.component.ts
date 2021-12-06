@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { ApiService, ListService } from "src/app/services";
 import { InvokeHeaderFnService } from "src/app/services/invoke-header-fn.service";
 import { environment } from "../../../environments/environment";
-import { DashboardServiceUtilityService } from "src/app/services/dashboard-service-utility.service";
+import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -86,7 +86,7 @@ export class HeaderComponent implements OnInit {
     private listService: ListService,
     public router: Router,
     private headerFnService: InvokeHeaderFnService,
-    private dashboardService: DashboardServiceUtilityService
+    private dashboardService: DashboardUtilityService
   ) {
     this.sharedService.activeParentNav.subscribe((val) => {
       let activeTab = localStorage.getItem("active-header");
@@ -114,11 +114,22 @@ export class HeaderComponent implements OnInit {
   async init() {
     await this.apiService.checkAccess();
     this.isFleetEnabled = environment.isFleetEnabled;
-    this.isDispatchEnabled = localStorage.getItem("isDispatchEnabled") ? JSON.parse(localStorage.getItem("isDispatchEnabled")) : environment.isDispatchEnabled;
-    this.isComplianceEnabled = localStorage.getItem("isComplianceEnabled") ? JSON.parse(localStorage.getItem("isComplianceEnabled")) : environment.isComplianceEnabled;
-    this.isManageEnabled = localStorage.getItem("isManageEnabled") ? JSON.parse(localStorage.getItem("isManageEnabled")) : environment.isManageEnabled;
-    this.isSafetyEnabled = localStorage.getItem("isSafetyEnabled") ? JSON.parse(localStorage.getItem("isSafetyEnabled")) : environment.isSafetyEnabled;
-    this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled") ? JSON.parse(localStorage.getItem("isAccountsEnabled")) : environment.isAccountsEnabled; environment.isAccountsEnabled;
+    this.isDispatchEnabled = localStorage.getItem("isDispatchEnabled")
+      ? JSON.parse(localStorage.getItem("isDispatchEnabled"))
+      : environment.isDispatchEnabled;
+    this.isComplianceEnabled = localStorage.getItem("isComplianceEnabled")
+      ? JSON.parse(localStorage.getItem("isComplianceEnabled"))
+      : environment.isComplianceEnabled;
+    this.isManageEnabled = localStorage.getItem("isManageEnabled")
+      ? JSON.parse(localStorage.getItem("isManageEnabled"))
+      : environment.isManageEnabled;
+    this.isSafetyEnabled = localStorage.getItem("isSafetyEnabled")
+      ? JSON.parse(localStorage.getItem("isSafetyEnabled"))
+      : environment.isSafetyEnabled;
+    this.isAccountsEnabled = localStorage.getItem("isAccountsEnabled")
+      ? JSON.parse(localStorage.getItem("isAccountsEnabled"))
+      : environment.isAccountsEnabled;
+    environment.isAccountsEnabled;
     this.isReportsEnabled = environment.isReportsEnabled;
   }
   onNavSelected(nav: string) {
@@ -143,7 +154,6 @@ export class HeaderComponent implements OnInit {
       //   this.logoSrc = 'assets/img/logo.png';
       // }
     }
-
   }
 
   async Logout() {
@@ -160,10 +170,10 @@ export class HeaderComponent implements OnInit {
       localStorage.removeItem("active-header");
       localStorage.removeItem("currentUserName");
       localStorage.removeItem("nickName");
-      localStorage.removeItem("isDispatchEnabled")
-      localStorage.removeItem("isComplianceEnabled")
-      localStorage.removeItem("isSafetyEnabled")
-      localStorage.removeItem("isAccountsEnabled")
+      localStorage.removeItem("isDispatchEnabled");
+      localStorage.removeItem("isComplianceEnabled");
+      localStorage.removeItem("isSafetyEnabled");
+      localStorage.removeItem("isAccountsEnabled");
       localStorage.removeItem("isManageEnabled");
       localStorage.setItem("signOut", "true"); //trigger flag
       localStorage.removeItem("accessToken"); //Remove token from local

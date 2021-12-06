@@ -878,6 +878,81 @@
                     </div>
                   </div>
                 </div>
+                <form>
+                  <div class="row">
+                    <div class="col-lg-12 mt-2">
+                      <hr class="solid mt-4">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-7 offset-lg-0 pt-2 pr-0">
+                      <div class="col-lg-12">
+                        <label class="control-label font-weight-bold text-lg-right text-5 pt-2">Terms and
+                          Conditions</label>
+                      </div>
+                    </div><br>
+                    <div class="col-lg-7 offset-lg-0 pt-2 pr-0">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2 ">Terms For
+                          Customer on
+                          Invoice
+                        </label>
+                        <textarea style="height: unset !important" class="form-control" rows="4"
+                          style=" height: 100px; width: 681px;" placeholder=" Write Something...."
+                          [(ngModel)]="carriers.termsCustom" name="termsCustom"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Terms and
+                        Conditions For Carrier
+                      </label>
+                      <textarea style="height: unset !important" class="form-control" rows="4"
+                        style=" height: 100px; width: 693px;" placeholder=" Write Something...."
+                        [(ngModel)]="carriers.termsCarrier" name="termsCarrier"></textarea>
+                    </div>
+                  </div>
+                </form>
+                <form>
+                  <div class="row">
+                    <div class="col-lg-7 offset-lg-0 pt-2 pr-0">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Terms and
+                          Conditions For Truck Dispatch
+                        </label>
+                        <textarea style="height: unset !important" class="form-control" rows="4"
+                          style=" height: 100px; width: 681px;" placeholder=" Write Something...."
+                          [(ngModel)]="carriers.termsTruck" name="termsTruck"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Notes For B.O.L
+                      </label>
+                      <textarea style="height: unset !important" class="form-control" rows="4"
+                        style=" height: 100px;width: 693px;" placeholder=" Write Something...."
+                        [(ngModel)]="carriers.notesBol" name="notesBol"></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-7 offset-lg-0 pt-2 pr-0">
+                      <div class="col-lg-6">
+                        <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Dispatch Notes
+                          For Driver
+                        </label>
+                        <textarea style="height: unset !important" class="form-control" rows="4"
+                          style=" height: 100px; width: 681px;" placeholder=" Write Something...."
+                          [(ngModel)]="carriers.notesDriver" name="notesDriver"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <label class="control-label font-weight-bold font-weight-bold text-lg-right pt-2">Notes For Factor
+                        Invoice
+                      </label>
+                      <textarea style="height: unset !important" class="form-control" rows="4"
+                        style=" height: 100px;width: 693px;" placeholder=" Write Something...."
+                        [(ngModel)]="carriers.notesFactor" name="notesFactor"></textarea>
+                    </div>
+                  </div>
+                </form>
                 <div class="row mt-2">
                   <div class="col-lg-12 text-right">
                     <button type="button" class="btn btn-default mr-2" (click)="cancel()">Cancel</button>

@@ -1,12 +1,6 @@
-<style>
-    .extra {
-        display: none;
-    }
-</style>
 
 <section class="body">
     <div class="inner-wrapper">
-
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
@@ -44,6 +38,10 @@
                             <button type="button" (click)="resetFilter()" class="btn btn-sm btn-success">Reset</button>
                         </div>
 
+                        <div class="col-md-6 col-lg-6 text-right pr-1">
+                            <a routerLink="/reports/fleet/vehicles/overview" class="btn btn-sm btn-success">Back</a>
+                        </div>
+
                     </div>
                 </form>
             </header>
@@ -70,7 +68,7 @@
                                                         <th class="">Ownership</th>
                                                         <th class="">Driver Assigned</th>
                                                         <th class="">Team Driver Assigned</th>
-                                                        <th class="col7 extra">Trip</th>
+                                                    
                                                         <th class="col8 ">Plate Number</th>
 
                                                         <th class="col10 minWidth120">Status</th>
@@ -135,11 +133,7 @@
                                                             <span
                                                                 class="badge badge-dark p-1 text-uppercase">{{vehicle.currentStatus}}</span>
                                                         </td>
-
-
-                                                        <!-- extra columns -->
-
-
+                                        
                                                     </tr>
                                                 </tbody>
                                             </table>

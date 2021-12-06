@@ -113,11 +113,13 @@
                             else elseBlock
                           "
                         >
-                          {{ device.vehicle.vehicleIdentification }}
+                       <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/vehicles/detail/{{device.vehicle.vehicleID}}">  {{ device.vehicle.vehicleIdentification }}</a> 
                         </td>
                         <ng-template #elseBlock
                           ><td>
-                            {{ device.asset.assetIdentification }}
+                            
+                            <a  style="color: blue; text-decoration: none;" target="_blank" routerLink="/fleet/assets/detail/{{device.asset.assetID}}">  {{  device.asset.assetIdentification }}</a> 
+                            
                           </td></ng-template
                         >
                         <td>
