@@ -82,12 +82,23 @@ export class ActivityComponent implements OnInit {
 
   searchFilter() {
     if (this.start != null && this.end != null) {
-      this.lastItemSK = '';
-      this.allData = []
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchVehicleListing()
-    }
-    else {
+      if (this.start != null && this.end == null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start == null && this.end != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start > this.end) {
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else {
+        this.lastItemSK = '';
+        this.allData = []
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchVehicleListing()
+      }
+    } else {
       return false;
     }
   }
