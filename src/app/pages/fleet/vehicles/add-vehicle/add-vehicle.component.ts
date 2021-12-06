@@ -9,7 +9,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 import { ListService } from "../../../../services";
 import { DomSanitizer } from "@angular/platform-browser";
-
+import * as moment from 'moment'
 import * as _ from "lodash";
 import { NgForm } from "@angular/forms";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
@@ -260,6 +260,7 @@ export class AddVehicleComponent implements OnInit {
   slides = [];
   pDocs = [];
   lDocs = [];
+  years: any = []
   documentSlides = [];
   localPhotos = [];
   slideConfig = {
@@ -280,7 +281,7 @@ export class AddVehicleComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
-
+  currentYear = '';
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -299,6 +300,8 @@ export class AddVehicleComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.getYears();
+    this.currentYear = moment().format('YYYY');
     this.fetchInspectionForms();
     this.fetchGroups();
     this.fetchVehicles();
@@ -346,7 +349,15 @@ export class AddVehicleComponent implements OnInit {
     this.getValidDrivers(driverList);
     this.drivers = driverList;
   }
+  getYears() {
+    var max = new Date().getFullYear() + 1,
+      min = 1980,
+      max = max;
 
+    for (var i = max; i >= min; i--) {
+      this.years.push(i);
+    }
+  }
   private getValidVendors(vendorList: any[]) {
     let ids = [];
     this.listService.vendorList.forEach((element) => {
@@ -730,7 +741,7 @@ export class AddVehicleComponent implements OnInit {
     try {
       return await new Promise((resolve, reject) => {
         this.apiService.postData("vehicles", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -749,7 +760,7 @@ export class AddVehicleComponent implements OnInit {
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => {},
+                next: () => { },
               });
           },
           next: (res) => {
@@ -775,12 +786,12 @@ export class AddVehicleComponent implements OnInit {
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -1303,7 +1314,7 @@ export class AddVehicleComponent implements OnInit {
     try {
       return await new Promise((resolve, reject) => {
         this.apiService.putData("vehicles", formData, true).subscribe({
-          complete: () => {},
+          complete: () => { },
           error: (err: any) => {
             from(err.error)
               .pipe(
@@ -1321,7 +1332,7 @@ export class AddVehicleComponent implements OnInit {
                 error: () => {
                   this.submitDisabled = false;
                 },
-                next: () => {},
+                next: () => { },
               });
           },
           next: (res) => {
@@ -1389,7 +1400,7 @@ export class AddVehicleComponent implements OnInit {
   addGroup() {
     this.groupSubmitDisabled = true;
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1406,7 +1417,7 @@ export class AddVehicleComponent implements OnInit {
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
