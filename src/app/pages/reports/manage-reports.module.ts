@@ -28,10 +28,11 @@ const routes: Routes = [
   {
     path: 'accounts',
     loadChildren: () => import('./accounts/manage-accounts-reports.module').then((m) => m.ManageAccountsReportsModule)
-  }
-
-
-
+  },
+  {
+    path: 'addressbook',
+    loadChildren: () => import('./address-book/mange-address-book.module').then((m) => m.ManageAddressBookModule) ,
+  },
 ]
 
 @NgModule({
