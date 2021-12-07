@@ -94,7 +94,8 @@ export class BrokeragePdfComponent implements OnInit {
   emailCopyRef: any;
   brokEmails = [];
   orderID: "";
-  type: "list";
+  type: "";
+  isEmail = false;
 
   ngOnInit() {
     this.subscription = this.listService.brokeragePdfList.subscribe(
@@ -185,11 +186,13 @@ export class BrokeragePdfComponent implements OnInit {
   }
 
   addEmails() {
+    this.isEmail = true;
     this.brokEmail.emails = [];
     let isFlag = true;
     if (this.brokEmails.length === 0) {
       this.toastr.error("Please enter at least one email");
       isFlag = false;
+      this.isEmail = false;
       return;
     }
     const re =
@@ -199,6 +202,7 @@ export class BrokeragePdfComponent implements OnInit {
       if (!result) {
         this.toastr.error("Please enter valid email(s)");
         isFlag = false;
+        this.isEmail = false;
         return;
       } else {
         if (!this.brokEmail.emails.includes(elem.label)) {
@@ -209,6 +213,7 @@ export class BrokeragePdfComponent implements OnInit {
     if (this.brokEmail.subject == "") {
       this.toastr.error("Please enter subject");
       isFlag = false;
+      this.isEmail = false;
       return;
     }
 
@@ -220,6 +225,7 @@ export class BrokeragePdfComponent implements OnInit {
 
     if (isFlag) {
       this.sendBrokEmail();
+      this.isEmail = false;
     }
   }
 }
