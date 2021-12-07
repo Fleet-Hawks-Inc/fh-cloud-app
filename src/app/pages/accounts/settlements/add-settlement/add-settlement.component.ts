@@ -65,7 +65,7 @@ export class AddSettlementComponent implements OnInit {
     status: "unpaid",
     paymentLinked: false,
     pendingPayment: 0,
-    currency: "",
+    currency: "CAD",
     paymentInfo: {
       lMiles: 0,
       lMileTeam: 0,
