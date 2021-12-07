@@ -120,6 +120,10 @@ export class VehicleListComponent implements OnInit {
     }
   }, 800);
 
+  changeVehicleID() {
+    this.vehicleID = '';
+  }
+
   fetchGroups() {
     this.apiService.getData('groups/get/list').subscribe((result: any) => {
       this.groupsList = result;
@@ -195,7 +199,11 @@ export class VehicleListComponent implements OnInit {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
+
           if (result.Items.length > 0) {
+            result.Items.map((v) => {
+              v.url = `/fleet/vehicles/detail/${v.vehicleID}`;
+            });
 
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
@@ -206,6 +214,8 @@ export class VehicleListComponent implements OnInit {
             this.vehicles = this.vehicles.concat(result.Items)
 
             this.loaded = true;
+            await this.getDashCamConnection(this.vehicles);
+            await this.getDashCamStatus(this.vehicles);
           }
         });
     }

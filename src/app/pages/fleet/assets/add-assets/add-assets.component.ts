@@ -58,7 +58,12 @@ export class AddAssetsComponent implements OnInit {
       GAWR_Unit: null,
       ownerShip: null,
       ownerOperator: null,
-      rentCompany: "",
+      ownCname: "",
+      ownAmt: "",
+      ownCurr: "",
+      ownDate: "",
+      ownRec: true,
+      ownFrq: "",
       licenceCountryCode: null,
       licenceStateCode: null,
       licencePlateNumber: "",
@@ -161,9 +166,37 @@ export class AddAssetsComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
+  companyLabel = "";
 
   isEdit: boolean = false;
-
+  
+   retInterval = [
+    {
+      value: 'weekly',
+      name: 'Weekly'
+    },
+    {
+      value: 'biweekly',
+      name: 'Biweekly'
+    },
+    {
+      value: 'monthly',
+      name: 'Monthly'
+    },
+    {
+      value: 'quarterly',
+      name: 'Quarterly'
+    },
+    {
+      value: 'annually',
+      name: 'Annually'
+    },
+     {
+      value: 'semi-monthly',
+      name: 'Semi-Monthly'
+    },
+  ];
+  
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -289,8 +322,8 @@ export class AddAssetsComponent implements OnInit {
       });
   }
   getYears() {
-    var max = new Date().getFullYear(),
-      min = max - 30,
+    var max = new Date().getFullYear() + 1,
+      min = 1991,
       max = max;
 
     for (var i = max; i >= min; i--) {
@@ -376,6 +409,11 @@ export class AddAssetsComponent implements OnInit {
         this.isRequired = true;
       }
     }
+     if(value === 'rented') {
+        this.companyLabel = 'Rented';
+      }  else if(value === 'leased') {
+      this.companyLabel = 'Leased';
+      }
   }
 
   /*
@@ -412,7 +450,12 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
-        rentCompany: this.assetsData.assetDetails.rentCompany,
+        ownCname: this.assetsData.assetDetails.ownCname,
+        ownAmt: this.assetsData.assetDetails.ownAmt,
+        ownCurr:this.assetsData.assetDetails.ownCurr,
+        ownDate:this.assetsData.assetDetails.ownDate,
+        ownRec:this.assetsData.assetDetails.ownRec,
+        ownFrq:this.assetsData.assetDetails.ownFrq,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -515,7 +558,7 @@ export class AddAssetsComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.postData("assets", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
@@ -533,7 +576,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -552,12 +595,12 @@ export class AddAssetsComponent implements OnInit {
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -609,15 +652,17 @@ export class AddAssetsComponent implements OnInit {
         this.assetsData.assetDetails.GAWR = result.assetDetails.GAWR;
         this.assetsData.assetDetails.GAWR_Unit = result.assetDetails.GAWR_Unit;
         this.assetsData.assetDetails.ownerShip = result.assetDetails.ownerShip;
+        this.assetsData.assetDetails.ownCname = result.assetDetails.ownCname;
+        this.assetsData.assetDetails.ownAmt = result.assetDetails.ownAmt;
+        this.assetsData.assetDetails.ownCurr = result.assetDetails.ownCurr;
+        this.assetsData.assetDetails.ownDate = result.assetDetails.ownDate;
+        this.assetsData.assetDetails.ownRec = result.assetDetails.ownRec;
+        this.assetsData.assetDetails.ownFrq = result.assetDetails.ownFrq;
         if (result.assetDetails.ownerShip === "ownerOperator") {
           this.assetsData.assetDetails.ownerOperator =
             result.assetDetails.ownerOperator;
         }
-        if (result.assetDetails.ownerShip === "rented") {
-          this.assetsData.assetDetails.rentCompany =
-            result.assetDetails.rentCompany;
-        }
-        if (result.assetDetails.ownerShip === "interchange") {
+         if (result.assetDetails.ownerShip === "interchange") {
           this.isRequired = false;
           this.isEdit = true;
         } else {
@@ -774,7 +819,12 @@ export class AddAssetsComponent implements OnInit {
         GAWR: this.assetsData.assetDetails.GAWR,
         GAWR_Unit: this.assetsData.assetDetails.GAWR_Unit,
         ownerShip: this.assetsData.assetDetails.ownerShip,
-        rentCompany: this.assetsData.assetDetails.rentCompany,
+        ownCname: this.assetsData.assetDetails.ownCname,
+        ownAmt: this.assetsData.assetDetails.ownAmt,
+        ownCurr: this.assetsData.assetDetails.ownCurr,
+        ownDate: this.assetsData.assetDetails.ownDate,
+        ownRec: this.assetsData.assetDetails.ownRec,
+        ownFrq: this.assetsData.assetDetails.ownFrq,
         ownerOperator: this.assetsData.assetDetails.ownerOperator,
         licenceCountryCode: this.assetsData.assetDetails.licenceCountryCode,
         licenceStateCode: this.assetsData.assetDetails.licenceStateCode,
@@ -877,7 +927,7 @@ export class AddAssetsComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.putData("assets/", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -894,7 +944,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -968,7 +1018,7 @@ export class AddAssetsComponent implements OnInit {
   addGroup() {
     this.groupSubmitDisabled = true;
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -985,7 +1035,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
