@@ -58,6 +58,8 @@ export class InvoiceListComponent implements OnInit {
   searchActive = false;
   invoicesCAD = [];
   invoicesUSD = [];
+  overdueTotalCAD = 0;
+  overdueTotalUSD = 0;
 
   constructor(
     private accountService: AccountService,
@@ -127,6 +129,8 @@ export class InvoiceListComponent implements OnInit {
     this.emailedTotalCAD = 0;
     this.partiallyPaidTotalCAD = 0;
     this.voidedTotalCAD = 0;
+    this.overdueTotalCAD = 0;
+    this.overdueTotalUSD = 0;
 
     if (type === "manual") {
       invoices.map((e: any) => {
@@ -168,6 +172,10 @@ export class InvoiceListComponent implements OnInit {
           this.voidedTotalCAD =
             this.voidedTotalCAD + Number(element.finalAmount);
           this.voidedTotalCAD = +this.voidedTotalCAD.toFixed(2);
+        } else if (element.invStatus === "overdue") {
+          this.overdueTotalCAD =
+            this.overdueTotalCAD + Number(element.finalAmount);
+          this.overdueTotalCAD = +this.overdueTotalCAD.toFixed(2);
         }
       }
       for (const element of this.invoicesUSD) {
@@ -192,6 +200,10 @@ export class InvoiceListComponent implements OnInit {
           this.voidedTotalUSD =
             this.voidedTotalUSD + Number(element.finalAmount);
           this.voidedTotalUSD = +this.voidedTotalUSD.toFixed(2);
+        } else if (element.invStatus === "overdue") {
+          this.overdueTotalUSD =
+            this.overdueTotalUSD + Number(element.finalAmount);
+          this.overdueTotalUSD = +this.overdueTotalUSD.toFixed(2);
         }
       }
       this.totalUSD =
@@ -199,14 +211,16 @@ export class InvoiceListComponent implements OnInit {
         this.paidTotalUSD +
         this.emailedTotalUSD +
         this.partiallyPaidTotalUSD +
-        this.voidedTotalUSD;
+        this.voidedTotalUSD +
+        this.overdueTotalUSD;
       this.totalUSD = +this.totalUSD.toFixed(2);
       this.totalCAD =
         this.openTotalCAD +
         this.paidTotalCAD +
         this.emailedTotalCAD +
         this.partiallyPaidTotalCAD +
-        this.voidedTotalCAD;
+        this.voidedTotalCAD +
+        this.overdueTotalCAD;
       this.totalCAD = +this.totalCAD.toFixed(2);
     }
   }
