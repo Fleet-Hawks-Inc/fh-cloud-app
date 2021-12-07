@@ -474,710 +474,674 @@
                                                                                                     {{
                                                                                                     comm.quantityUnit
                                                                                                     }}
+                                                                                                    <strong>
+                                                                                                        ,
+                                                                                                        PU#:
+                                                                                                    </strong>
+                                                                                                    {{
+                                                                                                    comm.pu
+                                                                                                    }}
                                                                                                     <br
                                                                                                         />
                                                                                                 </span>
-                                                                                                <br
-                                                                                                    />
+                                                                                                <strong>
+                                                                                                    Customer
+                                                                                                    PO#:
+                                                                                                </strong>
+                                                                                                <span
+                                                                                                    *ngFor="let
+                                                                                                    po
+                                                                                                    of
+                                                                                                    pick.customerPO;
+                                                                                                    let
+                                                                                                    poin=
+                                                                                                    index">
+                                                                                                    {{
+                                                                                                    po
+                                                                                                    }}
+                                                                                                    <span
+                                                                                                        *ngIf="poin
+                                                                                                    <pick.customerPO.length-1">,</span>
+                                                                                                </span>
                                                                                             </span>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td
-                                                                                            colspan="3"
-                                                                                            style="margin-top:
-                                                                                            20px">
-                                                                                            <table
-                                                                                                width="100%"
-                                                                                                border="0"
-                                                                                                style="border:
-                                                                                                1px
-                                                                                                solid
-                                                                                                #adadad;
-                                                                                                font-size:
-                                                                                                13px;"
-                                                                                                cellspacing="0"
-                                                                                                cellpadding="0">
-                                                                                                <tbody>
-                                                                                                    <tr
-                                                                                                        bgcolor="#f3f3f3">
-                                                                                                        <td
-                                                                                                            width="40%"
-                                                                                                            style="border-bottom:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            border-right:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            padding-left:
-                                                                                                            10px;">
-                                                                                                            <p
-                                                                                                                style="color:
-                                                                                                                #000000;
-                                                                                                                font-weight:
-                                                                                                                600;
-                                                                                                                margin-bottom:
-                                                                                                                1px;">
-                                                                                                                Receiver
-                                                                                                            </p>
-                                                                                                        </td>
-                                                                                                        <td
-                                                                                                            width="60%"
-                                                                                                            style="border-bottom:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            border-right:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            padding-left:
-                                                                                                            10px;">
-                                                                                                            <p
-                                                                                                                style="color:
-                                                                                                                #000000;
-                                                                                                                font-weight:
-                                                                                                                600;
-                                                                                                                margin-bottom:
-                                                                                                                1px;">
-                                                                                                                Drop(s)
-                                                                                                            </p>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                    <tr
-                                                                                                        *ngFor="let
-                                                                                                        recvr
-                                                                                                        of
-                                                                                                        ship.allRec">
-                                                                                                        <td
-                                                                                                            style="border-right:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            padding-left:
-                                                                                                            10px;
-                                                                                                            text-transform:
-                                                                                                            uppercase">
-                                                                                                            <p
-                                                                                                                style="color:
-                                                                                                                #000000;
-                                                                                                                font-size:
-                                                                                                                13px;">
-                                                                                                                <strong>{{
-                                                                                                                    recvr.companyName
-                                                                                                                    }}</strong><br
-                                                                                                                    />
-                                                                                                                {{
-                                                                                                                recvr.shipAddress
-                                                                                                                }}
-                                                                                                            </p>
-                                                                                                        </td>
-                                                                                                        <td
-                                                                                                            style="border-right:
-                                                                                                            1px
-                                                                                                            solid
-                                                                                                            #adadad;
-                                                                                                            padding-left:
-                                                                                                            10px;">
-                                                                                                            <span
-                                                                                                                *ngFor="let
-                                                                                                                drop
-                                                                                                                of
-                                                                                                                recvr.dropPoint;
-                                                                                                                let
-                                                                                                                rind=
-                                                                                                                index">
-                                                                                                                <span
-                                                                                                                    *ngIf="!drop.address
-                                                                                                                    .manual">{{
-                                                                                                                    rind
-                                                                                                                    +
-                                                                                                                    1
-                                                                                                                    }})
+                                                                                            <br/>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td
+                                                                                                colspan="3"
+                                                                                                style="margin-top:
+                                                                                                20px">
+                                                                                                <table
+                                                                                                    width="100%"
+                                                                                                    border="0"
+                                                                                                    style="border:
+                                                                                                    1px
+                                                                                                    solid
+                                                                                                    #adadad;
+                                                                                                    font-size:
+                                                                                                    13px;"
+                                                                                                    cellspacing="0"
+                                                                                                    cellpadding="0">
+                                                                                                    <tbody>
+                                                                                                        <tr
+                                                                                                            bgcolor="#f3f3f3">
+                                                                                                            <td
+                                                                                                                width="40%"
+                                                                                                                style="border-bottom:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                border-right:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                padding-left:
+                                                                                                                10px;">
+                                                                                                                <p
+                                                                                                                    style="color:
+                                                                                                                    #000000;
+                                                                                                                    font-weight:
+                                                                                                                    600;
+                                                                                                                    margin-bottom:
+                                                                                                                    1px;">
+                                                                                                                    Receiver
+                                                                                                                </p>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                width="60%"
+                                                                                                                style="border-bottom:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                border-right:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                padding-left:
+                                                                                                                10px;">
+                                                                                                                <p
+                                                                                                                    style="color:
+                                                                                                                    #000000;
+                                                                                                                    font-weight:
+                                                                                                                    600;
+                                                                                                                    margin-bottom:
+                                                                                                                    1px;">
+                                                                                                                    Drop(s)
+                                                                                                                </p>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        <tr
+                                                                                                            *ngFor="let
+                                                                                                            recvr
+                                                                                                            of
+                                                                                                            ship.allRec">
+                                                                                                            <td
+                                                                                                                style="border-right:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                padding-left:
+                                                                                                                10px;
+                                                                                                                text-transform:
+                                                                                                                uppercase">
+                                                                                                                <p
+                                                                                                                    style="color:
+                                                                                                                    #000000;
+                                                                                                                    font-size:
+                                                                                                                    13px;">
+                                                                                                                    <strong>{{
+                                                                                                                        recvr.companyName
+                                                                                                                        }}</strong><br
+                                                                                                                        />
                                                                                                                     {{
-                                                                                                                    drop.address
-                                                                                                                    .dropOffLocation
+                                                                                                                    recvr.shipAddress
                                                                                                                     }}
-                                                                                                                </span>
-                                                                                                                <span
-                                                                                                                    *ngIf="drop.address
-                                                                                                                    .manual">{{
-                                                                                                                    rind
-                                                                                                                    +
-                                                                                                                    1
-                                                                                                                    }})
-                                                                                                                    {{
-                                                                                                                    drop.address
-                                                                                                                    .address
-                                                                                                                    }},
-                                                                                                                    {{
-                                                                                                                    drop.address
-                                                                                                                    .cityName
-                                                                                                                    }},
-                                                                                                                    {{
-                                                                                                                    drop.address
-                                                                                                                    .stateName
-                                                                                                                    }},
-                                                                                                                    {{
-                                                                                                                    drop.address
-                                                                                                                    .countryName
-                                                                                                                    }}
-                                                                                                                </span>
-                                                                                                                <br
-                                                                                                                    /><strong>Date
-                                                                                                                    and
-                                                                                                                    Time:
-                                                                                                                </strong>
-                                                                                                                {{
-                                                                                                                drop.dateAndTime
-                                                                                                                }}<br
-                                                                                                                    />
-                                                                                                                <strong>Commodity:</strong>
+                                                                                                                </p>
+                                                                                                            </td>
+                                                                                                            <td
+                                                                                                                style="border-right:
+                                                                                                                1px
+                                                                                                                solid
+                                                                                                                #adadad;
+                                                                                                                padding-left:
+                                                                                                                10px;">
                                                                                                                 <span
                                                                                                                     *ngFor="let
-                                                                                                                    comm
+                                                                                                                    drop
                                                                                                                     of
-                                                                                                                    drop.commodity;
+                                                                                                                    recvr.dropPoint;
                                                                                                                     let
-                                                                                                                    cind=
+                                                                                                                    rind=
                                                                                                                     index">
+                                                                                                                    <span
+                                                                                                                        *ngIf="!drop.address
+                                                                                                                        .manual">{{
+                                                                                                                        rind
+                                                                                                                        +
+                                                                                                                        1
+                                                                                                                        }})
+                                                                                                                        {{
+                                                                                                                        drop.address
+                                                                                                                        .dropOffLocation
+                                                                                                                        }}
+                                                                                                                    </span>
+                                                                                                                    <span
+                                                                                                                        *ngIf="drop.address
+                                                                                                                        .manual">{{
+                                                                                                                        rind
+                                                                                                                        +
+                                                                                                                        1
+                                                                                                                        }})
+                                                                                                                        {{
+                                                                                                                        drop.address
+                                                                                                                        .address
+                                                                                                                        }},
+                                                                                                                        {{
+                                                                                                                        drop.address
+                                                                                                                        .cityName
+                                                                                                                        }},
+                                                                                                                        {{
+                                                                                                                        drop.address
+                                                                                                                        .stateName
+                                                                                                                        }},
+                                                                                                                        {{
+                                                                                                                        drop.address
+                                                                                                                        .countryName
+                                                                                                                        }}
+                                                                                                                    </span>
                                                                                                                     <br
+                                                                                                                        /><strong>Date
+                                                                                                                        and
+                                                                                                                        Time:
+                                                                                                                    </strong>
+                                                                                                                    {{
+                                                                                                                    drop.dateAndTime
+                                                                                                                    }}<br
                                                                                                                         />
-                                                                                                                    {{
-                                                                                                                    cind
-                                                                                                                    +
-                                                                                                                    1
-                                                                                                                    }})
-                                                                                                                    <strong>
-                                                                                                                        Name:
-                                                                                                                    </strong>{{
-                                                                                                                    comm.name
-                                                                                                                    }}
-                                                                                                                    <strong>,
-                                                                                                                        Weight:
-                                                                                                                    </strong>
-                                                                                                                    {{
-                                                                                                                    comm.weight
-                                                                                                                    }}
-                                                                                                                    {{
-                                                                                                                    comm.weightUnit
-                                                                                                                    }}
-                                                                                                                    <strong>,
-                                                                                                                        Quantity:
-                                                                                                                    </strong>
-                                                                                                                    {{
-                                                                                                                    comm.quantity
-                                                                                                                    }}
-                                                                                                                    {{
-                                                                                                                    comm.quantityUnit
-                                                                                                                    }}
+                                                                                                                    <strong>Commodity:</strong>
+                                                                                                                    <span
+                                                                                                                        *ngFor="let
+                                                                                                                        comm
+                                                                                                                        of
+                                                                                                                        drop.commodity;
+                                                                                                                        let
+                                                                                                                        cind=
+                                                                                                                        index">
+                                                                                                                        <br
+                                                                                                                            />
+                                                                                                                        {{
+                                                                                                                        cind
+                                                                                                                        +
+                                                                                                                        1
+                                                                                                                        }})
+                                                                                                                        <strong>
+                                                                                                                            Name:
+                                                                                                                        </strong>{{
+                                                                                                                        comm.name
+                                                                                                                        }}
+                                                                                                                        <strong>,
+                                                                                                                            Weight:
+                                                                                                                        </strong>
+                                                                                                                        {{
+                                                                                                                        comm.weight
+                                                                                                                        }}
+                                                                                                                        {{
+                                                                                                                        comm.weightUnit
+                                                                                                                        }}
+                                                                                                                        <strong>,
+                                                                                                                            Quantity:
+                                                                                                                        </strong>
+                                                                                                                        {{
+                                                                                                                        comm.quantity
+                                                                                                                        }}
+                                                                                                                        {{
+                                                                                                                        comm.quantityUnit
+                                                                                                                        }}
+                                                                                                                        <strong>
+                                                                                                                            ,
+                                                                                                                            DU#:
+                                                                                                                        </strong>
+                                                                                                                        {{
+                                                                                                                        comm.del
+                                                                                                                        }}
+                                                                                                                        <br
+                                                                                                                            />
+                                                                                                                    </span>
                                                                                                                     <br
                                                                                                                         />
                                                                                                                 </span>
-                                                                                                                <br
-                                                                                                                    />
-                                                                                                            </span>
-                                                                                                        </td>
-                                                                                                    </tr>
-                                                                                                </tbody>
-                                                                                            </table>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                            <tr>
-                                                                                <td
-                                                                                    colspan="3">&nbsp;</td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <!-- <tr>
-                                    <td colspan="2">
-                                        <table width="100%" border="0" style="border: 1px solid #adadad;
-                                            font-size: 13px" cellspacing="0" cellpadding="0">
-                                            <tbody>
-                                                <tr bgcolor="#f3f3f3">
-                                                    <td width="50%" style="border-bottom:
-                                                        1px
-                                                        solid #adadad;
-                                                        border-right: 1px solid
-                                                        #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="font-weight:
-                                                            600;
-                                                            color: #000000;
-                                                            margin-bottom:
-                                                            1px;">
-                                                            Description
-                                                        </p>
-                                                    </td>
-                                                    <td width="50%" style="border-bottom:
-                                                        1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="font-weight:
-                                                            600;
-                                                            color: #000000;
-                                                            margin-bottom:
-                                                            1px;">
-                                                            Amount
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr *ngIf="orderData.charges.fuelSurcharge" style="border-bottom: 1px
-                                                    solid
-                                                    #adadad">
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000;
-                                                            font-size: 13px">
-                                                            {{
-                                                            orderData.charges.fuelSurcharge.type
-                                                            }}
-                                                            (Fuel Surcharge)
-                                                        </p>
-                                                    </td>
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000;
-                                                            font-size: 13px">
-                                                            {{
-                                                            orderData.charges.fuelSurcharge.amount
-                                                            | number: "1.2-2"
-                                                            }}
-                                                            {{
-                                                            orderData.charges.fuelSurcharge.currency
-                                                            }}
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr *ngIf="orderData.charges.freightFee" style="border-bottom: 1px
-                                                    solid
-                                                    #adadad">
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000;
-                                                            font-size: 13px">
-                                                            {{
-                                                            orderData.charges.freightFee.type
-                                                            }}
-                                                            (Freight Fee)
-                                                        </p>
-                                                    </td>
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000;
-                                                            font-size: 13px">
-                                                            {{
-                                                            orderData.charges.freightFee.amount
-                                                            | number: "1.2-2"
-                                                            }}
-                                                            {{
-                                                            orderData.charges.freightFee.currency
-                                                            }}
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr *ngFor="let acss of
-                                                    orderData.charges.accessorialFeeInfo
-                                                    .accessorialFee" style="border-bottom:
-                                                    1px solid #adadad">
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000">
-                                                            {{ acss.type }}
-                                                            (Accessorial Fee)
-                                                        </p>
-                                                    </td>
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000">
-                                                            {{ acss.amount |
-                                                            number:
-                                                            "1.2-2" }}
-                                                            {{ acss.currency }}
-                                                        </p>
-                                                    </td>
-                                                </tr>
-                                                <tr *ngFor="let acssDed of
-                                                    orderData.charges
-                                                    .accessorialDeductionInfo.accessorialDeduction" style="border-bottom:
-                                                    1px solid #adadad">
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000">
-                                                            {{ acssDed.type }}
-                                                            (Accessorial
-                                                            Deduction
-                                                            Fee)
-                                                        </p>
-                                                    </td>
-                                                    <td style="border-right: 1px
-                                                        solid #adadad;
-                                                        padding-left: 10px;">
-                                                        <p style="color:
-                                                            #000000">
-                                                            {{ acssDed.amount |
-                                                            number: "1.2-2" }}
-                                                            {{ acssDed.currency
-                                                            }}
-                                                        </p>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </tbody>
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                                <tr>
+                                                                                    <td
+                                                                                        colspan="3">&nbsp;</td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </td>
-                                </tr> -->
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <div class="html2pdf__page-break"></div>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
 
-                            <tr *ngIf="brokerage.instructions">
-                                <td colspan="2">
-                                    <p style="font-size: 13px;
-                                        color: #000000;
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <div class="html2pdf__page-break"></div>
 
-                                        text-transform: uppercase;
-                                        margin-top: 2px;
-                                        margin-bottom: 12px;">
-                                        <strong><span style="background:
-                                                #ffff00;
-                                                padding-top: 2px;
-                                                padding-bottom: 2px;">Special
-                                                Instructions: {{
-                                                brokerage.instructions }}</span>
-                                        </strong>
-                                    </p>
-                                </td>
-                            </tr>
+                                <tr *ngIf="brokerage.instructions">
+                                    <td colspan="2">
+                                        <p style="font-size: 13px;
+                                            color: #000000;
 
-                            <tr>
-                                <td colspan="2">
-                                    <p style="font-size: 9px;
-                                        color: #000000;
-                                        line-height: 13px;
-                                        margin-top: 5px;">
-                                        <strong>Instructions:</strong> By
-                                        signing this agreement
-                                        or by picking up and taking
-                                        possession
-                                        of the shipment the
-                                        CARRIER agrees to all the terms and
-                                        conditions as outlined
-                                        in this rate confirmation and the
-                                        transportation agreement
-                                        between company, the "BROKER" and
-                                        the
-                                        CARRIER (the
-                                        "Agreement"). No oral agreements or
-                                        conditions exist. In
-                                        the event that there is a conflict
-                                        between the Agreement
-                                        and this rate confirmation, the
-                                        Agreement shall control.
-                                        Further, no charges or amendments to
-                                        this rate
-                                        confirmation will be binding unless
-                                        BROKER approves such
-                                        changes in writing prior to the
-                                        CARRIER
-                                        taking possession
-                                        of the shipment. In accordance with
-                                        49
-                                        CFR $ 392.9 and 49
-                                        CFR $ 393.100 et all, the CARRIER
-                                        and
-                                        its drivers are
-                                        solely responsible for verifying the
-                                        contents, counts,
-                                        conditions, loading, weight, proper
-                                        weight distribution
-                                        per axle, blocking, bracing, and
-                                        securement of each load
-                                        for transportation. CARRIER and its
-                                        drivers are solely
-                                        responsible for attaching a seal
-                                        either
-                                        provided by the
-                                        shipper or by the CARRIER to each
-                                        shipment and ensuring
-                                        the seal is not tampered or broken
-                                        during transit. Bills
-                                        of Lading (BOL) must indicate the
-                                        seal
-                                        number and "SEAL
-                                        INTACT" AT THE TIME SHIPMENT IS
-                                        DELIVERED. Shipments which
-                                        are pre-loaded and sealed or whereas
-                                        the
-                                        driver is not
-                                        permitted on the dock to witness the
-                                        loading or counts are
-                                        required to be marked on the BOL
-                                        with
-                                        "SHIPPER LOAD AND
-                                        COUNT." CARRIER acknowledges and
-                                        agrees
-                                        the CARRIER is
-                                        liable for the full invoice value of
-                                        the
-                                        shipment or any
-                                        part thereof due to loss or damage.
-                                        CARRIER shall notify
-                                        BROKER immediately in the event any
-                                        exception is listed on
-                                        the BOL, the seal is broken due to a
-                                        regulatory
-                                        inspection, delay in the
-                                        transportation
-                                        of the shipment,
-                                        or there is an incident or accident
-                                        during transit. FOOD
-                                        GRADE NOTICE: Due to federal, state
-                                        and
-                                        local regulations
-                                        which govern food grade commodities,
-                                        if
-                                        the shipment
-                                        container is damaged, breached,
-                                        exposed
-                                        to outside
-                                        elements, or the seal is broken
-                                        during
-                                        shipment the
-                                        customer may reject the entire
-                                        shipment
-                                        or if CARRIER is
-                                        not able to provide a downloadable
-                                        temperature report
-                                        indicating that required
-                                        temperatures
-                                        were maintained at
-                                        all times during transport. If the
-                                        customer denies the
-                                        right of salvage or there is no
-                                        right of
-                                        salvage, the
-                                        CARRIER will remain fully liable for
-                                        loss or damage to the
-                                        shipment and no salvage will be
-                                        allowed.
-                                        To the extent
-                                        that any shipments subject to this
-                                        rate
-                                        confirmation or
-                                        the Agreement are transported within
-                                        the
-                                        State of
-                                        California on refrigerated
-                                        equipment,
-                                        CARRIER warrants
-                                        that it shall only utilize equipment
-                                        which is in full
-                                        compliance with the California Air
-                                        Resources Board (ARB)
-                                        TRU ACTM in-use regulations. CARRIER
-                                        shall indemnify
-                                        BROKER and Shipper from any
-                                        penalties,
-                                        costs or any other
-                                        liability, imposed on Shipper or
-                                        BROKER
-                                        due to CARRIER'S
-                                        use of non-compliant equipment.
-                                        CARRIER
-                                        is an independent
-                                        contractor and not an agent or
-                                        employee
-                                        of BROKER. CARRIER
-                                        agrees to obey all federal, state
-                                        and
-                                        local laws and
-                                        regulations. CARRIER acknowledges
-                                        that
-                                        BROKER does not
-                                        exercise direction or control over
-                                        the
-                                        daily operations of
-                                        the CARRIER and that the CARRIER can
-                                        legally meet all the
-                                        terms, conditions and times as
-                                        enumerated herein. CARRIER
-                                        shall indemnify BROKER for any loss,
-                                        damage, injury,
-                                        liability, expense, cost, including
-                                        reasonable attorney
-                                        fees, fines, penalties, actions and
-                                        claims including, but
-                                        not limited to, claims for injuries
-                                        to
-                                        persons, (including
-                                        death), for damage to equipment, and
-                                        for
-                                        damage to third
-                                        parties arising out of the CARRIER'S
-                                        own
-                                        negligence,
-                                        wrongful act or omission, or failure
-                                        to
-                                        comply with the
-                                        terms of this Agreement. Neither
-                                        party
-                                        shall be liable to
-                                        the other for any claims, actions,
-                                        or
-                                        damages due to
-                                        negligence or willful misconduct of
-                                        the
-                                        other party.
-                                        CARRIER must notify BROKER within 24
-                                        hours of any
-                                        accessorial charges. CARRIER must
-                                        provide a written
-                                        certification of detention time
-                                        signed
-                                        by the responsible
-                                        party indicating time in and time
-                                        out on
-                                        the BOL. All
-                                        comchecks incur a minimum of $5.00
-                                        processing fee.
-                                    </p>
-                                </td>
-                            </tr>
+                                            text-transform: uppercase;
+                                            margin-top: 2px;
+                                            margin-bottom: 12px;">
+                                            <strong><span style="background:
+                                                    #ffff00;
+                                                    padding-top: 2px;
+                                                    padding-bottom: 2px;">Special
+                                                    Instructions: {{
+                                                    brokerage.instructions }}</span>
+                                            </strong>
+                                        </p>
+                                    </td>
+                                </tr>
 
-                            <tr>
-                                <td colspan="2">
-                                    <p style="font-size: 13px;
-                                        color: #000000;
-                                        line-height: 18px;
-                                        margin-top: 12px;">
-                                        <strong>Please send all invoices and
-                                            accounting queries to
-                                            {{ orderData.carrierData.email
-                                            }}</strong>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table width="100%" cellspacing="0"
-                                        cellpadding="0">
-                                        <tbody>
-                                            <tr>
-                                                <td width="10%">
-                                                    <p style="font-size:
-                                                        13px;
-                                                        color: #000000">
-                                                        <strong>Accepted By:
-                                                        </strong>
-                                                    </p>
-                                                </td>
-                                                <td width="23%"
-                                                    style="border-bottom:
-                                                    solid
-                                                    1px #999">
-                                                    &nbsp;
-                                                </td>
-                                                <td width="10%">
-                                                    <strong
-                                                        style="font-size:
-                                                        13px; color:
-                                                        #000000">Date:</strong>
-                                                </td>
-                                                <td width="23%"
-                                                    style="border-bottom:
-                                                    solid
-                                                    1px #999">
-                                                    &nbsp;
-                                                </td>
-                                                <td width="10%">
-                                                    <p style="font-size:
-                                                        13px;
-                                                        color: #000000">
-                                                        <strong>Signature</strong>
-                                                    </p>
-                                                </td>
-                                                <td style="border-bottom:
-                                                    solid
-                                                    1px #999">&nbsp;</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <table border="0" align="center"
-                                        cellpadding="0" cellspacing="0">
-                                        <tbody>
-                                            <tr>
-                                                <td align="center">
-                                                    <h2 style="font-size:
-                                                        13px">Powered
-                                                        By</h2>
-                                                    <img alt="Fleet Hawks
-                                                        Inc."
-                                                        [src]="logoSrc"
-                                                        width="207"
-                                                        height="28" />
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">&nbsp;</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <td colspan="2">
+                                        <p style="font-size: 9px;
+                                            color: #000000;
+                                            line-height: 13px;
+                                            margin-top: 5px;">
+                                            <strong>Instructions:</strong> By
+                                            signing this agreement
+                                            or by picking up and taking
+                                            possession
+                                            of the shipment the
+                                            CARRIER agrees to all the terms and
+                                            conditions as outlined
+                                            in this rate confirmation and the
+                                            transportation agreement
+                                            between company, the "BROKER" and
+                                            the
+                                            CARRIER (the
+                                            "Agreement"). No oral agreements or
+                                            conditions exist. In
+                                            the event that there is a conflict
+                                            between the Agreement
+                                            and this rate confirmation, the
+                                            Agreement shall control.
+                                            Further, no charges or amendments to
+                                            this rate
+                                            confirmation will be binding unless
+                                            BROKER approves such
+                                            changes in writing prior to the
+                                            CARRIER
+                                            taking possession
+                                            of the shipment. In accordance with
+                                            49
+                                            CFR $ 392.9 and 49
+                                            CFR $ 393.100 et all, the CARRIER
+                                            and
+                                            its drivers are
+                                            solely responsible for verifying the
+                                            contents, counts,
+                                            conditions, loading, weight, proper
+                                            weight distribution
+                                            per axle, blocking, bracing, and
+                                            securement of each load
+                                            for transportation. CARRIER and its
+                                            drivers are solely
+                                            responsible for attaching a seal
+                                            either
+                                            provided by the
+                                            shipper or by the CARRIER to each
+                                            shipment and ensuring
+                                            the seal is not tampered or broken
+                                            during transit. Bills
+                                            of Lading (BOL) must indicate the
+                                            seal
+                                            number and "SEAL
+                                            INTACT" AT THE TIME SHIPMENT IS
+                                            DELIVERED. Shipments which
+                                            are pre-loaded and sealed or whereas
+                                            the
+                                            driver is not
+                                            permitted on the dock to witness the
+                                            loading or counts are
+                                            required to be marked on the BOL
+                                            with
+                                            "SHIPPER LOAD AND
+                                            COUNT." CARRIER acknowledges and
+                                            agrees
+                                            the CARRIER is
+                                            liable for the full invoice value of
+                                            the
+                                            shipment or any
+                                            part thereof due to loss or damage.
+                                            CARRIER shall notify
+                                            BROKER immediately in the event any
+                                            exception is listed on
+                                            the BOL, the seal is broken due to a
+                                            regulatory
+                                            inspection, delay in the
+                                            transportation
+                                            of the shipment,
+                                            or there is an incident or accident
+                                            during transit. FOOD
+                                            GRADE NOTICE: Due to federal, state
+                                            and
+                                            local regulations
+                                            which govern food grade commodities,
+                                            if
+                                            the shipment
+                                            container is damaged, breached,
+                                            exposed
+                                            to outside
+                                            elements, or the seal is broken
+                                            during
+                                            shipment the
+                                            customer may reject the entire
+                                            shipment
+                                            or if CARRIER is
+                                            not able to provide a downloadable
+                                            temperature report
+                                            indicating that required
+                                            temperatures
+                                            were maintained at
+                                            all times during transport. If the
+                                            customer denies the
+                                            right of salvage or there is no
+                                            right of
+                                            salvage, the
+                                            CARRIER will remain fully liable for
+                                            loss or damage to the
+                                            shipment and no salvage will be
+                                            allowed.
+                                            To the extent
+                                            that any shipments subject to this
+                                            rate
+                                            confirmation or
+                                            the Agreement are transported within
+                                            the
+                                            State of
+                                            California on refrigerated
+                                            equipment,
+                                            CARRIER warrants
+                                            that it shall only utilize equipment
+                                            which is in full
+                                            compliance with the California Air
+                                            Resources Board (ARB)
+                                            TRU ACTM in-use regulations. CARRIER
+                                            shall indemnify
+                                            BROKER and Shipper from any
+                                            penalties,
+                                            costs or any other
+                                            liability, imposed on Shipper or
+                                            BROKER
+                                            due to CARRIER'S
+                                            use of non-compliant equipment.
+                                            CARRIER
+                                            is an independent
+                                            contractor and not an agent or
+                                            employee
+                                            of BROKER. CARRIER
+                                            agrees to obey all federal, state
+                                            and
+                                            local laws and
+                                            regulations. CARRIER acknowledges
+                                            that
+                                            BROKER does not
+                                            exercise direction or control over
+                                            the
+                                            daily operations of
+                                            the CARRIER and that the CARRIER can
+                                            legally meet all the
+                                            terms, conditions and times as
+                                            enumerated herein. CARRIER
+                                            shall indemnify BROKER for any loss,
+                                            damage, injury,
+                                            liability, expense, cost, including
+                                            reasonable attorney
+                                            fees, fines, penalties, actions and
+                                            claims including, but
+                                            not limited to, claims for injuries
+                                            to
+                                            persons, (including
+                                            death), for damage to equipment, and
+                                            for
+                                            damage to third
+                                            parties arising out of the CARRIER'S
+                                            own
+                                            negligence,
+                                            wrongful act or omission, or failure
+                                            to
+                                            comply with the
+                                            terms of this Agreement. Neither
+                                            party
+                                            shall be liable to
+                                            the other for any claims, actions,
+                                            or
+                                            damages due to
+                                            negligence or willful misconduct of
+                                            the
+                                            other party.
+                                            CARRIER must notify BROKER within 24
+                                            hours of any
+                                            accessorial charges. CARRIER must
+                                            provide a written
+                                            certification of detention time
+                                            signed
+                                            by the responsible
+                                            party indicating time in and time
+                                            out on
+                                            the BOL. All
+                                            comchecks incur a minimum of $5.00
+                                            processing fee.
+                                        </p>
+                                    </td>
+                                </tr>
 
-                </section>
+                                <tr>
+                                    <td colspan="2">
+                                        <p style="font-size: 13px;
+                                            color: #000000;
+                                            line-height: 18px;
+                                            margin-top: 12px;">
+                                            <strong>Please send all invoices and
+                                                accounting queries to
+                                                {{ orderData.carrierData.email
+                                                }}</strong>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table width="100%" cellspacing="0"
+                                            cellpadding="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="10%">
+                                                        <p style="font-size:
+                                                            13px;
+                                                            color: #000000">
+                                                            <strong>Accepted By:
+                                                            </strong>
+                                                        </p>
+                                                    </td>
+                                                    <td width="23%"
+                                                        style="border-bottom:
+                                                        solid
+                                                        1px #999">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td width="10%">
+                                                        <strong
+                                                            style="font-size:
+                                                            13px; color:
+                                                            #000000">Date:</strong>
+                                                    </td>
+                                                    <td width="23%"
+                                                        style="border-bottom:
+                                                        solid
+                                                        1px #999">
+                                                        &nbsp;
+                                                    </td>
+                                                    <td width="10%">
+                                                        <p style="font-size:
+                                                            13px;
+                                                            color: #000000">
+                                                            <strong>Signature</strong>
+                                                        </p>
+                                                    </td>
+                                                    <td style="border-bottom:
+                                                        solid
+                                                        1px #999">&nbsp;</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <table border="0" align="center"
+                                            cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center">
+                                                        <h2 style="font-size:
+                                                            13px">Powered
+                                                            By</h2>
+                                                        <img alt="Fleet Hawks
+                                                            Inc."
+                                                            [src]="logoSrc"
+                                                            width="207"
+                                                            height="28" />
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </section>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                        (click)="modal.dismiss()">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-success"
+                        (click)="generatePDF()">
+                        Download
+                    </button>
+                    <button type="button" *ngIf="type === 'detail'" class="btn
+                        btn-success"
+                        (click)="openEmailInv()">
+                        Send Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+
+
+    <ng-template #emailBrokerageModal let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Send Brokerage</h4>
+            <button type="button" class="close" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form>
+            <div class="modal-body">
+                <div class="email--invoice__main">
+                    <div class="row align-items-center mb-2">
+                        <div class="col-12">
+                            <label class="control-label font-weight-bold mt-2
+                                text-3
+                                text-dark" for="inputDefault">Order#: {{
+                                orderData.orderNumber }}
+                            </label>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="control-label font-weight-bold mt-2
+                                text-3
+                                text-dark" for="inputDefault">Send To:
+                                <small> You can add multiple email(s)</small>
+                                <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup>
+                                </span>
+                            </label>
+                            <ng-select multiple="true" notFoundText="Please type
+                                to add email"
+                                [addTag]="true"
+                                placeholder="eg. johnsmith@gmail.com"
+                                [(ngModel)]="brokEmails" name="emails"
+                                type="text"
+                                class="form-control h-auto"
+                                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9]+$">
+                            </ng-select>
+                        </div>
+                        <div class="col-12">
+                            <label class="control-label font-weight-bold mt-2
+                                text-3
+                                text-dark" for="inputDefault">Subject line:
+                                <span
+                                    class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            <input type="text" [(ngModel)]="brokEmail.subject"
+                                class="form-control"
+                                placeholder="Enter subject" name="subject">
+                        </div>
+                        <div class="col-12 mt-2">
+                            <input class="form-check-input ml-0" name="copyBrok"
+                                [(ngModel)]="brokEmail.sendCopy"
+                                type="checkbox"
+                                value="" id="copy">
+                            <label class="form-check-label pl-3" for="copy">
+                                Send me a copy at <strong>
+                                    {{brokEmail.carrierEmail}}</strong>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default"
-                    (click)="modal.dismiss()">
-                    Close
+                <button type="button" (click)="modal.dismiss('Cross click')"
+                    class="btn
+                    btn-default">
+                    Cancel
                 </button>
-                <button type="button" class="btn btn-success"
-                    (click)="generatePDF()">
-                    Download
-                </button>
+                <button type="submit" [disabled]="isEmail"
+                    (click)="addEmails()"
+                    class="btn btn-success">Submit</button>
             </div>
         </form>
-    </div>
-</ng-template>
+    </ng-template>
