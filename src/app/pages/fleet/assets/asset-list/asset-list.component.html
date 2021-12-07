@@ -325,10 +325,14 @@
                                                 *ngIf="item.assetDetails.ownerShip === 'ownerOperator'">{{item.assetDetails.ownerOperator
                                                 ? contactsObjects[item.assetDetails.ownerOperator] : '-' }}</span>
                                              <span
-                                                *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.rentCompany
-                                                ? item.assetDetails.rentCompany : '-'}}</span>
+                                                *ngIf="item.assetDetails.ownerShip === 'rented'">{{item.assetDetails.ownCname
+                                                ? item.assetDetails.ownCname: '-'}}</span>
                                              <span
-                                                *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'">-</span>
+                                                *ngIf="item.assetDetails.ownerShip === 'owned' || item.assetDetails.ownerShip === 'leased' || item.assetDetails.ownerShip === 'interchange'"></span>
+                                                  <span
+                                             *ngIf="item.assetDetails.ownerShip === 'leased'">{{item.assetDetails.ownCname
+                                             ? item.assetDetails.ownCname : '-'}}
+                                             </span>
                                           </td>
                                           <td *ngIf="hideShow.safetyDate" [routerLink]="item.url">{{
                                              item.assetDetails.ownerShip !=='interchange' ?

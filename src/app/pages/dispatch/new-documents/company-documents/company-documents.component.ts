@@ -68,7 +68,7 @@ export class CompanyDocumentsComponent implements OnInit {
   suggestions = [];
   currentID = null;
   uploadeddoc = [];
-  newDoc: any;
+  newDoc: any = [];
   tripsObjects: any = {};
   currentUser;
   docError = false; // to show error if doc is not uploaded
@@ -185,6 +185,7 @@ export class CompanyDocumentsComponent implements OnInit {
 
     if (condition) {
       this.uploadeddoc = [];
+
       this.uploadeddoc = files;
     }
   }
@@ -220,9 +221,9 @@ export class CompanyDocumentsComponent implements OnInit {
       for (let i = 0; i < this.uploadeddoc.length; i++) {
         formData.append('uploadedDocs', this.uploadeddoc[i]);
       }
+
       // append other fields
       formData.append('data', JSON.stringify(this.documentData));
-
       this.apiService.postData('documents', formData, true).
 
         subscribe({
@@ -299,7 +300,7 @@ export class CompanyDocumentsComponent implements OnInit {
     this.docError = false;
     this.ifEdit = true;
     this.modalTitle = 'Edit';
-    this.newDoc = '';
+    this.newDoc = [];
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
@@ -320,7 +321,34 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
         // this.uploadeddoc = result.uploadedDocs;
-        this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
+        if (result.uploadedDocs.length > 0) {
+          result.uploadedDocs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.newDoc.push(obj);
+          });
+        }
+
       });
     $('#addDocumentModal').modal('show');
   }

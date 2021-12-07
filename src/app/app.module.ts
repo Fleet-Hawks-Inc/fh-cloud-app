@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -49,6 +49,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/customRouteReuseService';
 import { LocationShareComponent } from './entry/location-share/location-share.component';
+import { GlobalErrorHandler } from './interceptors/GlobalErrorHandler';
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -99,7 +100,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   providers: [HttpInterceptorProviders, PreLoadStrategy, InvokeHeaderFnService, {
     provide: RouteReuseStrategy,
     useClass: CustomRouteReuseStrategy
-  }],
+  }, { provide: ErrorHandler, useClass: GlobalErrorHandler }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

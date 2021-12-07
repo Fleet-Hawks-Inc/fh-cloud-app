@@ -12,6 +12,7 @@ import { result } from 'lodash';
   styleUrls: ['./activity.component.css']
 })
 export class ActivityComponent implements OnInit {
+  exportData = [];
   allData = [];
   assetData = []
   startDate = '';
@@ -29,12 +30,10 @@ export class ActivityComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public astId;
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute,) { }
-
-
   ngOnInit() {
-    this.astId = this.route.snapshot.params[`astId`];
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.astId = this.route.snapshot.params[`astId`];
     this.fetchAssetActivity()
     this.fetchAsset();
   }
@@ -53,7 +52,6 @@ export class ActivityComponent implements OnInit {
   fetchAssetActivity() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-        this.dataMessage = Constants.FETCHING_DATA;
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
@@ -65,18 +63,15 @@ export class ActivityComponent implements OnInit {
             asst.miles += Number(element.miles);
           }
         }
-
-        if (result.Items.length > 0) {
-          if (result.LastEvaluatedKey !== undefined) {
-            this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
-            this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
-          }
-
-          else {
-            this.lastItemSK = 'end';
-          }
-          this.loaded = true;
+        if (result.LastEvaluatedKey !== undefined) {
+          this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
+          this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
         }
+
+        else {
+          this.lastItemSK = 'end';
+        }
+        this.loaded = true;
       });
     }
   }
@@ -98,17 +93,30 @@ export class ActivityComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA
         this.fetchAssetActivity()
       }
-    }
-    else {
+    } else {
       return false;
     }
   }
+  fetchFullExport() {
+    this.apiService.getData(`trips/fetch/assetActivity/list?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      this.exportData = result.Items;
+      for (let asst of this.exportData) {
+        let dataa = asst
+        asst.miles = 0
+        for (let element of dataa.tripPlanning) {
+          asst.miles += Number(element.miles);
+        }
+      }
 
+      this.generateCSV();
+    });
+
+  }
   generateCSV() {
-    if (this.allData.length > 0) {
+    if (this.exportData.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.allData.forEach(element => {
+      this.exportData.forEach(element => {
         let location = ''
         let date = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {

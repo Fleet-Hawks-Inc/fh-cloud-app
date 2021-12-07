@@ -103,7 +103,7 @@ export class LocationShareComponent implements OnInit {
   }
 
   async validateAndGetLocation() {
-    return await this.apiService.getData(`location/share/vehicle/${this.token}`).toPromise();
+    return await this.apiService.getData(`location/share/get/${this.token}`).toPromise();
   }
 
   ngOnDestroy() {
