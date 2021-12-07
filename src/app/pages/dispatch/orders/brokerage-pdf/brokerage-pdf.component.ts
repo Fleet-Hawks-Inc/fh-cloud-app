@@ -93,9 +93,9 @@ export class BrokeragePdfComponent implements OnInit {
   };
   emailCopyRef: any;
   brokEmails = [];
-  orderID: "";
-  type: "";
   isEmail = false;
+  orderID = "";
+  type = "";
 
   ngOnInit() {
     this.subscription = this.listService.brokeragePdfList.subscribe(
@@ -172,6 +172,7 @@ export class BrokeragePdfComponent implements OnInit {
   }
 
   async sendBrokEmail() {
+    this.isEmail = true;
     let result = await this.apiService
       .getData(
         `orders/emailBrokerage/${this.orderID}?data=${encodeURIComponent(
@@ -179,6 +180,8 @@ export class BrokeragePdfComponent implements OnInit {
         )}`
       )
       .toPromise();
+    this.isEmail = false;
+    this.modalService.dismissAll();
     if (result == null) {
       this.brokEmail.emails = [];
       this.toastr.success("Brokerage email send successfully!");
@@ -186,13 +189,11 @@ export class BrokeragePdfComponent implements OnInit {
   }
 
   addEmails() {
-    this.isEmail = true;
     this.brokEmail.emails = [];
     let isFlag = true;
     if (this.brokEmails.length === 0) {
       this.toastr.error("Please enter at least one email");
       isFlag = false;
-      this.isEmail = false;
       return;
     }
     const re =
@@ -202,7 +203,6 @@ export class BrokeragePdfComponent implements OnInit {
       if (!result) {
         this.toastr.error("Please enter valid email(s)");
         isFlag = false;
-        this.isEmail = false;
         return;
       } else {
         if (!this.brokEmail.emails.includes(elem.label)) {
@@ -213,7 +213,6 @@ export class BrokeragePdfComponent implements OnInit {
     if (this.brokEmail.subject == "") {
       this.toastr.error("Please enter subject");
       isFlag = false;
-      this.isEmail = false;
       return;
     }
 
@@ -225,7 +224,6 @@ export class BrokeragePdfComponent implements OnInit {
 
     if (isFlag) {
       this.sendBrokEmail();
-      this.isEmail = false;
     }
   }
 }
