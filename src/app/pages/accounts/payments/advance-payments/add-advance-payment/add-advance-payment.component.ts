@@ -14,6 +14,7 @@ import { Location } from "@angular/common";
 export class AddAdvancePaymentComponent implements OnInit {
   paymentData = {
     paymentNo: "",
+    advType: null,
     paymentTo: null,
     entityId: null,
     amount: "",
@@ -206,7 +207,10 @@ export class AddAdvancePaymentComponent implements OnInit {
       .getData(`advance/detail/${this.paymentID}`)
       .subscribe((result: any) => {
         this.paymentData = result[0];
-        this.changePaymentMode(this.paymentData.payMode);
+        this.payModeLabel = this.paymentData.payMode.replace("_", " ");
+        if (this.payModeLabel === "eft") {
+          this.payModeLabel = this.payModeLabel.toUpperCase();
+        }
       });
   }
 
