@@ -117,6 +117,7 @@ export class EditProfileComponent implements OnInit {
   notesBol: ""
   termsCustom: ""
   notesDriver: ""
+  tagLine: ""
 
   yardDefault = false;
   public searchTerm = new Subject<string>();
@@ -573,6 +574,7 @@ export class EditProfileComponent implements OnInit {
         notesBol: this.carriers.notesBol,
         termsCustom: this.carriers.termsCustom,
         notesDriver: this.carriers.notesDriver,
+        tagLine: this.carriers.tagLine,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -595,7 +597,7 @@ export class EditProfileComponent implements OnInit {
       }
       // create form data instance
       const formData = new FormData();
-
+      console.log('data', data);
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append('uploadedPhotos', this.uploadedPhotos[i]);
