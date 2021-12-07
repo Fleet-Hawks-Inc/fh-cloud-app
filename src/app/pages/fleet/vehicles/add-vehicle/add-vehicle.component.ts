@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ApiService } from "../../../../services";
+import { ApiService, DashboardUtilityService } from "../../../../services";
 import { Router } from "@angular/router";
 import { map } from "rxjs/operators";
 import { from } from "rxjs";
@@ -290,7 +290,8 @@ export class AddVehicleComponent implements OnInit {
     private httpClient: HttpClient,
     private listService: ListService,
     private domSanitizer: DomSanitizer,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     this.selectedFileNames = new Map<any, any>();
     $(document).ready(() => {
@@ -756,9 +757,9 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.submitDisabled = false;
-            // this.uploadFiles(); // upload selected files to bucket
             this.toastr.success("Vehicle Added Successfully");
             this.router.navigateByUrl("/fleet/vehicles/list");
+            this.dashboardUtilityService.refreshVehicles = true;
             // this.location.back();
           },
         });
@@ -1329,6 +1330,7 @@ export class AddVehicleComponent implements OnInit {
             this.response = res;
             this.Success = "";
             this.toastr.success("Vehicle Updated successfully");
+            this.dashboardUtilityService.refreshVehicles = true;
             this.cancel();
           },
         });

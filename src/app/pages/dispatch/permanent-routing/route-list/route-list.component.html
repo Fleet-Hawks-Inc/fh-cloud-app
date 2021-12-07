@@ -2,8 +2,8 @@
     <div class="inner-wrapper">
         <section role="main" class="content-body pr-0 pt-0 pl-0">
             <header class="page-header pr19 pl11">
+                                <form class="form-horizontal" method="get">
                 <div class="row" style="padding-top:10px;">
-
                     <div class="col-md-2 col-lg-2 pr-1">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" class="form-control" [(ngModel)]="searchedRouteName" name="searchedRouteName"
@@ -19,7 +19,7 @@
                     </div>
 
                     <div class="col-md-2 col-lg-2">
-                        <a href="javascript:;" class="btn btn-success btn-sm mr-3 modal-with-form" style="color:white;" (click)="searchFilter()">Search</a>
+                        <button type="submit" (click)="searchFilter()"class="btn btn-sm btn-success mr-3">Search</button>
                         <a href="javascript:;" class="btn btn-success btn-sm modal-with-form" style="color:white;" (click)="resetFilter()">Reset</a>
                     </div>
 
@@ -37,6 +37,7 @@
                         <a routerLink="/dispatch/routes/add" class="btn btn-success btn-sm modal-with-form" style="color:white;"><i class="fas fa-plus"></i> Add Route</a>
                     </div>
                 </div>
+                </form>
             </header>
 
             <section class="m-2">

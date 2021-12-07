@@ -51,19 +51,31 @@
                     </div>
                 </form>
             </header>
-            <div class="col-6 mb-3 mt-2">
-                <div class="bg-white p-3">
-                    <div class="row text-dark">
-                        <div class="col-12">
-                            <div>
-                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Name</h4>
-                                <h3><span *ngFor="let data of assetData">{{data.assetIdentification}}</span></h3>
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-3 mb-4 ">
+                        <div class="bg-white p-3">
+                            <div class="row text-dark col-lg-12">
+                                <div class="col">
+                                    <div class="maindriverbox" style="box-shadow: 3px 3px
+                            5px;">
+                                        <div class="col-8">
 
+                                            <div>
+                                                <h4 class="mt-1 mb-0 font-weight-bold">Asset Name</h4>
+                                                <h3><span
+                                                        *ngFor="let data of assetData">{{data.assetIdentification}}</span>
+                                                </h3>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
             <div class="row text-dark">
                 <div class="col pr-0">
                     <div class="card">
@@ -72,10 +84,18 @@
                             <div class="card-body">
 
                                 <section class="reports_div">
-                                    <table class="row-border hover table table-bordered table-striped mb-0"
+                                    <table width="70%" class="row-border hover table table-bordered table-striped mb-0"
                                         id="tonuTripsDT">
+                                        <col style="width:10%">
+                                        <col style="width:5%">
+                                        <col style="width:10%">
+                                        <col style="width:25%">
+                                        <col style="width:10%">
+                                        <col style="width:10%">
+
+
                                         <thead>
-                                            <tr class="back-color-gray">
+                                            <tr>
                                                 <th>Asset</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>

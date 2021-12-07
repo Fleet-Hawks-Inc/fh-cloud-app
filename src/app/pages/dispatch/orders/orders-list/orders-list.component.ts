@@ -9,6 +9,7 @@ import * as html2pdf from "html2pdf.js";
 import * as moment from "moment";
 import { ListService } from "src/app/services/list.service";
 import * as _ from "lodash";
+import { DashboardUtilityService } from "src/app/services/dashboard-utility.service";
 
 declare var $: any;
 @Component({
@@ -44,7 +45,7 @@ export class OrdersListComponent implements OnInit {
     start: "",
     end: "",
   };
-  customerValue = '';
+  customerValue = "";
 
   totalRecords = 10;
   pageLength = 10;
@@ -212,27 +213,25 @@ export class OrdersListComponent implements OnInit {
   isLoad: boolean = false;
   isLoadText = "Load More...";
 
-  customerFlag = false;
-
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
-    private listService: ListService
-  ) { }
+    private listService: ListService,
+    private dashboardUtilityService: DashboardUtilityService
+  ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.initDataTable();
+    this.customersObjects = await this.dashboardUtilityService.getCustomers();
   }
-
 
   fetchTabData(tabType) {
     this.activeTab = tabType;
   }
 
   allignOrders(orders) {
-
     for (let i = 0; i < orders.length; i++) {
       const element = orders[i];
 
@@ -270,7 +269,7 @@ export class OrdersListComponent implements OnInit {
 
   initDataTable(refresh?: boolean) {
     if (refresh === true) {
-      this.lastEvaluatedKey = '';
+      this.lastEvaluatedKey = "";
       this.orders = [];
     }
     this.spinner.show();
@@ -279,15 +278,15 @@ export class OrdersListComponent implements OnInit {
       this.apiService
         .getData(
           "orders/fetch/records/all?searchValue=" +
-          this.orderFiltr.searchValue +
-          "&startDate=" +
-          this.orderFiltr.start +
-          "&endDate=" +
-          this.orderFiltr.end +
-          "&category=" +
-          this.orderFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+            this.orderFiltr.searchValue +
+            "&startDate=" +
+            this.orderFiltr.start +
+            "&endDate=" +
+            this.orderFiltr.end +
+            "&category=" +
+            this.orderFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -363,10 +362,6 @@ export class OrdersListComponent implements OnInit {
       return false;
     }
 
-    if (this.orderFiltr.category === 'customer' && !this.customerFlag) {
-      this.toastr.error("Please select customer from suggestions");
-      return false;
-    }
     if (this.orderFiltr.startDate === null) this.orderFiltr.startDate = "";
     if (this.orderFiltr.endDate === null) this.orderFiltr.endDate = "";
     if (
@@ -439,7 +434,7 @@ export class OrdersListComponent implements OnInit {
         start: "",
         end: "",
       };
-      this.customerValue = '';
+      this.customerValue = "";
       $("#categorySelect").text("Search by category");
       this.ordersDraw = 0;
       this.records = false;
@@ -521,18 +516,20 @@ export class OrdersListComponent implements OnInit {
     newData.confirm = this.emailData.confirmEmail;
     let result = await this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber}/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
-      ).toPromise();
+        `orders/update/orderStatus/${this.newOrderID}/${
+          this.newOrderNumber
+        }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
+      )
+      .toPromise();
     if (result) {
       this.dataMessage = Constants.FETCHING_DATA;
       this.orders[this.confirmIndex].newStatus = "confirmed";
-      this.confirmOrders.unshift(this.orders[this.confirmIndex])
+      this.confirmOrders.unshift(this.orders[this.confirmIndex]);
       this.confirmRef.close();
       this.isConfirm = false;
     } else {
       this.isConfirm = false;
     }
-
   }
 
   async confirmEmail(order, i) {
@@ -740,25 +737,5 @@ export class OrdersListComponent implements OnInit {
       this.initDataTable();
     }
     this.loaded = false;
-
-  }
-
-  getSuggestions = _.debounce(function (value) {
-    if (value != '') {
-      value = value.toLowerCase()
-      this.apiService
-        .getData(`contacts/suggestion/${value}`)
-        .subscribe((result) => {
-          this.suggestions = result.Items;
-        });
-    }
-
-  }, 800);
-
-  setSearchValues(name, searchValue) {
-    this.customerValue = name;
-    this.orderFiltr.searchValue = searchValue;
-    this.suggestions = [];
-    this.customerFlag = true;
   }
 }
