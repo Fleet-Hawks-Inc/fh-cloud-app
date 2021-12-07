@@ -322,8 +322,8 @@ export class AddAssetsComponent implements OnInit {
       });
   }
   getYears() {
-    var max = new Date().getFullYear(),
-      min = max - 30,
+    var max = new Date().getFullYear() + 1,
+      min = 1991,
       max = max;
 
     for (var i = max; i >= min; i--) {
@@ -558,7 +558,7 @@ export class AddAssetsComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.postData("assets", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
@@ -576,7 +576,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -595,12 +595,12 @@ export class AddAssetsComponent implements OnInit {
         $('[name="' + v + '"]')
           .after(
             '<label id="' +
-              v +
-              '-error" class="error" for="' +
-              v +
-              '">' +
-              this.errors[v] +
-              "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
           )
           .addClass("error");
       }
@@ -927,7 +927,7 @@ export class AddAssetsComponent implements OnInit {
     formData.append("data", JSON.stringify(data));
 
     this.apiService.putData("assets/", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -944,7 +944,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1018,7 +1018,7 @@ export class AddAssetsComponent implements OnInit {
   addGroup() {
     this.groupSubmitDisabled = true;
     this.apiService.postData("groups", this.groupData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1035,7 +1035,7 @@ export class AddAssetsComponent implements OnInit {
             error: () => {
               this.groupSubmitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
