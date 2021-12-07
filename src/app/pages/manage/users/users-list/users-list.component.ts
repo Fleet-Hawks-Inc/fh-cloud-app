@@ -38,6 +38,13 @@ export class UsersListComponent implements OnInit {
   userRoles: any;
   selectedUserData: any = '';
   newRoles = [];
+
+  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
+
+  ngOnInit() {
+    this.fetchUsers();
+  }
+
   getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
@@ -57,19 +64,19 @@ export class UsersListComponent implements OnInit {
       this.suggestedUsers = [];
     }
   }, 800);
-  constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
 
-  ngOnInit() {
-    this.fetchUsers();
-  }
-
-
-
-  setUser(contactID, firstName, lastName) {
-    this.searchUserName = firstName + ' ' + lastName;
-    this.contactID = firstName + '-' + lastName;
+    setUser(contactID, firstName = "", lastName = "", middleName = "") {
+    if (middleName !== "") {
+      this.searchUserName = `${firstName} ${middleName} ${lastName}`;
+      // this.contactID = contactID;
+      this.contactID = `${firstName} ${middleName} ${lastName}`;
+    } else {
+      this.searchUserName = `${firstName} ${lastName}`;
+      this.contactID = `${firstName} ${lastName}`;
+    }
     this.suggestedUsers = [];
   }
+  
   fetchUsers() {
     this.apiService.getData('contacts/get/employee/count/?searchValue=' + this.contactID)
       .subscribe({
@@ -188,19 +195,28 @@ this.newRoles = [];
 
   searchFilter() {
     if (this.searchUserName !== '') {
+     this.searchUserName = this.searchUserName.toLowerCase();
+               if (this.contactID == '') 
+               {
+               this.contactID = this.searchUserName;
+                }
       this.users = [];
-      this.fetchUsers();
+      this.lastEvaluatedKey = '';
+      this.suggestedUsers = [];
+      this.initDataTable();
     } else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.searchUserName !== '') {
+    if (this.searchUserName !== '' || this.lastEvaluatedKey !== '') {
       this.searchUserName = '';
       this.contactID = '';
       this.users = [];
-      this.fetchUsers();
+      this.lastEvaluatedKey = '';
+      this.suggestedUsers = [];
+      this.initDataTable();
     } else {
       return false;
     }
