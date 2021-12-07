@@ -95,7 +95,7 @@
                         <td>{{document.documentNumber}}</td>
                         <td>{{tripsObjects[document.tripID]}}</td>
                         <td>{{ (document.docType == 'BOL' || document.docType == 'POD') ?
-                                                document.docType+'#' : document.docType }}</td>
+                          document.docType+'#' : document.docType }}</td>
                         <!-- <td>{{document.documentName}}</td> -->
                         <td>{{document.uploadedBy}}</td>
                         <td>Created: {{document.dateCreated | date: 'yyyy/MM/dd'}} <br>
@@ -329,9 +329,36 @@
               <span>
                 Acceptable formats (pdf, jpg, jpeg, png). The maximum
                 file size can be 15MB.</span>
-              <div *ngIf="newDoc" class="border my-2 p-2">
-                <h4 class="mt-0">Uploaded Document</h4>
-                <a href="{{newDoc}}" target="_blank">Document</a>
+              <div class="row" *ngIf="ifEdit" style="max-height: 170px; overflow:
+                          scroll">
+                <div class="col-12">
+                  <table class="table table-bordered">
+                    <thead>
+                      <th>Sr.</th>
+                      <th>Name</th>
+                      <th>Icon/Thumbnail</th>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="newDoc.length == 0">
+                        <td colspan="4">
+                          <span>No document found</span>
+                        </td>
+                      </tr>
+                      <tr *ngFor="let doc of newDoc; let d= index">
+                        <td>{{ d + 1 }}</td>
+                        <td>{{ doc.displayName }}</td>
+                        <td>
+                          <a class="image-popup-no-margins" href="{{
+                                      doc.docPath }}" target="_blank">
+                            <img class="img_thumbnail" src="{{
+                                        doc.imgPath }}" />
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
               </div>
             </div>
           </div>
