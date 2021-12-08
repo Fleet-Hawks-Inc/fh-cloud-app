@@ -25,7 +25,7 @@
         </div>
       </header>
 
-      <section class="m-2" id="print_sale">
+      <section class="m-2">
         <div class="row mb-3">
           <div class="col-lg-12">
             <div class="bg-white p-3 text-dark">
@@ -52,7 +52,7 @@
                             font-weight-bold
                             text-dark text-capitalize
                           ">
-                          {{ customerID ? customersObjects[customerID] : "-" }}
+                          {{ customerName ? customerName : "-" }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
                       </div>
@@ -92,20 +92,20 @@
                               Shipment Date
                             </td>
                             <td width="60%">
-                              {{ shipDate | date: "yyyy/MM/dd" }}
+                              {{ shipDate ? (shipDate | date: "yyyy/MM/dd" ) : '-' }}
                             </td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Reference#
                             </td>
-                            <td>{{ sRef }}</td>
+                            <td>{{ sRef ? sRef : '-' }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Sales Person
                             </td>
-                            <td>{{ salePerson }}</td>
+                            <td>{{ salePerson ? salePerson : '-' }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -149,38 +149,15 @@
                           </tr>
                           <tr>
                             <td width="40%" class="back-color-gray font-weight-bold">
-                              Additions
+                              Charges
                             </td>
                             <td width="60%">
-                              <span *ngFor="
-                                  let data of accFees;
-                                  let j = index;
-                                  last as isLast
-                                ">
-                                {{ data.name }}:
-                                {{ data.amount | number: "1.2-2" }}
-                                {{ currency }}
-                                <span *ngIf="!isLast">,</span>
-                              </span>
+                              {{chargeName}},
+                              {{chargeType === 'add' ? '+' : '-'}} {{chargeAmount}} {{ currency }}
                             </td>
                           </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Deductions
-                            </td>
-                            <td width="60%">
-                              <span *ngFor="
-                                  let data of accDed;
-                                  let j = index;
-                                  last as isLast
-                                ">
-                                {{ data.name }}:
-                                {{ data.amount | number: "1.2-2" }}
-                                {{ currency }}
-                                <span *ngIf="!isLast">,</span>
-                              </span>
-                            </td>
-                          </tr>
+
+
                         </tbody>
                       </table>
                     </div>
@@ -236,125 +213,133 @@
 
 <ng-template #previewSaleOrder let-modal>
   <div class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Sale Order</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body p-0">
-      <div>
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
-                        <i class="far fa-calendar-alt text-7"></i>
-                        <br />
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
-                        </p>
-                        <p class="mb-0">DATE</p>
-                      </div>
-                    </div>
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
-                        <i class="fa fa-user text-7"></i>
-                        <br />
-                        <p class="
-                            mb-0
-                            text-5
-                            font-weight-bold
-                            text-dark text-capitalize
-                          ">
-                          {{ customerID ? customersObjects[customerID] : "-" }}
-                        </p>
-                        <p class="mb-0">CUSTOMER</p>
-                      </div>
-                    </div>
 
-                    <div class="col-md-4 col-lg-4">
-                      <div class="text-center p-4 cmaindiv">
-                        <i class="fas fa-money-bill-wave text-7"></i>
-                        <br />
-                        <p class="mb-0 text-5 font-weight-bold text-dark">
-                          {{ currency }}
-                          {{
-                          finalTotal ? (finalTotal | number: "1.2-2") : "0"
-                          }}
-                        </p>
-                        <p class="mb-0">AMOUNT</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-lg-12">
-            <div class="bg-white p-3 text-dark">
-              <div class="form-group row">
-                <div class="col-lg-6">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
+    <div class="modal-body text-dark" id="print_sale">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tbody>
+          <tr>
+            <td>
+              <h2 class="modal-title mt-0" id="modal-basic-title"><strong>Sales Order</strong></h2>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top">
+              <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;"><strong>Sales
+                  Order #:</strong> {{ sOrNo }}</p>
+            </td>
+            <td valign="top" align="right">
+              <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;">
+                <strong>Sales OrderDate:</strong> {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+          </tr>
+          <tr>
+            <td width="50%" valign="top">
+              <h2 class="text-dark" style="font-size:20px;">Customer</h2>
+              <p class="text-dark text-capitalize" style="font-size:13px;"> <strong>{{customerName}}</strong><br>
+                <strong>Address:</strong> {{address ? address : 'NA'}}<br>
+              </p>
+            </td>
+            <td valign="top" align="right">
+              <h2 style="font-size:20px;">&nbsp;</h2>
+              <p class="m-0 text-dark" style="font-size:13px;"> <strong>Phone:</strong> {{workPhone ? workPhone :
+                'NA'}}<br>
+                <strong>Email:</strong> {{workEmail ? workEmail : 'NA'}}<br>
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <h2 style="font-size:16px; margin-bottom:10px; margin-top:0px;">Invoice</h2>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table width="100%" border="0" style="border:1px solid #adadad; font-size:13px;" cellspacing="0"
+                cellpadding="0">
+                <tbody>
+                  <tr bgcolor="#f3f3f3">
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Reference#</p>
+                    </td>
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Shipment Date</p>
+                    </td>
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Sales Person</p>
+                    </td>
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Status</p>
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; text-align: right; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Remarks</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td height="25" style="border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark"> {{ sRef ? sRef : '-' }}</p>
+                    </td>
+                    <td style="border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark"> {{ shipDate ? (shipDate | date: "yyyy/MM/dd" ) : '' }}</p>
+                    </td>
+                    <td style="border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark">{{ salePerson ? salePerson : '-' }} </p>
+                    </td>
+                    <td style="border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark">{{
+                        status ? status : '-'
+                        }}</p>
+                    </td>
+                    <td style="text-align: right; padding:10px;">
+                      <p class="m-0 text-dark">{{ remarks ? remarks : "-" }}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <h2 style="font-size:16px; margin-bottom:10px; margin-top:0px;">Extras</h2>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table width="100%" border="0"
+                style="border:1px solid #adadad; border-bottom:0px solid #adadad; border-right:0px solid #adadad; font-size:13px;"
+                cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr bgcolor="#f3f3f3">
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Taxes</p>
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Charges</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%"
+                      style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding:10px;">
+                      <table width="100%">
                         <tbody>
                           <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
-                              Shipment Date
-                            </td>
-                            <td width="60%">
-                              {{ shipDate | date: "yyyy/MM/dd" }}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Reference#
-                            </td>
-                            <td>{{ sRef }}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Sales Person
-                            </td>
-                            <td>{{ salePerson }}</td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Remarks
-                            </td>
-                            <td>{{ remarks ? remarks : "-" }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-responsive-lg">
-                        <tbody>
-                          <!-- <tr>
-                            <td
-                              width="40%"
-                              class="back-color-gray font-weight-bold"
-                            >
-                              Discount
-                            </td>
-                            <td width="60%">50 CAD</td>
-                          </tr> -->
-                          <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
-                              Taxes
-                            </td>
-                            <td width="60%">
+                            <td>
                               <span *ngFor="
                                   let data of taxes;
                                   let j = index;
@@ -365,88 +350,120 @@
                               </span>
                             </td>
                           </tr>
-                          <tr>
-                            <td width="40%" class="back-color-gray font-weight-bold">
-                              Additions
-                            </td>
-                            <td width="60%">
-                              <span *ngFor="
-                                  let data of accFees;
-                                  let j = index;
-                                  last as isLast
-                                ">
-                                {{ data.name }}:
-                                {{ data.amount | number: "1.2-2" }}
-                                {{ currency }}
-                                <span *ngIf="!isLast">,</span>
-                              </span>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="back-color-gray font-weight-bold">
-                              Deductions
-                            </td>
-                            <td width="60%">
-                              <span *ngFor="
-                                  let data of accDed;
-                                  let j = index;
-                                  last as isLast
-                                ">
-                                {{ data.name }}:
-                                {{ data.amount | number: "1.2-2" }}
-                                {{ currency }}
-                                <span *ngIf="!isLast">,</span>
-                              </span>
-                            </td>
-                          </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
+                    </td>
 
-                <div class="col-lg-12 pr-0">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <table class="table table-bordered table-hover">
-                        <thead>
-                          <tr>
-                            <th>Commodity</th>
-                            <th>Quantity</th>
-                            <th>Rate</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                          </tr>
-                        </thead>
+                    <td width="50%"
+                      style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding:10px;">
+
+                      <table width="100%">
                         <tbody>
-                          <tr *ngFor="let item of sOrderDetails">
-                            <td>{{ item.commodity ? item.commodity : "-" }}</td>
-                            <td>
-                              {{ item.qty ? item.qty : "-" }} {{ item.qtyUnit }}
+                          <tr>
+                            <td width="60%">
+                              {{chargeName}},
+                              {{chargeType === 'add' ? '+' : '-'}} {{chargeAmount}} {{ currency }}
                             </td>
-                            <td>
-                              {{ item.rate ? item.rate : "-" }} per
-                              {{ item.rateUnit }}
-                            </td>
-                            <td>
-                              {{ item.amount ? item.amount : "-" }}
-                              {{ currency }}
-                            </td>
-                            <td>{{ item.desc ? item.desc : "-" }}</td>
-                          </tr>
-                          <tr *ngIf="sOrderDetails?.length === 0">
-                            <td>No Data Found</td>
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table width="100%" border="0"
+                style="border:1px solid #adadad; border-bottom:0px solid #adadad; font-size:13px;" cellspacing="0"
+                cellpadding="0">
+                <thead>
+                  <tr bgcolor="#f3f3f3">
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Commodity</p>
+                    </td>
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Quantity</p>
+                    </td>
+                    <td width="15%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Rate</p>
+                    </td>
+                    <td width="27%"
+                      style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Description</p>
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; text-align: left; padding:10px;">
+                      <p class="m-0 text-dark" style="font-weight:600;">Amount</p>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr *ngFor="let item of sOrderDetails">
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">{{
+                      item.commodity ? item.commodity : "-" }}</td>
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      {{ item.qty ? item.qty : "-" }} {{ item.qtyUnit }}
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      {{ item.rate ? item.rate : "-" }} per
+                      {{ item.rateUnit }}
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
+                      {{ item.amount ? item.amount : "-" }}
+                      {{ currency }}
+                    </td>
+                    <td style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">{{
+                      item.desc ? item.desc : "-" }}</td>
+                  </tr>
+                  <tr *ngIf="sOrderDetails?.length === 0">
+                    <td>No Data Found</td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="border-0 w-100 mt-4">
+                <tbody>
+                  <tr>
+                    <td class="border-0 text-right" colspan="5">Total Amount: <span
+                        style="font-size: 30px;font-weight: 600;">{{ currency
+                        }} {{
+                        finalTotal ? (finalTotal | number: "1.2-2") : "0"
+                        }}</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table border="0" align="center" cellpadding="0" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td align="center">
+                      <h2 style="font-size:13px;">Powered By</h2>
+                      <img src="../../../../../../assets/img/logo.png" width="207" height="28">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&nbsp;</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="modal-footer">
 
@@ -455,7 +472,7 @@
         Cancel
       </button>
       <button (click)="generatePDF()" class="btn
-        btn-success ml-2 ">Send</button>
+        btn-success ml-2 ">Download</button>
 
     </div>
   </div>

@@ -278,7 +278,7 @@ export class AddTripComponent implements OnInit {
     private countryStateCity: CountryStateCityService,
     private el: ElementRef, // public selectionType: SelectionType, // public columnMode: ColumnMode,
     private routeMnagementSvc: RouteManagementServiceService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.tripID = this.route.snapshot.params["tripID"];
@@ -594,8 +594,8 @@ export class AddTripComponent implements OnInit {
   fetchRoutes() {
     this.spinner.show();
     this.apiService.getData("routes").subscribe({
-      complete: () => {},
-      error: () => {},
+      complete: () => { },
+      error: () => { },
       next: (result: any) => {
         this.spinner.hide();
         this.permanentRoutes = result["Items"];
@@ -1054,7 +1054,7 @@ export class AddTripComponent implements OnInit {
       // this.vehicles = result.Items;
       result.Items.forEach((element) => {
         if (element.isDeleted === 0) {
-          this.vehicles.push(element);
+          this.vehicles = [...this.vehicles, element];
         }
       });
 
@@ -1075,7 +1075,7 @@ export class AddTripComponent implements OnInit {
       // this.assets = result.Items;
       result.Items.forEach((element) => {
         if (element.isDeleted === 0) {
-          this.assets.push(element);
+          this.assets = [...this.assets, element];
         }
       });
 
@@ -1098,7 +1098,7 @@ export class AddTripComponent implements OnInit {
         result.Items.forEach((element) => {
           if (element.isDeleted === 0) {
             element.fullName = element.firstName;
-            this.drivers.push(element);
+            this.drivers = [...this.drivers, element];
           }
         });
         this.codrivers = this.drivers;
@@ -1279,12 +1279,14 @@ export class AddTripComponent implements OnInit {
     } else {
       if (type === "driver") {
         await this.spinner.show();
-        this.assetDataCoDriverUsername = null; //reset the codriver selected
         await this.fetchCoDriver($event.driverID);
         this.tempTextFieldValues.driverName = $event.fullName;
         this.tempTextFieldValues.driverUsername = $event.userName;
         this.tempTextFieldValues.driverID = $event.driverID;
-        this.assetDataCoDriverUsername = null;
+        if (this.assetDataDriverUsername === this.assetDataCoDriverUsername) {
+          this.assetDataCoDriverUsername = null;
+        }
+
         if (eventType === "click") {
           this.assetDataDriverUsername = $event.userName;
         }
@@ -1314,6 +1316,7 @@ export class AddTripComponent implements OnInit {
   }
 
   assetsChange($event, type) {
+
     this.tempTextFieldValues.trailerName = "";
     if ($event === undefined) {
       $(".assetClass").removeClass("td_border");
@@ -1327,11 +1330,14 @@ export class AddTripComponent implements OnInit {
           const element = $event[i];
 
           $("#asset_" + element.assetID).addClass("td_border");
-          arayy.push(element.assetID);
+          if (!arayy.includes(element.assetID)) {
+            arayy.push(element.assetID);
+          }
           let objj = {
             id: element.assetID,
             name: element.assetIdentification,
           };
+
           this.tempTextFieldValues.trailer.push(objj);
         }
         if ($event.length > 0) {
@@ -1348,10 +1354,15 @@ export class AddTripComponent implements OnInit {
           id: $event.assetID,
           name: $event.assetIdentification,
         };
-        this.tempTextFieldValues.trailer.push(objj);
+        const exist = this.tempTextFieldValues.trailer.some(el => el.id === $event.assetID);
+        if (!exist) this.tempTextFieldValues.trailer.push(objj);
+        // this.tempTextFieldValues.trailer.push(objj);
         for (let i = 0; i < this.tempTextFieldValues.trailer.length; i++) {
           const element = this.tempTextFieldValues.trailer[i];
-          arayy.push(element.id);
+          if (!arayy.includes(element.id)) {
+            arayy.push(element.id);
+          }
+          // arayy.push(element.id);
         }
         this.informationAsset = arayy;
       }
@@ -1540,7 +1551,7 @@ export class AddTripComponent implements OnInit {
     this.hasError = false;
     this.hasSuccess = false;
     this.apiService.postData("trips", this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -1558,7 +1569,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1583,12 +1594,12 @@ export class AddTripComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -2549,7 +2560,7 @@ export class AddTripComponent implements OnInit {
     }
 
     this.apiService.putData(url, this.tripData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -2567,7 +2578,7 @@ export class AddTripComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3144,7 +3155,7 @@ export class AddTripComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -3157,8 +3168,8 @@ export class AddTripComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
