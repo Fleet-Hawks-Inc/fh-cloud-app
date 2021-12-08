@@ -145,7 +145,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
             data: {
               vehicleIdentification: devices.vehicleIdentification,
               time: `${new Date(devices.timeModified).toLocaleDateString()} | ${new Date(devices.timeModified).toLocaleTimeString()}`,
-              speed: devices.location.speed,
+              speed: devices.location.speed || 0.00,
               vehicleID: devices.vehicleID,
               location: devices.location.label
             }
@@ -200,7 +200,7 @@ export class MapDashboardComponent implements OnInit, AfterViewInit {
 
   prepareVehicleInfoTemplate(data: any) {
     return `<a href='#/fleet/vehicles/detail/${data.vehicleID}' target=_blank'><h4> Vehicle: ${data.vehicleIdentification}</h4></a>
-    Speed: ${data.speed} KM/H 
+    Speed: ${parseFloat(data.speed).toFixed(2)} KM/H 
     Time : ${data.time}<br/> <br/> 
      `;
   }
