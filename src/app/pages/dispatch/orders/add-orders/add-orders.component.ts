@@ -480,9 +480,7 @@ export class AddOrdersComponent implements OnInit {
     this.listService.fetchShippers();
     this.listService.fetchReceivers();
     this.listService.fetchContactsByIDs();
-    // this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
-    // this.getCarrierState();
     this.disableButton();
 
     $(".modal").on("hidden.bs.modal", (e) => {
@@ -706,7 +704,7 @@ export class AddOrdersComponent implements OnInit {
   async saveShipper(i: number) {
     // this.isShipperSubmit = true;
     //check if all required fields are filled
-    $("#poErr_" + i).hide();
+    // $("#poErr_" + i).hide();
     let newPicks = this.shippersReceivers[i].shippers;
     if (!newPicks.shipperID) {
       this.toastr.error("Please select shipper");
@@ -751,20 +749,6 @@ export class AddOrdersComponent implements OnInit {
         newPosData.push(po.label);
       }
       element.newCustomerPO = newPosData;
-    }
-
-    if (
-      newPosData.length > 0 &&
-      newPosData != null &&
-      this.orderData.cusConfirmation != null &&
-      this.orderData.cusConfirmation != ""
-    ) {
-      let result = await this.validatePOs(i);
-      if (result.status) {
-        $("#poErr_" + i).show();
-        $("#poErr_" + i).text(result.msg);
-        return;
-      }
     }
 
     if (this.shippersReceivers[i].shippers.update == true) {
@@ -1176,7 +1160,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1422,24 +1406,16 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
-    $("#confirmErr").hide();
-    if (
-      this.orderData.cusConfirmation != null &&
-      this.orderData.cusConfirmation != ""
-    ) {
-      let result = await this.validatePOs("");
-      if (result != null && result.status) {
-        $("#confirmErr").show();
-        $("#confirmErr").text(`${result.msg}`);
-        setTimeout(() => {
-          $("html, body").animate(
-            { scrollTop: $("#confirmErr").position().top },
-            "slow"
-          );
-        }, 500);
-        this.submitDisabled = false;
-        return;
-      }
+
+    if (this.isConfirmExist) {
+      setTimeout(() => {
+        $("html, body").animate(
+          { scrollTop: $("#confirmErr").position().top },
+          "slow"
+        );
+      }, 500);
+      this.submitDisabled = false;
+      return;
     }
 
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
@@ -1513,7 +1489,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1539,7 +1515,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1555,12 +1531,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1993,19 +1969,7 @@ export class AddOrdersComponent implements OnInit {
         });
         element.newCustomerPO = newPosData;
       });
-      if (
-        newPosData.length > 0 &&
-        newPosData != null &&
-        this.orderData.cusConfirmation != null &&
-        this.orderData.cusConfirmation != ""
-      ) {
-        let result = await this.validatePOs(i);
-        if (result.status) {
-          $("#poErr_" + i).show();
-          $("#poErr_" + i).text(result.msg);
-          return;
-        }
-      }
+
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].pickupPoint = data.pickupPoint;
@@ -2513,25 +2477,17 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
-    $("#confirmErr").hide();
-    if (
-      this.orderData.cusConfirmation != null &&
-      this.orderData.cusConfirmation != ""
-    ) {
-      let result = await this.validatePOs("");
-      if (result != null && result.status) {
-        $("#confirmErr").show();
-        $("#confirmErr").text(`${result.msg}`);
-        setTimeout(() => {
-          $("html, body").animate(
-            { scrollTop: $("#confirmErr").position().top },
-            "slow"
-          );
-        }, 500);
-        this.submitDisabled = false;
-        return;
-      }
+    if (this.isConfirmExist) {
+      setTimeout(() => {
+        $("html, body").animate(
+          { scrollTop: $("#confirmErr").position().top },
+          "slow"
+        );
+      }, 500);
+      this.submitDisabled = false;
+      return;
     }
+
 
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
       const element = this.orderData.shippersReceiversInfo[i];
@@ -2575,7 +2531,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2596,7 +2552,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -3223,27 +3179,4 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  async validatePOs(i: any = "") {
-    let pos = [];
-
-    if (i !== "") {
-      this.shippersReceivers[i].shippers.pickupPoint.forEach((element) => {
-        element.newCustomerPO.forEach((po) => {
-          pos.push(po);
-        });
-      });
-    } else {
-      pos = this.orderData.cusPOs ? this.orderData.cusPOs : [];
-    }
-    let result = await this.apiService
-      .getData(
-        `orders/validate/pos?value=${encodeURIComponent(
-          JSON.stringify(pos)
-        )}&confirmNo=${this.orderData.cusConfirmation}&orderID=${
-          this.getOrderID
-        }`
-      )
-      .toPromise();
-    return result;
-  }
 }
