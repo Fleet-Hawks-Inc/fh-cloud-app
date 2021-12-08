@@ -28,7 +28,7 @@
                 <div class="form-group row adddriverpl pt-3">
                   <div class="col-lg-6">
                     <div class="row" id="settlementListDiv">
-                      <div class="col-lg-10">
+                      <div class="col-lg-5">
                         <label class="control-label font-weight-bold font-bold
                           text-lg-right pt-2">Advance
                           Payment To<span class="mandfield text-2 ml-1"><sup>*</sup></span>
@@ -48,6 +48,24 @@
                           payTo.touched)" class="text-danger">
                           <div *ngIf="payTo.errors.required">
                             Advance payment to is required.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-5">
+                        <label class="control-label font-weight-bold font-bold
+                          text-lg-right pt-2">Advance Type<span class="mandfield
+                            text-2 ml-1"><sup>*</sup></span>
+                        </label>
+                        <ng-select [(ngModel)]="paymentData.advType"
+                          name="advType" placeholder="Select type"
+                          #advType="ngModel" required>
+                          <ng-option value="payroll">Payroll</ng-option>
+                          <ng-option value="expense">Expense</ng-option>
+                        </ng-select>
+                        <div *ngIf="advType.invalid && (advType.dirty ||
+                          advType.touched)" class="text-danger">
+                          <div *ngIf="advType.errors.required">
+                            Advance Type is required.
                           </div>
                         </div>
                       </div>
