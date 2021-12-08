@@ -135,24 +135,34 @@ export class UsersListComponent implements OnInit {
       });
   }
   initDataTable() {
-   // this.spinner.show();
+    // this.spinner.show();
     this.apiService.getData('contacts/fetch/employee/records?searchValue=' + this.contactID + '&lastKey=' + this.lastEvaluatedKey)
       .subscribe((result: any) => {
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         this.users = result[`Items`];
-        console.log('this.users', this.users);
         this.users.map((v: any) => {
-if (v.userLoginData.userRoles.length > 0) {
-for (const element of v.userLoginData.userRoles) {
-    const role = element.split('_');
-    const newRole = role[1];
-    this.newRoles.push(newRole);
-  }
-v.userLoginData.userRoles = this.newRoles;
-this.newRoles = [];
-}
+          if (v.userLoginData.userRoles.length > 0) {
+            for (const element of v.userLoginData.userRoles) {
+              const role = element.split('_');
+
+              if (role.length > 2) {
+                if (role[1] === 'view') {
+                  role.splice(2, 1, "only");
+                }
+                const newRole = `${role[1]} ${role[2]} `;
+                this.newRoles.push(newRole);
+
+              }
+              else {
+                const newRole = `${role[1]} `;
+                this.newRoles.push(newRole);
+              }
+            }
+            v.userLoginData.userRoles = this.newRoles;
+            this.newRoles = [];
+          }
         });
         if (this.contactID !== '' || this.departmentName !== '') {
           this.userStartPoint = 1;
@@ -208,7 +218,7 @@ this.newRoles = [];
   async deleteUser(contactID, firstName: string, lastName: string, userName: string) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
-        .deleteData(`contacts/delete/user/${contactID}/${firstName}/${lastName}/${userName}`)
+        .deleteData(`contacts / delete /user/${contactID} /${firstName}/${lastName} /${userName}`)
         .subscribe(async (result: any) => {
           this.userDraw = 0;
           this.lastEvaluatedKey = '';
