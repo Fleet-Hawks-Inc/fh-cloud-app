@@ -113,8 +113,23 @@ export class SummaryComponent implements OnInit {
                 else {
                     this.lastItemSK = 'end';
                 }
-                this.fuelList = this.fuelList.concat(result.Items);
-                this.loaded = true;
+                   result[`Items`].forEach(element => {
+        let date: any = moment(element.data.date)
+        if (element.data.time) {
+          let time = moment(element.data.time, 'h mm a')
+          date.set({
+            hour: time.get('hour'),
+            minute: time.get('minute')
+          })
+          date = date.format('MMM Do YYYY, h:mm a')
+        }
+        else {
+          date = date.format('MMM Do YYYY')
+        }
+        element.dateTime = date
+      });
+             this.fuelList = this.fuelList.concat(result.Items);
+             this.loaded = true;
             }
         }
     }
@@ -165,14 +180,14 @@ export class SummaryComponent implements OnInit {
             return false;
         }
     }
-
+ 
     generateFuelCSV() {
         if (this.exportList.length > 0) {
             let dataObject = []
             let csvArray = []
             this.exportList.forEach(element => {
-                let obj = {}
-                obj["Date"] = element.data.date
+                let obj = {}    
+                obj["Date/Time"] = element.dateTime                                                                          
                 obj["Use Type"] = element.data.useType
                 obj["Unit Name"] = this.assetList[element.unitID] || this.vehicleList[element.unitID]
                 obj["Fuel Card#"] = element.data.cardNo
@@ -210,7 +225,22 @@ export class SummaryComponent implements OnInit {
     }
 
     getSetExport() {
-        this.apiService.getData("fuelEntries/get/export?type=unitID").subscribe((result: any) => {
+        this.apiService.getData("fuelEntries/get/export").subscribe((result: any) => {
+        result[`Items`].forEach(element => {
+        let date: any = moment(element.data.date)
+        if (element.data.time) {
+          let time = moment(element.data.time, 'h mm a')
+          date.set({
+            hour: time.get('hour'),
+            minute: time.get('minute')
+          })
+          date = date.format('MMM Do YYYY h:mm a')
+        }
+        else {
+          date = date.format('MMM Do YYYY')
+        }
+        element.dateTime = date
+      });    
             this.exportList = result.Items;
             this.generateFuelCSV();
         })

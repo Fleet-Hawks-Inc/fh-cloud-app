@@ -17,21 +17,12 @@
               />
             </div>
             <div *ngIf="suggestedUsers?.length > 0" class="result-suggestions">
-              <ul>
-                <li
-                  *ngFor="let suggestedUser of suggestedUsers"
-                  style="cursor: pointer"
-                  (click)="
-                    setUser(
-                      suggestedUser.contactID,
-                      suggestedUser.firstName,
-                      suggestedUser.lastName
-                    )
-                  "
-                >
-                  {{ suggestedUser.firstName }} {{ suggestedUser.lastName }}
-                </li>
-              </ul>
+                         <ul>
+                                <li *ngFor="let suggestedUser of suggestedUsers" class="cursorpoint" (click)="setUser(suggestedUser.contactID,
+                    suggestedUser.firstName, suggestedUser.lastName,
+                    suggestedUser.middleName)" class="text-capitalize">{{ suggestedUser.firstName }} {{
+                                    suggestedUser.middleName }} {{ suggestedUser.lastName }}</li>
+                            </ul>
             </div>
           </div>
           <div class="col-md-2 col-lg-2">

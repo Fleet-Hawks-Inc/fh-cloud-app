@@ -18,8 +18,7 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right">
-            <a href="javascript:;" (click)="cancel()" class="btn btn-sm btn-default"><i
-                class="fas fa-list"></i> All
+            <a href="javascript:;" (click)="cancel()" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
               Trips</a>
           </div>
         </div>
@@ -54,8 +53,7 @@
                         </label>
 
                         <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr"
-                          placeholder="eg.
-                          776,1234" autocomplete="off" #order="ngModel" required />
+                          placeholder="eg. 776,1234" autocomplete="off" #order="ngModel" required />
                         <div *ngIf="order.invalid && (order.dirty ||
                           order.touched)" class="text-danger">
                           <div *ngIf="order.errors.required">
@@ -146,13 +144,11 @@
                           <div class="row">
                             <div class="col-lg-6">
                               <input type="number" class="form-control" name="reeferTemperature"
-                                [(ngModel)]="tripData.reeferTemperature" placeholder="eg. 10
-                                °C or °F" />
+                                [(ngModel)]="tripData.reeferTemperature" placeholder="eg. 10 °C or °F" />
                             </div>
                             <div class="col-lg-6 pl-0">
                               <ng-select [(ngModel)]="tripData.reeferTemperatureUnit" name="reeferTemperatureUnit"
-                                placeholder="Select
-                                Temperature Unit" #sltReeferTemp="ngModel">
+                                placeholder="Select Temperature Unit" #sltReeferTemp="ngModel">
                                 <ng-option value="C">°C</ng-option>
                                 <ng-option value="F">°F</ng-option>
                               </ng-select>
@@ -343,8 +339,7 @@
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.type" (open)="dropdownOpen()" (close)="dropdownClose()"
                                 (change)="checkType($event, i)" id="editCell1{{ i }}" name="tripType{{ i }}"
-                                placeholder="Select
-                                trip type">
+                                placeholder="Select trip type">
                                 <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
                               </ng-select>
                             </td>
@@ -352,8 +347,7 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.orderID" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="cell21{{ i }}" name="neworderID{{ i }}" placeholder="Select
-                                Order">
+                                id="cell21{{ i }}" name="neworderID{{ i }}" placeholder="Select Order">
                                 <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{
                                   ord.orderNo }}</ng-option>
                               </ng-select>
@@ -412,14 +406,12 @@
                               editRow{{ i }}">
                               <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
                                 [(ngModel)]="trip.locationName" class="form-control newRow" autocomplete="off"
-                                (keyup)="searchTerm.next($event)" placeholder="Start
-                                typing to get
-                                location
-                                suggestions" *ngIf="!trip.locMan" />
+                                (keyup)="searchTerm.next($event)" placeholder="Start typing to get location suggestions"
+                                *ngIf="!trip.locMan" />
                               <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
-                                [(ngModel)]="trip.locationName" class="form-control newRow" placeholder="Start
-                                add location
-                                from popup" *ngIf="trip.locMan" (click)="locationModel('edit', i)" />
+                                [(ngModel)]="trip.locationName" class="form-control newRow"
+                                placeholder="Start add location from popup" *ngIf="trip.locMan"
+                                (click)="locationModel('edit', i)" />
                               <ul class="p-0
                                 m-0
                                 text-left
@@ -443,8 +435,7 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.mileType" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="editCell5{{ i }}" name="tripmileType{{ i }}" placeholder="Select
-                                miles type">
+                                id="editCell5{{ i }}" name="tripmileType{{ i }}" placeholder="Select miles type">
                                 <ng-option value="empty">EMPTY</ng-option>
                                 <ng-option value="loaded">LOADED</ng-option>
                               </ng-select>
@@ -483,8 +474,8 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.carrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="editCell11{{ i }}" name="editCarrID" placeholder="Select
-                                Carrier" [disabled]="trip.disablecarr">
+                                id="editCell11{{ i }}" name="editCarrID" placeholder="Select Carrier"
+                                [disabled]="trip.disablecarr">
                                 <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
                                   carrier.companyName }}</ng-option>
                               </ng-select>
@@ -501,15 +492,13 @@
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.type" class="newRow" (open)="dropdownOpen()"
                                 (close)="dropdownClose()" (change)="checkType($event, '')" id="cell1" name="newTripType"
-                                placeholder="Select
-                                type">
+                                placeholder="Select type">
                                 <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
                               </ng-select>
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.orderID" class="newRow" (open)="dropdownOpen()"
-                                (close)="dropdownClose()" id="cell91" name="neworderID" placeholder="Select
-                                Order">
+                                (close)="dropdownClose()" id="cell91" name="neworderID" placeholder="Select Order">
                                 <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{
                                   ord.orderNo }}</ng-option>
                               </ng-select>
@@ -555,15 +544,13 @@
                               <input type="text" id="cell4" name="locationName"
                                 [(ngModel)]="textFieldValues.locationName" class="form-control newRow"
                                 autocomplete="off" (keyup)="searchTerm.next($event)"
-                                [(ngModel)]="textFieldValues.locationName" placeholder="Start
-                                typing to get
-                                location
-                                suggestions" *ngIf="!textFieldValues.locMan" />
+                                [(ngModel)]="textFieldValues.locationName"
+                                placeholder="Start typing to get location suggestions"
+                                *ngIf="!textFieldValues.locMan" />
                               <input type="text" id="cell4" name="locationName"
                                 [(ngModel)]="textFieldValues.locationName" class="form-control newRow"
-                                [(ngModel)]="textFieldValues.locationName" placeholder="Enter
-                                location from
-                                popup" *ngIf="textFieldValues.locMan" (click)="locationModel('add', '')" readonly />
+                                [(ngModel)]="textFieldValues.locationName" placeholder="Enter location from popup"
+                                *ngIf="textFieldValues.locMan" (click)="locationModel('add', '')" readonly />
 
                               <ul class="p-0
                                 m-0
@@ -584,8 +571,7 @@
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5" name="newMileType"
-                                (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select
-                                type">
+                                (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select type">
                                 <ng-option value="empty">EMPTY</ng-option>
                                 <ng-option value="loaded">LOADED</ng-option>
                               </ng-select>
@@ -617,8 +603,8 @@
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.carrierID" class="newRow" id="cell1"
-                                name="newcarrierID" (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select
-                                Carrier">
+                                name="newcarrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                placeholder="Select Carrier">
                                 <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
                                   carrier.companyName }}</ng-option>
                               </ng-select>
@@ -1505,9 +1491,7 @@
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input type="text" class="form-control" name="address1" [(ngModel)]="locObj.addr"
-                          #aaddr="ngModel" required placeholder="eg. 71,New
-                          Highway Road, Ontario,
-                          Canada" />
+                          #aaddr="ngModel" required placeholder="eg. 71,New Highway Road, Ontario, Canada" />
 
                         <div *ngIf="aaddr.invalid && (aaddr.dirty ||
                           aaddr.touched)" class="text-danger">
@@ -1527,8 +1511,7 @@
                           pt-2">Select Country
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode" #adrCountry="ngModel"
-                          required name="countryCode" class="form-control populate" placeholder="Select
-                          Country">
+                          required name="countryCode" class="form-control populate" placeholder="Select Country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States</ng-option>
                           <ng-option value="MX">Mexico</ng-option>
@@ -1568,8 +1551,7 @@
                           pt-2">Select City
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="locObj.ctName" name="ctName" class="form-control populate"
-                          #adrCity="ngModel" required placeholder="Select
-                          City">
+                          #adrCity="ngModel" required placeholder="Select City">
                           <ng-option *ngFor="let city of cities" value="{{ city.cityName }}">
                             {{ city.cityName }}
                           </ng-option>
