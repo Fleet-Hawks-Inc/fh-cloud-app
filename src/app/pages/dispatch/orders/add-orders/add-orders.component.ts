@@ -17,7 +17,7 @@ import { CountryStateCityService } from "src/app/services/country-state-city.ser
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
 import { v4 as uuidv4 } from "uuid";
 import { environment } from "../../../../../environments/environment.prod";
-import { ApiService, HereMapService, ListService } from "../../../../services";
+import { ApiService, DashboardUtilityService, HereMapService, ListService } from "../../../../services";
 import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 
 declare var $: any;
@@ -376,7 +376,9 @@ export class AddOrdersComponent implements OnInit {
     private domSanitizer: DomSanitizer,
     private location: Location,
     private countryStateCity: CountryStateCityService,
-    private routeManagement: RouteManagementServiceService
+    private routeManagement: RouteManagementServiceService,
+
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     const current = new Date();
 
@@ -477,9 +479,6 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   async ngOnInit() {
-    this.listService.fetchShippers();
-    this.listService.fetchReceivers();
-    this.listService.fetchContactsByIDs();
     this.listService.fetchCustomers();
     this.disableButton();
 
@@ -490,10 +489,19 @@ export class AddOrdersComponent implements OnInit {
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
       this.fetchOrderByID();
+      this.getShipperReceiverEdit();
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
-      this.fetchStateTaxes();
+      // this.fetchStateTaxes();
+
+      this.getShippers();
+      this.getReceivers();
+      this.listService.fetchContactsByIDs();
+      this.listService.contactsObjectDataSource.subscribe((res) => {
+        this.receiversObjects = res;
+        this.shippersObjects = res;
+      });
     }
 
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
@@ -501,14 +509,9 @@ export class AddOrdersComponent implements OnInit {
     });
 
     // this.customers = this.listService.customersList;
-    // this.shippers = this.listService.shipperList;
-
     // this.receivers = this.listService.receiverList;
 
-    this.listService.contactsObjectDataSource.subscribe((res) => {
-      this.receiversObjects = res;
-      this.shippersObjects = res;
-    });
+
 
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
@@ -528,13 +531,51 @@ export class AddOrdersComponent implements OnInit {
     this.getValidCustomers(customerList);
     this.customers = customerList;
 
+
+  }
+
+  async getShippers() {
+    this.listService.fetchShippers();
     let shipperList = new Array<any>();
     this.getValidShippers(shipperList);
     this.shippers = shipperList;
+  }
 
+  async getReceivers() {
+    this.listService.fetchReceivers();
     let receiverList = new Array<any>();
     this.getValidReceivers(receiverList);
     this.receivers = receiverList;
+  }
+
+  getShipperReceiverEdit() {
+    this.apiService
+      .getData(`contacts/get/forOrder/${this.getOrderID}`)
+      .subscribe((result: any) => {
+        let newShippers = [];
+        let newReceivers = []
+        if (result && result.length > 0) {
+          for (const item of result) {
+            if (item.isDeleted === 0 && item.eTypes.includes('shipper')) {
+              newShippers.push(item)
+            }
+            if (item.isDeleted === 0 && item.eTypes.includes('receiver')) {
+              newReceivers.push(item)
+            }
+
+          }
+
+          this.shippersObjects = newShippers.reduce((a: any, b: any) => {
+            return (a[b["contactID"]] = b["companyName"]), a;
+          }, {});
+          this.receiversObjects = newReceivers.reduce((a: any, b: any) => {
+            return (a[b["contactID"]] = b["companyName"]), a;
+          }, {});
+
+        }
+
+
+      });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -1602,6 +1643,7 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
     if (!this.orderData.zeroRated) {
+      this.fetchStateTaxes();
       let gst = this.orderData.taxesInfo[0].amount
         ? this.orderData.taxesInfo[0].amount
         : 0;
@@ -1891,6 +1933,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
+      this.getShippers();
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
@@ -1916,9 +1959,11 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
       this.stateReceiverIndex = i;
+      this.getReceivers()
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
+
   }
 
   async updateShipperReceiver(obj, i) {
@@ -2130,8 +2175,10 @@ export class AddOrdersComponent implements OnInit {
     let length = this.shippersReceivers.length;
     if (obj == "shipper") {
       this.shippersReceivers[i].shippers.isShow = true;
+      this.getShippers();
     } else {
       this.shippersReceivers[i].receivers.isShow = true;
+      this.getReceivers();
     }
   }
 
@@ -2165,7 +2212,10 @@ export class AddOrdersComponent implements OnInit {
       .subscribe(async (result: any) => {
         result = result.Items[0];
         this.orderData.cusAddressID = result.cusAddressID;
-        await this.fetchStateTaxes();
+        if (!result.zeroRated) {
+          await this.fetchStateTaxes();
+        }
+
         let state = this.stateTaxes.find(
           (o) => o.stateTaxID == result.stateTaxID
         );

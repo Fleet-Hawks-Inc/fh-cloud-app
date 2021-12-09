@@ -45,6 +45,6 @@ export const environment = {
   googleConfig: {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
   },
-  VSSServerWSS: 'wss://18.223.121.29:36301/ws'
+  VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss'
 
 };
