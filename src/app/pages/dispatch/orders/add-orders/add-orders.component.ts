@@ -479,8 +479,6 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   async ngOnInit() {
-
-    this.listService.fetchContactsByIDs();
     this.listService.fetchCustomers();
     this.disableButton();
 
@@ -499,7 +497,11 @@ export class AddOrdersComponent implements OnInit {
 
       this.getShippers();
       this.getReceivers();
-
+      this.listService.fetchContactsByIDs();
+      this.listService.contactsObjectDataSource.subscribe((res) => {
+        this.receiversObjects = res;
+        this.shippersObjects = res;
+      });
     }
 
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
@@ -509,10 +511,7 @@ export class AddOrdersComponent implements OnInit {
     // this.customers = this.listService.customersList;
     // this.receivers = this.listService.receiverList;
 
-    this.listService.contactsObjectDataSource.subscribe((res) => {
-      this.receiversObjects = res;
-      this.shippersObjects = res;
-    });
+
 
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
