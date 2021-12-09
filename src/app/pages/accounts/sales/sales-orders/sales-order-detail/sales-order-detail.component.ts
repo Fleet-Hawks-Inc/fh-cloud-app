@@ -106,7 +106,7 @@ export class SalesOrderDetailComponent implements OnInit {
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
 
-    // this.salePrev.close();
+    this.salePrev.close();
 
   }
 
@@ -117,7 +117,6 @@ export class SalesOrderDetailComponent implements OnInit {
       windowClass: "preview-sale-order",
     };
     this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
-    // this.generatePDF();
   }
 
 }
