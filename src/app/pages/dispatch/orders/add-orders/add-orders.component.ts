@@ -488,8 +488,9 @@ export class AddOrdersComponent implements OnInit {
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
-      this.fetchOrderByID();
       this.getShipperReceiverEdit();
+      this.fetchOrderByID();
+
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
@@ -2000,25 +2001,25 @@ export class AddOrdersComponent implements OnInit {
           return false;
         }
       }
-
       let data = this.shippersReceivers[i].shippers;
-
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].shipperID = data.shipperID;
-
       let newPosData = [];
       data.pickupPoint.forEach((element) => {
         element.customerPO.forEach((po: any) => {
-          newPosData.push(po.label);
+          if (po && po != null) {
+            newPosData.push(po.label);
+          }
+
         });
         element.newCustomerPO = newPosData;
       });
-
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].pickupPoint = data.pickupPoint;
       let location: any;
+
       for (
         let index = 0;
         index <
@@ -3211,6 +3212,7 @@ export class AddOrdersComponent implements OnInit {
 
   validateConfirmation() {
     this.isConfirmExist = false;
+    this.submitDisabled = true;
     if (this.orderData.cusConfirmation !== "") {
       this.orderData.cusConfirmation = this.orderData.cusConfirmation.trim();
       this.apiService
@@ -3222,8 +3224,10 @@ export class AddOrdersComponent implements OnInit {
             this.isConfirmExist = true;
             this.isConfirmData.orderNo = result.orderNo;
             this.isConfirmData.cusConfirmation = result.cusConfirmation;
+            this.submitDisabled = false;
           } else {
             this.isConfirmExist = false;
+            this.submitDisabled = false;
           }
         });
     }
