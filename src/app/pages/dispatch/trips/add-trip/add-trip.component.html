@@ -1193,7 +1193,7 @@
         <div class="modal-footer">
           <div class="col-md-12 text-right">
             <a class="btn btn-success modal-confirm mr-3" href="javascript:;" (click)="saveSelectOrderIDS()">Select</a>
-            <button class="btn btn-default modal-dismiss" data-dismiss="modal">
+            <button class="btn btn-default modal-dismiss" (click)="modal.dismiss('Cross click')">
               Cancel
             </button>
           </div>
@@ -1273,6 +1273,9 @@
                     <table class="w-100">
                       <!-- <thead>head</thead> -->
                       <tbody>
+                        <tr *ngIf="vehicles.length === 0">
+                          {{vehicleMessage}}
+                        </tr>
                         <tr *ngFor="let vehicle of vehicles">
                           <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}"
                             (click)="vehicleChange(vehicle, 'click')">
@@ -1305,6 +1308,9 @@
                   <div class="assign--trips__scroll trips-assets__listing">
                     <table class="w-100">
                       <tbody>
+                        <tr *ngIf="assets.length === 0">
+                          {{assetMessage}}
+                        </tr>
                         <tr *ngFor="let asset of assets">
                           <td class="assetClass" id="asset_{{ asset.assetID }}" (click)="assetsChange(asset, 'click')">
                             <div class="">
@@ -1325,6 +1331,9 @@
                   <div class="assign--trips__scroll trips-drivers__listing">
                     <table class="w-100">
                       <tbody>
+                        <tr *ngIf="drivers.length === 0">
+                          {{driverMessage}}
+                        </tr>
                         <tr *ngFor="let driver of drivers">
                           <td class="driverClass" id="drivr_{{ driver.driverID }}"
                             (click)="driverChange(driver, 'driver', 'click')">

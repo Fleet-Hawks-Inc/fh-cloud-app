@@ -28,6 +28,7 @@ import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { constants } from "buffer";
 
 declare var $: any;
 
@@ -44,6 +45,8 @@ export class AddTripComponent implements OnInit {
 
   @ViewChild("orderModal", { static: true })
   orderModal: TemplateRef<any>;
+
+  orderModalRef: any;
 
   newCoords = [];
   public searchResults: any;
@@ -252,6 +255,9 @@ export class AddTripComponent implements OnInit {
   lastFtLOrderSK = "";
   lastLtlOrderSK = "";
   dataMessage = "";
+  vehicleMessage = '';
+  assetMessage = '';
+  driverMessage = '';
   loaded = false;
   readonly rowHeight = 60;
   readonly headerHeight = 50;
@@ -287,6 +293,7 @@ export class AddTripComponent implements OnInit {
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
+
     } else {
       this.pageTitle = "Add Trip";
     }
@@ -302,6 +309,9 @@ export class AddTripComponent implements OnInit {
     this.mapShow();
     this.searchLocation();
     this.getCurrentuser();
+    this.fetchVehicles();
+    this.fetchAssets();
+    this.fetchDrivers();
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -612,7 +622,7 @@ export class AddTripComponent implements OnInit {
       keyboard: true,
       windowClass: "trip-assignment--modal",
     };
-    this.modalService.open(this.orderModal, ngbModalOptions)
+    this.orderModalRef = this.modalService.open(this.orderModal, ngbModalOptions)
     this.fetchFTLOrders();
     this.fetchLTLOrders();
   }
@@ -718,7 +728,7 @@ export class AddTripComponent implements OnInit {
 
   async saveSelectOrderIDS() {
     this.OrderIDs = this.temporaryOrderIDs;
-    $("#orderModal").modal("hide");
+    this.orderModalRef.close();
     this.orderNo = this.temporaryOrderNumber.toString();
     let tripPlans = [];
 
@@ -793,7 +803,7 @@ export class AddTripComponent implements OnInit {
                     planID: uuidv4(),
                     type: "Pickup",
                     date: PDate,
-                    name: current.shippersObjects[n.shipperID],
+                    name: n.shipperName,
                     dateTime: pk.dateAndTime,
                     miles: pickupMiles,
                     carrierID: null,
@@ -875,7 +885,7 @@ export class AddTripComponent implements OnInit {
                     type: "Delivery",
                     date: DrDate,
                     dateTime: dr.dateAndTime,
-                    name: current.receiversObjects[k.receiverID],
+                    name: k.receiverName,
                     miles: deliveryMiles,
                     carrierID: null,
                     carrierName: "",
@@ -1056,8 +1066,12 @@ export class AddTripComponent implements OnInit {
 
   fetchVehicles() {
     if (this.vehicles.length === 0) {
+      this.vehicleMessage = Constant.FETCHING_DATA;
       this.apiService.getData("vehicles").subscribe((result: any) => {
         // this.vehicles = result.Items;
+        if (result.Items.length === 0) {
+          this.vehicleMessage = Constant.NO_RECORDS_FOUND;
+        }
         result.Items.forEach((element) => {
           if (element.isDeleted === 0) {
             this.vehicles = [...this.vehicles, element];
@@ -1080,8 +1094,12 @@ export class AddTripComponent implements OnInit {
 
   fetchAssets() {
     if (this.assets.length === 0) {
+      this.assetMessage = Constant.FETCHING_DATA;
       this.apiService.getData("assets/tripAssets").subscribe((result: any) => {
         // this.assets = result.Items;
+        if (result.Items.length === 0) {
+          this.assetMessage = Constant.NO_RECORDS_FOUND;
+        }
         result.Items.forEach((element) => {
           if (element.isDeleted === 0) {
             this.assets = [...this.assets, element];
@@ -1104,9 +1122,13 @@ export class AddTripComponent implements OnInit {
 
   fetchDrivers() {
     if (this.drivers.length === 0) {
+      this.driverMessage = Constant.FETCHING_DATA;
       this.apiService
         .getData("drivers/fetch/forTrips")
         .subscribe((result: any) => {
+          if (result.Items.length === 0) {
+            this.driverMessage = Constant.NO_RECORDS_FOUND;
+          }
           result.Items.forEach((element) => {
             if (element.isDeleted === 0) {
               element.fullName = element.firstName;
@@ -1944,7 +1966,7 @@ export class AddTripComponent implements OnInit {
         let res = result.Items.map((i) => {
           i.pickupLocations = "";
           i.deliveryLocations = "";
-          i.customer = this.customersObjects[i.customerID];
+          i.customer = i.customerName;
           if (i.shippersReceiversInfo) {
             let ind = 1;
             let ind2 = 1;
@@ -2227,7 +2249,8 @@ export class AddTripComponent implements OnInit {
         //     if(plann.location != undefined && plann.location != ''){
         //         locations.push(plann.location)
         //     }
-        // }
+        // }  
+
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
@@ -3199,9 +3222,7 @@ export class AddTripComponent implements OnInit {
       this.assignAssetModel,
       ngbModalOptions
     );
-    this.fetchVehicles();
-    this.fetchAssets();
-    this.fetchDrivers();
+
   }
 
   copyRow(index) {
