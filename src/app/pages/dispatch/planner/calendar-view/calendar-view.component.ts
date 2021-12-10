@@ -367,7 +367,6 @@ export class CalendarViewComponent implements OnInit {
       this.tripData.vehicleIDs = await selectedVehicles;
       this.tripData.assetIDs = await selectedAssets;
       this.tripData.tripStatus = "dispatched";
-      console.log("this.tripData", this.tripData);
       this.apiService.putData("trips", this.tripData).subscribe({
         complete: () => {},
         error: (err: any) => {
