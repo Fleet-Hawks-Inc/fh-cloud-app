@@ -32,7 +32,7 @@ export class CalendarViewComponent implements OnInit {
     private route: ActivatedRoute,
     private hereMap: HereMapService,
     private modalService: NgbModal
-  ) { }
+  ) {}
 
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, listPlugin];
   vehicles = [];
@@ -367,9 +367,9 @@ export class CalendarViewComponent implements OnInit {
       this.tripData.vehicleIDs = await selectedVehicles;
       this.tripData.assetIDs = await selectedAssets;
       this.tripData.tripStatus = "dispatched";
-
+      console.log("this.tripData", this.tripData);
       this.apiService.putData("trips", this.tripData).subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -385,8 +385,8 @@ export class CalendarViewComponent implements OnInit {
                 this.spinner.hide();
                 this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
@@ -412,40 +412,42 @@ export class CalendarViewComponent implements OnInit {
 
     this.spinner.show();
     this.OrderIDs = [];
-    this.apiService.getData("trips/" + tripID).subscribe((result: any) => {
-      result = result.Items[0];
-      // delete result.timeCreated;
-      delete result.timeModified;
-      delete result._type;
-      if (result.documents == undefined) {
-        result.documents = [];
-      }
-      delete result.tripSK;
-      delete result.isDelActiveSK;
-      this.tripData = result;
-      this.OrderIDs = this.tripData["orderId"];
-      this.tripData['oldOrdr'] = this.tripData["orderId"];
-      if (this.tripData.tripPlanning.length === 0) {
-        this.toastr.error(
-          "The trip plan for the selected trip is empty. Please create one to assign."
-        );
-        this.spinner.hide();
-        return false;
-      }
+    this.apiService
+      .getData("trips/planner/data/" + tripID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        // delete result.timeCreated;
+        delete result.timeModified;
+        delete result._type;
+        if (result.documents == undefined) {
+          result.documents = [];
+        }
+        delete result.tripSK;
+        delete result.isDelActiveSK;
+        this.tripData = result;
+        this.OrderIDs = this.tripData["orderId"];
+        this.tripData["oldOrdr"] = this.tripData["orderId"];
+        if (this.tripData.tripPlanning.length === 0) {
+          this.toastr.error(
+            "The trip plan for the selected trip is empty. Please create one to assign."
+          );
+          this.spinner.hide();
+          return false;
+        }
 
-      if (
-        this.tripData.tripStatus === "pending" ||
-        this.tripData.tripStatus === "confirmed"
-      ) {
-        this.openTripAssignModel();
-        this.spinner.hide();
-      } else {
-        this.toastr.error(
-          "Dispatch is already done. Please refer edit trip to make other changes"
-        );
-        this.spinner.hide();
-      }
-    });
+        if (
+          this.tripData.tripStatus === "pending" ||
+          this.tripData.tripStatus === "confirmed"
+        ) {
+          this.openTripAssignModel();
+          this.spinner.hide();
+        } else {
+          this.toastr.error(
+            "Dispatch is already done. Please refer edit trip to make other changes"
+          );
+          this.spinner.hide();
+        }
+      });
   }
 
   fetchTrips() {
@@ -641,7 +643,7 @@ export class CalendarViewComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => { },
+        complete: () => {},
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -654,8 +656,8 @@ export class CalendarViewComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => { },
-              next: () => { },
+              error: () => {},
+              next: () => {},
             });
         },
         next: (res) => {
