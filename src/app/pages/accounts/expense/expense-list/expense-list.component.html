@@ -44,13 +44,33 @@
         <div id="other-expense-header">
           <form class="form-horizontal" method="get">
             <div class="row" style="padding-top:10px;">
+
               <div class="col-md-2 col-lg-2 pr-0">
+                <ng-select name="searchValue" placeholder="Search by category" [(ngModel)]="filter.category">
+                  <ng-option value="vehicle"> Vehicle </ng-option>
+                  <ng-option value="tripNo"> Trip Number </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-1 col-lg-1 pr-0" *ngIf="filter.category === 'vehicle'">
+                <ng-select name="searchValue" placeholder="Search by expense type" [(ngModel)]="filter.unitNumber">
+                  <ng-option *ngFor="let data of vehicles " value="{{ data.vehicleID }}"> {{ data.vehicleIdentification
+                    }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-1 col-lg-1 pr-0" *ngIf="filter.category === 'tripNo'">
+                <div class="input-group input-group-md mb-3">
+                  <input type="text" class="form-control" placeholder="Search by trip" name="amount"
+                    [(ngModel)]="filter.unitNumber">
+                </div>
+              </div>
+              <div class="col-md-1 col-lg-1 pr-0">
                 <div class="input-group input-group-md mb-3">
                   <input type="text" class="form-control" placeholder="Search by amount" name="amount"
                     [(ngModel)]="filter.amount">
                 </div>
               </div>
-              <div class="col-lg-3 col-md-3 pr-0">
+              <div class="col-lg-2 col-md-2 pr-0">
                 <div class="input-daterange input-group" data-plugin-datepicker="">
                   <span class="input-group-prepend">
                     <span class="input-group-text">
@@ -75,12 +95,15 @@
                 </ng-select>
               </div>
               <div class="col-md-2 col-lg-2">
-                <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch" (click)="searchFilter()">Search</button>
-                <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch" (click)="resetFilter()">Reset</button>
+                <button type="submit" class="btn btn-sm btn-success mr-3" [disabled]="disableSearch"
+                  (click)="searchFilter()">Search</button>
+                <button type="submit" class="btn btn-sm btn-success" [disabled]="disableSearch"
+                  (click)="resetFilter()">Reset</button>
               </div>
 
-              <div class="col-md-3 col-lg-3 text-right pr-1">
-                <button (click)="refreshData()" [disabled]="disableSearch" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm mr-2">
+              <div class="col-md-2 col-lg-2 text-right pr-1">
+                <button (click)="refreshData()" [disabled]="disableSearch" data-toggle="tooltip" title="Refresh data"
+                  class="btn btn-success btn-sm mr-2">
                   <i class="fas fa-sync"></i>
                 </button>
                 <a routerLink="/accounts/expense/add" class="btn btn-success btn-sm ml-2" style="color:white;"><i
@@ -121,14 +144,16 @@
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                                   {{ data.txnDate | date:'yyyy/MM/dd' }}
                                 </td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{ categories[data.categoryID] }}</td>
+                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{
+                                  categories[data.categoryID] }}</td>
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                                   {{ (data.vendorID != null) ? vendors[data.vendorID] : '-' }}</td>
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
                                   <span *ngIf="data.recurring" class="text-lowercase">
                                     {{ (data.recurring.status) ? data.recurring.interval : '-' }} </span>
                                 </td>
-                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{ data.finalTotal | number : '1.2-2' }}
+                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{
+                                  data.finalTotal | number : '1.2-2' }}
                                   {{ data.currency }}</td>
                                 <td>
                                   <div class="btn-group flex-wrap">
@@ -146,8 +171,9 @@
                           </table>
                         </div>
                         <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && expenses.length !== 0">
-                          <button type="button" class="btn btn-success btn-sm text-light"  (click)="onScroll()">Load More..</button>
-                                               </div>
+                          <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                            More..</button>
+                        </div>
                       </div>
 
                     </div>
