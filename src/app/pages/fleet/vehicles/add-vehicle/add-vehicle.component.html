@@ -63,7 +63,7 @@
                           src="{{ slide }}"
                           class="img-fluid"
                           alt=""
-                          style="margin: auto"
+                          style="margin: auto; max-height: 200px"
                         />
                       </div>
                     </ngx-slick-carousel>
@@ -278,13 +278,12 @@
                           [ngClass]="{
                             error: vehicleF.submitted && ySlt.invalid
                           }"
-
                         >
-                        <ng-option
-                        *ngFor="let year of years"
-                        value="{{ year }}"
-                        >{{ year }}</ng-option
-                      >
+                          <ng-option
+                            *ngFor="let year of years"
+                            value="{{ year }}"
+                            >{{ year }}</ng-option
+                          >
                         </ng-select>
                         <div
                           *ngIf="ySlt.invalid && vehicleF.submitted"
