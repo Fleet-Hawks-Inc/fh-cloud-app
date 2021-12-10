@@ -536,17 +536,23 @@ export class AddOrdersComponent implements OnInit {
   }
 
   async getShippers() {
-    this.listService.fetchShippers();
-    let shipperList = new Array<any>();
-    this.getValidShippers(shipperList);
-    this.shippers = shipperList;
+    if (this.shippers.length === 0) {
+      this.listService.fetchShippers();
+      let shipperList = new Array<any>();
+      this.getValidShippers(shipperList);
+      this.shippers = shipperList;
+    }
+
   }
 
   async getReceivers() {
-    this.listService.fetchReceivers();
-    let receiverList = new Array<any>();
-    this.getValidReceivers(receiverList);
-    this.receivers = receiverList;
+    if (this.receivers.length === 0) {
+      this.listService.fetchReceivers();
+      let receiverList = new Array<any>();
+      this.getValidReceivers(receiverList);
+      this.receivers = receiverList;
+    }
+
   }
 
   getShipperReceiverEdit() {
