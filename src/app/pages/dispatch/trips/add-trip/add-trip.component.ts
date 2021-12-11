@@ -28,6 +28,7 @@ import { v4 as uuidv4 } from "uuid";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
 import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { constants } from "buffer";
 
 declare var $: any;
 
@@ -41,6 +42,11 @@ export class AddTripComponent implements OnInit {
   assignAssetModel: TemplateRef<any>;
   @ViewChild("assignConfirmationModal", { static: true })
   assignConfirmationModal: TemplateRef<any>;
+
+  @ViewChild("orderModal", { static: true })
+  orderModal: TemplateRef<any>;
+
+  orderModalRef: any;
 
   newCoords = [];
   public searchResults: any;
@@ -249,6 +255,9 @@ export class AddTripComponent implements OnInit {
   lastFtLOrderSK = "";
   lastLtlOrderSK = "";
   dataMessage = "";
+  vehicleMessage = '';
+  assetMessage = '';
+  driverMessage = '';
   loaded = false;
   readonly rowHeight = 60;
   readonly headerHeight = 50;
@@ -284,6 +293,7 @@ export class AddTripComponent implements OnInit {
     this.tripID = this.route.snapshot.params["tripID"];
     if (this.tripID != undefined) {
       this.pageTitle = "Edit Trip";
+
     } else {
       this.pageTitle = "Add Trip";
     }
@@ -294,18 +304,14 @@ export class AddTripComponent implements OnInit {
         this.recalledState = true;
       }
     });
-    //this.fetchOrders();
-    this.fetchCustomerByIDs();
     this.fetchCarriers();
     this.orderFTLInit();
-    this.fetchRoutes();
     this.mapShow();
+    this.searchLocation();
+    this.getCurrentuser();
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
-    this.searchLocation();
-    this.getCurrentuser();
-    this.fetchTripsByIDs();
     await this.fetchCountries();
 
     if (this.tripID != undefined) {
@@ -592,15 +598,18 @@ export class AddTripComponent implements OnInit {
   }
 
   fetchRoutes() {
-    this.spinner.show();
-    this.apiService.getData("routes").subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.spinner.hide();
-        this.permanentRoutes = result["Items"];
-      },
-    });
+    if (this.permanentRoutes.length === 0) {
+      this.spinner.show();
+      this.apiService.getData("routes").subscribe({
+        complete: () => { },
+        error: () => { },
+        next: (result: any) => {
+          this.spinner.hide();
+          this.permanentRoutes = result["Items"];
+        },
+      });
+    }
+
   }
 
   mapShow() {
@@ -609,7 +618,13 @@ export class AddTripComponent implements OnInit {
   }
 
   showMOdal() {
-    $("#orderModal").modal("show");
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "trip-assignment--modal",
+    };
+    this.orderModalRef = this.modalService.open(this.orderModal, ngbModalOptions)
+    this.fetchFTLOrders();
+    this.fetchLTLOrders();
   }
 
   emptyAsigneeModal() {
@@ -713,7 +728,7 @@ export class AddTripComponent implements OnInit {
 
   async saveSelectOrderIDS() {
     this.OrderIDs = this.temporaryOrderIDs;
-    $("#orderModal").modal("hide");
+    this.orderModalRef.close();
     this.orderNo = this.temporaryOrderNumber.toString();
     let tripPlans = [];
 
@@ -788,7 +803,7 @@ export class AddTripComponent implements OnInit {
                     planID: uuidv4(),
                     type: "Pickup",
                     date: PDate,
-                    name: current.shippersObjects[n.shipperID],
+                    name: n.shipperName,
                     dateTime: pk.dateAndTime,
                     miles: pickupMiles,
                     carrierID: null,
@@ -870,7 +885,7 @@ export class AddTripComponent implements OnInit {
                     type: "Delivery",
                     date: DrDate,
                     dateTime: dr.dateAndTime,
-                    name: current.receiversObjects[k.receiverID],
+                    name: k.receiverName,
                     miles: deliveryMiles,
                     carrierID: null,
                     carrierName: "",
@@ -1050,63 +1065,84 @@ export class AddTripComponent implements OnInit {
   }
 
   fetchVehicles() {
-    this.apiService.getData("vehicles").subscribe((result: any) => {
-      // this.vehicles = result.Items;
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          this.vehicles = [...this.vehicles, element];
+    if (this.vehicles.length === 0) {
+      this.vehicleMessage = Constant.FETCHING_DATA;
+      this.apiService.getData("vehicles").subscribe((result: any) => {
+        // this.vehicles = result.Items;
+        if (result.Items.length === 0) {
+          this.vehicleMessage = Constant.NO_RECORDS_FOUND;
         }
-      });
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.vehicles = [...this.vehicles, element];
+          }
+        });
 
-      this.vehiclesObjects = result.Items.reduce((a: any, b: any) => {
-        return (
-          (a[b["vehicleID"]] =
-            b["isDeleted"] == 1
-              ? b["vehicleIdentification"] + "  - Deleted"
-              : b["vehicleIdentification"]),
-          a
-        );
-      }, {});
-    });
+        this.vehiclesObjects = result.Items.reduce((a: any, b: any) => {
+          return (
+            (a[b["vehicleID"]] =
+              b["isDeleted"] == 1
+                ? b["vehicleIdentification"] + "  - Deleted"
+                : b["vehicleIdentification"]),
+            a
+          );
+        }, {});
+      });
+    }
+
   }
 
   fetchAssets() {
-    this.apiService.getData("assets").subscribe((result: any) => {
-      // this.assets = result.Items;
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          this.assets = [...this.assets, element];
+    if (this.assets.length === 0) {
+      this.assetMessage = Constant.FETCHING_DATA;
+      this.apiService.getData("assets/tripAssets").subscribe((result: any) => {
+        // this.assets = result.Items;
+        if (result.Items.length === 0) {
+          this.assetMessage = Constant.NO_RECORDS_FOUND;
         }
-      });
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.assets = [...this.assets, element];
+          }
+        });
 
-      this.assetsObjects = result.Items.reduce((a: any, b: any) => {
-        return (
-          (a[b["assetID"]] =
-            b["isDeleted"] == 1
-              ? b["assetIdentification"] + "  - Deleted"
-              : b["assetIdentification"]),
-          a
-        );
-      }, {});
-    });
+        this.assetsObjects = result.Items.reduce((a: any, b: any) => {
+          return (
+            (a[b["assetID"]] =
+              b["isDeleted"] == 1
+                ? b["assetIdentification"] + "  - Deleted"
+                : b["assetIdentification"]),
+            a
+          );
+        }, {});
+      });
+    }
+
   }
 
   fetchDrivers() {
-    this.apiService
-      .getData("drivers/fetch/forTrips")
-      .subscribe((result: any) => {
-        result.Items.forEach((element) => {
-          if (element.isDeleted === 0) {
-            element.fullName = element.firstName;
-            this.drivers = [...this.drivers, element];
+    if (this.drivers.length === 0) {
+      this.driverMessage = Constant.FETCHING_DATA;
+      this.apiService
+        .getData("drivers/fetch/forTrips")
+        .subscribe((result: any) => {
+          if (result.Items.length === 0) {
+            this.driverMessage = Constant.NO_RECORDS_FOUND;
           }
-        });
-        this.codrivers = this.drivers;
+          result.Items.forEach((element) => {
+            if (element.isDeleted === 0) {
+              element.fullName = element.firstName;
+              this.drivers = [...this.drivers, element];
+            }
+          });
+          this.codrivers = this.drivers;
 
-        this.driversObjects = result.Items.reduce((a: any, b: any) => {
-          return (a[b["driverID"]] = b["firstName"]), a;
-        }, {});
-      });
+          this.driversObjects = result.Items.reduce((a: any, b: any) => {
+            return (a[b["driverID"]] = b["firstName"]), a;
+          }, {});
+        });
+    }
+
   }
 
   fetchCoDriver(driverID) {
@@ -1583,12 +1619,6 @@ export class AddTripComponent implements OnInit {
     });
   }
 
-  fetchTripsByIDs() {
-    this.apiService.getData("trips/get/list").subscribe((result: any) => {
-      this.tripsObject = result;
-    });
-  }
-
   throwErrors() {
     from(Object.keys(this.errors)).subscribe((v) => {
       $('[name="' + v + '"]')
@@ -1767,8 +1797,7 @@ export class AddTripComponent implements OnInit {
     this.orderSearch = "";
     this.activeTab = "FTL";
     this.lastFtLOrderSK = "";
-    this.fetchFTLOrders();
-    this.fetchLTLOrders();
+
   }
   onFTLSelect({ selected }) {
     this.selectedLTL = [];
@@ -1937,7 +1966,7 @@ export class AddTripComponent implements OnInit {
         let res = result.Items.map((i) => {
           i.pickupLocations = "";
           i.deliveryLocations = "";
-          i.customer = this.customersObjects[i.customerID];
+          i.customer = i.customerName;
           if (i.shippersReceiversInfo) {
             let ind = 1;
             let ind2 = 1;
@@ -2117,17 +2146,6 @@ export class AddTripComponent implements OnInit {
     }
   }
 
-  /*
-   * Get all customer's IDs of names from api
-   */
-  fetchCustomerByIDs() {
-    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
-      this.customersObjects = result;
-      this.shippersObjects = result;
-      this.receiversObjects = result;
-    });
-  }
-
   public searchLocation() {
     let target;
     this.searchTerm
@@ -2231,7 +2249,8 @@ export class AddTripComponent implements OnInit {
         //     if(plann.location != undefined && plann.location != ''){
         //         locations.push(plann.location)
         //     }
-        // }
+        // }  
+
 
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
@@ -2824,6 +2843,12 @@ export class AddTripComponent implements OnInit {
     // });
   }
 
+  getRoutes() {
+    this.fetchRoutes();
+    this.mapOrderActive = "";
+    this.mapRouteActive = "active";
+    this.tripData.mapFrom = "route";
+  }
   changeMapRoute(type) {
     if (type == "route") {
       if (this.tripData.routeID != "" && this.tripData.routeID != null) {
@@ -3197,6 +3222,7 @@ export class AddTripComponent implements OnInit {
       this.assignAssetModel,
       ngbModalOptions
     );
+
   }
 
   copyRow(index) {
