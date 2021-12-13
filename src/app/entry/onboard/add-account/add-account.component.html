@@ -148,9 +148,9 @@
                       </div>
                       <div class="col-lg-5">
                         <label class="control-label  font-weight-bold text-lg-right pt-2">Fax<span
-                            class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                            class="mandfield text-2 ml-1"></span></label>
                         <input id="fax" type="text" class="form-control" [(ngModel)]="fax" name="fax" #fx="ngModel"
-                          placeholder="eg. 2234567891" required pattern="^[0-9]{10}$"
+                          placeholder="eg. 2234567891"
                           [ngClass]="{ 'error' : cForm.submitted && fx.invalid }">
                         <div *ngIf="fx.invalid && cForm.submitted" class="text-danger">
                           <div *ngIf="fx.errors.required">

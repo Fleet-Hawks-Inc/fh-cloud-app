@@ -137,9 +137,10 @@ export class SummaryComponent implements OnInit {
                 obj["VIN#"] = element.VIN
                 obj["Year"] = element.year
                 obj["Make"] = element.manufacturerID
-                obj["Model"] = element.modelID
+                obj["Model"] = element.modelID  ? element.modelID : '-'
+                obj["Type"] = element.vehicleType
                 obj["Plate#"] = element.plateNumber
-                obj["Ownership"] = element.ownership
+                obj["Ownership"] = element.ownership ? element.ownership  : '-'
                 obj["Status"] = element.currentStatus
                 dataObject.push(obj)
             });

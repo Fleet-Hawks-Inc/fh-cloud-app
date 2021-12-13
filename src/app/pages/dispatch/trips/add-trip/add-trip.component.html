@@ -18,8 +18,7 @@
           </div>
 
           <div class="col-md-8 col-lg-8 text-right">
-            <a href="javascript:;" (click)="cancel()" class="btn btn-sm btn-default"><i
-                class="fas fa-list"></i> All
+            <a href="javascript:;" (click)="cancel()" class="btn btn-sm btn-default"><i class="fas fa-list"></i> All
               Trips</a>
           </div>
         </div>
@@ -36,15 +35,30 @@
                       <div class="col-lg-3">
                         <label class="control-label
                           font-weight-semibold
-                          text-3 text-dark">Dispatcher</label>
+                          text-3 text-dark">Dispatcher: <span
+                            class="d-inline-block mb-3 font-weight-bold text-5 text-dark ">{{ currentUser
+                            }}</span></label>
                       </div>
-                      <div class="col-lg-6">
-                        <p class="font-weight-bold text-5 text-dark mb-0 pt-1">
-                          {{ currentUser }}
-                        </p>
+
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <label class="control-label
+                          font-weight-semibold
+                          text-3 text-dark">Create this trip using
+                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                        <div class="btn-group-toggle">
+                          <label class="btn btn-outline
+                            btn-yesno mr-2 {{
+                            mapOrderActive
+                            }} mb-2" (click)="changeMapRoute('order')">Order Number</label>
+                          <label class="btn btn-outline
+                            btn-yesno mr-2 mb-2 {{
+                            mapRouteActive
+                            }}" (click)="getRoutes()">Permanent Route</label>
+                        </div>
                       </div>
                     </div>
-
                     <div class="row mb-2">
                       <div class="col-lg-10">
                         <label class="control-label
@@ -54,8 +68,7 @@
                         </label>
 
                         <input type="text" class="form-control" (click)="showMOdal()" [(ngModel)]="orderNo" name="ordr"
-                          placeholder="eg.
-                          776,1234" autocomplete="off" #order="ngModel" required />
+                          placeholder="eg. 776,1234" autocomplete="off" #order="ngModel" required />
                         <div *ngIf="order.invalid && (order.dirty ||
                           order.touched)" class="text-danger">
                           <div *ngIf="order.errors.required">
@@ -78,24 +91,7 @@
                         </ng-select>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-10">
-                        <label class="control-label
-                          font-weight-semibold
-                          text-3 text-dark">Create this trip using
-                          <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                        <div class="btn-group-toggle">
-                          <label class="btn btn-outline
-                            btn-yesno mr-2 {{
-                            mapOrderActive
-                            }} mb-2" (click)="changeMapRoute('order')">Order Number</label>
-                          <label class="btn btn-outline
-                            btn-yesno mr-2 mb-2 {{
-                            mapRouteActive
-                            }}" (click)="changeMapRoute('route')">Permanent Route</label>
-                        </div>
-                      </div>
-                    </div>
+
                   </div>
                   <div class="col-lg-6 mb-1">
                     <div class="row">
@@ -105,7 +101,7 @@
                         </p>
                       </div>
                     </div>
-                    <div class="row mb-2">
+                    <div class="row mb-2 mt-4">
                       <div class="col-lg-10 col-md-12">
                         <label class="control-label
                           font-weight-semibold
@@ -134,29 +130,26 @@
                           </div>
                         </div>
                       </div>
-
-                      <div class="mb-2">
-                        <div class="col-lg-12">
-                          <label class="control-label
-                            font-weight-semibold
-                            text-3 text-dark">Reefer Temperature
-                          </label>
-                        </div>
-                        <div class="col-lg-10 col-md-12">
-                          <div class="row">
-                            <div class="col-lg-6">
-                              <input type="number" class="form-control" name="reeferTemperature"
-                                [(ngModel)]="tripData.reeferTemperature" placeholder="eg. 10
-                                °C or °F" />
-                            </div>
-                            <div class="col-lg-6 pl-0">
-                              <ng-select [(ngModel)]="tripData.reeferTemperatureUnit" name="reeferTemperatureUnit"
-                                placeholder="Select
-                                Temperature Unit" #sltReeferTemp="ngModel">
-                                <ng-option value="C">°C</ng-option>
-                                <ng-option value="F">°F</ng-option>
-                              </ng-select>
-                            </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-lg-12">
+                        <label class="control-label
+                          font-weight-semibold
+                          text-3 text-dark">Reefer Temperature
+                        </label>
+                      </div>
+                      <div class="col-lg-6 col-md-6">
+                        <div class="row">
+                          <div class="col-lg-6">
+                            <input type="number" class="form-control" name="reeferTemperature"
+                              [(ngModel)]="tripData.reeferTemperature" placeholder="eg. 10 °C or °F" />
+                          </div>
+                          <div class="col-lg-6 pl-0">
+                            <ng-select [(ngModel)]="tripData.reeferTemperatureUnit" name="reeferTemperatureUnit"
+                              placeholder="Select Temperature Unit" #sltReeferTemp="ngModel">
+                              <ng-option value="C">°C</ng-option>
+                              <ng-option value="F">°F</ng-option>
+                            </ng-select>
                           </div>
                         </div>
                       </div>
@@ -343,8 +336,7 @@
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.type" (open)="dropdownOpen()" (close)="dropdownClose()"
                                 (change)="checkType($event, i)" id="editCell1{{ i }}" name="tripType{{ i }}"
-                                placeholder="Select
-                                trip type">
+                                placeholder="Select trip type">
                                 <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
                               </ng-select>
                             </td>
@@ -352,8 +344,7 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.orderID" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="cell21{{ i }}" name="neworderID{{ i }}" placeholder="Select
-                                Order">
+                                id="cell21{{ i }}" name="neworderID{{ i }}" placeholder="Select Order">
                                 <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{
                                   ord.orderNo }}</ng-option>
                               </ng-select>
@@ -412,14 +403,12 @@
                               editRow{{ i }}">
                               <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
                                 [(ngModel)]="trip.locationName" class="form-control newRow" autocomplete="off"
-                                (keyup)="searchTerm.next($event)" placeholder="Start
-                                typing to get
-                                location
-                                suggestions" *ngIf="!trip.locMan" />
+                                (keyup)="searchTerm.next($event)" placeholder="Start typing to get location suggestions"
+                                *ngIf="!trip.locMan" />
                               <input type="text" id="editCell4{{ i }}" name="editCell4{{ i }}"
-                                [(ngModel)]="trip.locationName" class="form-control newRow" placeholder="Start
-                                add location
-                                from popup" *ngIf="trip.locMan" (click)="locationModel('edit', i)" />
+                                [(ngModel)]="trip.locationName" class="form-control newRow"
+                                placeholder="Start add location from popup" *ngIf="trip.locMan"
+                                (click)="locationModel('edit', i)" />
                               <ul class="p-0
                                 m-0
                                 text-left
@@ -443,8 +432,7 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.mileType" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="editCell5{{ i }}" name="tripmileType{{ i }}" placeholder="Select
-                                miles type">
+                                id="editCell5{{ i }}" name="tripmileType{{ i }}" placeholder="Select miles type">
                                 <ng-option value="empty">EMPTY</ng-option>
                                 <ng-option value="loaded">LOADED</ng-option>
                               </ng-select>
@@ -483,8 +471,8 @@
                               textRows
                               editRow{{ i }}">
                               <ng-select [(ngModel)]="trip.carrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
-                                id="editCell11{{ i }}" name="editCarrID" placeholder="Select
-                                Carrier" [disabled]="trip.disablecarr">
+                                id="editCell11{{ i }}" name="editCarrID" placeholder="Select Carrier"
+                                [disabled]="trip.disablecarr">
                                 <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
                                   carrier.companyName }}</ng-option>
                               </ng-select>
@@ -501,15 +489,13 @@
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.type" class="newRow" (open)="dropdownOpen()"
                                 (close)="dropdownClose()" (change)="checkType($event, '')" id="cell1" name="newTripType"
-                                placeholder="Select
-                                type">
+                                placeholder="Select type">
                                 <ng-option value="{{ type }}" *ngFor="let type of typeOptions">{{ type }}</ng-option>
                               </ng-select>
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.orderID" class="newRow" (open)="dropdownOpen()"
-                                (close)="dropdownClose()" id="cell91" name="neworderID" placeholder="Select
-                                Order">
+                                (close)="dropdownClose()" id="cell91" name="neworderID" placeholder="Select Order">
                                 <ng-option value="{{ ord.orderID }}" *ngFor="let ord of planOrderData">{{
                                   ord.orderNo }}</ng-option>
                               </ng-select>
@@ -555,15 +541,13 @@
                               <input type="text" id="cell4" name="locationName"
                                 [(ngModel)]="textFieldValues.locationName" class="form-control newRow"
                                 autocomplete="off" (keyup)="searchTerm.next($event)"
-                                [(ngModel)]="textFieldValues.locationName" placeholder="Start
-                                typing to get
-                                location
-                                suggestions" *ngIf="!textFieldValues.locMan" />
+                                [(ngModel)]="textFieldValues.locationName"
+                                placeholder="Start typing to get location suggestions"
+                                *ngIf="!textFieldValues.locMan" />
                               <input type="text" id="cell4" name="locationName"
                                 [(ngModel)]="textFieldValues.locationName" class="form-control newRow"
-                                [(ngModel)]="textFieldValues.locationName" placeholder="Enter
-                                location from
-                                popup" *ngIf="textFieldValues.locMan" (click)="locationModel('add', '')" readonly />
+                                [(ngModel)]="textFieldValues.locationName" placeholder="Enter location from popup"
+                                *ngIf="textFieldValues.locMan" (click)="locationModel('add', '')" readonly />
 
                               <ul class="p-0
                                 m-0
@@ -584,8 +568,7 @@
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.mileType" id="cell5" name="newMileType"
-                                (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select
-                                type">
+                                (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select type">
                                 <ng-option value="empty">EMPTY</ng-option>
                                 <ng-option value="loaded">LOADED</ng-option>
                               </ng-select>
@@ -617,8 +600,8 @@
                             </td>
                             <td>
                               <ng-select [(ngModel)]="textFieldValues.carrierID" class="newRow" id="cell1"
-                                name="newcarrierID" (open)="dropdownOpen()" (close)="dropdownClose()" placeholder="Select
-                                Carrier">
+                                name="newcarrierID" (open)="dropdownOpen()" (close)="dropdownClose()"
+                                placeholder="Select Carrier">
                                 <ng-option value="{{ carrier.contactID }}" *ngFor="let carrier of carriers">{{
                                   carrier.companyName }}</ng-option>
                               </ng-select>
@@ -984,14 +967,13 @@
 </section>
 
 <!-- order modal start -->
-<div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
-  <div class="modal-dialog modal-xl" role="document">
+<ng-template #orderModal let-modal>
+  <div class="modal-dialog w-100 m-0" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Select Order</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
-          </i>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <form>
@@ -1211,7 +1193,7 @@
         <div class="modal-footer">
           <div class="col-md-12 text-right">
             <a class="btn btn-success modal-confirm mr-3" href="javascript:;" (click)="saveSelectOrderIDS()">Select</a>
-            <button class="btn btn-default modal-dismiss" data-dismiss="modal">
+            <button class="btn btn-default modal-dismiss" (click)="modal.dismiss('Cross click')">
               Cancel
             </button>
           </div>
@@ -1219,7 +1201,8 @@
       </form>
     </div>
   </div>
-</div>
+</ng-template>
+
 <!-- order modal end -->
 
 <!-- new asset modal -->
@@ -1290,6 +1273,9 @@
                     <table class="w-100">
                       <!-- <thead>head</thead> -->
                       <tbody>
+                        <tr *ngIf="vehicles.length === 0">
+                          {{vehicleMessage}}
+                        </tr>
                         <tr *ngFor="let vehicle of vehicles">
                           <td class="vehicleClass" id="veh_{{ vehicle.vehicleID }}"
                             (click)="vehicleChange(vehicle, 'click')">
@@ -1322,6 +1308,9 @@
                   <div class="assign--trips__scroll trips-assets__listing">
                     <table class="w-100">
                       <tbody>
+                        <tr *ngIf="assets.length === 0">
+                          {{assetMessage}}
+                        </tr>
                         <tr *ngFor="let asset of assets">
                           <td class="assetClass" id="asset_{{ asset.assetID }}" (click)="assetsChange(asset, 'click')">
                             <div class="">
@@ -1342,6 +1331,9 @@
                   <div class="assign--trips__scroll trips-drivers__listing">
                     <table class="w-100">
                       <tbody>
+                        <tr *ngIf="drivers.length === 0">
+                          {{driverMessage}}
+                        </tr>
                         <tr *ngFor="let driver of drivers">
                           <td class="driverClass" id="drivr_{{ driver.driverID }}"
                             (click)="driverChange(driver, 'driver', 'click')">
@@ -1357,8 +1349,8 @@
                               <p class="m-0 text-dark"><strong> Asset:</strong> {{driver.assets ?
                                 assetsObjects[driver.assets]
                                 : 'NA'}}</p>
-                              <p class="m-0 text-dark"><strong> Trip#:</strong> {{driver.tripID ?
-                                (tripsObject[driver.tripID]) : 'NA'}}</p>
+                              <p class="m-0 text-dark"><strong> Trip#:</strong> {{driver.tripNo ?
+                                driver.tripNo : 'NA'}}</p>
 
                               <p class="m-0 text-dark"><strong> Delivered Date:</strong> {{driver.updatedAt ?
                                 driver.updatedAt
@@ -1505,9 +1497,7 @@
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span>
                         </label>
                         <input type="text" class="form-control" name="address1" [(ngModel)]="locObj.addr"
-                          #aaddr="ngModel" required placeholder="eg. 71,New
-                          Highway Road, Ontario,
-                          Canada" />
+                          #aaddr="ngModel" required placeholder="eg. 71,New Highway Road, Ontario, Canada" />
 
                         <div *ngIf="aaddr.invalid && (aaddr.dirty ||
                           aaddr.touched)" class="text-danger">
@@ -1527,8 +1517,7 @@
                           pt-2">Select Country
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select (change)="getStates($event)" [(ngModel)]="locObj.cCode" #adrCountry="ngModel"
-                          required name="countryCode" class="form-control populate" placeholder="Select
-                          Country">
+                          required name="countryCode" class="form-control populate" placeholder="Select Country">
                           <ng-option value="CA">Canada</ng-option>
                           <ng-option value="US">United States</ng-option>
                           <ng-option value="MX">Mexico</ng-option>
@@ -1568,8 +1557,7 @@
                           pt-2">Select City
                           <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="locObj.ctName" name="ctName" class="form-control populate"
-                          #adrCity="ngModel" required placeholder="Select
-                          City">
+                          #adrCity="ngModel" required placeholder="Select City">
                           <ng-option *ngFor="let city of cities" value="{{ city.cityName }}">
                             {{ city.cityName }}
                           </ng-option>
