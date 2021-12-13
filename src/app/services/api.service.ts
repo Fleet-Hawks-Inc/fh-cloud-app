@@ -187,7 +187,6 @@ export class ApiService {
     
   }
   else{
-    console.log("User Roles are deactivated")
     localStorage.setItem("isDispatchEnabled", "true")
     localStorage.setItem("isComplianceEnabled", "false")
     localStorage.setItem("isSafetyEnabled", "true")
