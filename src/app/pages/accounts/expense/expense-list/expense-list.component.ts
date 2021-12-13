@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AccountService } from 'src/app/services/account.service';
 import { ApiService } from 'src/app/services/api.service';
-import  Constants  from '../../../fleet/constants';
+import Constants from '../../../fleet/constants';
 
 @Component({
   selector: 'app-expense-list',
@@ -20,6 +20,8 @@ export class ExpenseListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   filter = {
+    category: null,
+    unitNumber: null,
     amount: '',
     startDate: null,
     endDate: null,
@@ -28,12 +30,40 @@ export class ExpenseListComponent implements OnInit {
   lastItemSK = '';
   loaded = false;
   disableSearch = false;
+
+  vehicles = [];
+  trips = [];
+  assets = [];
+
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
 
   ngOnInit() {
+    this.fetchVehicles();
+    this.fetchTrips();
+    this.fetchAssets();
     this.fetchExpenses();
     this.fetchVendors();
     this.fetchExpenseCategories();
+
+  }
+
+  fetchVehicles() {
+    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
+      this.vehicles = result;
+    });
+  }
+
+
+  fetchTrips() {
+    this.apiService.getData("trips/get/list").subscribe((result: any) => {
+      this.trips = result;
+    });
+  }
+
+  fetchAssets() {
+    this.apiService.getData("assets/get/list").subscribe((result: any) => {
+      this.assets = result;
+    });
   }
 
   fetchExpenses(refresh?: boolean) {
@@ -42,9 +72,9 @@ export class ExpenseListComponent implements OnInit {
       this.expenses = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`expense/paging?amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
+      this.accountService.getData(`expense/paging?filterType=${this.filter.category}&unitNumber=${this.filter.unitNumber}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
 
-        if(result.length === 0) {
+        if (result.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
           this.disableSearch = false;
         }
@@ -74,15 +104,15 @@ export class ExpenseListComponent implements OnInit {
   deleteExpense(expenseID) {
     if (confirm('Are you sure you want to delete?') === true) {
       this.accountService.getData(`expense/delete/${expenseID}`)
-      .subscribe((result: any) => {
-        if (result !== undefined) {
-          this.dataMessage = Constants.FETCHING_DATA;
-          this.expenses = [];
-          this.lastItemSK = '';
-          this.fetchExpenses();
-          this.toaster.success('Expense transaction deleted successfully.');
-        }
-      });
+        .subscribe((result: any) => {
+          if (result !== undefined) {
+            this.dataMessage = Constants.FETCHING_DATA;
+            this.expenses = [];
+            this.lastItemSK = '';
+            this.fetchExpenses();
+            this.toaster.success('Expense transaction deleted successfully.');
+          }
+        });
     }
 
   }
@@ -95,7 +125,20 @@ export class ExpenseListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.category === 'vehicle' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
+      this.toaster.error('Please type vehicle number');
+      return false;
+    }
+    if (this.filter.category === 'tripNo' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
+      this.toaster.error('Please type trip number');
+      return false;
+    }
+    if (this.filter.category === 'asset' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
+      this.toaster.error('Please type asset name');
+      return false;
+    }
+
+    if (this.filter.category != '' || this.filter.unitNumber != null || this.filter.unitNumber != '' || this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       this.disableSearch = true;
       if (
         this.filter.startDate !== '' &&
@@ -125,6 +168,8 @@ export class ExpenseListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
+      category: null,
+      unitNumber: null,
       amount: '',
       startDate: null,
       endDate: null,
@@ -138,7 +183,7 @@ export class ExpenseListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-    this.fetchExpenses();
+      this.fetchExpenses();
     }
     this.loaded = false;
   }
@@ -147,6 +192,8 @@ export class ExpenseListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
+      category: null,
+      unitNumber: null,
       amount: '',
       startDate: null,
       endDate: null,
@@ -156,4 +203,9 @@ export class ExpenseListComponent implements OnInit {
     this.expenses = [];
     this.fetchExpenses();
   }
+
+  changeCategory() {
+    this.filter.unitNumber = null;
+  }
 }
+
