@@ -25,15 +25,17 @@
                       </ng-option>
                     </ng-select>
                   </div>
-                  <div class="col-md-2 col-lg-2 pr-0" [clearable]="false" *ngIf="filter.category === 'tripNo'">
-                    <ng-select name="trip" placeholder="Search by trip" [(ngModel)]="filter.unitNumber">
+                  <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'tripNo'">
+                    <ng-select name="trip" [clearable]="false" placeholder="Search by trip"
+                      [(ngModel)]="filter.unitNumber">
                       <ng-option *ngFor="let trip of trips | keyvalue" value="{{ trip.key }}"> {{ trip.value
                         }}
                       </ng-option>
                     </ng-select>
                   </div>
-                  <div class="col-md-2 col-lg-2 pr-0" [clearable]="false" *ngIf="filter.category === 'asset'">
-                    <ng-select name="asset" placeholder="Search by asset" [(ngModel)]="filter.unitNumber">
+                  <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.category === 'asset'">
+                    <ng-select name="asset" [clearable]="false" placeholder="Search by asset"
+                      [(ngModel)]="filter.unitNumber">
                       <ng-option *ngFor="let asset of assets | keyvalue" value="{{ asset.key }}"> {{ asset.value
                         }}
                       </ng-option>
