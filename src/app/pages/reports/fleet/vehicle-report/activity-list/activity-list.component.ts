@@ -1,12 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as _ from 'lodash';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { ToastrService } from 'ngx-toastr';
 import { environment } from '../../../../../../environments/environment';
-import { ApiService, HereMapService } from '../../../../../services';
+import { ApiService } from '../../../../../services';
 import { OnboardDefaultService } from '../../../../../services/onboard-default.service';
 import Constants from 'src/app/pages/fleet/constants';
 declare var $: any;
@@ -35,77 +32,23 @@ export class ActivityListComponent implements OnInit {
   driversList: any = {};
   vendorsList: any = {};
   currentView = 'list';
-
   totalRecords = 20;
-  pageLength = 10;
   lastEvaluatedKey = '';
-
-  hideShow = {
-    vin: true,
-    vehicleName: true,
-    vehicleType: true,
-    make: true,
-    model: true,
-    lastLocation: true,
-    trip: false,
-    plateNo: true,
-    fuelType: true,
-    status: true,
-    group: false,
-    ownership: true,
-    driver: true,
-    serviceProgram: false,
-    serviceDate: false,
-    insuranceVendor: false,
-    insuranceAmount: false,
-    engineSummary: false,
-    primaryMeter: false,
-    fuelUnit: false,
-    startDate: true,
-    year: true,
-    annualSafety: true,
-    teamDriver: true
-  }
-
-  vehicleNext = false;
-  vehiclePrev = true;
-  vehicleDraw = 0;
-  vehiclePrevEvauatedKeys = [''];
-  vehicleStartPoint = 1;
-  vehicleEndPoint = this.pageLength;
+  disableSearch = false;
   vehicleTypeObects: any = {};
   lastItemSK = ''
   loaded = false
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, private hereMap: HereMapService, private toastr: ToastrService, private spinner: NgxSpinnerService,
-    private onboard: OnboardDefaultService, protected _sanitizer: DomSanitizer, private modalService: NgbModal) {
+  constructor(private apiService: ApiService, private httpClient: HttpClient, 
+     protected _sanitizer: DomSanitizer) {
   }
-
-
   ngOnInit() {
-
-    this.onboard.checkInspectionForms();
     this.fetchGroups();
-    // this.fetchVehicleModelList();
-    // this.fetchVehicleManufacturerList();
     this.fetchDriversList();
     this.fetchServiceProgramsList();
     this.fetchVendorList();
     this.initDataTable()
-    $(document).ready(() => {
-      setTimeout(() => {
-        $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
-      }, 1800);
-    });
-
-    this.httpClient.get('assets/vehicleType.json').subscribe((data: any) => {
-      this.vehicleTypeObects = data.reduce((a: any, b: any) => {
-        return a[b['code']] = b['name'], a;
-      }, {});
-    });
-
   }
-
   getSuggestions = _.debounce(function (value) {
 
     value = value.toLowerCase();
@@ -131,12 +74,6 @@ export class ActivityListComponent implements OnInit {
       this.vehicleModelList = result;
     });
   }
-
-  // fetchVehicleManufacturerList() {
-  //   this.apiService.getData('manufacturers/get/list').subscribe((result: any) => {
-  //     this.vehicleManufacturersList = result;
-  //   });
-  // }
 
   fetchDriversList() {
     this.apiService.getData('drivers/get/list').subscribe((result: any) => {
@@ -169,14 +106,14 @@ export class ActivityListComponent implements OnInit {
         .subscribe(async (result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
-
+            this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           result[`Items`].map((v: any) => {
             v.url = `/reports/fleet/vehicles/activity/${v.vehicleID}`;
           })
           if (result.Items.length > 0) {
-
+            this.disableSearch = false;
             if (result.LastEvaluatedKey !== undefined) {
               this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
             }
@@ -203,6 +140,7 @@ export class ActivityListComponent implements OnInit {
       if (this.vehicleID == '') {
         this.vehicleID = this.vehicleIdentification;
       }
+      this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.vehicles = [];
       this.lastEvaluatedKey = ''
@@ -215,6 +153,7 @@ export class ActivityListComponent implements OnInit {
 
   resetFilter() {
     if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
+      this.disableSearch = true;
       this.vehicleID = '';
       this.suggestedVehicles = [];
       this.vehicleIdentification = '';
