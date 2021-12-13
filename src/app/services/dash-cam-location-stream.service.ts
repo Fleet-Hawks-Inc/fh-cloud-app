@@ -18,7 +18,7 @@ export class DashCamLocationStreamService {
         if (this.connection$) {
           return this.connection$;
         } else {
-          this.connection$ = webSocket('ws://18.223.121.29:36300/ws');
+          this.connection$ = webSocket(environment.VSSServerWSS);
           this.send(username, usage, token);
           return this.connection$;
         }

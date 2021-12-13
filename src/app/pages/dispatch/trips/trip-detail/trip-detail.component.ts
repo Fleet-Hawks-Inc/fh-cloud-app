@@ -175,7 +175,7 @@ export class TripDetailComponent implements OnInit {
       .getData("trips/" + this.tripID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-
+        
         if (result.orderId.length > 0) {
           this.customerData = result.customerData;
           this.orderNumbers = result.orderNumbers;
@@ -264,11 +264,11 @@ export class TripDetailComponent implements OnInit {
             driverName: element.driverName,
             driverID: element.driverID,
             driverStatus: element.driverStatus
-              ? element.driverStatus
+              ? element.driverStatus.toUpperCase()
               : "",
             coDriverID: element.coDriverID,
             coDriverStatus: element.coDriverStatus
-              ? element.coDriverStatus
+              ? element.coDriverStatus.toUpperCase()
               : "",
             driverUsername: element.driverUsername,
             locationName: element.location,

@@ -21,7 +21,7 @@ const whiteListedUrls = [
   'carriers/add',
   'carriers/onBoard',
   'pcMiles/onboard/suggestions/',
-  'location/share/vehicle'
+  'location/share/get'
 ];
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {

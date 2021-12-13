@@ -114,9 +114,9 @@ export class ServiceListComponent implements OnInit {
    * Get all tasks from api
    */
   fetchTasks() {
-    this.apiService.getData("tasks?type=service").subscribe((result: any) => {
+    this.apiService.getData('tasks?type=service').subscribe((result: any) => {
       this.tasks = result;
-    });
+    })
   }
 
   gotoIssue(issue) {

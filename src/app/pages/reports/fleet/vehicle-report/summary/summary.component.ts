@@ -16,12 +16,13 @@ import * as _ from 'lodash';
 })
 export class SummaryComponent implements OnInit {
     dataMessage: string = Constants.FETCHING_DATA;
-    vehicles: any = [];
+    vehicles = [];
     vehicleIdentification = '';
     suggestedVehicles = [];
     vehicleManufacturersList: any = {};
     vehicleModelList: any = {};
     modelID: any = {};
+    exportList: any = [];
     manufacturerID: any = {};
     createdTime: any = {};
     vehicleType: any = {};
@@ -114,11 +115,11 @@ export class SummaryComponent implements OnInit {
         }
     }
     resetVehicle() {
-       if (this.vehicleIdentification !== '' || this.currentStatus !== null) {
+       if (this.vehicleIdentification !== '' || this.currentStatus !== null || this.lastItemSK) {
       this.vehicleIdentification = '';
-      this.lastItemSK = '';
       this.currentStatus = null;
       this.vehicles = [];
+      this.lastItemSK = '';
       this.dataMessage = Constants.FETCHING_DATA;
       this.suggestedVehicles = [];
       this.getVehiclePage();
@@ -127,19 +128,19 @@ export class SummaryComponent implements OnInit {
     }
   }
     generateVehicleCSV() {
-        if (this.vehicles.length > 0) {
+        if (this.exportList.length > 0) {
             let dataObject = []
             let csvArray = []
-            this.vehicles.forEach(element => {
+            this.exportList.forEach(element => {
                 let obj = {}
                 obj["Vehicle Name"] = element.vehicleIdentification
                 obj["VIN#"] = element.VIN
                 obj["Year"] = element.year
                 obj["Make"] = element.manufacturerID
-                obj["Model"] = element.modelID
+                obj["Model"] = element.modelID  ? element.modelID : '-'
+                obj["Type"] = element.vehicleType
                 obj["Plate#"] = element.plateNumber
-                obj["Last Drive Time"] = element.vehicle
-                obj["Ownership"] = element.ownership
+                obj["Ownership"] = element.ownership ? element.ownership  : '-'
                 obj["Status"] = element.currentStatus
                 dataObject.push(obj)
             });
@@ -164,6 +165,22 @@ export class SummaryComponent implements OnInit {
         }
         else {
             this.toastr.error("No Records found")
+        }
+    }
+    
+    vehicleExport() {
+        this.apiService.getData(`vehicles/fetch/export`).subscribe((result: any) => {
+            this.exportList = result.Items;
+            this.generateVehicleCSV();
+        })
+    }
+    
+    csvExport() {
+        if (this.vehicleIdentification  !== '' || this.currentStatus !== null) {
+            this.exportList = this.vehicles
+            this.generateVehicleCSV();
+        } else {
+            this.vehicleExport();
         }
     }
 }

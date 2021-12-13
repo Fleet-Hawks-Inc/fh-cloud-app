@@ -16,7 +16,10 @@ export class SalesOrderDetailComponent implements OnInit {
   saleID: any;
 
   txnDate: string;
-  customerID: string;
+  customerName: string;
+  workEmail: string;
+  workPhone: string;
+  address: string;
   finalTotal: any;
   currency: string;
   shipDate: string;
@@ -27,8 +30,9 @@ export class SalesOrderDetailComponent implements OnInit {
   sOrderDetails: any;
   sOrNo: string;
   taxes: any;
-  accFees: any;
-  accDed: any;
+  chargeName: string;
+  chargeType: string;
+  chargeAmount: string;
 
   customersObjects: any = {};
   emailDisabled = false;
@@ -41,7 +45,6 @@ export class SalesOrderDetailComponent implements OnInit {
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
-      this.fetchCustomersByIDs()
       this.fetchSaleOrder();
     }
   }
@@ -52,7 +55,10 @@ export class SalesOrderDetailComponent implements OnInit {
       let result = res[0];
 
       this.txnDate = result.txnDate;
-      this.customerID = result.cusInfo.customerID;
+      this.customerName = result.cusInfo.cName;
+      this.workEmail = result.cusInfo.workEmail;
+      this.workPhone = result.cusInfo.workPhone;
+      this.address = result.cusInfo.address;
       this.finalTotal = result.total.finalTotal;
       this.currency = result.currency;
       this.shipDate = result.shipDate;
@@ -63,20 +69,13 @@ export class SalesOrderDetailComponent implements OnInit {
       this.status = result.status;
       this.sOrNo = result.sOrNo;
       this.taxes = result.charges.taxes;
-      this.accFees = result.charges.accFee;
-      this.accDed = result.charges.accDed;
+      this.chargeName = result.charges.cName;
+      this.chargeType = result.charges.cType;
+      this.chargeAmount = result.charges.cAmount;
       this.isPDF = true;
     });
   }
 
-  /*
-* Get all customers's IDs of names from api
-*/
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
 
   async sendConfirmationEmail() {
     this.emailDisabled = true;
@@ -107,18 +106,17 @@ export class SalesOrderDetailComponent implements OnInit {
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
 
-    // this.salePrev.close();
+    this.salePrev.close();
 
   }
 
   openModal() {
-    // let ngbModalOptions: NgbModalOptions = {
-    //   keyboard: false,
-    //   backdrop: "static",
-    //   windowClass: "preview-sale-order",
-    // };
-    // this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
-    this.generatePDF();
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-order",
+    };
+    this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
   }
 
 }

@@ -23,7 +23,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   drivers = [];
   contacts: any = {};
   employees: any = {};
-  lastItemSK = '';
+  lastItemSK = "";
   loaded = false;
   disableSearch = false;
   constructor(
@@ -42,46 +42,50 @@ export class AdvancePaymentsListComponent implements OnInit {
   fetchPayments(refresh?: boolean) {
     let searchParam = null;
     if (refresh === true) {
-      this.lastItemSK = '';
+      this.lastItemSK = "";
       this.payments = [];
     }
-    if (this.lastItemSK !== 'end') {
-      if (this.filter.paymentNo !== null && this.filter.paymentNo !== '') {
+    if (this.lastItemSK !== "end") {
+      if (this.filter.paymentNo !== null && this.filter.paymentNo !== "") {
         searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
-     } else {
-       searchParam = null;
-     }
-      this.accountService.getData(`advance/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-
-        if (result.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-          this.disableSearch = false;
-        }
-        if (result.length > 0) {
-          this.disableSearch = false;
-          if (result[result.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+      } else {
+        searchParam = null;
+      }
+      this.accountService
+        .getData(
+          `advance/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+        )
+        .subscribe((result: any) => {
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.disableSearch = false;
           }
-          result.map((v) => {
-            v.url = `/accounts/payments/advance-payments/detail/${ v.paymentID }`;
-            v.paymentTo = v.paymentTo.replace("_"," ");
-            if(v.payMode) {
-              v.payMode = v.payMode.replace("_"," ");
+          if (result.length > 0) {
+            this.disableSearch = false;
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(
+                result[result.length - 1].sk
+              );
             } else {
-              v.payMode= '-';
+              this.lastItemSK = "end";
             }
-            v.status = v.status.replace("_"," ");
-            v.paidAmount = v.amount - v.pendingPayment;
-            v.paidAmount = v.paidAmount.toFixed(2);
-            this.payments.push(v);
-          });
-          this.loaded = true;
-        }
-      });
+            result.map((v) => {
+              v.url = `/accounts/payments/advance-payments/detail/${v.paymentID}`;
+              v.paymentTo = v.paymentTo.replace("_", " ");
+              if (v.payMode) {
+                v.payMode = v.payMode.replace("_", " ");
+              } else {
+                v.payMode = "-";
+              }
+              v.newStatus = v.status.replace("_", " ");
+              v.paidAmount = v.amount - v.pendingPayment;
+              v.paidAmount = v.paidAmount.toFixed(2);
+              this.payments.push(v);
+            });
+            this.loaded = true;
+          }
+        });
     }
-
   }
 
   fetchDrivers() {
@@ -98,38 +102,37 @@ export class AdvancePaymentsListComponent implements OnInit {
       });
   }
   fetchContactsList() {
-    this.apiService
-      .getData(`contacts/get/list`)
-      .subscribe((result: any) => {
-        this.contacts = result;
-      });
+    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
+      this.contacts = result;
+    });
   }
 
   deletePayment(paymentID) {
-    if (confirm('Are you sure you want to void?') === true) {
-      this.accountService.deleteData(`advance/delete/${paymentID}`).subscribe((result: any) => {
-        this.lastItemSK = '';
-        this.payments = [];
-        this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchPayments();
-        this.toaster.success('Advance payment deleted successfully.');
-      })
+    if (confirm("Are you sure you want to void?") === true) {
+      this.accountService
+        .deleteData(`advance/delete/${paymentID}`)
+        .subscribe((result: any) => {
+          this.lastItemSK = "";
+          this.payments = [];
+          this.dataMessage = Constants.FETCHING_DATA;
+          this.fetchPayments();
+          this.toaster.success("Advance payment deleted successfully.");
+        });
     }
   }
 
   searchFilter() {
-    if (this.filter.type !== null || this.filter.paymentNo !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (
+      this.filter.type !== null ||
+      this.filter.paymentNo !== null ||
+      this.filter.endDate !== null ||
+      this.filter.startDate !== null
+    ) {
       this.disableSearch = true;
-      if (
-        this.filter.startDate != "" &&
-        this.filter.endDate == ""
-      ) {
+      if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
-      } else if (
-        this.filter.startDate == "" &&
-        this.filter.endDate != ""
-      ) {
+      } else if (this.filter.startDate == "" && this.filter.endDate != "") {
         this.toaster.error("Please select both start and end dates.");
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
@@ -138,7 +141,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
         this.payments = [];
-        this.lastItemSK = '';
+        this.lastItemSK = "";
         this.fetchPayments();
       }
     }
@@ -148,19 +151,19 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-        startDate: null,
-        endDate: null,
-        type: null,
-        paymentNo: null
+      startDate: null,
+      endDate: null,
+      type: null,
+      paymentNo: null,
     };
     this.payments = [];
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.fetchPayments();
   }
 
   onScroll() {
     if (this.loaded) {
-    this.fetchPayments();
+      this.fetchPayments();
     }
     this.loaded = false;
   }
@@ -169,13 +172,13 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-        startDate: null,
-        endDate: null,
-        type: null,
-        paymentNo: null
+      startDate: null,
+      endDate: null,
+      type: null,
+      paymentNo: null,
     };
     this.payments = [];
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.fetchPayments();
   }
 }

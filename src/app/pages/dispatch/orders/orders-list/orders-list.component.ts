@@ -645,6 +645,7 @@ export class OrdersListComponent implements OnInit {
     ) {
       this.brokerErr =
         "Brokerage amount should not be greater than order total.";
+      return false;
     } else {
       this.brokerErr = "";
     }
@@ -695,9 +696,10 @@ export class OrdersListComponent implements OnInit {
       .subscribe((result: any) => {
         if (result) {
           if (this.brokerage.type === "all") {
-            this.orders[this.brokerage.draw][this.brokerage.index].orderStatus =
-              "brokerage";
+            this.orders[this.brokerage.index].newStatus = "brokerage";
+            this.orders[this.brokerage.index].orderStatus = "brokerage";
           } else if (this.brokerage.type === "section") {
+            this.confirmOrders[this.brokerage.index].newStatus = "brokerage";
             this.confirmOrders[this.brokerage.index].orderStatus = "brokerage";
           }
           this.toastr.success("Order updated successfully!");
@@ -723,7 +725,8 @@ export class OrdersListComponent implements OnInit {
         .postData("orders/update/brokerage", data)
         .subscribe((result: any) => {
           if (result) {
-            this.orders[draw][index].orderStatus = "created";
+            this.orders[index].newStatus = "created";
+            this.orders[index].orderStatus = "created";
             this.toastr.success("Order updated successfully!");
           }
         });

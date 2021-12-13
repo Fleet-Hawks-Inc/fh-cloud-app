@@ -81,11 +81,15 @@
               <div class="pull-right" *ngIf="tripData">
                 <h4 class="m-0 font-weight-bold">
                   Trip#:
-                  <a routerLink="/dispatch/trips/trip-details/{{
+                  <a *ngIf="tripData.tripNo"
+                    routerLink="/dispatch/trips/trip-details/{{
                     tripData.tripID
                     }}">
-                    {{ tripData.tripNo ? tripData.tripNo : 'NA' }}
+                    {{ tripData.tripNo }}
                   </a>
+                  <span *ngIf="!tripData.tripNo">
+                    NA
+                  </span>
                 </h4>
                 <!-- <a routerLink="/dispatch/orders/add" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add
                   Order</a> -->

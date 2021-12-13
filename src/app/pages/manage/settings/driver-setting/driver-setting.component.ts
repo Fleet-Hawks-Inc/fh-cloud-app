@@ -25,7 +25,15 @@ export class DriverSettingComponent implements OnInit {
   suggestedDrivers = [];
   driverType = null;
   drivers = [];
-  getSuggestions = _.debounce(function (value) {
+
+  constructor( private apiService: ApiService, private toastr: ToastrService,) { }
+
+  ngOnInit() {
+    this.fetchDriversCount();
+  }
+  
+  
+    getSuggestions = _.debounce(function (value) {
     this.driverID = '';
     value = value.toLowerCase();
     if (value !== '') {
@@ -38,17 +46,23 @@ export class DriverSettingComponent implements OnInit {
             }
             return v;
           });
-          console.log('result', result);
           this.suggestedDrivers = result;
         });
     } else {
       this.suggestedDrivers = [];
     }
   }, 800);
-  constructor( private apiService: ApiService, private toastr: ToastrService,) { }
-
-  ngOnInit() {
-    this.fetchDriversCount();
+  
+    setDriver(driverID, firstName = "", lastName = "", middleName = "") {
+    if (middleName !== "") {
+      this.driverName = `${firstName} ${middleName} ${lastName}`;
+      // this.driverID = driverID;
+      this.driverID = `${firstName} ${middleName} ${lastName}`;
+    } else {
+      this.driverName = `${firstName} ${lastName}`;
+      this.driverID = `${firstName} ${lastName}`;
+    }
+    this.suggestedDrivers = [];
   }
   fetchDriversCount() {
     this.apiService.getData(`drivers/deleted/get/count?driver=${this.driverID}&type=${this.driverType}`).subscribe({
@@ -67,7 +81,6 @@ export class DriverSettingComponent implements OnInit {
   initDataTable() {
     this.apiService.getData(`drivers/deleted/fetch/records?driver=${this.driverID}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`)
       .subscribe((result: any) => {
-        console.log('result', result);
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
@@ -147,29 +160,40 @@ export class DriverSettingComponent implements OnInit {
       this.resetCountResult();
     }
     searchFilter() {
-      if (this.driverName !== ''  || this.driverType !== null || this.driverType !== '') {
+      if (
+      this.driverName !== ''  || 
+      this.driverType !== null
+      ) {
         this.driverName = this.driverName.toLowerCase();
-        if (this.driverID === '') {
+        if (this.driverID == '') {
           this.driverID = this.driverName;
         }
+        
         this.drivers = [];
         this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
         this.suggestedDrivers = [];
-        this.fetchDriversCount();
+        this.initDataTable();
+        //this.fetchDriversCount();
       } else {
         return false;
       }
     }
     resetFilter() {
-      if (this.driverName !== ''  || this.driverType !== null || this.driverType !== '') {
-        this.drivers = [];
+      if (
+      this.driverName !== ''  || 
+      this.driverType !== null ||
+      this.lastEvaluatedKey !== '') {
         this.driverID = '';
         this.driverName = '';
         this.driverType = null;
+        this.drivers = [];
+        this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
-        this.fetchDriversCount();
         this.driverDraw = 0;
+        this.initDataTable();
         this.resetCountResult();
+        this.fetchDriversCount();
       } else {
         return false;
       }
@@ -186,12 +210,5 @@ export class DriverSettingComponent implements OnInit {
           this.toastr.success('Driver is restored!');
         });
       }
-    }
-
-
-    setDriver(firstName, lastName) {
-      this.driverName = firstName + ' ' + lastName;
-      this.driverID = firstName + '-' + lastName;
-      this.suggestedDrivers = [];
     }
 }

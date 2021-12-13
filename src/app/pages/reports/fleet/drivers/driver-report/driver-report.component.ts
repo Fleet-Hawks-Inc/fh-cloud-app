@@ -17,6 +17,7 @@ export class DriverReportComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public drivIDs;
+  exportData = [];
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
   data = []
@@ -30,7 +31,7 @@ export class DriverReportComponent implements OnInit {
   driverID = "";
   dataMessage: string = Constants.FETCHING_DATA
   driverName = ''
-
+  
   DrivN = []
   loaded = false
 
@@ -62,7 +63,6 @@ export class DriverReportComponent implements OnInit {
             driv.miles += Number(element.miles);
           }
         }
-
         if (result.Items.length === 0) {
 
           this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -101,11 +101,26 @@ export class DriverReportComponent implements OnInit {
       return false;
     }
   }
+
+
+  fetchFullExport() {
+    this.apiService.getData(`trips/fetch/driverActivity/list?driver=${this.drivIDs}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+      this.exportData = result.Items;
+      for (let driv of this.exportData) {
+        let dataa = driv
+        driv.miles = 0
+        for (let element of dataa.tripPlanning) {
+          driv.miles += Number(element.miles);
+        }
+      }
+      this.generateCSV();
+    });
+  }
   generateCSV() {
-    if (this.data.length > 0) {
+    if (this.exportData.length > 0) {
       let dataObject = []
       let csvArray = []
-      this.data.forEach(element => {
+      this.exportData.forEach(element => {
         let type = '';
         let location = '';
         let date = "";

@@ -109,6 +109,16 @@ export class EditProfileComponent implements OnInit {
       bankCities: []
     }]
   }];
+
+
+  termsTruck: ""
+  termsCarrier: ""
+  notesFactor: ""
+  notesBol: ""
+  termsCustom: ""
+  notesDriver: ""
+  tagLine: ""
+
   yardDefault = false;
   public searchTerm = new Subject<string>();
   public searchResults: any;
@@ -171,6 +181,8 @@ export class EditProfileComponent implements OnInit {
         this.EIN = this.carriers.EIN;
         this.MC = this.carriers.MC;
         this.SCAC = this.carriers.SCAC;
+
+
         this.CSA = this.carriers.CSA;
         this.CTPAT = this.carriers.CTPAT;
         this.PIP = this.carriers.PIP;
@@ -198,6 +210,7 @@ export class EditProfileComponent implements OnInit {
           trailers: this.carriers.fleets.trailers,
           trucks: this.carriers.fleets.trucks,
         };
+
         this.addressDetails = this.carriers.addressDetails;
         if (this.carriers.referral) {
           this.referral.name = this.carriers.referral.name;
@@ -555,6 +568,13 @@ export class EditProfileComponent implements OnInit {
         addressDetails: this.addressDetails,
         phone: this.phone,
         fax: this.fax,
+        termsTruck: this.carriers.termsTruck,
+        termsCarrier: this.carriers.termsCarrier,
+        notesFactor: this.carriers.notesFactor,
+        notesBol: this.carriers.notesBol,
+        termsCustom: this.carriers.termsCustom,
+        notesDriver: this.carriers.notesDriver,
+        tagLine: this.carriers.tagLine,
         fleets: {
           curtainSide: this.fleets.curtainSide,
           dryVans: this.fleets.dryVans,
@@ -577,7 +597,7 @@ export class EditProfileComponent implements OnInit {
       }
       // create form data instance
       const formData = new FormData();
-
+      console.log('data', data);
       // append photos if any
       for (let i = 0; i < this.uploadedPhotos.length; i++) {
         formData.append('uploadedPhotos', this.uploadedPhotos[i]);
