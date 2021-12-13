@@ -711,7 +711,7 @@ export class NewAddressBookComponent implements OnInit {
           this.unitData.data.push(data)
         }
       } else if (element === 'owner_operator') {
-        if (!this.newArr.includes('op')) {
+        if (!this.newArr.includes('owner_operator')) {
           let data = {
             opData: {
               csa: false,
@@ -731,7 +731,7 @@ export class NewAddressBookComponent implements OnInit {
               drCur: null
             }
           }
-          this.newArr.push('op');
+          this.newArr.push('owner_operator');
           this.unitData.data.push(data)
         }
       } else if (element === 'vendor') {
@@ -748,7 +748,6 @@ export class NewAddressBookComponent implements OnInit {
     });
 
     let difference = this.newArr.filter(x => !this.unitData.eTypes.includes(x));
-
     difference.forEach(elem => {
       if (elem === 'broker') {
         for (let index = 0; index < this.unitData.data.length; index++) {
@@ -825,7 +824,6 @@ export class NewAddressBookComponent implements OnInit {
       }
 
     })
-
   }
 
 
