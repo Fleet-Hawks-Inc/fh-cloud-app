@@ -32,27 +32,38 @@ export class ExpenseListComponent implements OnInit {
   disableSearch = false;
 
   vehicles = [];
+  trips = [];
+  assets = [];
+
   constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
 
   ngOnInit() {
+    this.fetchVehicles();
+    this.fetchTrips();
+    this.fetchAssets();
     this.fetchExpenses();
     this.fetchVendors();
     this.fetchExpenseCategories();
-    this.fetchVehicles();
+
   }
 
   fetchVehicles() {
-
-
-    this.apiService.getData("vehicles").subscribe((result: any) => {
-      result.Items.forEach((element) => {
-        if (element.isDeleted === 0) {
-          this.vehicles = [...this.vehicles, element];
-        }
-      });
+    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
+      this.vehicles = result;
     });
+  }
 
 
+  fetchTrips() {
+    this.apiService.getData("trips/get/list").subscribe((result: any) => {
+      this.trips = result;
+    });
+  }
+
+  fetchAssets() {
+    this.apiService.getData("assets/get/list").subscribe((result: any) => {
+      this.assets = result;
+    });
   }
 
   fetchExpenses(refresh?: boolean) {
@@ -114,16 +125,20 @@ export class ExpenseListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (this.filter.category === 'vehicle' && this.filter.unitNumber == '') {
+    if (this.filter.category === 'vehicle' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
       this.toaster.error('Please type vehicle number');
       return false;
     }
-    if (this.filter.category === 'tripNo' && this.filter.unitNumber == '') {
+    if (this.filter.category === 'tripNo' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
       this.toaster.error('Please type trip number');
       return false;
     }
+    if (this.filter.category === 'asset' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
+      this.toaster.error('Please type asset name');
+      return false;
+    }
 
-    if (this.filter.category != '' || this.filter.unitNumber != '' || this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (this.filter.category != '' || this.filter.unitNumber != null || this.filter.unitNumber != '' || this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
       this.disableSearch = true;
       if (
         this.filter.startDate !== '' &&
@@ -153,8 +168,8 @@ export class ExpenseListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-      category: '',
-      unitNumber: '',
+      category: null,
+      unitNumber: null,
       amount: '',
       startDate: null,
       endDate: null,
@@ -177,8 +192,8 @@ export class ExpenseListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
-      category: '',
-      unitNumber: '',
+      category: null,
+      unitNumber: null,
       amount: '',
       startDate: null,
       endDate: null,
@@ -188,4 +203,9 @@ export class ExpenseListComponent implements OnInit {
     this.expenses = [];
     this.fetchExpenses();
   }
+
+  changeCategory() {
+    this.filter.unitNumber = null;
+  }
 }
+
