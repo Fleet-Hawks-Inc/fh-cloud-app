@@ -186,8 +186,10 @@
                                                         <th class="col2">Item Name</th>
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
-                                                        <th class="col5">Quantity</th>
                                                         <th class="col7">Unit Cost</th>
+                                                        <th class="col7">Tax</th>
+                                                        <th class="col5">Quantity</th>
+                                                        <th class="col7">Total Cost</th>
                                                         <th class="col8">Warehouse Details</th>
                                                         <th class="col9 extra">Warranty Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
@@ -218,14 +220,22 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{vendors[item.warehouseVendorID]}}
                                                         </td>
+                                                          
+                                                        <td *ngIf="hideShow.unitCost"
+                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                                                             {{item.cost}} {{item.costUnitType}}
+                                                        </td>
+                                                          <td *ngIf="hideShow.unitCost"
+                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                                                             {{item.tax}} 
+                                                        </td>
                                                         <td *ngIf="hideShow.quantity"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.quantity}}
                                                         </td>
-                                                        
-                                                        <td *ngIf="hideShow.unitCost"
+                                                         <td *ngIf="hideShow.quantity"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                             {{item.cost}} {{item.costUnitType}}
+                                                            {{item.totalCost}}
                                                         </td>
                                                         <td *ngIf="hideShow.warehouse"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -236,7 +246,6 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.warrantyTime ? item.warrantyTime : '-'}} {{item.warrantyUnit}}
                                                         </td>
-                                                        
                                                         <td>
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button"
@@ -270,7 +279,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
                                         <table class="table table-bordered table-responsive-lg table-striped mb-0"
                                             id="simple-table1">
