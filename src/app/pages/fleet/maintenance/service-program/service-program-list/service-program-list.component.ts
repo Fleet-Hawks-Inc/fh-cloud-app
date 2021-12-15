@@ -21,8 +21,8 @@ export class ServiceProgramListComponent implements OnInit {
   programeName = '';
   totalRecords = 20;
   pageLength = 10;
-  lastEvaluatedKey = '';
-
+  lastItemSK = '';
+  disableSearch = false;
   serviceProgramNext = false;
   serviceProgramPrev = true;
   serviceProgramDraw = 0;
@@ -30,6 +30,7 @@ export class ServiceProgramListComponent implements OnInit {
   serviceProgramStartPoint = 1;
   serviceProgramEndPoint = this.pageLength;
   suggestions = [];
+  data = []
   loaded = false
   constructor(
     private apiService: ApiService,
@@ -41,28 +42,24 @@ export class ServiceProgramListComponent implements OnInit {
     this.initDataTable();
   }
 
-
-
-
   initDataTable() {
-    if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData('servicePrograms/fetch/records?programName=' + this.programeName + '&lastKey=' + this.lastEvaluatedKey)
+    if (this.lastItemSK !== 'end') {
+      this.apiService.getData('servicePrograms/fetch/records?programName=' + this.programeName + '&lastKey=' + this.lastItemSK)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
-
+            this.disableSearch = false;
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestions = [];
           if (result.Items.length > 0) {
-
+            this.disableSearch = false;
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].programID);
+              this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.sk);
             }
             else {
-              this.lastEvaluatedKey = 'end'
+              this.lastItemSK = 'end'
             }
             this.programs = this.programs.concat(result.Items)
-
             this.loaded = true;
           }
         });
@@ -78,9 +75,10 @@ export class ServiceProgramListComponent implements OnInit {
   searchFilter() {
     if (this.programeName !== '') {
       this.programeName = this.programeName.toLowerCase();
+      this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
+      this.lastItemSK = ''
       this.programs = [];
-      this.lastEvaluatedKey = ''
       this.initDataTable();
     } else {
       return false;
@@ -90,11 +88,11 @@ export class ServiceProgramListComponent implements OnInit {
   resetFilter() {
     if (this.programeName !== '') {
       this.dataMessage = Constants.FETCHING_DATA;
+      this.disableSearch = true;
       this.programeName = '';
+      this.lastItemSK = ''
       this.programs = [];
-      this.lastEvaluatedKey = ''
       this.initDataTable();
-
     } else {
       return false;
     }
@@ -105,9 +103,9 @@ export class ServiceProgramListComponent implements OnInit {
       this.apiService
         .deleteData(`servicePrograms/isDeleted/${entryID}/${programName}/` + 1)
         .subscribe((result: any) => {
+          this.lastItemSK = '';
           this.programs = [];
           this.serviceProgramDraw = 0;
-          this.lastEvaluatedKey = '';
           this.dataMessage = Constants.FETCHING_DATA;
           this.initDataTable();
           this.toastr.success('Service Program Deleted Successfully!');
@@ -116,19 +114,19 @@ export class ServiceProgramListComponent implements OnInit {
   }
 
 
-  getSuggestions = _.debounce(function (searchvalue) {
-    this.suggestions = [];
-    if (searchvalue !== '') {
-      searchvalue = searchvalue.toLowerCase();
-      this.apiService.getData('servicePrograms/get/suggestions/' + searchvalue).subscribe({
-        complete: () => { },
-        error: () => { },
-        next: (result: any) => {
-          this.suggestions = result;
-        }
-      })
-    }
-  }, 800)
+  // getSuggestions = _.debounce(function (searchvalue) {
+  //   this.suggestions = [];
+  //   if (searchvalue !== '') {
+  //     searchvalue = searchvalue.toLowerCase();
+  //     this.apiService.getData('servicePrograms/get/suggestions/' + searchvalue).subscribe({
+  //       complete: () => { },
+  //       error: () => { },
+  //       next: (result: any) => {
+  //         this.suggestions = result;
+  //       }
+  //     })
+  //   }
+  // }, 800)
 
   setData(value) {
     this.programeName = value.trim();
@@ -138,8 +136,9 @@ export class ServiceProgramListComponent implements OnInit {
   refreshData() {
     this.dataMessage = Constants.FETCHING_DATA;
     this.programeName = '';
+    this.disableSearch = true;
+    this.lastItemSK = '';
     this.programs = [];
-    this.lastEvaluatedKey = '';
     this.initDataTable();
 
   }

@@ -19,10 +19,10 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   vehicleModal: boolean = false;
   vehicles: any;
   tasks: any;
-  programID = '';
+  programID = [];
   taskData: any = []
   serviceData = {
-    // programID: '',
+    
     programName: '',
     description: '',
     vehicles: [],
@@ -53,7 +53,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   submitDisabled = false;
   Error: string = '';
   Success: string = '';
-
+  public programId;
   selectedVehicles = [];
   constructor(
     private apiService: ApiService,
@@ -84,6 +84,8 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     let vehicleList = new Array<any>();
     this.getValidVehicles(vehicleList);
     this.vehicles = vehicleList;
+    this.programId = this.route.snapshot.params['programId'];
+    this.fetchServiceByID();
   }
 
   private getValidVehicles(vehicleList: any[]) {
@@ -191,14 +193,12 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
       });
     this.errors = {};
   }
-
   async fetchServiceByID() {
     // this.spinner.show(); // loader init
     let result: any = await this.apiService
       .getData('servicePrograms/' + this.programID).toPromise();
     // .subscribe((result: any) => {
-    result = result.Items[0];
-
+    result = result[0];
     this.serviceData['programID'] = this.programID;
     this.serviceData.programName = result.programName;
     this.serviceData.description = result.description;
@@ -215,18 +215,16 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
     }
     this.serviceData.serviceScheduleDetails = newTasks;
     this.spinner.hide(); // hide loader
-    // });
   }
 
   /*
    * Update Service Program
   */
-  updateServiceProgram() {
+  updateServiceProgram(entryID) {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
-
-    this.apiService.putData('servicePrograms', this.serviceData).subscribe({
+    this.apiService.putData(`servicePrograms/${this.programID}`, this.serviceData).subscribe({
       complete: () => { },
       error: (err) => {
         from(err.error)
