@@ -232,40 +232,36 @@
                             </div>
                           </div>
 
-                          <div class="flex">
-                            <div class="row" style="max-height: 170px; overflow:
+
+                          <div class="row" *ngIf="uploadedDocSrc.length > 0" style="max-height: 170px; overflow:
                           scroll">
-                              <div class="col-12">
-                                <table class="table table-bordered">
-                                  <thead>
-                                    <th>Sr.</th>
-                                    <th>Name</th>
-                                    <th>Icon/Thumbnail</th>
-                                  </thead>
-                                  <tbody>
-                                    <tr *ngIf="uploadedDocSrc.length == 0">
-                                      <td colspan="4">
-                                        <span>No document found</span>
-                                      </td>
-                                    </tr>
-                                    <tr *ngFor="let doc of uploadedDocSrc; let d= index">
-                                      <td>{{ d + 1 }}</td>
-                                      <td>{{ doc.displayName }}</td>
-                                      <td>
-                                        <a class="image-popup-no-margins" href="{{
+                            <div class="col-12">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <th>Sr.</th>
+                                  <th>Name</th>
+                                  <th>Icon/Thumbnail</th>
+                                </thead>
+                                <tbody>
+
+                                  <tr *ngFor="let doc of uploadedDocSrc; let d= index">
+                                    <td>{{ d + 1 }}</td>
+                                    <td>{{ doc.displayName }}</td>
+                                    <td>
+                                      <a class="image-popup-no-margins" href="{{
                                                     doc.docPath }}" target="_blank">
-                                          <img class="img_thumbnail" src="{{
+                                        <img class="img_thumbnail" src="{{
                                                       doc.imgPath }}" />
-                                        </a>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
+                                      </a>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
 
-                              </div>
                             </div>
-
                           </div>
+
+
                         </div>
                       </div>
                     </div>
@@ -1011,10 +1007,16 @@
                       margin-bottom: 10px;" cellpadding="0" cellspacing="0" bordercolor="#adadad">
                       <tbody>
                         <tr>
-                          <td colspan="4" class="text-dark" style="border-bottom: 1px solid #adadad;
+                          <td colspan="2" class="text-dark" style="border-bottom: 1px solid #adadad;
                             padding: 10px;font-size: 14px;;">
                             <p class="m-0 text-dark"><strong>Address: </strong>{{item.address
                               ? item.address : 'NA'}}
+                            </p>
+                          </td>
+                          <td colspan="2" align="right" class="text-dark" style="border-bottom: 1px solid #adadad;
+                            padding: 10px;font-size: 14px;;">
+                            <p class="m-0 text-dark"><strong>Care of option: </strong>{{item.careOption
+                              ? item.careOption : 'NA'}}
                             </p>
                           </td>
                         </tr>
