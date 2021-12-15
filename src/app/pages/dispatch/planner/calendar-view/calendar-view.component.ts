@@ -12,6 +12,8 @@ import { HereMapService } from "../../../../services/here-map.service";
 import * as moment from "moment";
 import * as _ from "lodash";
 import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ConditionalExpr } from "@angular/compiler";
+import { Console, timeStamp } from "console";
 declare var $: any;
 
 @Component({
@@ -42,6 +44,7 @@ export class CalendarViewComponent implements OnInit {
   errors: {};
   tempTrips = [];
   trips = [];
+  data = [];
   events = [];
   tripData = {
     tripPlanning: [],
@@ -85,6 +88,8 @@ export class CalendarViewComponent implements OnInit {
     assetIdentification: "",
     isTemp: true,
   };
+  allEvents = [];
+  selectedStatus = ['confirmed', 'dispatched', 'started', 'enroute', 'delivered', 'tonu', 'cancelled'];
 
   async ngOnInit() {
     await this.fetchCustomers();
@@ -93,6 +98,7 @@ export class CalendarViewComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchDrivers();
+
   }
 
   emptyAssetModalFields() {
@@ -126,7 +132,6 @@ export class CalendarViewComponent implements OnInit {
       });
     });
   }
-
   fetchAssets() {
     this.assets = [];
     this.apiService.getData("assets").subscribe((result: any) => {
@@ -152,6 +157,23 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
+  getStatus(value, status) {
+    if (value) {
+      this.selectedStatus.push(status);
+    } else {
+      var index = this.selectedStatus.indexOf(status);
+      if (index !== -1) {
+        this.selectedStatus.splice(index, 1);
+      }
+    }
+    this.events = [];
+    for (const ev of this.allEvents) {
+      if (this.selectedStatus.includes(ev.status)) {
+        this.events.push(ev);
+      }
+    }
+  }
+
   fetchAllTrips() {
     let backgroundColor = "";
     let borderColor = "";
@@ -172,15 +194,19 @@ export class CalendarViewComponent implements OnInit {
             }
             let eventObj = {
               title: "#" + i.tripNo + "\n Status: " + i.tripStatus,
+              status: i.tripStatus,
               date: moment(i.dateCreated, "YYYY-MM-DD").format("YYYY-MM-DD"),
               backgroundColor: backgroundColor,
               borderColor: borderColor,
             };
             this.events.push(eventObj);
+            this.allEvents.push(eventObj);
+
           }
         });
       });
   }
+
 
   fetchCoDriver(driverID) {
     this.codrivers = this.drivers.filter(function (obj) {

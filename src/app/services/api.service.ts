@@ -15,6 +15,7 @@ export class ApiService {
   public BaseUrl = environment.BaseUrl;
   public AssetUrl = environment.AssetURL;
   public AccountService = environment.AccountServiceUrl;
+  public isUserRoles=environment.isUserRoles
   private httpOptions;
 
   private httpOptionsOld = {
@@ -161,7 +162,7 @@ export class ApiService {
   }
 
   async checkAccess() {
-
+    if(this.isUserRoles){
     const user = (await Auth.currentSession()).getIdToken().payload;
     user.userRoles = user.userRoles.split(',')
 
@@ -183,6 +184,15 @@ export class ApiService {
     if (user.userRoles.includes("role_accounts")) {
       localStorage.setItem("isAccountsEnabled", "true")
     }
+    
+  }
+  else{
+    localStorage.setItem("isDispatchEnabled", "true")
+    localStorage.setItem("isComplianceEnabled", "false")
+    localStorage.setItem("isSafetyEnabled", "true")
+    localStorage.setItem("isAccountsEnabled", "true")
+    localStorage.setItem("isManageEnabled", "true")
+  }
     // switch(true){
     //   case user.userRoles.includes("role_safety"):
     //     environment.isSafetyEnabled= true;

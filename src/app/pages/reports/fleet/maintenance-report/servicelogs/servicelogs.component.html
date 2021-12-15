@@ -90,7 +90,7 @@
 
                   <table class="row-border hover table table-bordered table-striped mb-0">
                      <thead>
-                        <tr class="back-color-gray">
+                        <tr>
                            <th>Unit Type</th>
                            <th>Vehicle/Asset</th>
                            <th>Odometer</th>
@@ -135,7 +135,8 @@
                      </tbody>
                   </table>
                </section>
-               <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allData.length !== 0">
+               <div class="col-lg-12 mt-3 text-center"
+                  *ngIf="lastItemSK !== 'end' && datee !== 'end' && allData.length !== 0">
                   <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
                      More..</button>
                </div>
