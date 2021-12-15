@@ -1945,7 +1945,17 @@
             </div>
 
             <div class="row">
-              <div class="col-6">
+              <div class="col-3">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <label class="control-label font-weight-bold text-lg-right pt-2">Care of option</label>
+
+                    <input [(ngModel)]="item.careOption" name="careOption{{ i }}" class="form-control populate"
+                      placeholder="Select address type">
+                  </div>
+                </div>
+              </div>
+              <div class="col-3">
                 <div class="row">
                   <div class="col-lg-12">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Address Type</label>
