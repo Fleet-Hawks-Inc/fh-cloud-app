@@ -686,7 +686,7 @@ export class AddTripComponent implements OnInit {
           if (editRowValues.trailer != undefined) {
             for (let i = 0; i < editRowValues.trailer.length; i++) {
               const element = editRowValues.trailer[i];
-              this.informationAsset.push(element.id);
+              this.informationAsset = [...this.informationAsset, element.id];
 
               let objj = {
                 id: element.id,
