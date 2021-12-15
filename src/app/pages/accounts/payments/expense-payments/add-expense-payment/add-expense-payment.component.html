@@ -633,8 +633,6 @@
                                                 <div class="col-lg-6">
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="paymentData.advTotal" name="advTotal" disabled>
-                                                    <label class="error">{{
-                                                        advErr }}</label>
                                                 </div>
                                             </div>
                                             <div class="row pt-1">
@@ -647,8 +645,6 @@
                                                     <input type="text" class="form-control"
                                                         [(ngModel)]="paymentData.expTotal" name="expTotal" (input)="paymentCalculation();
                                                         checkInput('expense')" disabled>
-                                                    <label class="error">{{
-                                                        advErr }}</label>
                                                 </div>
                                             </div>
                                             <div class="row pt-1">
