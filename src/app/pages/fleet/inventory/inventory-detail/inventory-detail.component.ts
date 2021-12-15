@@ -21,6 +21,8 @@ export class InventoryDetailComponent implements OnInit {
   partNumber = "";
   cost = "";
   costUnit = "";
+  tax = "";
+  totalCost = "";
   quantity = "";
   itemName = "";
   description = "";
@@ -86,10 +88,11 @@ export class InventoryDetailComponent implements OnInit {
     this.apiService.getData(`items/` + this.itemID).subscribe((result: any) => {
       result = result.Items[0];
       this.inventoryDataUpdate = result;
-
       this.carrierID = result.carrierID;
       this.partNumber = result.partNumber;
       this.cost = result.cost;
+      this.tax = result.tax;
+      this.totalCost = result.totalCost;
       this.costUnitType = result.costUnitType;
       this.costUnit = result.costUnit;
       this.quantity = result.quantity;
@@ -114,11 +117,9 @@ export class InventoryDetailComponent implements OnInit {
       this.uploadedPhotos = result.uploadedPhotos;
       this.uploadedDocs = result.uploadedDocs;
      
-     
      //AWS S3
           this.photos = result.uploadedPics;
           this.documents = result.uploadDocument;
-     
      
      /*
       if (
