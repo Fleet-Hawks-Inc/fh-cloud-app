@@ -202,7 +202,7 @@
                                     </div>
                                     <div class="col-lg-1 text-right">
                                         <button class="btn btn-sm btn-success
-                                            mar-top-37" *ngIf="!paymentID" [disabled]="searchDisabled"
+                                            mar-top-37" [disabled]="searchDisabled"
                                             (click)="fetchSearchData()">Search</button>
                                     </div>
                                 </div>
@@ -215,7 +215,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-12">
                                 <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row" *ngIf="!paymentID">
+                                    <div class="form-group row">
                                         <div class="col-lg-12">
                                             <label class="control-label
                                                 font-weight-bold
@@ -271,7 +271,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-12">
                                 <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row" *ngIf="!paymentID">
+                                    <div class="form-group row">
                                         <div class="col-lg-12">
                                             <label class="control-label
                                                 font-weight-bold
@@ -367,7 +367,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-12">
                                 <div class="bg-white p-3 text-dark">
-                                    <div class="form-group row" *ngIf="!paymentID">
+                                    <div class="form-group row">
                                         <div class="col-lg-12">
                                             <label class="control-label
                                                 font-weight-bold
@@ -521,11 +521,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-2" style="margin-top: 32px;" *ngIf="!paymentID">
-                                                    <a href="javascript:;" (click)="refreshAccount()"
+                                                <div class="col-lg-2" style="margin-top: 32px;" >
+                                                    <!-- <a href="javascript:;" (click)="refreshAccount()"
                                                         data-toggle="tooltip" title="Refresh account
                                                         data" class="btn btn-success
-                                                        btn-sm modal-with-form"><i class="fas fa-sync"></i></a>
+                                                        btn-sm modal-with-form"><i class="fas fa-sync"></i></a> -->
                                                 </div>
                                             </div>
                                             <div class="row pt-1" *ngIf="paymentData.payMode &&
@@ -678,7 +678,7 @@
                                                 preview</button>
                                             <button type="button" class="btn
                                                 btn-success modal-with-form" [disabled]="!paymentForm.form.valid
-                                                || submitDisabled" *ngIf="!paymentID"
+                                                || submitDisabled"
                                                 (click)="addRecord()">Save</button>
                                         </div>
                                     </div>

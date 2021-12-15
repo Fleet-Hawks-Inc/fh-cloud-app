@@ -8,6 +8,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ListService } from "src/app/services/list.service";
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-add-expense-payment",
@@ -54,13 +55,17 @@ export class AddExpensePaymentComponent implements OnInit {
   errors = {};
   response: any = "";
   showModal = false;
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
 
   constructor(
     private apiService: ApiService,
     private toaster: ToastrService,
     private accountService: AccountService,
     private router: Router,
-    private listService: ListService
+    private listService: ListService,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -415,5 +420,34 @@ export class AddExpensePaymentComponent implements OnInit {
       txnDate: this.paymentData.txnDate,
     };
     this.listService.openPaymentChequeModal(obj);
+  }
+
+  changePaymentMode(type) {
+    let label = "";
+    if (type == "cash") {
+      label = "Cash";
+      this.paymentData.payModeNo = null;
+    } else if (type == "cheque") {
+      label = "Cheque";
+      this.paymentData.payModeNo = null;
+    } else if (type == "eft") {
+      label = "EFT";
+      this.paymentData.payModeNo = null;
+    } else if (type == "credit_card") {
+      label = "Credit Card";
+      this.paymentData.payModeNo = null;
+    } else if (type == "debit_card") {
+      label = "Debit Card";
+      this.paymentData.payModeNo = null;
+    } else if (type == "demand_draft") {
+      label = "Demand Draft";
+      this.paymentData.payModeNo = null;
+    }
+    this.payModeLabel = label;
+    this.paymentData.payModeDate = null;
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 }
