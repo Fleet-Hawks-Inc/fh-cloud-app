@@ -219,13 +219,13 @@
                                   <div class="col-lg-6">
                                     <label class="control-label"><span class="font-weight-bold">Email:</span>
                                       {{
-                                      item.workEmail ? item.workEmail : "-"
+                                      item.workEmail ? item.workEmail : "NA"
                                       }}</label>
                                   </div>
                                   <div class="col-lg-6">
                                     <label class="control-label"><span class="font-weight-bold">Phone:</span>
                                       {{
-                                      item.workPhone ? item.workPhone : "-"
+                                      item.workPhone ? item.workPhone : "NA"
                                       }}</label>
                                   </div>
                                 </div>
@@ -267,7 +267,11 @@
                                     <label class="control-label"><span class="font-weight-bold">Type:</span>
                                       {{ address.aType | titlecase }}</label>
                                   </div>
+                                  <div class="col-6">
+                                    <label class="control-label"><span class="font-weight-bold">Care of option:</span>
+                                      {{address.careOption ? address.careOption : 'NA'}}</label>
 
+                                  </div>
                                   <input *ngIf="item.adrs?.length > 1" class="address-icon" type="radio" name="select"
                                     (change)="
                                       getAddressID(
