@@ -383,8 +383,8 @@ export class EditProfileComponent implements OnInit {
     this.banks[bankIndex].addressDetails[index].bankCities = await this.countryStateCity.GetCitiesByStateCodes(countryCode, stateCode);
   }
   addAddress() {
-    if (this.addressDetails.length === 3) { // to restrict to add max 3 addresses, can increase in future by changing this value only
-      this.toaster.warning('Maximum 3 addresses are allowed.');
+    if (this.addressDetails.length === 6) { // to restrict to add max 6 addresses, can increase in future by changing this value only
+      this.toaster.warning('Maximum 6 addresses are allowed.');
     } else {
       this.addressDetails.push({
         addressType: '',
