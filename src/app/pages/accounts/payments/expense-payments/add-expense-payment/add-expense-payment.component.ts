@@ -7,6 +7,7 @@ import { AccountService } from "src/app/services/account.service";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { ActivatedRoute, Router } from "@angular/router";
+import { ListService } from "src/app/services/list.service";
 
 @Component({
   selector: "app-add-expense-payment",
@@ -52,20 +53,33 @@ export class AddExpensePaymentComponent implements OnInit {
   submitDisabled = false;
   errors = {};
   response: any = "";
+  showModal = false;
 
   constructor(
     private apiService: ApiService,
     private toaster: ToastrService,
     private accountService: AccountService,
-    private router: Router
+    private router: Router,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
     this.fetchAccounts();
   }
 
+  emptyPrevSelection() {
+    this.settlements = [];
+    this.advancePayments = [];
+    this.expenses = [];
+    this.paymentData.finalAmount = 0;
+    this.paymentData.advTotal = 0;
+    this.paymentData.expTotal = 0;
+    this.dataMessage = Constants.NO_RECORDS_FOUND;
+    this.dataMessageAdv = Constants.NO_RECORDS_FOUND;
+    this.dataMessageExp = Constants.NO_RECORDS_FOUND;
+  }
   getEntityData(type = "") {
-    console.log("type", type);
+    this.emptyPrevSelection();
     if (type === "driver") {
       this.carriers = [];
       this.ownerOperators = [];
@@ -90,17 +104,6 @@ export class AddExpensePaymentComponent implements OnInit {
             this.drivers.push(element);
           }
         });
-        console.log("this.drivers", this.drivers);
-
-        // this.drivers = result.Items.reduce((a: any, b: any) => {
-        //   return (
-        //     (a[b["driverID"]] =
-        //       b["isDeleted"] === 1
-        //         ? b["firstName"] + b["lastName"] + " - Deleted"
-        //         : b["firstName"] + b["lastName"]),
-        //     a
-        //   );
-        // }, {});
       });
   }
 
@@ -108,22 +111,11 @@ export class AddExpensePaymentComponent implements OnInit {
     this.apiService
       .getData("contacts/get/type/carrier")
       .subscribe((result: any) => {
-        // this.carriers = result;
         result.forEach((element) => {
           if (element.isDeleted === 0) {
             this.carriers.push(element);
           }
         });
-
-        // this.carriers = result.reduce((a: any, b: any) => {
-        //   return (
-        //     (a[b["contactID"]] =
-        //       b["isDeleted"] == 1
-        //         ? b["companyName"] + "  - Deleted"
-        //         : b["companyName"]),
-        //     a
-        //   );
-        // }, {});
       });
   }
 
@@ -131,28 +123,18 @@ export class AddExpensePaymentComponent implements OnInit {
     this.apiService
       .getData(`contacts/get/type/ownerOperator`)
       .subscribe((result: any) => {
-        // this.ownerOperators = result;
         result.forEach((element) => {
           if (element.isDeleted === 0) {
             this.ownerOperators.push(element);
           }
         });
-
-        //   this.ownerOperators = result.reduce((a: any, b: any) => {
-        //     return (
-        //       (a[b["contactID"]] =
-        //         b["isDeleted"] == 1
-        //           ? b["companyName"] + "  - Deleted"
-        //           : b["companyName"]),
-        //       a
-        //     );
-        //   }, {});
       });
   }
 
   async fetchSearchData() {
     this.settlements = [];
     this.advancePayments = [];
+    this.expenses = [];
     if (this.paymentData.entityId != null) {
       if (
         this.paymentData.fromDate !== null &&
@@ -216,18 +198,18 @@ export class AddExpensePaymentComponent implements OnInit {
       .getData(`chartAc/get/all/list`)
       .subscribe((result: any) => {
         this.accList = result;
-        console.log("this.accList", this.accList);
       });
   }
 
   selectedSettlements() {
     let tripIDs = [];
+    this.paymentData.settlementIds = [];
     this.settlements.map((p) => {
       if (p.selected) {
+        this.paymentData.settlementIds.push(p.sttlID);
         tripIDs = tripIDs.concat(p.tripIds);
       }
     });
-    console.log("tripIDs", tripIDs);
     if (tripIDs.length > 0) {
       let selTrips = encodeURIComponent(JSON.stringify(tripIDs));
       this.fetchExpenses(selTrips);
@@ -239,7 +221,7 @@ export class AddExpensePaymentComponent implements OnInit {
     this.accountService
       .getData(`expense/getBy/trips/${tripIDs}`)
       .subscribe((result: any) => {
-        if (result.lemgth > 0) {
+        if (result.length === 0) {
           this.dataMessageExp = Constants.NO_RECORDS_FOUND;
         }
         result.map((exp) => {
@@ -249,7 +231,6 @@ export class AddExpensePaymentComponent implements OnInit {
           exp.errText = "";
         });
         this.expenses = result;
-        console.log("this.accList result", result);
       });
   }
 
@@ -267,17 +248,14 @@ export class AddExpensePaymentComponent implements OnInit {
     } else {
       if (data.fullPayment) {
         this.advancePayments[index].paidAmount = data.pendingPayment;
+        this.advancePayments[index].selected = true;
         this.advancePayments[index].paidStatus = true;
       } else {
         this.advancePayments[index].paidAmount = 0;
         this.advancePayments[index].paidStatus = false;
       }
-
-      // this.selectedAdvancepayments();
+      this.selectedAdvancepayments();
     }
-    console.log("this.expenses", this.expenses);
-    console.log("this.advancePayments", this.advancePayments);
-    // this.paymentCalculation();
   }
 
   selectedExpenses() {
@@ -305,8 +283,6 @@ export class AddExpensePaymentComponent implements OnInit {
         this.paymentData.expIds.push(element.expenseID);
       }
     }
-    console.log("this.paymentData.expData", this.paymentData.expData);
-    console.log("this.paymentData.expIds", this.paymentData.expIds);
     this.paymentCalculation();
   }
 
@@ -322,12 +298,8 @@ export class AddExpensePaymentComponent implements OnInit {
         // this.submitDisabled = false;
       }
     } else if (type == "advance") {
-      console.log("this.advancePayments[index]", this.advancePayments[index]);
       let advAmount = Number(this.advancePayments[index]["pendingPayment"]);
       let enteredAmount = Number(this.advancePayments[index]["paidAmount"]);
-
-      console.log("enteredAmount", enteredAmount);
-      console.log("advAmount", advAmount);
 
       if (enteredAmount < 0 || enteredAmount > advAmount) {
         this.advancePayments[index]["errText"] = "Please enter valid amount";
@@ -344,6 +316,7 @@ export class AddExpensePaymentComponent implements OnInit {
   selectedAdvancepayments() {
     this.paymentData.advancePayIds = [];
     this.paymentData.advData = [];
+    this.paymentData.advTotal = 0;
     for (const element of this.advancePayments) {
       if (
         element.selected &&
@@ -365,40 +338,34 @@ export class AddExpensePaymentComponent implements OnInit {
         this.paymentData.advData.push(obj);
       }
     }
-    console.log("this.paymentData.advData", this.paymentData.advData);
-    console.log(
-      "this.paymentData.advancePayIds",
-      this.paymentData.advancePayIds
-    );
     this.paymentCalculation();
   }
 
   paymentCalculation() {
-    this.paymentData.finalAmount =
-      Number(this.paymentData.advTotal) - Number(this.paymentData.expTotal);
+    this.paymentData.finalAmount = Math.abs(
+      Number(this.paymentData.advTotal) - Number(this.paymentData.expTotal)
+    );
   }
 
   addRecord() {
-    // if (this.paymentData.settlementIds.length === 0) {
-    //   this.toaster.error("Please select settlement(s)");
-    //   return false;
-    // }
+    if (this.paymentData.expTotal === 0) {
+      this.toaster.error("Please enter expense amount");
+      return false;
+    }
 
-    // if (this.paymentData.finalAmount <= 0) {
-    //   this.toaster.error("Net payable should be greated than 0");
-    //   return false;
-    // }
+    if (this.paymentData.advTotal === 0) {
+      this.toaster.error("Please entter advance amount");
+      return false;
+    }
 
-    // for (const element of this.settlements) {
-    //   if (element.selected) {
-    //     if (element.paidAmount === 0) {
-    //       this.toaster.error("Please select settlement amount");
-    //       return false;
-    //     }
-    //   }
-    // }
+    for (const element of this.advancePayments) {
+      if (element.selected && element.paidAmount == "") {
+        this.toaster.error("Please enter valid advance payment");
+        return false;
+      }
+    }
+
     this.submitDisabled = true;
-    console.log("this.paymentData", this.paymentData);
     this.accountService
       .postData("expense-payments", this.paymentData)
       .subscribe({
@@ -429,5 +396,24 @@ export class AddExpensePaymentComponent implements OnInit {
           this.router.navigateByUrl("/accounts/payments/expense-payments/list");
         },
       });
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.finalAmount,
+      type: "expensePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.fromDate,
+      toDate: this.paymentData.toDate,
+      finalAmount: this.paymentData.finalAmount,
+      txnDate: this.paymentData.txnDate,
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

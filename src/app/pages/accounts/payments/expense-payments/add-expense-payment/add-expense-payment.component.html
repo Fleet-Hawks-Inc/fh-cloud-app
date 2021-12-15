@@ -7,7 +7,7 @@
                         <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Payment</h4>
                     </div>
                     <div class="col-md-8 col-lg-8 text-right pr-1">
-                        <a routerLink="accounts/payments/expense-payments/list" class="btn btn-default btn-sm"><i class="fas
+                        <a routerLink="/accounts/payments/expense-payments/list" class="btn btn-default btn-sm"><i class="fas
                                 fa-list"></i> All Payments</a>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                                                     Driver<span class="mandfield
                                                         text-2 ml-1"><sup>*</sup></span></label>
                                                 <ng-select [(ngModel)]="paymentData.entityId" name="type"
-                                                    placeholder="Select Driver" #driverID="ngModel" required  class="text-capitalize">
+                                                    placeholder="Select Driver" #driverID="ngModel" required  class="text-capitalize" (change)="emptyPrevSelection();">
                                                     <ng-option value="{{
                                                         data.driverID }}" *ngFor="let data of
                                                         drivers">{{
@@ -124,7 +124,7 @@
                                                     Carrier<span class="mandfield text-2
                                                         ml-1"><sup>*</sup></span></label>
                                                 <ng-select [(ngModel)]="paymentData.entityId" name="type"
-                                                    placeholder="Select Carrier" #carrID="ngModel" required class="text-capitalize">
+                                                    placeholder="Select Carrier" #carrID="ngModel" required class="text-capitalize" (change)="emptyPrevSelection();">
                                                     <ng-option value="{{
                                                         data.contactID }}" *ngFor="let data of
                                                         carriers">{{
@@ -150,7 +150,7 @@
                                                     Select Owner Operator<span class="mandfield text-2
                                                         ml-1"><sup>*</sup></span></label>
                                                 <ng-select [(ngModel)]="paymentData.entityId" name="type" placeholder="Select Owner
-                                                    Operator" #oprID="ngModel" required class="text-capitalize">
+                                                    Operator" #oprID="ngModel" required class="text-capitalize" (change)="emptyPrevSelection();">
                                                     <ng-option value="{{
                                                         data.contactID }}" *ngFor="let data of
                                                         ownerOperators">{{
@@ -350,9 +350,7 @@
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control"
-                                                                [(ngModel)]="data.paidAmount" (input)="selectedExpenses(); paymentCalculation();
-                                                                checkInput('advance',
-                                                                i)" name="advPaidAmount{{i}}"
+                                                                [(ngModel)]="data.paidAmount" (input)="selectedAdvancepayments(); checkInput('advance', i)" name="advPaidAmount{{i}}"
                                                                 [disabled]="data.paidStatus">
                                                             <label id="stlErr{{i}}" class="error">{{
                                                                 data.errText }}</label>
@@ -361,7 +359,6 @@
                                                 </tbody>
                                             </table>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
@@ -445,9 +442,7 @@
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control"
-                                                                [(ngModel)]="data.paidAmount" (input)="paymentCalculation();
-                                                                checkInput('expense',
-                                                                i)" name="expensePaidAmount{{i}}"
+                                                                [(ngModel)]="data.paidAmount" (input)="selectedExpenses(); checkInput('expense', i)" name="expensePaidAmount{{i}}"
                                                                 [disabled]="data.paidStatus">
                                                             <label id="expErr{{i}}" class="error">{{
                                                                 data.errText }}</label>
@@ -679,7 +674,7 @@
                                             <button type="button" class="btn
                                                 btn-success modal-with-form
                                                 mr-2" *ngIf="paymentData.payMode
-                                                == 'cheque'" (click)="showCheque()">Cheque
+                                                == 'cheque' && paymentData.finalAmount > 0" (click)="showCheque()">Cheque
                                                 preview</button>
                                             <button type="button" class="btn
                                                 btn-success modal-with-form" [disabled]="!paymentForm.form.valid
@@ -697,3 +692,4 @@
         </section>
     </div>
 </section>
+<app-payment-cheque></app-payment-cheque>

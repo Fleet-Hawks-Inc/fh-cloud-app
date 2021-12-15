@@ -136,16 +136,16 @@ const routes: Routes = [
     component: VendorPaymentDetailComponent,
   },
   {
+    path: "expense-payments/list",
+    component: ExpensePaymentListComponent,
+  },
+  {
     path: "expense-payments/add",
     component: AddExpensePaymentComponent,
   },
   {
     path: "expense-payments/detail/:paymentID",
-    component: ExpenseDetailComponent,
-  },
-  {
-    path: "expense-payments/list",
-    component: ExpensePaymentListComponent,
+    component: ExpensePaymentDetailComponent,
   },
 ];
 

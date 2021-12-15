@@ -12,8 +12,7 @@ export class ExpensePaymentListComponent implements OnInit {
   filter = {
     startDate: null,
     endDate: null,
-    type: null,
-    paymentNo: null,
+    amount: null,
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -27,13 +26,44 @@ export class ExpensePaymentListComponent implements OnInit {
   }
 
   async getList() {
+    let filterAmount = "";
+    if (this.filter.amount) {
+      filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+    }
     const result: any = await this.accountService
-      .getData(`expense-payments/paging`)
+      .getData(
+        `expense-payments/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}`
+      )
       .toPromise();
     if (result.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
     this.payments = result;
-    console.log("result", result);
+    this.payments.map((v) => {
+      v.payMode = v.payMode.replace("_", " ");
+      v.url = `/accounts/payments/expense-payments/detail/${v.paymentID}`;
+    });
+  }
+
+  searchFilter() {
+    if (
+      this.filter.amount != null ||
+      this.filter.startDate !== null ||
+      this.filter.endDate !== null
+    ) {
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.payments = [];
+      this.getList();
+    }
+  }
+
+  resetFilter() {
+    this.filter.amount = null;
+    this.filter.startDate = null;
+    this.filter.endDate = null;
+
+    this.dataMessage = Constants.FETCHING_DATA;
+    this.payments = [];
+    this.getList();
   }
 }

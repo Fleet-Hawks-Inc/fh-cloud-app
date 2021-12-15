@@ -7,9 +7,8 @@
             <div class="row" style="padding-top:10px;">
               <div class="col-md-2 col-lg-2 pr-0">
                 <div class="input-group input-group-md mb-3">
-                  <input type="text" class="form-control" placeholder="Search by
-                    payment#" name="paymentNo"
-                    [(ngModel)]="filter.paymentNo">
+                  <input type="text" class="form-control" placeholder="Search by amount" name="amount"
+                    [(ngModel)]="filter.amount">
                 </div>
               </div>
   
@@ -45,7 +44,7 @@
                   [disabled]="disableSearch" (click)="resetFilter()">Reset</button>
               </div>
   
-              <div class="col-md-3 col-lg-3 text-right pr-1">
+              <div class="col-md-5 col-lg-5 text-right pr-1">
                 <button (click)="refreshData()" data-toggle="tooltip"
                   title="Refresh data" [disabled]="disableSearch" class="btn
                   btn-success btn-sm mr-2">
@@ -92,11 +91,11 @@
                                     </td>
                                   </tr>
                                   <tr *ngFor="let data of payments; let i= index;">
-                                    <td>{{ data.paymentNo }} </td>
-                                    <td>{{ data.txnDate | date: 'yyyy/MM/dd'}} </td>
-                                    <td>{{ data.payMode }} </td>
-                                    <td>{{ data.entityId }} </td>
-                                    <td>{{ data.advTotal| number : '1.2-2' }} {{ data.currency }}</td>
+                                    <td class="font-weight-bold cursorpoint" [routerLink]="data.url">{{ data.paymentNo }} </td>
+                                    <td class="cursorpoint" [routerLink]="data.url">{{ data.txnDate | date: 'yyyy/MM/dd'}} </td>
+                                    <td class="text-capitalize cursorpoint" [routerLink]="data.url">{{ data.payMode }} </td>
+                                    <td class="text-capitalize cursorpoint" [routerLink]="data.url">{{ data.entityName }} </td>
+                                    <td [routerLink]="data.url" class="cursorpoint">{{ data.finalAmount| number : '1.2-2' }} {{ data.currency }}</td>
                                   </tr>
                                 </tbody>
                               </table>
