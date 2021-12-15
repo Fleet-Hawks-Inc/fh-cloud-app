@@ -220,7 +220,7 @@ export class AddServiceProgramComponent implements OnInit, AfterViewInit {
   /*
    * Update Service Program
   */
-  updateServiceProgram(entryID) {
+  updateServiceProgram() {
     this.hasError = false;
     this.hasSuccess = false;
     this.submitDisabled = true;
