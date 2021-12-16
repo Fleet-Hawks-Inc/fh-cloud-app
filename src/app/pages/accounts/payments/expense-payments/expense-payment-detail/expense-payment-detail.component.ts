@@ -34,6 +34,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
   };
   showModal = false;
   paymentID = "";
+  accountsObjects = {};
 
   constructor(
     private accountService: AccountService,
@@ -43,6 +44,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
+    this.fetchAccountsByIDs();
     this.fetchPayment();
   }
 
@@ -70,5 +72,11 @@ export class ExpensePaymentDetailComponent implements OnInit {
       .getData(`expense-payments/detail/${this.paymentID}`)
       .toPromise();
     this.paymentData = result;
+  }
+
+  async fetchAccountsByIDs() {
+    this.accountsObjects = await this.accountService
+      .getData("chartAc/get/all/list")
+      .toPromise();
   }
 }
