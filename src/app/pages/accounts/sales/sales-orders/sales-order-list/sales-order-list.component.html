@@ -105,10 +105,8 @@
                       <tr *ngIf="allSales.length === 0" class="text-center">
                         <td colspan="9">{{ dataMessage }}</td>
                       </tr>
-                      <tr *ngFor="let item of allSales">
-                        <td title="/accounts/sales/orders/detail/{{
-                          item.saleID
-                          }}" routerLink="/accounts/sales/orders/detail/{{
+                      <tr *ngFor="let item of allSales" class="cursorpoint">
+                        <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           {{ item.txnDate | date: "yyyy/MM/dd" }}
@@ -133,9 +131,7 @@
                           }}">
                           {{ item.shipDate ? (item.shipDate | date: "yyyy/MM/dd") : '-' }}
                         </td>
-                        <td title="/accounts/sales/orders/detail/{{
-                          item.saleID
-                          }}" routerLink="/accounts/sales/orders/detail/{{
+                        <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           {{
