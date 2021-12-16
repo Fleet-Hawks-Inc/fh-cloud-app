@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModule } from './devices/devices.module';
 import {
@@ -100,6 +101,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     SharedModule,
     NgbModule,
+    InfiniteScrollModule,
     DeviceModule
   ], exports: [...COMPONENTS],
 })
