@@ -232,6 +232,7 @@ export class AddExpensePaymentComponent implements OnInit {
         result.map((exp) => {
           exp.prevPaidAmount = Number(exp.finalTotal) - Number(exp.balance);
           exp.status = exp.status ? exp.status : "pending";
+          exp.status = exp.status.replace("_", " ");
           exp.paidStatus = false;
           exp.errText = "";
         });
@@ -282,6 +283,9 @@ export class AddExpensePaymentComponent implements OnInit {
           status: status,
           pendingAmount: Number(element.balance) - Number(element.paidAmount),
           tripID: element.tripID,
+          expDate: element.txnDate,
+          expTotal: element.finalTotal,
+          tripNo: element.tripNo,
         };
         this.paymentData.expTotal += Number(element.paidAmount);
         this.paymentData.expData.push(obj);
@@ -337,6 +341,8 @@ export class AddExpensePaymentComponent implements OnInit {
           status: status,
           pendingAmount:
             Number(element.pendingPayment) - Number(element.paidAmount),
+          advPayNo: element.paymentNo,
+          advTotal: element.amount,
         };
         this.paymentData.advTotal += Number(element.paidAmount);
         this.paymentData.advancePayIds.push(element.paymentID);
@@ -359,7 +365,7 @@ export class AddExpensePaymentComponent implements OnInit {
     }
 
     if (this.paymentData.advTotal === 0) {
-      this.toaster.error("Please entter advance amount");
+      this.toaster.error("Please enter advance amount");
       return false;
     }
 
