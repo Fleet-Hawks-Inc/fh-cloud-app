@@ -181,6 +181,7 @@
                               placeholder="eg. 100,200,300"
                               name="cost"
                               [(ngModel)]="cost"
+                              (change)="calculateAmount()"
                               placeholder="Unit cost"
                               #iUniC="ngModel"
                               required
@@ -280,6 +281,7 @@
                           placeholder="eg. 10,20,30"
                           name="quantity"
                           [(ngModel)]="quantity"
+                          (change)="calculateAmount()"
                           placeholder="eg. 1,2,3"
                           #iQuan="ngModel"
                           required
@@ -311,9 +313,8 @@
                                 pt-2
                               "
                               >Tax <span class="mandfield text-2 ml-1"
-                            ></span></label
+                            ><sup>*</sup></span></label
                             >
-                          
                           </div>
                           <div class="col-lg-4">
                             <label
@@ -337,8 +338,19 @@
                               [(ngModel)]="tax"
                               (change)="calculateAmount()"
                               placeholder="Tax Amount"
-                              #iAisle="ngModel"
+                              #iunitT="ngModel"
+                              required
                             />
+                                 <div
+                              *ngIf="
+                                iunitT.invalid && (iunitT.dirty || iunitT.touched)
+                              "
+                              class="text-danger"
+                            >
+                              <div *ngIf="iunitT.errors.required">
+                                Tax is required.
+                              </div>
+                            </div>
                           </div>
                           
                           <div class="col-lg-4">
