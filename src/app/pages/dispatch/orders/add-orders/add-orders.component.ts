@@ -1254,7 +1254,7 @@ export class AddOrdersComponent implements OnInit {
             }
           }
 
-          if (this.customerSelected[0].adrs.length > 0) {
+          if (this.customerSelected[0].adrs.length > 0 && !this.getOrderID && !this.cloneID) {
             this.orderData.cusAddressID =
               this.customerSelected[0].adrs[0].addressID;
             let newCountCode = this.customerSelected[0].adrs[0].cCode;
@@ -1669,9 +1669,9 @@ export class AddOrdersComponent implements OnInit {
       let advance: any = this.orderData.advance;
       let totalTax = parseInt(gst) + parseInt(pst) + parseInt(hst);
       let taxAmount = (parseInt(this.totalAmount) * totalTax) / 100;
-      let final = parseInt(this.totalAmount) + taxAmount;
-
+      let final: any = (parseInt(this.totalAmount) + taxAmount).toFixed(2);
       this.orderData["totalAmount"] = final;
+
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
     }
