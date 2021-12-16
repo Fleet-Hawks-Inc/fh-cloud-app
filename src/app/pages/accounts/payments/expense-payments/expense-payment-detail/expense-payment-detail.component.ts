@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class ExpensePaymentDetailComponent implements OnInit {
   paymentData = {
+    entityName: "",
     paymentTo: null,
     entityId: null,
     paymentNo: "",
