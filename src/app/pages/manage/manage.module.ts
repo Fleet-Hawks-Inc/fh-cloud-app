@@ -19,7 +19,6 @@ import { ManagemainComponent } from './managemain/managemain.component';
 
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const COMPONENTS = [
