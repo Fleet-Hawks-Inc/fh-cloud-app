@@ -1048,6 +1048,38 @@
             </table>
           </td>
         </tr>
+        <tr class="text-dark">
+          <td colspan="2">
+            <table class="table table-sm table-bordered table-striped">
+              <tbody>
+                <tr>
+                  <td valign="top" style="width: 33.33%;">
+                    <strong>Pickup Number(s):</strong>
+                    <span *ngIf="allPUs.length === 0"> NA</span>
+                    <span *ngFor="let pu of allPUs; let isLast=last">
+                      {{pu}} <span *ngIf="!isLast">,</span>
+                    </span>
+                  </td>
+                  <td valign="top" style="width: 33.33%;">
+                    <strong>Delivery Number(s):</strong>
+                    <span *ngIf="allDels.length === 0"> NA</span>
+                    <span *ngFor="let del of allDels; let isLast=last">
+                      {{del}} <span *ngIf="!isLast">,</span>
+                    </span>
+                  </td>
+                  <td valign="top" style="width: 33.33%;">
+                    <strong>Customer PO(s):</strong>
+                    <span *ngIf="allPOs.length === 0"> NA</span>
+                    <span *ngFor="let po of allPOs; let isLast=last">
+                      {{po}} <span *ngIf="!isLast">,</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+
 
         <tr>
           <td colspan="2">
