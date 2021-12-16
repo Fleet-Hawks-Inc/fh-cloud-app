@@ -8,6 +8,7 @@ export const environment = {
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,
+  isUserRoles:false,
 
   isReportsEnabled: true,
 

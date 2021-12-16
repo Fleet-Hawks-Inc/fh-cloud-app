@@ -61,8 +61,7 @@
                                                             *ngFor="let data of
                                                             addresses">
                                                             <ng-option
-                                                                *ngIf="data.fullAddr
-                                                                != ''"
+                                                                *ngIf="data.fullAddr"
                                                                 value="{{
                                                                 data.fullAddr
                                                                 }}">
@@ -1339,6 +1338,212 @@
                                     </table>
                                 </td>
                             </tr>
+                            <tr *ngIf="paydata.type === 'expensePayment'">
+                                <td>
+                                    <table
+                                        width="100%"
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        height="300"
+                                        class="class_border">
+                                        <tbody>
+                                            <tr>
+                                                <td valign="top">
+                                                    <table
+                                                        width="100%"
+                                                        border="0"
+                                                        cellspacing="0"
+                                                        cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <table
+                                                                        width="100%"
+                                                                        border="0"
+                                                                        cellspacing="0"
+                                                                        cellpadding="0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    width="33%"
+                                                                                    height="30"
+                                                                                    class="pl-3
+                                                                                    border_bottom
+                                                                                    pt-2
+                                                                                    text-uppercase">
+                                                                                    {{
+                                                                                    cheqdata.entityName
+                                                                                    }}<br
+                                                                                        /><br
+                                                                                        />
+                                                                                    Pay
+                                                                                    Period:
+                                                                                    <br
+                                                                                        />{{
+                                                                                    cheqdata.payPeriod
+                                                                                    }}
+                                                                                </td>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    width="33%"
+                                                                                    align="center"
+                                                                                    valign="top"
+                                                                                    class="border_bottom
+                                                                                    pt-2">
+                                                                                    {{
+                                                                                    cheqdata.payDate
+                                                                                    }}
+                                                                                </td>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    align="right"
+                                                                                    valign="top"
+                                                                                    class="pr-3
+                                                                                    border_bottom
+                                                                                    pt-2">
+                                                                                    {{
+                                                                                    cheqdata.chqNo
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td
+                                                                    width="50%"
+                                                                    height="240"
+                                                                    valign="top"
+                                                                    class="border_right">
+                                                                    <table
+                                                                        width="96%"
+                                                                        border="0"
+                                                                        align="center"
+                                                                        cellpadding="0"
+                                                                        cellspacing="0">
+                                                                        <tbody>
+                                                                            <!-- <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td
+                                                                                    width="48%">&nbsp;</td>
+                                                                                <td
+                                                                                    width="25%"
+                                                                                    align="right">
+                                                                                    Period
+                                                                                </td>
+                                                                                <td
+                                                                                    width="2%"
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">YTD</td>
+                                                                            </tr> -->
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td>Regular</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    <!-- {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }} -->
+                                                                                </td>
+                                                                                <td
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td
+                                                                                    height="6"
+                                                                                    colspan="4">&nbsp;</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                                <td width="50%"
+                                                                    valign="top">
+                                                                    <table
+                                                                        width="96%"
+                                                                        border="0"
+                                                                        align="center"
+                                                                        cellpadding="0"
+                                                                        cellspacing="0">
+                                                                        <tbody>
+                                                                            <!-- <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td
+                                                                                    width="48%">&nbsp;</td>
+                                                                                <td
+                                                                                    width="25%"
+                                                                                    align="right">
+                                                                                    Period
+                                                                                </td>
+                                                                                <td
+                                                                                    width="2%"
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">YTD</td>
+                                                                            </tr> -->
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td>Regular</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    <!-- {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }} -->
+                                                                                </td>
+                                                                                <td
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td
+                                                                                    height="6"
+                                                                                    colspan="4">&nbsp;</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>&nbsp;</td>
                             </tr>
@@ -2182,6 +2387,212 @@
                                                 <td align="right">
                                                     {{ this.cheqdata.regularPay
                                                     | number: "1.2-2" }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr *ngIf="paydata.type === 'expensePayment'">
+                                <td>
+                                    <table
+                                        width="100%"
+                                        border="0"
+                                        cellspacing="0"
+                                        cellpadding="0"
+                                        height="300"
+                                        class="class_border">
+                                        <tbody>
+                                            <tr>
+                                                <td valign="top">
+                                                    <table
+                                                        width="100%"
+                                                        border="0"
+                                                        cellspacing="0"
+                                                        cellpadding="0">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    <table
+                                                                        width="100%"
+                                                                        border="0"
+                                                                        cellspacing="0"
+                                                                        cellpadding="0">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    width="33%"
+                                                                                    height="30"
+                                                                                    class="pl-3
+                                                                                    border_bottom
+                                                                                    pt-2
+                                                                                    text-uppercase">
+                                                                                    {{
+                                                                                    cheqdata.entityName
+                                                                                    }}<br
+                                                                                        /><br
+                                                                                        />
+                                                                                    Pay
+                                                                                    Period:
+                                                                                    <br
+                                                                                        />{{
+                                                                                    cheqdata.payPeriod
+                                                                                    }}
+                                                                                </td>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    width="33%"
+                                                                                    align="center"
+                                                                                    valign="top"
+                                                                                    class="border_bottom
+                                                                                    pt-2">
+                                                                                    {{
+                                                                                    cheqdata.payDate
+                                                                                    }}
+                                                                                </td>
+                                                                                <td
+                                                                                    style="color:
+                                                                                    #000000"
+                                                                                    align="right"
+                                                                                    valign="top"
+                                                                                    class="pr-3
+                                                                                    border_bottom
+                                                                                    pt-2">
+                                                                                    {{
+                                                                                    cheqdata.chqNo
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td
+                                                                    width="50%"
+                                                                    height="240"
+                                                                    valign="top"
+                                                                    class="border_right">
+                                                                    <table
+                                                                        width="96%"
+                                                                        border="0"
+                                                                        align="center"
+                                                                        cellpadding="0"
+                                                                        cellspacing="0">
+                                                                        <tbody>
+                                                                            <!-- <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td
+                                                                                    width="48%">&nbsp;</td>
+                                                                                <td
+                                                                                    width="25%"
+                                                                                    align="right">
+                                                                                    Period
+                                                                                </td>
+                                                                                <td
+                                                                                    width="2%"
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">YTD</td>
+                                                                            </tr> -->
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td>Regular</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    <!-- {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }} -->
+                                                                                </td>
+                                                                                <td
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td
+                                                                                    height="6"
+                                                                                    colspan="4">&nbsp;</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                                <td width="50%"
+                                                                    valign="top">
+                                                                    <table
+                                                                        width="96%"
+                                                                        border="0"
+                                                                        align="center"
+                                                                        cellpadding="0"
+                                                                        cellspacing="0">
+                                                                        <tbody>
+                                                                            <!-- <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td
+                                                                                    width="48%">&nbsp;</td>
+                                                                                <td
+                                                                                    width="25%"
+                                                                                    align="right">
+                                                                                    Period
+                                                                                </td>
+                                                                                <td
+                                                                                    width="2%"
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">YTD</td>
+                                                                            </tr> -->
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
+                                                                                <td>Regular</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    <!-- {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }} -->
+                                                                                </td>
+                                                                                <td
+                                                                                    align="right">&nbsp;</td>
+                                                                                <td
+                                                                                    align="right">
+                                                                                    {{
+                                                                                    cheqdata.regularPay
+                                                                                    |
+                                                                                    number:
+                                                                                    "1.2-2"
+                                                                                    }}
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td
+                                                                                    height="6"
+                                                                                    colspan="4">&nbsp;</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </td>
                                             </tr>
                                         </tbody>
