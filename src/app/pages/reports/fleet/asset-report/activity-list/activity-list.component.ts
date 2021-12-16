@@ -48,7 +48,7 @@ export class ActivityListComponent implements OnInit {
   flatbedOptions: any = {};
   curtainOptions: any = {};
   closeResult = '';
-
+  disableSearch = false;
   response: any = '';
   hasError = false;
   hasSuccess = false;
@@ -143,6 +143,7 @@ export class ActivityListComponent implements OnInit {
     if (this.lastEvaluatedKey !== 'end') {
       const result = await this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
       if (result.Items.length === 0) {
+        this.disableSearch = false;
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
       this.suggestedAssets = [];
@@ -153,6 +154,7 @@ export class ActivityListComponent implements OnInit {
       })
 
       if (result.Items.length > 0) {
+        this.disableSearch = false;
         if (result.LastEvaluatedKey !== undefined) {
           this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
         }
@@ -176,6 +178,7 @@ export class ActivityListComponent implements OnInit {
       if (this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
+      this.disableSearch = true;
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
@@ -188,6 +191,7 @@ export class ActivityListComponent implements OnInit {
 
   resetFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
+      this.disableSearch = true;
       this.assetID = '';
       this.assetIdentification = '';
       this.lastEvaluatedKey = ''

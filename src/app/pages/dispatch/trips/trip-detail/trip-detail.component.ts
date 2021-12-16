@@ -82,6 +82,9 @@ export class TripDetailComponent implements OnInit {
   allFetchedOrders = [];
   customersObjects = [];
   orderNumbers = "";
+  allDels = [];
+  allPOs = [];
+  allPUs = [];
   routeName = "-";
   plannedMiles = 0;
   uploadedDocs = [];
@@ -175,10 +178,13 @@ export class TripDetailComponent implements OnInit {
       .getData("trips/" + this.tripID)
       .subscribe(async (result: any) => {
         result = result.Items[0];
-        
+
         if (result.orderId.length > 0) {
           this.customerData = result.customerData;
           this.orderNumbers = result.orderNumbers;
+          this.allDels = result.allDels;
+          this.allPOs = result.allPOs;
+          this.allPUs = result.allPUs;
         }
         if (result.settlmnt) {
           this.tripStatus = "Settled";

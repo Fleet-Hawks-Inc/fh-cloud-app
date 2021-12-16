@@ -19,6 +19,7 @@ import { ManagemainComponent } from './managemain/managemain.component';
 
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const COMPONENTS = [
@@ -101,8 +102,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgSelectModule,
     SharedModule,
     NgbModule,
+    DeviceModule,
     InfiniteScrollModule,
-    DeviceModule
   ], exports: [...COMPONENTS],
 })
 export class ManageModule { }

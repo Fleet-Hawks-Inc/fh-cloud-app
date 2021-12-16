@@ -71,6 +71,7 @@ export class NewAddressBookComponent implements OnInit {
     workEmail: '',
     eTypes: [],
     adrs: [{
+      careOption: '',
       aType: 'Billing Address',
       cName: '',
       sName: '',
@@ -437,6 +438,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: 'Billing Address',
         cName: '',
         sName: '',
@@ -1456,6 +1458,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: null,
         cName: '',
         sName: '',

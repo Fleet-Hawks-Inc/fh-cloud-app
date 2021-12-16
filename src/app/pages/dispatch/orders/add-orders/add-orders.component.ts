@@ -1609,6 +1609,13 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
+  changeTax(value) {
+    if (!value && this.stateTaxes.length === 0) {
+      this.fetchStateTaxes();
+    }
+    this.calculateAmount();
+  }
+
   async calculateAmount() {
     this.freightFee = this.orderData.charges.freightFee["amount"];
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
@@ -1650,7 +1657,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
     if (!this.orderData.zeroRated) {
-      this.fetchStateTaxes();
       let gst = this.orderData.taxesInfo[0].amount
         ? this.orderData.taxesInfo[0].amount
         : 0;
