@@ -623,7 +623,10 @@
                                   {{ data.eventParams.type }}
                                   <b class="text-success">{{
                                     data.entityNumber
-                                    }}</b>
+                                    }}</b> 
+                                    <span *ngIf="data.eventParams.location"><br/>
+                                    <p>Last Location: {{data.eventParams.location}}</p>
+                                    </span>
                                 </li>
                               </ul>
                             </div>
@@ -1015,7 +1018,7 @@
                           </td>
                           <td colspan="2" align="right" class="text-dark" style="border-bottom: 1px solid #adadad;
                             padding: 10px;font-size: 14px;;">
-                            <p class="m-0 text-dark"><strong>Care of option: </strong>{{item.careOption
+                            <p class="m-0 text-dark"><strong>C/O: </strong>{{item.careOption
                               ? item.careOption : 'NA'}}
                             </p>
                           </td>

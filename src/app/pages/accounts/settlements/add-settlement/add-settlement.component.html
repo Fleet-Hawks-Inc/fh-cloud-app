@@ -160,6 +160,21 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <div class="row mt-2">
+                                            <div class="col-12">
+                                                <label class="control-label
+                                                font-weight-bold pt-2">Show Fuel</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="radio-inline mr-3">
+                                                    <input type="radio" name="optradio" value="yes" (change)="checkFuelVisibility($event)" [checked]="showFuel === 'yes'"><span class="pl-1">Yes</span>
+                                                  </label>
+                                                  <label class="radio-inline">
+                                                    <input type="radio" name="optradio" value="no" (change)="checkFuelVisibility($event)" [checked]="showFuel === 'no'"><span class="pl-1">No</span>
+                                                  </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-lg-2" *ngIf="settlementData.type">
                                         <label class="control-label
@@ -1262,91 +1277,94 @@
                                             </div>
                                         </div>
 
-                                        <div class="row pt-2" *ngIf="settlementData.type ==
+                                        <div *ngIf="showFuel === 'yes'">
+                                            <div class="row pt-2" *ngIf="settlementData.type ==
                                             'driver' || settlementData.type ==
                                             'owner_operator'">
                                             <div class="col-lg-10">
-                                                <h4 class="font-weight-bold">Fuel
-                                                    Expenses</h4>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <table class="table
-                                                    table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Date</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Location</th>
-                                                            <th>Card No.</th>
-                                                            <th>Type</th>
-                                                            <th>Quantity</th>
-                                                            <th>Amount</th>
-                                                            <th>Add</th>
-                                                            <th>Deduct</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="text-center" *ngIf="fuelEnteries.length
-                                                            === 0">
-                                                            <td colspan="8">{{
-                                                                noRecordMsg }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let data of
-                                                            fuelEnteries; let
-                                                            fe=index;">
-                                                            <td>{{ data.fuelDate
-                                                                |
-                                                                date:"yyyy/MM/dd"
-                                                                }}</td>
-                                                            <td>{{
-                                                                data.unitNumber
-                                                                }}</td>
-                                                            <td>{{ data.cityName
-                                                                }}, {{
-                                                                data.locationCountry
-                                                                }}</td>
-                                                            <td>{{
-                                                                data.fuelCardNumber}}</td>
-                                                            <td>{{ data.type }}</td>
-                                                            <td>{{ data.quantity
-                                                                }} {{
-                                                                data.unitOfMeasure
-                                                                }}</td>
-                                                            <td>
-                                                                {{ data.subTotal
-                                                                | number :
-                                                                '1.2-2'
-                                                                }}
-                                                                {{ data.currency
-                                                                }}
-                                                                <span *ngIf="data.convert">
-                                                                    ({{data.total
+                                                    <h4 class="font-weight-bold">Fuel
+                                                        Expenses</h4>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <table class="table
+                                                        table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Date</th>
+                                                                <th>Vehicle</th>
+                                                                <th>Location</th>
+                                                                <th>Card No.</th>
+                                                                <th>Type</th>
+                                                                <th>Quantity</th>
+                                                                <th>Amount</th>
+                                                                <th>Add</th>
+                                                                <th>Deduct</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-center" *ngIf="fuelEnteries.length
+                                                                === 0">
+                                                                <td colspan="8">{{
+                                                                    noRecordMsg }}</td>
+                                                            </tr>
+                                                            <tr *ngFor="let data of
+                                                                fuelEnteries; let
+                                                                fe=index;">
+                                                                <td>{{ data.fuelDate
+                                                                    |
+                                                                    date:"yyyy/MM/dd"
+                                                                    }}</td>
+                                                                <td>{{
+                                                                    data.unitNumber
+                                                                    }}</td>
+                                                                <td>{{ data.cityName
+                                                                    }}, {{
+                                                                    data.locationCountry
+                                                                    }}</td>
+                                                                <td>{{
+                                                                    data.fuelCardNumber}}</td>
+                                                                <td>{{ data.type }}</td>
+                                                                <td>{{ data.quantity
+                                                                    }} {{
+                                                                    data.unitOfMeasure
+                                                                    }}</td>
+                                                                <td>
+                                                                    {{ data.subTotal
                                                                     | number :
-                                                                    '1.2-2' }}
-                                                                    {{data.billingCurrency}},
-                                                                    1
-                                                                    {{data.billingCurrency}}
-                                                                    =
-                                                                    {{data.convertRate
-                                                                    | number :
-                                                                    '1.2-2' }})
-                                                                </span>
-                                                            </td>
-                                                            <td>
-                                                                <input type="checkbox" [(ngModel)]="data.add"
-                                                                    name="add{{fe}}" (change)="selectedFuelEntry()"
-                                                                    [disabled]="data.addDisabled" />
-                                                            </td>
-                                                            <td>
-                                                                <input type="checkbox" [(ngModel)]="data.deduction"
-                                                                    name="sub{{fe}}" (change)="selectedFuelEntry()"
-                                                                    [disabled]="data.subDisabled" />
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                    '1.2-2'
+                                                                    }}
+                                                                    {{ data.currency
+                                                                    }}
+                                                                    <span *ngIf="data.convert">
+                                                                        ({{data.total
+                                                                        | number :
+                                                                        '1.2-2' }}
+                                                                        {{data.billingCurrency}},
+                                                                        1
+                                                                        {{data.billingCurrency}}
+                                                                        =
+                                                                        {{data.convertRate
+                                                                        | number :
+                                                                        '1.2-2' }})
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" [(ngModel)]="data.add"
+                                                                        name="add{{fe}}" (change)="selectedFuelEntry()"
+                                                                        [disabled]="data.addDisabled" />
+                                                                </td>
+                                                                <td>
+                                                                    <input type="checkbox" [(ngModel)]="data.deduction"
+                                                                        name="sub{{fe}}" (change)="selectedFuelEntry()"
+                                                                        [disabled]="data.subDisabled" />
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
+                                        
 
                                         <!-- trip addition -->
                                         <div class="row pt-2">
