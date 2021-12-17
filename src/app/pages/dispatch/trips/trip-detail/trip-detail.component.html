@@ -623,10 +623,10 @@
                                   {{ data.eventParams.type }}
                                   <b class="text-success">{{
                                     data.entityNumber
-                                    }}</b> 
-                                    <span *ngIf="data.eventParams.location"><br/>
+                                    }}</b>
+                                  <span *ngIf="data.eventParams.location"><br />
                                     <p>Last Location: {{data.eventParams.location}}</p>
-                                    </span>
+                                  </span>
                                 </li>
                               </ul>
                             </div>
@@ -956,10 +956,13 @@
       <tbody>
         <tr>
           <td width="50%">
-            <h1 style="font-size: 26px">Driver Information Sheet</h1>
+            <h1 style="font-size: 26px; color: #000;margin: 0;">Driver Information Sheet</h1>
           </td>
           <td width="50%" align="right" valign="middle">
-            <img src="../../../../../assets/img/logo.png" />
+            <img crossorigin="anonymous" [src]="companyLogoSrc" alt="logo" style="max-width: 100px;">
+            <p class="m-0 font-weight-bold text-dark" style="font-size: 16px;"
+              *ngIf="tripData.termsInfo.tagLine && tripData.termsInfo.tagLine != ''">{{ tripData.termsInfo.tagLine }}
+            </p>
           </td>
         </tr>
         <tr>
@@ -1195,31 +1198,43 @@
           </td>
         </tr>
 
+        <tr *ngIf="tripData.termsInfo.driverTerms && tripData.termsInfo.driverTerms != ''">
+          <td colspan="2" style="margin-bottom: 15px;">
+            <strong>Dispatch Notes For Driver: </strong> {{ tripData.termsInfo.driverTerms }}
+          </td>
+        </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
-
+        <tr *ngIf="tripData.termsInfo.dispatchTerms && tripData.termsInfo.dispatchTerms != ''">
+          <td colspan="2" style="margin-bottom: 15px;">
+            <strong>Terms and Conditions For Truck Dispatch: </strong>{{ tripData.termsInfo.dispatchTerms }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
         <tr>
           <td colspan="2">
             <table width="100%" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark">
+                    <p style="font-size: 13px" class="text-dark m-0">
                       <strong>Accepted By: </strong>
                     </p>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
-                  <td width="10%" style="font-size: 13px" class="text-center">
+                  <td width="10%" style="font-size: 13px" class="text-center text-dark m-0">
                     <strong>Date:</strong>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark text-center"><strong>Signature</strong></p>
+                    <p style="font-size: 13px" class="text-dark text-center m-0"><strong>Signature</strong></p>
                   </td>
                   <td style="border-bottom: solid 1px #999">&nbsp;</td>
                 </tr>
