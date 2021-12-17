@@ -1254,7 +1254,7 @@ export class AddOrdersComponent implements OnInit {
             }
           }
 
-          if (this.customerSelected[0].adrs.length > 0) {
+          if (this.customerSelected[0].adrs.length > 0 && !this.getOrderID && !this.cloneID) {
             this.orderData.cusAddressID =
               this.customerSelected[0].adrs[0].addressID;
             let newCountCode = this.customerSelected[0].adrs[0].cCode;
@@ -1609,6 +1609,13 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
+  changeTax(value) {
+    if (!value && this.stateTaxes.length === 0) {
+      this.fetchStateTaxes();
+    }
+    this.calculateAmount();
+  }
+
   async calculateAmount() {
     this.freightFee = this.orderData.charges.freightFee["amount"];
     this.fuelSurcharge = this.orderData.charges.fuelSurcharge["amount"];
@@ -1650,7 +1657,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
     if (!this.orderData.zeroRated) {
-      this.fetchStateTaxes();
       let gst = this.orderData.taxesInfo[0].amount
         ? this.orderData.taxesInfo[0].amount
         : 0;
@@ -1663,9 +1669,9 @@ export class AddOrdersComponent implements OnInit {
       let advance: any = this.orderData.advance;
       let totalTax = parseInt(gst) + parseInt(pst) + parseInt(hst);
       let taxAmount = (parseInt(this.totalAmount) * totalTax) / 100;
-      let final = parseInt(this.totalAmount) + taxAmount;
-
+      let final: any = (parseInt(this.totalAmount) + taxAmount).toFixed(2);
       this.orderData["totalAmount"] = final;
+
       this.totalAmount = final;
       this.orderData.finalAmount = final - parseInt(advance);
     }

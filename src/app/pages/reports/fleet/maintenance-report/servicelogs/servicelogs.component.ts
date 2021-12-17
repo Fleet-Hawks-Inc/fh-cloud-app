@@ -25,6 +25,7 @@ export class ServicelogsComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   dataMessage: string = Constants.FETCHING_DATA;
   lastItemSK = '';
+  datee = '';
   asset: any;
   loaded = false;
   searchValue = null;
@@ -59,7 +60,7 @@ export class ServicelogsComponent implements OnInit {
   }
   fetchSlogsList() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}`)
+      this.apiService.getData(`serviceLogs/fetch/serviceLogReport?searchValue=${this.searchValue}&category=${this.category}&taskID=${this.taskID}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`)
         .subscribe((result: any) => {
           this.dataMessage = Constants.FETCHING_DATA
           if (result.Items.length === 0) {
@@ -67,9 +68,11 @@ export class ServicelogsComponent implements OnInit {
           }
           if (result.LastEvaluatedKey !== undefined) {
             this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].logSK);
+            this.datee = encodeURIComponent(result.Items[result.Items.length - 1].completionDate)
           }
           else {
             this.lastItemSK = 'end';
+            this.datee = 'end';
           }
           if (result.Items.length > 0) {
             this.loaded = true;
@@ -145,6 +148,7 @@ export class ServicelogsComponent implements OnInit {
       }
       else {
         this.dataMessage = Constants.FETCHING_DATA
+        this.datee = null;
         this.lastItemSK = '';
         this.allData = []
         this.fetchSlogsList()
@@ -163,6 +167,7 @@ export class ServicelogsComponent implements OnInit {
       this.end = null;
       this.dataMessage = Constants.FETCHING_DATA
       this.lastItemSK = '';
+      this.datee = null;
       this.allData = []
       this.fetchSlogsList()
     }
@@ -173,8 +178,9 @@ export class ServicelogsComponent implements OnInit {
   fetchExportList() {
     this.apiService.getData('serviceLogs/fetch/ServiceLogList')
       .subscribe((result: any) => {
-        this.data = result.Items;
+        // this.data = result.Items;
         if (result.Items.length > 0) {
+          this.loaded = true;
           result['Items'].map((v: any) => {
             if (v.isDeleted === 0) {
               v.entityStatus = 'Active';
@@ -191,12 +197,10 @@ export class ServicelogsComponent implements OnInit {
               }
               this.data.push(v);
             }
-
           })
         }
         this.generateCSV();
       })
-
 
   }
 

@@ -686,7 +686,7 @@ export class AddTripComponent implements OnInit {
           if (editRowValues.trailer != undefined) {
             for (let i = 0; i < editRowValues.trailer.length; i++) {
               const element = editRowValues.trailer[i];
-              this.informationAsset.push(element.id);
+              this.informationAsset = [...this.informationAsset, element.id];
 
               let objj = {
                 id: element.id,
@@ -1715,7 +1715,7 @@ export class AddTripComponent implements OnInit {
         let res = result.Items.map((i) => {
           i.pickupLocations = "";
           i.deliveryLocations = "";
-          i.customer = this.customersObjects[i.customerID];
+          i.customer = i.customerName;
           if (i.shippersReceiversInfo) {
             let ind = 1;
             let ind2 = 1;
@@ -1842,7 +1842,7 @@ export class AddTripComponent implements OnInit {
         let res = result.Items.map((i) => {
           i.pickupLocations = "";
           i.deliveryLocations = "";
-          i.customer = this.customersObjects[i.customerID];
+          i.customer = i.customerName;
           if (i.shippersReceiversInfo) {
             let ind = 1;
             let ind2 = 1;

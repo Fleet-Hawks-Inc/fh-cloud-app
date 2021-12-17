@@ -224,31 +224,16 @@ export class AssetDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private countryStateCity: CountryStateCityService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.assetID = this.route.snapshot.params[`assetID`]; // get asset Id from URL
     this.fetchAsset();
-    this.fetchDeviceInfo();
-    // this.fetchManufacturesByIDs();
-    // this.fetchModalsByIDs();
+
     this.fetchGroups();
     this.fetchContactsByIDs();
   }
 
-  fetchManufacturesByIDs() {
-    this.apiService
-      .getData("assetManufacturers/get/list")
-      .subscribe((result: any) => {
-        this.manufacturersObjects = result;
-      });
-  }
-
-  fetchModalsByIDs() {
-    this.apiService.getData("assetModels/get/list").subscribe((result: any) => {
-      this.modelsObjects = result;
-    });
-  }
   fetchContactsByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.contactsObjects = result;
@@ -313,7 +298,7 @@ export class AssetDetailComponent implements OnInit {
           this.GVWR_Unit = result.assetDetails.GVWR_Unit;
           this.ownerShip = result.assetDetails.ownerShip;
           this.ownCname = result.assetDetails.ownCname;
-          this.ownAmt = result.assetDetails.ownAmt;    
+          this.ownAmt = result.assetDetails.ownAmt;
           this.ownCurr = result.assetDetails.ownCurr;
           this.ownDate = result.assetDetails.ownDate;
           this.ownRec = result.assetDetails.ownRec;
@@ -417,20 +402,11 @@ export class AssetDetailComponent implements OnInit {
         // Load devices information
         this.getDeviceEventsFor24Hours(this.assetIdentification);
       },
-      (err) => {}
+      (err) => { }
     );
   }
 
-  fetchDeviceInfo = () => {
-    this.apiService.getData("devices").subscribe(
-      (result: any) => {
-        if (result) {
-          this.deviceData = result[`Items`];
-        }
-      },
-      (err) => {}
-    );
-  };
+
   fetchGroups() {
     this.apiService.getData("groups/get/list").subscribe((result: any) => {
       this.groupsObjects = result;
@@ -473,7 +449,7 @@ export class AssetDetailComponent implements OnInit {
     this.apiService
       .postData("assets/" + this.assetID, this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -487,8 +463,8 @@ export class AssetDetailComponent implements OnInit {
                 this.spinner.hide(); // loader hide
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -507,12 +483,12 @@ export class AssetDetailComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });

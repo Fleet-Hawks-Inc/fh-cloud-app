@@ -54,6 +54,7 @@ export class PaymentChequeComponent implements OnInit {
     advance: 0,
     page: "",
     invoices: [],
+    paymentTo: "",
   };
 
   cheqdata = {
@@ -104,6 +105,8 @@ export class PaymentChequeComponent implements OnInit {
     this.subscription = this.listService.paymentModelList.subscribe(
       (res: any) => {
         if (res.showModal && res.length != 0) {
+          this.getCarriers();
+          this.getCurrentuser();
           this.paydata = res;
           this.cheqdata.payDate = formatDate(
             this.paydata.txnDate,
@@ -120,7 +123,8 @@ export class PaymentChequeComponent implements OnInit {
             this.paydata.type === "driver" ||
             this.paydata.type === "employee" ||
             this.paydata.type === "owner_operator" ||
-            this.paydata.type === "carrier"
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "expensePayment"
           ) {
             this.paydata.payYear = formatDate(
               this.paydata.toDate,
@@ -138,6 +142,20 @@ export class PaymentChequeComponent implements OnInit {
               this.locale
             );
             this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+          }
+
+          if (this.paydata.type === "advancePayment") {
+            this.paydata.payYear = formatDate(
+              this.paydata.fromDate,
+              "yyyy",
+              this.locale
+            );
+            let startDate = formatDate(
+              this.paydata.fromDate,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            this.cheqdata.payPeriod = `${startDate}`;
           }
 
           this.cheqdata.chqNo = this.paydata.chequeNo;
@@ -161,6 +179,10 @@ export class PaymentChequeComponent implements OnInit {
               Number(this.cheqdata.tax);
             this.cheqdata.netPay =
               Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
+            // minus advance
+            if (this.paydata.advance > 0) {
+              this.cheqdata.netPay -= this.paydata.advance;
+            }
           } else if (
             this.paydata.type === "owner_operator" ||
             this.paydata.type === "carrier" ||
@@ -173,9 +195,27 @@ export class PaymentChequeComponent implements OnInit {
             }
           }
 
+          // this if cond. only in the case of expense payment
+          if (
+            this.paydata.type === "expensePayment" ||
+            this.paydata.type === "advancePayment"
+          ) {
+            this.cheqdata.regularPay = this.paydata.finalAmount;
+            if (this.paydata.paymentTo == "driver") {
+              this.fetchDriver();
+            } else {
+              this.fetchContact();
+            }
+          }
+
           if (this.paydata.type == "driver") {
             this.fetchDriver();
-          } else {
+          } else if (
+            this.paydata.type === "employee" ||
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "vendor"
+          ) {
             this.fetchContact();
           }
           if (
@@ -202,8 +242,6 @@ export class PaymentChequeComponent implements OnInit {
         }
       }
     );
-    this.getCarriers();
-    this.getCurrentuser();
   }
 
   prevCheck() {
@@ -220,7 +258,6 @@ export class PaymentChequeComponent implements OnInit {
       let decc = Number(amountSplit[1]);
       decimals = decc > 0 ? decc : 0.0;
     }
-
     if (decimals > 0) {
       this.cheqdata.decimals = ` and ${decimals}/100`;
     }
@@ -237,13 +274,14 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   getCarriers() {
+    this.carriers = [];
     this.apiService
       .getData(`contacts/get/records/carrier`)
       .subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           element.type = "sub";
-          this.carriers.push(element);
+          this.carriers = [...this.carriers, element];
         }
       });
   }
@@ -292,7 +330,7 @@ export class PaymentChequeComponent implements OnInit {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0,
-      filename: `cheque.pdf`,
+      filename: `cheque-${this.paydata.chequeNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },

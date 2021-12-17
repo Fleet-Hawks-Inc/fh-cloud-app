@@ -119,7 +119,6 @@ export class AddDriverPaymentComponent implements OnInit {
     }
     this.fetchDrivers();
     this.fetchCarriers();
-    this.fetchtrips();
     this.fetchOwnerOperators();
     this.fetchAccounts();
     this.listService.fetchChartAccounts();
@@ -620,7 +619,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     this.accountService
       .getData(
-        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}`
+        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=driver`
       )
       .subscribe((result: any) => {
         if (result.length === 0) {
