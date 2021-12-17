@@ -923,39 +923,6 @@
     </div>
 </section>
 
-<div class="modal fade" id="attachDeviceModal" tabindex="-1" role="dialog" aria-labelledby="attachDeviceModal"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 600px" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Device</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="far fa-window-close modal-dismiss" style="font-size: 25px">
-                    </i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal form-bordered" id="vehicleForm" method="get">
-                    <div class="form-row">
-                        <div class="form-group col-md-12">
-                            <label class="font-weight-bold control-label">Select Device</label>
-                            <ng-select (change)="addDevicesIDs()" [(ngModel)]="devices" name="devices"
-                                class="form-control populate">
-                                <ng-option *ngFor="let device of deviceData" value="{{ device.deviceID }}">{{
-                                    device.deviceName }}</ng-option>
-                            </ng-select>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default" data-dismiss="modal">Cancel</button>
-
-                <button class="btn btn-success" (click)="addDevice()">Add</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- VIEW DOCUMENT MODAL -->
 <div class="modal fade" id="viewDocModal" tabindex="-1" role="dialog" aria-labelledby="viewDocModalLabel"
