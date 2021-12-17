@@ -623,7 +623,10 @@
                                   {{ data.eventParams.type }}
                                   <b class="text-success">{{
                                     data.entityNumber
-                                    }}</b>
+                                    }}</b> 
+                                    <span *ngIf="data.eventParams.location"><br/>
+                                    <p>Last Location: {{data.eventParams.location}}</p>
+                                    </span>
                                 </li>
                               </ul>
                             </div>
