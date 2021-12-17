@@ -58,6 +58,7 @@ export class TripDetailComponent implements OnInit {
 
   driverTerms = '';
   dispatchTerms = '';
+  tagLine = '';
 
   orderType: string;
   tripID = "";
@@ -373,6 +374,7 @@ export class TripDetailComponent implements OnInit {
         if (result.termsInfo) {
           this.driverTerms = result.termsInfo.driverTerms ? result.termsInfo.driverTerms : '';
           this.dispatchTerms = result.termsInfo.dispatchTerms ? result.termsInfo.dispatchTerms : '';
+          this.tagLine = result.termsInfo.tagLine ? result.termsInfo.tagLine : '';
         }
       });
   }
