@@ -178,10 +178,10 @@ export class AddServiceComponent implements OnInit {
     }
 
     this.fetchGroups();
-    await this.fetchVehicles();
+    this.fetchVehicles();
     this.fetchUsersList();
     this.fetchInventory();
-    await this.fetchAssets();
+    this.fetchAssets();
 
     this.listService.fetchVendors();
     this.listService.fetchTasks();
