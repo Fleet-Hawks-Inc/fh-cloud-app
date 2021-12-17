@@ -1198,17 +1198,17 @@
           </td>
         </tr>
 
-        <tr *ngIf="tripData.termsInfo.driverTerms && tripData.termsInfo.driverTerms != ''">
-          <td colspan="2" style="margin-bottom: 15px;">
-            <strong>Dispatch Notes For Driver: </strong> {{ tripData.termsInfo.driverTerms }}
+        <tr *ngIf="driverTerms != ''">
+          <td colspan="2">
+            <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
           </td>
         </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
-        <tr *ngIf="tripData.termsInfo.dispatchTerms && tripData.termsInfo.dispatchTerms != ''">
-          <td colspan="2" style="margin-bottom: 15px;">
-            <strong>Terms and Conditions For Truck Dispatch: </strong>{{ tripData.termsInfo.dispatchTerms }}
+        <tr *ngIf="dispatchTerms != ''">
+          <td colspan="2">
+            <strong>Terms and Conditions For Truck Dispatch: </strong>{{ dispatchTerms }}
           </td>
         </tr>
         <tr>
