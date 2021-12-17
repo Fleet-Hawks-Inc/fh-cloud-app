@@ -38,6 +38,9 @@ export class UsersListComponent implements OnInit {
   userRoles: any;
   selectedUserData: any = '';
   newRoles = [];
+   searchValue = null;
+    lastItemSK = "";
+    loaded: boolean = false;
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
 
@@ -141,96 +144,64 @@ export class UsersListComponent implements OnInit {
         }
       });
   }
+  
   initDataTable() {
-    // this.spinner.show();
-    this.apiService.getData('contacts/fetch/employee/records?searchValue=' + this.contactID + '&lastKey=' + this.lastEvaluatedKey)
+    if (this.lastItemSK !== 'end'){
+    this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
+        console.log('abc', result)
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.users = result[`Items`];
-        this.users.map((v: any) => {
-          if (v.userLoginData.userRoles.length > 0) {
-            for (const element of v.userLoginData.userRoles) {
-              const role = element.split('_');
-
-              if (role.length > 2) {
-                if (role[1] === 'view') {
-                  role.splice(2, 1, "only");
+        if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
                 }
-                const newRole = `${role[1]} ${role[2]} `;
-                this.newRoles.push(newRole);
-
-              }
-              else {
-                const newRole = `${role[1]} `;
-                this.newRoles.push(newRole);
-              }
-            }
-            v.userLoginData.userRoles = this.newRoles;
-            this.newRoles = [];
-          }
-        });
-        if (this.contactID !== '' || this.departmentName !== '') {
-          this.userStartPoint = 1;
-          this.userEndPoint = this.totalRecords;
+                else {
+                    this.lastItemSK = 'end'
+                }
+             this.users = this.users.concat(result.Items);
+            this.loaded = true;
         }
-
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].contactSK.replace(/#/g, '--');
-          this.userNext = false;
-          // for prev button
-          if (!this.userPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.userPrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.userNext = true;
-          this.lastEvaluatedKey = '';
-          this.userEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.userDraw > 0) {
-          this.userPrev = false;
-        } else {
-          this.userPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+      })
+    }
   }
-
-  searchFilter() {
-    if (this.searchUserName !== '') {
-     this.searchUserName = this.searchUserName.toLowerCase();
+  
+   searchFilter() {
+    if (this.searchValue !== null) {
+     this.searchValue = this.searchValue.toLowerCase();
                if (this.contactID == '') 
                {
-               this.contactID = this.searchUserName;
+               this.contactID = this.searchValue;
                 }
+                
       this.users = [];
-      this.lastEvaluatedKey = '';
-      this.suggestedUsers = [];
+      this.lastItemSK = '';
       this.initDataTable();
     } else {
       return false;
     }
+  }
+  
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
   }
 
   resetFilter() {
-    if (this.searchUserName !== '' || this.lastEvaluatedKey !== '') {
-      this.searchUserName = '';
+    if (this.searchValue !== '') {
+      this.searchValue = null;
       this.contactID = '';
       this.users = [];
-      this.lastEvaluatedKey = '';
-      this.suggestedUsers = [];
+      this.lastItemSK = '';
       this.initDataTable();
     } else {
       return false;
     }
   }
+
   async deleteUser(contactID, firstName: string, lastName: string, userName: string) {
     if (confirm('Are you sure you want to delete?') === true) {
       await this.apiService
@@ -248,21 +219,6 @@ export class UsersListComponent implements OnInit {
   getStartandEndVal() {
     this.userStartPoint = this.userDraw * this.pageLength + 1;
     this.userEndPoint = this.userStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.userDraw += 1;
-    this.initDataTable();
-    this.getStartandEndVal();
-  }
-
-  // prev button func
-  prevResults() {
-    this.userDraw -= 1;
-    this.lastEvaluatedKey = this.userPrevEvauatedKeys[this.userDraw];
-    this.initDataTable();
-    this.getStartandEndVal();
   }
 
   resetCountResult() {

@@ -67,6 +67,18 @@
                             </td>
                             <td>{{cost}} {{costUnitType}}</td>
                           </tr>
+                               <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Tax
+                            </td>
+                            <td>{{tax}}</td>
+                          </tr>
+                               <tr>
+                            <td class="back-color-gray font-weight-bold">
+                              Total Cost
+                            </td>
+                            <td>{{totalCost}}</td>
+                          </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Unit Measure
@@ -150,7 +162,6 @@
                       </table>
                     </div>
                   </div>
-
                 </div>
                 <div class="col-lg-6">
                   <div class="row pb14" *ngIf="photos?.length">
@@ -200,7 +211,6 @@
                           </div>
                           <div class="col-lg-3 text-right">
                               <i class="fas fa-times text-danger"  (click)="delete('doc',document.name, i)"></i>
-
                           </div>
                         </div>
                       </div>

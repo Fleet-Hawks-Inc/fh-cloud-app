@@ -219,13 +219,13 @@
                                   <div class="col-lg-6">
                                     <label class="control-label"><span class="font-weight-bold">Email:</span>
                                       {{
-                                      item.workEmail ? item.workEmail : "-"
+                                      item.workEmail ? item.workEmail : "NA"
                                       }}</label>
                                   </div>
                                   <div class="col-lg-6">
                                     <label class="control-label"><span class="font-weight-bold">Phone:</span>
                                       {{
-                                      item.workPhone ? item.workPhone : "-"
+                                      item.workPhone ? item.workPhone : "NA"
                                       }}</label>
                                   </div>
                                 </div>
@@ -267,7 +267,11 @@
                                     <label class="control-label"><span class="font-weight-bold">Type:</span>
                                       {{ address.aType | titlecase }}</label>
                                   </div>
+                                  <div class="col-6">
+                                    <label class="control-label"><span class="font-weight-bold">C/O:</span>
+                                      {{address.careOption ? address.careOption : 'NA'}}</label>
 
+                                  </div>
                                   <input *ngIf="item.adrs?.length > 1" class="address-icon" type="radio" name="select"
                                     (change)="
                                       getAddressID(
@@ -2599,16 +2603,6 @@
                               [(ngModel)]="orderData.charges.freightFee.type" name="freight_type" #freightType="ngModel"
                               required freightType class="form-control populate" #sltFreight="ngModel" required>
                               <ng-option value="Flat Fee">Flat Fee</ng-option>
-                              <!-- <ng-option value="Per Mile">Per Mile</ng-option>
-                                             <ng-option value="Bag">Bag</ng-option>
-                                             <ng-option value="Box">Box</ng-option>
-                                             <ng-option value="Carton">Carton</ng-option>
-                                             <ng-option value="Case">Case</ng-option>
-                                             <ng-option value="Container Bulk Cargo">Container Bulk Cargo</ng-option>
-                                             <ng-option value="Pieces">Pieces</ng-option>
-                                             <ng-option value="Parcel">Parcel</ng-option>
-                                             <ng-option value="Skid">Skid</ng-option>
-                                             <ng-option value="Unit">Unit</ng-option> -->
                             </ng-select>
                             <div *ngIf="
                                 sltFreight.invalid &&
