@@ -55,6 +55,10 @@ export class TripDetailComponent implements OnInit {
     bol: "",
     dateCreated: "",
   };
+
+  driverTerms = '';
+  dispatchTerms = '';
+
   orderType: string;
   tripID = "";
   allAssetName = "";
@@ -365,6 +369,10 @@ export class TripDetailComponent implements OnInit {
 
         if (result.termsInfo.logo && result.termsInfo.logo != "") {
           this.companyLogoSrc = `${this.Asseturl}/${result.carrierID}/${result.termsInfo.logo}`;
+        }
+        if (result.termsInfo) {
+          this.driverTerms = result.termsInfo.driverTerms ? result.termsInfo.driverTerms : '';
+          this.dispatchTerms = result.termsInfo.dispatchTerms ? result.termsInfo.dispatchTerms : '';
         }
       });
   }
