@@ -106,6 +106,7 @@ export class TripDetailComponent implements OnInit {
   recallStatus = false;
   ordersData: any = [];
 
+  companyLogoSrc: string;
   customerData = [];
   isEmail: boolean = false;
   ngOnInit() {
@@ -360,6 +361,10 @@ export class TripDetailComponent implements OnInit {
 
         if (this.newCoords.length > 0) {
           this.getCoords();
+        }
+
+        if (result.termsInfo.logo && result.termsInfo.logo != "") {
+          this.companyLogoSrc = `${this.Asseturl}/${result.carrierID}/${result.termsInfo.logo}`;
         }
       });
   }

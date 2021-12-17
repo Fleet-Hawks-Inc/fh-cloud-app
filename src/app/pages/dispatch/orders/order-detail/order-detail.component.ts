@@ -556,7 +556,7 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
-      this.subject = "";
+      this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
     } else {
       this.isEmail = false;
     }
@@ -887,12 +887,10 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
-        this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
-
         this.orderInvData = result[0];
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.logo != "") {
-          this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
+        if (this.orderInvData.carrierData.logo && this.orderInvData.carrierData.logo != "") {
+          this.companyLogoSrc = `${this.Asseturl}/${this.carrierID}/${this.orderInvData.carrierData.logo}`;
         }
         if (this.invoiceData.assets != undefined) {
           this.assets = this.invoiceData.assets;
