@@ -16,8 +16,8 @@ import { SafetySettingComponent } from './safety-setting/safety-setting.componen
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
-import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
 
 const routes: Routes = [
 
@@ -56,8 +56,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     NgbModule,
+    InfiniteScrollModule,
     NgSelectModule,
-    InfiniteScrollModule
   ]
 })
 export class ManageSettingsModule { }
