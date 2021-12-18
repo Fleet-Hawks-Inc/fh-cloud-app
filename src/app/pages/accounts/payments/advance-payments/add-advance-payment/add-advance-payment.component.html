@@ -401,6 +401,10 @@
                   <div class="col-lg-11 text-right">
                     <button type="button" accounts class="btn btn-default mr-2"
                       (click)="cancel()">Cancel</button>
+                    <button type="button" class="btn
+                      btn-success modal-with-form
+                      mr-2" *ngIf="paymentData.payMode == 'cheque'" (click)="showCheque()">Cheque
+                      preview</button>
                     <button type="button" *ngIf="!paymentID"
                       (click)="addRecord()"
                       [disabled]="!payForm.form.valid || submitDisabled"
@@ -444,3 +448,4 @@
     </div>
   </div>
 </div>
+<app-payment-cheque></app-payment-cheque>

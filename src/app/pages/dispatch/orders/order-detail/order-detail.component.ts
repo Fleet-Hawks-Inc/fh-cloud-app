@@ -364,7 +364,6 @@ export class OrderDetailComponent implements OnInit {
         ) {
           this.hideEdit = true;
           this.isGenerate = false;
-          console.log('isGenerate', this.isGenerate)
         }
         this.orderStatus = result.orderStatus;
         this.cusAddressID = result.cusAddressID;

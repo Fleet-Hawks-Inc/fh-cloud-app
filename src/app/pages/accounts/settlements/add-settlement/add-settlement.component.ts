@@ -155,6 +155,7 @@ export class AddSettlementComponent implements OnInit {
   prevSelectedExpIds = [];
   allCarriers = [];
   allOwnerOperators = [];
+  showFuel = "no";
 
   constructor(
     private listService: ListService,
@@ -470,7 +471,6 @@ export class AddSettlementComponent implements OnInit {
             a
           );
         }, {});
-        console.log("this.trips====", this.trips);
         this.tripsObject = _.merge(this.tripsObject, stlObj);
       });
   }
@@ -2431,5 +2431,9 @@ export class AddSettlementComponent implements OnInit {
         `settlement/currency/convert/${curr}/${this.settlementData.currency}/${amount}/${date}`
       )
       .toPromise();
+  }
+
+  checkFuelVisibility(event) {
+    this.showFuel = event.target.value;
   }
 }
