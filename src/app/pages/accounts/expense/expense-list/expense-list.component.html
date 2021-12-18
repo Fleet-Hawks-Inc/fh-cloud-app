@@ -114,12 +114,13 @@
                                 <th>Trip & Unit#</th>
                                 <th>Recurring</th>
                                 <th>Amount</th>
+                                <th>Status</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr *ngIf="expenses.length === 0" class="text-center">
-                                <td colspan="7">{{ dataMessage }}</td>
+                                <td colspan="8">{{ dataMessage }}</td>
                               </tr>
                               <tr *ngFor="let data of expenses;">
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
@@ -150,11 +151,14 @@
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">{{
                                   data.finalTotal | number : '1.2-2' }}
                                   {{ data.currency }}</td>
+                                <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
+                                  <span class="badge badge-dark p-1 text-uppercase">{{ data.newStatus}}</span>
+                                </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
-                                    <button type="button" class="mb-1 mt-1 mr-1 btn p-0" data-toggle="dropdown"><i
+                                    <button type="button" class="mb-1 mt-1 mr-1 btn p-0" data-toggle="dropdown"  [disabled]="data.disableEdit"><i
                                         class="fas fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu" role="menu">
+                                    <div class="dropdown-menu" role="menu" *ngIf="!data.disableEdit">
                                       <a class="dropdown-item text-1"
                                         routerLink="/accounts/expense/edit/{{ data.expenseID }}">Edit</a>
                                       <a class="dropdown-item text-1" (click)="deleteExpense(data.expenseID)">Delete</a>
