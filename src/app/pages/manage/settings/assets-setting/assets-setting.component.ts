@@ -53,7 +53,7 @@ export class AssetsSettingComponent implements OnInit {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             this.suggestedAssets = [];
-          result[Items].map((v: any) => {
+          result['Items'].map((v: any) => {
               v.assetType = v.assetType.replace('_', ' ');
                 });
             if (result.Items.length > 0) {
