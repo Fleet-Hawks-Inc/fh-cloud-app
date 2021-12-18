@@ -22,6 +22,22 @@
                                 <div class="col-lg-12">
                                     <table class="table table-bordered">
                                         <tbody>
+                                            <tr *ngIf="corporateDrver">
+                                                <td
+                                                    width="50%"
+                                                    class="back-color-gray
+                                                    font-weight-bold">
+                                                    Issue for vendor?
+                                                </td>
+                                                <td width="50%">
+                                                    <label class="radio-inline mr-3">
+                                                        <input type="radio" name="optradio" value="yes" (change)="arrangeFields($event)" [checked]="showIssue === true"><span class="pl-1">Yes</span>
+                                                      </label>
+                                                      <label class="radio-inline">
+                                                        <input type="radio" name="optradio" value="no" (change)="arrangeFields($event)" [checked]="showIssue === false"><span class="pl-1">No</span>
+                                                      </label>
+                                                </td>
+                                            </tr>
                                             <tr>
                                                 <td
                                                     width="50%"
@@ -38,7 +54,7 @@
                                                         bindValue="contactID"
                                                         [(ngModel)]="carrierID"
                                                         placeholder="Select
-                                                        Company">
+                                                        Company" class="text-capitalize">
                                                     </ng-select>
                                                 </td>
                                             </tr>
@@ -178,9 +194,9 @@
                                                                                     #000000"
                                                                                     class="font-weight-bold
                                                                                     text-uppercase">
-                                                                                    {{
+                                                                                    <!-- {{
                                                                                     cheqdata.companyName
-                                                                                    }}
+                                                                                    }} -->
                                                                                 </td>
                                                                                 <td>
                                                                                     <table
@@ -221,6 +237,9 @@
                                                                         cellspacing="0">
                                                                         <tbody>
                                                                             <tr>
+                                                                                <td>&nbsp;</td>
+                                                                            </tr>
+                                                                            <tr>
                                                                                 <td
                                                                                     width="61%"
                                                                                     rowspan="2"
@@ -240,9 +259,9 @@
                                                                                                     12px;
                                                                                                     line-height:
                                                                                                     15px;">
-                                                                                                    {{
+                                                                                                    <!-- {{
                                                                                                     cheqdata.companyAddress
-                                                                                                    }}
+                                                                                                    }} -->
                                                                                                     <br
                                                                                                         />
                                                                                                 </td>
@@ -322,10 +341,10 @@
                                                                                     class="font-weight-bold"
                                                                                     style="color:
                                                                                     #000000">
-                                                                                    PAY
+                                                                                    <!-- PAY -->
                                                                                 </td>
                                                                                 <td
-                                                                                    width="8%"
+                                                                                    width="2%"
                                                                                     class="font-weight-bold">
                                                                                     &nbsp;
                                                                                 </td>
@@ -358,7 +377,7 @@
                                                                                     #000000"
                                                                                     align="right"
                                                                                     class="text-uppercase">
-                                                                                    TO
+                                                                                    <!-- TO -->
                                                                                 </td>
                                                                                 <td
                                                                                     class="text-uppercase">&nbsp;</td>
@@ -376,9 +395,9 @@
                                                                                     style="color:
                                                                                     #000000"
                                                                                     align="right">
-                                                                                    THE
+                                                                                    <!-- THE
                                                                                     ORDER
-                                                                                    OF
+                                                                                    OF -->
                                                                                 </td>
                                                                                 <td>&nbsp;</td>
                                                                                 <td
@@ -409,7 +428,7 @@
                                                                                     align="right"
                                                                                     style="color:
                                                                                     #000000">
-                                                                                    S**{{
+                                                                                    $**{{
                                                                                     cheqdata.amount
                                                                                     |
                                                                                     number:
@@ -468,6 +487,9 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
                             </tr>
                             <tr *ngIf="paydata.type === 'driver' || paydata.type === 'employee'">
                                 <td>
@@ -1570,7 +1592,7 @@
                                         border="0"
                                         cellspacing="0"
                                         cellpadding="0"
-                                        height="300"
+                                        height="276"
                                         class="class_border">
                                         <tbody>
                                             <tr>
@@ -1597,13 +1619,11 @@
                                                                                     height="30"
                                                                                     class="pl-3
                                                                                     border_bottom
-                                                                                    pt-2
+                                                                                    pt-2 pb-1
                                                                                     text-uppercase">
                                                                                     {{
                                                                                     cheqdata.entityName
-                                                                                    }}<br
-                                                                                        /><br
-                                                                                        />
+                                                                                    }}
                                                                                     <!-- Pay
                                                                                     Period:
                                                                                     <br
@@ -1618,7 +1638,7 @@
                                                                                     align="center"
                                                                                     valign="top"
                                                                                     class="border_bottom
-                                                                                    pt-2">
+                                                                                    pt-2 pb-1">
                                                                                     {{
                                                                                     cheqdata.payDate
                                                                                     }}
@@ -1630,7 +1650,7 @@
                                                                                     valign="top"
                                                                                     class="pr-3
                                                                                     border_bottom
-                                                                                    pt-2">
+                                                                                    pt-2 pb-1">
                                                                                     {{
                                                                                     cheqdata.chqNo
                                                                                     }}
@@ -2849,7 +2869,7 @@
                                         border="0"
                                         cellspacing="0"
                                         cellpadding="0"
-                                        height="300"
+                                        height="276"
                                         class="class_border">
                                         <tbody>
                                             <tr>
@@ -2876,13 +2896,11 @@
                                                                                     height="30"
                                                                                     class="pl-3
                                                                                     border_bottom
-                                                                                    pt-2
+                                                                                    pt-2 pb-1
                                                                                     text-uppercase">
                                                                                     {{
                                                                                     cheqdata.entityName
-                                                                                    }}<br
-                                                                                        /><br
-                                                                                        />
+                                                                                    }}
                                                                                     <!-- Pay
                                                                                     Period:
                                                                                     <br
@@ -2897,7 +2915,7 @@
                                                                                     align="center"
                                                                                     valign="top"
                                                                                     class="border_bottom
-                                                                                    pt-2">
+                                                                                    pt-2 pb-1">
                                                                                     {{
                                                                                     cheqdata.payDate
                                                                                     }}
@@ -2909,7 +2927,7 @@
                                                                                     valign="top"
                                                                                     class="pr-3
                                                                                     border_bottom
-                                                                                    pt-2">
+                                                                                    pt-2 pb-1">
                                                                                     {{
                                                                                     cheqdata.chqNo
                                                                                     }}

@@ -12,19 +12,12 @@ import { ToastrService } from 'ngx-toastr';
 export class VehicleSettingComponent implements OnInit {
   environment = environment.isFeatureEnabled;
   dataMessage: string = Constants.FETCHING_DATA;
-  vehicleNext = false;
-  vehiclePrev = true;
-  vehicleDraw = 0;
-  totalRecords = 20;
-  pageLength = 10;
   lastEvaluatedKey = '';
-  vehiclePrevEvauatedKeys = [''];
-  vehicleStartPoint = 1;
-  vehicleEndPoint = this.pageLength;
   vehicleID = '';
   currentStatus = null;
   vehicleIdentification = '';
   vehicles = [];
+  loaded = false;
   suggestedVehicles = [];
   driversList: any = {};
   vehicleModelList: any = {};
@@ -45,7 +38,7 @@ export class VehicleSettingComponent implements OnInit {
   constructor(private apiService: ApiService, private toastr: ToastrService,) { }
 
   ngOnInit() {
-    this.fetchVehiclesCount();
+    this.initDataTable();
     this.fetchDriversList();
   }
   fetchDriversList() {
@@ -58,68 +51,31 @@ export class VehicleSettingComponent implements OnInit {
     this.vehicleID = vehicleIdentification;
     this.suggestedVehicles = [];
   }
-  fetchVehiclesCount() {
-    this.apiService.getData('vehicles/get/deleted/count?vehicle=' + this.vehicleID ).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.vehicleID !== '') {
-          this.vehicleEndPoint = this.totalRecords;
+      async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            const result = await this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND
+            }
+            this.suggestedVehicles = [];
+            if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].vehicleSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.vehicles = this.vehicles.concat(result.Items);
+                this.loaded = true;
+            }
         }
-
-        this.initDataTable();
-      },
-    });
-  }
-  initDataTable() {
-    this.apiService.getData('vehicles/fetch/deleted/records?vehicle=' + this.vehicleID + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if(result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
+    }
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
         }
-        this.suggestedVehicles = [];
-        this.getStartandEndVal();
-        this.vehicles = result[`Items`];
-
-        if(this.vehicleID !== '') {
-          this.vehicleStartPoint = 1;
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].vehicleSK.replace(/#/g, '--');
-          this.vehicleNext = false;
-          // for prev button
-          if (!this.vehiclePrevEvauatedKeys.includes(lastEvalKey)) {
-            this.vehiclePrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.vehicleNext = true;
-          this.lastEvaluatedKey = '';
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-        if (this.totalRecords < this.vehicleEndPoint) {
-          this.vehicleEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.vehicleDraw > 0) {
-          this.vehiclePrev = false;
-        } else {
-          this.vehiclePrev = true;
-        }
-      });
-  }
-  getStartandEndVal() {
-    this.vehicleStartPoint = this.vehicleDraw * this.pageLength + 1;
-    this.vehicleEndPoint = this.vehicleStartPoint + this.pageLength - 1;
-  }
-
+        this.loaded = false;
+    }
   searchFilter() {
     if (this.vehicleIdentification !== '') {
       this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
@@ -128,8 +84,9 @@ export class VehicleSettingComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.vehicles = [];
+      this.lastEvaluatedKey = '';
+      this.initDataTable();
       this.suggestedVehicles = [];
-      this.fetchVehiclesCount();
     } else {
       return false;
     }
@@ -138,10 +95,9 @@ export class VehicleSettingComponent implements OnInit {
     if (confirm('Are you sure you want to restore?') === true) {
       this.apiService.deleteData(`vehicles/restore/${eventData.vehicleID}/${eventData.vehicleIdentification}`).subscribe((result: any) => {
         this.vehicles = [];
-        this.vehicleDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        this.fetchVehiclesCount();
+        this.initDataTable();
         this.toastr.success('Vehicle restored successfully!');
       });
     }
@@ -151,39 +107,15 @@ export class VehicleSettingComponent implements OnInit {
       this.vehicleID = '';
       this.suggestedVehicles = [];
       this.vehicleIdentification = '';
+      this.lastEvaluatedKey = '';
       this.currentStatus = null;
       this.vehicles = [];
+      this.initDataTable();
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchVehiclesCount();
-      this.resetCountResult();
     } else {
       return false;
     }
   }
-
-  // next button func
-  nextResults() {
-    this.vehicleNext = true;
-    this.vehiclePrev = true;
-    this.vehicleDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.vehicleNext = true;
-    this.vehiclePrev = true;
-    this.vehicleDraw -= 1;
-    this.lastEvaluatedKey = this.vehiclePrevEvauatedKeys[this.vehicleDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.vehicleStartPoint = 1;
-    this.vehicleEndPoint = this.pageLength;
-    this.vehicleDraw = 0;
-  }
-
   refreshData() {
     this.vehicleID = '';
     this.suggestedVehicles = [];
@@ -192,7 +124,5 @@ export class VehicleSettingComponent implements OnInit {
     this.vehicles = [];
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchVehiclesCount();
-    this.resetCountResult();
   }
 }
