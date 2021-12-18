@@ -20,9 +20,8 @@
                                 <td align="right">
                                     <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc"
                                         alt="logo" style="max-width: 100px;">
-                                    <p *ngIf="orderData.carrierData.termsInfo.tagLine && orderData.carrierData.termsInfo.tagLine != ''"
-                                        class="m-0 font-weight-bold text-dark">{{
-                                        orderData.carrierData.termsInfo.tagLine }}</p>
+                                    <p *ngIf="tagLine && tagLine != ''" class="m-0 font-weight-bold text-dark">{{
+                                        tagLine }}</p>
                                 </td>
                             </tr>
                             <tr>

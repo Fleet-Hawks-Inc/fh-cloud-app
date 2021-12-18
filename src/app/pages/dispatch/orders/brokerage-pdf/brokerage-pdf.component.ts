@@ -98,6 +98,7 @@ export class BrokeragePdfComponent implements OnInit {
   type = "";
   companyLogoSrc: string;
   carrierTerms: string;
+  tagLine: string;
 
   ngOnInit() {
     this.subscription = this.listService.brokeragePdfList.subscribe(
@@ -109,6 +110,7 @@ export class BrokeragePdfComponent implements OnInit {
           this.carrierData = res.carrierData;
           this.companyLogoSrc = res.orderData.carrierData.termsInfo.logo;
           this.carrierTerms = res.orderData.carrierData.termsInfo.carrierTerms;
+          this.tagLine = res.orderData.carrierData.termsInfo.tagLine;
           this.companyLogo = res.companyLogo;
           this.type = res.type ? res.type : "list";
           this.brokEmail.carrierEmail = res.carrierEmail
