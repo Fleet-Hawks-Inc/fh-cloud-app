@@ -532,47 +532,18 @@
                                   </div>
 
                                   <div class="col-lg-5 offset-lg-2">
-                                    <h4 class="
-                                        mt-0
-                                        text-dark
-                                        font-weight-bold
-                                        text-4
-                                        d-inline
-                                      ">
+                                    <h4 class="mt-0
+                                      text-dark
+                                      font-weight-bold
+                                      text-4
+                                      d-inline">
                                       Charges
                                     </h4>
-
                                     <div class="row mt-3">
-                                      <div class="col-lg-6">
-                                        <label class="
-                                            control-label
-                                            font-weight-semibold
-                                            text-3 text-dark
-                                          ">Accessorial Fee</label>
-                                      </div>
-                                      <div class="col-lg-2"></div>
-                                      <div class="col-lg-4 text-right">
-                                        <label class="
-                                            control-label
-                                            font-weight-semibold
-                                            text-3 text-dark
-                                          ">Fee Total:
-                                        </label>
-                                        {{
-                                        saleData.total.feeTotal
-                                        | number: "1.2-2"
-                                        }}
-                                      </div>
-                                    </div>
-
-                                    <div class="row mt-3" *ngFor="
-                                        let accAdd of saleData.charges.accFee;
-                                        let aId = index
-                                      ">
                                       <div class="col-lg-6">
                                         <div class="row">
                                           <div class="col-lg-10 pr-0">
-                                            <input type="text" name="addCH{{ aId }}" [(ngModel)]="accAdd.name"
+                                            <input type="text" name="cName" [(ngModel)]="saleData.charges.cName"
                                               class="form-control" placeholder="Enter name" />
                                           </div>
                                         </div>
@@ -580,104 +551,71 @@
                                       <div class="col-lg-3">
                                         <div class="row">
                                           <div class="col-lg-12 pr-0">
-                                            <input type="text" name="addamount{{ aId }}" [(ngModel)]="accAdd.amount"
+                                            <ng-select [(ngModel)]="saleData.charges.cType" name="cType"
+                                              #cType="ngModel" [clearable]="false" (change)="accessorialFeeTotal()"
+                                              required>
+                                              <ng-option value="add">Add</ng-option>
+                                              <ng-option value="ded">Deduct</ng-option>
+                                            </ng-select>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-lg-3 text-right">
+                                        <div class="row">
+                                          <div class="col-lg-12 pr-0">
+                                            <input type="text" name="cAmount" [(ngModel)]="saleData.charges.cAmount"
                                               class="form-control" placeholder="Enter amount"
                                               (input)="accessorialFeeTotal()" pattern="^[0-9]\d*(\.\d+)?$"
                                               #accFeeam="ngModel" />
 
-                                            <div *ngIf="accFeeam.errors?.pattern" class="text-danger">
+                                            <div *ngIf="accFeeam.errors?.pattern">
                                               Please enter valid amount
                                             </div>
                                           </div>
                                         </div>
                                       </div>
-                                      <div class="col-lg-3 text-right">
-                                        <button *ngIf="aId === 0" type="button" (click)="addAccessorialArr('fee')"
-                                          class="btn btn-success btn-sm">
-                                          <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button *ngIf="aId > 0" type="button" (click)="
-                                            dedAccessorialArr('fee', aId)
-                                          " class="btn btn-danger btn-sm">
-                                          <i class="fas fa-minus"></i>
-                                        </button>
-                                      </div>
                                     </div>
-
                                     <div class="row mt-3">
-                                      <div class="col-lg-6">
-                                        <label class="
-                                            control-label
-                                            font-weight-semibold
-                                            text-3 text-dark
-                                          ">Accessorial Deduction</label>
-                                      </div>
-                                      <div class="col-lg-2"></div>
-                                      <div class="col-lg-4 text-right">
-                                        <label class="
-                                            control-label
-                                            font-weight-semibold
-                                            text-3 text-dark
-                                          ">Deduction Total:
-                                        </label>
-                                        {{
-                                        saleData.total.dedTotal
-                                        | number: "1.2-2"
-                                        }}
-                                      </div>
-                                    </div>
-
-                                    <div class="row mt-3" *ngFor="
-                                        let accDed of saleData.charges.accDed;
-                                        let bId = index
-                                      ">
                                       <div class="col-lg-6">
                                         <div class="row">
                                           <div class="col-lg-10 pr-0">
-                                            <input type="text" name="dedCH{{ bId }}" [(ngModel)]="accDed.name"
-                                              class="form-control" placeholder="Enter name" />
+                                            <input type="text" class="form-control" disabled value="Discount" />
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-3">
                                         <div class="row">
                                           <div class="col-lg-12 pr-0">
-                                            <input type="text" name="dedamount{{ bId }}" [(ngModel)]="accDed.amount"
-                                              class="form-control" placeholder="Enter amount"
-                                              (input)="accessorialDedTotal()" #dedam="ngModel"
-                                              pattern="^[0-9]\d*(\.\d+)?$" />
-
-                                            <div *ngIf="dedam.errors?.pattern">
-                                              Please enter valid amount
-                                            </div>
+                                            <input type="number" min="0" class="form-control" placeholder="0.00"
+                                              [(ngModel)]="saleData.charges.discount" name="discount"
+                                              (change)="calculateAmount()" />
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-3 text-right">
-                                        <button *ngIf="bId === 0" type="button" (click)="addAccessorialArr('ded')"
-                                          class="btn btn-success btn-sm">
-                                          <i class="fas fa-plus"></i>
-                                        </button>
-                                        <button *ngIf="bId > 0" type="button" (click)="
-                                            dedAccessorialArr('ded', bId)
-                                          " class="btn btn-danger btn-sm">
-                                          <i class="fas fa-minus"></i>
-                                        </button>
+                                        <div class="row">
+                                          <div class="col-lg-12 pr-0">
+                                            <ng-select class="form-control populate"
+                                              [(ngModel)]="saleData.charges.discountUnit" name="discountUnit"
+                                              (change)="calculateAmount()">
+                                              <ng-option value="%">%</ng-option>
+                                              <ng-option value="CAD">CAD</ng-option>
+                                              <ng-option value="USD">USD</ng-option>
+                                            </ng-select>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
+
                                     <div class="row mt-3 align-items-center">
                                       <div class="col-lg-5 pl-3 mb-2">
-                                        <div class="
-                                            checkbox-custom checkbox-default
-                                          ">
+                                        <div class="checkbox-custom checkbox-default">
                                           <input [(ngModel)]="saleData.taxExempt" name="taxExempt" type="checkbox"
                                             id="ZeroRated" />
-                                          <label class="
-                                              control-label
-                                              font-weight-semibold
-                                              labelmt
-                                              text-3 text-dark
-                                            " for="ZeroRated">Tax Exempt</label>
+                                          <label class="control-label
+                                            font-weight-semibold
+                                            labelmt
+                                            text-3 text-dark" for="ZeroRated">Tax Exempt</label>
                                         </div>
                                       </div>
                                       <div class="col-lg-7 pl-3 mb-0 text-right">
@@ -690,22 +628,32 @@
                                         : 0.0
                                         }}
                                       </div>
+                                      <div class="col-lg-12 pl-3 mb-0 text-right">
+                                        <span class="font-weight-semibold mr-5">Discount Amount:
+                                        </span>
+                                        {{
+                                        saleData.total.discountAmount
+                                        ? (saleData.total.discountAmount
+                                        | number: "1.2-2")
+                                        : 0.0
+                                        }}
+                                      </div>
                                     </div>
                                     <div class="row mt-3" *ngIf="!saleData.taxExempt">
                                       <div class="col-lg-12">
-                                        <label class="
-                                            control-label
-                                            font-weight-bold
-                                            text-3 text-dark
-                                          " for="inputDefault">Province/State</label>
+                                        <label class="control-label
+                                          font-weight-bold
+                                          text-3 text-dark" for="inputDefault">Province/State</label>
                                       </div>
                                       <div class="col-lg-9">
                                         <ng-select [(ngModel)]="saleData.stateTaxID" name="stateTaxID"
-                                          (change)="stateSelectChange()" class="form-control populate"
-                                          [clearable]="false">
+                                          (change)="stateSelectChange()" class="form-control
+                                          populate" [clearable]="false">
                                           <ng-option *ngFor="let stateTax of stateTaxes" selected
                                             value="{{ stateTax.stateTaxID }}">
-                                            {{ stateTax.stateName }}</ng-option>
+                                            {{
+                                            stateTax.stateName
+                                            }}</ng-option>
                                         </ng-select>
                                       </div>
                                     </div>
@@ -713,10 +661,10 @@
                                     <div class="row" *ngIf="!saleData.taxExempt">
                                       <div class="col-lg-8">
                                         <!-- GST -->
-                                        <div class="row mt-3" *ngFor="
-                                            let taxD of saleData.charges.taxes;
-                                            let td = index
-                                          ">
+                                        <div class="row mt-3" *ngFor="let taxD of
+                                          saleData.charges
+                                          .taxes;
+                                          let td= index">
                                           <div class="col-lg-5 pr-0">
                                             <input type="text" disabled class="form-control" [(ngModel)]="taxD.name"
                                               name="taxName{{ td }}" />
@@ -725,19 +673,17 @@
                                           <div class="col-lg-5 pr-0 input-group">
                                             <input type="text" [(ngModel)]="taxD.tax" name="taxper{{ td }}"
                                               class="form-control" (input)="taxcalculation(td)" /><span
-                                              class="input-group-append"><span class="
-                                                  input-group-text
-                                                  pt-0
-                                                  pb-0
-                                                ">%</span></span>
+                                              class="input-group-append"><span class="input-group-text
+                                                pt-0
+                                                pb-0">%</span></span>
                                           </div>
                                         </div>
                                       </div>
                                       <div class="col-lg-4">
-                                        <div class="row mt-3 bordtop" *ngFor="
-                                            let taxD of saleData.charges.taxes;
-                                            let td = index
-                                          ">
+                                        <div class="row mt-3 bordtop" *ngFor="let taxD of
+                                          saleData.charges
+                                          .taxes;
+                                          let td= index">
                                           <div class="col-lg-12 pt-1">
                                             <p class="text-right mb-0">
                                               {{
@@ -751,35 +697,13 @@
                                         </div>
                                       </div>
                                     </div>
-
                                     <div class="row align-items-center">
                                       <div class="col-lg-12 pt-1 text-right">
-                                        <span class="
-                                            text-right
-                                            h5
-                                            font-weight-semibold
-                                            text-4 text-dark
-                                            mr-5
-                                          ">
-                                          Total Credits
-                                        </span>
-                                        <span class="text-right m-0 d-inline-block" style="width: 58px;">
-                                          {{
-                                          saleData.total.customerCredit ? (saleData.total.customerCredit
-                                          | number: "1.2-2" ): '0'
-                                          }}
-                                        </span>
-                                      </div>
-                                    </div>
-                                    <div class="row align-items-center">
-                                      <div class="col-lg-12 pt-1 text-right">
-                                        <span class="
-                                            text-right
-                                            h5
-                                            font-weight-semibold
-                                            text-4 text-dark
-                                            mr-5
-                                          ">
+                                        <span class="text-right
+                                          h5
+                                          font-weight-semibold
+                                          text-4 text-dark
+                                          mr-5">
                                           Total Amount
                                         </span>
                                         <span class="text-right m-0">
@@ -791,6 +715,7 @@
                                       </div>
                                     </div>
                                   </div>
+
                                 </div>
                               </div>
                             </div>
