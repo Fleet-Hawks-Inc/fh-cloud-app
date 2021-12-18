@@ -619,7 +619,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     this.accountService
       .getData(
-        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=driver`
+        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=driver&fetch=other&entityType=${this.paymentData.paymentTo}`
       )
       .subscribe((result: any) => {
         if (result.length === 0) {
