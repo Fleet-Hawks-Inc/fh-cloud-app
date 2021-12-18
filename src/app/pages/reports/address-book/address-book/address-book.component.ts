@@ -40,6 +40,7 @@ export class AddressBookComponent implements OnInit {
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
+                    // this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.updatedSK);
                 }
                 else {
                     this.lastItemSK = 'end'
@@ -94,7 +95,7 @@ export class AddressBookComponent implements OnInit {
                 obj["Company Name"] = element.cName
                 obj["Email"] = element.workEmail
                 obj["Phone"] = element.workPhone
-                obj["Type"] = element.eTypes
+                obj["Type"] = element.eTypes.join(' ')
                 obj["Address"] = element.adrs[0].manual === true ? (
                                         element.adrs[0].add1 + " "
                                         +
@@ -137,5 +138,20 @@ export class AddressBookComponent implements OnInit {
             this.toastr.error("No Records found")
         }
   }
+  
+  requiredExport() {
+        this.apiService.getData(`contacts/get/getFull/export`).subscribe((result: any) => {
+            this.addressBookList = result.Items;
+            this.generateCSV();
+        })
+    }
+    
+    requiredCSV() {
+        if (this.company !== null || this.type !== null) {
+            this.generateCSV();
+        } else {
+            this.requiredExport();
+        }
+    }
 }
 

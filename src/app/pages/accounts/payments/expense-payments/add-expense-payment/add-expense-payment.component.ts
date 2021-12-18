@@ -176,7 +176,7 @@ export class AddExpensePaymentComponent implements OnInit {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     this.accountService
       .getData(
-        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=expense`
+        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=expense&fetch=other&entityType=${this.paymentData.paymentTo}`
       )
       .subscribe((result: any) => {
         if (result.length === 0) {
