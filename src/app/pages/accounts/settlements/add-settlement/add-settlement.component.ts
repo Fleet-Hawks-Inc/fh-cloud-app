@@ -79,10 +79,10 @@ export class AddSettlementComponent implements OnInit {
     },
     fuelIds: [],
     fuelData: [],
-    expIds: [],
-    expData: [],
-    expAdd: 0,
-    expDed: 0,
+    // expIds: [],
+    // expData: [],
+    // expAdd: 0,
+    // expDed: 0,
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -155,6 +155,7 @@ export class AddSettlementComponent implements OnInit {
   prevSelectedExpIds = [];
   allCarriers = [];
   allOwnerOperators = [];
+  showFuel = "no";
 
   constructor(
     private listService: ListService,
@@ -178,7 +179,7 @@ export class AddSettlementComponent implements OnInit {
     this.fetchVehicles();
     this.fetchAssets();
     this.fetchOrders();
-    this.fetchExpenseCategories();
+    // this.fetchExpenseCategories();
   }
 
   fetchDrivers() {
@@ -470,7 +471,6 @@ export class AddSettlementComponent implements OnInit {
             a
           );
         }, {});
-        console.log("this.trips====", this.trips);
         this.tripsObject = _.merge(this.tripsObject, stlObj);
       });
   }
@@ -486,13 +486,13 @@ export class AddSettlementComponent implements OnInit {
     return planLoc;
   }
 
-  fetchExpenseCategories() {
-    this.accountService
-      .getData(`expense/categories/list`)
-      .subscribe((result: any) => {
-        this.categories = result;
-      });
-  }
+  // fetchExpenseCategories() {
+  //   this.accountService
+  //     .getData(`expense/categories/list`)
+  //     .subscribe((result: any) => {
+  //       this.categories = result;
+  //     });
+  // }
   fetchCarriers() {
     this.apiService
       .getData(`contacts/get/type/carrier`)
@@ -609,10 +609,10 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.fuelDed;
     }
     // trip expense values
-    this.settlementData.subTotal =
-      this.settlementData.subTotal +
-      this.settlementData.expAdd -
-      this.settlementData.expDed;
+    // this.settlementData.subTotal =
+    //   this.settlementData.subTotal +
+    //   this.settlementData.expAdd -
+    //   this.settlementData.expDed;
     if (this.settlementData.type == "carrier") {
       if (this.settlementData.taxObj.carrLocalTax != 0) {
         this.settlementData.taxObj.carrLocalAmount =
@@ -836,7 +836,7 @@ export class AddSettlementComponent implements OnInit {
     }
 
     await this.fetchFuelExpenses();
-    await this.fetchTripExpenses();
+    // await this.fetchTripExpenses();
   }
 
   setArray(element) {
@@ -1275,7 +1275,7 @@ export class AddSettlementComponent implements OnInit {
           this.driverId = this.settlementData.entityId;
         }
         this.fetchSelectedFuelExpenses();
-        this.fetchSelectedTripExpenses();
+        // this.fetchSelectedTripExpenses();
         this.editDisabled = true;
         if (result[0].taxObj == undefined) {
           result[0].taxObj = {
@@ -1521,61 +1521,61 @@ export class AddSettlementComponent implements OnInit {
     }, {});
     this.tripsObject = _.merge(this.tripsObject, stlObj);
     await this.fetchFuelExpenses();
-    await this.fetchTripExpenses();
+    // await this.fetchTripExpenses();
   }
 
-  async fetchTripExpenses() {
-    let tripIds = encodeURIComponent(
-      JSON.stringify(this.settlementData.tripIds)
-    );
+  // async fetchTripExpenses() {
+  //   let tripIds = encodeURIComponent(
+  //     JSON.stringify(this.settlementData.tripIds)
+  //   );
 
-    if (this.settlementData.tripIds.length > 0) {
-      let result = await this.accountService
-        .getData(
-          `expense/trip-expenses?trips=${tripIds}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
-        )
-        .toPromise();
-      this.finalTripExpenses = [];
-      for (const exp of result) {
-        const expobj = {
-          tripID: exp.tripID,
-          categoryID: exp.categoryID,
-          notes: exp.notes,
-          amount: exp.amount,
-          currency: exp.currency,
-          add: false,
-          deduction: false,
-          addDisabled: false,
-          subDisabled: false,
-          txnDate: exp.txnDate,
-          expenseID: exp.expenseID,
-        };
-        this.finalTripExpenses.push(expobj);
-      }
-    } else {
-      this.finalTripExpenses = [];
-    }
-  }
+  //   if (this.settlementData.tripIds.length > 0) {
+  //     let result = await this.accountService
+  //       .getData(
+  //         `expense/trip-expenses?trips=${tripIds}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
+  //       )
+  //       .toPromise();
+  //     this.finalTripExpenses = [];
+  //     for (const exp of result) {
+  //       const expobj = {
+  //         tripID: exp.tripID,
+  //         categoryID: exp.categoryID,
+  //         notes: exp.notes,
+  //         amount: exp.amount,
+  //         currency: exp.currency,
+  //         add: false,
+  //         deduction: false,
+  //         addDisabled: false,
+  //         subDisabled: false,
+  //         txnDate: exp.txnDate,
+  //         expenseID: exp.expenseID,
+  //       };
+  //       this.finalTripExpenses.push(expobj);
+  //     }
+  //   } else {
+  //     this.finalTripExpenses = [];
+  //   }
+  // }
 
-  filterExpenses(tripID: any) {
-    this.finalTripExpenses = this.tripExpenses.filter((e: any) => {
-      return e.tripID === tripID;
-    });
-  }
+  // filterExpenses(tripID: any) {
+  //   this.finalTripExpenses = this.tripExpenses.filter((e: any) => {
+  //     return e.tripID === tripID;
+  //   });
+  // }
 
-  removeExpenses(tripID: any) {
-    let remTripInd = [];
-    this.finalTripExpenses.map((v) => {
-      if (v.tripID === tripID) {
-        let ind = this.finalTripExpenses.indexOf(v);
-        remTripInd.push(ind);
-      }
-    });
+  // removeExpenses(tripID: any) {
+  //   let remTripInd = [];
+  //   this.finalTripExpenses.map((v) => {
+  //     if (v.tripID === tripID) {
+  //       let ind = this.finalTripExpenses.indexOf(v);
+  //       remTripInd.push(ind);
+  //     }
+  //   });
 
-    for (var i = remTripInd.length - 1; i >= 0; i--) {
-      this.finalTripExpenses.splice(remTripInd[i], 1);
-    }
-  }
+  //   for (var i = remTripInd.length - 1; i >= 0; i--) {
+  //     this.finalTripExpenses.splice(remTripInd[i], 1);
+  //   }
+  // }
 
   remStldTrip(tripID: string, splitID: string, index: number, splitIndex: any) {
     let selectedTrip = this.dummySettledTrips[index];
@@ -2314,116 +2314,116 @@ export class AddSettlementComponent implements OnInit {
     }
   }
 
-  selectedExpense() {
-    this.settlementData.expAdd = 0;
-    this.settlementData.expDed = 0;
-    this.settlementData.expIds = [];
-    this.settlementData.expData = [];
-    for (let i = 0; i < this.finalTripExpenses.length; i++) {
-      const element = this.finalTripExpenses[i];
+  // selectedExpense() {
+  //   this.settlementData.expAdd = 0;
+  //   this.settlementData.expDed = 0;
+  //   this.settlementData.expIds = [];
+  //   this.settlementData.expData = [];
+  //   for (let i = 0; i < this.finalTripExpenses.length; i++) {
+  //     const element = this.finalTripExpenses[i];
 
-      if (element.add) {
-        this.settlementData.expAdd += Number(element.amount);
-        element.subDisabled = true;
-        if (!this.settlementData.expIds.includes(element.expenseID)) {
-          this.settlementData.expIds.push(element.expenseID);
-          let obj = {
-            expenseID: element.expenseID,
-            amount: Number(element.amount),
-            action: "add",
-          };
-          this.settlementData.expData.push(obj);
-        }
-      } else {
-        element.subDisabled = false;
-      }
+  //     if (element.add) {
+  //       this.settlementData.expAdd += Number(element.amount);
+  //       element.subDisabled = true;
+  //       if (!this.settlementData.expIds.includes(element.expenseID)) {
+  //         this.settlementData.expIds.push(element.expenseID);
+  //         let obj = {
+  //           expenseID: element.expenseID,
+  //           amount: Number(element.amount),
+  //           action: "add",
+  //         };
+  //         this.settlementData.expData.push(obj);
+  //       }
+  //     } else {
+  //       element.subDisabled = false;
+  //     }
 
-      if (element.deduction) {
-        this.settlementData.expDed += Number(element.amount);
-        element.addDisabled = true;
-        if (!this.settlementData.expIds.includes(element.expenseID)) {
-          this.settlementData.expIds.push(element.expenseID);
-          let obj = {
-            expenseID: element.expenseID,
-            amount: Number(element.amount),
-            action: "sub",
-          };
-          this.settlementData.expData.push(obj);
-        }
-      } else {
-        element.addDisabled = false;
-      }
-    }
-    if (this.settlementID) {
-      this.preExpensesTotal();
-    }
-    this.settlementData.expDed = Number(this.settlementData.expDed.toFixed(2));
-    this.settlementData.expAdd = Number(this.settlementData.expAdd.toFixed(2));
+  //     if (element.deduction) {
+  //       this.settlementData.expDed += Number(element.amount);
+  //       element.addDisabled = true;
+  //       if (!this.settlementData.expIds.includes(element.expenseID)) {
+  //         this.settlementData.expIds.push(element.expenseID);
+  //         let obj = {
+  //           expenseID: element.expenseID,
+  //           amount: Number(element.amount),
+  //           action: "sub",
+  //         };
+  //         this.settlementData.expData.push(obj);
+  //       }
+  //     } else {
+  //       element.addDisabled = false;
+  //     }
+  //   }
+  //   if (this.settlementID) {
+  //     this.preExpensesTotal();
+  //   }
+  //   this.settlementData.expDed = Number(this.settlementData.expDed.toFixed(2));
+  //   this.settlementData.expAdd = Number(this.settlementData.expAdd.toFixed(2));
 
-    this.calculateFinalTotal();
-  }
+  //   this.calculateFinalTotal();
+  // }
 
-  async fetchSelectedTripExpenses() {
-    if (this.settlementData.expIds.length > 0) {
-      let expenseIDs = encodeURIComponent(
-        JSON.stringify(this.settlementData.expIds)
-      );
-      let result = await this.accountService
-        .getData(`expense/get/selected?entities=${expenseIDs}`)
-        .toPromise();
-      result.map((k) => {
-        this.settlementData.expData.map((v) => {
-          if (v.expenseID === k.expenseID) {
-            k.action = v.action === "add" ? "Added" : "Deducted";
-          }
-        });
-      });
+  // async fetchSelectedTripExpenses() {
+  //   if (this.settlementData.expIds.length > 0) {
+  //     let expenseIDs = encodeURIComponent(
+  //       JSON.stringify(this.settlementData.expIds)
+  //     );
+  //     let result = await this.accountService
+  //       .getData(`expense/get/selected?entities=${expenseIDs}`)
+  //       .toPromise();
+  //     result.map((k) => {
+  //       this.settlementData.expData.map((v) => {
+  //         if (v.expenseID === k.expenseID) {
+  //           k.action = v.action === "add" ? "Added" : "Deducted";
+  //         }
+  //       });
+  //     });
 
-      this.selectedExpenses = result;
-      this.prevSelectedExp = result;
-    }
-  }
+  //     this.selectedExpenses = result;
+  //     this.prevSelectedExp = result;
+  //   }
+  // }
 
-  delSelectedExpense(expID, index) {
-    this.prevSelectedExp = [];
-    if (!this.deletedExpEntries.includes(expID)) {
-      this.deletedExpEntries.push(expID);
-      let ind = this.settlementData.expIds.indexOf(expID);
-      this.settlementData.expIds.splice(ind, 1);
-      this.settlementData.expAdd = 0;
-      this.settlementData.expDed = 0;
-      this.settlementData.expData.map((v) => {
-        if (v.expenseID === expID) {
-          let indx = this.settlementData.expData.indexOf(v);
-          this.settlementData.expData.splice(indx, 1);
-        }
-      });
+  // delSelectedExpense(expID, index) {
+  //   this.prevSelectedExp = [];
+  //   if (!this.deletedExpEntries.includes(expID)) {
+  //     this.deletedExpEntries.push(expID);
+  //     let ind = this.settlementData.expIds.indexOf(expID);
+  //     this.settlementData.expIds.splice(ind, 1);
+  //     this.settlementData.expAdd = 0;
+  //     this.settlementData.expDed = 0;
+  //     this.settlementData.expData.map((v) => {
+  //       if (v.expenseID === expID) {
+  //         let indx = this.settlementData.expData.indexOf(v);
+  //         this.settlementData.expData.splice(indx, 1);
+  //       }
+  //     });
 
-      this.prevSelectedExp = this.settlementData.expData;
-      this.prevSelectedExpIds = this.settlementData.expIds;
-      this.settlementData.expData = [];
-      this.preExpensesTotal();
-      this.finalTripExpenses.push(this.selectedExpenses[index]);
-      this.selectedExpenses.splice(index, 1);
-    }
-    this.calculateFinalTotal();
-  }
+  //     this.prevSelectedExp = this.settlementData.expData;
+  //     this.prevSelectedExpIds = this.settlementData.expIds;
+  //     this.settlementData.expData = [];
+  //     this.preExpensesTotal();
+  //     this.finalTripExpenses.push(this.selectedExpenses[index]);
+  //     this.selectedExpenses.splice(index, 1);
+  //   }
+  //   this.calculateFinalTotal();
+  // }
 
-  preExpensesTotal() {
-    this.prevSelectedExp.map((v) => {
-      if (v.action === "add") {
-        this.settlementData.expAdd += Number(v.amount);
-      } else if (v.action === "sub") {
-        this.settlementData.expDed += Number(v.amount);
-      }
-      this.settlementData.expData.push(v);
-    });
-    this.prevSelectedExpIds.map((k) => {
-      if (!this.settlementData.expIds.includes(k)) {
-        this.settlementData.expIds.push(k);
-      }
-    });
-  }
+  // preExpensesTotal() {
+  //   this.prevSelectedExp.map((v) => {
+  //     if (v.action === "add") {
+  //       this.settlementData.expAdd += Number(v.amount);
+  //     } else if (v.action === "sub") {
+  //       this.settlementData.expDed += Number(v.amount);
+  //     }
+  //     this.settlementData.expData.push(v);
+  //   });
+  //   this.prevSelectedExpIds.map((k) => {
+  //     if (!this.settlementData.expIds.includes(k)) {
+  //       this.settlementData.expIds.push(k);
+  //     }
+  //   });
+  // }
 
   async currencyConverter(curr, amount, date) {
     return await this.accountService
@@ -2431,5 +2431,9 @@ export class AddSettlementComponent implements OnInit {
         `settlement/currency/convert/${curr}/${this.settlementData.currency}/${amount}/${date}`
       )
       .toPromise();
+  }
+
+  checkFuelVisibility(event) {
+    this.showFuel = event.target.value;
   }
 }

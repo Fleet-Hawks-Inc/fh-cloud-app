@@ -1273,7 +1273,7 @@
                     <table class="w-100">
                       <!-- <thead>head</thead> -->
                       <tbody>
-                        <tr *ngIf="vehicles.length === 0">
+                        <tr *ngIf="vehicles.length === 0" class="bg-transparent">
                           {{vehicleMessage}}
                         </tr>
                         <tr *ngFor="let vehicle of vehicles">
@@ -1308,7 +1308,7 @@
                   <div class="assign--trips__scroll trips-assets__listing">
                     <table class="w-100">
                       <tbody>
-                        <tr *ngIf="assets.length === 0">
+                        <tr *ngIf="assets.length === 0" class="bg-transparent">
                           {{assetMessage}}
                         </tr>
                         <tr *ngFor="let asset of assets">
@@ -1331,7 +1331,7 @@
                   <div class="assign--trips__scroll trips-drivers__listing">
                     <table class="w-100">
                       <tbody>
-                        <tr *ngIf="drivers.length === 0">
+                        <tr *ngIf="drivers.length === 0" class="bg-transparent">
                           {{driverMessage}}
                         </tr>
                         <tr *ngFor="let driver of drivers">
@@ -1377,6 +1377,9 @@
                   <div class="assign--trips__scroll trips-codrivers__listing">
                     <table class="w-100">
                       <tbody>
+                        <tr *ngIf="codrivers.length === 0" class="bg-transparent">
+                          {{driverMessage}}
+                        </tr>
                         <tr *ngFor="let driver of codrivers">
                           <td class="codriverClass" id="codrivr_{{ driver.driverID }}"
                             (click)="driverChange(driver, 'codriver', 'click')">
