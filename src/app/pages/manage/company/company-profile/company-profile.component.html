@@ -1,4 +1,4 @@
-<section class="body" *ngIf="showData">
+<section class="body">
   <div class="inner-wrapper">
 
 
@@ -12,7 +12,8 @@
             <a class="text-uppercase btn btn-sm btn-dark mr-2" data-toggle="modal" data-target="#changePasswordModal"
               href="javascript:;">Change Password</a>
             <a routerLink="/manage/company/edit/{{carriers.carrierID}}" class="btn btn-dark btn-sm"
-              *ngIf="carriers.carrierID != '' || carriers.carrierID != undefined"><i class="fas fa-plus"></i> Edit
+              *ngIf="carriers.length > 0 && carriers.carrierID != '' || carriers.carrierID != undefined"><i
+                class="fas fa-plus"></i> Edit
               Company
               Detail</a>
           </div>

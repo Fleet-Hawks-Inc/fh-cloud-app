@@ -39,15 +39,15 @@
               </div>
               <div class="col-md-2 col-lg-2">
                 <button type="submit" class="btn btn-sm btn-success mr-2"
-                   (click)="searchFilter()">Search</button>
+                   (click)="searchFilter()" [disabled]="disableSearch">Search</button>
                 <button type="submit" class="btn btn-sm btn-success"
-                   (click)="resetFilter()">Reset</button>
+                   (click)="resetFilter()" [disabled]="disableSearch">Reset</button>
               </div>
   
               <div class="col-md-5 col-lg-5 text-right pr-1">
                 <!-- <button (click)="refreshData()" data-toggle="tooltip"
                   title="Refresh data" class="btn
-                  btn-success btn-sm mr-2">
+                  btn-success btn-sm mr-2" [disabled]="disableSearch">
                   <i class="fas fa-sync"></i>
                 </button> -->
                 <a routerLink="/accounts/payments/expense-payments/add" class="btn
@@ -66,7 +66,8 @@
               <div class="bg-white p-3 text-dark">
                 <div class="form-group row">
                   <div class="col-lg-12">
-                    <div >
+                    <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                  [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                       <div class="">
                         <div class="">
                           <div class="row">
@@ -98,7 +99,10 @@
                                 </tbody>
                               </table>
                             </div>
-                            
+                            <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && payments.length !== 0">
+                              <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                                More..</button>
+                            </div>
                           </div>
                         </div>
                       </div>
