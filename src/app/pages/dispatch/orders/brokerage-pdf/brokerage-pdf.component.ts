@@ -23,7 +23,7 @@ export class BrokeragePdfComponent implements OnInit {
     private modalService: NgbModal,
     private toastr: ToastrService,
     private apiService: ApiService
-  ) {}
+  ) { }
   subscription: Subscription;
   brokerage = {
     orderNo: "",
@@ -96,6 +96,9 @@ export class BrokeragePdfComponent implements OnInit {
   isEmail = false;
   orderID = "";
   type = "";
+  companyLogoSrc: string;
+  carrierTerms: string;
+  tagLine: string;
 
   ngOnInit() {
     this.subscription = this.listService.brokeragePdfList.subscribe(
@@ -105,6 +108,9 @@ export class BrokeragePdfComponent implements OnInit {
           this.brokerage = res.brokerage;
           this.orderData = res.orderData;
           this.carrierData = res.carrierData;
+          this.companyLogoSrc = res.orderData.carrierData.termsInfo.logo;
+          this.carrierTerms = res.orderData.carrierData.termsInfo.carrierTerms;
+          this.tagLine = res.orderData.carrierData.termsInfo.tagLine;
           this.companyLogo = res.companyLogo;
           this.type = res.type ? res.type : "list";
           this.brokEmail.carrierEmail = res.carrierEmail
@@ -121,8 +127,8 @@ export class BrokeragePdfComponent implements OnInit {
           this.modalService
             .open(this.modalContent, ngbModalOptions)
             .result.then(
-              (result) => {},
-              (reason) => {}
+              (result) => { },
+              (reason) => { }
             );
         }
       }
@@ -138,16 +144,18 @@ export class BrokeragePdfComponent implements OnInit {
     var data = document.getElementById("print_brokerage");
     setTimeout(() => {
       html2pdf(data, {
-        margin: 0,
-        filename: `Carrier Confirmation (${
-          this.brokerage.orderNo
-        })${new Date().getTime()}.pdf`,
+        margin: 0.15,
+        filename: `Carrier Confirmation (${this.brokerage.orderNo
+          })${new Date().getTime()}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: {
+
           scale: 2,
           logging: true,
           dpi: 192,
           letterRendering: true,
+          allowTaint: true,
+          useCORS: true,
         },
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       });
