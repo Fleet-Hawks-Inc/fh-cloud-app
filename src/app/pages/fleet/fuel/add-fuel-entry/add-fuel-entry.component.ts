@@ -332,6 +332,7 @@ export class AddFuelEntryComponent implements OnInit {
   addFuelEntry() {
     this.hideErrors();
     this.submitDisabled = true;
+    if(Number(this.fuelData.data.ppu)&& Number(this.fuelData.data.ppu)>0){
     if (this.fuelData.data.useType == "def") {
       this.fuelData.data.type = "DEF";
     }
@@ -368,6 +369,11 @@ export class AddFuelEntryComponent implements OnInit {
         this.location.back();
       },
     });
+  }
+  else{
+    this.toaster.error(`Price Per ${this.fuelData.data.uom} must be greater than 0`)
+    this.submitDisabled=false
+  }
   }
 
   throwErrors() {
