@@ -96,7 +96,7 @@
                         <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
                           }}">
-                          {{ item.crRef }}
+                          {{ item.crRef ? item.crRef : '-' }}
                         </td>
                         <!-- <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
@@ -130,9 +130,12 @@
                         <td routerLink="/accounts/sales/credit-notes/detail/{{
                             item.creditID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">{{
-                            item.status
-                            }}</span>
+                          <span class="badge badge-dark p-1 text-uppercase">
+                            <span *ngIf="item.status === 'partially deducted'">Partially Received</span>
+                            <span *ngIf="item.status === 'open'">Open</span>
+                            <span *ngIf="item.status === 'deducted'">Deducted</span>
+                          </span>
+
                         </td>
                         <td class="cursorpoint">
                           <div class="btn-group flex-wrap">

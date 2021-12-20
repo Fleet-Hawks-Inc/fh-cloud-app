@@ -170,6 +170,7 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   selectedCustomer(customerID: any) {
+    this.salesData.cusInfo.addressID = '';
     this.apiService
       .getData(`contacts/detail/${customerID}`)
       .subscribe((result: any) => {
@@ -207,7 +208,7 @@ export class AddSalesOrderComponent implements OnInit {
 
   getAddressID(value: boolean, i: number, id: string) {
     if (value === true) {
-      this.salesData.cusInfo.addressID.cusAddressID = id;
+      this.salesData.cusInfo.addressID = id;
       for (
         let index = 0;
         index < this.customerSelected[0].adrs.length;

@@ -321,7 +321,10 @@
                                         badge badge-dark
                                         p-1
                                         text-uppercase
-                                      ">{{ data.status }}</span>
+                                      ">
+                                      <span *ngIf="data.status === 'partially_deducted'">Partially Received</span>
+                                      <span *ngIf="data.status != 'partially_deducted'">{{ data.status }}</span>
+                                    </span>
                                   </td>
                                   <td class="text-center">
                                     <input type="checkbox" [(ngModel)]="data.fullPayment" name="advfinal{{ i }}"
@@ -730,8 +733,13 @@
                         Cancel
                       </button>
                       <button href="javascript:;" [disabled]="
-                      !saleForm.form.valid || submitDisabled" *ngIf="!saleID" (click)="addInvoice()"
+                      !saleForm.form.valid || submitDisabled" *ngIf="!saleID" (click)="checkEmailStat('no');"
                         class="btn btn-success">Save</button>
+                      <button type="button" *ngIf="!saleID" class="btn
+                      btn-success ml-2" (click)="checkEmailStat('yes');"
+                        [disabled]="!saleForm.form.valid || submitDisabled">Save
+                        &
+                        Send</button>
                       <button href="javascript:;" *ngIf="saleID" (click)="updateInvoice()"
                         class="btn btn-success">Update</button>
                     </div>

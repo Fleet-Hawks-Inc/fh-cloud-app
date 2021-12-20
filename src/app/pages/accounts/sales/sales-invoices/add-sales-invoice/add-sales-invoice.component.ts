@@ -24,6 +24,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
     customerID: null,
+    cusAddressID: '',
     sOrderNo: '',
     sRef: '',
     dueDate: null,
@@ -203,6 +204,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async getCustomerOrders(ID: string) {
     this.saleData.sOrderNo = '';
+    this.saleData.cusAddressID = '';
     this.salesOrder = [];
     this.saleData.sOrderDetails = [{
       commodity: '',
@@ -292,6 +294,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async getOrderDetail(ID: string) {
     let getSaleOrder = this.salesOrder.find(elem => elem.saleID === ID);
+    this.saleData.cusAddressID = getSaleOrder.cusInfo.addressID;
     this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails]
     await this.calculateAmount(null);
     this.calculateFinalTotal();
@@ -505,6 +508,15 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.taxTotal()
   }
 
+  checkEmailStat(type) {
+    if (type === "yes") {
+      this.saleData["sendEmail"] = true;
+    } else {
+      this.saleData["sendEmail"] = false;
+    }
+    this.addInvoice();
+  }
+
   addInvoice() {
     this.customerCredits.forEach(elem => {
       if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
@@ -512,6 +524,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         return;
       }
     })
+    console.log('this.saleData', this.saleData)
 
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
