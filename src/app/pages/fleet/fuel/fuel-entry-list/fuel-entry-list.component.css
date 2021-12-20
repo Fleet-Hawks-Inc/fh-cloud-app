@@ -3,3 +3,7 @@ ngx-datatable {
   min-height: 60vh;
   overflow-y: scroll;
 }
+
+datatable-header-cell{
+    font-weight: bold;
+}
