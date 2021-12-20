@@ -512,8 +512,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         return;
       }
     })
-    console.log('this.saleData', this.saleData)
-    return
+
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {
