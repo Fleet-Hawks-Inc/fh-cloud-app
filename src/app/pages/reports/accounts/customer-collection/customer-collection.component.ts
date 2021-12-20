@@ -5,6 +5,7 @@ import Constant from "src/app/pages/fleet/constants";
 import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from "html2pdf.js";
 import * as moment from 'moment'
+import * as _ from "lodash";
 declare var $: any;
 
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -37,6 +38,7 @@ export class CustomerCollectionComponent implements OnInit {
     startDate: '',
     endDate: ''
   }
+  suggestedCustomers=[]
   printData: any = {}
   date = new Date();
   dateMinLimit = { year: 1950, month: 1, day: 1 };
@@ -65,7 +67,23 @@ export class CustomerCollectionComponent implements OnInit {
       this.loaded = false;
     }
   }
+getSuggestions=_.debounce(async function (value){
+  value=value.toLowerCase();
+  if(value!=''){
+    const result=await this.apiService.getData(`contacts/reports/suggestions/${value}`).toPromise();
+    this.suggestedCustomers=result
+  }
+  else{
+    this.suggestedCustomers=[]
+  }
 
+},500)
+setCustomer(cName){
+  if(cName!=''){
+  this.customer=cName;
+  this.suggestedCustomers=[]
+  }
+}
   async fetchCustomerCollection(refresh?: boolean) {
     this.dataMessage = Constant.FETCHING_DATA
     this.isLoading = true;
@@ -75,7 +93,7 @@ export class CustomerCollectionComponent implements OnInit {
     }
     if (this.lastSK != 'end') {
       const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}&customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-      //console.log(result)
+      // console.log(result)
       this.dataMessage = Constant.FETCHING_DATA
       if (result.Items.length == 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND
