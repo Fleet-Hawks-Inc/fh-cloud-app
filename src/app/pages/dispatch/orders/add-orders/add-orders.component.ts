@@ -541,7 +541,7 @@ export class AddOrdersComponent implements OnInit {
       this.listService.fetchShippers();
       let shipperList = new Array<any>();
       this.getValidShippers(shipperList);
-      this.shippers = shipperList;
+      this.shippers = [...shipperList];
     }
   }
 
@@ -1203,7 +1203,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1536,7 +1536,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1562,7 +1562,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -1578,12 +1578,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1666,13 +1666,13 @@ export class AddOrdersComponent implements OnInit {
         ? this.orderData.taxesInfo[2].amount
         : 0;
       let advance: any = this.orderData.advance;
-      let totalTax = parseInt(gst) + parseInt(pst) + parseInt(hst);
-      let taxAmount = (parseInt(this.totalAmount) * totalTax) / 100;
-      let final: any = (parseInt(this.totalAmount) + taxAmount).toFixed(2);
+      let totalTax = parseFloat(gst) + parseFloat(pst) + parseFloat(hst);
+      let taxAmount = (parseFloat(this.totalAmount) * totalTax) / 100;
+      let final: any = (parseFloat(this.totalAmount) + taxAmount).toFixed(2);
       this.orderData["totalAmount"] = final;
 
       this.totalAmount = final;
-      this.orderData.finalAmount = final - parseInt(advance);
+      this.orderData.finalAmount = final - parseFloat(advance);
     }
     this.newTaxes = this.orderData.taxesInfo;
     if (this.subTotal > 0) {
@@ -2599,7 +2599,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2620,7 +2620,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
