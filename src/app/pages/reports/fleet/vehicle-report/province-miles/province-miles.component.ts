@@ -178,14 +178,65 @@ export class ProvinceMilesComponent implements OnInit {
           veh.miles += Number(element.miles);
         }
       }
-  
+      for (let data of this.exportData) {
+        data.canMiles = 0;
+        data.usMiles = 0;
+        data.finalData = ''
+        data.provData = [];
+        data.province =
+          data.provinceData = [];
+        data.vehicleProvinces = [];
+        data.vehicleIDs.map((v) => {
+          data.iftaMiles.map((ifta) => {
+            ifta.map((ifta2) => {
+              if (ifta2[v] && ifta2[v].length > 0) {
+                let newObj = {
+                  vehicleID: v,
+                  vehicleName: data.vehicle,
+                  provinces: []
+                }
+                ifta2[v].map((location) => {
+
+                  if (!data.vehicleProvinces.includes(location.StCntry)) {
+                    data.vehicleProvinces.push(location.StCntry);
+                  }
+                  newObj.provinces.push(location);
+                })
+                data.provinceData.push(newObj);
+
+
+              }
+            })
+          })
+        })
+        const usProvArr = ["DE", "FL", "GA", "MD", "NC", "NJ", "NY", "SC", "VA", "US"]
+        const canArr = ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "US", "YT"]
+        for (let item of data.provinceData) {
+          data.finalData = item
+         
+          let provinceDataa = item.provinces;
+          item.provinces.map((v) => {
+            if (usProvArr.includes(v.StCntry)) {
+        
+              data.usMiles += Number(v.Total)
+            }
+            else if (canArr.includes(v.StCntry)) {
+              console.log('v.StCntry', v.StCntry);
+              console.log('exx', v);
+              data.canMiles += Number(v.Total)
+            }
+            else {
+              return false;
+            }
+          })
+        }
+      }
       this.generateCSV();
 
     });
   }
   generateCSV() {
     if (this.exportData.length > 0) {
-
       let dataObject = []
       let csvArray = []
       this.exportData.forEach(element => {
@@ -203,6 +254,17 @@ export class ProvinceMilesComponent implements OnInit {
             location += " & ";
           }
         }
+        let stateMiles = ''
+        for(let data of element.provinceData){
+       
+          for(let j =0; j < data.provinces.length; j++){
+            const element3 = data.provinces[j];
+            stateMiles += element3.StCntry + " : " + element3.Total
+            if (j < data.provinces.length - 1) {
+              stateMiles += " & ";
+            }
+          }
+        }
         let obj = {}
         obj["Vehicle"] = element.vehicle ? element.vehicle.replace(/, /g, ' &') : '';
         obj["Trip#"] = element.tripNo;
@@ -210,6 +272,9 @@ export class ProvinceMilesComponent implements OnInit {
         obj["location"] = location;
         obj["Date"] = date;
         obj["Total Miles"] = element.miles;
+        obj["State Miles"] = stateMiles;
+        obj["Canada Miles"] = element.canMiles;
+        obj["US Miles"] = element.usMiles;
         dataObject.push(obj)
       });
       let headers = Object.keys(dataObject[0]).join(',')
