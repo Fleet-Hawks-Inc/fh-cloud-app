@@ -440,7 +440,7 @@
                             ">
                             Attachments</label>
                           <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
-                            name="files" class="form-control" />
+                            name="files" class="form-control p-0" />
                           <span *ngIf="filesError != ''" class="text-danger">
                             {{ filesError }}
                           </span>
