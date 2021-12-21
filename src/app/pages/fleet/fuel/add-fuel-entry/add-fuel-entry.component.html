@@ -306,6 +306,7 @@
                                 <div *ngIf="cost.errors.required">
                                   Cost must contain numbers.
                                 </div>
+                                
                               </div>
                             </div>
                           </div>
@@ -871,7 +872,7 @@
                       </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" *ngIf="fuelData.data.useType === 'vehicle'">
                       <div class="col-lg-10">
                         <label
                           class="
