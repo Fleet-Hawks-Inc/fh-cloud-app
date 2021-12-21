@@ -14,6 +14,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class AddDeviceComponent implements OnInit {
   public errorMessage = "";
   public deviceIDText = "Device ID (Serial#)";
+  public title = "New Device"
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -64,6 +65,7 @@ export class AddDeviceComponent implements OnInit {
     if (deviceType && deviceSerialNo) {
       this.editMode = true;
       this.deviceID = `${deviceType}/${deviceSerialNo}`;
+      this.title = "Edit Device"
 
       // this.deviceID=encodeURIComponent(this.deviceID);
       this.fetchDevices();
