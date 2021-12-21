@@ -233,6 +233,16 @@ export class ProvinceMilesComponent implements OnInit {
 
     });
   }
+
+  csv() {
+    if (this.stateCode ) {
+      this.exportData = this.allData
+      this.generateCSV();
+    }
+    else {
+      this.fetchFullExport()
+    }
+  }
   generateCSV() {
     if (this.exportData.length > 0) {
       let dataObject = []
