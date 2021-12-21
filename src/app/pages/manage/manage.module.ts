@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ManageRoutingModule } from './manage-routing.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../shared/shared.module';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeviceModule } from './devices/devices.module';
 import {
@@ -18,7 +19,6 @@ import { ManagemainComponent } from './managemain/managemain.component';
 
 import { AlertsListComponent } from './alerts/alerts-list/alerts-list.component';
 import { AddAlertsComponent } from './alerts/add-alerts/add-alerts.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const COMPONENTS = [
