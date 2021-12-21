@@ -62,58 +62,7 @@ export class ProvinceMilesComponent implements OnInit {
             veh.miles += Number(element.miles);
           }
         }
-        for (let data of this.allData) {
-          data.canMiles = 0;
-          data.usMiles = 0;
-          data.finalData = ''
-          data.provData = [];
-          data.province =
-            data.provinceData = [];
-          data.vehicleProvinces = [];
-          data.vehicleIDs.map((v) => {
-            data.iftaMiles.map((ifta) => {
-              ifta.map((ifta2) => {
-                if (ifta2[v] && ifta2[v].length > 0) {
-                  let newObj = {
-                    vehicleID: v,
-                    vehicleName: data.vehicle,
-                    provinces: []
-                  }
-                  ifta2[v].map((location) => {
-
-                    if (!data.vehicleProvinces.includes(location.StCntry)) {
-                      data.vehicleProvinces.push(location.StCntry);
-                    }
-                    newObj.provinces.push(location);
-                  })
-                  data.provinceData.push(newObj);
-
-
-                }
-              })
-            })
-          })
-          const usProvArr = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL", "GA","HI","ID","IL","IN", "IA","KS","	KY","	LA","ME", "MD","MA","MI","MN",
-          "MS","MO","MT","NE","NV","NH","	NJ","	NM","	NY", "NC", "ND", "OH","OK","OR","PA","PR","	RI","SC","SD","	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-          const canArr = ["AB", "BC", "MB", "NB", "NL", "NF","NT", "NS", "NU", "ON", "PE","PQ", "QC", "SK", "Canada", "YT"]
-          for (let item of data.provinceData) {
-            data.finalData = item
-           
-            let provinceDataa = item.provinces;
-            item.provinces.map((v) => {
-              if (usProvArr.includes(v.StCntry)) {
-          
-                data.usMiles += Number(v.Total)
-              }
-              else if (canArr.includes(v.StCntry)) {
-                data.canMiles += Number(v.Total)
-              }
-              else {
-                return false;
-              }
-            })
-          }
-        }
+     this.fetchPendingData();
         //To filter according stateCode
 
         if (this.stateCode !== null) {
@@ -135,6 +84,61 @@ export class ProvinceMilesComponent implements OnInit {
 
         }
       });
+    }
+  }
+  fetchPendingData(){
+    for (let data of this.allData) {
+      data.canMiles = 0;
+      data.usMiles = 0;
+      data.finalData = ''
+      data.provData = [];
+      data.province =
+        data.provinceData = [];
+      data.vehicleProvinces = [];
+      data.vehicleIDs.map((v) => {
+        data.iftaMiles.map((ifta) => {
+          ifta.map((ifta2) => {
+            if (ifta2[v] && ifta2[v].length > 0) {
+              let newObj = {
+                vehicleID: v,
+                vehicleName: data.vehicle,
+                provinces: []
+              }
+              ifta2[v].map((location) => {
+
+                if (!data.vehicleProvinces.includes(location.StCntry)) {
+                  data.vehicleProvinces.push(location.StCntry);
+                }
+                newObj.provinces.push(location);
+              })
+              data.provinceData.push(newObj);
+
+
+            }
+          })
+        })
+      })
+      const usProvArr = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL", "GA","HI","ID","IL","IN", "IA","KS","	KY","	LA","ME", "MD","MA","MI","MN",
+      "MS","MO","MT","NE","NV","NH","	NJ","	NM","	NY", "NC", "ND", "OH","OK","OR","PA","PR","	RI","SC","SD","	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
+      const canArr = ["AB", "BC", "MB", "NB", "NL", "NF","NT", "NS", "NU", "ON", "PE","PQ", "QC", "SK", "Canada", "YT"]
+      console.log('data.provinceData', data.provinceData)
+      for (let item of data.provinceData) {
+        data.finalData = item
+       
+        let provinceDataa = item.provinces;
+        item.provinces.map((v) => {
+          if (usProvArr.includes(v.StCntry)) {
+      
+            data.usMiles += Number(v.Total)
+          }
+          else if (canArr.includes(v.StCntry)) {
+            data.canMiles += Number(v.Total)
+          }
+          else {
+            return false;
+          }
+        })
+      }
     }
   }
   onScroll() {
@@ -177,58 +181,8 @@ export class ProvinceMilesComponent implements OnInit {
           veh.miles += Number(element.miles);
         }
       }
-      for (let data of this.exportData) {
-        data.canMiles = 0;
-        data.usMiles = 0;
-        data.finalData = ''
-        data.provData = [];
-        data.province =
-          data.provinceData = [];
-        data.vehicleProvinces = [];
-        data.vehicleIDs.map((v) => {
-          data.iftaMiles.map((ifta) => {
-            ifta.map((ifta2) => {
-              if (ifta2[v] && ifta2[v].length > 0) {
-                let newObj = {
-                  vehicleID: v,
-                  vehicleName: data.vehicle,
-                  provinces: []
-                }
-                ifta2[v].map((location) => {
-
-                  if (!data.vehicleProvinces.includes(location.StCntry)) {
-                    data.vehicleProvinces.push(location.StCntry);
-                  }
-                  newObj.provinces.push(location);
-                })
-                data.provinceData.push(newObj);
-
-
-              }
-            })
-          })
-        })
-        const usProvArr = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL", "GA","HI","ID","IL","IN", "IA","KS","	KY","	LA","ME", "MD","MA","MI","MN",
-        "MS","MO","MT","NE","NV","NH","	NJ","	NM","	NY", "NC", "ND", "OH","OK","OR","PA","PR","	RI","SC","SD","	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-        const canArr = ["AB", "BC", "MB", "NB", "NL", "NF","NT", "NS", "NU", "ON", "PE","PQ", "QC", "SK", "Canada", "YT"]
-        for (let item of data.provinceData) {
-          data.finalData = item
-         
-          let provinceDataa = item.provinces;
-          item.provinces.map((v) => {
-            if (usProvArr.includes(v.StCntry)) {
-        
-              data.usMiles += Number(v.Total)
-            }
-            else if (canArr.includes(v.StCntry)) {
-              data.canMiles += Number(v.Total)
-            }
-            else {
-              return false;
-            }
-          })
-        }
-      }
+      this.fetchPendingData()
+      this.exportData = this.allData
       this.generateCSV();
 
     });

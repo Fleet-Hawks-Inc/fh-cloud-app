@@ -124,9 +124,11 @@
                                                 <td>
                                                     {{ item.miles | number : '1.2-2'}}
                                                 </td>
-                                                <td><span *ngFor='let item1 of item.provinceData'>
+                                                <td>
+                                                    <span *ngIf ="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor='let item1 of item.provinceData'>
                                                         <span *ngFor='let item2 of item1.provinces'>
-                                                            {{item2.StCntry }}:- {{item2.Total}}<br>
+                                                            {{item2.StCntry }}:- {{item2.Total }}<br>
                                                         </span>
                                                     </span>
                                                 </td>
