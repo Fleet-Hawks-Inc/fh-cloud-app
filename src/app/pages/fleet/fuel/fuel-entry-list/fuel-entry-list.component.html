@@ -188,19 +188,19 @@
                           >
                         </ng-template>
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Use Type" prop="data.useType">
+                      <ngx-datatable-column name="Use Type" [width]=200 prop="data.useType">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Fuel Type" prop="data.type">
+                      <ngx-datatable-column name="Fuel Type" [width]=200 prop="data.type">
                       </ngx-datatable-column>
                       <ngx-datatable-column
                         name="Fuel Amount"
-                        [width]="184"
+                        [width]="200"
                         prop="data.amt"
                       >
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Fuel Units" prop="data.qty">
+                      <ngx-datatable-column name="Fuel Units" [width]=200 prop="data.qty">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Site" prop="data.site">
+                      <ngx-datatable-column name="Site" prop="data.site" [width]=200>
                       </ngx-datatable-column>
                       <ngx-datatable-column
                         name="Province"
