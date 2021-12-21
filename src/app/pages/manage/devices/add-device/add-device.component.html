@@ -4,7 +4,7 @@
       <header class="page-header pr19 pl7">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            New Device
+            {{title}}
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <a routerLink="/manage/devices/list" class="btn btn-default btn-sm"
@@ -216,8 +216,7 @@
                             text-lg-right
                             pt-2
                           "
-                          >{{ deviceIDText
-                          }}<span class="mandfield text-2 ml-1">*</span></label
+                          >{{ deviceIDText}}<span class="mandfield text-2 ml-1">*</span></label
                         >
                         <input
                           [disabled]="editMode"
