@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-settlements-detail",
@@ -72,10 +72,13 @@ export class SettlementsDetailComponent implements OnInit {
   accountsObjects = {};
   accountsIntObjects = {};
   payments = [];
+  showModal = true;
+
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
@@ -168,5 +171,15 @@ export class SettlementsDetailComponent implements OnInit {
           });
         });
       });
+  }
+
+  showPreviewModal() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      settlementData: this.settlementData,
+    };
+    console.log("in dets");
+    this.listService.showSettlementsDetailPreview(obj);
   }
 }

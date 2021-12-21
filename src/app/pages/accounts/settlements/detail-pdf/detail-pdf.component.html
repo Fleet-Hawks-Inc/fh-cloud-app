@@ -1,0 +1,628 @@
+<ng-template #settlmentDetail let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Cheque</h4>
+            <button type="button" class="close" (click)="modal.dismiss()">
+                &times;
+            </button>
+        </div>
+        <form>
+            <div class="modal-body" id="settlmentDetailSection">
+                <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td width="50%">
+                                <h1 style="font-size:26px;">Driver Settlement</h1>
+                            </td>
+                            <td width="50%" align="right" valign="middle"> <img src="img/logo.png">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <h2 style="font-size:20px; margin-bottom:10px;">Driver:
+                                    Jack Leach</h2>
+                            </td>
+                            <td valign="top" align="right">
+                                <h2 style="font-size:20px; margin-bottom:10px;">Pay
+                                    Period: 2021/10/05 to 2021/11/30</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <h2 style="font-size:16px;">Trip Informationl</h2>
+                            </td>
+                            <td valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <table width="99%"
+                                    style="border:1px solid #adadad; border-right:0px solid #adadad; font-size:13px; margin-bottom:10px;"
+                                    cellpadding="0" cellspacing="0" bordercolor="#adadad">
+                                    <tbody>
+                                        <tr>
+                                            <td width="50%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Total Miles </p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>6140</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver
+                                                    Total Miles</p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>6140</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Loaded
+                                                    Miles </p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>5960.9</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver
+                                                    Loaded Miles</p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>0</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Empty
+                                                    Miles </p>
+                                            </td>
+                                            <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>179.1</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td valign="top">
+                                <table width="99%" align="right" cellpadding="0" cellspacing="0" bordercolor="#adadad"
+                                    style="border:1px solid #adadad; border-right:0px solid #adadad; font-size:13px; margin-bottom:10px;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="50%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver Emplty Miles</p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>0</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Team
+                                                    Miles </p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>6140</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver
+                                                    Team Miles</p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>0</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver
+                                                    Team Loaded</p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>5960.9</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Driver
+                                                    Teamm Emplty</p>
+                                            </td>
+                                            <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>179.1</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" valign="top">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0"
+                                    style="border:1px solid #d0d0d0; font-size:13px; margin-bottom:0px;">
+                                    <tr bgcolor="#f3f3f3">
+                                        <td width="6%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Trip#</p>
+                                        </td>
+                                        <td width="7%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Date</p>
+                                        </td>
+                                        <td width="6%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Order#</p>
+                                        </td>
+                                        <td width="23%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Locations</p>
+                                        </td>
+                                        <td width="7%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Miles</p>
+                                        </td>
+                                        <td width="15%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Driver</p>
+                                        </td>
+                                        <td width="6%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Vehicle</p>
+                                        </td>
+                                        <td width="6%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Assets</p>
+                                        </td>
+                                        <td width="7%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Carrier</p>
+                                        </td>
+                                        <td width="6%"
+                                            style="padding-left:10px; border-bottom:1px solid #adadad; border-right:1px solid #adadad;">
+                                            <p style="font-weight:600;">Status</p>
+                                        </td>
+                                        <td width="6%"
+                                            style="padding-left:10px; border-bottom:1px solid #adadad; border-right:1px solid #adadad;">
+                                            <p style="font-weight:600;">Rate</p>
+                                        </td>
+                                        <td style="padding-left:10px; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Total</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>1225</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>2021/11/20</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>1301</p>
+                                        </td>
+                                        <td
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>1)
+                                                <strong>Yard</strong>: 9889 54 Street Southeast, Calgary<br>
+                                                Date: 2021/11/29, Drop Time: 04:45 PM<br>
+                                                <strong>Delivery</strong>: 160854 10th Avenue, AL. USA<br>
+                                                Date: 2021/11/30, Drop Time: 08:45 PM<br>
+                                            </p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>3255.00</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>Sabarwal Ahmed, Travis Head</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>6610</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>7417</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>&nbsp;</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>Delivered</p>
+                                        </td>
+                                        <td valign="top"
+                                            style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>$ 58</p>
+                                        </td>
+                                        <td valign="top" style="border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>$ 1042</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top"
+                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                            <p>1225(2)</p>
+                                        </td>
+                                        <td colspan="11" style="padding:10px; border-bottom:1px solid #adadad;">
+                                            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                                style="border:1px solid #adadad; font-size:13px; margin-bottom:10px;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="15%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <p>2021/11/30</p>
+                                                        </td>
+                                                        <td width="35%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <strong>Yard:</strong>180
+                                                            Ryan St, Winnipeg, MB, R2R 0P1</td>
+                                                        <td width="20%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <p><strong>Driver: </strong> Manjit Singh<br>
+                                                                <strong>Co-Driver: </strong> Rohit Kumar
+                                                            </p>
+                                                        </td>
+                                                        <td
+                                                            style="text-align: right; border-right:1px solid #adadad; padding-right:10px;">
+                                                            <p><strong>Vehicle:
+                                                                </strong> 510</p>
+                                                        </td>
+                                                        <td style="text-align: right; padding-right:10px;">
+                                                            <p><strong>Asset(s):
+                                                                </strong> 315</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                                style="border:1px solid #adadad; font-size:13px; margin-bottom:10px;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td width="15%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <p>2021/11/30</p>
+                                                        </td>
+                                                        <td width="35%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <strong>Yard:</strong>180
+                                                            Ryan St, Winnipeg, MB, R2R 0P1</td>
+                                                        <td width="20%"
+                                                            style="border-right:1px solid #adadad; padding-left:10px;">
+                                                            <p><strong>Driver: </strong> Manjit Singh<br>
+                                                                <strong>Co-Driver: </strong> Rohit Kumar
+                                                            </p>
+                                                        </td>
+                                                        <td
+                                                            style="text-align: right; border-right:1px solid #adadad; padding-right:10px;">
+                                                            <p><strong>Vehicle:
+                                                                </strong> 510</p>
+                                                        </td>
+                                                        <td style="text-align: right; padding-right:10px;">
+                                                            <p><strong>Asset(s):
+                                                                </strong> 315</p>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>1335</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>2021/11/20</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>1301</p>
+                                        </td>
+                                        <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>1)
+                                                <strong>Yard</strong>: 9889 54 Street Southeast, Calgary<br>
+                                                Date: 2021/11/29, Drop Time: 04:45 PM<br>
+                                                <strong>Delivery</strong>: 160854 10th Avenue, AL. USA<br>
+                                                Date: 2021/11/30, Drop Time: 08:45 PM<br>
+                                            </p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>987.20</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>Sabarwal Ahmed, Travis Head</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>6610</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>7417</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>&nbsp;</p>
+                                        </td>
+                                        <td valign="top" style=" padding-left:10px; border-right:1px solid #adadad;">
+                                            <p>Delivered</p>
+                                        </td>
+                                        <td valign="top" style=" padding-left:10px; border-right:1px solid #adadad;">
+                                            <p>$ 22</p>
+                                        </td>
+                                        <td valign="top" style=" padding-left:10px;">
+                                            <p>$ 800</p>
+                                        </td>
+                                    </tr>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <h2 style="font-size:16px;">Addition</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0"
+                                    style="border:1px solid #d0d0d0; font-size:13px; margin-bottom:0px;">
+                                    <tr bgcolor="#f3f3f3">
+                                        <td width="20%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Trip#</p>
+                                        </td>
+                                        <td width="20%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Charge Name</p>
+                                        </td>
+                                        <td
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Description</p>
+                                        </td>
+                                        <td width="20%"
+                                            style="padding-right:10px; text-align: right; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Amount</p>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="settlementData.addition.length === 0" class="text-center">
+                                        <td colspan="4">
+                                            No data
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let data of settlementData.addition">
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>{{ data.tripID }}</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>{{ data.chargeName }}</p>
+                                        </td>
+                                        <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>
+                                                {{ data.desc ? data.desc : '-' }}
+                                            </p>
+                                        </td>
+                                        <td valign="top" style="padding-right:10px; text-align: right;">
+                                            <p>{{ data.amount | number : '1.2-2' }} {{ data.currency }}</p>
+                                        </td>
+                                    </tr>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <h2 style="font-size:16px;">Deduction</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0"
+                                    style="border:1px solid #d0d0d0; font-size:13px; margin-bottom:0px;">
+                                    <tr bgcolor="#f3f3f3">
+                                        <td width="20%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Trip#</p>
+                                        </td>
+                                        <td width="20%"
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Charge Name</p>
+                                        </td>
+                                        <td
+                                            style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Description</p>
+                                        </td>
+                                        <td width="20%"
+                                            style="padding-right:10px; text-align: right; border-bottom:1px solid #adadad;">
+                                            <p style="font-weight:600;">Amount</p>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="settlementData.deduction.length === 0" class="text-center">
+                                        <td colspan="4">
+                                            No data
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let data of settlementData.deduction">
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>{{ data.tripID }}</p>
+                                        </td>
+                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>{{ data.chargeName }}</p>
+                                        </td>
+                                        <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                            <p>
+                                                {{ data.desc ? data.desc : '-' }}
+                                            </p>
+                                        </td>
+                                        <td valign="top" style="padding-right:10px; text-align: right;">
+                                            <p>{{ data.amount | number : '1.2-2' }} {{ data.currency }}</p>
+                                        </td>
+                                    </tr>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%" align="center" cellpadding="0" cellspacing="0" bordercolor="#adadad"
+                                    style="border:1px solid #adadad; border-right:0px solid #adadad; font-size:13px; margin-bottom:10px;">
+                                    <tbody>
+                                        <tr>
+                                            <!-- <td width="10%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Total Addition</p>
+                                            </td>
+                                            <td width="12%" style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ settlementData.additionTotal }}</p>
+                                            </td>
+                                            <td width="10%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Total Deduction</p>
+                                            </td>
+                                            <td width="12%" style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ settlementData.deductionTotal }}</p>
+                                            </td> -->
+                                            <td width="30%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Total Payment</p>
+                                            </td>
+                                            <td width="20%" style="border-right:1px solid #adadad; padding-left:10px;">
+                                                {{ settlementData.paymentTotal }}</td>
+                                            <td width="30%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Payment Currency</p>
+                                            </td>
+                                            <td width="20%" style="border-right:1px solid #adadad; padding-left:10px;">{{ settlementData.currency }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <h2 style="font-size:16px; margin-bottom: 8px; margin-top: 8px;">Other
+                                    Charges</h2>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table width="100%" align="center" cellpadding="0" cellspacing="0" bordercolor="#adadad"
+                                    style="border:1px solid #adadad; border-right:0px solid #adadad; font-size:13px; margin-bottom:0px;">
+                                    <tbody>
+                                        <tr>
+                                            <td width="20%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Add</p>
+                                            </td>
+                                            <td width="12%"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ settlementData.additionTotal }}</p>
+                                            </td>
+                                            <td width="20%" bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Deduct</p>
+                                            </td>
+                                            <td width="20%"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                {{ settlementData.deductionTotal }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Fuel Addition</p>
+                                            </td>
+                                            <td style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ settlementData.fuelAdd }}</p>
+                                            </td>
+                                            <td bgcolor="#f3f3f3"
+                                                style="border-right:1px solid #adadad; padding-left:10px;">
+                                                <p style="font-weight:600;">Fuel Deduction</p>
+                                            </td>
+                                            <td style="border-right:1px solid #adadad; padding-left:10px;">{{ settlementData.fuelDed }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <p style="font-size:13px; margin-bottom:5px; margin-top:5px;">&nbsp;</p>
+                            </td>
+                            <td valign="top" align="right">
+                                <p style="font-size:20px; margin-bottom:5px; margin-top:5px;">
+                                    <strong>Grand Total:</strong> {{ settlementData.finalTotal }}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <table border="0" align="center" cellpadding="0" cellspacing="0">
+                                    <tbody>
+                                        <tr>
+                                            <td align="center">
+                                                <h2 style="font-size:13px;">Powered By</h2>
+                                                <img src="img/logo-2.png" width="207" height="28">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+                    Close
+                </button>
+                <button type="button" class="btn btn-success" (click)="generatePDF()">
+                    Download PDF
+                </button>
+            </div>
+        </form>
+    </div>
+</ng-template>
