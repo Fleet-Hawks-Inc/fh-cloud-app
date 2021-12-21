@@ -208,9 +208,13 @@ export class InventoryListComponent implements OnInit {
         });
     }
 
+
+
     openTransferModal() {
         $('#transferModal').modal('show');
     }
+
+    
 
     fetchWarehouses() {
         this.apiService.getData('items/get/list/warehouses').subscribe((result: any) => {
