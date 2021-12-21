@@ -264,7 +264,7 @@ export class AddDeviceComponent implements OnInit {
     if (eventArgs && eventArgs.value === "Tracker") {
       this.deviceIDText = "IMEI#";
     } else {
-      this.deviceIDText = "Device Id(Serial #)";
+      this.deviceIDText = "Device ID(Serial #)";
     }
   }
 }
