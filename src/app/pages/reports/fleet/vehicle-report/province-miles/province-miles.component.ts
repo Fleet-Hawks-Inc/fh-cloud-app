@@ -23,6 +23,9 @@ export class ProvinceMilesComponent implements OnInit {
   exportData = [];
   stateCode = null;
   dummyData = [];
+  dateMinLimit = { year: 1950, month: 1, day: 1 };
+  date = new Date();
+  futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
   ngOnInit(): void {
 
@@ -39,23 +42,19 @@ export class ProvinceMilesComponent implements OnInit {
   fetchProvinceMilesData() {
     if (this.lastItemSK !== 'end') {
       this.apiService.getData(`vehicles/fetch/provinceMiles?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-
         this.allData = this.allData.concat(result.Items)
         this.dummyData = this.dummyData.concat(result.Items)
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
-
         if (result.LastEvaluatedKey !== undefined) {
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
           this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
         }
-
         else {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-
         for (let veh of this.allData) {
           let dataa = veh
           veh.miles = 0
@@ -63,9 +62,7 @@ export class ProvinceMilesComponent implements OnInit {
             veh.miles += Number(element.miles);
           }
         }
-
         for (let data of this.allData) {
-          // console.log(' iftaMiles', data.iftaMiles)
           data.canMiles = 0;
           data.usMiles = 0;
           data.finalData = ''
@@ -100,12 +97,11 @@ export class ProvinceMilesComponent implements OnInit {
           const canArr = ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "US", "YT"]
           for (let item of data.provinceData) {
             data.finalData = item
-            console.log('data.finalData', data.finalData,)
+           
             let provinceDataa = item.provinces;
             item.provinces.map((v) => {
               if (usProvArr.includes(v.StCntry)) {
-                // console.log('v.StCntry', v.StCntry);
-                // console.log('exx', v);
+          
                 data.usMiles += Number(v.Total)
               }
               else if (canArr.includes(v.StCntry)) {
@@ -117,23 +113,13 @@ export class ProvinceMilesComponent implements OnInit {
                 return false;
               }
             })
-            // console.log('provinceDataa', provinceDataa);
-            // let result = provArr.includes(item.provinceDataa)
-            // console.log('result ', result)
-
           }
-          // console.log('    data.provData  ',     data.provData );
-          // console.log(' data.province ',   data.province );
-          console.log('  data.usMiles ', data.usMiles);
-          console.log('    data.canMiles ', data.canMiles);
         }
         //To filter according stateCode
 
         if (this.stateCode !== null) {
           this.allData = []
-
           for (let data of this.dummyData) {
-
             if (data.vehicleProvinces.includes(this.stateCode)) {
               if (data.vehicleProvinces === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -149,7 +135,6 @@ export class ProvinceMilesComponent implements OnInit {
           }
 
         }
-
       });
     }
   }
@@ -193,7 +178,7 @@ export class ProvinceMilesComponent implements OnInit {
           veh.miles += Number(element.miles);
         }
       }
-
+  
       this.generateCSV();
 
     });
@@ -204,10 +189,8 @@ export class ProvinceMilesComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.exportData.forEach(element => {
-
         let location = ''
         let date = ''
-      
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           date += element2.type + " : " + element2.date
@@ -220,7 +203,6 @@ export class ProvinceMilesComponent implements OnInit {
             location += " & ";
           }
         }
-   
         let obj = {}
         obj["Vehicle"] = element.vehicle ? element.vehicle.replace(/, /g, ' &') : '';
         obj["Trip#"] = element.tripNo;
@@ -228,9 +210,7 @@ export class ProvinceMilesComponent implements OnInit {
         obj["location"] = location;
         obj["Date"] = date;
         obj["Total Miles"] = element.miles;
-
         dataObject.push(obj)
-
       });
       let headers = Object.keys(dataObject[0]).join(',')
 
