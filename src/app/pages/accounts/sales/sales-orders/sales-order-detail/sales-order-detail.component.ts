@@ -1,13 +1,13 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { AccountService, ApiService } from 'src/app/services';
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
+import { AccountService, ApiService } from "src/app/services";
 import * as html2pdf from "html2pdf.js";
 @Component({
-  selector: 'app-sales-order-detail',
-  templateUrl: './sales-order-detail.component.html',
-  styleUrls: ['./sales-order-detail.component.css']
+  selector: "app-sales-order-detail",
+  templateUrl: "./sales-order-detail.component.html",
+  styleUrls: ["./sales-order-detail.component.css"],
 })
 export class SalesOrderDetailComponent implements OnInit {
   @ViewChild("previewSaleOrder", { static: true })
@@ -40,7 +40,13 @@ export class SalesOrderDetailComponent implements OnInit {
   isPDF: boolean = false;
   salePrev: any;
 
-  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private toaster: ToastrService, private route: ActivatedRoute) { }
+  constructor(
+    public accountService: AccountService,
+    private modalService: NgbModal,
+    public apiService: ApiService,
+    private toaster: ToastrService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -49,33 +55,33 @@ export class SalesOrderDetailComponent implements OnInit {
     }
   }
 
-
   fetchSaleOrder() {
-    this.accountService.getData(`sales-orders/detail/${this.saleID}`).subscribe(res => {
-      let result = res[0];
+    this.accountService
+      .getData(`sales-orders/detail/${this.saleID}`)
+      .subscribe((res) => {
+        let result = res[0];
 
-      this.txnDate = result.txnDate;
-      this.customerName = result.cusInfo.cName;
-      this.workEmail = result.cusInfo.workEmail;
-      this.workPhone = result.cusInfo.workPhone;
-      this.address = result.cusInfo.address;
-      this.finalTotal = result.total.finalTotal;
-      this.currency = result.currency;
-      this.shipDate = result.shipDate;
-      this.sRef = result.sRef;
-      this.salePerson = result.salePerson;
-      this.remarks = result.remarks;
-      this.sOrderDetails = result.sOrderDetails;
-      this.status = result.status;
-      this.sOrNo = result.sOrNo;
-      this.taxes = result.charges.taxes;
-      this.chargeName = result.charges.cName;
-      this.chargeType = result.charges.cType;
-      this.chargeAmount = result.charges.cAmount;
-      this.isPDF = true;
-    });
+        this.txnDate = result.txnDate;
+        this.customerName = result.cusInfo.cName;
+        this.workEmail = result.cusInfo.workEmail;
+        this.workPhone = result.cusInfo.workPhone;
+        this.address = result.cusInfo.address;
+        this.finalTotal = result.total.finalTotal;
+        this.currency = result.currency;
+        this.shipDate = result.shipDate;
+        this.sRef = result.sRef;
+        this.salePerson = result.salePerson;
+        this.remarks = result.remarks;
+        this.sOrderDetails = result.sOrderDetails;
+        this.status = result.status;
+        this.sOrNo = result.sOrNo;
+        this.taxes = result.charges.taxes;
+        this.chargeName = result.charges.cName;
+        this.chargeType = result.charges.cType;
+        this.chargeAmount = result.charges.cAmount;
+        this.isPDF = true;
+      });
   }
-
 
   async sendConfirmationEmail() {
     this.emailDisabled = true;
@@ -91,10 +97,10 @@ export class SalesOrderDetailComponent implements OnInit {
   }
 
   generatePDF() {
-
     var data = document.getElementById("print_sale");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0, 0.5, 0],
+      pagebreak: { mode: ["avoid-all"] },
       filename: "sale-order.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -107,7 +113,6 @@ export class SalesOrderDetailComponent implements OnInit {
     });
 
     this.salePrev.close();
-
   }
 
   openModal() {
@@ -116,7 +121,9 @@ export class SalesOrderDetailComponent implements OnInit {
       backdrop: "static",
       windowClass: "preview-sale-order",
     };
-    this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
+    this.salePrev = this.modalService.open(
+      this.previewSaleOrder,
+      ngbModalOptions
+    );
   }
-
 }
