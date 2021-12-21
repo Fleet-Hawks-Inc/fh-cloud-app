@@ -541,7 +541,7 @@ export class AddOrdersComponent implements OnInit {
       this.listService.fetchShippers();
       let shipperList = new Array<any>();
       this.getValidShippers(shipperList);
-      this.shippers = [...shipperList];
+      this.shippers = shipperList;
     }
   }
 

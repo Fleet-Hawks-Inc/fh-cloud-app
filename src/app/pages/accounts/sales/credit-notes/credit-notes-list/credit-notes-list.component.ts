@@ -70,7 +70,6 @@ export class CreditNotesListComponent implements OnInit {
             } else {
               this.lastItemSK = "end";
             }
-            console.log('allCredits', this.allCredits)
             // this.loaded = true;
           }
         });
