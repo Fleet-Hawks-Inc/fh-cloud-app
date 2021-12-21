@@ -90,8 +90,13 @@ export class SalesOrderListComponent implements OnInit {
       this.allSales = [];
     }
     if (this.lastItemSK !== 'end') {
-
-      this.accountService.getData(`sales-orders/paging?category=${this.filterData.category}&unit=${encodeURIComponent(`"${this.filterData.unit}"`)}&status=${this.filterData.status}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
+      if (this.filterData.category) {
+        this.filterData.category = encodeURIComponent(`"${this.filterData.category}"`);
+      }
+      if (this.filterData.unit) {
+        this.filterData.unit = encodeURIComponent(`"${this.filterData.unit}"`);
+      }
+      this.accountService.getData(`sales-orders/paging?category=${this.filterData.category}&unit=${this.filterData.unit}&status=${this.filterData.status}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.isSearch = false;

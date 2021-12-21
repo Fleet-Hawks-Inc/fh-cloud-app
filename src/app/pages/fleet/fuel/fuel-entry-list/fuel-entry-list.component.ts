@@ -8,13 +8,15 @@ import { environment } from '../../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
 import * as _ from 'lodash'
+import { ViewEncapsulation } from '@angular/core';
 declare var $: any;
 
 @Component({
   selector: 'app-fuel-entry-list',
   templateUrl: './fuel-entry-list.component.html',
   styleUrls: ['./fuel-entry-list.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FuelEntryListComponent implements OnInit {
 
@@ -68,7 +70,7 @@ export class FuelEntryListComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
-  readonly rowHeight = 70;
+  readonly rowHeight = 65;
   readonly headerHeight = 70;
   pageLimit = 10
   loaded = false;
