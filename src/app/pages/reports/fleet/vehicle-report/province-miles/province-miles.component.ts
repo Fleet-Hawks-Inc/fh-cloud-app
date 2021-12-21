@@ -105,8 +105,6 @@ export class ProvinceMilesComponent implements OnInit {
                 data.usMiles += Number(v.Total)
               }
               else if (canArr.includes(v.StCntry)) {
-                console.log('v.StCntry', v.StCntry);
-                console.log('exx', v);
                 data.canMiles += Number(v.Total)
               }
               else {
@@ -221,8 +219,6 @@ export class ProvinceMilesComponent implements OnInit {
               data.usMiles += Number(v.Total)
             }
             else if (canArr.includes(v.StCntry)) {
-              console.log('v.StCntry', v.StCntry);
-              console.log('exx', v);
               data.canMiles += Number(v.Total)
             }
             else {
