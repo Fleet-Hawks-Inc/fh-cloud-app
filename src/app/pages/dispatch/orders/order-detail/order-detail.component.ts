@@ -501,7 +501,7 @@ export class OrderDetailComponent implements OnInit {
               const obj = {
                 imgPath: "assets/img/icon-pdf.png",
                 docPath: `${x.urlPath}`,
-                displayName: x.urlPath,
+                displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
               };
@@ -815,8 +815,8 @@ export class OrderDetailComponent implements OnInit {
                 x.storedName.split(".")[1] === "jpeg"
               ) {
                 obj = {
-                  imgPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                  imgPath: `${x.storedName}`,
+                  docPath: `${x.storedName}`,
                   displayName: x.displayName,
                   name: x.storedName,
                   ext: x.storedName.split(".")[1],
@@ -824,7 +824,7 @@ export class OrderDetailComponent implements OnInit {
               } else {
                 obj = {
                   imgPath: "assets/img/icon-pdf.png",
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                  docPath: `${x.storedName}`,
                   displayName: x.displayName,
                   name: x.storedName,
                   ext: x.storedName.split(".")[1],
