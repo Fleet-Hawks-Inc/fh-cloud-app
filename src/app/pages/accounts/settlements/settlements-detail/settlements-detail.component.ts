@@ -178,6 +178,7 @@ export class SettlementsDetailComponent implements OnInit {
     let obj = {
       showModal: this.showModal,
       settlementData: this.settlementData,
+      entityName: this.entityName,
     };
     console.log("in dets");
     this.listService.showSettlementsDetailPreview(obj);

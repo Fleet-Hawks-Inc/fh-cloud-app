@@ -5,6 +5,7 @@ import { AccountService } from "src/app/services/account.service";
 import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import * as html2pdf from "html2pdf.js";
+import * as moment from "moment";
 
 @Component({
   selector: "app-detail-pdf",
@@ -79,6 +80,12 @@ export class DetailPdfComponent implements OnInit {
     fuelIds: [],
     fuelData: [],
   };
+  logoSrc = "assets/img/logo.png";
+  otherLogoSrc = "assets/img/stl-top-logo.png";
+  entityName = "";
+  operatorDriversList = [];
+  settledTrips = [];
+  selectedTrips = [];
 
   constructor(
     private listService: ListService,
@@ -94,7 +101,15 @@ export class DetailPdfComponent implements OnInit {
         console.log("res--=", res);
         if (res.showModal && res.length != 0) {
           this.settlementData = res.settlementData;
+          this.entityName = res.entityName;
           console.log("this.settlementData", this.settlementData);
+
+          if (this.settlementData.tripIds.length > 0) {
+            let stldTrips = encodeURIComponent(
+              JSON.stringify(this.settlementData.tripIds)
+            );
+            this.fetchSettledTrips(stldTrips);
+          }
 
           let ngbModalOptions: NgbModalOptions = {
             backdrop: "static",
@@ -122,5 +137,214 @@ export class DetailPdfComponent implements OnInit {
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
     });
+  }
+
+  async fetchSettledTrips(tripIds) {
+    let result: any = await this.apiService
+      .getData(`trips/driver/settled?entities=${tripIds}`)
+      .toPromise();
+    this.settledTrips = result;
+    console.log("settledTrips=====", this.settledTrips);
+
+    for (let i = 0; i < this.settledTrips.length; i++) {
+      const element = this.settledTrips[i];
+      element.pickupLocation = "";
+      element.dropLocation = "";
+      element.carrID = [];
+      let pickCount = 1;
+      let dropCount = 1;
+      element.selected = false;
+      element.subSelected = false;
+      element.splitArr = [];
+      element.indeterminate = false;
+      element.entityMiles = 0;
+      element.entityDriver = [];
+      element.entityVehicle = [];
+      element.entityAsset = [];
+      element.entityCarrier = [];
+      for (let j = 0; j < element.tripPlanning.length; j++) {
+        const plan = element.tripPlanning[j];
+
+        if (
+          this.settlementData.type === "driver" ||
+          this.settlementData.type === "carrier"
+        ) {
+          if (
+            this.settlementData.entityId === plan.driverID ||
+            this.settlementData.entityId === plan.coDriverID ||
+            this.settlementData.entityId === plan.carrierID
+          ) {
+            element.pickupLocation += `${pickCount}) <strong>${
+              plan.type
+            }</strong>: ${plan.location} <br>
+            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+              plan.type === "Pickup" ? "Pickup" : "Drop"
+            } Time</u>: ${
+              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+            } <br>`;
+            pickCount++;
+            element.entityMiles += Number(plan.miles);
+
+            if (
+              this.settlementData.entityId === plan.driverID ||
+              this.settlementData.entityId === plan.coDriverID
+            ) {
+              if (!element.entityDriver.includes(plan.driverID)) {
+                element.entityDriver.push(plan.driverID);
+              }
+
+              if (!element.entityDriver.includes(plan.coDriverID)) {
+                element.entityDriver.push(plan.coDriverID);
+              }
+            }
+
+            if (!element.entityVehicle.includes(plan.vehicleID)) {
+              element.entityVehicle.push(plan.vehicleID);
+            }
+
+            if (!element.entityCarrier.includes(plan.carrierID)) {
+              element.entityCarrier.push(plan.carrierID);
+            }
+
+            for (let f = 0; f < plan.assetID.length; f++) {
+              const elemAsset = plan.assetID[f];
+              if (!element.entityAsset.includes(elemAsset)) {
+                element.entityAsset.push(elemAsset);
+              }
+            }
+          }
+        } else if (this.settlementData.type === "owner_operator") {
+          if (
+            this.operatorDriversList.includes(plan.driverID) ||
+            this.operatorDriversList.includes(plan.coDriverID)
+          ) {
+            element.pickupLocation += `${pickCount}) <strong>${
+              plan.type
+            }</strong>: ${plan.location} <br>
+              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+              plan.type === "Pickup" ? "Pickup" : "Drop"
+            } Time</u>: ${
+              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+            } <br>`;
+            pickCount++;
+            element.entityMiles += Number(plan.miles);
+
+            if (!element.entityDriver.includes(plan.driverID)) {
+              element.entityDriver.push(plan.driverID);
+            }
+
+            if (!element.entityDriver.includes(plan.coDriverID)) {
+              element.entityDriver.push(plan.coDriverID);
+            }
+
+            if (!element.entityVehicle.includes(plan.vehicleID)) {
+              element.entityVehicle.push(plan.vehicleID);
+            }
+
+            if (!element.entityCarrier.includes(plan.carrierID)) {
+              element.entityCarrier.push(plan.carrierID);
+            }
+
+            for (let f = 0; f < plan.assetID.length; f++) {
+              const elemAsset = plan.assetID[f];
+              if (!element.entityAsset.includes(elemAsset)) {
+                element.entityAsset.push(elemAsset);
+              }
+            }
+          }
+        }
+
+        if (plan.carrierID !== "") {
+          if (!element.carrID.includes(plan.carrierID)) {
+            element.carrID.push(plan.carrierID);
+          }
+        }
+      }
+
+      if (element.split && element.split.length > 0) {
+        element.split.map((main) => {
+          let arrr = {
+            selected: false,
+            splitID: main.splitID,
+            splitName: main.splitName,
+            trips: [],
+          };
+          if (main.plan) {
+            main.plan.map((c) => {
+              if (
+                this.settlementData.type === "driver" ||
+                this.settlementData.type === "carrier"
+              ) {
+                // if (main.stlStatus.includes(entStat)) {
+                if (this.settlementData.type === "driver") {
+                  element.tripPlanning.map((trp) => {
+                    if (c === trp.planID) {
+                      if (
+                        this.settlementData.entityId === trp.driverID ||
+                        this.settlementData.entityId === trp.coDriverID
+                      ) {
+                        trp.planLoc = this.setTripLoc(trp);
+                        arrr.trips.push(trp);
+                      }
+                    }
+                  });
+                } else if (this.settlementData.type === "carrier") {
+                  element.tripPlanning.map((trp) => {
+                    if (c === trp.planID) {
+                      if (this.settlementData.entityId === trp.carrierID) {
+                        trp.planLoc = this.setTripLoc(trp);
+                        arrr.trips.push(trp);
+                      }
+                    }
+                  });
+                }
+                // }
+              } else if (this.settlementData.type === "owner_operator") {
+                let exstPlanIDs = [];
+                for (
+                  let index = 0;
+                  index < this.operatorDriversList.length;
+                  index++
+                ) {
+                  const drvr = this.operatorDriversList[index];
+                  // entStat = `${drvr}:false`;
+                  // if (main.stlStatus.includes(entStat)) {
+                  element.tripPlanning.map((trp) => {
+                    if (c === trp.planID) {
+                      if (!exstPlanIDs.includes(trp.planID)) {
+                        exstPlanIDs.push(trp.planID);
+                        if (
+                          this.operatorDriversList.includes(trp.driverID) ||
+                          this.operatorDriversList.includes(trp.coDriverID)
+                        ) {
+                          trp.planLoc = this.setTripLoc(trp);
+                          arrr.trips.push(trp);
+                        }
+                      }
+                    }
+                  });
+                  // }
+                }
+              }
+            });
+          }
+
+          if (arrr.trips.length > 0) {
+            element.splitArr.push(arrr);
+          }
+        });
+      }
+    }
+  }
+
+  setTripLoc(trp) {
+    let planLoc = "";
+    if (trp.locMan) {
+      planLoc = `${trp.locData.addr}, ${trp.locData.ctName}, ${trp.locData.sName}, ${trp.locData.cName} ${trp.locData.zip}`;
+    } else {
+      planLoc = trp.location;
+    }
+
+    return planLoc;
   }
 }

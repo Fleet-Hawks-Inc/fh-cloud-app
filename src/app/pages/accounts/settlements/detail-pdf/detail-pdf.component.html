@@ -1,7 +1,7 @@
 <ng-template #settlmentDetail let-modal>
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">Cheque</h4>
+            <h4 class="modal-title">Details</h4>
             <button type="button" class="close" (click)="modal.dismiss()">
                 &times;
             </button>
@@ -14,7 +14,7 @@
                             <td width="50%">
                                 <h1 style="font-size:26px;">Driver Settlement</h1>
                             </td>
-                            <td width="50%" align="right" valign="middle"> <img src="img/logo.png">
+                            <td width="50%" align="right" valign="middle"> <img [src]="otherLogoSrc">
                             </td>
                         </tr>
                         <tr>
@@ -22,12 +22,18 @@
                         </tr>
                         <tr>
                             <td valign="top">
-                                <h2 style="font-size:20px; margin-bottom:10px;">Driver:
-                                    Jack Leach</h2>
+                                <h2 style="font-size:20px; margin-bottom:10px;">
+                                    <span class="text-uppercase" *ngIf="settlementData.type == 'driver' || settlementData.type == 'carrier'">
+                                        {{ settlementData.type }}
+                                    </span>
+                                    <span class="text-uppercase" *ngIf="settlementData.type == 'owner_operator'">
+                                        owner operator
+                                    </span>
+                                    : {{ entityName }}</h2>
                             </td>
                             <td valign="top" align="right">
                                 <h2 style="font-size:20px; margin-bottom:10px;">Pay
-                                    Period: 2021/10/05 to 2021/11/30</h2>
+                                    Period: {{ settlementData.fromDate | date:"yyyy/MM/dd" }} to {{ settlementData.toDate | date:"yyyy/MM/dd" }}</h2>
                             </td>
                         </tr>
                         <tr>
@@ -35,7 +41,7 @@
                         </tr>
                         <tr>
                             <td valign="top">
-                                <h2 style="font-size:16px;">Trip Informationl</h2>
+                                <h2 style="font-size:16px;">Trip Information</h2>
                             </td>
                             <td valign="top">&nbsp;</td>
                         </tr>
@@ -52,7 +58,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>6140</p>
+                                                <p>{{ settlementData.miles.tripsTotal }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -63,7 +69,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>6140</p>
+                                                <p>{{ settlementData.miles.driverTotal }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -74,7 +80,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>5960.9</p>
+                                                <p>{{ settlementData.miles.tripsLoaded }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -85,7 +91,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>0</p>
+                                                <p>{{ settlementData.miles.driverLoaded }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -95,7 +101,7 @@
                                                     Miles </p>
                                             </td>
                                             <td style="border-right:1px solid #adadad; padding-left:10px;">
-                                                <p>179.1</p>
+                                                <p>{{ settlementData.miles.tripsEmpty }}</p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -108,11 +114,11 @@
                                         <tr>
                                             <td width="50%" bgcolor="#f3f3f3"
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p style="font-weight:600;">Driver Emplty Miles</p>
+                                                <p style="font-weight:600;">Driver Empty Miles</p>
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>0</p>
+                                                <p>{{ settlementData.miles.driverEmpty }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -123,7 +129,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>6140</p>
+                                                <p>{{ settlementData.miles.tripsTeam }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -134,7 +140,7 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>0</p>
+                                                <p>{{ settlementData.miles.teamHours }}</p>
                                             </td>
                                         </tr>
                                         <tr>
@@ -145,17 +151,17 @@
                                             </td>
                                             <td
                                                 style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                                <p>5960.9</p>
+                                                <p>{{ settlementData.miles.driverLoadedTeam }}</p>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td bgcolor="#f3f3f3"
                                                 style="border-right:1px solid #adadad; padding-left:10px;">
                                                 <p style="font-weight:600;">Driver
-                                                    Teamm Emplty</p>
+                                                    Team Empty</p>
                                             </td>
                                             <td style="border-right:1px solid #adadad; padding-left:10px;">
-                                                <p>179.1</p>
+                                                <p>{{ settlementData.miles.driverEmptyTeam }}</p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -206,7 +212,7 @@
                                             style="padding-left:10px; border-right:1px solid #adadad; border-bottom:1px solid #adadad;">
                                             <p style="font-weight:600;">Carrier</p>
                                         </td>
-                                        <td width="6%"
+                                        <!-- <td width="6%"
                                             style="padding-left:10px; border-bottom:1px solid #adadad; border-right:1px solid #adadad;">
                                             <p style="font-weight:600;">Status</p>
                                         </td>
@@ -216,173 +222,150 @@
                                         </td>
                                         <td style="padding-left:10px; border-bottom:1px solid #adadad;">
                                             <p style="font-weight:600;">Total</p>
-                                        </td>
+                                        </td> -->
                                     </tr>
-                                    <tr>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>1225</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>2021/11/20</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>1301</p>
-                                        </td>
-                                        <td
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>1)
-                                                <strong>Yard</strong>: 9889 54 Street Southeast, Calgary<br>
-                                                Date: 2021/11/29, Drop Time: 04:45 PM<br>
-                                                <strong>Delivery</strong>: 160854 10th Avenue, AL. USA<br>
-                                                Date: 2021/11/30, Drop Time: 08:45 PM<br>
-                                            </p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>3255.00</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>Sabarwal Ahmed, Travis Head</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>6610</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>7417</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>&nbsp;</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>Delivered</p>
-                                        </td>
-                                        <td valign="top"
-                                            style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>$ 58</p>
-                                        </td>
-                                        <td valign="top" style="border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>$ 1042</p>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top"
-                                            style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                                            <p>1225(2)</p>
-                                        </td>
-                                        <td colspan="11" style="padding:10px; border-bottom:1px solid #adadad;">
-                                            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"
-                                                style="border:1px solid #adadad; font-size:13px; margin-bottom:10px;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="15%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <p>2021/11/30</p>
-                                                        </td>
-                                                        <td width="35%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <strong>Yard:</strong>180
-                                                            Ryan St, Winnipeg, MB, R2R 0P1</td>
-                                                        <td width="20%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <p><strong>Driver: </strong> Manjit Singh<br>
-                                                                <strong>Co-Driver: </strong> Rohit Kumar
-                                                            </p>
-                                                        </td>
-                                                        <td
-                                                            style="text-align: right; border-right:1px solid #adadad; padding-right:10px;">
-                                                            <p><strong>Vehicle:
-                                                                </strong> 510</p>
-                                                        </td>
-                                                        <td style="text-align: right; padding-right:10px;">
-                                                            <p><strong>Asset(s):
-                                                                </strong> 315</p>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"
-                                                style="border:1px solid #adadad; font-size:13px; margin-bottom:10px;">
-                                                <tbody>
-                                                    <tr>
-                                                        <td width="15%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <p>2021/11/30</p>
-                                                        </td>
-                                                        <td width="35%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <strong>Yard:</strong>180
-                                                            Ryan St, Winnipeg, MB, R2R 0P1</td>
-                                                        <td width="20%"
-                                                            style="border-right:1px solid #adadad; padding-left:10px;">
-                                                            <p><strong>Driver: </strong> Manjit Singh<br>
-                                                                <strong>Co-Driver: </strong> Rohit Kumar
-                                                            </p>
-                                                        </td>
-                                                        <td
-                                                            style="text-align: right; border-right:1px solid #adadad; padding-right:10px;">
-                                                            <p><strong>Vehicle:
-                                                                </strong> 510</p>
-                                                        </td>
-                                                        <td style="text-align: right; padding-right:10px;">
-                                                            <p><strong>Asset(s):
-                                                                </strong> 315</p>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>1335</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>2021/11/20</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>1301</p>
-                                        </td>
-                                        <td style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>1)
-                                                <strong>Yard</strong>: 9889 54 Street Southeast, Calgary<br>
-                                                Date: 2021/11/29, Drop Time: 04:45 PM<br>
-                                                <strong>Delivery</strong>: 160854 10th Avenue, AL. USA<br>
-                                                Date: 2021/11/30, Drop Time: 08:45 PM<br>
-                                            </p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>987.20</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>Sabarwal Ahmed, Travis Head</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>6610</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>7417</p>
-                                        </td>
-                                        <td valign="top" style="border-right:1px solid #adadad; padding-left:10px;">
-                                            <p>&nbsp;</p>
-                                        </td>
-                                        <td valign="top" style=" padding-left:10px; border-right:1px solid #adadad;">
-                                            <p>Delivered</p>
-                                        </td>
-                                        <td valign="top" style=" padding-left:10px; border-right:1px solid #adadad;">
-                                            <p>$ 22</p>
-                                        </td>
-                                        <td valign="top" style=" padding-left:10px;">
-                                            <p>$ 800</p>
-                                        </td>
-                                    </tr>
+                                    <ng-container *ngFor="let trp of settledTrips; let t=index;">
+                                        <tr>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ trp.tripNo }}</p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ trp.dateCreated | date:"yyyy/MM/dd" }}</p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p><span *ngFor="let
+                                                    ord of
+                                                    trp.orderId">
+                                                    order No
+                                                    <!-- {{
+                                                    orders[ord]
+                                                    }} -->
+                                                </span></p>
+                                            </td>
+                                            <td
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;" [innerHTML]="trp.pickupLocation">
+                                                
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>{{ trp.entityMiles | number : '1.2-2' }}</p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>
+                                                    <span *ngFor="let drv of trp.entityDriver; let d=index">
+                                                        <!-- {{ driversObj[drv] }} -->
+                                                        drievr
+                                                        <span *ngIf="d<trp.entityDriver.length-1">,<br></span>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>
+                                                    <span *ngFor="let veh of trp.entityVehicle; let v=index"> vehicle
+                                                        <span *ngIf="v<trp.entityVehicle.length-1">,<br></span>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>
+                                                    <span *ngFor="let ast of trp.entityAsset; let a=index"> asset
+                                                    <span *ngIf="a<trp.entityAsset.length-1">,<br></span>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>
+                                                    <span *ngFor="let carr of trp.carrID; let c=index"> carrier
+                                                        <span *ngIf="c<trp.carrID.length-1">,<br></span>
+                                                    </span>
+                                                </p>
+                                            </td>
+                                            <!-- <td valign="top"
+                                                style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>Delivered</p>
+                                            </td>
+                                            <td valign="top"
+                                                style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                                                <p>$ 58</p>
+                                            </td>
+                                            <td valign="top" style="border-bottom:1px solid #adadad; padding-left:10px;">
+                                                <p>$ 1042</p>
+                                            </td> -->
+                                        </tr>
+                                        <ng-container *ngFor="let splt of trp.splitArr; let sp=index">
+                                            <tr>
+                                                <td valign="top"
+                                                    style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                                                    <p>{{ trp.tripNo }} ({{(splt.splitName) ? splt.splitName : sp+1}})</p>
+                                                </td>
+                                                <td colspan="11" style="padding:10px; border-bottom:1px solid #adadad;">
+                                                    <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                                        style="border:1px solid #adadad; font-size:13px; margin-bottom:10px;" *ngFor="let spltLine of splt.trips">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td width="15%"
+                                                                    style="border-right:1px solid #adadad; padding-left:10px;">
+                                                                    <p>{{ spltLine.date | date:"yyyy/MM/dd" }}</p>
+                                                                </td>
+                                                                <td width="35%"
+                                                                    style="border-right:1px solid #adadad; padding-left:10px;">
+                                                                    <span>
+                                                                        <b> {{ spltLine.type }}: </b>
+                                                                        {{ spltLine.planLoc }}
+                                                                        <br>
+                                                                        <b>Miles</b>: {{ spltLine.miles | number : '1.2-2' }}
+                                                                    </span>
+                                                                </td>
+                                                                <td width="20%"
+                                                                    style="border-right:1px solid #adadad; padding-left:10px;">
+                                                                    <p>
+                                                                        <span *ngIf="spltLine.driverID">
+                                                                            <b>Driver: </b>
+                                                                            {{ spltLine.driverID }}
+                                                                            <br>
+                                                                        </span>
+                                                                        <span *ngIf="spltLine.coDriverID">
+                                                                            <b>Co-driver: </b>
+                                                                            {{ spltLine.coDriverID }}
+                                                                        </span>
+                                                                        <span *ngIf="spltLine.carrierID">
+                                                                            <b>Carrier: </b>
+                                                                            {{ spltLine.carrierID }}
+                                                                        </span>
+                                                                    </p>
+                                                                </td>
+                                                                <td
+                                                                    style="text-align: right; border-right:1px solid #adadad; padding-right:10px;">
+                                                                    <p>
+                                                                        <strong>Vehicle:</strong> 
+                                                                        {{ spltLine.vehicleID }}
+                                                                    </p>
+                                                                </td>
+                                                                <td style="text-align: right; padding-right:10px;">
+                                                                    <p>
+                                                                        <strong>Asset(s):</strong> 
+                                                                        <span *ngFor="let ast of spltLine.assetID; let a=index">
+                                                                            {{ ast }}
+                                                                            <span *ngIf="a<spltLine.assetID.length-1">,<br></span>
+                                                                        </span>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                   
+                                    
                                     <tbody>
                                     </tbody>
                                 </table>
@@ -575,7 +558,7 @@
                                             </td>
                                             <td style="border-right:1px solid #adadad; padding-left:10px;">{{ settlementData.fuelDed }}</td>
                                         </tr>
-                                    </tbody>
+                                    </tbody> 
                                 </table>
                             </td>
                         </tr>
@@ -602,7 +585,7 @@
                                         <tr>
                                             <td align="center">
                                                 <h2 style="font-size:13px;">Powered By</h2>
-                                                <img src="img/logo-2.png" width="207" height="28">
+                                                <img [src]="logoSrc" width="207" height="28">
                                             </td>
                                         </tr>
                                     </tbody>
