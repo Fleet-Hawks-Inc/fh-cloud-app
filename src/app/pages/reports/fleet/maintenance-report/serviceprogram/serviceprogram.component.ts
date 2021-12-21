@@ -56,7 +56,7 @@ export class ServiceprogramComponent implements OnInit {
                 }
                 this.serviceProgramList = this.serviceProgramList.concat(result.Items);
                 this.loaded = true;
-        }
+             }
       }
     }
   
