@@ -207,9 +207,7 @@ export class ProvinceMilesComponent implements OnInit {
 
         let location = ''
         let date = ''
-        let provMiles = []
-        let provMiles1 = []
-        let stateMiles = ''
+      
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
           date += element2.type + " : " + element2.date
@@ -222,14 +220,7 @@ export class ProvinceMilesComponent implements OnInit {
             location += " & ";
           }
         }
-        for (let data of element.provinceData) {
-          element.provMiles = data
-          for (let data1 of data.provinces) {
-            provMiles1 = data1
-            // stateMiles += data1
-          }
-          console.log(' element.provMiles', element.provMiles)
-        }
+   
         let obj = {}
         obj["Vehicle"] = element.vehicle ? element.vehicle.replace(/, /g, ' &') : '';
         obj["Trip#"] = element.tripNo;
