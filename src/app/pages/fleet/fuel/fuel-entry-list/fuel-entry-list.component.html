@@ -138,21 +138,14 @@
             <div class="bg-white p-3 text-dark">
               <div class="form-group row pt-1">
                 <div class="col-lg-12">
-                  <div
-                    class="
-                      table-responsive
-                      hover
-                      table table-bordered table-striped
-                    "
-                  >
                     <ngx-datatable
                       #myTable
                       class="bootstrap expandable fixedTable"
+                         infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()"
                       [rows]="fuelList"
                       [rowHeight]="rowHeight"
-                      [scrollbarV]="true"
                       [messages]="{ emptyMessage: dataMessage }"
-                      (scroll)="onScroll($event.offsetY)"
                     >
                       <ngx-datatable-column
                         name="Date Time"
@@ -237,8 +230,9 @@
                       </div>
                       </ng-template>
                     </ngx-datatable-column> -->
+     
                     </ngx-datatable>
-                  </div>
+                
 
                   <!-- <div class="row mt-3 dtPaginate" *ngIf="fuelList.length> 0">
                     <div class="col-6">
@@ -254,16 +248,17 @@
                         [disabled]="fuelNext">Next</button>
                     </div>
                   </div> -->
+                                  <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && fuelList.length !== 0">
+          <button type="button" class="btn btn-success btn-sm text-light" (click)="initDataTable()">Load
+            More..</button>
+        </div> 
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && fuelList.length !== 0">
-          <button type="button" class="btn btn-success btn-sm text-light" (click)=" initDataTable()">Load
-            More..</button>
-        </div> -->
+        
       </section>
     </section>
   </div>

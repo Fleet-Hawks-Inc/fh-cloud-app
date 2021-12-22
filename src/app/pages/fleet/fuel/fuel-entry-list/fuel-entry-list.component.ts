@@ -54,16 +54,8 @@ export class FuelEntryListComponent implements OnInit {
   start: any = '';
   end: any = '';
   lastTimeCreated = ''
-  totalRecords = 20;
-  pageLength = 10;
   lastEvaluatedKey = '';
 
-  fuelNext = false;
-  fuelPrev = true;
-  fuelDraw = 0;
-  fuelPrevEvauatedKeys = [''];
-  fuelStartPoint = 1;
-  fuelEndPoint = this.pageLength;
   allVehicles = [];
   allAssets: any = [];
   wexCategories: any = {};
@@ -72,7 +64,6 @@ export class FuelEntryListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   readonly rowHeight = 60;
   readonly headerHeight = 70;
-  pageLimit = 10
   loaded = false;
 
   constructor(
@@ -84,7 +75,6 @@ export class FuelEntryListComponent implements OnInit {
   }
   ngOnInit() {
     this.fetchVendorList();
-    // this.fuelEntriesCount();
     this.fetchVehicleList();
     this.fetchAssetList();
     this.fetchWEXCode();
@@ -101,25 +91,7 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-  onScroll(offsetY) {
-    const viewHeight =
-      this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
-
-    if (
-      offsetY + viewHeight + this.fuelList.length * this.rowHeight
-    ) {
-      let limit = this.pageLimit;
-      if (this.fuelList.length === 0) {
-        const pageSize = Math.ceil(viewHeight / this.rowHeight);
-
-        limit = Math.max(pageSize, this.pageLimit);
-      }
-      if (this.loaded) {
-        this.initDataTable();
-      }
-      this.loaded = false;
-    }
-  }
+  
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
@@ -221,22 +193,7 @@ export class FuelEntryListComponent implements OnInit {
       });
     });
   }
-  // fuelEntriesCount() {
-  //   this.apiService.getData('fuelEntries/get/count?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID).subscribe({
-  //     complete: () => { },
-  //     error: () => { },
-  //     next: (result: any) => {
-  //       this.totalRecords = result.Count;
-
-  //       if (this.unitID != null || this.start != '' || this.end != '' || this.assetUnitID != null) {
-  //         this.fuelEndPoint = this.totalRecords;
-  //       }
-
-  //       this.initDataTable();
-  //     },
-  //   });
-  // }
-
+ 
   showTopValues() {
 
     const data = {
@@ -271,25 +228,23 @@ export class FuelEntryListComponent implements OnInit {
       this.apiService.deleteData(`fuelEntries/delete/${eventData.fuelID}`).subscribe((result: any) => {
 
         this.fuelList = [];
-        this.fuelDraw = 0;
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
-        //this.fuelEntriesCount();
         this.toastr.success('Fuel Entry Deleted Successfully!');
       });
     }
   }
+  
   initDataTable() {
     this.spinner.show();
+    if(this.lastEvaluatedKey !== 'end')
+    {
     this.apiService.getData('fuelEntries/fetch/records?unitID=' + this.unitID + '&from=' + this.start + '&to=' + this.end + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey + '&timeCreated=' + this.lastTimeCreated).subscribe((result: any) => {
       if (result.Items.length == 0) {
         this.dataMessage = Constants.NO_RECORDS_FOUND;
       }
       this.suggestedUnits = [];
-      // this.getStartandEndVal();
       result[`Items`].forEach(element => {
-
-
         let date: any = moment(element.data.date)
         if (element.data.time) {
           let time = moment(element.data.time, 'h mm a')
@@ -303,27 +258,30 @@ export class FuelEntryListComponent implements OnInit {
           date = date.format('MMM Do YYYY')
         }
         element.dateTime = date
-
         // element.fuelTime=moment(element.fuelTime).format('h:mm a')
-
       });
-
-
-
-      this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
-
-
-      if (result.LastEvaluatedKey.fuelSK !== undefined) {
-        // for prev button
-        this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.fuelSK)
-        if (result.LastEvaluatedKey.timeCreated !== undefined) {
-          this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+      if (result.LastEvaluatedKey !== undefined) 
+        {
+        this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].fuelSK);
         }
-        this.loaded = true
-      } else {
-        this.lastEvaluatedKey = '';
+       // if (result.LastEvaluatedKey.timeCreated !== undefined) 
+        //{
+        //  this.lastTimeCreated = result.LastEvaluatedKey.timeCreated
+        //}
+       else {
+        this.lastEvaluatedKey = 'end';
       }
+      this.fuelList = this.fuelList.concat(_.orderBy(result.Items, [(obj) => new Date(obj.data.date)], ['desc']))
+      this.loaded = true;
     })
+    }
+  }
+
+onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = false;
   }
 
   searchFilter() {
@@ -338,7 +296,6 @@ export class FuelEntryListComponent implements OnInit {
       this.fuelList = [];
       this.lastEvaluatedKey = ''
       this.initDataTable();
-      //this.fuelEntriesCount();
     } else {
       return false;
     }
@@ -352,42 +309,15 @@ export class FuelEntryListComponent implements OnInit {
     this.start = '';
     this.end = '';
     this.dataMessage = Constants.FETCHING_DATA;
+    this.lastEvaluatedKey = '';
     this.fuelList = [];
     this.initDataTable();
-    //this.fuelEntriesCount();
-    //this.resetCountResult();
-
   }
 
   // getStartandEndVal() {
   //   this.fuelStartPoint = this.fuelDraw * this.pageLength + 1;
   //   this.fuelEndPoint = this.fuelStartPoint + this.pageLength - 1;
   // }
-
-  // next button func
-  nextResults() {
-    this.fuelNext = true;
-    this.fuelPrev = true;
-    this.fuelDraw += 1;
-    this.initDataTable();
-    //this.getStartandEndVal();
-  }
-
-  // prev button func
-  prevResults() {
-    this.fuelNext = true;
-    this.fuelPrev = true;
-    this.fuelDraw -= 1;
-    this.lastEvaluatedKey = this.fuelPrevEvauatedKeys[this.fuelDraw];
-    this.initDataTable();
-    //this.getStartandEndVal();
-  }
-
-  resetCountResult() {
-    this.fuelStartPoint = 1;
-    this.fuelEndPoint = this.pageLength;
-    this.fuelDraw = 0;
-  }
 
   fetchAllVehicles() {
     this.apiService.getData('vehicles').subscribe((result: any) => {
@@ -418,8 +348,6 @@ export class FuelEntryListComponent implements OnInit {
     this.end = '';
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fuelList = [];
-    // this.fuelEntriesCount();
-    this.resetCountResult();
+    this.fuelList = [];;
   }
 }
