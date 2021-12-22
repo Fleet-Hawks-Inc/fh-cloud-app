@@ -9,6 +9,9 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
+import {Router} from '@angular/router'
+
 declare var $: any;
 
 @Component({
@@ -47,6 +50,8 @@ export class FuelEntryListComponent implements OnInit {
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
+  SelectionType = SelectionType;
+  ColumnMode = ColumnMode;
   vehicleIdentification = '';
   unitID = null;
   assetUnitID = null;
@@ -80,7 +85,8 @@ export class FuelEntryListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private router:Router) {
   }
   ngOnInit() {
     this.fetchVendorList();
@@ -100,6 +106,13 @@ export class FuelEntryListComponent implements OnInit {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+  }
+
+  onFuelSelect(event){
+    let value=event.selected[0]
+    let fuelID=value.fuelSK.split('#')[1]
+    this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
+
   }
   onScroll(offsetY) {
     const viewHeight =
