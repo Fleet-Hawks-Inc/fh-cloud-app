@@ -1209,7 +1209,7 @@
                 <table width="100%" style="margin-top: 0px; border-bottom: 1px solid #cdcdcd">
                   <tbody>
                     <tr>
-                      <td width="60%" class="title" valign="top" style="padding: 10px; text-align: left">
+                      <td width="60%" class="title" valign="center" style="padding: 10px; text-align: left">
                         <h4 style="
                             margin: 0 0 15px;
                             font-size: 37px;
@@ -1219,6 +1219,16 @@
                           ">
                           INVOICE
                         </h4>
+                      </td>
+                      <td align="right">
+                        <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
+                          style="max-width: 100px;">
+                        <p *ngIf="invoiceData.carrierData.termsInfo.tagLine && invoiceData.carrierData.termsInfo.tagLine != ''"
+                          class="m-0 font-weight-bold text-dark">{{ invoiceData.carrierData.termsInfo.tagLine }}</p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="60%" class="title" valign="top" style="padding: 10px; text-align: left">
                         <p style="margin: 0; color: #000">
                           <span style="font-size: 12px">
                             <b>Invoice#</b>
@@ -1241,7 +1251,7 @@
                           <span style="font-size: 12px">
                             <b>Customer Confirmation#: </b>
                           </span>
-                          {{ invoiceData.cusConfirmation }}
+                          {{ invoiceData.cusConfirmation ? invoiceData.cusConfirmation : 'NA' }}
                         </p>
                       </td>
                       <td width="60%" class="title" valign="top" style="padding: 10px; text-align: right">
@@ -1645,7 +1655,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div *ngIf="m > 0" class="html2pdf__page-break"></div>
+                              <!-- <div *ngIf="m > 0" class="html2pdf__page-break"></div> -->
                             </div>
                           </div>
                         </td>
@@ -1831,7 +1841,7 @@
                             <tbody>
                               <tr *ngIf="newDoc.ext === 'pdf'">
                                 <td>
-                                  <div class="html2pdf__page-break"></div>
+                                  <!-- <div class="html2pdf__page-break"></div> -->
                                   <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
                                     [render-text]="true" [original-size]="false" [autoresize]="true"
                                     style="max-width: 700px; display: block">
@@ -1844,7 +1854,7 @@
                                   newDoc.ext === 'png'
                                 ">
                                 <td>
-                                  <div class="html2pdf__page-break"></div>
+                                  <!-- <div class="html2pdf__page-break"></div> -->
                                   <img crossorigin="*" [src]="newDoc.docPath" class="img-fluid rounded" height="200px"
                                     width="100%" />
                                 </td>
@@ -1858,21 +1868,13 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr *ngIf="invoiceData.carrierData.termsInfo.terms && invoiceData.carrierData.termsInfo.terms != ''">
               <td colspan="2" class="p-3">
                 <p style="margin: 0; color: #000">
-                  Please include our Invoice number on the remittance. Remit
-                  address is provided above, kindly send all the accounting
-                  queries to
-                  <strong> {{ invoiceData.carrierData.email }}</strong>
-                </p>
-                <p style="margin: 0; color: #000">
-                  No Statement is issued on the payment of this invoice. Terms
-                  net 15 days
+                  <strong>Terms & Conditions: </strong>{{ invoiceData.carrierData.termsInfo.terms }}
                 </p>
               </td>
             </tr>
-
             <tr>
               <td colspan="2">
                 <table border="0" align="center" cellpadding="0" cellspacing="0">

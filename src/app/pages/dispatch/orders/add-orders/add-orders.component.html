@@ -2978,7 +2978,7 @@
                               <div class="row mt-4 pb-1 mb-1" *ngFor="let item of newTaxes; let i = index">
                                 <div class="col-lg-12 pt-1">
                                   <p class="text-right m-0">
-                                    {{ item.taxAmount ? item.taxAmount : 0 }}
+                                    {{ item.taxAmount ? (item.taxAmount | number: "1.2-2" ) : 0 }}
                                   </p>
                                 </div>
                               </div>

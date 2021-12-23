@@ -256,8 +256,12 @@ export class OrderDetailComponent implements OnInit {
       phone: "",
       email: "",
       fax: "",
-      logo: "",
       carrierID: "",
+      termsInfo: {
+        logo: "",
+        tagLine: "",
+        terms: ''
+      }
     },
     charges: {
       accessorialDeductionInfo: {
@@ -461,7 +465,7 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${x}`,
             name: x,
             ext: x.split(".")[1],
           }));
@@ -469,7 +473,7 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            docPath: `${x.storedName}`,
             name: x.storedName,
             ext: x.storedName.split(".")[1],
           }));
@@ -486,8 +490,8 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "jpeg"
             ) {
               const obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
@@ -496,7 +500,7 @@ export class OrderDetailComponent implements OnInit {
             } else {
               const obj = {
                 imgPath: "assets/img/icon-pdf.png",
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
@@ -556,7 +560,7 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
-      this.subject = "";
+      this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
     } else {
       this.isEmail = false;
     }
@@ -618,7 +622,8 @@ export class OrderDetailComponent implements OnInit {
     this.previewRef.close();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -629,8 +634,6 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-
-    $("#previewInvoiceModal").modal("hide");
   }
 
   cancel() {
@@ -641,7 +644,8 @@ export class OrderDetailComponent implements OnInit {
     await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -811,8 +815,8 @@ export class OrderDetailComponent implements OnInit {
                 x.storedName.split(".")[1] === "jpeg"
               ) {
                 obj = {
-                  imgPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                  imgPath: `${x.storedName}`,
+                  docPath: `${x.storedName}`,
                   displayName: x.displayName,
                   name: x.storedName,
                   ext: x.storedName.split(".")[1],
@@ -820,7 +824,7 @@ export class OrderDetailComponent implements OnInit {
               } else {
                 obj = {
                   imgPath: "assets/img/icon-pdf.png",
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
+                  docPath: `${x.storedName}`,
                   displayName: x.displayName,
                   name: x.storedName,
                   ext: x.storedName.split(".")[1],
@@ -887,12 +891,10 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
-        this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
-
         this.orderInvData = result[0];
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.logo != "") {
-          this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
+        if (this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
+          this.companyLogoSrc = `${this.orderInvData.carrierData.termsInfo.logo}`;
         }
         if (this.invoiceData.assets != undefined) {
           this.assets = this.invoiceData.assets;
