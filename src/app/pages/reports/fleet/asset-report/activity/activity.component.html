@@ -41,7 +41,7 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)=" fetchFullExport() ">CSV</a>
+                                    <a class="dropdown-item text-1" (click)="csv() ">CSV</a>
 
                                 </div>
                             </div>
@@ -101,6 +101,10 @@
                                                 <th>Order#</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
+                                                <th>Province(US)</th>
+                                                <th>US(Total)</th>
+                                                <th>Province(Canada)</th>
+                                                <th>Canada(Total)</th>
                                                 <th>Total Miles</th>
                                             </tr>
                                         </thead>
@@ -129,7 +133,25 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    {{ item.miles | number : '1.2-2'}}
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.usProvince"> 
+                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                         {{item.usMiles}} <br>
+                                                </td>
+                                                   <td>
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.caProvince"> 
+                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                <td>{{item.canMiles}}</td>
+                                                <td>
+                                                    {{ item.miles}}
                                                 </td>
                                             </tr>
                                         </tbody>
