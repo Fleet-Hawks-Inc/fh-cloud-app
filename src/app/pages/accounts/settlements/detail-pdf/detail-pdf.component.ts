@@ -6,6 +6,7 @@ import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import * as html2pdf from "html2pdf.js";
 import * as moment from "moment";
+import Constants from "src/app/pages/fleet/constants";
 
 @Component({
   selector: "app-detail-pdf",
@@ -13,6 +14,7 @@ import * as moment from "moment";
   styleUrls: ["./detail-pdf.component.css"],
 })
 export class DetailPdfComponent implements OnInit {
+  fetchingdata: string = Constants.FETCHING_DATA;
   @ViewChild("settlmentDetail", { static: true })
   modalContent: TemplateRef<any>;
   subscription: Subscription;
@@ -86,6 +88,7 @@ export class DetailPdfComponent implements OnInit {
   operatorDriversList = [];
   settledTrips = [];
   selectedTrips = [];
+  fuelEnteries = [];
 
   constructor(
     private listService: ListService,
@@ -98,11 +101,15 @@ export class DetailPdfComponent implements OnInit {
     // settlmentDetailSection
     this.subscription = this.listService.settlementDetails.subscribe(
       (res: any) => {
-        console.log("res--=", res);
         if (res.showModal && res.length != 0) {
           this.settlementData = res.settlementData;
           this.entityName = res.entityName;
-          console.log("this.settlementData", this.settlementData);
+          this.fuelEnteries = res.fuelEnteries;
+
+          for (let i = 0; i < this.settlementData.miles.drivers.length; i++) {
+            const element = this.settlementData.miles.drivers[i];
+            this.operatorDriversList.push(element.driverID);
+          }
 
           if (this.settlementData.tripIds.length > 0) {
             let stldTrips = encodeURIComponent(
@@ -131,23 +138,40 @@ export class DetailPdfComponent implements OnInit {
   async generatePDF() {
     var data = document.getElementById("settlmentDetailSection");
     html2pdf(data, {
-      margin: 0,
-      filename: `settlements.pdf`,
+      margin: [0.5, 0, 0.5, 0],
+      pagebreak: { mode: ["avoid-all"] },
+      filename: `STL-${this.settlementData.setNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "landscape" },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
     });
   }
 
   async fetchSettledTrips(tripIds) {
     let result: any = await this.apiService
-      .getData(`trips/driver/settled?entities=${tripIds}`)
+      .getData(`trips/entity/settled/data/${tripIds}`)
       .toPromise();
     this.settledTrips = result;
-    console.log("settledTrips=====", this.settledTrips);
 
     for (let i = 0; i < this.settledTrips.length; i++) {
       const element = this.settledTrips[i];
+
+      if (this.settlementData.deduction.length > 0) {
+        this.settlementData.deduction.map((dedStl) => {
+          if (dedStl.tripID === element.tripID) {
+            dedStl.tripName = element.tripNo;
+          }
+        });
+      }
+
+      if (this.settlementData.addition.length > 0) {
+        this.settlementData.addition.map((dedStl) => {
+          if (dedStl.tripID === element.tripID) {
+            dedStl.tripName = element.tripNo;
+          }
+        });
+      }
+
       element.pickupLocation = "";
       element.dropLocation = "";
       element.carrID = [];
@@ -346,5 +370,9 @@ export class DetailPdfComponent implements OnInit {
     }
 
     return planLoc;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
