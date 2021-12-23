@@ -622,7 +622,8 @@ export class OrderDetailComponent implements OnInit {
     this.previewRef.close();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -633,8 +634,6 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-
-    $("#previewInvoiceModal").modal("hide");
   }
 
   cancel() {
@@ -645,7 +644,8 @@ export class OrderDetailComponent implements OnInit {
     await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {

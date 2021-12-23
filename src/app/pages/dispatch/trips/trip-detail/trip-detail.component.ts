@@ -687,7 +687,8 @@ export class TripDetailComponent implements OnInit {
   async generate() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: 0.5,
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },
       html2canvas: {

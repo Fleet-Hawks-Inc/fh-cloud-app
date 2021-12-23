@@ -20,4 +20,9 @@ export class RouteManagementServiceService {
   tripUpdated() {
     return this.tripUpdateSessionID = uuidv4();
   }
+
+  resetAllCache() {
+    this.tripUpdateSessionID = uuidv4();
+    this.orderUpdateSessionID = uuidv4();
+  }
 }
