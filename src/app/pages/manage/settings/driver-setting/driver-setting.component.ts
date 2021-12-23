@@ -12,16 +12,9 @@ export class DriverSettingComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   driverID = '';
   driverName = '';
-  totalRecords = 10;
-  pageLength = 10;
   lastEvaluatedKey = '';
   currentStatus: any;
-  driverNext = false;
-  driverPrev = true;
-  driverDraw = 0;
-  driverPrevEvauatedKeys = [''];
-  driverStartPoint = 1;
-  driverEndPoint = this.pageLength;
+  loaded = false;
   suggestedDrivers = [];
   driverType = null;
   drivers = [];
@@ -29,7 +22,7 @@ export class DriverSettingComponent implements OnInit {
   constructor( private apiService: ApiService, private toastr: ToastrService,) { }
 
   ngOnInit() {
-    this.fetchDriversCount();
+    this.initDataTable();
   }
   
   
@@ -64,88 +57,34 @@ export class DriverSettingComponent implements OnInit {
     }
     this.suggestedDrivers = [];
   }
-  fetchDriversCount() {
-    this.apiService.getData(`drivers/deleted/get/count?driver=${this.driverID}&type=${this.driverType}`).subscribe({
-      complete: () => { },
-      error: () => { },
-      next: (result: any) => {
-        this.totalRecords = result.Count;
 
-        if (this.driverID !== '') {
-          this.driverEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
-  }
-  initDataTable() {
-    this.apiService.getData(`drivers/deleted/fetch/records?driver=${this.driverID}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`)
-      .subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        result.Items.map((v) => {
+      async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            const result = await this.apiService.getData(`drivers/deleted/fetch/records?driver=${this.driverID}&lastKey=${this.lastEvaluatedKey}&type=${this.driverType}`).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND
+            }
+            result.Items.map((v) => {
           v.url = `/fleet/drivers/detail/${v.driverID}`;
         });
-        this.suggestedDrivers = [];
-        this.getStartandEndVal();
-        this.drivers = result[`Items`];
-        if (this.driverID !== '') {
-          this.driverStartPoint = 1;
-          this.driverEndPoint = this.totalRecords;
+            this.suggestedDrivers = [];
+            if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.drivers = this.drivers.concat(result.Items);
+                this.loaded = true;
+            }
         }
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].driverSK.replace(/#/g, '--');
-          this.driverNext = false;
-          // for prev button
-          if (!this.driverPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.driverPrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-        } else {
-          this.driverNext = true;
-          this.lastEvaluatedKey = '';
-          this.driverEndPoint = this.totalRecords;
-        }
-        if (this.totalRecords < this.driverEndPoint) {
-          this.driverEndPoint = this.totalRecords;
-        }
-        // disable prev btn
-        if (this.driverDraw > 0) {
-          this.driverPrev = false;
-        } else {
-          this.driverPrev = true;
-        }
-       // this.spinner.hide();
-      }, err => {
-      //  this.spinner.hide();
-      });
-  }
-  getStartandEndVal() {
-    this.driverStartPoint = this.driverDraw * this.pageLength + 1;
-    this.driverEndPoint = this.driverStartPoint + this.pageLength - 1;
-  }
-    // next button func
-    nextResults() {
-      this.driverNext = true;
-      this.driverPrev = true;
-      this.driverDraw += 1;
-      this.initDataTable();
     }
-
-    // prev button func
-    prevResults() {
-      this.driverNext = true;
-      this.driverPrev = true;
-      this.driverDraw -= 1;
-      this.lastEvaluatedKey = this.driverPrevEvauatedKeys[this.driverDraw];
-      this.initDataTable();
-    }
-
-    resetCountResult() {
-      this.driverStartPoint = 1;
-      this.driverEndPoint = this.pageLength;
-      this.driverDraw = 0;
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
+        }
+        this.loaded = false;
     }
 
     refreshData() {
@@ -155,10 +94,8 @@ export class DriverSettingComponent implements OnInit {
       this.driverType = null;
       this.lastEvaluatedKey = '';
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchDriversCount();
-      this.driverDraw = 0;
-      this.resetCountResult();
     }
+    
     searchFilter() {
       if (
       this.driverName !== ''  || 
@@ -168,17 +105,16 @@ export class DriverSettingComponent implements OnInit {
         if (this.driverID == '') {
           this.driverID = this.driverName;
         }
-        
         this.drivers = [];
         this.dataMessage = Constants.FETCHING_DATA;
         this.lastEvaluatedKey = '';
         this.suggestedDrivers = [];
         this.initDataTable();
-        //this.fetchDriversCount();
       } else {
         return false;
       }
     }
+    
     resetFilter() {
       if (
       this.driverName !== ''  || 
@@ -190,23 +126,19 @@ export class DriverSettingComponent implements OnInit {
         this.drivers = [];
         this.lastEvaluatedKey = '';
         this.dataMessage = Constants.FETCHING_DATA;
-        this.driverDraw = 0;
         this.initDataTable();
-        this.resetCountResult();
-        this.fetchDriversCount();
       } else {
         return false;
       }
     }
-
+    
     restoreDriver(eventData) {
       if (confirm('Are you sure you want to restore?') === true) {
         this.apiService.deleteData(`drivers/restore/driver/${eventData.driverID}/${eventData.firstName}/${eventData.lastName}/${eventData.userName}`).subscribe((result: any) => {
           this.drivers = [];
-          this.driverDraw = 0;
           this.dataMessage = Constants.FETCHING_DATA;
           this.lastEvaluatedKey = '';
-          this.fetchDriversCount();
+          this.initDataTable();
           this.toastr.success('Driver is restored!');
         });
       }

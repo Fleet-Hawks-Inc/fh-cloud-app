@@ -624,6 +624,9 @@
                                   <b class="text-success">{{
                                     data.entityNumber
                                     }}</b>
+                                  <span *ngIf="data.eventParams.location"><br />
+                                    <p>Last Location: {{data.eventParams.location}}</p>
+                                  </span>
                                 </li>
                               </ul>
                             </div>
@@ -953,10 +956,13 @@
       <tbody>
         <tr>
           <td width="50%">
-            <h1 style="font-size: 26px">Driver Information Sheet</h1>
+            <h1 style="font-size: 26px; color: #000;margin: 0;">Driver Information Sheet</h1>
           </td>
           <td width="50%" align="right" valign="middle">
-            <img src="../../../../../assets/img/logo.png" />
+            <img crossorigin="anonymous" [src]="companyLogoSrc" alt="logo" style="max-width: 100px;">
+            <p class="m-0 font-weight-bold text-dark" style="font-size: 16px;" *ngIf="tagLine && tagLine != ''">{{
+              tagLine }}
+            </p>
           </td>
         </tr>
         <tr>
@@ -1015,7 +1021,7 @@
                           </td>
                           <td colspan="2" align="right" class="text-dark" style="border-bottom: 1px solid #adadad;
                             padding: 10px;font-size: 14px;;">
-                            <p class="m-0 text-dark"><strong>Care of option: </strong>{{item.careOption
+                            <p class="m-0 text-dark"><strong>C/O: </strong>{{item.careOption
                               ? item.careOption : 'NA'}}
                             </p>
                           </td>
@@ -1192,31 +1198,43 @@
           </td>
         </tr>
 
+        <tr *ngIf="driverTerms != ''">
+          <td colspan="2" class="text-dark">
+            <strong>Dispatch Notes For Driver: </strong> {{ driverTerms }}
+          </td>
+        </tr>
         <tr>
           <td colspan="2">&nbsp;</td>
         </tr>
-
+        <tr *ngIf="dispatchTerms != ''">
+          <td colspan="2" class="text-dark">
+            <strong>Terms and Conditions For Truck Dispatch: </strong>{{ dispatchTerms }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
         <tr>
           <td colspan="2">
             <table width="100%" cellspacing="0" cellpadding="0">
               <tbody>
                 <tr>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark">
+                    <p style="font-size: 13px" class="text-dark m-0">
                       <strong>Accepted By: </strong>
                     </p>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
-                  <td width="10%" style="font-size: 13px" class="text-center">
+                  <td width="10%" style="font-size: 13px" class="text-center text-dark m-0">
                     <strong>Date:</strong>
                   </td>
                   <td width="23%" style="border-bottom: solid 1px #999">
                     &nbsp;
                   </td>
                   <td width="10%">
-                    <p style="font-size: 13px" class="text-dark text-center"><strong>Signature</strong></p>
+                    <p style="font-size: 13px" class="text-dark text-center m-0"><strong>Signature</strong></p>
                   </td>
                   <td style="border-bottom: solid 1px #999">&nbsp;</td>
                 </tr>

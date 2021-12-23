@@ -9,6 +9,8 @@ import { AccountService, ApiService } from "../../../../services";
 export class LoadInvoiceDetailComponent implements OnInit {
   invID = "";
   showDetails = false;
+  Asseturl = this.apiService.AssetUrl;
+  companyLogoSrc: string;
   invoiceData: any = {
     orderID: "",
   };
@@ -64,7 +66,9 @@ export class LoadInvoiceDetailComponent implements OnInit {
     this.invoiceData["orderNumber"] = result[0]["orderNumber"];
     this.invoiceData["data"] = result[0]["data"];
 
-    console.log('this.invoiceData', this.invoiceData)
+    if (this.invoiceData.carrierData.logo && this.invoiceData.carrierData.logo != "") {
+      this.companyLogoSrc = `${this.Asseturl}/${this.invoiceData.pk}/${this.invoiceData.carrierData.logo}`;
+    }
     if (result[0].assets != undefined) {
       this.assets = result[0].assets;
     }

@@ -55,6 +55,11 @@ export class TripDetailComponent implements OnInit {
     bol: "",
     dateCreated: "",
   };
+
+  driverTerms = '';
+  dispatchTerms = '';
+  tagLine = '';
+
   orderType: string;
   tripID = "";
   allAssetName = "";
@@ -106,6 +111,7 @@ export class TripDetailComponent implements OnInit {
   recallStatus = false;
   ordersData: any = [];
 
+  companyLogoSrc: string;
   customerData = [];
   isEmail: boolean = false;
   ngOnInit() {
@@ -360,6 +366,15 @@ export class TripDetailComponent implements OnInit {
 
         if (this.newCoords.length > 0) {
           this.getCoords();
+        }
+
+        if (result.termsInfo.logo && result.termsInfo.logo != "") {
+          this.companyLogoSrc = `${result.termsInfo.logo}`;
+        }
+        if (result.termsInfo) {
+          this.driverTerms = result.termsInfo.driverTerms ? result.termsInfo.driverTerms : '';
+          this.dispatchTerms = result.termsInfo.dispatchTerms ? result.termsInfo.dispatchTerms : '';
+          this.tagLine = result.termsInfo.tagLine ? result.termsInfo.tagLine : '';
         }
       });
   }
@@ -672,7 +687,8 @@ export class TripDetailComponent implements OnInit {
   async generate() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: 0.5,
+      pagebreak: { mode: ['avoid-all', 'css'] },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },
       html2canvas: {

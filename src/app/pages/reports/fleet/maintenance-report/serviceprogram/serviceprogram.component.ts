@@ -56,7 +56,7 @@ export class ServiceprogramComponent implements OnInit {
                 }
                 this.serviceProgramList = this.serviceProgramList.concat(result.Items);
                 this.loaded = true;
-        }
+             }
       }
     }
   
@@ -105,7 +105,11 @@ export class ServiceprogramComponent implements OnInit {
             let csvArray = []
             this.serviceProgramList.forEach(element => {
                 let obj = {}
-                obj["Vehicle"] = this.vehicles[element.vehicles]
+                let allVehicles=[]
+                for(const el of element.vehicles){
+                   allVehicles.push(this.vehicles[el])
+                }
+                obj["Vehicle"] =  allVehicles.join(' ')
                 obj["Service Program Name"] = element.programName
                 obj["Description"] = element.description
                 dataObject.push(obj)
@@ -133,5 +137,20 @@ export class ServiceprogramComponent implements OnInit {
             this.toastr.error("No Records found")
         }
   }
+  
+    requiredExport() {
+        this.apiService.getData(`servicePrograms/get/getFull/export`).subscribe((result: any) => {
+            this.serviceProgramList = result.Items;
+            this.generateCSV();
+        })
+    }
+    
+    requiredCSV() {
+        if (this.vehicle !== null || this.programName !== null) {
+            this.generateCSV();
+        } else {
+            this.requiredExport();
+        }
+    }
 
 }

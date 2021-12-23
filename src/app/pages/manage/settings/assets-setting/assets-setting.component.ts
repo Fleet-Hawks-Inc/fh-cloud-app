@@ -16,15 +16,8 @@ export class AssetsSettingComponent implements OnInit {
   assetID = '';
   assetType = null;
   assetIdentification = '';
-  assetNext = false;
-  assetPrev = true;
-  assetDraw = 0;
-  totalRecords = 10;
-  pageLength = 10;
   lastEvaluatedKey = '';
-  assetPrevEvauatedKeys = [''];
-  assetStartPoint = 1;
-  assetEndPoint = this.pageLength;
+  loaded = false;
   allData = [];
   contactsObjects = [];
   getSuggestions = _.debounce(function (value) {
@@ -44,77 +37,43 @@ export class AssetsSettingComponent implements OnInit {
               private toastr: ToastrService,) { }
 
   ngOnInit() {
-    this.fetchAssetsCount();
+    this.initDataTable();
     this.fetchContacts();
-  }
-  fetchAssetsCount() {
-    this.apiService.getData('assets/get/deleted/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.assetID !== '' || this.assetType != null) {
-          this.assetEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
   }
   fetchContacts() {
     this.apiService.getData('contacts/get/list/ownerOperator').subscribe((result: any) => {
       this.contactsObjects = result;
     });
   }
-  initDataTable() {
-    this.apiService.getData('assets/fetch/deleted/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if (result.Items.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedAssets = [];
-        this.getStartandEndVal();
-        result[`Items`].map((v: any) => {
-          v.assetType = v.assetType.replace('_', ' ');
-        });
-        this.allData = result[`Items`];
 
-        if (this.assetID !== '' || this.assetType != null) {
-          this.assetStartPoint = 1;
-          this.assetEndPoint = this.totalRecords;
+      async initDataTable() {
+        if (this.lastEvaluatedKey !== 'end') {
+            const result = await this.apiService.getData('assets/fetch/deleted/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey).toPromise();
+            if (result.Items.length === 0) {
+                this.dataMessage = Constants.NO_RECORDS_FOUND
+            }
+            this.suggestedAssets = [];
+          result['Items'].map((v: any) => {
+              v.assetType = v.assetType.replace('_', ' ');
+                });
+            if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.allData = this.allData.concat(result.Items);
+                this.loaded = true;
+            }
         }
-
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].assetSK.replace(/#/g, '--');
-          this.assetNext = false;
-          // for prev button
-          if (!this.assetPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.assetPrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.assetNext = true;
-          this.lastEvaluatedKey = '';
-          this.assetEndPoint = this.totalRecords;
+    }
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
         }
-
-        if (this.totalRecords < this.assetEndPoint) {
-          this.assetEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.assetDraw > 0) {
-          this.assetPrev = false;
-        } else {
-          this.assetPrev = true;
-        }
-      }, err => {
-      });
-  }
-  getStartandEndVal() {
-    this.assetStartPoint = this.assetDraw * this.pageLength + 1;
-    this.assetEndPoint = this.assetStartPoint + this.pageLength - 1;
-  }
+        this.loaded = false;
+    }
 
   setAsset(assetID, assetIdentification) {
     this.assetIdentification = assetIdentification;
@@ -125,10 +84,9 @@ export class AssetsSettingComponent implements OnInit {
       if (confirm('Are you sure you want to restore?') === true) {
         this.apiService.deleteData(`assets/restore/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
             this.allData = [];
-            this.assetDraw = 0;
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastEvaluatedKey = '';
-            this.fetchAssetsCount();
+            this.initDataTable();
             this.toastr.success('Asset Restored Successfully!');
           });
       }
@@ -141,8 +99,9 @@ export class AssetsSettingComponent implements OnInit {
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
+      this.lastEvaluatedKey = '';
       this.suggestedAssets = [];
-      this.fetchAssetsCount();
+      this.initDataTable();
     } else {
       return false;
     }
@@ -155,33 +114,11 @@ export class AssetsSettingComponent implements OnInit {
       this.assetType = null;
       this.suggestedAssets = [];
       this.allData = [];
+      this.lastEvaluatedKey = '';
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAssetsCount();
-      this.resetCountResult();
+      this.initDataTable();
     } else {
       return false;
     }
   }
-    // next button func
-    nextResults() {
-      this.assetNext = true;
-      this.assetPrev = true;
-      this.assetDraw += 1;
-      this.initDataTable();
-    }
-
-    // prev button func
-    prevResults() {
-      this.assetNext = true;
-      this.assetPrev = true;
-      this.assetDraw -= 1;
-      this.lastEvaluatedKey = this.assetPrevEvauatedKeys[this.assetDraw];
-      this.initDataTable();
-    }
-
-    resetCountResult() {
-      this.assetStartPoint = 1;
-      this.assetEndPoint = this.pageLength;
-      this.assetDraw = 0;
-    }
 }

@@ -58,6 +58,7 @@ export class AddExpensePaymentComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  expErr = "";
 
   constructor(
     private apiService: ApiService,
@@ -175,7 +176,7 @@ export class AddExpensePaymentComponent implements OnInit {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     this.accountService
       .getData(
-        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=expense`
+        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=expense&fetch=other&entityType=${this.paymentData.paymentTo}`
       )
       .subscribe((result: any) => {
         if (result.length === 0) {
@@ -232,6 +233,7 @@ export class AddExpensePaymentComponent implements OnInit {
         result.map((exp) => {
           exp.prevPaidAmount = Number(exp.finalTotal) - Number(exp.balance);
           exp.status = exp.status ? exp.status : "pending";
+          exp.status = exp.status.replace("_", " ");
           exp.paidStatus = false;
           exp.errText = "";
         });
@@ -282,6 +284,9 @@ export class AddExpensePaymentComponent implements OnInit {
           status: status,
           pendingAmount: Number(element.balance) - Number(element.paidAmount),
           tripID: element.tripID,
+          expDate: element.txnDate,
+          expTotal: element.finalTotal,
+          tripNo: element.tripNo,
         };
         this.paymentData.expTotal += Number(element.paidAmount);
         this.paymentData.expData.push(obj);
@@ -337,6 +342,8 @@ export class AddExpensePaymentComponent implements OnInit {
           status: status,
           pendingAmount:
             Number(element.pendingPayment) - Number(element.paidAmount),
+          advPayNo: element.paymentNo,
+          advTotal: element.amount,
         };
         this.paymentData.advTotal += Number(element.paidAmount);
         this.paymentData.advancePayIds.push(element.paymentID);
@@ -347,9 +354,12 @@ export class AddExpensePaymentComponent implements OnInit {
   }
 
   paymentCalculation() {
-    this.paymentData.finalAmount = Math.abs(
-      Number(this.paymentData.advTotal) - Number(this.paymentData.expTotal)
-    );
+    // this.paymentData.finalAmount = Math.abs(
+    //   Number(this.paymentData.advTotal) - Number(this.paymentData.expTotal)
+    // );
+    this.expErr = "";
+    this.paymentData.finalAmount =
+      Number(this.paymentData.expTotal) - Number(this.paymentData.advTotal);
   }
 
   addRecord() {
@@ -359,7 +369,12 @@ export class AddExpensePaymentComponent implements OnInit {
     }
 
     if (this.paymentData.advTotal === 0) {
-      this.toaster.error("Please entter advance amount");
+      this.toaster.error("Please enter advance amount");
+      return false;
+    }
+
+    if (this.paymentData.expTotal < this.paymentData.advTotal) {
+      this.expErr = "Advance total cannot exceed the expense total amount";
       return false;
     }
 
@@ -368,6 +383,10 @@ export class AddExpensePaymentComponent implements OnInit {
         this.toaster.error("Please enter valid advance payment");
         return false;
       }
+    }
+
+    if (this.paymentData.finalAmount < 0) {
+      return false;
     }
 
     this.submitDisabled = true;

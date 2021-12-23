@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { AccountService } from 'src/app/services/account.service';
-import { ApiService } from 'src/app/services/api.service';
-import Constants from '../../../fleet/constants';
+import { Component, OnInit } from "@angular/core";
+import { ToastrService } from "ngx-toastr";
+import { AccountService } from "src/app/services/account.service";
+import { ApiService } from "src/app/services/api.service";
+import Constants from "../../../fleet/constants";
 
 @Component({
-  selector: 'app-expense-list',
-  templateUrl: './expense-list.component.html',
-  styleUrls: ['./expense-list.component.css']
+  selector: "app-expense-list",
+  templateUrl: "./expense-list.component.html",
+  styleUrls: ["./expense-list.component.css"],
 })
 export class ExpenseListComponent implements OnInit {
-
   dataMessage: string = Constants.FETCHING_DATA;
   noRecrdMessage: string = Constants.NO_RECORDS_FOUND;
   expenses = [];
@@ -22,12 +21,12 @@ export class ExpenseListComponent implements OnInit {
   filter = {
     category: null,
     unitNumber: null,
-    amount: '',
+    amount: "",
     startDate: null,
     endDate: null,
     typeId: null,
-  }
-  lastItemSK = '';
+  };
+  lastItemSK = "";
   loaded = false;
   disableSearch = false;
 
@@ -35,7 +34,11 @@ export class ExpenseListComponent implements OnInit {
   trips = [];
   assets = [];
 
-  constructor(private accountService: AccountService, private apiService: ApiService, private toaster: ToastrService) { }
+  constructor(
+    private accountService: AccountService,
+    private apiService: ApiService,
+    private toaster: ToastrService
+  ) {}
 
   ngOnInit() {
     this.fetchVehicles();
@@ -44,7 +47,6 @@ export class ExpenseListComponent implements OnInit {
     this.fetchExpenses();
     this.fetchVendors();
     this.fetchExpenseCategories();
-
   }
 
   fetchVehicles() {
@@ -52,7 +54,6 @@ export class ExpenseListComponent implements OnInit {
       this.vehicles = result;
     });
   }
-
 
   fetchTrips() {
     this.apiService.getData("trips/get/list").subscribe((result: any) => {
@@ -68,96 +69,125 @@ export class ExpenseListComponent implements OnInit {
 
   fetchExpenses(refresh?: boolean) {
     if (refresh === true) {
-      this.lastItemSK = '';
+      this.lastItemSK = "";
       this.expenses = [];
     }
-    if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`expense/paging?filterType=${this.filter.category}&unitNumber=${this.filter.unitNumber}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`).subscribe((result: any) => {
-
-        if (result.length === 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-          this.disableSearch = false;
-        }
-        if (result.length > 0) {
-          this.disableSearch = false;
-          if (result[result.length - 1].sk !== undefined) {
-            this.lastItemSK = encodeURIComponent(result[result.length - 1].sk);
-          } else {
-            this.lastItemSK = 'end';
+    if (this.lastItemSK !== "end") {
+      this.accountService
+        .getData(
+          `expense/paging?filterType=${this.filter.category}&unitNumber=${this.filter.unitNumber}&amount=${this.filter.amount}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&category=${this.filter.typeId}&lastKey=${this.lastItemSK}`
+        )
+        .subscribe((result: any) => {
+          if (result.length === 0) {
+            this.dataMessage = Constants.NO_RECORDS_FOUND;
+            this.disableSearch = false;
           }
-          result.map((v) => {
-            this.expenses.push(v);
-          });
-          this.loaded = true;
-        }
-      });
+          if (result.length > 0) {
+            this.disableSearch = false;
+            if (result[result.length - 1].sk !== undefined) {
+              this.lastItemSK = encodeURIComponent(
+                result[result.length - 1].sk
+              );
+            } else {
+              this.lastItemSK = "end";
+            }
+            result.map((v) => {
+              v.disableEdit = false;
+              if (v.status) {
+                v.newStatus = v.status.replace("_", " ");
+                if (
+                  v.status === "deducted" ||
+                  v.status === "partially_deducted"
+                ) {
+                  v.disableEdit = true;
+                }
+              }
+
+              this.expenses.push(v);
+            });
+            this.loaded = true;
+          }
+        });
     }
   }
 
   fetchVendors() {
-    this.apiService.getData(`contacts/get/list/vendor`)
+    this.apiService
+      .getData(`contacts/get/list/vendor`)
       .subscribe((result: any) => {
         this.vendors = result;
-      })
+      });
   }
 
   deleteExpense(expenseID) {
-    if (confirm('Are you sure you want to delete?') === true) {
-      this.accountService.getData(`expense/delete/${expenseID}`)
+    if (confirm("Are you sure you want to delete?") === true) {
+      this.accountService
+        .getData(`expense/delete/${expenseID}`)
         .subscribe((result: any) => {
           if (result !== undefined) {
             this.dataMessage = Constants.FETCHING_DATA;
             this.expenses = [];
-            this.lastItemSK = '';
+            this.lastItemSK = "";
             this.fetchExpenses();
-            this.toaster.success('Expense transaction deleted successfully.');
+            this.toaster.success("Expense transaction deleted successfully.");
           }
         });
     }
-
   }
 
   fetchExpenseCategories() {
-    this.accountService.getData(`expense/categories/list`)
+    this.accountService
+      .getData(`expense/categories/list`)
       .subscribe((result: any) => {
         this.categories = result;
       });
   }
 
   searchFilter() {
-    if (this.filter.category === 'vehicle' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
-      this.toaster.error('Please type vehicle number');
+    if (
+      this.filter.category === "vehicle" &&
+      (this.filter.unitNumber == null || this.filter.unitNumber == "")
+    ) {
+      this.toaster.error("Please type vehicle number");
       return false;
     }
-    if (this.filter.category === 'tripNo' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
-      this.toaster.error('Please type trip number');
+    if (
+      this.filter.category === "tripNo" &&
+      (this.filter.unitNumber == null || this.filter.unitNumber == "")
+    ) {
+      this.toaster.error("Please type trip number");
       return false;
     }
-    if (this.filter.category === 'asset' && (this.filter.unitNumber == null || this.filter.unitNumber == '')) {
-      this.toaster.error('Please type asset name');
+    if (
+      this.filter.category === "asset" &&
+      (this.filter.unitNumber == null || this.filter.unitNumber == "")
+    ) {
+      this.toaster.error("Please type asset name");
       return false;
     }
 
-    if (this.filter.category != '' || this.filter.unitNumber != null || this.filter.unitNumber != '' || this.filter.amount !== '' || this.filter.typeId !== null || this.filter.endDate !== null || this.filter.startDate !== null) {
+    if (
+      this.filter.category != "" ||
+      this.filter.unitNumber != null ||
+      this.filter.unitNumber != "" ||
+      this.filter.amount !== "" ||
+      this.filter.typeId !== null ||
+      this.filter.endDate !== null ||
+      this.filter.startDate !== null
+    ) {
       this.disableSearch = true;
-      if (
-        this.filter.startDate !== '' &&
-        this.filter.endDate === ''
-      ) {
-        this.toaster.error('Please select both start and end dates.');
+      if (this.filter.startDate !== "" && this.filter.endDate === "") {
+        this.toaster.error("Please select both start and end dates.");
         return false;
-      } else if (
-        this.filter.startDate === '' &&
-        this.filter.endDate !== ''
-      ) {
-        this.toaster.error('Please select both start and end dates.');
+      } else if (this.filter.startDate === "" && this.filter.endDate !== "") {
+        this.toaster.error("Please select both start and end dates.");
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
-        this.toaster.error('Start date should be less than end date');
+        this.toaster.error("Start date should be less than end date");
         return false;
       } else {
         this.expenses = [];
-        this.lastItemSK = '';
+        this.lastItemSK = "";
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchExpenses();
       }
@@ -170,15 +200,14 @@ export class ExpenseListComponent implements OnInit {
     this.filter = {
       category: null,
       unitNumber: null,
-      amount: '',
+      amount: "",
       startDate: null,
       endDate: null,
       typeId: null,
     };
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.expenses = [];
     this.fetchExpenses();
-
   }
 
   onScroll() {
@@ -194,12 +223,12 @@ export class ExpenseListComponent implements OnInit {
     this.filter = {
       category: null,
       unitNumber: null,
-      amount: '',
+      amount: "",
       startDate: null,
       endDate: null,
       typeId: null,
     };
-    this.lastItemSK = '';
+    this.lastItemSK = "";
     this.expenses = [];
     this.fetchExpenses();
   }
@@ -208,4 +237,3 @@ export class ExpenseListComponent implements OnInit {
     this.filter.unitNumber = null;
   }
 }
-
