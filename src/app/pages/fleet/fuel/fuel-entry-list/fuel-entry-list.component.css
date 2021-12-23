@@ -1,6 +1,6 @@
 ngx-datatable {
-  max-height: 70vh;
-  min-height: 60vh;
+  max-height: 60vh;
+  min-height: 50vh;
   overflow-y: scroll;
 }
 

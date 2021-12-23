@@ -222,11 +222,15 @@ setCustomer(cName){
       let orderHeaders = ''
       let oArray = []
       if (orders.length > 0) {
+        delete orders[0].orderSK
+        delete orders[0].isDeleted
         orderHeaders = "," + Object.keys(orders[0]).join(',')
         orderHeaders += '\n'
         for (const i of orders) {
           i.milesInfo = i.milesInfo.totalMiles
           i.charges = i.charges.freightFee.currency
+          delete i.orderSK
+          delete i.isDeleted
           let o = "," + Object.values(i).join(',')
           o += '\n'
           oArray.push(o)
