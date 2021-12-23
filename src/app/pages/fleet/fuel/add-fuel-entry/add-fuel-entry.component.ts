@@ -340,7 +340,7 @@ export class AddFuelEntryComponent implements OnInit {
       `${this.fuelData.data.date}T${this.fuelData.data.time}`
     ).getTime();
     // append other fields
-    console.log(this.fuelData)
+    
     this.apiService.postData("fuelEntries", this.fuelData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -446,6 +446,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.transID = result.data.transID;
     this.fuelData.data.country = result.data.country;
     this.fuelData.data.state = result.data.state;
+    this.fuelData.data.site=result.data.site;
     this.fuelData.data.city = result.data.city;
     this.fuelData.data.odometer = result.data.odometer;
     this.existingPhotos = result.data.uploadedPhotos;

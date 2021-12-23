@@ -9,6 +9,11 @@
             <h4 class="text-4 font-weight-bold mt-0 mb-0 text-dark">{{title}}</h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right por-1">
+            <a
+            routerLink="/fleet/fuel/edit/{{ fuelID }}"
+            class="btn btn-default btn-sm mr-2"
+            ><i class="fas fa-pencil-alt"></i> Edit Fuel</a
+          >
             <a routerLink="/fleet/fuel/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Fuel Entries
               List</a>
           </div>

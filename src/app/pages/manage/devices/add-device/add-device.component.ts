@@ -261,10 +261,10 @@ export class AddDeviceComponent implements OnInit {
    * change title text depending on device type selected.
    */
   deviceTypeSelected(eventArgs: any) {
-    if (eventArgs && eventArgs === "Tracker") {
+    if (eventArgs && eventArgs.value === "Tracker") {
       this.deviceIDText = "IMEI#";
     } else {
-      this.deviceIDText = "Device Id(Serial #)";
+      this.deviceIDText = "Device ID(Serial #)";
     }
   }
 }
