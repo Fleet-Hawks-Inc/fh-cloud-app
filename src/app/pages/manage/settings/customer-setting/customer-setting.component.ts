@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CustomerSettingComponent implements OnInit {
   
-    dataMessage: string;
+    dataMessage: string = Constants.FETCHING_DATA;
     company: any = null;
     type: any = null;
     lastItemSK = "";
@@ -49,8 +49,6 @@ export class CustomerSettingComponent implements OnInit {
       })
     }
 }
-
-  
   searchFilter() {
       if(this.company !== null || this.type !== null){
         this.dataMessage = Constants.FETCHING_DATA;
@@ -70,7 +68,7 @@ export class CustomerSettingComponent implements OnInit {
   }
     
   resetFilter() {
-    if (this.company !== null || this.type !== null) {
+    if (this.company !== null || this.type !== null || this.lastItemSK !== '') {
       this.company = null;
       this.type = null;
       this.lastItemSK = '';
