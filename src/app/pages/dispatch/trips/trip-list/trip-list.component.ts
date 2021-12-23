@@ -617,6 +617,7 @@ export class TripListComponent implements OnInit {
     this.spinner.show();
     // this.orders = [];
     if (this.lastEvaluatedKey !== "end") {
+      this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.trim()
       this.apiService
         .getData(
           "trips/fetch/records/all?searchValue=" +
