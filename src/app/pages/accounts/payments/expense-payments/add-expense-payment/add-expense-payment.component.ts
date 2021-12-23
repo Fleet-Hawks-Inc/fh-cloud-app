@@ -368,10 +368,10 @@ export class AddExpensePaymentComponent implements OnInit {
       return false;
     }
 
-    if (this.paymentData.advTotal === 0) {
-      this.toaster.error("Please enter advance amount");
-      return false;
-    }
+    // if (this.paymentData.advTotal === 0) {
+    //   this.toaster.error("Please enter advance amount");
+    //   return false;
+    // }
 
     if (this.paymentData.expTotal < this.paymentData.advTotal) {
       this.expErr = "Advance total cannot exceed the expense total amount";
@@ -385,7 +385,7 @@ export class AddExpensePaymentComponent implements OnInit {
       }
     }
 
-    if (this.paymentData.finalAmount < 0) {
+    if (this.paymentData.finalAmount <= 0) {
       return false;
     }
 

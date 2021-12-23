@@ -95,7 +95,7 @@
                         <th class="text-2">Customer</th>
                         <th class="text-2">Shipment Date</th>
                         <th class="text-2">Amount</th>
-                        <th class="text-2">Invoice Status</th>
+                        <!-- <th class="text-2">Invoice Status</th> -->
                         <!-- <th class="text-2">Payment Status</th> -->
                         <th class="text-2">Status</th>
                         <th class="text-2">Action</th>
@@ -103,7 +103,7 @@
                     </thead>
                     <tbody>
                       <tr *ngIf="allSales.length === 0" class="text-center">
-                        <td colspan="9">{{ dataMessage }}</td>
+                        <td colspan="8">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let item of allSales" class="cursorpoint">
                         <td routerLink="/accounts/sales/orders/detail/{{
@@ -140,7 +140,7 @@
                           : "-"
                           }} {{ item.currency }}
                         </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
+                        <!-- <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           <span *ngIf="item.invStatus">
@@ -151,7 +151,7 @@
                           <span *ngIf="!item.invStatus">
                             -
                           </span>
-                        </td>
+                        </td> -->
                         <!-- <td
                           routerLink="/accounts/sales/orders/detail/{{
                             item.saleID
