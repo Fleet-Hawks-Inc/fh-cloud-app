@@ -153,6 +153,8 @@
                       [scrollbarV]="true"
                       [messages]="{ emptyMessage: dataMessage }"
                       (scroll)="onScroll($event.offsetY)"
+                      [selectionType]="SelectionType.single"
+                      (select)="onFuelSelect($event)"
                     >
                       <ngx-datatable-column
                         name="Date Time"
