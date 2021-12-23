@@ -256,8 +256,12 @@ export class OrderDetailComponent implements OnInit {
       phone: "",
       email: "",
       fax: "",
-      logo: "",
       carrierID: "",
+      termsInfo: {
+        logo: "",
+        tagLine: "",
+        terms: ''
+      }
     },
     charges: {
       accessorialDeductionInfo: {
@@ -461,7 +465,7 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${x}`,
             name: x,
             ext: x.split(".")[1],
           }));
@@ -469,7 +473,7 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            docPath: `${x.storedName}`,
             name: x.storedName,
             ext: x.storedName.split(".")[1],
           }));
@@ -486,8 +490,8 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "jpeg"
             ) {
               const obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
@@ -496,8 +500,8 @@ export class OrderDetailComponent implements OnInit {
             } else {
               const obj = {
                 imgPath: "assets/img/icon-pdf.png",
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                displayName: x.displayName,
+                docPath: `${x.urlPath}`,
+                displayName: x.urlPath,
                 name: x.storedName,
                 ext: x.storedName.split(".")[1],
               };
@@ -889,8 +893,8 @@ export class OrderDetailComponent implements OnInit {
         this.invoiceData = result[0];
         this.orderInvData = result[0];
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.logo && this.orderInvData.carrierData.logo != "") {
-          this.companyLogoSrc = `${this.Asseturl}/${this.carrierID}/${this.orderInvData.carrierData.logo}`;
+        if (this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
+          this.companyLogoSrc = `${this.orderInvData.carrierData.termsInfo.logo}`;
         }
         if (this.invoiceData.assets != undefined) {
           this.assets = this.invoiceData.assets;

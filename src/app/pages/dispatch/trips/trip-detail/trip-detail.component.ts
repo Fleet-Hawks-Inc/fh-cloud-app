@@ -369,7 +369,7 @@ export class TripDetailComponent implements OnInit {
         }
 
         if (result.termsInfo.logo && result.termsInfo.logo != "") {
-          this.companyLogoSrc = `${this.Asseturl}/${result.carrierID}/${result.termsInfo.logo}`;
+          this.companyLogoSrc = `${result.termsInfo.logo}`;
         }
         if (result.termsInfo) {
           this.driverTerms = result.termsInfo.driverTerms ? result.termsInfo.driverTerms : '';
