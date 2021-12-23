@@ -96,6 +96,7 @@ export class FuelEntryListComponent implements OnInit {
         $('#DataTables_Table_0_wrapper .dt-buttons').addClass('custom-dt-buttons').prependTo('.page-buttons');
       }, 1800);
     });
+  }
   onFuelSelect(event){
     let value=event.selected[0]
     let fuelID=value.fuelSK.split('#')[1]
