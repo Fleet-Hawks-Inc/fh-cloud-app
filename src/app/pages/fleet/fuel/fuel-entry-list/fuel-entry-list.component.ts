@@ -9,6 +9,9 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
+import {Router} from '@angular/router'
+
 declare var $: any;
 
 @Component({
@@ -47,6 +50,8 @@ export class FuelEntryListComponent implements OnInit {
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
+  SelectionType = SelectionType;
+  ColumnMode = ColumnMode;
   vehicleIdentification = '';
   unitID = null;
   assetUnitID = null;
@@ -71,7 +76,8 @@ export class FuelEntryListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private httpClient: HttpClient,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private router:Router) {
   }
   ngOnInit() {
     this.fetchVendorList();
@@ -91,7 +97,6 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-  
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;

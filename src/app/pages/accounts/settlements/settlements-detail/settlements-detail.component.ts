@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-settlements-detail",
@@ -22,10 +22,11 @@ export class SettlementsDetailComponent implements OnInit {
     type: null,
     entityId: null,
     setNo: "",
-    txnDate: null,
+    txnDate: "",
     fromDate: null,
     toDate: null,
     tripIds: [],
+    trpData: [],
     miles: {
       tripsTotal: 0,
       driverTotal: 0,
@@ -37,17 +38,36 @@ export class SettlementsDetailComponent implements OnInit {
       driverHours: 0,
       teamHours: 0,
       totalHours: 0,
+      drivers: [],
+      driverLoadedTeam: 0,
+      driverEmptyTeam: 0,
     },
     addition: [],
     deduction: [],
     additionTotal: 0,
     deductionTotal: 0,
+    taxObj: {
+      gstPrcnt: 0,
+      pstPrcnt: 0,
+      hstPrcnt: 0,
+      gstAmount: 0,
+      pstAmount: 0,
+      hstAmount: 0,
+      carrLocalTax: 0,
+      carrLocalAmount: 0,
+      carrFedTax: 0,
+      carrFedAmount: 0,
+    },
     paymentTotal: 0,
     taxes: 0,
-    finalTotal: 0,
     subTotal: 0,
-    transactionLog: [],
-    currency: "",
+    finalTotal: 0,
+    fuelAdd: 0,
+    fuelDed: 0,
+    status: "unpaid",
+    paymentLinked: false,
+    pendingPayment: 0,
+    currency: "CAD",
     paymentInfo: {
       lMiles: 0,
       lMileTeam: 0,
@@ -57,8 +77,10 @@ export class SettlementsDetailComponent implements OnInit {
       pRate: 0,
       dRate: 0,
       pType: "",
-      // drivers: [],
     },
+    fuelIds: [],
+    fuelData: [],
+    transactionLog: [],
   };
   expenses = [];
   tripsObj = [];
@@ -72,10 +94,14 @@ export class SettlementsDetailComponent implements OnInit {
   accountsObjects = {};
   accountsIntObjects = {};
   payments = [];
+  showModal = true;
+  selectedFuelEnteries = [];
+
   constructor(
     private accountService: AccountService,
     private route: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
@@ -103,6 +129,7 @@ export class SettlementsDetailComponent implements OnInit {
         } else {
           this.fetchContact(this.settlementData.entityId);
         }
+        this.fetchSelectedFuelExpenses();
       });
   }
 
@@ -168,5 +195,58 @@ export class SettlementsDetailComponent implements OnInit {
           });
         });
       });
+  }
+
+  showPreviewModal() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      settlementData: this.settlementData,
+      entityName: this.entityName,
+      fuelEnteries: this.selectedFuelEnteries,
+    };
+    this.listService.showSettlementsDetailPreview(obj);
+  }
+
+  async fetchSelectedFuelExpenses() {
+    if (this.settlementData.fuelIds.length > 0) {
+      let fuelIDs = encodeURIComponent(
+        JSON.stringify(this.settlementData.fuelIds)
+      );
+      let result = await this.apiService
+        .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
+        .toPromise();
+      result.map((k) => {
+        k.fuelID = k.data.fuelID;
+        k.fuelDate = k.data.date;
+        k.cityName = k.data.city;
+        k.locationCountry = k.data.country;
+        k.fuelCardNumber = k.data.cardNo;
+        k.unitOfMeasure = k.data.uom;
+        k.subTotal = k.data.amt;
+        k.billingCurrency = k.data.currency;
+        k.type = k.data.type;
+        this.settlementData.fuelData.map((v) => {
+          if (v.fuelID === k.fuelID) {
+            k.action = v.action === "add" ? "Added" : "Deducted";
+            if (v.convert) {
+              k.convert = v.convert;
+              k.total = v.actAmount;
+              k.convertRate = v.convertRate;
+              k.currency = this.settlementData.currency;
+              k.subTotal = v.amount;
+            } else {
+              k.convert = false;
+            }
+          }
+        });
+      });
+      this.selectedFuelEnteries = result;
+      this.selectedFuelEnteries.sort(function compare(a, b) {
+        let dateA: any = new Date(a.fuelDate);
+        let dateB: any = new Date(b.fuelDate);
+        return dateA - dateB;
+      });
+    }
   }
 }

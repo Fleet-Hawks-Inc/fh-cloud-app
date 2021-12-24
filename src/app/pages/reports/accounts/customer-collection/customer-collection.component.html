@@ -99,7 +99,7 @@
                 <section class="reports_div">
                   <div class="setHeight">
                     <ngx-datatable #myTable class="bootstrap expandable fixedTable" [rows]="customerCollection"
-                      [rowHeight]="rowHeight" [scrollbarV]="true" [messages]="{ emptyMessage: dataMessage }"
+                      [rowHeight]="rowHeight" [scrollbarV]="true" [columnMode]="ColumnMode.standard" [messages]="{ emptyMessage: dataMessage }"
                       (scroll)="onScroll($event.offsetY)">
                       <ngx-datatable-row-detail [rowHeight]="400" #myDetailRow (toggle)="onDetailToggle($event)">
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
@@ -228,7 +228,7 @@
                           </div>
                         </ng-template>
                       </ngx-datatable-row-detail>
-                      <ngx-datatable-column [width]="50" [resizeable]="false" [sortable]="false" [draggable]="false"
+                      <ngx-datatable-column [width]="20" [resizeable]="false" [sortable]="false" [draggable]="false"
                         [canAutoResize]="false">
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
                           <a href="javascript:void(0)" [class.datatable-icon-right]="!expanded"
@@ -239,22 +239,27 @@
                       </ngx-datatable-column>
 
                       <ngx-datatable-column name="Customer" prop="cName">
+                        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
+                          let-row="row">
+                          <span *ngIf="value == ''">-</span>
+                          <span *ngIf="value">{{ value|titlecase }}</span>
+                        </ng-template>
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Email" prop="workEmail" [width]="200" [sortable]="false">
                       </ngx-datatable-column>
                       <ngx-datatable-column name="Phone" prop="workPhone" [sortable]="false">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Total Orders" prop="totalOrders">
+                      <ngx-datatable-column name="Orders" prop="totalOrders">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Delivered Orders" prop="deliveredOrders">
+                      <ngx-datatable-column name="Delivered" prop="deliveredOrders">
                       </ngx-datatable-column>
-                      <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
+                      <!-- <ngx-datatable-column name="Invoice Generated" prop="invoiceGenerated">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
                           <span *ngIf="value == 0">-</span>
                           <span *ngIf="value != 0">{{ value }}</span>
                         </ng-template>
-                      </ngx-datatable-column>
+                      </ngx-datatable-column> -->
                       <ngx-datatable-column name="Total Amount" prop="totalAmount" [sortable]="false">
                         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value"
                           let-row="row">
@@ -405,9 +410,9 @@
             </tr>
             <tr>
               <td width="50%" valign="top">
-                <h2 style="font-size:20px;">Customer</h2>
-                <p style="font-size:13px;"> <strong>{{printData.cName}}</strong>
-                </p>
+                <h3 style="font-size:20px;">Customer</h3>
+                <h2 style="font-size:15px;"> <strong>{{printData.cName|titlecase}}</strong>
+                </h2>
               </td>
               <td valign="top" align="right">
                 <h2 style="font-size:20px;">&nbsp;</h2>
@@ -453,7 +458,7 @@
                           <tbody>
                             <tr>
                               <td>
-                                <p style="font-size:16px;"><strong>Invoice Generated:</strong>
+                                <p style="font-size:16px;"><strong>Inv. Generated:</strong>
                                   {{printData.invoiceGenerated}}</p>
                               </td>
                             </tr>
@@ -638,56 +643,56 @@
             </tr>
             <tr valign="top">
               <td colspan="2">
-                <table width="100%" border="0" style="border:1px solid #adadad; font-size:13px;" cellspacing="0"
+                <table width="100%" border="0" style="border:1px solid #000000; font-size:13px;" cellspacing="0"
                   cellpadding="0">
                   <tbody>
                     <tr bgcolor="#f3f3f3">
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                        <p style="font-weight:600;">Created Date</p>
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                        <p style="font-weight:600;">Date</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Order#</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Confirmation#</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Type</p>
                       </td>
                       <td width="6%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Miles</p>
                       </td>
                       <td width="6%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Amount</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Status</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                        <p style="font-weight:600;">invoice Generated</p>
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                        <p style="font-weight:600;">Invoice</p>
                       </td>
                       <td width="8%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                        <p style="font-weight:600;">Invoice date</p>
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                        <p style="font-weight:600;">Inv. Date</p>
                       </td>
                       <td width="10%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                        <p style="font-weight:600;">Invoice No</p>
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                        <p style="font-weight:600;">Inv. #</p>
                       </td>
                       <td width="6%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
-                        <p style="font-weight:600;">Invoice Status</p>
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
+                        <p style="font-weight:600;">Inv. Status</p>
                       </td>
                       <td width="6%"
-                        style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding-left:10px;">
+                        style="border-bottom:1px solid #000000; border-right:1px solid #000000; padding-left:10px;">
                         <p style="font-weight:600;">Received</p>
                       </td>
                     </tr>
@@ -696,22 +701,22 @@
                     </tr>
                     <tr *ngFor="let order of printData.orders">
                       <td height="25"
-                        style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
-                        <p style="margin-top:0px; margin-bottom:0px;"> {{order.createdDate}}</p>
+                        style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
+                        <p style="margin-top:0px; margin-bottom:0px;"> {{order.createdDate|date:'MMM dd'}}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{order.orderNumber}}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{ order.cusConfirmation }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{ order.orderMode }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{ order.milesInfo.totalMiles }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{
                         order.finalAmount
                           | currency
@@ -719,25 +724,25 @@
                                 .currency
                       }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{
                         order.orderStatus
                       }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{ order.invoiceGenerate }}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{order.invDate}}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{order.invNo}}</p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:5px; margin-bottom:5px;">{{ order.invStat }}<br>
                         </p>
                       </td>
-                      <td style="border-right:1px solid #adadad; border-bottom:1px solid #adadad; padding-left:10px;">
+                      <td style="border-right:1px solid #000000; border-bottom:1px solid #000000; padding-left:10px;">
                         <p style="margin-top:0px; margin-bottom:0px;">{{order.paid}}<br>
                         </p>
                       </td>
