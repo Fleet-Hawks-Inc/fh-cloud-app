@@ -14,6 +14,7 @@ import { CompanyDocumentsComponent } from './company-documents/company-documents
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { Injectable } from '@angular/core';
 import { unsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   { path: '', component: NewDocumentsComponent},
@@ -100,6 +101,7 @@ const routes: Routes = [
     NgbModule,
     NgSelectModule,
     NgxSpinnerModule,
+    InfiniteScrollModule
   ],
   providers: [unsavedChangesGuard,
     { provide: NgbDateAdapter, useClass: CustomAdapter },

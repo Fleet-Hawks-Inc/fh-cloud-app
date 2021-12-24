@@ -168,14 +168,16 @@ setCustomer(cName){
   async generatePDF() {
     let data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.5,0.5,0.5],
+      pagebreak: { mode: ["avoid-all"] },
       filename: "customerReport.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2Canvas: {
-        dpi: 300,
+        dpi: 200,
+
         letterRendering: true,
-        allowTaint: true,
-        useCORS: true
+        loging:true,
+        scale:2
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
     })
@@ -222,11 +224,15 @@ setCustomer(cName){
       let orderHeaders = ''
       let oArray = []
       if (orders.length > 0) {
+        delete orders[0].orderSK
+        delete orders[0].isDeleted
         orderHeaders = "," + Object.keys(orders[0]).join(',')
         orderHeaders += '\n'
         for (const i of orders) {
           i.milesInfo = i.milesInfo.totalMiles
           i.charges = i.charges.freightFee.currency
+          delete i.orderSK
+          delete i.isDeleted
           let o = "," + Object.values(i).join(',')
           o += '\n'
           oArray.push(o)

@@ -9,8 +9,6 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
-import {Router} from '@angular/router'
-import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 declare var $: any;
 
 @Component({
@@ -96,12 +94,35 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-   onFuelSelect(event){
+
+
+  onFuelSelect(event){
     let value=event.selected[0]
     let fuelID=value.fuelSK.split('#')[1]
     this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
+
   }
-  
+     /*
+  onScroll(offsetY) {
+    const viewHeight =
+      this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+
+    if (
+      offsetY + viewHeight + this.fuelList.length * this.rowHeight
+    ) {
+      let limit = this.pageLimit;
+      if (this.fuelList.length === 0) {
+        const pageSize = Math.ceil(viewHeight / this.rowHeight);
+
+        limit = Math.max(pageSize, this.pageLimit);
+      }
+      if (this.loaded) {
+        this.initDataTable();
+      }
+      this.loaded = false;
+    }
+  }
+  */
   setUnit(unitID, unitName) {
     this.unitName = unitName;
     this.unitID = unitID;
