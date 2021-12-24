@@ -13,6 +13,8 @@ export class SalesOrderDetailComponent implements OnInit {
   @ViewChild("previewSaleOrder", { static: true })
   previewSaleOrder: TemplateRef<any>;
 
+  assetUrl = this.apiService.AssetUrl;
+  carrierID = '';
   saleID: any;
 
   txnDate: string;
@@ -33,6 +35,7 @@ export class SalesOrderDetailComponent implements OnInit {
   chargeName: string;
   chargeType: string;
   chargeAmount: string;
+  docs = [];
 
   customersObjects: any = {};
   emailDisabled = false;
@@ -53,7 +56,7 @@ export class SalesOrderDetailComponent implements OnInit {
   fetchSaleOrder() {
     this.accountService.getData(`sales-orders/detail/${this.saleID}`).subscribe(res => {
       let result = res[0];
-
+      this.carrierID = result.pk;
       this.txnDate = result.txnDate;
       this.customerName = result.cusInfo.cName;
       this.workEmail = result.cusInfo.workEmail;
@@ -73,6 +76,34 @@ export class SalesOrderDetailComponent implements OnInit {
       this.chargeType = result.charges.cType;
       this.chargeAmount = result.charges.cAmount;
       this.isPDF = true;
+
+      if (result.docs.length > 0) {
+        result.docs.forEach((x: any) => {
+          let obj: any = {};
+          if (
+            x.storedName.split(".")[1] === "jpg" ||
+            x.storedName.split(".")[1] === "png" ||
+            x.storedName.split(".")[1] === "jpeg"
+          ) {
+            obj = {
+              imgPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+              docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
+          } else {
+            obj = {
+              imgPath: "assets/img/icon-pdf.png",
+              docPath: `${this.assetUrl}/${this.carrierID}/${x.storedName}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
+          }
+          this.docs.push(obj);
+        });
+      }
     });
   }
 
@@ -117,6 +148,15 @@ export class SalesOrderDetailComponent implements OnInit {
       windowClass: "preview-sale-order",
     };
     this.salePrev = this.modalService.open(this.previewSaleOrder, ngbModalOptions)
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.accountService
+      .deleteData(`sales-orders/uploadDelete/${this.saleID}/${name}`)
+      .subscribe((result: any) => {
+        this.docs.splice(index, 1);
+        this.toaster.success("Attachment deleted successfully.");
+      });
   }
 
 }
