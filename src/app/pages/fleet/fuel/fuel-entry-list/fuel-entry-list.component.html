@@ -142,10 +142,12 @@
                       #myTable
                       class="bootstrap expandable fixedTable"
                          infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                         [infiniteScrollThrottle]="5" (scrolled)="onScroll()"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()"
                       [rows]="fuelList"
                       [rowHeight]="rowHeight"
+                      
                       [messages]="{ emptyMessage: dataMessage }"
+                      
                       [selectionType]="SelectionType.single"
                       (select)="onFuelSelect($event)"
                     >

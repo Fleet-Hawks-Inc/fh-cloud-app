@@ -96,12 +96,10 @@ export class FuelEntryListComponent implements OnInit {
       }, 1800);
     });
   }
-  
    onFuelSelect(event){
     let value=event.selected[0]
     let fuelID=value.fuelSK.split('#')[1]
     this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
-
   }
   
   setUnit(unitID, unitName) {
