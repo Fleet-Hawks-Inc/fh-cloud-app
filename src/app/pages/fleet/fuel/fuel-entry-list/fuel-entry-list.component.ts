@@ -9,6 +9,8 @@ import { HttpClient } from '@angular/common/http';
 import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
+import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 declare var $: any;
 
 @Component({
@@ -44,11 +46,11 @@ export class FuelEntryListComponent implements OnInit {
   formattedFromDate: any = '';
   formattedToDate: any = '';
   fuelList = [];
+  SelectionType = SelectionType;
+  ColumnMode = ColumnMode;
   suggestedUnits = [];
   vehicleID = '';
   amount = '';
-  SelectionType = SelectionType;
-  ColumnMode = ColumnMode;
   vehicleIdentification = '';
   unitID = null;
   assetUnitID = null;
@@ -95,12 +97,10 @@ export class FuelEntryListComponent implements OnInit {
     });
   }
 
-
-  onFuelSelect(event){
+ onFuelSelect(event){
     let value=event.selected[0]
     let fuelID=value.fuelSK.split('#')[1]
     this.router.navigate([`/fleet/fuel/detail/${fuelID}`])
-
   }
      /*
   onScroll(offsetY) {
