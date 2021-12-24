@@ -168,14 +168,16 @@ setCustomer(cName){
   async generatePDF() {
     let data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.5,0.5,0.5],
+      pagebreak: { mode: ["avoid-all"] },
       filename: "customerReport.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2Canvas: {
-        dpi: 300,
+        dpi: 200,
+
         letterRendering: true,
-        allowTaint: true,
-        useCORS: true
+        loging:true,
+        scale:2
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
     })

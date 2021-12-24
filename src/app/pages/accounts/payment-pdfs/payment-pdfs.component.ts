@@ -394,12 +394,12 @@ export class PaymentPdfsComponent implements OnInit {
         .toPromise();
       this.fueldata.map((k) => {
         result.map((fuel) => {
-          k.city = fuel.cityName;
-          k.country = fuel.locationCountry;
-          k.vehicle = fuel.unitNumber;
-          k.card = fuel.fuelCardNumber;
-          k.quantity = `${fuel.quantity} ${fuel.unitOfMeasure}`;
-          k.fuelDate = fuel.fuelDate;
+          k.city = fuel.data.city;
+          k.country = fuel.data.country;
+          k.vehicle = fuel.data.unitNo;
+          k.card = fuel.data.cardNo;
+          k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
+          k.fuelDate = fuel.data.date;
         });
 
         if (k.action === "add") {
