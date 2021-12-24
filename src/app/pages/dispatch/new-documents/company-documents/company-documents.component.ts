@@ -295,12 +295,14 @@ export class CompanyDocumentsComponent implements OnInit {
     * Fetch Document details before updating
     */
   editDocument(id: any) {
+
     this.spinner.show();
     this.currentID = id;
     this.docError = false;
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = [];
+    
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
@@ -321,6 +323,38 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
         // this.uploadeddoc = result.uploadedDocs;
+                if (
+          result.uploadedDocs !== undefined &&
+          result.uploadedDocs.length > 0
+        ) {
+          result.uploadedDocs.forEach((x: any) => {
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              const obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            } else {
+              const obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            }
+          });
+        }
+        
+/*
         if (result.uploadedDocs.length > 0) {
           result.uploadedDocs.forEach((x: any) => {
             let obj: any = {};
@@ -348,7 +382,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.newDoc.push(obj);
           });
         }
-
+*/
       });
     $('#addDocumentModal').modal('show');
   }
