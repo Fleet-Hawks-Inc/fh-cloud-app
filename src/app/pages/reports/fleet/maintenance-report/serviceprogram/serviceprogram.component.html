@@ -1,91 +1,164 @@
 <section class="body">
-	<div class="inner-wrapper">
-		<section role="main" class="content-body pt-0 pr-0 pl-1">
-			<header class="page-header pr19 pl11">
-				<form class="form-horizontal" method="get">
-					<div class="row" style="padding-top:10px;">
-						<div class="col-md-2 col-lg-2 pr-0">
-							<div class="input-group input-group-sm mb-3">
-								<ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)] = "vehicle" name ="vehicle" placeholder="Search Vehicle">
-                      <ng-option *ngFor ="let item of vehicles | keyvalue" value = {{item.key}}>{{item.value}}</ng-option>
-                     </ng-select>
-							</div>
-						</div>
+  <div class="inner-wrapper">
+    <section role="main" class="content-body pt-0 pr-0 pl-1">
+      <header class="page-header pr19 pl11">
+        <form class="form-horizontal" method="get">
+          <div class="row" style="padding-top: 10px">
+            <div class="col-md-2 col-lg-2 pr-0">
+              <div class="input-group input-group-sm mb-3">
+                <ng-select
+                  data-plugin-selectTwo
+                  class="form-control populate"
+                  [(ngModel)]="vehicle"
+                  name="vehicle"
+                  placeholder="Search Vehicle"
+                >
+                  <ng-option
+                    *ngFor="let item of vehicles | keyvalue"
+                    value="{{ item.key }}"
+                    >{{ item.value }}</ng-option
+                  >
+                </ng-select>
+              </div>
+            </div>
 
-						<div class="col-md-1 col-lg-2 pr-0">
-							<ng-select data-plugin-selectTwo class="form-control populate" [(ngModel)] = "programName" name ="programName" placeholder="Select Service Task">
-													<ng-option *ngFor ="let item of serviceProgramList" value={{item.programID}}>{{item.programName}}</ng-option>
-													</ng-select>
+            <div class="col-md-1 col-lg-2 pr-0">
+              <ng-select
+                data-plugin-selectTwo
+                class="form-control populate"
+                [(ngModel)]="programName"
+                name="programName"
+                placeholder="Select Service Task"
+              >
+                <ng-option
+                  *ngFor="let item of serviceProgramList"
+                  value="{{ item.programID }}"
+                  >{{ item.programName }}</ng-option
+                >
+              </ng-select>
+            </div>
 
-											</div>
+            <div class="col-md-2 col-lg-2">
+              <button
+                type="submit"
+                class="btn btn-sm mr-3 btn-success line-height-18"
+                (click)="searchFilter()"
+              >
+                Search
+              </button>
+              <button
+                class="btn btn-sm btn-success line-height-18"
+                type="submit"
+                (click)="resetFilter()"
+              >
+                Reset
+              </button>
+            </div>
 
-						<div class="col-md-2 col-lg-2">
-							<button type="submit" class="btn btn-sm mr-3 btn-success line-height-18" (click)="searchFilter()">Search</button>
-							<button class="btn btn-sm btn-success line-height-18" type="submit" (click)="resetFilter()">Reset</button>
-						</div>
+            <div class="col-md-6 col-lg-6 text-right pr-1">
+              <div class="btn-group flex-wrap ml-4">
+                <button
+                  type="button"
+                  class="btn btn-success btn-xs dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-upload"></i> Export
+                  <span class="caret"></span>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  role="menu"
+                  x-placement="bottom-start"
+                  style="
+                    position: absolute;
+                    will-change: transform;
+                    top: 0px;
+                    left: 0px;
+                    transform: translate3d(0px, 38px, 0px);
+                  "
+                >
+                  <a
+                    class="dropdown-item text-1 cursorpoint"
+                    (click)="requiredCSV()"
+                    >CSV</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </header>
 
-						<div class="col-md-6 col-lg-6 text-right pr-1">
-
-							<div class="btn-group flex-wrap ml-4">
-								<button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fas fa-upload"></i> Export <span class="caret"></span></button>
-								<div class="dropdown-menu" role="menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-									<a class="dropdown-item text-1 cursorpoint"(click)="requiredCSV()">CSV</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</form>
-			</header>
-
-
-			<div class="row text-dark">
-				<div class="col">
-					<div class="card">
-						<div class="card-body bor-radius0px">
-							<!--Vehicle Div-->
-							<div id="ifta-report-distance-vehicle-div">
-								<section class="reports_div">
-							     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-									<table class="table reports_small_div">
-										<thead>
-											<tr class="back-color-gray">
-												<th>Vehicle</th>
-												<th>Service Program Name</th>
-												<th>Description</th>
-											</tr>
-										</thead>
-										<tbody>
-											 <tr *ngIf="serviceProgramList.length == 0" class="text-center">
-                                                                        <td colspan="3">{{dataMessage}}</td>
-                                                                    </tr>
-											<tr *ngFor = "let item of serviceProgramList">
-									
-												<td>
-													<span *ngFor = "let vehicle of item.vehicles">
-													{{vehicles[vehicle]}}
-													</span>
-													</td>
-												<td>{{item.programName}}</td>
-												<td>{{item.description}}</td>
-											</tr>
-										</tbody>
-									</table>
-								<div class="row mt-3 dtPaginate">
-                                                    <div class="col-lg-12 mt-3 text-center"
-                                                        *ngIf="lastItemSK !== 'end' && serviceProgramList.length !== 0">
-                                                        <button type="button" (click)="onScroll()"
-                                                            class="btn btn-success btn-sm text-light">Load
-                                                            More ...</button>
-                                                    </div>
-                                </div>
-							  </div>
-							</section>
-						   </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+      <div class="row text-dark p-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-body bor-radius0px">
+              <!--Vehicle Div-->
+              <div id="ifta-report-distance-vehicle-div">
+                <section class="reports_div">
+                  <div
+                    infiniteScroll
+                    [infiniteScrollDistance]="1"
+                    [infiniteScrollUpDistance]="1"
+                    [infiniteScrollThrottle]="5"
+                    (scrolled)="onScroll()"
+                  >
+                    <table
+                      class="
+                        table table-bordered table-striped
+                        reports_small_div
+                      "
+                    >
+                      <thead>
+                        <tr class="back-color-gray">
+                          <th>Vehicle</th>
+                          <th>Service Program Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngIf="serviceProgramList.length == 0"
+                          class="text-center"
+                        >
+                          <td colspan="3">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let item of serviceProgramList">
+                          <td>
+                            <span *ngFor="let vehicle of item.vehicles">
+                              {{ vehicles[vehicle] }}
+                            </span>
+                          </td>
+                          <td>{{ item.programName }}</td>
+                          <td>{{ item.description }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row mt-3 dtPaginate">
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastItemSK !== 'end' &&
+                          serviceProgramList.length !== 0
+                        "
+                      >
+                        <button
+                          type="button"
+                          (click)="onScroll()"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More ...
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
