@@ -12,8 +12,8 @@ export const environment = {
 
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
-  AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
-  SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
+  AccountServiceUrl: 'https://account-service.ap-south-1.fleethawks.com/',
+  SafetyServiceUrl: 'https://safety-service.ap-south-1.fleethawks.com/',
 
   temp: 'search',
   LoginUrl: 'users/login',
