@@ -144,7 +144,8 @@ export class BrokeragePdfComponent implements OnInit {
     var data = document.getElementById("print_brokerage");
     setTimeout(() => {
       html2pdf(data, {
-        margin: 0.15,
+        margin: [0.5, 0, 0.5, 0],
+        pagebreak: { mode: ["avoid-all"] },
         filename: `Carrier Confirmation (${this.brokerage.orderNo
           })${new Date().getTime()}.pdf`,
         image: { type: "jpeg", quality: 0.98 },
@@ -157,7 +158,7 @@ export class BrokeragePdfComponent implements OnInit {
           allowTaint: true,
           useCORS: true,
         },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
       });
     }, 0);
   }
