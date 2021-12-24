@@ -8,6 +8,7 @@ import { map } from "rxjs/operators";
 import { AccountService, ApiService, ListService } from "../../../../services";
 import Constants from "../../../fleet/constants";
 import { Location } from "@angular/common";
+declare var $: any;
 @Component({
   selector: "app-add-settlement",
   templateUrl: "./add-settlement.component.html",
@@ -156,6 +157,10 @@ export class AddSettlementComponent implements OnInit {
   allCarriers = [];
   allOwnerOperators = [];
   showFuel = "no";
+  ownerVehicles = [];
+  ownerVehicleID = null;
+  dummyTrips = [];
+  pendingInfo = false;
 
   constructor(
     private listService: ListService,
@@ -231,6 +236,18 @@ export class AddSettlementComponent implements OnInit {
               payCurr = paymentInfo.deliveryRateUnit;
             }
             this.settlementData.currency = payCurr;
+            if (
+              this.settlementData.paymentInfo.lMiles === 0 &&
+              this.settlementData.paymentInfo.eMiles === 0 &&
+              this.settlementData.paymentInfo.pRate === 0 &&
+              this.settlementData.paymentInfo.dRate === 0
+            ) {
+              this.pendingInfo = true;
+            }
+
+            if (!this.settlementData.currency || this.pendingInfo) {
+              this.showPaymentPopup();
+            }
           }
         });
     }
@@ -264,9 +281,11 @@ export class AddSettlementComponent implements OnInit {
       .subscribe((result: any) => {
         this.searchDisabled = false;
         this.trips = result.Items;
-        if (result.Items.length === 0) {
-          this.tripMsg = Constants.NO_RECORDS_FOUND;
-        }
+        this.dummyTrips = result.Items;
+        this.tripMsg = Constants.NO_RECORDS_FOUND;
+        // if (result.Items.length === 0) {
+        //   this.tripMsg = Constants.NO_RECORDS_FOUND;
+        // }
         let entStat = `${this.settlementData.entityId}:false`;
 
         for (let i = 0; i < this.trips.length; i++) {
@@ -464,6 +483,7 @@ export class AddSettlementComponent implements OnInit {
             });
           }
         }
+        this.filterByUnit();
         let stlObj = result.Items.reduce((a: any, b: any) => {
           return (
             (a[b["tripID"]] =
@@ -1307,7 +1327,7 @@ export class AddSettlementComponent implements OnInit {
         if (this.settlementData.type === "owner_operator") {
           for (let i = 0; i < this.settlementData.miles.drivers.length; i++) {
             const element = this.settlementData.miles.drivers[i];
-            this.operatorDriversList.push(element.driverId);
+            this.operatorDriversList.push(element.driverID);
           }
         }
 
@@ -1336,12 +1356,12 @@ export class AddSettlementComponent implements OnInit {
       element.carrID = [];
       let pickCount = 1;
       let dropCount = 1;
+      element.entityMiles = 0;
       element.selected = true;
       element.newSplitArr = [];
       element.calSplitArr = [];
       element.subTripCount = 0;
       this.selectedTrips.push(element);
-
       for (let j = 0; j < element.tripPlanning.length; j++) {
         const plan = element.tripPlanning[j];
 
@@ -1354,30 +1374,41 @@ export class AddSettlementComponent implements OnInit {
             this.settlementData.entityId === plan.coDriverID ||
             this.settlementData.entityId === plan.carrierID
           ) {
-            if (plan.type == "Pickup") {
-              element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-              pickCount++;
-            }
+            element.pickupLocation += `${pickCount}) <strong>${
+              plan.type
+            }</strong>: ${plan.location} <br>
+            <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+              plan.type === "Pickup" ? "Pickup" : "Drop"
+            } Time</u>: ${
+              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+            } <br>`;
+            pickCount++;
+            element.entityMiles += Number(plan.miles);
+            // if (plan.type == "Pickup") {
+            //   element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
+            //   pickCount++;
+            // }
 
-            if (plan.type == "Delivery") {
-              element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-              dropCount++;
-            }
+            // if (plan.type == "Delivery") {
+            //   element.dropLocation += `${dropCount}) ${plan.location} <br>`;
+            //   dropCount++;
+            // }
           }
         } else if (this.settlementData.type === "owner_operator") {
           if (
             this.operatorDriversList.includes(plan.driverID) ||
             this.operatorDriversList.includes(plan.coDriverID)
           ) {
-            if (plan.type == "Pickup") {
-              element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-              pickCount++;
-            }
-
-            if (plan.type == "Delivery") {
-              element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-              dropCount++;
-            }
+            element.pickupLocation += `${pickCount}) <strong>${
+              plan.type
+            }</strong>: ${plan.location} <br>
+              <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+              plan.type === "Pickup" ? "Pickup" : "Drop"
+            } Time</u>: ${
+              plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+            } <br>`;
+            pickCount++;
+            element.entityMiles += Number(plan.miles);
           }
         }
 
@@ -1629,6 +1660,7 @@ export class AddSettlementComponent implements OnInit {
     element.carrID = [];
     let pickCount = 1;
     let dropCount = 1;
+    element.entityMiles = 0;
 
     for (let j = 0; j < element.tripPlanning.length; j++) {
       const plan = element.tripPlanning[j];
@@ -1642,30 +1674,32 @@ export class AddSettlementComponent implements OnInit {
           this.settlementData.entityId === plan.coDriverID ||
           this.settlementData.entityId === plan.carrierID
         ) {
-          if (plan.type == "Pickup") {
-            element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-            pickCount++;
-          }
-
-          if (plan.type == "Delivery") {
-            element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-            dropCount++;
-          }
+          element.pickupLocation += `${pickCount}) <strong>${
+            plan.type
+          }</strong>: ${plan.location} <br>
+          <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+            plan.type === "Pickup" ? "Pickup" : "Drop"
+          } Time</u>: ${
+            plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+          } <br>`;
+          pickCount++;
+          element.entityMiles += Number(plan.miles);
         }
       } else if (this.settlementData.type === "owner_operator") {
         if (
           this.operatorDriversList.includes(plan.driverID) ||
           this.operatorDriversList.includes(plan.coDriverID)
         ) {
-          if (plan.type == "Pickup") {
-            element.pickupLocation += `${pickCount}) ${plan.location} <br>`;
-            pickCount++;
-          }
-
-          if (plan.type == "Delivery") {
-            element.dropLocation += `${dropCount}) ${plan.location} <br>`;
-            dropCount++;
-          }
+          element.pickupLocation += `${pickCount}) <strong>${
+            plan.type
+          }</strong>: ${plan.location} <br>
+          <u>Date</u>: ${moment(plan.date).format("YYYY/MM/DD")}, <u>${
+            plan.type === "Pickup" ? "Pickup" : "Drop"
+          } Time</u>: ${
+            plan.type === "Pickup" ? plan.pickupTime : plan.dropTime
+          } <br>`;
+          pickCount++;
+          element.entityMiles += Number(plan.miles);
         }
       }
 
@@ -1736,7 +1770,6 @@ export class AddSettlementComponent implements OnInit {
       }
       this.trips.push(selectedTrip);
     }
-
     this.resetCal();
     this.paymentCalculation(this.settledTrips, "settled");
   }
@@ -1820,6 +1853,15 @@ export class AddSettlementComponent implements OnInit {
                   ? paymentInfo.dr
                   : 0;
 
+                if (
+                  this.settlementData.paymentInfo.lMiles === 0 &&
+                  this.settlementData.paymentInfo.eMiles === 0 &&
+                  this.settlementData.paymentInfo.pRate === 0 &&
+                  this.settlementData.paymentInfo.dRate
+                ) {
+                  this.pendingInfo = true;
+                }
+
                 let payCurr = "CAD";
                 if (paymentInfo.pType === "Pay Per Mile") {
                   payCurr = paymentInfo.lmCur;
@@ -1829,6 +1871,9 @@ export class AddSettlementComponent implements OnInit {
                   payCurr = paymentInfo.drCur;
                 }
                 this.settlementData.currency = payCurr;
+                if (!this.settlementData.currency || this.pendingInfo) {
+                  this.showPaymentPopup();
+                }
               }
             } else if (this.settlementData.type === "owner_operator") {
               if (curKey[0] === "opData") {
@@ -1858,6 +1903,17 @@ export class AddSettlementComponent implements OnInit {
                   payCurr = paymentInfo.drCur;
                 }
                 this.settlementData.currency = payCurr;
+                if (
+                  this.settlementData.paymentInfo.lMiles === 0 &&
+                  this.settlementData.paymentInfo.eMiles === 0 &&
+                  this.settlementData.paymentInfo.pRate === 0 &&
+                  this.settlementData.paymentInfo.dRate === 0
+                ) {
+                  this.pendingInfo = true;
+                }
+                if (!this.settlementData.currency || this.pendingInfo) {
+                  this.showPaymentPopup();
+                }
               }
             }
           });
@@ -1874,6 +1930,10 @@ export class AddSettlementComponent implements OnInit {
         if (result.Items.length === 0) {
           this.tripMsg = Constants.NO_RECORDS_FOUND;
         }
+        if (result.vehicles) {
+          this.ownerVehicles = result.vehicles;
+        }
+
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           if (!this.settlementID) {
@@ -2129,7 +2189,10 @@ export class AddSettlementComponent implements OnInit {
         elem.convert = false;
         elem.convertRate = 0;
         elem.currency = this.settlementData.currency;
-        if (this.settlementData.currency !== elem.billingCurrency) {
+        if (
+          this.settlementData.currency !== elem.billingCurrency &&
+          this.settlementData.currency !== undefined
+        ) {
           elem.convert = true;
           let convertedValue: any = await this.currencyConverter(
             elem.billingCurrency,
@@ -2435,5 +2498,32 @@ export class AddSettlementComponent implements OnInit {
 
   checkFuelVisibility(event) {
     this.showFuel = event.target.value;
+  }
+
+  filterByUnit() {
+    if (this.ownerVehicleID.length > 0 && this.dummyTrips.length > 0) {
+      const tripArr = [];
+      for (const element of this.dummyTrips) {
+        let flag = false;
+        if (element.vehicleIDs && element.vehicleIDs.length > 0) {
+          element.vehicleIDs.map((v) => {
+            if (this.ownerVehicleID.includes(v)) {
+              flag = true;
+            }
+          });
+        }
+
+        if (flag) {
+          tripArr.push(element);
+        }
+      }
+      this.trips = tripArr;
+    } else {
+      this.trips = this.dummyTrips;
+    }
+  }
+
+  showPaymentPopup() {
+    $("#infoModal").modal("show");
   }
 }
