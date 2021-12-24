@@ -69,11 +69,9 @@ export class ActivityComponent implements OnInit {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
                 this.allData = this.allData.concat(result.Items)
-
                 const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
                     "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
                 const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "YT"]
-
                 for (let veh of this.allData) {
                     let dataa = veh
                     veh.miles = 0
@@ -82,7 +80,6 @@ export class ActivityComponent implements OnInit {
                     }
                 }
                 this.allData = result.Items;
-                console.log('allData==-', this.allData)
                 for (let data of this.allData) {
                     console.log(' iftaMiles', data.iftaMiles)
                     data.canMiles = 0;
@@ -121,36 +118,24 @@ export class ActivityComponent implements OnInit {
                                         }
                                     })
                                     data.provinceData.push(newObj);
-                                    console.log(data.provinceData)
                                 }
                             })
                         })
                     })
-
-
                     for (let item of data.provinceData) {
                         data.finalData = item
-                        console.log('data.finalData', data.finalData,)
-
                         let provinceDataa = item.provinces;
                         item.provinces.map((v) => {
                             if (usProvArr.includes(v.StCntry)) {
-                                console.log('v.StCntry', v.StCntry);
-                                console.log('exx', v);
                                 data.usMiles += Number(v.Total)
                                 data.usProvince = v.StCntry
                             }
                             else if (canArr.includes(v.StCntry)) {
-                                console.log('v.StCntry', v.StCntry);
-                                console.log('exx', v);
                                 data.canMiles += Number(v.Total)
                                 data.canProvince = v.StCntry
                             }
                         })
                     }
-                    console.log('  data.usMiles ', data.usMiles);
-                    console.log('    data.canMiles ', data.canMiles);
-                    console.log('data.provinceData', data);
                 }
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
