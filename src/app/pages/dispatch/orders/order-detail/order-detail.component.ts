@@ -94,31 +94,6 @@ export class OrderDetailComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
-  sampleArr = [
-    {
-      displayName: "pexels-tony-990113.jpg",
-      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
-      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
-    },
-    {
-      displayName: "pexels-tony-990113.jpg",
-      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
-      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
-
-    },
-    {
-      displayName: "pexels-tony-990113.jpg",
-      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
-      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
-
-    },
-    {
-      displayName: "pexels-tony-990113.jpg",
-      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
-      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
-
-    }
-  ]
 
   pageVariable = 1;
 
