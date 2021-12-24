@@ -2001,13 +2001,25 @@
                           >Attach Document
                         </label>
 
-                        <input
+                        <!-- <input
                           class="form-control p-0"
                           name="document.uploadedDocs{{ i }}"
                           (change)="selectDocuments($event, i)"
                           type="file"
                           multiple
-                        />
+                        /> -->
+
+                        <span
+                          class="btn btn-default btn-file btn-xs w100 text-left"
+                        >
+                          <input
+                            class="w100"
+                            type="file"
+                            multiple
+                            name="document.uploadedDocs{{ i }}"
+                            (change)="selectDocuments($event, i)"
+                          />
+                        </span>
                       </div>
                       <div class="col-lg-10 mt-2" *ngIf="assetsDocs[i]">
                         <div class="vehicle-common-box p-3">

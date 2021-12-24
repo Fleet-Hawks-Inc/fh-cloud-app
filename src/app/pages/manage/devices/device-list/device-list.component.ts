@@ -86,6 +86,7 @@ export class DeviceListComponent implements OnInit {
 
   public deactivateDevice(devicesType: any, deviceID: string, activate: boolean) {
     const confirmationText = activate == true ? 'activate' : 'deactivate';
+    const status = activate == true ? 'activated' : 'deactivated';
     if (confirm(`Are you sure you want to ${confirmationText}?`) === true) {
       try {
         let body: any = {
@@ -98,8 +99,8 @@ export class DeviceListComponent implements OnInit {
             this.devices = [];
             this.next = 'null';
             this.fetchDevices();
-            this.toastr.success("Device De-activated Successfully")
-          }
+            this.toastr.success(`Device ${status} Successfully`)
+            }
         })
       }
       catch (error) {
