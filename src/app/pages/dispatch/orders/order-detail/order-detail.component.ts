@@ -94,6 +94,32 @@ export class OrderDetailComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
+  sampleArr = [
+    {
+      displayName: "pexels-tony-990113.jpg",
+      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
+      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
+    },
+    {
+      displayName: "pexels-tony-990113.jpg",
+      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
+      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
+
+    },
+    {
+      displayName: "pexels-tony-990113.jpg",
+      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
+      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
+
+    },
+    {
+      displayName: "pexels-tony-990113.jpg",
+      storedName: "9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg",
+      urlPath: "https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com/1y4EaQ9AaUPC1XmvollNF7tMh5y/9906a980-6498-11ec-a0c5-5dd8fe54f815.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARUNMEEHUVXGWAIEB%2F20211224%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Date=20211224T091445Z&X-Amz-Expires=3600&X-Amz-Signature=94bc417d979b23f4f2c0c158c4c474243ac3b4671c222af5660fa8e1a98407a8&X-Amz-SignedHeaders=host",
+
+    }
+  ]
+
   pageVariable = 1;
 
   carrierLogo: string;
@@ -222,6 +248,7 @@ export class OrderDetailComponent implements OnInit {
   };
 
   emailDocs = [];
+  invDocs = [];
   isEmail = false;
 
   slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
@@ -473,9 +500,11 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
-            docPath: `${x.storedName}`,
+            imgPath: `${x.urlPath}`,
+            docPath: `${x.urlPath}`,
+            displayName: x.displayName,
             name: x.storedName,
-            ext: x.storedName.split(".")[1],
+            ext: x.storedName.split(".")[1]
           }));
         }
 
@@ -494,7 +523,7 @@ export class OrderDetailComponent implements OnInit {
                 docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
-                ext: x.storedName.split(".")[1],
+                ext: x.storedName.split(".")[1]
               };
               this.docs.push(obj);
             } else {
@@ -503,14 +532,14 @@ export class OrderDetailComponent implements OnInit {
                 docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
-                ext: x.storedName.split(".")[1],
+                ext: x.storedName.split(".")[1]
               };
               this.docs.push(obj);
             }
           });
         }
 
-        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+        //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
       (err) => { }
@@ -767,7 +796,7 @@ export class OrderDetailComponent implements OnInit {
   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
+  async selectDocuments(event) {
     let files = [];
     this.uploadedDocs = [];
     files = [...event.target.files];
@@ -801,42 +830,40 @@ export class OrderDetailComponent implements OnInit {
         formData.append("uploadedDocs", this.uploadedDocs[i]);
       }
 
-      this.apiService
-        .postData(`orders/uploadDocs/${this.orderID}`, formData, true)
-        .subscribe((result: any) => {
-          this.docs = [];
-          this.uploadedDocs = [];
-          if (result.length > 0) {
-            result.forEach((x: any) => {
-              let obj: any = {};
-              if (
-                x.storedName.split(".")[1] === "jpg" ||
-                x.storedName.split(".")[1] === "png" ||
-                x.storedName.split(".")[1] === "jpeg"
-              ) {
-                obj = {
-                  imgPath: `${x.storedName}`,
-                  docPath: `${x.storedName}`,
-                  displayName: x.displayName,
-                  name: x.storedName,
-                  ext: x.storedName.split(".")[1],
-                };
-              } else {
-                obj = {
-                  imgPath: "assets/img/icon-pdf.png",
-                  docPath: `${x.storedName}`,
-                  displayName: x.displayName,
-                  name: x.storedName,
-                  ext: x.storedName.split(".")[1],
-                };
-              }
-              this.docs.push(obj);
-            });
+      let result: any = await this.apiService
+        .postData(`orders/uploadDocs/${this.orderID}`, formData, true).toPromise()
+      this.invDocs = [];
+      this.uploadedDocs = [];
+      if (result.length > 0) {
+        result.forEach((x: any) => {
+          let obj: any = {};
+          if (
+            x.storedName.split(".")[1] === "jpg" ||
+            x.storedName.split(".")[1] === "png" ||
+            x.storedName.split(".")[1] === "jpeg"
+          ) {
+            obj = {
+              imgPath: `${x.urlPath}`,
+              docPath: `${x.urlPath}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
+          } else {
+            obj = {
+              imgPath: "assets/img/icon-pdf.png",
+              docPath: `${x.urlPath}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
           }
-          this.toastr.success("BOL/POD uploaded successfully");
-          this.uploadBol.nativeElement.value = "";
-          this.fetchOrder();
+          this.invDocs.push(obj);
         });
+      }
+      this.toastr.success("BOL/POD uploaded successfully");
+      this.uploadBol.nativeElement.value = "";
+      await this.fetchOrder();
     }
   }
 
@@ -901,6 +928,36 @@ export class OrderDetailComponent implements OnInit {
         }
         if (this.invoiceData.vehicles != undefined) {
           this.vehicles = this.invoiceData.vehicles;
+        }
+        if (
+          result[0].uploadedDocs !== undefined &&
+          result[0].uploadedDocs.length > 0
+        ) {
+          result[0].uploadedDocs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.invDocs.push(obj);
+          });
         }
         this.showBtns = true;
       });
