@@ -16,8 +16,10 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CustomerCollectionComponent implements OnInit {
   @ViewChild('myTable') table: any;
-  @ViewChild("previewReportModal", { static: true })
-  previewReportModal: TemplateRef<any>;
+  @ViewChild("previewAllModal",{static:true}) previewAllModal:TemplateRef<any>;
+  @ViewChild("previewReportModal", { static: true }) previewReportModal:TemplateRef<any>;
+//  previewReportModal: TemplateRef<any>;
+  
   constructor(private apiService: ApiService, private el: ElementRef, private toastr: ToastrService,
     private modalService: NgbModal,) { }
   public customerCollection = []
@@ -25,6 +27,8 @@ export class CustomerCollectionComponent implements OnInit {
   ColumnMode = ColumnMode;
   dataMessage = "";
   loaded = false;
+  exportLoading=false
+  allData=[];
   readonly rowHeight = 70;
   readonly headerHeight = 70;
   expanded: any = {};
@@ -34,6 +38,7 @@ export class CustomerCollectionComponent implements OnInit {
   pageLimit = 10
   customer = ""
   previewRef: any;
+  preview:any;
   customerFiltr = {
     startDate: '',
     endDate: ''
@@ -165,23 +170,51 @@ setCustomer(cName){
       ngbModalOptions
     )
   }
-  async generatePDF() {
-    let data = document.getElementById("print_wrap");
+  async allCustomerPDF(){
+    this.exportLoading=true
+    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    this.allData=result.Items
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "preview"
+    };
+    this.preview = this.modalService.open(this.previewAllModal,
+      ngbModalOptions
+    )
+    let data=document.getElementById("print_all_wrap")
     html2pdf(data, {
-      margin: 0.15,
-      filename: "customerReport.pdf",
+      margin: 0,
+     pagebreak: { mode: "avoid-all",after:".customerData" },
+      filename: "allCustomerReport.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2Canvas: {
         dpi: 300,
         letterRendering: true,
-        allowTaint: true,
-        useCORS: true
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
+    })
+    this.exportLoading=false
+  }
+  async generatePDF() {
+    let data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: [0.5, 0.5,0.5,0.5],
+      pagebreak: { mode: ["avoid-all"] },
+      filename: "customerReport.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2Canvas: {
+        dpi: 200,
+
+        letterRendering: true,
+        loging:true,
+        scale:2
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
     })
     $("#previewReportModal").modal("hide");
   }
   async generateCSV() {
+    this.exportLoading=true
     let dataObject = []
     let ordersData = []
     let csvArray = []
@@ -257,7 +290,7 @@ setCustomer(cName){
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
+this.exportLoading=false
     }
 
   }
