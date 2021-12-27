@@ -525,11 +525,13 @@
                                                                         trp.tripNo
                                                                         }}</a>
                                                                 </td>
-                                                                <td>{{
+                                                                <td>
+                                                                    {{
                                                                     trp.dateCreated
                                                                     |
                                                                     date:"yyyy/MM/dd"
-                                                                    }}</td>
+                                                                    }}
+                                                                </td>
                                                                 <td>
                                                                     <span *ngFor="let
                                                                         ord of
@@ -606,9 +608,7 @@
                                                                         <span *ngIf="c<trp.carrID.length-1">,<br></span>
                                                                     </span>
                                                                 </td>
-                                                                <!-- <td>
-                                                                    yes
-                                                                </td> -->
+                                                                
                                                                 <td><span class="badge
                                                                         badge-dark
                                                                         p-1">DELIVERED</span></td>
