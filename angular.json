@@ -76,7 +76,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "aot": true,
+              "aot": false,
               "optimization": {
                 "scripts": true,
                 "styles": {
@@ -89,7 +89,7 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",

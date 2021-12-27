@@ -50,6 +50,8 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/customRouteReuseService';
 import { LocationShareComponent } from './entry/location-share/location-share.component';
 import { GlobalErrorHandler } from './interceptors/GlobalErrorHandler';
+import { SubscriptionOnboardComponent } from './entry/subscription-onboard/subscription-onboard.component';
+
 
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
@@ -71,7 +73,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     UnsavedChangesComponent,
     AddAccountComponent,
     ForgotPasswordComponent,
-    LocationShareComponent
+    LocationShareComponent,
+    SubscriptionOnboardComponent
   ],
   imports: [
     CommonModule,
