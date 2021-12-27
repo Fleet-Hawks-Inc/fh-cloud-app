@@ -93,16 +93,16 @@ export class ProvinceMilesComponent implements OnInit {
               })
             })
           })
-          const usProvArr = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL", "GA","HI","ID","IL","IN", "IA","KS","	KY","	LA","ME", "MD","MA","MI","MN",
-          "MS","MO","MT","NE","NV","NH","	NJ","	NM","	NY", "NC", "ND", "OH","OK","OR","PA","PR","	RI","SC","SD","	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-          const canArr = ["AB", "BC", "MB", "NB", "NL", "NF","NT", "NS", "NU", "ON", "PE","PQ", "QC", "SK", "Canada", "YT"]
+          const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
+            "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
+          const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "Canada", "YT"]
           for (let item of data.provinceData) {
             data.finalData = item
-           
+
             let provinceDataa = item.provinces;
             item.provinces.map((v) => {
               if (usProvArr.includes(v.StCntry)) {
-          
+
                 data.usMiles += Number(v.Total)
               }
               else if (canArr.includes(v.StCntry)) {
@@ -208,16 +208,16 @@ export class ProvinceMilesComponent implements OnInit {
             })
           })
         })
-        const usProvArr = ["AL","AK","AZ","AR","CA","CO","CT","DE","DC","FL", "GA","HI","ID","IL","IN", "IA","KS","	KY","	LA","ME", "MD","MA","MI","MN",
-        "MS","MO","MT","NE","NV","NH","	NJ","	NM","	NY", "NC", "ND", "OH","OK","OR","PA","PR","	RI","SC","SD","	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
-        const canArr = ["AB", "BC", "MB", "NB", "NL", "NF","NT", "NS", "NU", "ON", "PE","PQ", "QC", "SK", "Canada", "YT"]
+        const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
+          "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
+        const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "Canada", "YT"]
         for (let item of data.provinceData) {
           data.finalData = item
-         
+
           let provinceDataa = item.provinces;
           item.provinces.map((v) => {
             if (usProvArr.includes(v.StCntry)) {
-        
+
               data.usMiles += Number(v.Total)
             }
             else if (canArr.includes(v.StCntry)) {
@@ -235,7 +235,7 @@ export class ProvinceMilesComponent implements OnInit {
   }
 
   csv() {
-    if (this.stateCode ) {
+    if (this.stateCode) {
       this.exportData = this.allData
       this.generateCSV();
     }
@@ -248,31 +248,35 @@ export class ProvinceMilesComponent implements OnInit {
       let dataObject = []
       let csvArray = []
       this.exportData.forEach(element => {
-        let location = ''
+        let location = '';
         let date = ''
         for (let i = 0; i < element.tripPlanning.length; i++) {
           const element2 = element.tripPlanning[i];
-          date += element2.type + " : " + element2.date
-          if (i < element.tripPlanning.length - 1) {
-            date += " & ";
-          }
+          date += `"${element2.type} : ${element2.date}\n\"`;
+          // if (i < element.tripPlanning.length - 1) {
+          //   date += " & ";
+          // }
           element2.location = element2.location.replace(/,/g, ' ');
-          location += element2.type + ' : ' + element2.location
-          if (i < element.tripPlanning.length - 1) {
-            location += " & ";
-          }
+          location += '"' + element2.type + ':' + element2.location + '"\n' + '\t';
+          console.log(location)
+          // if (i < element.tripPlanning.length - 1) {
+          //   location += " & ";
+          // }
         }
         let stateMiles = ''
-        for(let data of element.provinceData){
-       
-          for(let j =0; j < data.provinces.length; j++){
+        for (let data of element.provinceData) {
+
+          for (let j = 0; j < data.provinces.length; j++) {
             const element3 = data.provinces[j];
-            stateMiles += element3.StCntry + " : " + element3.Total
-            if (j < data.provinces.length - 1) {
-              stateMiles += " & ";
-            }
+            stateMiles += `"${element3.StCntry} : ${element3.Total}\n\"`
+            // if (j < data.provinces.length - 1) {
+            //   stateMiles += " & ";
+            // }
           }
         }
+        let dummyText = '"avatarImage\n avatarName"\t date\t time\t text';
+        // location = location.replace(/\s+/g, ' ').trim();
+        //  console.log(location)
         let obj = {}
         obj["Vehicle"] = element.vehicle ? element.vehicle.replace(/, /g, ' &') : '';
         obj["Trip#"] = element.tripNo;
