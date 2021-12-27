@@ -938,38 +938,35 @@ export class AddSettlementComponent implements OnInit {
           }
         }
         // this.oprDriverPaymentCalc(paymentInfor, oprElement, driverDeliveryCount);
-        paymentInfor.driverID = oprElement.driverID;
-        // this.settlementData.paymentInfo.drivers.push(paymentInfor);
-        if (paymentInfor.paymentType === "Pay Per Mile") {
-          paymentInfor.loadedMiles = paymentInfor.loadedMiles
-            ? paymentInfor.loadedMiles
-            : 0;
-          paymentInfor.emptyMiles = paymentInfor.emptyMiles
-            ? paymentInfor.emptyMiles
-            : 0;
-          paymentInfor.rate = paymentInfor.rate ? paymentInfor.rate : 0;
-          paymentInfor.deliveryRate = paymentInfor.deliveryRate
-            ? paymentInfor.deliveryRate
-            : 0;
-          let loadedMilesPayment =
-            oprElement.loaded * Number(paymentInfor.loadedMiles);
-          let emptyMilesPayment =
-            oprElement.empty * Number(paymentInfor.emptyMiles);
-          this.drvrPay = loadedMilesPayment + emptyMilesPayment;
-        } else if (paymentInfor.paymentType === "Pay Per Hour") {
-          this.settlementData.paymentTotal =
-            oprElement.hours * Number(paymentInfor.rate);
-        } else if (paymentInfor.paymentType === "Pay Per Delivery") {
-          this.settlementData.paymentTotal =
-            driverDeliveryCount * Number(paymentInfor.deliveryRate);
-        }
-        oprElement.payment += this.drvrPay;
+        // paymentInfor.driverID = oprElement.driverID;
+        // // this.settlementData.paymentInfo.drivers.push(paymentInfor);
+        // if (paymentInfor.paymentType === "Pay Per Mile") {
+        //   paymentInfor.loadedMiles = paymentInfor.loadedMiles
+        //     ? paymentInfor.loadedMiles
+        //     : 0;
+        //   paymentInfor.emptyMiles = paymentInfor.emptyMiles
+        //     ? paymentInfor.emptyMiles
+        //     : 0;
+        //   paymentInfor.rate = paymentInfor.rate ? paymentInfor.rate : 0;
+        //   paymentInfor.deliveryRate = paymentInfor.deliveryRate
+        //     ? paymentInfor.deliveryRate
+        //     : 0;
+        //   let loadedMilesPayment =
+        //     oprElement.loaded * Number(paymentInfor.loadedMiles);
+        //   let emptyMilesPayment =
+        //     oprElement.empty * Number(paymentInfor.emptyMiles);
+        //   this.drvrPay = loadedMilesPayment + emptyMilesPayment;
+        // } else if (paymentInfor.paymentType === "Pay Per Hour") {
+        //   this.settlementData.paymentTotal =
+        //     oprElement.hours * Number(paymentInfor.rate);
+        // } else if (paymentInfor.paymentType === "Pay Per Delivery") {
+        //   this.settlementData.paymentTotal =
+        //     driverDeliveryCount * Number(paymentInfor.deliveryRate);
+        // }
+        // oprElement.payment += this.drvrPay;
       }
-
       // final payment will be according to owner operator values
-      if (this.contactDetail) {
-        this.oprFinalCal();
-      }
+      this.oprFinalCal();
     }
   }
 
@@ -1250,6 +1247,10 @@ export class AddSettlementComponent implements OnInit {
       this.toaster.error("Total should not be zero.");
       return false;
     }
+    if (this.settlementData.tripIds.length === 0) {
+      this.toaster.error("Please select settlement");
+      return false;
+    }
     if (this.settlementData.type === "owner_operator") {
       this.settlementData.miles.drivers.map((v) => {
         delete v.paymentDetails;
@@ -1346,10 +1347,10 @@ export class AddSettlementComponent implements OnInit {
     let result: any = await this.apiService
       .getData(`trips/driver/settled?entities=${tripIds}`)
       .toPromise();
-    this.settledTrips = result;
+    // this.settledTrips = result;
 
-    for (let i = 0; i < this.settledTrips.length; i++) {
-      const element = this.settledTrips[i];
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
       let entStat = `${this.settlementData.entityId}:true`;
       element.pickupLocation = "";
       element.dropLocation = "";
@@ -1361,9 +1362,37 @@ export class AddSettlementComponent implements OnInit {
       element.newSplitArr = [];
       element.calSplitArr = [];
       element.subTripCount = 0;
+      element.splitArr = [];
+      element.entityDriver = [];
+      element.entityVehicle = [];
+      element.entityCarrier = [];
+      element.entityAsset = [];
       this.selectedTrips.push(element);
       for (let j = 0; j < element.tripPlanning.length; j++) {
         const plan = element.tripPlanning[j];
+
+        if (!element.entityDriver.includes(plan.driverID)) {
+          element.entityDriver.push(plan.driverID);
+        }
+
+        if (!element.entityDriver.includes(plan.coDriverID)) {
+          element.entityDriver.push(plan.coDriverID);
+        }
+
+        if (!element.entityVehicle.includes(plan.vehicleID)) {
+          element.entityVehicle.push(plan.vehicleID);
+        }
+
+        if (!element.entityCarrier.includes(plan.carrierID)) {
+          element.entityCarrier.push(plan.carrierID);
+        }
+
+        for (let f = 0; f < plan.assetID.length; f++) {
+          const elemAsset = plan.assetID[f];
+          if (!element.entityAsset.includes(elemAsset)) {
+            element.entityAsset.push(elemAsset);
+          }
+        }
 
         if (
           this.settlementData.type === "driver" ||
@@ -1542,7 +1571,8 @@ export class AddSettlementComponent implements OnInit {
         }
       });
     }
-    this.dummySettledTrips = this.settledTrips;
+    this.settledTrips = result;
+    this.dummySettledTrips = result;
     let stlObj = result.reduce((a: any, b: any) => {
       return (
         (a[b["tripID"]] =
@@ -1552,67 +1582,15 @@ export class AddSettlementComponent implements OnInit {
     }, {});
     this.tripsObject = _.merge(this.tripsObject, stlObj);
     await this.fetchFuelExpenses();
-    // await this.fetchTripExpenses();
   }
-
-  // async fetchTripExpenses() {
-  //   let tripIds = encodeURIComponent(
-  //     JSON.stringify(this.settlementData.tripIds)
-  //   );
-
-  //   if (this.settlementData.tripIds.length > 0) {
-  //     let result = await this.accountService
-  //       .getData(
-  //         `expense/trip-expenses?trips=${tripIds}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
-  //       )
-  //       .toPromise();
-  //     this.finalTripExpenses = [];
-  //     for (const exp of result) {
-  //       const expobj = {
-  //         tripID: exp.tripID,
-  //         categoryID: exp.categoryID,
-  //         notes: exp.notes,
-  //         amount: exp.amount,
-  //         currency: exp.currency,
-  //         add: false,
-  //         deduction: false,
-  //         addDisabled: false,
-  //         subDisabled: false,
-  //         txnDate: exp.txnDate,
-  //         expenseID: exp.expenseID,
-  //       };
-  //       this.finalTripExpenses.push(expobj);
-  //     }
-  //   } else {
-  //     this.finalTripExpenses = [];
-  //   }
-  // }
-
-  // filterExpenses(tripID: any) {
-  //   this.finalTripExpenses = this.tripExpenses.filter((e: any) => {
-  //     return e.tripID === tripID;
-  //   });
-  // }
-
-  // removeExpenses(tripID: any) {
-  //   let remTripInd = [];
-  //   this.finalTripExpenses.map((v) => {
-  //     if (v.tripID === tripID) {
-  //       let ind = this.finalTripExpenses.indexOf(v);
-  //       remTripInd.push(ind);
-  //     }
-  //   });
-
-  //   for (var i = remTripInd.length - 1; i >= 0; i--) {
-  //     this.finalTripExpenses.splice(remTripInd[i], 1);
-  //   }
-  // }
 
   remStldTrip(tripID: string, splitID: string, index: number, splitIndex: any) {
     let selectedTrip = this.dummySettledTrips[index];
 
     if (splitID !== "" && splitID !== undefined) {
       this.settledTrips[index].calSplitArr.splice(splitIndex, 1);
+    } else {
+      this.settledTrips.splice(index, 1);
     }
 
     if (!this.delTripIds.includes(tripID)) {
@@ -1621,7 +1599,6 @@ export class AddSettlementComponent implements OnInit {
         tripId: tripID,
         split: [],
       };
-
       if (splitID !== "" && splitID !== undefined) {
         obj.split.push(splitID);
         this.settledTrips[index].newSplitArr.splice(splitIndex, 1);
@@ -1630,7 +1607,10 @@ export class AddSettlementComponent implements OnInit {
         }
         this.formatRemovedTrip(selectedTrip, splitID, false);
       } else {
+        selectedTrip.selected = false;
         this.trips.push(selectedTrip);
+        this.selectedTrip("");
+        // this.paymentCalculation(this.settledTrips, "settled");
       }
       this.deletedSellmnts.push(obj);
     } else {
@@ -1779,6 +1759,12 @@ export class AddSettlementComponent implements OnInit {
       this.toaster.error("Total Payment should not be zero.");
       return false;
     }
+
+    if (this.settlementData.tripIds.length === 0) {
+      this.toaster.error("Please select settlement");
+      return false;
+    }
+    // if(this.settlementData.tr)
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
@@ -1793,6 +1779,7 @@ export class AddSettlementComponent implements OnInit {
     this.settlementData["deletedFuelEnteries"] = this.deletedFuelEnteries;
     this.settlementData["delExpEntries"] = this.deletedExpEntries;
     this.settlementData["delStl"] = this.deletedSellmnts;
+
     this.accountService
       .putData(`settlement/update/${this.settlementID}`, this.settlementData)
       .subscribe({
@@ -2163,51 +2150,53 @@ export class AddSettlementComponent implements OnInit {
       (this.settlementData.type === "driver" ||
         this.settlementData.type === "owner_operator")
     ) {
-      let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
-      let result = await this.apiService
-        .getData(
-          `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
-        )
-        .toPromise();
-      this.fuelEnteries = result;
-      this.fuelEnteries.map(async (elem) => {
-        elem.fuelID = elem.data.fuelID;
-        elem.fuelDate = elem.data.date;
-        elem.unitNumber = this.vehicles[elem.unitID];
-        elem.cityName = elem.data.city;
-        elem.locationCountry = elem.data.country;
-        elem.fuelCardNumber = elem.data.cardNo;
-        elem.unitOfMeasure = elem.data.uom;
-        elem.subTotal = elem.data.amt;
-        elem.total = elem.data.amt;
-        elem.billingCurrency = elem.data.currency;
-        elem.add = false;
-        elem.deduction = false;
-        elem.addDisabled = false;
-        elem.subDisabled = false;
-        elem.type = elem.data.type;
-        elem.convert = false;
-        elem.convertRate = 0;
-        elem.currency = this.settlementData.currency;
-        if (
-          this.settlementData.currency !== elem.billingCurrency &&
-          this.settlementData.currency !== undefined
-        ) {
-          elem.convert = true;
-          let convertedValue: any = await this.currencyConverter(
-            elem.billingCurrency,
-            elem.total,
-            elem.fuelDate
-          );
-          elem.subTotal = convertedValue.result;
-          elem.convertRate = convertedValue.rate;
-        }
-      });
-      this.fuelEnteries.sort(function compare(a, b) {
-        let dateA: any = new Date(a.fuelDate);
-        let dateB: any = new Date(b.fuelDate);
-        return dateA - dateB;
-      });
+      if (this.showFuel === "yes") {
+        let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
+        let result = await this.apiService
+          .getData(
+            `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
+          )
+          .toPromise();
+        this.fuelEnteries = result;
+        this.fuelEnteries.map(async (elem) => {
+          elem.fuelID = elem.data.fuelID;
+          elem.fuelDate = elem.data.date;
+          elem.unitNumber = this.vehicles[elem.unitID];
+          elem.cityName = elem.data.city;
+          elem.locationCountry = elem.data.country;
+          elem.fuelCardNumber = elem.data.cardNo;
+          elem.unitOfMeasure = elem.data.uom;
+          elem.subTotal = elem.data.amt;
+          elem.total = elem.data.amt;
+          elem.billingCurrency = elem.data.currency;
+          elem.add = false;
+          elem.deduction = false;
+          elem.addDisabled = false;
+          elem.subDisabled = false;
+          elem.type = elem.data.type;
+          elem.convert = false;
+          elem.convertRate = 0;
+          elem.currency = this.settlementData.currency;
+          if (
+            this.settlementData.currency !== elem.billingCurrency &&
+            this.settlementData.currency !== undefined
+          ) {
+            elem.convert = true;
+            let convertedValue: any = await this.currencyConverter(
+              elem.billingCurrency,
+              elem.total,
+              elem.fuelDate
+            );
+            elem.subTotal = convertedValue.result;
+            elem.convertRate = convertedValue.rate;
+          }
+        });
+        this.fuelEnteries.sort(function compare(a, b) {
+          let dateA: any = new Date(a.fuelDate);
+          let dateB: any = new Date(b.fuelDate);
+          return dateA - dateB;
+        });
+      }
     } else {
       this.fuelEnteries = [];
     }
@@ -2377,117 +2366,6 @@ export class AddSettlementComponent implements OnInit {
     }
   }
 
-  // selectedExpense() {
-  //   this.settlementData.expAdd = 0;
-  //   this.settlementData.expDed = 0;
-  //   this.settlementData.expIds = [];
-  //   this.settlementData.expData = [];
-  //   for (let i = 0; i < this.finalTripExpenses.length; i++) {
-  //     const element = this.finalTripExpenses[i];
-
-  //     if (element.add) {
-  //       this.settlementData.expAdd += Number(element.amount);
-  //       element.subDisabled = true;
-  //       if (!this.settlementData.expIds.includes(element.expenseID)) {
-  //         this.settlementData.expIds.push(element.expenseID);
-  //         let obj = {
-  //           expenseID: element.expenseID,
-  //           amount: Number(element.amount),
-  //           action: "add",
-  //         };
-  //         this.settlementData.expData.push(obj);
-  //       }
-  //     } else {
-  //       element.subDisabled = false;
-  //     }
-
-  //     if (element.deduction) {
-  //       this.settlementData.expDed += Number(element.amount);
-  //       element.addDisabled = true;
-  //       if (!this.settlementData.expIds.includes(element.expenseID)) {
-  //         this.settlementData.expIds.push(element.expenseID);
-  //         let obj = {
-  //           expenseID: element.expenseID,
-  //           amount: Number(element.amount),
-  //           action: "sub",
-  //         };
-  //         this.settlementData.expData.push(obj);
-  //       }
-  //     } else {
-  //       element.addDisabled = false;
-  //     }
-  //   }
-  //   if (this.settlementID) {
-  //     this.preExpensesTotal();
-  //   }
-  //   this.settlementData.expDed = Number(this.settlementData.expDed.toFixed(2));
-  //   this.settlementData.expAdd = Number(this.settlementData.expAdd.toFixed(2));
-
-  //   this.calculateFinalTotal();
-  // }
-
-  // async fetchSelectedTripExpenses() {
-  //   if (this.settlementData.expIds.length > 0) {
-  //     let expenseIDs = encodeURIComponent(
-  //       JSON.stringify(this.settlementData.expIds)
-  //     );
-  //     let result = await this.accountService
-  //       .getData(`expense/get/selected?entities=${expenseIDs}`)
-  //       .toPromise();
-  //     result.map((k) => {
-  //       this.settlementData.expData.map((v) => {
-  //         if (v.expenseID === k.expenseID) {
-  //           k.action = v.action === "add" ? "Added" : "Deducted";
-  //         }
-  //       });
-  //     });
-
-  //     this.selectedExpenses = result;
-  //     this.prevSelectedExp = result;
-  //   }
-  // }
-
-  // delSelectedExpense(expID, index) {
-  //   this.prevSelectedExp = [];
-  //   if (!this.deletedExpEntries.includes(expID)) {
-  //     this.deletedExpEntries.push(expID);
-  //     let ind = this.settlementData.expIds.indexOf(expID);
-  //     this.settlementData.expIds.splice(ind, 1);
-  //     this.settlementData.expAdd = 0;
-  //     this.settlementData.expDed = 0;
-  //     this.settlementData.expData.map((v) => {
-  //       if (v.expenseID === expID) {
-  //         let indx = this.settlementData.expData.indexOf(v);
-  //         this.settlementData.expData.splice(indx, 1);
-  //       }
-  //     });
-
-  //     this.prevSelectedExp = this.settlementData.expData;
-  //     this.prevSelectedExpIds = this.settlementData.expIds;
-  //     this.settlementData.expData = [];
-  //     this.preExpensesTotal();
-  //     this.finalTripExpenses.push(this.selectedExpenses[index]);
-  //     this.selectedExpenses.splice(index, 1);
-  //   }
-  //   this.calculateFinalTotal();
-  // }
-
-  // preExpensesTotal() {
-  //   this.prevSelectedExp.map((v) => {
-  //     if (v.action === "add") {
-  //       this.settlementData.expAdd += Number(v.amount);
-  //     } else if (v.action === "sub") {
-  //       this.settlementData.expDed += Number(v.amount);
-  //     }
-  //     this.settlementData.expData.push(v);
-  //   });
-  //   this.prevSelectedExpIds.map((k) => {
-  //     if (!this.settlementData.expIds.includes(k)) {
-  //       this.settlementData.expIds.push(k);
-  //     }
-  //   });
-  // }
-
   async currencyConverter(curr, amount, date) {
     return await this.accountService
       .getData(
@@ -2498,6 +2376,9 @@ export class AddSettlementComponent implements OnInit {
 
   checkFuelVisibility(event) {
     this.showFuel = event.target.value;
+    if (this.showFuel === "yes") {
+      this.fetchFuelExpenses();
+    }
   }
 
   filterByUnit() {

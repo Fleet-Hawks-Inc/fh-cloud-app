@@ -5,7 +5,7 @@
 
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-
+                        <!-- 
                         <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select (change)="fetchStates($event)" name="category" placeholder="Search by Country">
                                 <ng-option value="CA">Canada</ng-option>
@@ -17,9 +17,9 @@
                             <ng-select [(ngModel)]="stateCode" placeholder="search by State" name="stateCode">
                                 <ng-option class="text-capitalize" *ngFor="let state of states"
                                     value="{{ state.stateCode }}">
-                                    {{ state.stateName }}</ng-option>
+                                    {{ state.stateName }}-- {{ state.stateCode }}</ng-option>
                             </ng-select>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-3 col-lg-3 pr-0">
                             <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
@@ -45,7 +45,7 @@
                                 (click)="searchFilter()">Search</button>
                         </div>
 
-                        <div class="col-md-3 col-lg-3 text-right pr-1">
+                        <div class="col-md-7 col-lg-7 text-right pr-1">
 
                             <div class="btn-group flex-wrap ml-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -53,7 +53,7 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)=" csv() ">CSV</a>
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
 
                                 </div>
                             </div>
@@ -76,24 +76,27 @@
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <col style="width:1%">
-                                        <col style="width:6%">
+                                        <col style="width:2%">
                                         <col style="width:3%">
                                         <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Vehicle</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
-                                                <th>Location</th>
-                                                <th>Date</th>
+                                                <th>Province(US)</th>
+                                                <th>US Province Miles</th>
+                                                <th>Province(Canada)</th>
+                                                <th>Canada Province Miles</th>
+                                                <th>Canada Total Miles</th>
+                                                <th>US Total Miles</th>
                                                 <th>Total Miles</th>
-                                                <th>State Miles</th>
-                                                <th>Canada Miles</th>
-                                                <th>US Miles</th>
-
+                                                <th>Trip Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -105,35 +108,56 @@
                                                 </td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+
+
                                                 <td>
-                                                    <span title="Location" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.location}} <br>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
+                                                        <span *ngFor="let item2 of item1.usProvince">
+                                                            {{item2.StCntry}}<br>
+                                                        </span>
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <span title="Date" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.date}} <br>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    {{ item.miles | number : '1.2-2'}}
-                                                </td>
-                                                <td><span *ngFor='let item1 of item.provinceData'>
-                                                        <span *ngFor='let item2 of item1.provinces'>
-                                                            {{item2.StCntry }}:- {{item2.Total}}<br>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor='let item1 of item.provinceData'>
+                                                        <span *ngFor='let item2 of item1.usProvince'>
+                                                            {{item2.Total }}<br>
                                                         </span>
                                                     </span>
                                                 </td>
 
-                                                <td> {{item.canMiles | number : '1.2-2' }}
+                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
+                                                        <span *ngFor="let item2 of item1.canProvince">
+                                                            {{item2.StCntry}}<br>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor='let item1 of item.provinceData'>
+                                                        <span *ngFor='let item2 of item1.canProvince'>
+                                                            {{item2.Total }}<br>
+                                                        </span>
+                                                    </span>
+                                                </td>
+
+                                                <td>{{item.canMiles | number : '1.2-2' }}
                                                 </td>
                                                 <td>{{item.usMiles | number : '1.2-2' }}
+                                                </td>
+                                                <td>
+                                                    {{ item.miles | number : '1.2-2'}}
+                                                </td>
+                                                <td>
+                                                    <span class="badge
+                                                                badge-dark p-1
+                                                                text-capitalize">{{
+                                                        item.newStatus
+                                                        }}</span>
+
                                                 </td>
 
                                             </tr>
