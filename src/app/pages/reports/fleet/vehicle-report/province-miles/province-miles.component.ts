@@ -239,21 +239,21 @@ export class ProvinceMilesComponent implements OnInit {
         for (let data of element.provinceData) {
           for (let j = 0; j < data.usProvince.length; j++) {
             const element3 = data.usProvince[j];
-            usState += element3.StCntry
-            usMiles += element3.Total
-            if (j < data.usProvince.length - 1) {
-              usState += " & ";
-              usMiles += " & ";
-            }
+            usState += `"${element3.StCntry}\n\"`;
+            usMiles += `"${element3.Total}\n\"`;
+            // if (j < data.usProvince.length - 1) {
+            //   usState += " & ";
+            //   usMiles += " & ";
+            // }
           }
           for (let j = 0; j < data.canProvince.length; j++) {
             const element3 = data.canProvince[j];
-            canState += element3.StCntry
-            canMiles += element3.Total
-            if (j < data.canProvince.length - 1) {
-              canState += " & ";
-              canMiles += " & ";
-            }
+            canState += `"${element3.StCntry}\n\"`;
+            canMiles += `"${element3.Total}\n\"`;
+            // if (j < data.canProvince.length - 1) {
+            //   canState += " & ";
+            //   canMiles += " & ";
+            // }
           }
 
 
