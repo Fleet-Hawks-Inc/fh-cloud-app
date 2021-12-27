@@ -95,7 +95,7 @@ export class BolPdfComponent implements OnInit {
     var data = document.getElementById("print_bol");
     html2pdf(data, {
       margin: [0.5, 0, 0.5, 0],
-      pagebreak: { mode: ["avoid-all"] },
+      pagebreak: { mode: "avoid-all", before: "print_bol" },
       filename: `BOL ${new Date().getTime()}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
