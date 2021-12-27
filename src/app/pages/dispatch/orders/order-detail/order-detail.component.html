@@ -1835,13 +1835,12 @@
                   </table>
                   <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
                     <tbody>
-                      <tr *ngFor="let newDoc of docs">
+                      <tr *ngFor="let newDoc of invDocs;">
                         <td>
                           <table>
                             <tbody>
                               <tr *ngIf="newDoc.ext === 'pdf'">
                                 <td>
-                                  <!-- <div class="html2pdf__page-break"></div> -->
                                   <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
                                     [render-text]="true" [original-size]="false" [autoresize]="true"
                                     style="max-width: 700px; display: block">
@@ -1854,9 +1853,7 @@
                                   newDoc.ext === 'png'
                                 ">
                                 <td>
-                                  <!-- <div class="html2pdf__page-break"></div> -->
-                                  <img crossorigin="*" [src]="newDoc.docPath" class="img-fluid rounded" height="200px"
-                                    width="100%" />
+                                  <img crossorigin="anonymous" [src]="newDoc.docPath" width="100%" />
                                 </td>
                               </tr>
                             </tbody>
