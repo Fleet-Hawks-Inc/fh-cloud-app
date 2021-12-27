@@ -688,7 +688,7 @@ export class TripDetailComponent implements OnInit {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0.5,
-      pagebreak: { mode: ['avoid-all', 'css'] },
+      pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },
       html2canvas: {
