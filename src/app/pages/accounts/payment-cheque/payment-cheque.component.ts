@@ -55,6 +55,7 @@ export class PaymentChequeComponent implements OnInit {
     page: "",
     invoices: [],
     paymentTo: "",
+    advType: "",
   };
 
   cheqdata = {
@@ -131,7 +132,7 @@ export class PaymentChequeComponent implements OnInit {
             this.cheqdata.currencyText = "Amount in Canadian Dollars";
           } else if (this.cheqdata.currency === "USD") {
             this.cheqdata.currencyText = "Amount in US Dollars";
-          }
+          } 
           if (
             this.paydata.type === "driver" ||
             this.paydata.type === "employee" ||

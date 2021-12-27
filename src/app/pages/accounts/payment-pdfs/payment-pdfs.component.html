@@ -408,17 +408,6 @@
                             </p>
                           </td>
                         </tr>
-                        <!-- <tr>
-                                                    <td class="pl-3 pt-2">
-                                                        <p class="text-3 text-dark mb-2">Road Expenses - CDN</p>
-                                                    </td>
-                                                    <td class="pr-3 pt-2 text-right">
-                                                        <p class="text-3 text-dark mb-2">0.00</p>
-                                                    </td>
-                                                    <td class="pr-3 pt-2 text-right">
-                                                        <p class="text-3 text-dark mb-2">0.00</p>
-                                                    </td>
-                                                </tr> -->
                         <tr>
                           <td class="pl-3 pt-2">&nbsp;</td>
                           <td class="pr-3 pt-2 text-right">&nbsp;</td>
@@ -446,17 +435,6 @@
                             </p>
                           </td>
                         </tr>
-                        <!-- <tr>
-                                                    <td class="pl-3 pt-2">
-                                                        <p class="text-3 text-dark font-weight-bold mb-2">Road Expenses Chq - CDN</p>
-                                                    </td>
-                                                    <td class="pr-3 pt-2 text-right">
-                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
-                                                    </td>
-                                                    <td class="pr-3 pt-2 text-right">
-                                                        <p class="text-3 font-weight-bold text-dark mb-2">0.00</p>
-                                                    </td>
-                                                </tr> -->
                         <tr>
                           <td class="pl-3 pt-2">
                             <p class="text-3 text-dark font-weight-bold mb-2">
@@ -478,17 +456,8 @@
                             </p>
                           </td>
                         </tr>
-                        <!-- <tr>
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr> -->
                       </tbody>
                     </table>
-                    <div
-                      class="html2pdf__page-break"
-                      *ngIf="paymentData.paymentTo !== 'employee'"
-                    ></div>
                   </td>
                 </tr>
                 <tr>
@@ -580,14 +549,8 @@
                             </p>
                           </td>
                         </tr>
-                        <!-- <tr>
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr> -->
                       </tbody>
                     </table>
-                    <!-- <div class="html2pdf__page-break"></div> -->
                   </td>
                 </tr>
                 <tr>
@@ -822,21 +785,10 @@
                             </p>
                           </td>
                         </tr>
-                        <tr>
-                          <td class="pl-3 pt-2">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                          <td class="pr-3 pt-2 text-right">&nbsp;</td>
-                        </tr>
                       </tbody>
                     </table>
-                    <!-- <div class="html2pdf__page-break"></div> -->
                   </td>
                 </tr>
-
-                <div
-                  *ngIf="paymentTrips.length > 0"
-                  class="html2pdf__page-break"
-                ></div>
                 <tr valign="top" *ngIf="fueldata.length > 0">
                   <td colspan="2">
                     <h2 class="text-dark font-weight-bold text-4">
@@ -858,11 +810,6 @@
                           <td width="15%" class="pl-3 pt-2">
                             <p class="text-4 font-weight-bold text-dark mb-2">
                               Date
-                            </p>
-                          </td>
-                          <td width="15%" class="pl-3 pt-2">
-                            <p class="text-4 font-weight-bold text-dark mb-2">
-                              Vehicle
                             </p>
                           </td>
                           <td width="30%" class="pl-3 pt-2">
@@ -889,12 +836,7 @@
                         <tr *ngFor="let data of fueldata">
                           <td class="pl-3 pt-2">
                             <p class="text-3 text-dark mb-2">
-                              {{ data.fuelDate }}
-                            </p>
-                          </td>
-                          <td class="pl-3 pt-2">
-                            <p class="text-3 text-dark mb-2">
-                              {{ data.vehicle }}
+                              {{ data.fuelDate | date: "dd-MM-yyyy" }}
                             </p>
                           </td>
                           <td class="pl-3 pt-2">
@@ -1114,10 +1056,6 @@
                 <tr *ngIf="paymentData.advData.length > 0">
                   <td colspan="2">&nbsp;</td>
                 </tr>
-                <div
-                  class="html2pdf__page-break"
-                  *ngIf="addCharges.length > 0 || dedCharges.length > 0"
-                ></div>
                 <tr valign="top" *ngIf="addCharges.length > 0">
                   <td colspan="2">
                     <h2 class="text-dark font-weight-bold text-4">
