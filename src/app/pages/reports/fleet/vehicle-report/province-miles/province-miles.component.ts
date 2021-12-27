@@ -48,63 +48,95 @@ export class ProvinceMilesComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         if (result.LastEvaluatedKey !== undefined) {
-          this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
-          this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
+          this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
+          this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
         }
         else {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
         const otherTrips = [];
-        for (let element of this.allData) {
+        for (let element of result.Items) {
           element.newStatus = element.tripStatus;
           element.canRecall = false;
           let dataa = element
           element.miles = 0
-          for (let element of dataa.tripPlanning) {
-            element.miles += Number(element.miles);
+          for (let element1 of dataa.tripPlanning) {
+            element.miles += Number(element1.miles);
           }
-
-
           if (element.recall === true) {
             element.newStatus = `${element.tripStatus} (R)`;
           }
           else {
-
             if (element.stlLink === true) {
               element.newStatus = "Settled";
             }
           }
+     
         }
-        this.fetchPendingData();
+    
         //To filter according stateCode
 
-        if (this.stateCode !== null) {
-          this.allData = []
-          for (let data of this.dummyData) {
-            if (data.vehicleProvinces.includes(this.stateCode)) {
-              if (data.vehicleProvinces === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
-              }
-              this.allData.push(data)
-              if (this.allData === 0) {
-                this.dataMessage = Constants.NO_RECORDS_FOUND
-              }
-            }
-          }
-          if (this.allData.length === 0) {
-            this.dataMessage = Constants.NO_RECORDS_FOUND
-          }
+        // if (this.stateCode !== null) {
+        //   this.allData = []
+        //   for (let data of this.dummyData) {
+        //     if (data.vehicleProvinces.includes(this.stateCode)) {
+        //       if (data.vehicleProvinces === 0) {
+        //         this.dataMessage = Constants.NO_RECORDS_FOUND
+        //       }
+        //       this.allData.push(data)
+        //       if (this.allData === 0) {
+        //         this.dataMessage = Constants.NO_RECORDS_FOUND
+        //       }
+        //     }
+        //   }
+        //   if (this.allData.length === 0) {
+        //     this.dataMessage = Constants.NO_RECORDS_FOUND
+        //   }
 
-        }
+        // }
       });
     }
   }
-  fetchPendingData() {
+
+  onScroll() {
+    if (this.loaded) {
+      this.fetchProvinceMilesData();
+    }
+    this.loaded = false;
+  }
+  searchFilter() {
+    if (this.start != null && this.end != null) {
+      if (this.start != null && this.end == null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start == null && this.end != null) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.start > this.end) {
+        this.toastr.error('Start Date should be less then end date.');
+        return false;
+      }
+      else {
+        this.lastItemSK = '';
+        this.allData = [];
+        this.dummyData = [];
+        this.dataMessage = Constants.FETCHING_DATA;
+
+        this.fetchProvinceMilesData()
+      }
+    } else {
+      return false;
+    }
+  }
+
+
+
+    fetchPendingData() {
     const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "	LA", "ME", "MD", "MA", "MI", "MN",
       "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
     const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "YT"]
-    for (let data of this.allData) {
+    for (let data of this.exportData) {
       data.canMiles = 0;
       data.usMiles = 0;
       data.stateMiles = 0;
@@ -169,39 +201,10 @@ export class ProvinceMilesComponent implements OnInit {
       }
     }
   }
-  onScroll() {
-    if (this.loaded) {
-      this.fetchProvinceMilesData();
-    }
-    this.loaded = false;
-  }
-  searchFilter() {
-    if (this.start != null && this.end != null) {
-      if (this.start != null && this.end == null) {
-        this.toastr.error('Please select both start and end dates.');
-        return false;
-      } else if (this.start == null && this.end != null) {
-        this.toastr.error('Please select both start and end dates.');
-        return false;
-      } else if (this.start > this.end) {
-        this.toastr.error('Start Date should be less then end date.');
-        return false;
-      }
-      else {
-        this.lastItemSK = '';
-        this.allData = [];
-        this.dummyData = [];
-        this.dataMessage = Constants.FETCHING_DATA;
-
-        this.fetchProvinceMilesData()
-      }
-    } else {
-      return false;
-    }
-  }
   fetchFullExport() {
     this.apiService.getData(`vehicles/fetch/provinceMiles/report?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
+      this.fetchPendingData()
       for (let veh of this.exportData) {
         let dataa = veh
         veh.miles = 0
@@ -209,8 +212,7 @@ export class ProvinceMilesComponent implements OnInit {
           veh.miles += Number(element.miles);
         }
       }
-      this.fetchPendingData()
-      this.exportData = this.allData
+      // this.exportData = this.allData
       this.generateCSV();
 
     });
@@ -258,7 +260,6 @@ export class ProvinceMilesComponent implements OnInit {
 
 
         }
-
         let obj = {}
         obj["Vehicle"] = element.vehicle ? element.vehicle.replace(/, /g, ' &') : '';
         obj["Trip#"] = element.tripNo;
