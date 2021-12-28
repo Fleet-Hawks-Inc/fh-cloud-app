@@ -81,13 +81,19 @@
                             <div class="card-body">
 
                                 <section class="reports_div">
-                                    <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <table class="row-border hover table table-bordered table-striped mb-0">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:4%">
+                                        <col style="width:3%">
                                         <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:5%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Vehicle</th>
@@ -96,14 +102,16 @@
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
+                                                <th>US Province Miles</th>
                                                 <th>US(Total)</th>
                                                 <th>Province(Canada)</th>
+                                                <th>Canada Total Miles</th>
                                                 <th>Canada(Total)</th>
                                                 <th>Total Miles</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr *ngIf="allData.length == 0" class="text-center">
+                                            <tr *ngIf="allData.length === 0" class="text-center">
                                                 <td colspan="15">{{dataMessage}}</td>
                                             </tr>
                                             <tr *ngFor="let item of allData">
@@ -130,29 +138,42 @@
                                                 </td>
 
                                                 <td>
-                                                    <span title="Provinceus" *ngFor="let item1 of item.provinceData">
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
                                                         <span *ngFor="let item2 of item1.usProvince">
-                                                            {{item2.StCntry}} :-{{item2.Total | number : '1.2-2'}} <br>
+                                                            {{item2.StCntry}}<br>
                                                         </span>
                                                     </span>
                                                 </td>
-
                                                 <td>
-                                                    {{item.usMiles | number : '1.2-2'}}
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
+                                                        <span *ngFor="let item2 of item1.usProvince">
+                                                            {{item2.Total}} <br>
+                                                        </span>
+                                                    </span>
                                                 </td>
-
                                                 <td>
+                                                    {{item.usMiles | number : '1.2-2' }} <br>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                     <span *ngFor="let item1 of item.provinceData">
                                                         <span *ngFor="let item2 of item1.caProvince">
-                                                            {{item2.StCntry}} :-{{item2.Total | number : '1.2-2'}} <br>
+                                                            {{item2.StCntry}}<br>
                                                         </span>
                                                     </span>
                                                 </td>
-
                                                 <td>
-                                                    {{item.canMiles | number : '1.2-2'}}
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
+                                                        <span *ngFor="let item2 of item1.caProvince">
+                                                            {{item2.Total}} <br>
+                                                        </span>
+                                                    </span>
                                                 </td>
-
+                                                <td>{{item.canMiles | number : '1.2-2' }}
+                                                </td>
                                                 <td>
                                                     {{ item.miles | number : '1.2-2'}}
                                                 </td>
