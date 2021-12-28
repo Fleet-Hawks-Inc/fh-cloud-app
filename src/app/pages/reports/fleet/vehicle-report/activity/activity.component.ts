@@ -191,15 +191,10 @@ export class ActivityComponent implements OnInit {
                 let date = ''
                 for (let i = 0; i < element.tripPlanning.length; i++) {
                     const element2 = element.tripPlanning[i];
-                    date += element2.type + " : " + element2.date
-                    if (i < element.tripPlanning.length - 1) {
-                        date += " & ";
-                    }
+                    date += `"${element2.type} :-  ${element2.date}\n\"`
                     element2.location = element2.location.replace(/,/g, ' ');
-                    location += element2.type + ' : ' + element2.location
-                    if (i < element.tripPlanning.length - 1) {
-                        location += " & ";
-                    }
+                    location += `"${element2.type} :-  ${element2.location}\n\"`
+
                 }
 
                 let usState = ''
