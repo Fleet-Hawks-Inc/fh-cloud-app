@@ -170,7 +170,7 @@ export class SharedModalsComponent implements OnInit {
 
   inspectionForms = [];
   groups = [];
-  drivers: any;
+  drivers: any = [];
   groupData = {
     groupName: "",
     groupType: "vehicles",
@@ -266,13 +266,23 @@ export class SharedModalsComponent implements OnInit {
     this.apiService
       .getData(`groups/getGroup/${this.groupData.groupType}`)
       .subscribe((result: any) => {
-        this.groups = result.Items;
+        // this.groups = result.Items;
+        result.Items.forEach((element) => {
+          if (element.isDeleted === 0) {
+            this.groups.push(element);
+          }
+        });
       });
   }
 
   fetchDrivers() {
     this.apiService.getData("drivers").subscribe((result: any) => {
-      this.drivers = result.Items;
+      // this.drivers = result.Items;
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.drivers.push(element);
+        }
+      });
     });
   }
 

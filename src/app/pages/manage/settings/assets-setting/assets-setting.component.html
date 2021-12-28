@@ -14,6 +14,8 @@
       </header>
 
       <div class="routing-overview__wrapper m-3">
+                                                     <form class="form-horizontal" method="get">
+
         <div class="row">
           <div class="col-lg-12 col-xl-12 mb-4">
             <div class=" ">
@@ -132,6 +134,7 @@
                     </div>
 
                    <div class="col-lg-12">
+
                     <div class="row" style="padding-top:10px;">
                       <div class="col-md-2 col-lg-2">
                          <div class="input-group input-group-md mb-3">
@@ -179,7 +182,8 @@
 
                    <div class="col-lg-12">
                     <!-- LIST VIEW OF ASSETS  -->
-                    <div class="table-responsive">
+                    <div class="table-responsive"infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                    [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
                        <table class="row-border hover table table-bordered table-striped mb-0">
                           <thead>
                              <tr>
@@ -230,15 +234,10 @@
                        </table>
 
                     </div>
-                    <div class="row mt-3 dtPaginate align-items-center" *ngIf="allData.length > 0">
-                       <div class="col-6">
-                           Showing {{ assetStartPoint }} to {{ assetEndPoint }} of {{ totalRecords }} enteries
-                       </div>
-                       <div class="col-6 text-right">
-                           <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="assetPrev">Prev</button>
-                           <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="assetNext">Next</button>
-                       </div>
-                   </div>
+                   <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && allData.length !== 0">
+              <button type="button" (click)="onScroll()" class="btn btn-success btn-sm text-light">Load
+                More..</button>
+            </div>
                  </div>
                   </div>
                 </div>
@@ -246,6 +245,7 @@
             </div>
           </div>
         </div>
+        </form>
       </div>
     </section>
   </div>

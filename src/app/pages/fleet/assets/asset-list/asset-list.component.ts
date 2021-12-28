@@ -5,8 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { HereMapService } from '../../../../services';
 import { HttpClient } from '@angular/common/http';
 import Constants from '../../constants';
-import {environment} from '../../../../../environments/environment';
-import {OnboardDefaultService} from '../../../../services/onboard-default.service';
+import { environment } from '../../../../../environments/environment';
+import { OnboardDefaultService } from '../../../../services/onboard-default.service';
 import * as _ from 'lodash';
 declare var $: any;
 
@@ -83,7 +83,7 @@ export class AssetListComponent implements OnInit {
   assetID = '';
   assetType = null;
   assetIdentification = '';
-  assetTypeList: any  = {};
+  assetTypeList: any = {};
   totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = '';
@@ -97,32 +97,32 @@ export class AssetListComponent implements OnInit {
   assetStartPoint = 1;
   assetEndPoint = this.pageLength;
   contactsObjects = [];
-
+  loaded = false
+  lastItemSK = ''
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
     private httpClient: HttpClient,
     private hereMap: HereMapService,
-    private onboard: OnboardDefaultService) {}
+    private onboard: OnboardDefaultService) { }
 
   ngOnInit(): void {
     this.onboard.checkInspectionForms();
-      this.fetchAssetsCount();
-      this.fetchGroups();
-      this.initDataTable();
-      this.fetchContacts();
+    this.fetchGroups();
+    this.initDataTable();
+    this.fetchContacts();
 
   }
 
   getSuggestions = _.debounce(function (value) {
     value = value.toLowerCase();
-    if(value != '') {
+    if (value != '') {
       this.apiService
-      .getData(`assets/suggestion/${value}`)
-      .subscribe((result) => {
-        this.suggestedAssets = result;
-      });
+        .getData(`assets/suggestion/${value}`)
+        .subscribe((result) => {
+          this.suggestedAssets = result;
+        });
     } else {
       this.suggestedAssets = [];
     }
@@ -164,39 +164,26 @@ export class AssetListComponent implements OnInit {
     this.message = info.id + ' - ' + info.firstName;
   }
 
-  fetchAssetsCount() {
-    this.apiService.getData('assets/get/count?asset=' + this.assetIdentification + '&assetType=' + this.assetType).subscribe({
-      complete: () => {},
-      error: () => {},
-      next: (result: any) => {
-        this.totalRecords = result.Count;
-        if (this.assetID !== '' || this.assetType != null) {
-          this.assetEndPoint = this.totalRecords;
-        }
-        this.initDataTable();
-      },
-    });
-  }
 
-
-  deleteAsset(eventData) {;
+  deleteAsset(eventData) {
+    ;
     // }
-      if (confirm('Are you sure you want to delete?') === true) {
-        // let record = {
-        //   date: eventData.createdDate,
-        //   time: eventData.createdTime,
-        //   eventID: eventData.assetID,
-        //   status: eventData.currentStatus
-        // }
-        this.apiService.deleteData(`assets/delete/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
-            this.allData = [];
-            this.assetDraw = 0;
-            this.dataMessage = Constants.FETCHING_DATA;
-            this.lastEvaluatedKey = '';
-            this.fetchAssetsCount();
-            this.toastr.success('Asset Deleted Successfully!');
-          });
-      }
+    if (confirm('Are you sure you want to delete?') === true) {
+      // let record = {
+      //   date: eventData.createdDate,
+      //   time: eventData.createdTime,
+      //   eventID: eventData.assetID,
+      //   status: eventData.currentStatus
+      // }
+      this.apiService.deleteData(`assets/delete/${eventData.assetID}/${eventData.assetIdentification}`).subscribe((result: any) => {
+        this.allData = [];
+        this.assetDraw = 0;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.lastEvaluatedKey = '';
+        this.initDataTable();
+        this.toastr.success('Asset Deleted Successfully!');
+      });
+    }
 
   }
   mapShow() {
@@ -212,68 +199,54 @@ export class AssetListComponent implements OnInit {
   }
 
   initDataTable() {
-    this.spinner.show();
-    this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification+ '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
-      .subscribe((result: any) => {
-        if(result.Items.length == 0) {
-          this.dataMessage = Constants.NO_RECORDS_FOUND;
-        }
-        this.suggestedAssets = [];
-        this.getStartandEndVal();
+    if (this.lastEvaluatedKey !== 'end')
+      this.apiService.getData('assets/fetch/records?asset=' + this.assetIdentification + '&assetType=' + this.assetType + '&lastKey=' + this.lastEvaluatedKey)
+        .subscribe((result: any) => {
+          this.dataMessage = Constants.FETCHING_DATA
+          if (result.Items.length === 0) {
 
-        result[`Items`].map((v:any) => {
-          v.url = `/fleet/assets/detail/${v.assetID}`;
-          v.assetType = v.assetType.replace("_"," ")
-        })
-        this.allData = result[`Items`];
+            this.dataMessage = Constants.NO_RECORDS_FOUND
+            this.suggestedAssets = [];
 
 
-        if(this.assetID != '' || this.assetType != null) {
-          this.assetStartPoint = 1;
-          this.assetEndPoint = this.totalRecords;
-        }
 
-        if (result[`LastEvaluatedKey`] !== undefined) {
-          const lastEvalKey = result[`LastEvaluatedKey`].assetSK.replace(/#/g, '--');
-          this.assetNext = false;
-          // for prev button
-          if (!this.assetPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.assetPrevEvauatedKeys.push(lastEvalKey);
           }
-          this.lastEvaluatedKey = lastEvalKey;
+          if (result.Items.length > 0) {
+            result[`Items`].map((v: any) => {
+              v.url = `/fleet/assets/detail/${v.assetID}`;
+              v.assetType = v.assetType.replace("_", " ")
+            })
+            if (result.LastEvaluatedKey !== undefined) {
+              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].assetSK);
+            }
+            else {
+              this.lastEvaluatedKey = 'end'
+            }
+            this.allData = this.allData.concat(result.Items)
 
-        } else {
-          this.assetNext = true;
-          this.lastEvaluatedKey = '';
-          this.assetEndPoint = this.totalRecords;
-        }
-
-        if (this.totalRecords < this.assetEndPoint) {
-          this.assetEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.assetDraw > 0) {
-          this.assetPrev = false;
-        } else {
-          this.assetPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+            this.loaded = true;
+          }
+        });
+  }
+  onScroll() {
+    if (this.loaded) {
+      this.initDataTable();
+    }
+    this.loaded = true;
   }
 
   searchFilter() {
     if (this.assetIdentification !== '' || this.assetType !== null) {
       this.assetIdentification = this.assetIdentification.toLowerCase();
-      if(this.assetID == '') {
+      if (this.assetID == '') {
         this.assetID = this.assetIdentification;
       }
       this.dataMessage = Constants.FETCHING_DATA;
       this.allData = [];
+      this.lastEvaluatedKey = ''
       this.suggestedAssets = [];
-      this.fetchAssetsCount();
+      this.initDataTable();
+
     } else {
       return false;
     }
@@ -287,8 +260,9 @@ export class AssetListComponent implements OnInit {
       this.suggestedAssets = [];
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchAssetsCount();
-      this.resetCountResult();
+      this.lastEvaluatedKey = ''
+      this.initDataTable();
+
     } else {
       return false;
     }
@@ -296,139 +270,111 @@ export class AssetListComponent implements OnInit {
 
   hideShowColumn() {
     // for headers
-    if(this.hideShow.vin == false) {
-      $('.col0').css('display','none');
+    if (this.hideShow.vin == false) {
+      $('.col0').css('display', 'none');
     } else {
-      $('.col0').css('display','');
+      $('.col0').css('display', '');
     }
-    if(this.hideShow.assetName == false) {
-      $('.col1').css('display','none');
+    if (this.hideShow.assetName == false) {
+      $('.col1').css('display', 'none');
     } else {
-      $('.col1').css('display','');
-    }
-
-    if(this.hideShow.type == false) {
-      $('.col2').css('display','none');
-    } else {
-      $('.col2').css('display','');
+      $('.col1').css('display', '');
     }
 
-    if(this.hideShow.plateNo == false) {
-      $('.col3').css('display','none');
+    if (this.hideShow.type == false) {
+      $('.col2').css('display', 'none');
     } else {
-      $('.col3').css('display','');
+      $('.col2').css('display', '');
     }
 
-    if(this.hideShow.lastLocation == false) {
-      $('.col4').css('display','none');
+    if (this.hideShow.plateNo == false) {
+      $('.col3').css('display', 'none');
     } else {
-      $('.col4').css('display','');
+      $('.col3').css('display', '');
     }
 
-    if(this.hideShow.year == false) {
-      $('.col5').css('display','none');
+    if (this.hideShow.lastLocation == false) {
+      $('.col4').css('display', 'none');
+    } else {
+      $('.col4').css('display', '');
+    }
+
+    if (this.hideShow.year == false) {
+      $('.col5').css('display', 'none');
     } else {
       $('.col5').removeClass('extra');
-      $('.col5').css('display','');
-      $('.col5').css('min-width','200px');
+      $('.col5').css('display', '');
+      $('.col5').css('min-width', '200px');
     }
 
-    if(this.hideShow.make == false) {
-      $('.col6').css('display','none');
+    if (this.hideShow.make == false) {
+      $('.col6').css('display', 'none');
     } else {
-      $('.col6').css('display','');
+      $('.col6').css('display', '');
     }
 
-    if(this.hideShow.model == false) {
-      $('.col7').css('display','none');
+    if (this.hideShow.model == false) {
+      $('.col7').css('display', 'none');
     } else {
       $('.col7').removeClass('extra');
-      $('.col7').css('display','');
-      $('.col7').css('min-width','200px');
+      $('.col7').css('display', '');
+      $('.col7').css('min-width', '200px');
     }
 
-    if(this.hideShow.ownership == false) {
-      $('.col8').css('display','none');
+    if (this.hideShow.ownership == false) {
+      $('.col8').css('display', 'none');
     } else {
       $('.col8').removeClass('extra');
-      $('.col8').css('display','');
-      $('.col8').css('min-width','200px');
+      $('.col8').css('display', '');
+      $('.col8').css('min-width', '200px');
     }
 
-    if(this.hideShow.currentStatus == false) {
-      $('.col9').css('display','none');
+    if (this.hideShow.currentStatus == false) {
+      $('.col9').css('display', 'none');
     } else {
-      $('.col9').css('display','');
+      $('.col9').css('display', '');
     }
 
     // extra columns
-    if(this.hideShow.group == false) {
-      $('.col10').css('display','none');
+    if (this.hideShow.group == false) {
+      $('.col10').css('display', 'none');
     } else {
       $('.col10').removeClass('extra');
-      $('.col10').css('display','');
-      $('.col10').css('min-width','200px');
+      $('.col10').css('display', '');
+      $('.col10').css('min-width', '200px');
     }
 
-    if(this.hideShow.aceID == false) {
-      $('.col11').css('display','none');
+    if (this.hideShow.aceID == false) {
+      $('.col11').css('display', 'none');
     } else {
       $('.col11').removeClass('extra');
-      $('.col11').css('display','');
-      $('.col11').css('min-width','200px');
+      $('.col11').css('display', '');
+      $('.col11').css('min-width', '200px');
     }
 
-    if(this.hideShow.aciID == false) {
-      $('.col12').css('display','none');
+    if (this.hideShow.aciID == false) {
+      $('.col12').css('display', 'none');
     } else {
       $('.col12').removeClass('extra');
-      $('.col12').css('display','');
-      $('.col12').css('min-width','200px');
+      $('.col12').css('display', '');
+      $('.col12').css('min-width', '200px');
     }
 
-    if(this.hideShow.gvwr == false) {
-      $('.col13').css('display','none');
+    if (this.hideShow.gvwr == false) {
+      $('.col13').css('display', 'none');
     } else {
       $('.col13').removeClass('extra');
-      $('.col13').css('display','');
-      $('.col13').css('min-width','200px');
+      $('.col13').css('display', '');
+      $('.col13').css('min-width', '200px');
     }
 
-    if(this.hideShow.gawr == false) {
-      $('.col14').css('display','none');
+    if (this.hideShow.gawr == false) {
+      $('.col14').css('display', 'none');
     } else {
       $('.col14').removeClass('extra');
-      $('.col14').css('display','');
-      $('.col14').css('min-width','200px');
+      $('.col14').css('display', '');
+      $('.col14').css('min-width', '200px');
     }
-  }
-
-  getStartandEndVal() {
-    this.assetStartPoint = this.assetDraw * this.pageLength + 1;
-    this.assetEndPoint = this.assetStartPoint + this.pageLength - 1;
-  }
-
-  // next button func
-  nextResults() {
-    this.assetNext = true;
-    this.assetPrev = true;
-    this.assetDraw += 1;
-    this.initDataTable();
-  }
-
-  // prev button func
-  prevResults() {
-    this.assetNext = true;
-    this.assetPrev = true;
-    this.assetDraw -= 1;
-    this.lastEvaluatedKey = this.assetPrevEvauatedKeys[this.assetDraw];
-    this.initDataTable();
-  }
-
-  resetCountResult() {
-    this.assetStartPoint = 1;
-    this.assetEndPoint = this.pageLength;
-    this.assetDraw = 0;
   }
 
   refreshData() {
@@ -439,7 +385,7 @@ export class AssetListComponent implements OnInit {
     this.allData = [];
     this.lastEvaluatedKey = '';
     this.dataMessage = Constants.FETCHING_DATA;
-    this.fetchAssetsCount();
-    this.resetCountResult();
+    this.initDataTable();
+
   }
 }

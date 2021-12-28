@@ -152,7 +152,8 @@
                           [(ngModel)]="serviceData.unitID"
                           name="unitID"
                           style="width: 100%"
-                          placeholder="Select vehicle for service"
+                          placeholder="Select vehicle for
+                          service"
                           #Vehi="ngModel"
                           required
                           [disabled]="vehicleDisabled"
@@ -196,7 +197,8 @@
                           [(ngModel)]="serviceData.unitID"
                           name="unitID"
                           style="width: 100%"
-                          placeholder="Select asset for service"
+                          placeholder="Select asset for
+                          service"
                           #Asse="ngModel"
                           required
                           [disabled]="vehicleDisabled"
@@ -242,7 +244,7 @@
                           name="odometer"
                           type="number"
                           class="form-control"
-                          placeholder="eg. 5000 , 10000 , 15000 "
+                          placeholder="eg. 5000 , 10000 , 15000"
                           #Odo12="ngModel"
                           required
                         />
@@ -319,7 +321,8 @@
                           name="reference"
                           type="text"
                           class="form-control"
-                          placeholder="Enter reference number"
+                          placeholder="Enter reference
+                          number"
                         />
                       </div>
                     </div>
@@ -377,7 +380,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-2 mar-top-37 pl-0 pr-0">
+                      <div class="col-lg-2 mar-top-38 pl-0 pr-0">
                         <a
                           href="javascript:;"
                           (click)="openModal('form')"
@@ -411,7 +414,8 @@
                           class="form-control"
                           rows="3"
                           style="height: auto !important"
-                          placeholder="Enter description about the service"
+                          placeholder="Enter
+                          description about the service"
                           #notesService="ngModel"
                           pattern="^[\s\S]{1,500}$"
                         ></textarea>
@@ -533,11 +537,12 @@
                               >Select Service Task</label
                             >
                             <ng-select
-                              [items]="tasks | async"
+                              [items]="taskData | async"
                               bindLabel="taskName"
                               [(ngModel)]="selectedTasks"
                               name="selectedTasks"
-                              placeholder="Select service task"
+                              placeholder="Select service
+                              task"
                               (add)="addTasks()"
                               [multiple]="true"
                               style="width: 100%"
@@ -545,13 +550,8 @@
                               (remove)="removeTasks($event)"
                             >
                             </ng-select>
-                            <!-- <ng-container *ngFor="let task of tasks | async;">
-                                       <ng-option *ngIf="task.taskType == 'service'" value="{{task.taskID}}">
-                                          {{task.taskName}}
-                                       </ng-option>
-                                    </ng-container> -->
                           </div>
-                          <div class="col-lg-2 mar-top-37 pl-0 pr-0">
+                          <div class="col-lg-2 mar-top-38 pl-0 pr-0">
                             <a
                               href="javascript:;"
                               data-toggle="modal"
@@ -559,6 +559,7 @@
                               class="
                                 btn
                                 cus-btn-padd
+                                mt-0
                                 btn-success
                                 modal-with-form
                                 mr-3
@@ -691,7 +692,9 @@
                                       [(ngModel)]="
                                         serviceData.allServiceTasks.currency
                                       "
-                                      [ngModelOptions]="{ standalone: true }"
+                                      [ngModelOptions]="{
+                                        standalone: true
+                                      }"
                                       (change)="currencyChange($event)"
                                     >
                                       <ng-option value="CAD">CAD</ng-option>
@@ -772,7 +775,8 @@
                               bindLabel="itemName"
                               [(ngModel)]="selectedParts"
                               name="selectedParts"
-                              placeholder="Select service part"
+                              placeholder="Select service
+                              part"
                               (add)="addParts()"
                               [multiple]="true"
                               (clear)="clearTaks('parts')"
@@ -944,7 +948,9 @@
                                       [(ngModel)]="
                                         serviceData.allServiceParts.currency
                                       "
-                                      [ngModelOptions]="{ standalone: true }"
+                                      [ngModelOptions]="{
+                                        standalone: true
+                                      }"
                                       (change)="currencyChange($event)"
                                     >
                                       <ng-option value="CAD">CAD</ng-option>
@@ -1020,15 +1026,28 @@
                               "
                               >Attach Photo
                             </label>
-                            <input
-                              (change)="
-                                selectDocuments($event, 'uploadedPhotos')
+
+                            <span
+                              class="
+                                btn btn-default btn-file btn-xs
+                                w100
+                                text-left
                               "
-                              name="uploadedPhotos"
-                              multiple
-                              type="file"
-                              class="form-control p-0"
-                            />
+                            >
+                              <input
+                                class="w100"
+                                type="file"
+                                multiple
+                                name="uploadedPhotos"
+                                (change)="
+                                  selectDocuments($event, 'uploadedPhotos')
+                                "
+                              />
+                            </span>
+
+                            <!-- <input (change)="selectDocuments($event,
+                              'uploadedPhotos')" name="uploadedPhotos" multiple
+                              type="file" class="form-control p-0" /> -->
                           </div>
                         </div>
                         <div class="row mt-2" *ngIf="logImages?.length">
@@ -1075,13 +1094,32 @@
                               "
                               >Attach Document</label
                             >
-                            <input
+
+                            <span
+                              class="
+                                btn btn-default btn-file btn-xs
+                                w100
+                                text-left
+                              "
+                            >
+                              <input
+                                class="w100"
+                                type="file"
+                                multiple
+                                name="uploadedDocuments"
+                                (change)="
+                                  selectDocuments($event, 'uploadedDocs')
+                                "
+                              />
+                            </span>
+
+                            <!-- <input
                               (change)="selectDocuments($event, 'uploadedDocs')"
                               name="uploadedDocuments"
                               multiple
                               type="file"
                               class="form-control p-0"
-                            />
+                            /> -->
                           </div>
                         </div>
                         <div class="row mt-2" *ngIf="logDocs?.length">
@@ -1362,7 +1400,8 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="eg. ACR301 etc"
+                    placeholder="eg.
+                    ACR301 etc"
                     [(ngModel)]="partData.partNumber"
                     name="partNumber"
                   />
@@ -1380,7 +1419,8 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="eg. tires"
+                    placeholder="eg.
+                    tires"
                     [(ngModel)]="itemData.itemName"
                     name="itemName"
                   />
@@ -1418,7 +1458,8 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="eg. 1,2,3"
+                    placeholder="eg.
+                    1,2,3"
                     [(ngModel)]="partData.quantity"
                     name="quantity"
                   />
@@ -1435,7 +1476,7 @@
                     class="form-control"
                     name="cost"
                     [(ngModel)]="itemData.cost"
-                    placeholder="eg. 1,2,3 "
+                    placeholder="eg. 1,2,3"
                   />
                 </div>
                 <div class="col-lg-6">
@@ -1529,7 +1570,8 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="eg. tires"
+                    placeholder="eg.
+                    tires"
                     [(ngModel)]="partData.itemName"
                     name="itemName"
                   />
@@ -1555,8 +1597,8 @@
                     <ng-option
                       *ngFor="let data of vendors"
                       value="{{ data.contactID }}"
-                      >{{ data.companyName }}</ng-option
-                    >
+                      >{{ data.companyName }}
+                    </ng-option>
                   </ng-select>
                 </div>
               </div>

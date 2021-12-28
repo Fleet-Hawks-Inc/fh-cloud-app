@@ -1,164 +1,252 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import Constants from 'src/app/pages/fleet/constants';
-import { AccountService, ApiService } from 'src/app/services';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import Constants from "src/app/pages/fleet/constants";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
-    selector: 'app-settlements-detail',
-    templateUrl: './settlements-detail.component.html',
-    styleUrls: ['./settlements-detail.component.css']
+  selector: "app-settlements-detail",
+  templateUrl: "./settlements-detail.component.html",
+  styleUrls: ["./settlements-detail.component.css"],
 })
 export class SettlementsDetailComponent implements OnInit {
+  noRecordMsg: string = Constants.NO_RECORDS_FOUND;
+  settlementID = "";
+  driverDetail = {
+    firstName: "",
+    lastName: "",
+    paymentDetails: {
+      paymentType: "",
+    },
+  };
+  settlementData = {
+    type: null,
+    entityId: null,
+    setNo: "",
+    txnDate: "",
+    fromDate: null,
+    toDate: null,
+    tripIds: [],
+    trpData: [],
+    miles: {
+      tripsTotal: 0,
+      driverTotal: 0,
+      tripsLoaded: 0,
+      driverLoaded: 0,
+      tripsEmpty: 0,
+      driverEmpty: 0,
+      tripsTeam: 0,
+      driverHours: 0,
+      teamHours: 0,
+      totalHours: 0,
+      drivers: [],
+      driverLoadedTeam: 0,
+      driverEmptyTeam: 0,
+    },
+    addition: [],
+    deduction: [],
+    additionTotal: 0,
+    deductionTotal: 0,
+    taxObj: {
+      gstPrcnt: 0,
+      pstPrcnt: 0,
+      hstPrcnt: 0,
+      gstAmount: 0,
+      pstAmount: 0,
+      hstAmount: 0,
+      carrLocalTax: 0,
+      carrLocalAmount: 0,
+      carrFedTax: 0,
+      carrFedAmount: 0,
+    },
+    paymentTotal: 0,
+    taxes: 0,
+    subTotal: 0,
+    finalTotal: 0,
+    fuelAdd: 0,
+    fuelDed: 0,
+    status: "unpaid",
+    paymentLinked: false,
+    pendingPayment: 0,
+    currency: "CAD",
+    paymentInfo: {
+      lMiles: 0,
+      lMileTeam: 0,
+      eMileTeam: 0,
+      rate: 0,
+      eMiles: 0,
+      pRate: 0,
+      dRate: 0,
+      pType: "",
+    },
+    fuelIds: [],
+    fuelData: [],
+    transactionLog: [],
+  };
+  expenses = [];
+  tripsObj = [];
+  accounts = [];
+  operatorDetail = {
+    cName: "",
+  };
 
-    noRecordMsg: string = Constants.NO_RECORDS_FOUND;
-    settlementID = '';
-    driverDetail = {
-        firstName: '',
-        lastName: '',
-        paymentDetails:{
-            paymentType: ''
+  entityName = "";
+  entityPaymentType = "";
+  accountsObjects = {};
+  accountsIntObjects = {};
+  payments = [];
+  showModal = true;
+  selectedFuelEnteries = [];
+
+  constructor(
+    private accountService: AccountService,
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    private listService: ListService
+  ) {}
+
+  ngOnInit() {
+    this.settlementID = this.route.snapshot.params[`settlementID`];
+    this.fetchSettlementDetail();
+    this.fetchTrips();
+    this.fetchAccountsByIDs();
+    this.fetchAccountsByInternalIDs();
+    this.fetchPayments();
+  }
+
+  fetchSettlementDetail() {
+    this.accountService
+      .getData(`settlement/detail/${this.settlementID}`)
+      .subscribe((result: any) => {
+        this.settlementData = result[0];
+        this.settlementData.transactionLog.map((v: any) => {
+          v.type = v.type.replace("_", " ");
+        });
+        if (this.settlementData.paymentInfo) {
+          this.entityPaymentType = this.settlementData.paymentInfo.pType;
         }
-    };
-    settlementData = {
-        type: null,
-        entityId: null,
-        setNo: '',
-        txnDate: null,
-        fromDate: null,
-        toDate: null,
-        tripIds: [],
-        miles: {
-            tripsTotal: 0,
-            driverTotal: 0,
-            tripsLoaded: 0,
-            driverLoaded: 0,
-            tripsEmpty: 0,
-            driverEmpty: 0,
-            tripsTeam: 0,
-            driverHours: 0,
-            teamHours: 0,
-            totalHours: 0
-        },
-        addition: [],
-        deduction: [],
-        additionTotal: 0,
-        deductionTotal: 0,
-        paymentTotal: 0,
-        taxes: 0,
-        finalTotal: 0,
-        subTotal: 0,
-        transactionLog: [],
-        paymentInfo:{
-            lMiles: 0,
-            lMileTeam: 0,
-            eMileTeam: 0,
-            rate: 0,
-            eMiles: 0,
-            pRate: 0,
-            dRate: 0,
-            pType: '',
-            // drivers: [],
+        if (this.settlementData.type === "driver") {
+          this.fetchDriverDetail(this.settlementData.entityId);
+        } else {
+          this.fetchContact(this.settlementData.entityId);
         }
-    }
-    expenses = [];
-    tripsObj = [];
-    accounts = [];
-    operatorDetail = {
-        cName: '',
-    };
+        this.fetchSelectedFuelExpenses();
+      });
+  }
 
-    entityName = "";
-    entityPaymentType = "";
-    accountsObjects = {};
-    accountsIntObjects = {};
-    payments = [];
-    constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService) { }
+  fetchDriverDetail(driverID) {
+    this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
+      this.driverDetail = result.Items[0];
+      this.entityName = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
+    });
+  }
 
-    ngOnInit() {
-        this.settlementID = this.route.snapshot.params[`settlementID`];
-        this.fetchSettlementDetail();
-        this.fetchTrips();
-        this.fetchAccountsByIDs();
-        this.fetchAccountsByInternalIDs();
-        this.fetchPayments();
-    }
+  fetchContact(contactID) {
+    this.apiService
+      .getData(`contacts/detail/${contactID}`)
+      .subscribe((result: any) => {
+        this.operatorDetail = result.Items[0];
+        this.entityName = this.operatorDetail.cName;
+      });
+  }
 
-    fetchSettlementDetail() {
-        this.accountService.getData(`settlement/detail/${this.settlementID}`)
-            .subscribe((result: any) => {
-                this.settlementData = result[0];
-                this.settlementData.transactionLog.map((v: any) => {
-                  v.type = v.type.replace('_', ' ');
-                });
-                if(this.settlementData.paymentInfo) {
-                    this.entityPaymentType = this.settlementData.paymentInfo.pType;
-                }
-                if (this.settlementData.type === 'driver') {
-                    this.fetchDriverDetail(this.settlementData.entityId);
-                } else {
-                    this.fetchContact(this.settlementData.entityId);
-                }
-            });
-    }
+  fetchTrips() {
+    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
+      this.tripsObj = result;
+    });
+  }
 
-    fetchDriverDetail(driverID) {
-        this.apiService.getData(`drivers/${driverID}`)
-            .subscribe((result: any) => {
-                this.driverDetail = result.Items[0];
-                this.entityName  = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
-            });
-    }
-
-    fetchContact(contactID) {
-        this.apiService.getData(`contacts/detail/${contactID}`)
-            .subscribe((result: any) => {
-                this.operatorDetail = result.Items[0];
-                this.entityName  = this.operatorDetail.cName;
-            });
-    }
-
-    fetchTrips() {
-        this.apiService.getData(`trips/get/list`)
-            .subscribe((result: any) => {
-                this.tripsObj = result;
-            });
-    }
-
-    fetchAccountsByIDs() {
-      this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
+  fetchAccountsByIDs() {
+    this.accountService
+      .getData("chartAc/get/list/all")
+      .subscribe((result: any) => {
         this.accountsObjects = result;
       });
-    }
+  }
 
-    fetchAccountsByInternalIDs() {
-      this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
+  fetchAccountsByInternalIDs() {
+    this.accountService
+      .getData("chartAc/get/internalID/list/all")
+      .subscribe((result: any) => {
         this.accountsIntObjects = result;
       });
+  }
+
+  fetchPayments() {
+    this.accountService
+      .getData(`driver-payments/settlement/${this.settlementID}`)
+      .subscribe((result: any) => {
+        result.map((v) => {
+          let obj = {
+            paymentNo: v.paymentNo,
+            txnDate: v.txnDate,
+            amount: 0,
+          };
+          v.settlData.map((k) => {
+            if (k.settlementId === this.settlementID) {
+              obj.amount += Number(k.paidAmount);
+            }
+          });
+
+          this.payments.push(obj);
+          this.payments.sort((a, b) => {
+            return (
+              new Date(a.txnDate).valueOf() - new Date(b.txnDate).valueOf()
+            );
+          });
+        });
+      });
+  }
+
+  showPreviewModal() {
+    this.showModal = true;
+    let obj = {
+      showModal: this.showModal,
+      settlementData: this.settlementData,
+      entityName: this.entityName,
+      fuelEnteries: this.selectedFuelEnteries,
+    };
+    this.listService.showSettlementsDetailPreview(obj);
+  }
+
+  async fetchSelectedFuelExpenses() {
+    if (this.settlementData.fuelIds.length > 0) {
+      let fuelIDs = encodeURIComponent(
+        JSON.stringify(this.settlementData.fuelIds)
+      );
+      let result = await this.apiService
+        .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
+        .toPromise();
+      result.map((k) => {
+        k.fuelID = k.data.fuelID;
+        k.fuelDate = k.data.date;
+        k.cityName = k.data.city;
+        k.locationCountry = k.data.country;
+        k.fuelCardNumber = k.data.cardNo;
+        k.unitOfMeasure = k.data.uom;
+        k.subTotal = k.data.amt;
+        k.billingCurrency = k.data.currency;
+        k.type = k.data.type;
+        this.settlementData.fuelData.map((v) => {
+          if (v.fuelID === k.fuelID) {
+            k.action = v.action === "add" ? "Added" : "Deducted";
+            if (v.convert) {
+              k.convert = v.convert;
+              k.total = v.actAmount;
+              k.convertRate = v.convertRate;
+              k.currency = this.settlementData.currency;
+              k.subTotal = v.amount;
+            } else {
+              k.convert = false;
+            }
+          }
+        });
+      });
+      this.selectedFuelEnteries = result;
+      this.selectedFuelEnteries.sort(function compare(a, b) {
+        let dateA: any = new Date(a.fuelDate);
+        let dateB: any = new Date(b.fuelDate);
+        return dateA - dateB;
+      });
     }
-
-    fetchPayments() {
-        this.accountService.getData(`driver-payments/settlement/${this.settlementID}`)
-            .subscribe((result: any) => {
-                result.map((v) => {
-                    let obj = {
-                        paymentNo: v.paymentNo,
-                        txnDate: v.txnDate,
-                        amount: 0
-                    }
-                    v.settlData.map((k) => {
-                        if(k.settlementId === this.settlementID) {
-                            obj.amount += Number(k.paidAmount);
-                        }
-                    })
-
-                    this.payments.push(obj);
-                    this.payments.sort((a, b) => {
-                        return (
-                          new Date(a.txnDate).valueOf() - new Date(b.txnDate).valueOf()
-                        );
-                    });
-                })
-            });
-    }
-
+  }
 }

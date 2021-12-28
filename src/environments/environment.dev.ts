@@ -2,16 +2,17 @@ export const environment = {
   production: true,
   isFeatureEnabled: true,
   isFleetEnabled: true,
-  isDispatchEnabled: true,
+  isDispatchEnabled: false,
   isComplianceEnabled: false,
-  isManageEnabled: true,
-  isSafetyEnabled: true,
-  isAccountsEnabled: true,
+  isManageEnabled: false,
+  isSafetyEnabled: false,
+  isAccountsEnabled: false,
   isReportsEnabled: true,
-  
+  isUserRoles:true,
+
   BaseUrl: 'https://fleetservice.ap-south-1.fleethawks.com/api/v1/',
   AssetURL: 'https://fh-cloud-service-uploads.s3.us-east-2.amazonaws.com',
-  AccountServiceUrl: ' https://accounts.ap-south-1.fleethawks.com/api/v1/',
+ AccountServiceUrl: 'https://accounts.ap-south-1.fleethawks.com/api/v1/',
   SafetyServiceUrl: 'https://safety.ap-south-1.fleethawks.com/api/v1/',
 
   temp: 'search',
@@ -37,13 +38,14 @@ export const environment = {
     region: 'ap-south-1'
   },
   HOSTNAME: 'myhome.anterbox.com',
-  PORT : 9001,
-  MQTTPATH : '/',
+  PORT: 9001,
+  MQTTPATH: '/',
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
   googleConfig: {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
-  }
+  },
+  VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss'
 
 };

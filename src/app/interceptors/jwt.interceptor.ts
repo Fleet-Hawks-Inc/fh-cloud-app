@@ -20,7 +20,9 @@ const whiteListedUrls = [
   'cities/state/',
   'carriers/add',
   'carriers/onBoard',
-  'pcMiles/onboard/suggestions/'];
+  'pcMiles/onboard/suggestions/',
+  'location/share/get'
+];
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
   headers;
@@ -47,7 +49,6 @@ export class JwtInterceptor implements HttpInterceptor {
             setHeaders: {
               //'Content-Type': 'application/json',  //API Service decides the type
               Authorization: `Bearer ${jwt}`,
-              'fh-carrier-id': isCarrier
             }
           });
           return next.handle(withAuthRequest);

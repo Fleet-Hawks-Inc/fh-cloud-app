@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {environment} from '../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Auth } from 'aws-amplify';
-import {EMPTY, from} from 'rxjs';
-import {switchMap} from 'rxjs/internal/operators';
+import { EMPTY, from } from 'rxjs';
+import { switchMap } from 'rxjs/internal/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -15,6 +15,7 @@ export class ApiService {
   public BaseUrl = environment.BaseUrl;
   public AssetUrl = environment.AssetURL;
   public AccountService = environment.AccountServiceUrl;
+  public isUserRoles=environment.isUserRoles
   private httpOptions;
 
   private httpOptionsOld = {
@@ -28,7 +29,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.jwt = localStorage.getItem('jwt');
-   //
+    //
     // from(Auth.currentSession())
     //     .pipe(
     //         switchMap((auth: any) => { // switchMap() is used instead of map().
@@ -47,47 +48,49 @@ export class ApiService {
   }
 
   getJwt(url: string, data) {
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    return this.http.post(this.BaseUrl + url , data , this.httpOptions);
+    return this.http.post(this.BaseUrl + url, data, this.httpOptions);
 
   }
 
 
   postData(url: string, data, formData: boolean = false) {
     let headers: object;
-    if(formData){
-      headers =  {headers: {}}
+    if (formData) {
+      headers = { headers: {} }
     }
     else {
-      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     }
 
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url, data, headers);
 
   }
 
   putData(url: string, data, formData: boolean = false) {
     let headers: object;
-    if(formData){
-      headers =  {headers: {}}
+    if (formData) {
+      headers = { headers: {} }
     }
     else {
-      headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})};
+      headers = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     }
 
-    return this.http.put<any>(this.BaseUrl + url , data , headers);
+    return this.http.put<any>(this.BaseUrl + url, data, headers);
 
   }
   getData(url: string) {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    let isCarrier = localStorage.getItem('carrierID') !=null ? localStorage.getItem('carrierID') : '';
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier})
+    let isCarrier = localStorage.getItem('carrierID') != null ? localStorage.getItem('carrierID') : '';
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'fh-carrier-id': isCarrier })
     };
 
-    return this.http.get<any>(this.BaseUrl + url , headers);
+    return this.http.get<any>(this.BaseUrl + url, headers);
   }
 
   deleteData(url: string) {
@@ -95,29 +98,30 @@ export class ApiService {
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    return this.http.delete<any>(this.BaseUrl + url , headers);
+    return this.http.delete<any>(this.BaseUrl + url, headers);
   }
 
 
   getHeaders() {
     from(Auth.currentSession())
-        .pipe(
-            switchMap((auth: any) => { // switchMap() is used instead of map().
+      .pipe(
+        switchMap((auth: any) => { // switchMap() is used instead of map().
 
-              const jwt = auth.accessToken.jwtToken;
+          const jwt = auth.accessToken.jwtToken;
 
-              this.httpOptions = {
-                headers: new HttpHeaders({
-                  'Authorization': `Bearer ${jwt}`,
-                  'Content-Type': 'application/json'
-                })
-              };
-              return EMPTY;
-
+          this.httpOptions = {
+            headers: new HttpHeaders({
+              'Authorization': `Bearer ${jwt}`,
+              'Content-Type': 'application/json'
             })
-        ).subscribe();
+          };
+          return EMPTY;
+
+        })
+      ).subscribe();
   }
 
   /*
@@ -138,18 +142,18 @@ export class ApiService {
     }
   }
 
-  checkIfUserActive=async()=>{
+  checkIfUserActive = async () => {
     try {
       const response: any = await Auth.currentSession();
       if (response) {
-        
-        if(response.idToken.payload.isUserActive==0){
+
+        if (response.idToken.payload.isUserActive == 0) {
           return false
         }
-        else{
+        else {
           return true
         }
-      } 
+      }
     } catch (error) {
       return false
 
@@ -157,18 +161,64 @@ export class ApiService {
 
   }
 
+  async checkAccess() {
+    if(this.isUserRoles){
+    const user = (await Auth.currentSession()).getIdToken().payload;
+    user.userRoles = user.userRoles.split(',')
+
+    if (user.userRoles.includes("orgAdmin") || user.userRoles.includes("role_view_admin") || user.userRoles.includes("role_super_admin")) {
+      localStorage.setItem("isDispatchEnabled", "true")
+      localStorage.setItem("isComplianceEnabled", "false")
+      localStorage.setItem("isSafetyEnabled", "true")
+      localStorage.setItem("isAccountsEnabled", "true")
+      localStorage.setItem("isManageEnabled", "true")
+      return
+    }
+    if (user.userRoles.includes("role_safety")) {
+      localStorage.setItem("isComplianceEnabled", "false")
+      localStorage.setItem("isSafetyEnabled", "true")
+    }
+    if (user.userRoles.includes("role_dispatch")) {
+      localStorage.setItem("isDispatchEnabled", "true")
+    }
+    if (user.userRoles.includes("role_accounts")) {
+      localStorage.setItem("isAccountsEnabled", "true")
+    }
+    
+  }
+  else{
+    localStorage.setItem("isDispatchEnabled", "true")
+    localStorage.setItem("isComplianceEnabled", "false")
+    localStorage.setItem("isSafetyEnabled", "true")
+    localStorage.setItem("isAccountsEnabled", "true")
+    localStorage.setItem("isManageEnabled", "true")
+  }
+    // switch(true){
+    //   case user.userRoles.includes("role_safety"):
+    //     environment.isSafetyEnabled= true;
+    //     environment.isComplianceEnabled=true;
+    //     break;
+    //   case user.userRoles.includes("role_dispatch"):
+    //     environment.isDispatchEnabled= true;
+    //     break;
+    //   case user.userRoles.includes("role_accounts"):
+    //     environment.isAccountsEnabled=true;
+    //     break;
+    //       }
+  }
   getDatatablePostData(url: string, data) {
     // this.getHeaders();
-    const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json'})
+    const headers = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
     // const headers =  {headers: new  HttpHeaders({ 'Content-Type': 'application/json',
     //   'x-auth-token': this.jwt})
     // };
-    return this.http.post(this.BaseUrl + url , data , headers);
+    return this.http.post(this.BaseUrl + url, data, headers);
 
   }
 
-getCarrierUserName(){
-  return localStorage.getItem('currentLoggedUserName')
-}
+  getCarrierUserName() {
+    return localStorage.getItem('currentLoggedUserName')
+  }
 }

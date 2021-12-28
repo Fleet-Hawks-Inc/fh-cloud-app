@@ -7,7 +7,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { MultiSidebarComponents } from './sidebars/multi-sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { FixedRightSidebarComponent } from './sidebars/fixed-right-sidebar/fixed-right-sidebar.component';
-import { AddressBookComponent } from './popups/address-book/address-book.component';
 import { SharedModalsComponent } from './popups/shared-modals/shared-modals.component';
 
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -25,7 +24,7 @@ import { AbsoluteValuePipe } from '../pipes/absolute-value.pipe';
 import { NewAddressBookComponent } from './popups/new-address-book/new-address-book.component';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
  */
@@ -96,8 +95,7 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MultiSidebarComponents,
     HeaderComponent,
     FixedRightSidebarComponent,
-    AddressBookComponent,    
-    AddServiceProgramComponent,    
+    AddServiceProgramComponent,
     SharedModalsComponent,
     AllCarriersComponent,
     MustMatchDirective,

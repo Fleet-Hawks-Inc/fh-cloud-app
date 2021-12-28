@@ -68,7 +68,7 @@ export class CompanyDocumentsComponent implements OnInit {
   suggestions = [];
   currentID = null;
   uploadeddoc = [];
-  newDoc: any;
+  newDoc: any = [];
   tripsObjects: any = {};
   currentUser;
   docError = false; // to show error if doc is not uploaded
@@ -106,6 +106,7 @@ export class CompanyDocumentsComponent implements OnInit {
       });
     }
   }, 800);
+    loaded: any = false;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -130,15 +131,15 @@ export class CompanyDocumentsComponent implements OnInit {
   fetchTrips() {
     this.apiService.getData('trips').subscribe((result: any) => {
       this.alltrips = result.Items;
-        result.Items.forEach((element) => {
-          if(element.isDeleted === 0) {
-            this.trips.push(element);
-          }
+      result.Items.forEach((element) => {
+        if (element.isDeleted === 0) {
+          this.trips.push(element);
+        }
 
-          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
-            this.documentData.tripID = null;
-          }
-        });
+        if (element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+          this.documentData.tripID = null;
+        }
+      });
     });
   }
 
@@ -175,17 +176,17 @@ export class CompanyDocumentsComponent implements OnInit {
       let ext = name[name.length - 1].toLowerCase();
 
 
-      if (ext != 'jpg' && ext != 'pdf' && ext != 'doc' && ext != 'docx' && ext != 'xls' && ext != 'xlsx' && ext != 'sxc'
-        && ext != 'sxw' && ext != 'jpeg' && ext != 'png') {
+      if (ext !== 'jpg' && ext !== 'pdf' && ext !== 'jpeg' && ext !== 'png') {
         $('#uploadedDocs').val('');
         condition = false;
-        this.toastr.error('Only pdf, doc, docx ,xls, xlsx, sxc, sxw, jpg, jpeg and png file formats are allowed');
+        this.toastr.error('Only pdf, jpg, jpeg and png file formats are allowed');
         return false;
       }
     }
 
     if (condition) {
       this.uploadeddoc = [];
+
       this.uploadeddoc = files;
     }
   }
@@ -221,9 +222,9 @@ export class CompanyDocumentsComponent implements OnInit {
       for (let i = 0; i < this.uploadeddoc.length; i++) {
         formData.append('uploadedDocs', this.uploadeddoc[i]);
       }
+
       // append other fields
       formData.append('data', JSON.stringify(this.documentData));
-
       this.apiService.postData('documents', formData, true).
 
         subscribe({
@@ -241,7 +242,7 @@ export class CompanyDocumentsComponent implements OnInit {
                   this.submitDisabled = false;
                   // this.throwErrors();
                 },
-                error: () => {this.submitDisabled = false; },
+                error: () => { this.submitDisabled = false; },
                 next: () => { },
               });
           },
@@ -252,6 +253,9 @@ export class CompanyDocumentsComponent implements OnInit {
             this.documentData.documentNumber = '';
             this.documentData.docType = null;
             this.documentData.tripID = null;
+            this.documentData.uploadedDocs = [];
+            this.uploadeddoc = [];
+            $('#uploadedDocs').val('');
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
@@ -292,12 +296,14 @@ export class CompanyDocumentsComponent implements OnInit {
     * Fetch Document details before updating
     */
   editDocument(id: any) {
+
     this.spinner.show();
     this.currentID = id;
     this.docError = false;
     this.ifEdit = true;
     this.modalTitle = 'Edit';
-    this.newDoc = '';
+    this.newDoc = [];
+    
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
@@ -306,7 +312,7 @@ export class CompanyDocumentsComponent implements OnInit {
         this.spinner.hide();
         this.documentData.tripID = result.tripID;
         this.alltrips.forEach((element) => {
-          if(element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
+          if (element.isDeleted === 1 && element.tripID === this.documentData.tripID) {
             this.documentData.tripID = null;
           }
         });
@@ -318,7 +324,66 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
         // this.uploadeddoc = result.uploadedDocs;
-        this.newDoc = `${this.Asseturl}/${result.carrierID}/${result.uploadedDocs}`;
+                if (
+          result.uploadedDocs !== undefined &&
+          result.uploadedDocs.length > 0
+        ) {
+          result.uploadedDocs.forEach((x: any) => {
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              const obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            } else {
+              const obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            }
+          });
+        }
+        
+/*
+        if (result.uploadedDocs.length > 0) {
+          result.uploadedDocs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.newDoc.push(obj);
+          });
+        }
+*/
       });
     $('#addDocumentModal').modal('show');
   }
@@ -370,6 +435,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.documentData.docType = null;
             this.documentData.tripID = '';
             this.documentData.uploadedDocs = [];
+            $('#uploadedDocs').val('');
             // this.documentData.documentName = '';
             this.documentData.description = '';
             this.lastEvaluatedKey = '';
@@ -400,52 +466,36 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  initDataTable() {
-    this.spinner.show();
-
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + "&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+  async initDataTable() {
+    if (this.lastEvaluatedKey !== 'end'){
+    this.apiService.getData(`documents/fetch/records?categoryType=company&searchValue=${this.filterValues.searchValue}&from=${this.filterValues.start}&to=${this.filterValues.end}&lastKey=${this.lastEvaluatedKey}`)
       .subscribe((result: any) => {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.suggestions = [];
-        this.getStartandEndVal();
-        this.documents = result['Items'];
-        if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
-          this.docStartPoint = 1;
-          this.docEndPoint = this.totalRecords;
-        }
-
-        if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g, '--');
-          this.docNext = false;
-          // for prev button
-          if (!this.docPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.docPrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.docNext = true;
-          this.lastEvaluatedKey = '';
-          this.docEndPoint = this.totalRecords;
-        }
-
-        if (this.totalRecords < this.docEndPoint) {
-          this.docEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.docDraw > 0) {
-          this.docPrev = false;
-        } else {
-          this.docPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+        if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.docSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.documents = this.documents.concat(result.Items);
+                this.loaded = true;
+            }
+        // this.suggestions = [];
+        // this.getStartandEndVal();
+        // this.documents = result['Items'];
+    });
+    }
   }
+  
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
+        }
+        this.loaded = false;
+      }
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;

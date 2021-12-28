@@ -17,17 +17,18 @@ export class AddAccountComponent implements OnInit {
   receivedActID = '';
   actName = null;
   actType = null;
+  mainactType = null;
   actNo: number;
   actDesc: '';
   actDash = false;
+  actClassID = null;
   opnBalCAD = 0;
   opnBalTypeCAD = 'debit';
-  actDateCAD: '';
+  actDate: '';
   closingAmtCAD: number;
   transactionLogCAD = [];
   opnBalUSD = 0;
   opnBalTypeUSD = 'debit';
-  actDateUSD: '';
   closingAmtUSD: number;
   transactionLogUSD = [];
   transLogCAD = false;
@@ -40,28 +41,39 @@ export class AddAccountComponent implements OnInit {
   Error = '';
   Success = '';
   submitDisabled = false;
+  actNoError = false;
+  actNameError = false;
+  classData = {
+    acClassName: '',
+    acClassDesc: ''
+  };
+  classDisabled = false;
+  acClasses = [];
   constructor(
     private accountService: AccountService,
     private listService: ListService,
     private toaster: ToastrService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getAcClasses();
+  }
   addAccount() {
     this.submitDisabled = true;
     const data = {
       actName: this.actName,
       actType: this.actType,
       actNo: this.actNo,
+      actClassID: this.actClassID,
+      mainactType: this.mainactType,
       actDesc: this.actDesc,
+      actDash: this.actDash,
       opnBalCAD: this.opnBalCAD,
       opnBalTypeCAD: this.opnBalTypeCAD,
-      actDash: this.actDash,
-      actDateCAD: this.actDateCAD,
+      actDate: this.actDate,
       transactionLogCAD: [],
       closingAmtCAD: 0,
       opnBalUSD: this.opnBalUSD,
       opnBalTypeUSD: this.opnBalTypeUSD,
-      actDateUSD: this.actDateUSD,
       transactionLogUSD: [],
       closingAmtUSD: 0,
       internalActID: '',
@@ -97,19 +109,20 @@ export class AddAccountComponent implements OnInit {
         this.listService.fetchChartAccounts();
         this.actName = '';
         this.actType = '';
+        this.mainactType = '';
+        this.actClassID = '';
         this.internalActID = '';
         this.actNo = null;
         this.actDash = false;
         this.actDesc = '';
         this.opnBalCAD = null;
         this.opnBalTypeCAD = 'debit';
-        this.actDateCAD = '';
+        this.actDate = '';
         this.closingAmtCAD = null;
         this.transactionLogCAD = [];
         this.transLogUSD = false;
         this.opnBalUSD = null;
         this.opnBalTypeUSD = 'debit';
-        this.actDateUSD = '';
         this.closingAmtUSD = null;
         this.transactionLogUSD = [];
         this.transLogUSD = false;
@@ -128,6 +141,67 @@ export class AddAccountComponent implements OnInit {
     this.transLogCAD = false;
     this.transLogUSD = false;
   }
-
-
+  getAcClasses() {
+    this.accountService.getData('chartAc/get/acClasses').subscribe((res) => {
+      this.acClasses = res;
+    });
+  }
+  validateAcNumber(actNo) {
+    this.accountService.getData(`chartAc/validate/accountNumber/${actNo}`).subscribe((res) => {
+      if (res === true) {
+        this.actNoError = true;
+        this.submitDisabled = true;
+      } else {
+        this.actNoError = false;
+        this.submitDisabled = true;
+      }
+    });
+  }
+  validateAcName(actName) {
+    actName = actName.replace(/\s+/g, ' ').trim(); // trim the double or more spaces if in between words
+    this.accountService.getData(`chartAc/validate/accountName/${actName}`).subscribe((res) => {
+      if (res === true) {
+        this.actNameError = true;
+      } else {
+        this.actNameError = false;
+      }
+    });
+  }
+  addAcClass() {
+    this.classDisabled = true;
+    this.errors = {};
+    this.hasError = false;
+    this.hasSuccess = false;
+    this.accountService.postData('chartAc/acClass/add', this.classData).subscribe({
+      complete: () => { },
+      error: (err: any) => {
+        from(err.error).pipe(map((val: any) => {
+          val.message = val.message.replace(/".*"/, 'This Field');
+          this.errors[val.context.key] = val.message;
+        })).subscribe({
+          complete: () => {
+            this.classDisabled = false;
+          },
+          error: () => {
+            this.classDisabled = false;
+          },
+          next: () => { },
+        });
+      },
+      next: (res) => {
+        this.getAcClasses();
+        this.classDisabled = false;
+        this.response = res;
+        $('#addAccountClassModal').modal('hide');
+        this.classData = {
+          acClassName: '',
+          acClassDesc: ''
+        };
+        this.toaster.success('Account class added successfully.');
+      },
+    });
+  }
+  refreshClass() {
+    this.getAcClasses();
+  }
 }

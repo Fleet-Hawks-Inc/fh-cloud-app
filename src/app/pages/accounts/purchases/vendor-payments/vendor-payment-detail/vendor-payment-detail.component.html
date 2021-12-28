@@ -1,171 +1,230 @@
 <section class="body">
-  <div class="inner-wrapper">
-    <section role="main" class="content-body pl-0 pr-0 pt-0">
-      <header class="page-header pr19 pl7">
-         <div class="row" style="padding-top:10px;">
-            <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-               <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Vendor Payment# - 1279430</h4>
+   <div class="inner-wrapper">
+      <section role="main" class="content-body pl-0 pr-0 pt-0">
+         <header class="page-header pr19 pl7">
+            <div class="row" style="padding-top:10px;">
+               <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
+                  <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Vendor
+                     Payment# - {{ paymentData.paymentNo }}</h4>
+               </div>
+               <div class="col-md-8 col-lg-8 text-right pr-1">
+                  <a routerLink="/accounts/purchases/vendor-payments/list"
+                     class="btn btn-sm btn-default"><i class="fas fa-list"></i>
+                     Payment List</a>
+               </div>
             </div>
-            <div class="col-md-8 col-lg-8 text-right pr-1">
-               <a routerLink="/accounts/purchases/vendor-payments/list" class="btn btn-sm btn-default"><i class="fas fa-list"></i> Payment List</a>
-            </div>
-         </div>
-      </header>
+         </header>
 
-      <section class="m-2">
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-12">
-                     <div class="row">
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="far fa-calendar-alt text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">Jun 23, 2020</p>
-                              <p class="mb-0">DATE</p>
-                           </div>
-                        </div>
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="fa fa-user text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">Manjot</p>
-                              <p class="mb-0">VENDOR</p>
-                           </div>
-                        </div>
+         <section class="m-2">
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row">
+                        <div class="col-lg-12">
+                           <div class="row">
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cmaindiv">
+                                    <i class="far fa-calendar-alt text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold
+                                       text-dark">{{ paymentData.txnDate |
+                                       date:"yyyy/MM/dd" }}</p>
+                                    <p class="mb-0">DATE</p>
+                                 </div>
+                              </div>
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cmaindiv">
+                                    <i class="fa fa-user text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold
+                                       text-dark">{{ vendorName }}</p>
+                                    <p class="mb-0">VENDOR</p>
+                                 </div>
+                              </div>
 
-                        <div class="col-md-4 col-lg-4">
-                           <div class="text-center p-4 cmaindiv">
-                              <i class="fas fa-money-bill-wave text-7"></i>
-                              <br>
-                              <p class="mb-0 text-5 font-weight-bold text-dark">1000 CAD</p>
-                              <p class="mb-0">AMOUNT</p>
+                              <div class="col-md-4 col-lg-4">
+                                 <div class="text-center p-4 cmaindiv">
+                                    <i class="fas fa-money-bill-wave text-7"></i>
+                                    <br>
+                                    <p class="mb-0 text-5 font-weight-bold
+                                       text-dark">{{
+                                       paymentData.total.finalTotal |
+                                       number : '1.2-2' }} {{
+                                       paymentData.currency }}</p>
+                                    <p class="mb-0">AMOUNT</p>
+                                 </div>
+                              </div>
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
-             </div>
-           </div>
-         </div>
-         
-         <div class="row mb-3">
-           <div class="col-lg-12">
-             <div class="bg-white p-3 text-dark">
-               <div class="form-group row">
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                           <table class="table table-bordered table-responsive-lg">
-                              <tbody>
-                              <tr>
-                                    <td  width="40%" class="back-color-gray font-weight-bold">Purchase Order(s)</td>
-                                    <td width="60%">1234,89778,888</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Payment Reference#</td>
-                                    <td>3078686</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Advance</td>
-                                    <td>0.00</td>
-                                 </tr>
-                              </tbody>
-                           </table>
+            </div>
+
+            <div class="row mb-3">
+               <div class="col-lg-12">
+                  <div class="bg-white p-3 text-dark">
+                     <div class="form-group row">
+                        <div class="col-lg-6">
+                           <div class="row">
+                              <div class="col-lg-12">
+                                 <table class="table table-bordered
+                                    table-responsive-lg">
+                                    <tbody>
+                                       <tr>
+                                          <td width="40%" class="back-color-gray
+                                             font-weight-bold">Purchase Bill(s)</td>
+                                          <td width="60%">
+                                             <span *ngFor="let data of
+                                                paymentData.billData; let
+                                                i=index">
+                                                {{ bills[data.billID] }}
+                                                <span
+                                                   *ngIf="paymentData.billData.length>
+                                                   0 && i
+                                                   <paymentData.billData.length-1">,</span>
+                                                </span>
+                                             </td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray
+                                                font-weight-bold">Payment
+                                                Reference#</td>
+                                             <td>{{ paymentData.refNo ?
+                                                paymentData.refNo : '-' }}</td>
+                                          </tr>
+                                          <tr>
+                                             <td class="back-color-gray
+                                                font-weight-bold">Advance</td>
+                                             <td>{{ paymentData.total.advTotal |
+                                                number : '1.2-2' }} {{
+                                                paymentData.currency }}</td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="row">
+                                 <div class="col-lg-12">
+                                    <table class="table table-bordered
+                                       table-responsive-lg">
+                                       <tbody>
+                                          <tr class="text-capitalize">
+                                             <td width="40%"
+                                                class="back-color-gray
+                                                font-weight-bold">Payment Mode</td>
+                                             <td width="60%">{{
+                                                paymentData.payMode ?
+                                                paymentData.payMode : '-'
+                                                }}</td>
+                                          </tr>
+                                          <tr class="text-capitalize">
+                                             <td class="back-color-gray
+                                                font-weight-bold">{{
+                                                paymentData.payMode }}
+                                                Reference#</td>
+                                             <td>{{ paymentData.payModeNo ?
+                                                paymentData.payModeNo : '-' }}</td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="row">
+                                 <div class="col-lg-12">
+                                    <table class="table table-bordered
+                                       table-hover">
+                                       <thead>
+                                          <tr>
+                                             <th>Purchase Bill#</th>
+                                             <th>Amount</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr *ngIf="paymentData.billData.length
+                                             === 0" class="text-center">
+                                             <td colspan="2">
+                                                {{ dataMessage }}
+                                             </td>
+                                          </tr>
+                                          <tr *ngFor="let data of
+                                             paymentData.billData">
+                                             <td>{{ bills[data.billID] }}</td>
+                                             <td>{{ data.paidAmount |
+                                                number : '1.2-2' }} {{
+                                                paymentData.currency }}</td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="col-lg-6">
+                              <div class="row">
+                                 <div class="col-lg-12">
+                                    <table class="table table-bordered
+                                       table-hover">
+                                       <thead>
+                                          <tr>
+                                             <th>Account Name</th>
+                                             <th>Debit</th>
+                                             <th>Credit</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          <tr
+                                             *ngIf="paymentData.transactionLog.length
+                                             === 0" class="text-center">
+                                             <td colspan="3">
+                                                {{ dataMessage }}
+                                             </td>
+                                          </tr>
+                                          <tr *ngFor="let data of
+                                             paymentData.transactionLog">
+                                             <td class="text-capitalize">{{
+                                                accountsObjects[data.accountID]
+                                                }}</td>
+                                             <td>
+                                                <span *ngIf="data.trxType ===
+                                                   'debit'">
+                                                   {{ data.amount | number :
+                                                   '1.2-2' }} {{
+                                                   paymentData.currency }}
+                                                </span>
+                                                <span *ngIf="data.trxType !=
+                                                   'debit'">
+                                                   0.00
+                                                </span>
+                                             </td>
+                                             <td>
+                                                <span *ngIf="data.trxType ===
+                                                   'credit'">
+                                                   {{ data.amount | number :
+                                                   '1.2-2' }} {{
+                                                   paymentData.currency }}
+                                                </span>
+                                                <span *ngIf="data.trxType !=
+                                                   'credit'">
+                                                   0.00
+                                                </span>
+                                             </td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              </div>
+                           </div>
                         </div>
                      </div>
                   </div>
-                  <div class="col-lg-6">
-                     <div class="row">
-                        <div class="col-lg-12">
-                           <table class="table table-bordered table-responsive-lg">
-                              <tbody>
-                                 <tr>
-                                    <td width="40%" class="back-color-gray font-weight-bold">Payment Mode</td>
-                                    <td width="60%">Cash</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Cash Reference#</td>
-                                    <td>5767</td>
-                                 </tr>
-                                 <tr>
-                                    <td class="back-color-gray font-weight-bold">Vendor Credit</td>
-                                    <td>0.00</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="col-lg-6">
-                     <div class="row">
-                       <div class="col-lg-12">
-                            <table class="table table-bordered table-hover">
-                            <thead>
-                            <tr>
-                            <th>Purchase Order#</th>
-                            <th>Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                            <td>1234</td>
-                            <td>200 CAD</td>
-                            </tr>
-                            <tr>
-                            <td>89778</td>
-                            <td>400 CAD</td>
-                            </tr>
-                            <tr>
-                            <td>888</td>
-                            <td>400 CAD</td>
-                            </tr>
-                            </tbody>
-                            </table>
-                      </div>
-                   </div>
-                  </div>
-             <div class="col-lg-6">
-             <div class="row">
-                <div class="col-lg-12">
-                   <table class="table table-bordered table-hover">
-                      <thead>
-                      <tr>
-                         <th>Account Name</th>
-                         <th>Debit</th>
-                         <th>Credit</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                         <td>Accounts Payable</td>
-                         <td>1000 CAD</td>
-                         <td>0.00</td>
-                      </tr>
-                      <tr>
-                         <td>Petty Cash</td>
-                         <td>0.00</td>
-                         <td>1000 CAD</td>
-                      </tr>
-                      <tr>
-                         <td>Total</td>
-                         <td>1000 CAD</td>
-                         <td>1000 CAD</td>
-                      </tr>
-                      </tbody>
-                   </table>
-                </div>
-                </div>
-             </div>
                </div>
-             </div>
-           </div>
-         </div>
-      </section>
+            </section>
 
 
+         </section>
+      </div>
    </section>
-  </div>
-</section>

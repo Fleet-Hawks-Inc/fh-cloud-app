@@ -14,6 +14,7 @@ import { Location } from "@angular/common";
 export class AddAdvancePaymentComponent implements OnInit {
   paymentData = {
     paymentNo: "",
+    advType: null,
     paymentTo: null,
     entityId: null,
     amount: "",
@@ -48,6 +49,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   Success: string = "";
   submitDisabled = false;
   paymentID;
+  showModal = false;
 
   constructor(
     private listService: ListService,
@@ -69,6 +71,10 @@ export class AddAdvancePaymentComponent implements OnInit {
     this.fetchOwnerOperators();
     this.fetchEmployee();
     // this.fetchVendor();
+    this.listService.fetchVendors();
+    let vendorList = new Array<any>();
+    this.getValidVendors(vendorList);
+    this.vendors = vendorList;
     // this.fetchCustomer();
     this.listService.fetchChartAccounts();
     this.accounts = this.listService.accountsList;
@@ -84,7 +90,6 @@ export class AddAdvancePaymentComponent implements OnInit {
             this.drivers.push(element);
           }
         });
-        console.log("this.drivers", this.drivers);
       });
   }
   refreshAccount() {
@@ -124,12 +129,16 @@ export class AddAdvancePaymentComponent implements OnInit {
       });
   }
 
-  fetchVendor() {
-    this.apiService
-      .getData(`contacts/get/list/vendor`)
-      .subscribe((result: any) => {
-        this.vendors = result;
+  private getValidVendors(vendorList: any[]) {
+    let ids = [];
+    this.listService.vendorList.forEach((element) => {
+      element.forEach((element2) => {
+        if (element2.isDeleted === 0 && !ids.includes(element2.contactID)) {
+          vendorList.push(element2);
+          ids.push(element2.contactID);
+        }
       });
+    });
   }
 
   fetchCustomer() {
@@ -199,7 +208,10 @@ export class AddAdvancePaymentComponent implements OnInit {
       .getData(`advance/detail/${this.paymentID}`)
       .subscribe((result: any) => {
         this.paymentData = result[0];
-        this.changePaymentMode(this.paymentData.payMode);
+        this.payModeLabel = this.paymentData.payMode.replace("_", " ");
+        if (this.payModeLabel === "eft") {
+          this.payModeLabel = this.payModeLabel.toUpperCase();
+        }
       });
   }
 
@@ -239,5 +251,24 @@ export class AddAdvancePaymentComponent implements OnInit {
 
   resetEntityVal() {
     this.paymentData.entityId = null;
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.amount,
+      type: "advancePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.amount,
+      txnDate: this.paymentData.txnDate,
+      advType: this.paymentData.advType,
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

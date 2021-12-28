@@ -1,7 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { ApiService, ListService } from "src/app/services";
 import * as html2pdf from "html2pdf.js";
+import { NgbModal, NgbModalOptions } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
+import { Auth } from "aws-amplify";
 
 @Component({
   selector: "app-brokerage-pdf",
@@ -9,10 +12,18 @@ import * as html2pdf from "html2pdf.js";
   styleUrls: ["./brokerage-pdf.component.css"],
 })
 export class BrokeragePdfComponent implements OnInit {
+  @ViewChild("ordBrokeragePrev", { static: true })
+  modalContent: TemplateRef<any>;
+
+  @ViewChild("emailBrokerageModal", { static: true })
+  emailBrokerageModal: TemplateRef<any>;
+
   constructor(
     private listService: ListService,
+    private modalService: NgbModal,
+    private toastr: ToastrService,
     private apiService: ApiService
-  ) { }
+  ) {}
   subscription: Subscription;
   brokerage = {
     orderNo: "",
@@ -65,6 +76,7 @@ export class BrokeragePdfComponent implements OnInit {
     phone: "",
     subTotal: 0,
     taxesAmt: 0,
+    orderNumber: "",
   };
   carrierData = {
     name: "",
@@ -73,6 +85,20 @@ export class BrokeragePdfComponent implements OnInit {
     phone: "",
   };
   companyLogo = "";
+  brokEmail = {
+    subject: "",
+    emails: [],
+    sendCopy: false,
+    carrierEmail: "",
+  };
+  emailCopyRef: any;
+  brokEmails = [];
+  isEmail = false;
+  orderID = "";
+  type = "";
+  companyLogoSrc: string;
+  carrierTerms: string;
+  tagLine: string;
 
   ngOnInit() {
     this.subscription = this.listService.brokeragePdfList.subscribe(
@@ -82,25 +108,131 @@ export class BrokeragePdfComponent implements OnInit {
           this.brokerage = res.brokerage;
           this.orderData = res.orderData;
           this.carrierData = res.carrierData;
+          this.companyLogoSrc = res.orderData.carrierData.termsInfo.logo;
+          this.carrierTerms = res.orderData.carrierData.termsInfo.carrierTerms;
+          this.tagLine = res.orderData.carrierData.termsInfo.tagLine;
           this.companyLogo = res.companyLogo;
-          this.generatePDF();
+          this.type = res.type ? res.type : "list";
+          this.brokEmail.carrierEmail = res.carrierEmail
+            ? res.carrierEmail
+            : this.getCurrentUser();
+          this.orderID = res.orderID;
+          this.brokEmail.subject = `Brokerage Order#: ${this.orderData.orderNumber}`;
+          let ngbModalOptions: NgbModalOptions = {
+            backdrop: "static",
+            keyboard: false,
+            windowClass: "ordBrokeragePrev-prog__main",
+          };
+          res.showModal = false;
+          this.modalService
+            .open(this.modalContent, ngbModalOptions)
+            .result.then(
+              (result) => {},
+              (reason) => {}
+            );
         }
       }
     );
   }
 
+  getCurrentUser = async () => {
+    let currentUser = (await Auth.currentSession()).getIdToken().payload;
+    this.brokEmail.carrierEmail = currentUser.email;
+  };
+
   async generatePDF() {
     var data = document.getElementById("print_brokerage");
-    html2pdf(data, {
-      margin: 0,
-      filename: `Carrier Confirmation (${this.brokerage.orderNo})${new Date().getTime()}.pdf`,
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-    });
+    setTimeout(() => {
+      html2pdf(data, {
+        margin: [0.5, 0, 0.5, 0],
+        pagebreak: { mode: "avoid-all", before: "print_brokerage" },
+        filename: `Carrier Confirmation (${
+          this.brokerage.orderNo
+        })${new Date().getTime()}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          logging: true,
+          dpi: 192,
+          letterRendering: true,
+          allowTaint: true,
+          useCORS: true,
+        },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      });
+    }, 0);
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  async openEmailInv() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "order-send__email",
+    };
+    this.modalService.dismissAll();
+    this.emailCopyRef = this.modalService.open(
+      this.emailBrokerageModal,
+      ngbModalOptions
+    );
+  }
+
+  async sendBrokEmail() {
+    this.isEmail = true;
+    let result = await this.apiService
+      .getData(
+        `orders/emailBrokerage/${this.orderID}?data=${encodeURIComponent(
+          JSON.stringify(this.brokEmail)
+        )}`
+      )
+      .toPromise();
+    this.isEmail = false;
+    this.modalService.dismissAll();
+    if (result == null) {
+      this.brokEmail.emails = [];
+      this.toastr.success("Brokerage email send successfully!");
+    }
+  }
+
+  addEmails() {
+    this.brokEmail.emails = [];
+    let isFlag = true;
+    if (this.brokEmails.length === 0) {
+      this.toastr.error("Please enter at least one email");
+      isFlag = false;
+      return;
+    }
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    this.brokEmails.forEach((elem) => {
+      let result = re.test(String(elem.label).toLowerCase());
+      if (!result) {
+        this.toastr.error("Please enter valid email(s)");
+        isFlag = false;
+        return;
+      } else {
+        if (!this.brokEmail.emails.includes(elem.label)) {
+          this.brokEmail.emails.push(elem.label);
+        }
+      }
+    });
+    if (this.brokEmail.subject == "") {
+      this.toastr.error("Please enter subject");
+      isFlag = false;
+      return;
+    }
+
+    if (this.brokEmail.sendCopy) {
+      if (!this.brokEmail.emails.includes(this.brokEmail.carrierEmail)) {
+        this.brokEmail.emails.push(this.brokEmail.carrierEmail);
+      }
+    }
+
+    if (isFlag) {
+      this.sendBrokEmail();
+    }
   }
 }

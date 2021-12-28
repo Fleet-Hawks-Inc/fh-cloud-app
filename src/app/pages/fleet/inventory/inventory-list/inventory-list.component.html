@@ -3,11 +3,11 @@
         display: none;
     }
 </style>
-
 <section class="body">
     <div class="inner-wrapper">
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
+                                <form class="form-horizontal" method="get">
                 <div class="row" *ngIf="currentTab == 'inv'" style="padding-top: 10px">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
@@ -153,6 +153,7 @@
                                 class="fas fa-plus"></i> Add Inventory</a>
                     </div>
                 </div>
+                </form>
             </header>
 
             <section class="m-2">
@@ -176,7 +177,10 @@
                                 <div class="tab-content border-0 p-0 shadow-none" id="myTabContent">
                                     <div class="tab-pane" [ngClass]="{'active show': currentTab == 'inv'}" id="einv" role="tabpanel"
                                         aria-labelledby="all-tab">
-                                        <div class="table-responsive">
+                                        <div>
+                                            <div infiniteScroll [infiniteScrollDistance]="1"
+                                                [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+                                                (scrolled)="onScroll()">
                                             <table class="row-border hover table table-bordered table-striped mb-0">
                                                 <thead>
                                                     <tr>
@@ -184,8 +188,10 @@
                                                         <th class="col2">Item Name</th>
                                                         <th class="col3">Category</th>
                                                         <th class="col4">Vendor</th>
-                                                        <th class="col5">Quantity</th>
                                                         <th class="col7">Unit Cost</th>
+                                                        <th class="col7">Tax</th>
+                                                        <th class="col5">Quantity</th>
+                                                        <th class="col7">Total Cost</th>
                                                         <th class="col8">Warehouse Details</th>
                                                         <th class="col9 extra">Warranty Time</th>
                                                         <th class="col10 extra">Reorder Point</th>
@@ -216,14 +222,22 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{vendors[item.warehouseVendorID]}}
                                                         </td>
+                                                          
+                                                        <td *ngIf="hideShow.unitCost"
+                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                                                             {{item.cost}} {{item.costUnitType}}
+                                                        </td>
+                                                          <td *ngIf="hideShow.unitCost"
+                                                            routerLink="/fleet/inventory/detail/{{item.itemID}}">
+                                                             {{item.tax}} 
+                                                        </td>
                                                         <td *ngIf="hideShow.quantity"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.quantity}}
                                                         </td>
-                                                        
-                                                        <td *ngIf="hideShow.unitCost"
+                                                         <td *ngIf="hideShow.quantity"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
-                                                             {{item.cost}} {{item.costUnitType}}
+                                                            {{item.totalCost}}
                                                         </td>
                                                         <td *ngIf="hideShow.warehouse"
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
@@ -234,7 +248,6 @@
                                                             routerLink="/fleet/inventory/detail/{{item.itemID}}">
                                                             {{item.warrantyTime ? item.warrantyTime : '-'}} {{item.warrantyUnit}}
                                                         </td>
-                                                        
                                                         <td>
                                                             <div class="dropdown dropright">
                                                                 <button class="bg-transparent border-0" type="button"
@@ -254,22 +267,21 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
+                                             <div class="row mt-3 dtPaginate">
+                                                    <div class="col-lg-12 mt-3 text-center"
+                                                        *ngIf="lastItemSK !== 'end' && items.length !== 0">
+                                                        <button type="button" (click)="onScroll()"
+                                                            class="btn btn-success btn-sm text-light">Load
+                                                            More..</button>
+                                                    </div>
+                                                </div>
                                         </div>
-                                        <div class="row mt-3 dtPaginate" *ngIf="items.length > 0">
-                                            <div class="col-6">
-                                                Showing {{ inventoryStartPoint }} to {{ inventoryEndPoint }} of {{
-                                                totalRecords }} enteries
-                                            </div>
-                                            <div class="col-6 text-right">
-                                                <button type="button" class="btn btn-default mr-2"
-                                                    (click)="prevResults('inv')" [disabled]="inventoryPrev">Prev</button>
-                                                <button type="button" class="btn btn-default"
-                                                    (click)="nextResults('inv')" [disabled]="inventoryNext">Next</button>
-                                            </div>
                                         </div>
                                     </div>
-
                                     <div class="tab-pane fade" [ngClass]="{'active show': currentTab == 'rinv'}" id="rinv" role="tabpanel" aria-labelledby="reefer-tab">
+                                         <div infiniteScroll [infiniteScrollDistance]="1"
+                                                [infiniteScrollUpDistance]="1" [infiniteScrollThrottle]="5"
+                                                (scrolled)="onScroll()">
                                         <table class="table table-bordered table-responsive-lg table-striped mb-0"
                                             id="simple-table1">
                                             <thead>
@@ -309,16 +321,16 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div>
-                                    <div class="row mt-3 dtPaginate" *ngIf="requiredItems.length > 0 && currentTab == 'rinv'">
-                                        <div class="col-6">
-                                            Showing {{ requiredInventoryStartPoint }} to {{ requiredInventoryEndPoint }} of {{ totalRecordsRequired }} entries
-                                        </div>
-                                        <div class="col-6 text-right">
-                                            <button type="button" class="btn btn-default mr-2" (click)="prevResults('req')" [disabled]="requiredInventoryPrev">Prev</button>
-                                            <button type="button" class="btn btn-default" (click)="nextResults('req')" [disabled]="requiredInventoryNext">Next</button>
-                                        </div>
-                                    </div>
+                                         <div class="row mt-3 dtPaginate">
+                                                    <div class="col-lg-12 mt-3 text-center"
+                                                        *ngIf="lastSK !== 'end' && requiredItems.length !== 0">
+                                                        <button type="button" (click)="onScroll()"
+                                                            class="btn btn-success btn-sm text-light">Load
+                                                            More..</button>
+                                                    </div>
+                                                </div>
+                                       </div>
+                                       </div>
                                 </div>
                             </div>
                            
@@ -326,11 +338,7 @@
                       </div>
                    </div>
                 </div>
-                
-                
              </section>
-
-
         </section>
     </div>
 </section>
@@ -351,8 +359,6 @@
                 <form #tranferQuanForm="ngForm">
                     <div class="form-row">
                         <div class="form-group col-lg-12">
-
-                            
                             <div class="row">
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">From Warehouse <span
@@ -363,14 +369,11 @@
                                             <ng-option *ngFor="let warehouse of warehouses | keyvalue"
                                                 value="{{warehouse.key}}">
                                                 {{warehouse.value}}</ng-option>
-
-
                                     </ng-select>
                                     <div *ngIf="w1.touched && (transfer.warehouseID1 == null || transfer.warehouseID1 == '')" class="text-danger">
                                         Warehouse is required.
                                     </div>
                                 </div>
-
                                 <div class="col-lg-6">
                                     <label class="control-label font-weight-bold text-lg-right pt-2">To Warehouse <span
                                         class="mandfield text-2 ml-1"><sup>*</sup></span></label>
@@ -381,8 +384,6 @@
                                                 value="{{warehouse.key}}">
                                                 {{warehouse.value}}</ng-option>
                                         </ng-container>
-                                            
-
                                     </ng-select>
                                     <div *ngIf="w2.touched && (transfer.warehouseID2 == null || transfer.warehouseID2 == '')" class="text-danger">
                                         Warehouse is required.
@@ -418,9 +419,7 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
-                                
                                 <div class="col-lg-6">
                                     <label
                                         class="control-label font-weight-bold font-bold text-lg-right pt-2">Date <span
@@ -440,8 +439,6 @@
                                           </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -457,7 +454,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="existingInvModal" tabindex="-1" role="dialog" aria-labelledby="addInventoryCategoryModal"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">

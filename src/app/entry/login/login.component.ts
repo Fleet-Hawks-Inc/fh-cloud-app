@@ -9,6 +9,7 @@ import jwt_decode from "jwt-decode";
 import { passwordStrength } from 'check-password-strength'
 import {map} from 'rxjs/operators'
 import {ToastrService} from 'ngx-toastr'
+import { RouteManagementServiceService } from 'src/app/services/route-management-service.service';
 declare var $: any;
 
 @Component({
@@ -63,7 +64,8 @@ confirmPassword:any;
     private router: Router,
     private authService: AuthService,
     private toaster: ToastrService,
-    private listService: ListService) { }
+    private listService: ListService,
+    private routMgmtService:RouteManagementServiceService) { }
 
   ngOnInit() {
     if (this.authService.isAuthenticated()) {
@@ -136,7 +138,7 @@ confirmPassword:any;
         if(loginResponse){
         
         let allow=await this.apiService.checkIfUserActive();
-        
+        await this.apiService.checkAccess()
         if(!allow){
           this.submitDisabled=false
           this.hasError=true;
@@ -219,6 +221,7 @@ confirmPassword:any;
       this.Error = 'Username and password is required'
 
     }
+    this.routMgmtService.resetAllCache();
   }
     // Show password
     toggleFieldTextType1() {

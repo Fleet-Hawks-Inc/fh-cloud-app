@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-advance-payments-detail",
@@ -14,6 +14,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   noRecordMsg = Constants.NO_RECORDS_FOUND;
   paymentData = {
     paymentNo: "",
+    advType: null,
     paymentTo: null,
     entityId: null,
     amount: "",
@@ -31,15 +32,17 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   paymentID;
   entityName = "";
   payModeLabel = "";
-  accountName = '';
+  accountName = "";
   accountsObjects: any = {};
   accountsIntObjects: any = {};
   advancePayments = [];
+  showModal = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private toaster: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
@@ -49,14 +52,18 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     this.fetchAccountsByInternalIDs();
   }
   fetchAccountsByIDs() {
-    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
-      this.accountsObjects = result;
-    });
+    this.accountService
+      .getData("chartAc/get/list/all")
+      .subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
   }
   fetchAccountsByInternalIDs() {
-    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
-      this.accountsIntObjects = result;
-    });
+    this.accountService
+      .getData("chartAc/get/internalID/list/all")
+      .subscribe((result: any) => {
+        this.accountsIntObjects = result;
+      });
   }
   fetchPayments() {
     this.accountService
@@ -66,10 +73,10 @@ export class AdvancePaymentsDetailComponent implements OnInit {
         this.fetchAdvPayments();
 
         this.paymentData.transactionLog.map((v: any) => {
-          v.type = v.type.replace('_', ' ');
+          v.type = v.type.replace("_", " ");
         });
         if (this.paymentData.status) {
-          this.paymentData.status = this.paymentData.status.replace('_',' ');
+          this.paymentData.status = this.paymentData.status.replace("_", " ");
         }
 
         this.changePaymentMode(this.paymentData.payMode);
@@ -91,12 +98,16 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   }
 
   fetchContact(contactID) {
-    this.apiService.getData(`contacts/detail/${contactID}`).subscribe((result: any) => {
+    this.apiService
+      .getData(`contacts/detail/${contactID}`)
+      .subscribe((result: any) => {
         this.entityName = result.Items[0].cName;
       });
   }
   fetchEmployee(contactID) {
-    this.apiService.getData(`contacts/detail/${contactID}`).subscribe((result: any) => {
+    this.apiService
+      .getData(`contacts/detail/${contactID}`)
+      .subscribe((result: any) => {
         this.entityName = `${result.Items[0].firstName} ${result.Items[0].lastName} `;
       });
   }
@@ -120,39 +131,61 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   }
 
   fetchAcounts(accountID) {
-    this.accountService.getData(`chartAc/account/${accountID}`).subscribe((result: any) => {
+    this.accountService
+      .getData(`chartAc/account/${accountID}`)
+      .subscribe((result: any) => {
         this.accountName = result.actName;
       });
   }
 
   fetchAdvPayments() {
-    let url = '';
-    if(this.paymentData.paymentTo === 'employee') {
-      url = 'employee-payments/advance';
+    let url = "";
+    if (this.paymentData.paymentTo === "employee") {
+      url = "employee-payments/advance";
     } else {
-      url = 'driver-payments/advance';
+      url = "driver-payments/advance";
     }
-    this.accountService.getData(`${url}/${this.paymentID}`)
+    this.accountService
+      .getData(`${url}/${this.paymentID}`)
       .subscribe((result: any) => {
-          result.map((v) => {
-              let obj = {
-                  paymentNo: v.paymentNo,
-                  txnDate: v.txnDate,
-                  amount: 0
-              }
-              v.advData.map((k) => {
-                  if(k.paymentID === this.paymentID) {
-                      obj.amount += Number(k.paidAmount);
-                  }
-              })
+        result.map((v) => {
+          let obj = {
+            paymentNo: v.paymentNo,
+            txnDate: v.txnDate,
+            amount: 0,
+          };
+          v.advData.map((k) => {
+            if (k.paymentID === this.paymentID) {
+              obj.amount += Number(k.paidAmount);
+            }
+          });
 
-              this.advancePayments.push(obj);
-              this.advancePayments.sort((a, b) => {
-                  return (
-                    new Date(a.txnDate).valueOf() - new Date(b.txnDate).valueOf()
-                  );
-              });
-          })
+          this.advancePayments.push(obj);
+          this.advancePayments.sort((a, b) => {
+            return (
+              new Date(a.txnDate).valueOf() - new Date(b.txnDate).valueOf()
+            );
+          });
+        });
       });
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.amount,
+      type: "advancePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.amount,
+      txnDate: this.paymentData.txnDate,
+      advType: this.paymentData.advType,
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

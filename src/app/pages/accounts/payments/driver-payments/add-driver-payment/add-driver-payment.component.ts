@@ -37,6 +37,7 @@ export class AddDriverPaymentComponent implements OnInit {
     vacPayPer: 0,
     vacPayAmount: 0,
     totalAmount: <any>0,
+    currency: "CAD",
     taxdata: {
       payPeriod: null,
       stateCode: null,
@@ -118,7 +119,6 @@ export class AddDriverPaymentComponent implements OnInit {
     }
     this.fetchDrivers();
     this.fetchCarriers();
-    this.fetchtrips();
     this.fetchOwnerOperators();
     this.fetchAccounts();
     this.listService.fetchChartAccounts();
@@ -213,7 +213,7 @@ export class AddDriverPaymentComponent implements OnInit {
       this.paymentData.payModeNo = null;
     } else if (type == "cheque") {
       label = "Cheque";
-      this.paymentData.payModeNo = Date.now().toString();
+      this.paymentData.payModeNo = null;
     } else if (type == "eft") {
       label = "EFT";
       this.paymentData.payModeNo = null;
@@ -250,7 +250,7 @@ export class AddDriverPaymentComponent implements OnInit {
       this.searchDisabled = true;
       this.accountService
         .getData(
-          `settlement/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&type=${this.paymentData.paymentTo}`
+          `settlement/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&type=${this.paymentData.paymentTo}&curr=${this.paymentData.currency}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -259,6 +259,7 @@ export class AddDriverPaymentComponent implements OnInit {
           this.searchDisabled = false;
           this.settlements = result;
           this.settlements.map((v) => {
+            v.currency = v.currency ? v.currency : "CAD";
             v.selected = false;
             v.fullPayment = false;
             v.paidAmount = 0;
@@ -618,7 +619,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.dataMessageAdv = Constants.FETCHING_DATA;
     this.accountService
       .getData(
-        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}`
+        `advance/entity/${this.paymentData.entityId}?from=${this.paymentData.fromDate}&to=${this.paymentData.toDate}&curr=${this.paymentData.currency}&type=driver&fetch=other&entityType=${this.paymentData.paymentTo}`
       )
       .subscribe((result: any) => {
         if (result.length === 0) {
@@ -676,7 +677,7 @@ export class AddDriverPaymentComponent implements OnInit {
       chequeAmount: this.paymentData.finalAmount,
       type: this.paymentData.paymentTo,
       chequeNo: this.paymentData.payModeNo,
-      currency: "CAD",
+      currency: this.paymentData.currency,
       formType: this.paymentID ? "edit" : "add",
       showModal: this.showModal,
       fromDate: this.paymentData.fromDate,

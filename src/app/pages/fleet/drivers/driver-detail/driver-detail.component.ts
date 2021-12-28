@@ -345,7 +345,12 @@ export class DriverDetailComponent implements OnInit {
           this.phone = this.driverData.phone;
           this.DOB = this.driverData.DOB;
           this.CDL = this.driverData.CDL_Number;
-          this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          if (this.driverData.middleName !== undefined && this.driverData.middleName !== null && this.driverData.middleName !== '') {
+            this.driverName = `${this.driverData.firstName} ${this.driverData.middleName} ${this.driverData.lastName}`;
+          } else {
+            this.driverName = `${this.driverData.firstName} ${this.driverData.lastName}`;
+          }
+
           this.startDate = this.driverData.startDate;
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;

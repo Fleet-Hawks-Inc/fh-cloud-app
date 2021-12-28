@@ -71,6 +71,7 @@ export class NewAddressBookComponent implements OnInit {
     workEmail: '',
     eTypes: [],
     adrs: [{
+      careOption: '',
       aType: 'Billing Address',
       cName: '',
       sName: '',
@@ -177,7 +178,7 @@ export class NewAddressBookComponent implements OnInit {
     this.searchLocation();
     this.fetchCountries();
 
-    this.listService.addressList.subscribe((res: any) => {
+    this.modalSubscription = this.listService.addressList.subscribe((res: any) => {
       if (res === 'list') {
 
         let ngbModalOptions: NgbModalOptions = {
@@ -274,6 +275,10 @@ export class NewAddressBookComponent implements OnInit {
     })
   }
 
+  ngOnDestroy() {
+    this.modalSubscription.unsubscribe();
+  }
+
   /*
    * Get all countries from api
    */
@@ -281,7 +286,7 @@ export class NewAddressBookComponent implements OnInit {
     this.countries = await this.countryStateCity.GetAllCountries();
   }
 
-  async getStates(countryCode, type, index = '', data: any) {
+  async getStates(countryCode, type, index: any = '', data: any) {
     let states = await this.countryStateCity.GetStatesByCountryCode([countryCode]);
     let countryName = await this.countryStateCity.GetSpecificCountryNameByCode(countryCode);
     if (type === 'unit') {
@@ -293,7 +298,7 @@ export class NewAddressBookComponent implements OnInit {
     }
   }
 
-  async getCities(stateCode, type = '', index = '', data) {
+  async getCities(stateCode, type = '', index: any = '', data) {
     let countryCode = '';
     if (type == 'unit') {
       countryCode = this.unitData.adrs[index].cCode;
@@ -359,7 +364,7 @@ export class NewAddressBookComponent implements OnInit {
       this.brokers = [];
       this.units.forEach(element => {
         if (element.eTypes.includes('broker')) {
-          this.brokers.push(element)
+          this.brokers.push(element);
         }
       });
       if (this.brokers.length === 0) this.dataMessage = Constants.NO_RECORDS_FOUND;
@@ -433,6 +438,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: 'Billing Address',
         cName: '',
         sName: '',
@@ -617,6 +623,9 @@ export class NewAddressBookComponent implements OnInit {
               wsib: false,
               wsibAcc: '',
               wsibExp: null,
+              wcb: false,
+              wcbAcc: '',
+              wcbExp: null,
               banks: [{
                 bName: '',
                 acc: '',
@@ -704,7 +713,7 @@ export class NewAddressBookComponent implements OnInit {
           this.unitData.data.push(data)
         }
       } else if (element === 'owner_operator') {
-        if (!this.newArr.includes('op')) {
+        if (!this.newArr.includes('owner_operator')) {
           let data = {
             opData: {
               csa: false,
@@ -724,7 +733,7 @@ export class NewAddressBookComponent implements OnInit {
               drCur: null
             }
           }
-          this.newArr.push('op');
+          this.newArr.push('owner_operator');
           this.unitData.data.push(data)
         }
       } else if (element === 'vendor') {
@@ -741,7 +750,6 @@ export class NewAddressBookComponent implements OnInit {
     });
 
     let difference = this.newArr.filter(x => !this.unitData.eTypes.includes(x));
-
     difference.forEach(elem => {
       if (elem === 'broker') {
         for (let index = 0; index < this.unitData.data.length; index++) {
@@ -818,7 +826,6 @@ export class NewAddressBookComponent implements OnInit {
       }
 
     })
-
   }
 
 
@@ -913,7 +920,18 @@ export class NewAddressBookComponent implements OnInit {
           delete elem.carrierData.wsibAcc;
           delete elem.carrierData.wsibExp;
         }
-      })
+      });
+
+    }
+  }
+  carrierWCB(value) {
+    if (value !== true) {
+      this.unitData.data.forEach(elem => {
+        if (elem.carrierData) {
+          delete elem.carrierData.wcbAcc;
+          delete elem.carrierData.wcbExp;
+        }
+      });
 
     }
   }
@@ -1006,8 +1024,6 @@ export class NewAddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
-      delete element.states;
-      delete element.cities;
       if (element.manual === true) {
         let data = {
           address1: element.add1,
@@ -1017,11 +1033,10 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         let result = await this.newGeoCode(data);
-
         if (result == null) {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return false;
         }
@@ -1029,20 +1044,22 @@ export class NewAddressBookComponent implements OnInit {
           element.geoCords = result;
         }
       } else {
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         if (element.isSuggest != true && element.userLoc != '') {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           this.unitDisabled = false;
           return;
         }
       }
+      delete element.states;
+      delete element.cities;
     }
+
     await this.checkCarrierBank(this.unitData);
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
       const element = this.unitData.addlCnt[j];
       element.flName = element.fName + ' ' + element.lName;
     }
-
     // create form data instance
     const formData = new FormData();
 
@@ -1141,9 +1158,6 @@ export class NewAddressBookComponent implements OnInit {
 
     for (let i = 0; i < this.unitData.adrs.length; i++) {
       const element = this.unitData.adrs[i];
-      delete element.states;
-      delete element.cities;
-
       if (element.manual === true) {
         let data = {
           address1: element.add1,
@@ -1153,23 +1167,26 @@ export class NewAddressBookComponent implements OnInit {
           countryName: element.cName,
           zipCode: element.zip
         }
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         let result = await this.newGeoCode(data);
 
         if (result == null) {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           return false;
         }
         if (result != undefined || result != null) {
           element.geoCords = result;
         }
       } else {
-        $('#addErr' + i).css('display', 'none');
+        $('#addressErr' + i).css('display', 'none');
         if (element.isSuggest != true && element.userLoc != '') {
-          $('#addErr' + i).css('display', 'block');
+          $('#addressErr' + i).css('display', 'block');
           return;
         }
       }
+      delete element.states;
+      delete element.cities;
+
     }
 
     for (let j = 0; j < this.unitData.addlCnt.length; j++) {
@@ -1190,6 +1207,7 @@ export class NewAddressBookComponent implements OnInit {
     this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.unitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -1265,30 +1283,30 @@ export class NewAddressBookComponent implements OnInit {
   fetchUnits() {
     this.dataMessage = Constants.FETCHING_DATA;
 
-    if (this.lastKey != 'end') {
+    if (this.lastKey !== 'end') {
       this.apiService.getData(`contacts/fetch/records?lastKey=${this.lastKey}&updatedKey=${this.updatedKey}&companyName=` + this.filterVal.cName).subscribe(res => {
 
-        if (res.length == 0) {
+        if (res.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
         res.forEach(element => {
           this.units.push(element);
           if (element.eTypes.includes('customer')) {
-            this.customers.push(element)
+            this.customers.push(element);
           } else if (element.eTypes.includes('broker')) {
-            this.brokers.push(element)
+            this.brokers.push(element);
           } else if (element.eTypes.includes('carrier')) {
-            this.carriers.push(element)
+            this.carriers.push(element);
           } else if (element.eTypes.includes('shipper')) {
-            this.shippers.push(element)
+            this.shippers.push(element);
           } else if (element.eTypes.includes('receiver')) {
-            this.receivers.push(element)
+            this.receivers.push(element);
           } else if (element.eTypes.includes('fc')) {
-            this.fcCompanies.push(element)
+            this.fcCompanies.push(element);
           } else if (element.eTypes.includes('vendor')) {
-            this.vendors.push(element)
+            this.vendors.push(element);
           } else if (element.eTypes.includes('owner_operator')) {
-            this.owners.push(element)
+            this.owners.push(element);
           }
 
         });
@@ -1334,7 +1352,7 @@ export class NewAddressBookComponent implements OnInit {
       this.units = [];
       this.fetchUnits();
     } else {
-      return false
+      return false;
     }
 
   }
@@ -1342,6 +1360,10 @@ export class NewAddressBookComponent implements OnInit {
   editUser(item: any) {
     this.listService.triggerModal('form');
     this.updateButton = true;
+    this.newEditUnit(item);
+  }
+
+  newEditUnit(item: any) {
     this.apiService.getData(`contacts/detail/${item.contactID}`).subscribe(res => {
       res = res.Items[0];
 
@@ -1349,7 +1371,7 @@ export class NewAddressBookComponent implements OnInit {
 
       this.unitTypes.filter((item: any) => {
         if (this.unitData.eTypes.includes(item.value)) {
-          let index = this.unitTypes.indexOf(item)
+          let index = this.unitTypes.indexOf(item);
           this.unitTypes[index].disabled = true;
         }
       })
@@ -1363,6 +1385,8 @@ export class NewAddressBookComponent implements OnInit {
       for (let index = 0; index < this.unitData.adrs.length; index++) {
         const element = this.unitData.adrs[index];
         if (element.manual) {
+          this.getStates(element.cCode, 'unit', index, '');
+          this.getCities(element.sCode, 'unit', index, '');
           element.isSuggest = false;
         } else {
           element.isSuggest = true;
@@ -1370,18 +1394,17 @@ export class NewAddressBookComponent implements OnInit {
       }
       this.unitData.addlCnt = res.addlCnt;
       this.unitData.data = res.data;
-
       //to show profile image
-      if (res.profileImg != '' && res.profileImg != undefined) {
+      if (res.profileImg !== '' && res.profileImg !== undefined) {
         this.profilePath = `${this.Asseturl}/${res.carrierID}/${res.profileImg}`;
         this.imageText = 'Update Picture';
       } else {
         this.profilePath = this.defaultProfilePath;
         this.imageText = 'Add Picture';
       }
-      this.unitData['contactID'] = res.contactID;
-      this.unitData['createdDate'] = res.createdDate;
-      this.unitData['createdTime'] = res.createdTime;
+      this.unitData[`contactID`] = res.contactID;
+      this.unitData[`createdDate`] = res.createdDate;
+      this.unitData[`createdTime`] = res.createdTime;
 
     })
   }
@@ -1396,13 +1419,15 @@ export class NewAddressBookComponent implements OnInit {
   }
 
   openDetail(targetModal, item) {
-    this.editUser(item)
+    this.emptyEntry();
+    this.newEditUnit(item);
 
-    this.modalService.dismissAll();
+    // this.modalService.dismissAll();
     let ngbModalOptions: NgbModalOptions = {
       backdrop: 'static',
       keyboard: false,
-      windowClass: 'units-detail__main'
+      windowClass: 'units-detail__main',
+      backdropClass: 'light-backdrop'
     };
     this.modalService.open(targetModal, ngbModalOptions);
 
@@ -1434,6 +1459,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: null,
         cName: '',
         sName: '',

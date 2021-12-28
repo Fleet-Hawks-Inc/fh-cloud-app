@@ -8,6 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import Constants from '../../constants';
 import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { email, ReactiveFormConfig, RxFormBuilder, RxwebValidators } from '@rxweb/reactive-form-validators';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 
 
 @Component({
@@ -227,6 +231,25 @@ export class VehicleDetailComponent implements OnInit {
     autoplay: true,
     autoplaySpeed: 5000,
   };
+  deviceInfo = {
+    deviceType: '',
+    deviceId: '',
+    deviceSrNo: '',
+    email: ''
+  }
+  userFormGroup: FormGroup;
+  selectedDuration: string;
+
+  durations = [
+    { duration: '1d', name: '1 day' },
+    { duration: '3d', name: '3 days' },
+    { duration: '7d', name: '1 week' },
+    { duration: '15d', name: '15 days' },
+    { duration: '30d', name: '1 month' },
+    { duration: '3m', name: '3 months' },
+    { duration: '6m', name: '6 months' },
+  ];
+
   contactsObjects: any = {};
   vehicleTypeObects: any = {};
   ownerOperatorName = '';
@@ -243,10 +266,23 @@ export class VehicleDetailComponent implements OnInit {
     private httpClient: HttpClient,
     private toastr: ToastrService,
     private domSanitizer: DomSanitizer,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private modalService: NgbModal,
+    private formBuilder: RxFormBuilder
   ) { }
 
   ngOnInit() {
+    ReactiveFormConfig.set({
+      'validationMessage': {
+        "required": "This field is required",
+        "email": "Email is invalid."
+      }
+    })
+
+    this.userFormGroup = this.formBuilder.group({
+      duration: ['', RxwebValidators.required()],
+      email: ['', [RxwebValidators.email(), RxwebValidators.required()]],
+    });
     this.vehicleID = this.route.snapshot.params['vehicleID'];
     this.getVehicle();
     this.fetchIssues();
@@ -348,12 +384,24 @@ export class VehicleDetailComponent implements OnInit {
   getVehicle() {
     this.apiService
       .getData("vehicles/" + this.vehicleID)
-      .subscribe(async (result: any) => {
-        result = result.Items[0];
+      .subscribe(async (vehicleResult: any) => {
+        vehicleResult = vehicleResult.Items[0];
 
-        this.ownerOperatorName = result.ownerOperatorID;
-        if (result.inspectionFormID != '' && result.inspectionFormID != undefined) {
-          this.apiService.getData(`inspectionForms/${result.inspectionFormID}`).subscribe((result1: any) => {
+        // Check if DashCam is added to enable Share Live location button
+        if (vehicleResult.deviceInfo && vehicleResult.deviceInfo.length > 0) {
+          for (const device of vehicleResult.deviceInfo) {
+            if (device.deviceType === "DashCam") {
+              this.deviceInfo.deviceId = device.deviceId;
+              this.deviceInfo.deviceSrNo = device.deviceSrNo;
+              this.deviceInfo.deviceType = device.deviceType;
+
+            }
+          }
+        }
+
+        this.ownerOperatorName = vehicleResult.ownerOperatorID;
+        if (vehicleResult.inspectionFormID != '' && vehicleResult.inspectionFormID != undefined) {
+          this.apiService.getData(`inspectionForms/${vehicleResult.inspectionFormID}`).subscribe((result1: any) => {
             if (result1.Items.length > 0) {
               if (result1.Items[0].isDefaultInspectionType === undefined) {
                 result1.Items[0].isDefaultInspectionType = '0';
@@ -362,237 +410,185 @@ export class VehicleDetailComponent implements OnInit {
             }
           });
         }
-        this.annualSafetyDate = result.annualSafetyDate;
-        this.vehicleIdentification = result.vehicleIdentification;
-        this.vehicleType = result.vehicleType;
-        this.VIN = result.VIN;
-        this.year = result.year;
-        this.manufacturerID = result.manufacturerID;
-        this.modelID = result.modelID;
-        this.plateNumber = result.plateNumber;
-        this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(result.countryID);
-        this.stateName = await this.countryStateCity.GetStateNameFromCode(result.stateID, result.countryID);
-        this.driverID = result.driverID;
-        this.teamDriverID = result.teamDriverID;
-        this.serviceProgramID = result.servicePrograms;
+        this.annualSafetyDate = vehicleResult.annualSafetyDate;
+        this.vehicleIdentification = vehicleResult.vehicleIdentification;
+        this.vehicleType = vehicleResult.vehicleType;
+        this.VIN = vehicleResult.VIN;
+        this.year = vehicleResult.year;
+        this.manufacturerID = vehicleResult.manufacturerID;
+        this.modelID = vehicleResult.modelID;
+        this.plateNumber = vehicleResult.plateNumber;
+        this.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(vehicleResult.countryID);
+        this.stateName = await this.countryStateCity.GetStateNameFromCode(vehicleResult.stateID, vehicleResult.countryID);
+        this.driverID = vehicleResult.driverID;
+        this.teamDriverID = vehicleResult.teamDriverID;
+        this.serviceProgramID = vehicleResult.servicePrograms;
         this.fetchProgramDetails();
-        this.primaryMeter = result.primaryMeter;
-        this.repeatByTime = result.repeatByTime;
-        this.repeatByTimeUnit = result.repeatByTimeUnit;
-        this.reapeatbyOdometerMiles = result.reapeatbyOdometerMiles;
-        this.currentStatus = result.currentStatus;
-        this.ownership = result.ownership;
-        this.groupID = result.groupID;
-        this.aceID = result.aceID;
-        this.aciID = result.aciID;
-        this.vehicleColor = result.vehicleColor;
-        this.bodyType = result.bodyType;
-        this.bodySubType = result.bodySubType;
-        this.msrp = result.msrp;
-        this.inspectionFormID = result.inspectionFormID;
-        this.iftaReporting = result.iftaReporting;
+        this.primaryMeter = vehicleResult.primaryMeter;
+        this.repeatByTime = vehicleResult.repeatByTime;
+        this.repeatByTimeUnit = vehicleResult.repeatByTimeUnit;
+        this.reapeatbyOdometerMiles = vehicleResult.reapeatbyOdometerMiles;
+        this.currentStatus = vehicleResult.currentStatus;
+        this.ownership = vehicleResult.ownership;
+        this.groupID = vehicleResult.groupID;
+        this.aceID = vehicleResult.aceID;
+        this.aciID = vehicleResult.aciID;
+        this.vehicleColor = vehicleResult.vehicleColor;
+        this.bodyType = vehicleResult.bodyType;
+        this.bodySubType = vehicleResult.bodySubType;
+        this.msrp = vehicleResult.msrp;
+        this.inspectionFormID = vehicleResult.inspectionFormID;
+        this.iftaReporting = vehicleResult.iftaReporting;
         this.lifeCycle = {
-          inServiceDate: result.lifeCycle.inServiceDate,
-          inServiceOdometer: result.lifeCycle.inServiceOdometer,
-          estimatedServiceMonths: result.lifeCycle.estimatedServiceMonths,
-          estimatedServiceMiles: result.lifeCycle.estimatedServiceMiles,
-          estimatedResaleValue: result.lifeCycle.estimatedResaleValue,
-          outOfServiceDate: result.lifeCycle.outOfServiceDate,
-          outOfServiceOdometer: result.lifeCycle.outOfServiceOdometer,
-          startDate: result.lifeCycle.startDate,
-          estimatedServiceYear: result.lifeCycle.estimatedServiceYears,
+          inServiceDate: vehicleResult.lifeCycle.inServiceDate,
+          inServiceOdometer: vehicleResult.lifeCycle.inServiceOdometer,
+          estimatedServiceMonths: vehicleResult.lifeCycle.estimatedServiceMonths,
+          estimatedServiceMiles: vehicleResult.lifeCycle.estimatedServiceMiles,
+          estimatedResaleValue: vehicleResult.lifeCycle.estimatedResaleValue,
+          outOfServiceDate: vehicleResult.lifeCycle.outOfServiceDate,
+          outOfServiceOdometer: vehicleResult.lifeCycle.outOfServiceOdometer,
+          startDate: vehicleResult.lifeCycle.startDate,
+          estimatedServiceYear: vehicleResult.lifeCycle.estimatedServiceYears,
         };
         this.specifications = {
-          height: result.specifications.height,
-          heightUnit: result.specifications.heightUnit,
-          width: result.specifications.width,
-          widthUnit: result.specifications.widthUnit,
-          length: result.specifications.length,
-          lengthUnit: result.specifications.lengthUnit,
-          interiorVolume: result.specifications.interiorVolume,
-          passangerVolume: result.specifications.passangerVolume,
-          groundClearnce: result.specifications.groundClearnce,
-          groundClearnceUnit: result.specifications.groundClearnceUnit,
-          bedLength: result.specifications.bedLength,
-          bedLengthUnit: result.specifications.bedLengthUnit,
-          cargoVolume: result.specifications.cargoVolume,
-          curbWeight: result.specifications.curbWeight,
-          grossVehicleWeightRating: result.specifications.grossVehicleWeightRating,
-          towingCapacity: result.specifications.towingCapacity,
-          maxPayload: result.specifications.maxPayload,
-          EPACity: result.specifications.EPACity,
-          EPACombined: result.specifications.EPACombined,
-          EPAHighway: result.specifications.EPAHighway,
-          tareWeight: result.specifications.tareWeight,
+          height: vehicleResult.specifications.height,
+          heightUnit: vehicleResult.specifications.heightUnit,
+          width: vehicleResult.specifications.width,
+          widthUnit: vehicleResult.specifications.widthUnit,
+          length: vehicleResult.specifications.length,
+          lengthUnit: vehicleResult.specifications.lengthUnit,
+          interiorVolume: vehicleResult.specifications.interiorVolume,
+          passangerVolume: vehicleResult.specifications.passangerVolume,
+          groundClearnce: vehicleResult.specifications.groundClearnce,
+          groundClearnceUnit: vehicleResult.specifications.groundClearnceUnit,
+          bedLength: vehicleResult.specifications.bedLength,
+          bedLengthUnit: vehicleResult.specifications.bedLengthUnit,
+          cargoVolume: vehicleResult.specifications.cargoVolume,
+          curbWeight: vehicleResult.specifications.curbWeight,
+          grossVehicleWeightRating: vehicleResult.specifications.grossVehicleWeightRating,
+          towingCapacity: vehicleResult.specifications.towingCapacity,
+          maxPayload: vehicleResult.specifications.maxPayload,
+          EPACity: vehicleResult.specifications.EPACity,
+          EPACombined: vehicleResult.specifications.EPACombined,
+          EPAHighway: vehicleResult.specifications.EPAHighway,
+          tareWeight: vehicleResult.specifications.tareWeight,
         };
-        if (result.insurance.remiderEvery === 'weekly') {
-          result.insurance.remiderEvery = 'Week(s)';
-        } else if (result.insurance.remiderEvery === 'monthly') {
-          result.insurance.remiderEvery = 'Month(s)';
-        } else if (result.insurance.remiderEvery === 'yearly') {
-          result.insurance.remiderEvery = 'Year(s)';
+        if (vehicleResult.insurance.remiderEvery === 'weekly') {
+          vehicleResult.insurance.remiderEvery = 'Week(s)';
+        } else if (vehicleResult.insurance.remiderEvery === 'monthly') {
+          vehicleResult.insurance.remiderEvery = 'Month(s)';
+        } else if (vehicleResult.insurance.remiderEvery === 'yearly') {
+          vehicleResult.insurance.remiderEvery = 'Year(s)';
         }
         this.insurance = {
-          dateOfIssue: result.insurance.dateOfIssue,
-          premiumAmount: result.insurance.premiumAmount,
-          premiumCurrency: result.insurance.premiumCurrency,
-          vendorID: result.insurance.vendorID,
-          dateOfExpiry: result.insurance.dateOfExpiry,
-          reminder: `${result.insurance.reminder}`,
-          remiderEvery: `${result.insurance.remiderEvery}`,
-          policyNumber: result.insurance.policyNumber,
-          amount: result.insurance.amount,
-          amountCurrency: result.insurance.amountCurrency,
+          dateOfIssue: vehicleResult.insurance.dateOfIssue,
+          premiumAmount: vehicleResult.insurance.premiumAmount,
+          premiumCurrency: vehicleResult.insurance.premiumCurrency,
+          vendorID: vehicleResult.insurance.vendorID,
+          dateOfExpiry: vehicleResult.insurance.dateOfExpiry,
+          reminder: `${vehicleResult.insurance.reminder}`,
+          remiderEvery: `${vehicleResult.insurance.remiderEvery}`,
+          policyNumber: vehicleResult.insurance.policyNumber,
+          amount: vehicleResult.insurance.amount,
+          amountCurrency: vehicleResult.insurance.amountCurrency,
         };
         this.fluid = {
-          fuelType: result.fluid.fuelType,
-          fuelTankOneCapacity: result.fluid.fuelTankOneCapacity,
-          fuelTankOneType: result.fluid.fuelTankOneType,
-          fuelQuality: result.fluid.fuelQuality,
-          fuelTankTwoType: result.fluid.fuelTankTwoType,
-          fuelTankTwoCapacity: result.fluid.fuelTankTwoCapacity,
-          oilCapacity: result.fluid.oilCapacity,
-          oilCapacityType: result.fluid.oilCapacityType,
-          defType: result.fluid.defType,
-          def: result.fluid.def
+          fuelType: vehicleResult.fluid.fuelType,
+          fuelTankOneCapacity: vehicleResult.fluid.fuelTankOneCapacity,
+          fuelTankOneType: vehicleResult.fluid.fuelTankOneType,
+          fuelQuality: vehicleResult.fluid.fuelQuality,
+          fuelTankTwoType: vehicleResult.fluid.fuelTankTwoType,
+          fuelTankTwoCapacity: vehicleResult.fluid.fuelTankTwoCapacity,
+          oilCapacity: vehicleResult.fluid.oilCapacity,
+          oilCapacityType: vehicleResult.fluid.oilCapacityType,
+          defType: vehicleResult.fluid.defType,
+          def: vehicleResult.fluid.def
         };
         this.wheelsAndTyres = {
-          numberOfTyres: result.wheelsAndTyres.numberOfTyres,
-          driveType: result.wheelsAndTyres.driveType,
-          brakeSystem: result.wheelsAndTyres.brakeSystem,
-          wheelbase: result.wheelsAndTyres.wheelbase,
-          rearAxle: result.wheelsAndTyres.rearAxle,
-          frontTyreType: result.wheelsAndTyres.frontTyreType,
-          rearTyreType: result.wheelsAndTyres.rearTyreType,
-          frontTrackWidth: result.wheelsAndTyres.frontTrackWidth,
-          rearTrackWidth: result.wheelsAndTyres.rearTrackWidth,
-          frontWheelDiameter: result.wheelsAndTyres.frontWheelDiameter,
-          rearWheelDiameter: result.wheelsAndTyres.rearWheelDiameter,
-          frontTyrePSI: result.wheelsAndTyres.frontTyrePSI,
-          rearTyrePSI: result.wheelsAndTyres.rearTyrePSI,
+          numberOfTyres: vehicleResult.wheelsAndTyres.numberOfTyres,
+          driveType: vehicleResult.wheelsAndTyres.driveType,
+          brakeSystem: vehicleResult.wheelsAndTyres.brakeSystem,
+          wheelbase: vehicleResult.wheelsAndTyres.wheelbase,
+          rearAxle: vehicleResult.wheelsAndTyres.rearAxle,
+          frontTyreType: vehicleResult.wheelsAndTyres.frontTyreType,
+          rearTyreType: vehicleResult.wheelsAndTyres.rearTyreType,
+          frontTrackWidth: vehicleResult.wheelsAndTyres.frontTrackWidth,
+          rearTrackWidth: vehicleResult.wheelsAndTyres.rearTrackWidth,
+          frontWheelDiameter: vehicleResult.wheelsAndTyres.frontWheelDiameter,
+          rearWheelDiameter: vehicleResult.wheelsAndTyres.rearWheelDiameter,
+          frontTyrePSI: vehicleResult.wheelsAndTyres.frontTyrePSI,
+          rearTyrePSI: vehicleResult.wheelsAndTyres.rearTyrePSI,
         };
         this.engine = {
-          engineSummary: result.engine.engineSummary,
-          engineBrand: result.engine.engineBrand,
-          aspiration: result.engine.aspiration,
-          blockType: result.engine.blockType,
-          bore: result.engine.bore,
-          camType: result.engine.camType,
-          stroke: result.engine.stroke,
-          valves: result.engine.valves,
-          compression: result.engine.compression,
-          cylinders: result.engine.cylinders,
-          displacement: result.engine.displacement,
-          fuelIndication: result.engine.fuelIndication,
-          fuelQuality: result.engine.fuelQuality,
-          maxHP: result.engine.maxHP,
-          maxTorque: result.engine.maxTorque,
-          readlineRPM: result.engine.readlineRPM,
-          transmissionSummary: result.engine.transmissionSummary,
-          transmissionType: result.engine.transmissionType,
-          transmissonBrand: result.engine.transmissonBrand,
-          transmissionGears: result.engine.transmissionGears,
+          engineSummary: vehicleResult.engine.engineSummary,
+          engineBrand: vehicleResult.engine.engineBrand,
+          aspiration: vehicleResult.engine.aspiration,
+          blockType: vehicleResult.engine.blockType,
+          bore: vehicleResult.engine.bore,
+          camType: vehicleResult.engine.camType,
+          stroke: vehicleResult.engine.stroke,
+          valves: vehicleResult.engine.valves,
+          compression: vehicleResult.engine.compression,
+          cylinders: vehicleResult.engine.cylinders,
+          displacement: vehicleResult.engine.displacement,
+          fuelIndication: vehicleResult.engine.fuelIndication,
+          fuelQuality: vehicleResult.engine.fuelQuality,
+          maxHP: vehicleResult.engine.maxHP,
+          maxTorque: vehicleResult.engine.maxTorque,
+          readlineRPM: vehicleResult.engine.readlineRPM,
+          transmissionSummary: vehicleResult.engine.transmissionSummary,
+          transmissionType: vehicleResult.engine.transmissionType,
+          transmissonBrand: vehicleResult.engine.transmissonBrand,
+          transmissionGears: vehicleResult.engine.transmissionGears,
         };
         this.purchase = {
-          purchaseVendorID: result.purchase.purchaseVendorID,
-          warrantyExpirationDate: result.purchase.warrantyExpirationDate,
-          purchasePrice: result.purchase.purchasePrice,
-          purchasePriceCurrency: result.purchase.purchasePriceCurrency,
-          warrantyExpirationMeter: result.purchase.warrantyExpirationMeter,
-          purchaseDate: result.purchase.purchaseDate,
-          purchaseComments: result.purchase.purchaseComments,
-          purchaseOdometer: result.purchase.purchaseOdometer,
-          gstInc: result.purchase.gstInc
+          purchaseVendorID: vehicleResult.purchase.purchaseVendorID,
+          warrantyExpirationDate: vehicleResult.purchase.warrantyExpirationDate,
+          purchasePrice: vehicleResult.purchase.purchasePrice,
+          purchasePriceCurrency: vehicleResult.purchase.purchasePriceCurrency,
+          warrantyExpirationMeter: vehicleResult.purchase.warrantyExpirationMeter,
+          purchaseDate: vehicleResult.purchase.purchaseDate,
+          purchaseComments: vehicleResult.purchase.purchaseComments,
+          purchaseOdometer: vehicleResult.purchase.purchaseOdometer,
+          gstInc: vehicleResult.purchase.gstInc
         };
         this.loan = {
-          loanVendorID: result.loan.loanVendorID,
-          amountOfLoan: result.loan.amountOfLoan,
-          amountOfLoanCurrency: result.loan.amountOfLoanCurrency,
-          aspiration: result.loan.aspiration,
-          annualPercentageRate: result.loan.annualPercentageRate,
-          downPayment: result.loan.downPayment,
-          downPaymentCurrency: result.loan.downPaymentCurrency,
-          monthlyPaymentCurrency: result.loan.monthlyPaymentCurrency,
-          dateOfLoan: result.loan.dateOfLoan,
-          monthlyPayment: result.loan.monthlyPayment,
-          firstPaymentDate: result.loan.firstPaymentDate,
-          numberOfPayments: result.loan.numberOfPayments,
-          loadEndDate: result.loan.loadEndDate,
-          accountNumber: result.loan.accountNumber,
-          generateExpenses: result.loan.generateExpenses,
-          loanDueDate: result.loan.loanDueDate,
-          lReminder: result.loan.lReminder,
-          gstInc: result.loan.gstInc,
-          notes: result.loan.notes,
+          loanVendorID: vehicleResult.loan.loanVendorID,
+          amountOfLoan: vehicleResult.loan.amountOfLoan,
+          amountOfLoanCurrency: vehicleResult.loan.amountOfLoanCurrency,
+          aspiration: vehicleResult.loan.aspiration,
+          annualPercentageRate: vehicleResult.loan.annualPercentageRate,
+          downPayment: vehicleResult.loan.downPayment,
+          downPaymentCurrency: vehicleResult.loan.downPaymentCurrency,
+          monthlyPaymentCurrency: vehicleResult.loan.monthlyPaymentCurrency,
+          dateOfLoan: vehicleResult.loan.dateOfLoan,
+          monthlyPayment: vehicleResult.loan.monthlyPayment,
+          firstPaymentDate: vehicleResult.loan.firstPaymentDate,
+          numberOfPayments: vehicleResult.loan.numberOfPayments,
+          loadEndDate: vehicleResult.loan.loadEndDate,
+          accountNumber: vehicleResult.loan.accountNumber,
+          generateExpenses: vehicleResult.loan.generateExpenses,
+          loanDueDate: vehicleResult.loan.loanDueDate,
+          lReminder: vehicleResult.loan.lReminder,
+          gstInc: vehicleResult.loan.gstInc,
+          notes: vehicleResult.loan.notes,
         };
         this.settings = {
-          primaryMeter: result.settings.primaryMeter,
-          fuelUnit: result.settings.fuelUnit,
-          hardBreakingParams: result.settings.hardBreakingParams,
-          hardAccelrationParams: result.settings.hardAccelrationParams,
-          turningParams: result.settings.turningParams,
-          measurmentUnit: result.settings.measurmentUnit,
+          primaryMeter: vehicleResult.settings.primaryMeter,
+          fuelUnit: vehicleResult.settings.fuelUnit,
+          hardBreakingParams: vehicleResult.settings.hardBreakingParams,
+          hardAccelrationParams: vehicleResult.settings.hardAccelrationParams,
+          turningParams: vehicleResult.settings.turningParams,
+          measurmentUnit: vehicleResult.settings.measurmentUnit,
         };
 
-        if (
-          result.uploadedPhotos != undefined &&
-          result.uploadedPhotos.length > 0
-        ) {
-          this.slides = result.uploadedPhotos.map(
-            (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-          );
-        }
 
-        if (
-          result.uploadedDocs != undefined &&
-          result.uploadedDocs.length > 0
-        ) {
-          this.docs = [];
-          result.uploadedDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.docs.push(obj);
-          });
-        }
-
-        if (
-          result.purchaseDocs != undefined &&
-          result.purchaseDocs.length > 0
-        ) {
-          this.pDocs = [];
-          result.purchaseDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.pDocs.push(obj);
-          });
-        }
+        this.slides = vehicleResult.uploadedPics;
+        this.pDocs = vehicleResult.purchaseDocsUpload;
+        this.lDocs = vehicleResult.loanDocsUpload;
+        this.docs = vehicleResult.uploadDocument;
 
 
-        if (
-          result.loanDocs != undefined &&
-          result.loanDocs.length > 0
-        ) {
-          this.lDocs = [];
-          result.loanDocs.map((x) => {
-            let obj = {
-              name: x,
-              path: `${this.Asseturl}/${result.carrierID}/${x}`
-            }
-            this.lDocs.push(obj);
-          });
-        }
-
-        $("#hardBreakingParametersValue").html(
-          this.settings.hardBreakingParams
-        );
-        $("#hardAccelrationParametersValue").html(
-          this.settings.hardAccelrationParams
-        );
-        $("#turningParametersValue").html(this.settings.turningParams);
       });
   }
 
@@ -657,6 +653,7 @@ export class VehicleDetailComponent implements OnInit {
     });
   }
 
+
   fetchProgramDetails() {
     if (this.serviceProgramID.length > 0) {
       let serviceProgramID = JSON.stringify(this.serviceProgramID);
@@ -665,5 +662,32 @@ export class VehicleDetailComponent implements OnInit {
 
       })
     }
+  }
+
+  async shareLocation(shareModal: any) {
+    this.modalService.open(shareModal, { ariaLabelledBy: 'modal-dash-cam', size: 'sm', }).result.then((result) => {
+    }, (reason) => {
+    });
+  }
+  locationLink: string = '';
+  shareLocationLink() {
+    const data = {
+      "deviceSerialNo": this.deviceInfo.deviceSrNo.split('#')[1],
+      "vehicleID": this.vehicleID,
+      "vehicleName": this.vehicleIdentification,
+      "duration": this.selectedDuration,
+      "email": this.deviceInfo.email
+    }
+    this.apiService.postData('location/share/vehicle', data, false).subscribe((resultData: any) => {
+
+      if (resultData) {
+        this.locationLink = resultData.locationPageURL;
+
+        this.modalService.dismissAll();
+        this.toastr.info('Location shared successfully.')
+      }
+
+    })
+
   }
 }

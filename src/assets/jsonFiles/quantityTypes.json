@@ -1,0 +1,38 @@
+[
+	{
+		"value": "bag",
+		"name": "Bag"
+	},
+	{
+		"value": "bale",
+		"name": "Bale"
+	},
+	{
+		"value": "barrel",
+		"name": "Barrel"
+	},
+    {
+		"value": "basket",
+		"name": "Basket"
+	},
+    {
+		"value": "bin",
+		"name": "Bin"
+	},
+    {
+		"value": "box",
+		"name": "Box"
+	},
+    {
+		"value": "bucket",
+		"name": "Bucket"
+	},
+    {
+		"value": "can",
+		"name": "Can"
+	},
+    {
+		"value": "crate",
+		"name": "Crate"
+	}
+]

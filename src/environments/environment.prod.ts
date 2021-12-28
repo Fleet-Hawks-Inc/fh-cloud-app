@@ -2,12 +2,15 @@ export const environment = {
   production: true,
   isFeatureEnabled: true,
   isFleetEnabled: true,
-  isDispatchEnabled: true,
+  isDispatchEnabled: false,
   isComplianceEnabled: false,
+
   isManageEnabled: true,
   isSafetyEnabled: true,
   isAccountsEnabled: true,
-  isReportsEnabled: false,
+  isUserRoles:false,
+
+  isReportsEnabled: true,
 
   BaseUrl: 'https://service.cloud.fleethawks.com/api/v1/',
 
@@ -30,14 +33,15 @@ export const environment = {
     USER_POOL_ID: 'ca-central-1_F0KoWWGIh',
     REGION: 'ca-central-1',
     APP_CLIENT_ID: '1khgs3lefjv2qld1dgts0dno68'
-  }, 
+  },
   HOSTNAME: 'myhome.anterbox.com',
-  PORT : 9001,
-  MQTTPATH : '/',
+  PORT: 9001,
+  MQTTPATH: '/',
   mapConfig: {
     apiKey: 'lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c'
   },
   googleConfig: {
     apiKey: 'AIzaSyDBkpMI6T1T-z_JRSd03vZ1Q-MSetM1UwI'
-  }
+  },
+  VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss'
 };

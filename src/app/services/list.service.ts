@@ -106,6 +106,13 @@ export class ListService {
   brokeragePdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
   brokeragePdfList = this.brokeragePdfDataSource.asObservable();
 
+  bolPdfDataSource: BehaviorSubject<Array<any>> = new BehaviorSubject([]);
+  bolPdfList = this.bolPdfDataSource.asObservable();
+
+  settlementDetailsDataSource: BehaviorSubject<Array<any>> =
+    new BehaviorSubject([]);
+  settlementDetails = this.settlementDetailsDataSource.asObservable();
+
   public _subject = new BehaviorSubject<any>({});
   statusChanged$: any;
 
@@ -218,10 +225,12 @@ export class ListService {
         this.customersDataSource.next(result);
       });
   }
-
+  /*
+   * Get all taskList
+   */
   fetchTasks() {
-    this.apiService.getData(`tasks`).subscribe((result: any) => {
-      this.tasksDataSource.next(result.Items);
+    this.apiService.getData(`tasks?type=service`).subscribe((result: any) => {
+      this.tasksDataSource.next(result);
     });
   }
 
@@ -320,5 +329,14 @@ export class ListService {
 
   triggerBrokeragePdf(value) {
     this.brokeragePdfDataSource.next(value);
+  }
+
+  triggerBolPdf(value) {
+    this.bolPdfDataSource.next(value);
+  }
+
+  showSettlementsDetailPreview(value) {
+    console.log("in dets fnc");
+    this.settlementDetailsDataSource.next(value);
   }
 }

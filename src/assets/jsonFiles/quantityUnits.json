@@ -1,0 +1,50 @@
+[
+	{
+		"name": "Bag",
+		"value": "Bag"
+	},
+	{
+		"name": "Bale",
+		"value": "Bale"
+	},
+	{
+		"name": "Barrel",
+		"value": "Barrel"
+	},
+	{
+		"name": "Basket",
+		"value": "Basket"
+	},
+	{
+		"name": "Bin",
+		"value": "Bin"
+	},
+	{
+		"name": "Box",
+		"value": "Box"
+	},
+	{
+		"name": "Bucket",
+		"value": "Bucket"
+	},
+	{
+		"name": "Can",
+		"value": "Can"
+	},
+	{
+		"name": "Crate",
+		"value": "Crate"
+	},
+	{
+		"name": "Cases",
+		"value": "Cases"
+	},
+	{
+		"name": "Pallets",
+		"value": "Pallets"
+	},
+	{
+		"name": "Package",
+		"value": "Package"
+	}
+]

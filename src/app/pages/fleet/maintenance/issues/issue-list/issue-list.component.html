@@ -4,25 +4,30 @@
 
         <section role="main" class="content-body pl-1 pt-0 pr-0">
             <header class="page-header pr19 pl11">
+                                <form class="form-horizontal" method="get">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
                         <div class="input-group input-group-sm mb-3">
-                            <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;" placeholder="Search issues by vehicle">
-                                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">{{data.vehicleIdentification}}</ng-option>
+                            <ng-select [(ngModel)]="unitID" name="unitID" style="width: 100%;"
+                                placeholder="Search issues by vehicle">
+                                <ng-option *ngFor="let data of allVehicles" [value]="data.vehicleID">
+                                    {{data.vehicleIdentification}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-0">
                         <div class="input-group input-group-sm mb-3">
-                            <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;" placeholder="Search issues by asset">
-                                <ng-option *ngFor="let data of allAssets" [value]="data.assetID">{{data.assetIdentification}}</ng-option>
+                            <ng-select [(ngModel)]="assetUnitID" name="assetUnitID" style="width: 100%;"
+                                placeholder="Search issues by asset">
+                                <ng-option *ngFor="let data of allAssets" [value]="data.assetID">
+                                    {{data.assetIdentification}}</ng-option>
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-md-2 col-lg-2 pl-0">
                         <div class="input-group input-group-sm mb-3">
                             <input type="text" name="issueName" [(ngModel)]="issueName" class="form-control"
-                                placeholder="Search Issue by Name" (input)="getSuggestions($event.target.value)"/>
+                                placeholder="Search Issue by Name" (input)="getSuggestions($event.target.value)" />
                         </div>
                         <div *ngIf="suggestedIssues?.length > 0" class="result-suggestions">
                             <ul>
@@ -63,7 +68,8 @@
                             </div>
                         </div> -->
 
-                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data" class="btn btn-success btn-sm modal-with-form mr-2">
+                        <a href="javascript:;" (click)="refreshData()" data-toggle="tooltip" title="Refresh data"
+                            class="btn btn-success btn-sm modal-with-form mr-2">
                             <i class="fas fa-sync"></i>
                         </a>
 
@@ -71,98 +77,107 @@
                             style="color: white"><i class="fas fa-plus"></i> Add Issue</a>
                     </div>
                 </div>
+                </form>
             </header>
 
             <section class="m-2">
                 <div class="row mb-3">
-                   <div class="col-lg-12">
-                      <div class="bg-white p-3 text-dark">
-                         <div class="form-group row pt-1">
-                            <div class="col-lg-12">
-                                <div class="table-responsive">
-                                <table class="row-border hover table table-bordered table-striped mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Unit Type</th>
-                                            <th>Vehicle/Asset</th>
-                                            <th>Issue Name</th>
-                                            <th>Reported On</th>
-                                            <th>Reported By</th>
-                                            <th>Assigned To</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngIf="issues.length == 0" class="text-center">
-											<td colspan="8">{{dataMessage}}</td>
-										</tr>
-                                        <tr *ngFor="let issue of issues" style="cursor: pointer;">
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{ issue.unitType }}
-                                            </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                <span *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
-                                                <span
-                                                    *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
-                                            </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{ issue.issueName }}
-                                            </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{issue.reportedDate | date: 'yyyy/MM/dd'}}
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-1">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table class="row-border hover table table-bordered table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Unit Type</th>
+                                                        <th>Vehicle/Asset</th>
+                                                        <th>Issue Name</th>
+                                                        <th>Reported On</th>
+                                                        <th>Reported By</th>
+                                                        <th>Assigned To</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="issues.length == 0" class="text-center">
+                                                        <td colspan="8">{{dataMessage}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let issue of issues" style="cursor: pointer;">
+                                                        <td
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            {{ issue.unitType }}
+                                                        </td>
+                                                        <td
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            <span
+                                                                *ngIf="issue.unitType === 'asset'">{{assetList[issue.unitID]}}</span>
+                                                            <span
+                                                                *ngIf="issue.unitType === 'vehicle'">{{vehicleList[issue.unitID]}}</span>
+                                                        </td>
+                                                        <td
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            {{ issue.issueName }}
+                                                        </td>
+                                                        <td
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            {{issue.reportedDate | date: 'yyyy/MM/dd'}}
 
-                                            </td>
-                                            <td class="text-capitalize" routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{ usersList[issue.reportedBy] }}
-                                            </td>
-                                            <td class="text-capitalize" routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                {{ usersList[issue.assignedTo] }}
-                                            </td>
-                                            <td routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
-                                                <span class="badge badge-dark p-1">
-                                                    {{issue.currentStatus | uppercase}}</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group flex-wrap">
-                                                    <button type="button" class="mr-1 btn" data-toggle="dropdown">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" role="menu">
-                                                        <button *ngIf="issue.currentStatus != 'CLOSED'" routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}" class="dropdown-item text-1">Edit</button>
-                                                        <!-- <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button> -->
-                                                        <button *ngIf="issue.currentStatus != 'CLOSED'" type="button" class="dropdown-item text-1"
-                                                            (click)="deleteIssue(issue.issueID, issue.issueName)">
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                </div>
+                                                        </td>
+                                                        <td class="text-capitalize"
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            {{ usersList[issue.reportedBy] }}
+                                                        </td>
+                                                        <td class="text-capitalize"
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            {{ usersList[issue.assignedTo] }}
+                                                        </td>
+                                                        <td
+                                                            routerLink="/fleet/maintenance/issues/detail/{{issue.issueID}}">
+                                                            <span class="badge badge-dark p-1">
+                                                                {{issue.currentStatus | uppercase}}</span>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group flex-wrap">
+                                                                <button type="button" class="mr-1 btn"
+                                                                    data-toggle="dropdown">
+                                                                    <i class="fas fa-ellipsis-v"></i>
+                                                                </button>
+                                                                <div class="dropdown-menu" role="menu">
+                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
+                                                                        routerLink="/fleet/maintenance/issues/edit/{{issue.issueID}}"
+                                                                        class="dropdown-item text-1">Edit</button>
+                                                                    <!-- <button *ngIf="issue.currentStatus == 'CLOSED'" (click)="cloneIssue(issue.issueID)" class="dropdown-item text-1">Clone</button> -->
+                                                                    <button *ngIf="issue.currentStatus != 'CLOSED'"
+                                                                        type="button" class="dropdown-item text-1"
+                                                                        (click)="deleteIssue(issue.issueID, issue.issueName)">
+                                                                        Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
 
-                                <div class="row mt-3 dtPaginate" *ngIf="issues.length > 0">
-                                    <div class="col-6">
-                                        Showing {{ issuesStartPoint }} to {{ issuesEndPoint }} of {{ totalRecords }} enteries
                                     </div>
-                                    <div class="col-6 text-right">
-                                        <button type="button" class="btn btn-default mr-2" (click)="prevResults()" [disabled]="issuesPrev">Prev</button>
-                                        <button type="button" class="btn btn-default" (click)="nextResults()" [disabled]="issuesNext">Next</button>
-                                    </div>
-                                </div>
 
+
+                                </div>
                             </div>
-
-
-                         </div>
-                      </div>
-                   </div>
+                        </div>
+                    </div>
                 </div>
 
-             </section>
-
+            </section>
+            <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && issues.length !== 0">
+                <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                    More..</button>
+            </div>
 
 
         </section>

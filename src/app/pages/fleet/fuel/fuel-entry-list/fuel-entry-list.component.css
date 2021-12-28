@@ -1,4 +1,9 @@
-.table th, .table td{
-    padding: 0.6rem;
-    vertical-align: unset;
+ngx-datatable {
+  max-height: 60vh;
+  min-height: 50vh;
+  overflow-y: scroll;
+}
+
+datatable-header-cell{
+    font-weight: bold;
 }

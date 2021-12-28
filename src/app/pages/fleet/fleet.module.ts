@@ -1,22 +1,18 @@
-import { CUSTOM_ELEMENTS_SCHEMA, Injectable, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { FleetRoutingModule } from './fleet-routing.module';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from '../../shared/shared.module';
+import { Injectable, NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbDateAdapter, NgbDateParserFormatter, NgbDateStruct, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
-import { ChartsModule } from 'ng2-charts';
 // ngselect2
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgSelectConfig } from '@ng-select/ng-select';
-import { ɵs } from '@ng-select/ng-select';
-
-import { SlickCarouselModule } from 'ngx-slick-carousel';
-
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgSelectConfig, NgSelectModule, ɵs } from '@ng-select/ng-select';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
+import { ChartsModule } from 'ng2-charts';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { SharedModule } from '../../shared/shared.module';
+import { FleetRoutingModule } from './fleet-routing.module';
 import { DashboardDriverComponent } from './index';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
+
 
 const COMPONENTS = [
   DashboardDriverComponent,
@@ -90,6 +86,8 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     NgbModule,
     NgMultiSelectDropDownModule.forRoot(),
     NgxSpinnerModule,
+    ReactiveFormsModule,
+    RxReactiveFormsModule
 
   ],
   exports: [...COMPONENTS],
@@ -101,6 +99,6 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     { provide: NgbDateAdapter, useClass: CustomAdapter },
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ]
- 
+
 })
 export class FleetModule { }

@@ -27,6 +27,8 @@ export class AddInventoryComponent implements OnInit {
   partNumber = '';
 
   cost = 0;
+  tax = 0;
+  totalCost = 0;
   costUnit = null;
   quantity = 0;
   itemName = '';
@@ -140,6 +142,11 @@ export class AddInventoryComponent implements OnInit {
       }
     }
   }
+  calculateAmount()
+  {
+     this.totalCost = (this.cost * this.quantity) + this.tax;
+  }
+
   getRequiredInventory() {
     this.apiService.getData('items/required/' + this.requiredItem).subscribe((result: any) => {
       result = result.Items[0];
@@ -157,6 +164,8 @@ export class AddInventoryComponent implements OnInit {
 
       this.partNumber = result.partNumber;
       this.cost = result.cost;
+      this.totalCost = result.totalCost;
+      this.tax = result.tax;
       this.costUnit = result.costUnit;
       this.costUnitType = result.costUnitType;
       this.quantity = result.quantity;
@@ -259,8 +268,10 @@ export class AddInventoryComponent implements OnInit {
     const data = {
       partNumber: this.partNumber,
       cost: this.cost,
+      totalCost:this.totalCost,
       costUnitType: this.costUnitType,
       costUnit: this.costUnit,
+      tax:this.tax,
       quantity: this.quantity,
       itemName: this.itemName,
       description: this.description,
@@ -325,6 +336,8 @@ export class AddInventoryComponent implements OnInit {
           this.partNumber = '';
 
           this.cost = 0;
+          this.totalCost = 0;
+          this.tax = 0;
           this.costUnit = null;
           this.quantity = 0;
 
@@ -400,6 +413,8 @@ export class AddInventoryComponent implements OnInit {
       partNumber: this.partNumber,
       cost: this.cost,
       costUnit: this.costUnit,
+      tax: this.tax,
+      totalCost:this.totalCost,
       costUnitType: this.costUnitType,
       quantity: this.quantity,
       itemName: this.itemName,
@@ -467,7 +482,6 @@ export class AddInventoryComponent implements OnInit {
       zipCode: this.zipCode,
       address: this.address,
     };
-
     this.apiService.postData('items/add/warehouse', data).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -521,7 +535,6 @@ export class AddInventoryComponent implements OnInit {
   setSrcValue() {
     this.pdfSrc = '';
   }
-
   openModal(unit: string) {
     this.listService.triggerModal(unit);
 

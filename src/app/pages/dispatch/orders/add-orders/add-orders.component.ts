@@ -1,23 +1,29 @@
-import { Component, OnInit } from "@angular/core";
-import { ApiService, ListService } from "../../../../services";
-import { Router, ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, from, Subject, throwError } from "rxjs";
-import * as _ from "lodash";
-import { NgbCalendar, NgbDateAdapter } from "@ng-bootstrap/ng-bootstrap";
-import { map } from "rxjs/operators";
-import { HereMapService } from "../../../../services";
-import { environment } from "../../../../../environments/environment.prod";
-import { NgbTimeStruct } from "@ng-bootstrap/ng-bootstrap";
-import { NgForm } from "@angular/forms";
-import { ToastrService } from "ngx-toastr";
-import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
-import { HttpClient } from "@angular/common/http";
-import { DomSanitizer } from "@angular/platform-browser";
-
-import { Auth } from "aws-amplify";
 import { Location } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { DomSanitizer } from "@angular/platform-browser";
+import { ActivatedRoute, Router } from "@angular/router";
+import {
+  NgbCalendar,
+  NgbDateAdapter,
+  NgbTimeStruct,
+} from "@ng-bootstrap/ng-bootstrap";
+import { Auth } from "aws-amplify";
+import { ToastrService } from "ngx-toastr";
+import { BehaviorSubject, from, Subject } from "rxjs";
+import { map } from "rxjs/operators";
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
-import { element } from "protractor";
+import { RouteManagementServiceService } from "src/app/services/route-management-service.service";
+import { v4 as uuidv4 } from "uuid";
+import { environment } from "../../../../../environments/environment.prod";
+import {
+  ApiService,
+  DashboardUtilityService,
+  HereMapService,
+  ListService,
+} from "../../../../services";
+import { PdfAutomationService } from "../../pdf-automation/pdf-automation.service";
 
 declare var $: any;
 declare var H: any;
@@ -69,9 +75,10 @@ export class AddOrdersComponent implements OnInit {
   countries;
   states;
   cities;
-
+  cusPOs = [];
   getOrderNumber: string;
   orderData = {
+    cusPOs: [],
     stateTaxID: "",
     invoiceGenerate: false,
     customerID: null,
@@ -158,6 +165,10 @@ export class AddOrdersComponent implements OnInit {
     },
     remarks: "",
     loc: "",
+    tripData: {
+      tripID: "",
+      tripNo: "",
+    },
   };
   response: any = "";
   hasError: boolean = false;
@@ -167,6 +178,12 @@ export class AddOrdersComponent implements OnInit {
   Error: string = "";
   Success: string = "";
   errors = {};
+
+  isConfirmExist = false;
+  isConfirmData: any = {
+    confirmNo: "",
+    orderNo: "",
+  };
 
   origin: any;
   destination: any;
@@ -222,6 +239,7 @@ export class AddOrdersComponent implements OnInit {
             contactPerson: "",
             phone: "",
             customerPO: [],
+            newCustomerPO: [],
             commodity: [
               {
                 name: "",
@@ -292,7 +310,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -304,7 +322,7 @@ export class AddOrdersComponent implements OnInit {
       {
         type: null,
         amount: 0,
-        currency: "",
+        currency: null,
       },
     ],
   };
@@ -327,7 +345,7 @@ export class AddOrdersComponent implements OnInit {
   singleDatePickerOptions;
 
   stateShipperIndex: any;
-  stateReceiverIndex: number;
+  stateReceiverIndex: any;
   uploadedDocs = [];
   existingUploadedDocs = [];
   packagingUnitsList: any = [];
@@ -347,6 +365,7 @@ export class AddOrdersComponent implements OnInit {
   isInvoiceGenerated: boolean;
 
   cloneID: any;
+  recalledState = false;
 
   constructor(
     private apiService: ApiService,
@@ -361,7 +380,10 @@ export class AddOrdersComponent implements OnInit {
     private listService: ListService,
     private domSanitizer: DomSanitizer,
     private location: Location,
-    private countryStateCity: CountryStateCityService
+    private countryStateCity: CountryStateCityService,
+    private routeManagement: RouteManagementServiceService,
+
+    private dashboardUtilityService: DashboardUtilityService
   ) {
     const current = new Date();
 
@@ -434,7 +456,12 @@ export class AddOrdersComponent implements OnInit {
     // });
   }
   cancel() {
-    this.location.back(); // <-- go back to previous location on cancel
+    this.location.back();
+  }
+  goBack() {
+    this.router.navigate([
+      `/dispatch/orders/order-list/${this.routeManagement.orderUpdated()}`,
+    ]); // <-- go back to previous location on cancel
   }
   async getCarrierState() {
     let carrierID = (await Auth.currentSession()).getIdToken().payload
@@ -457,12 +484,7 @@ export class AddOrdersComponent implements OnInit {
     return this.dateAdapter.toModel(this.ngbCalendar.getToday())!;
   }
   async ngOnInit() {
-    this.listService.fetchShippers();
-    this.listService.fetchReceivers();
-    this.listService.fetchContactsByIDs();
-    // this.listService.fetchReceiversByIDs();
     this.listService.fetchCustomers();
-    // this.getCarrierState();
     this.disableButton();
 
     $(".modal").on("hidden.bs.modal", (e) => {
@@ -471,11 +493,21 @@ export class AddOrdersComponent implements OnInit {
 
     this.getOrderID = this.route.snapshot.params["orderID"];
     if (this.getOrderID) {
+      this.getShipperReceiverEdit();
       this.fetchOrderByID();
+
       this.pageTitle = `Edit Order`;
     } else {
       this.pageTitle = "Add Order";
-      this.fetchStateTaxes();
+      // this.fetchStateTaxes();
+
+      this.getShippers();
+      this.getReceivers();
+      this.listService.fetchContactsByIDs();
+      this.listService.contactsObjectDataSource.subscribe((res) => {
+        this.receiversObjects = res;
+        this.shippersObjects = res;
+      });
     }
 
     this.httpClient.get("assets/packagingUnit.json").subscribe((data) => {
@@ -483,14 +515,7 @@ export class AddOrdersComponent implements OnInit {
     });
 
     // this.customers = this.listService.customersList;
-    // this.shippers = this.listService.shipperList;
-
     // this.receivers = this.listService.receiverList;
-
-    this.listService.contactsObjectDataSource.subscribe((res) => {
-      this.receiversObjects = res;
-      this.shippersObjects = res;
-    });
 
     this.route.queryParams.subscribe((params) => {
       this.cloneID = params.cloneID;
@@ -499,17 +524,60 @@ export class AddOrdersComponent implements OnInit {
       }
     });
 
+    this.route.queryParams.subscribe((params) => {
+      const recallStatus = params.state;
+      if (recallStatus) {
+        this.recalledState = true;
+      }
+    });
+
     let customerList = new Array<any>();
     this.getValidCustomers(customerList);
     this.customers = customerList;
+  }
 
-    let shipperList = new Array<any>();
-    this.getValidShippers(shipperList);
-    this.shippers = shipperList;
+  async getShippers() {
+    if (this.shippers.length === 0) {
+      this.listService.fetchShippers();
+      let shipperList = new Array<any>();
+      this.getValidShippers(shipperList);
+      this.shippers = shipperList;
+    }
+  }
 
-    let receiverList = new Array<any>();
-    this.getValidReceivers(receiverList);
-    this.receivers = receiverList;
+  async getReceivers() {
+    if (this.receivers.length === 0) {
+      this.listService.fetchReceivers();
+      let receiverList = new Array<any>();
+      this.getValidReceivers(receiverList);
+      this.receivers = receiverList;
+    }
+  }
+
+  getShipperReceiverEdit() {
+    this.apiService
+      .getData(`contacts/get/forOrder/${this.getOrderID}`)
+      .subscribe((result: any) => {
+        let newShippers = [];
+        let newReceivers = [];
+        if (result && result.length > 0) {
+          for (const item of result) {
+            if (item.isDeleted === 0 && item.eTypes.includes("shipper")) {
+              newShippers.push(item);
+            }
+            if (item.isDeleted === 0 && item.eTypes.includes("receiver")) {
+              newReceivers.push(item);
+            }
+          }
+
+          this.shippersObjects = newShippers.reduce((a: any, b: any) => {
+            return (a[b["contactID"]] = b["companyName"]), a;
+          }, {});
+          this.receiversObjects = newReceivers.reduce((a: any, b: any) => {
+            return (a[b["contactID"]] = b["companyName"]), a;
+          }, {});
+        }
+      });
   }
 
   private getValidCustomers(customerList: any[]) {
@@ -679,33 +747,51 @@ export class AddOrdersComponent implements OnInit {
   async saveShipper(i: number) {
     // this.isShipperSubmit = true;
     //check if all required fields are filled
-
-    if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
-      if (
-        !this.shippersReceivers[i].shippers.shipperID ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.stateCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address
-          .countryCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
+    // $("#poErr_" + i).hide();
+    let newPicks = this.shippersReceivers[i].shippers;
+    if (!newPicks.shipperID) {
+      this.toastr.error("Please select shipper");
+      return false;
+    }
+    for (const pick of newPicks.pickupPoint) {
+      if (pick.address.manual) {
+        if (
+          !pick.address.address ||
+          !pick.address.cityName ||
+          !pick.address.stateCode ||
+          !pick.address.countryCode ||
+          !pick.address.zipCode ||
+          !pick.pickupDate ||
+          !pick.pickupTime ||
+          !pick.commodity[0].name
+        ) {
+          this.toastr.error("Please fill required fields.");
+          return false;
+        }
+      } else if (
+        !pick.address.pickupLocation ||
+        !pick.pickupDate ||
+        !pick.pickupTime ||
+        !pick.commodity[0].name
       ) {
         this.toastr.error("Please fill required fields.");
         return false;
       }
-    } else if (
-      !this.shippersReceivers[i].shippers.shipperID ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].address
-        .pickupLocation ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-      !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
+    }
+
+    let newPosData = [];
+
+    for (
+      let index = 0;
+      index < this.shippersReceivers[i].shippers.pickupPoint.length;
+      index++
     ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
+      const element = this.shippersReceivers[i].shippers.pickupPoint[index];
+      for (let k = 0; k < element.customerPO.length; k++) {
+        const po = element.customerPO[k];
+        newPosData.push(po.label);
+      }
+      element.newCustomerPO = newPosData;
     }
 
     if (this.shippersReceivers[i].shippers.update == true) {
@@ -748,13 +834,7 @@ export class AddOrdersComponent implements OnInit {
         delete element.pickupTime;
       }
     }
-    let newPosData = [];
-    this.shippersReceivers[i].shippers.pickupPoint.forEach((element) => {
-      element.customerPO.forEach((po: any) => {
-        newPosData.push(po.label);
-      });
-      element.customerPO = newPosData;
-    });
+
     let currentShipper: any = {
       shipperID: this.shippersReceivers[i].shippers.shipperID,
       pickupPoint: this.shippersReceivers[i].shippers.pickupPoint,
@@ -810,31 +890,35 @@ export class AddOrdersComponent implements OnInit {
   }
   async saveReceiver(i) {
     // this.isReceiverSubmit = true;
-    if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
-      if (
-        !this.shippersReceivers[i].receivers.receiverID ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.countryCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
+    let newDrops = this.shippersReceivers[i].receivers;
+    if (!newDrops.receiverID) {
+      this.toastr.error("Please select receiver");
+      return false;
+    }
+    for (const drop of newDrops.dropPoint) {
+      if (drop.address.manual) {
+        if (
+          !drop.address.address ||
+          !drop.address.cityName ||
+          !drop.address.stateCode ||
+          !drop.address.countryCode ||
+          !drop.address.zipCode ||
+          !drop.dropOffDate ||
+          !drop.dropOffTime ||
+          !drop.commodity[0].name
+        ) {
+          this.toastr.error("Please fill required fields.");
+          return false;
+        }
+      } else if (
+        !drop.address.dropOffLocation ||
+        !drop.dropOffDate ||
+        !drop.dropOffTime ||
+        !drop.commodity[0].name
       ) {
         this.toastr.error("Please fill required fields.");
         return false;
       }
-    } else if (
-      !this.shippersReceivers[i].receivers.receiverID ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].address
-        .dropOffLocation ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-      !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-    ) {
-      this.toastr.error("Please fill required fields.");
-      return false;
     }
 
     if (this.shippersReceivers[i].receivers.update == true) {
@@ -994,6 +1078,7 @@ export class AddOrdersComponent implements OnInit {
         pickupTime: "",
         pickupInstruction: "",
         customerPO: [],
+        newCustomerPO: [],
         contactPerson: "",
         phone: "",
 
@@ -1118,7 +1203,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-              this.getAllCords.join(";")
+            this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1129,7 +1214,7 @@ export class AddOrdersComponent implements OnInit {
               }
             },
             (err) => {
-              console.log("pc miles", err);
+              // console.log("pc miles", err);
             }
           );
       } else {
@@ -1164,7 +1249,11 @@ export class AddOrdersComponent implements OnInit {
             }
           }
 
-          if (this.customerSelected[0].adrs.length > 0) {
+          if (
+            this.customerSelected[0].adrs.length > 0 &&
+            !this.getOrderID &&
+            !this.cloneID
+          ) {
             this.orderData.cusAddressID =
               this.customerSelected[0].adrs[0].addressID;
             let newCountCode = this.customerSelected[0].adrs[0].cCode;
@@ -1329,7 +1418,7 @@ export class AddOrdersComponent implements OnInit {
     return true;
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -1346,7 +1435,7 @@ export class AddOrdersComponent implements OnInit {
       this.orderData.additionalContact = this.orderData.additionalContact.label;
     }
     this.orderData.shippersReceiversInfo = this.finalShippersReceivers;
-
+    this.orderData.cusPOs = this.cusPOs;
     let flag = true;
     let flag1 = true;
     // check if exiting accoridan has atleast one shipper and one receiver
@@ -1360,9 +1449,20 @@ export class AddOrdersComponent implements OnInit {
 
     if (!flag && !flag1) {
       this.toastr.error(
-        "Please add atleast one Shipper and Receiver in shipments."
+        "Please add at least one Shipper and Receiver in shipments."
       );
       return false;
+    }
+
+    if (this.isConfirmExist) {
+      setTimeout(() => {
+        $("html, body").animate(
+          { scrollTop: $("#confirmErr").position().top },
+          "slow"
+        );
+      }, 500);
+      this.submitDisabled = false;
+      return;
     }
 
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
@@ -1413,6 +1513,10 @@ export class AddOrdersComponent implements OnInit {
             newloc = elem.address.pickupLocation.replace(/,/g, "");
             selectedLoc += newloc.toLowerCase() + "|";
           }
+          if (elem.newCustomerPO != undefined) {
+            elem.customerPO = elem.newCustomerPO;
+            delete elem.newCustomerPO;
+          }
         });
       });
     }
@@ -1432,7 +1536,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1458,13 +1562,13 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order added successfully");
-        this.cancel();
+        this.goBack();
       },
     });
   }
@@ -1474,12 +1578,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-            v +
-            '-error" class="error" for="' +
-            v +
-            '">' +
-            this.errors[v] +
-            "</label>"
+          v +
+          '-error" class="error" for="' +
+          v +
+          '">' +
+          this.errors[v] +
+          "</label>"
         )
         .addClass("error");
     });
@@ -1502,6 +1606,13 @@ export class AddOrdersComponent implements OnInit {
     } else {
       // this.orderData.receiverInfo.splice(i, 1);
     }
+  }
+
+  changeTax(value) {
+    if (!value && this.stateTaxes.length === 0) {
+      this.fetchStateTaxes();
+    }
+    this.calculateAmount();
   }
 
   async calculateAmount() {
@@ -1530,17 +1641,17 @@ export class AddOrdersComponent implements OnInit {
       (parseFloat(this.freightFee) || 0) +
       (parseFloat(this.fuelSurcharge) || 0);
 
-    this.subTotal = sum;
+    this.subTotal = sum.toFixed(2);
 
-    let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
-    let discountUnit = this.orderData.discount["unit"];
-    if (discountUnit === "percentage") {
-      this.discount = (this.subTotal * discountAmount) / 100;
-    } else {
-      this.discount = discountAmount;
-    }
+    // let discountAmount = parseFloat(this.orderData.discount["amount"]) || 0;
+    // let discountUnit = this.orderData.discount["unit"];
+    // if (discountUnit === "percentage") {
+    //   this.discount = (this.subTotal * discountAmount) / 100;
+    // } else {
+    //   this.discount = discountAmount;
+    // }
 
-    this.totalAmount = this.subTotal.toFixed(0);
+    this.totalAmount = this.subTotal;
 
     this.orderData["totalAmount"] = this.totalAmount;
     this.orderData.finalAmount = this.totalAmount;
@@ -1555,13 +1666,13 @@ export class AddOrdersComponent implements OnInit {
         ? this.orderData.taxesInfo[2].amount
         : 0;
       let advance: any = this.orderData.advance;
-      let totalTax = parseInt(gst) + parseInt(pst) + parseInt(hst);
-      let taxAmount = (parseInt(this.totalAmount) * totalTax) / 100;
-      let final = parseInt(this.totalAmount) + taxAmount;
-
+      let totalTax = parseFloat(gst) + parseFloat(pst) + parseFloat(hst);
+      let taxAmount = (parseFloat(this.totalAmount) * totalTax) / 100;
+      let final: any = (parseFloat(this.totalAmount) + taxAmount).toFixed(2);
       this.orderData["totalAmount"] = final;
+
       this.totalAmount = final;
-      this.orderData.finalAmount = final - parseInt(advance);
+      this.orderData.finalAmount = final - parseFloat(advance);
     }
     this.newTaxes = this.orderData.taxesInfo;
     if (this.subTotal > 0) {
@@ -1577,10 +1688,16 @@ export class AddOrdersComponent implements OnInit {
       this.finalShippersReceivers[parentIndex].shippers.splice(i, 1);
       this.shippersReceivers[parentIndex].shippers.update = false;
       this.shippersReceivers[parentIndex].shippers.save = true;
+      if (this.finalShippersReceivers[parentIndex].shippers.length === 0) {
+        this.shippersReceivers[parentIndex].shippers.isShow = true;
+      }
     } else {
       this.finalShippersReceivers[parentIndex].receivers.splice(i, 1);
       this.shippersReceivers[parentIndex].receivers.update = false;
       this.shippersReceivers[parentIndex].receivers.save = true;
+      if (this.finalShippersReceivers[parentIndex].receivers.length === 0) {
+        this.shippersReceivers[parentIndex].receivers.isShow = true;
+      }
     }
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
@@ -1733,6 +1850,7 @@ export class AddOrdersComponent implements OnInit {
         contactPerson: "",
         phone: "",
         customerPO: [],
+        newCustomerPO: [],
         commodity: [
           {
             name: "",
@@ -1796,15 +1914,14 @@ export class AddOrdersComponent implements OnInit {
 
     if (elem === "shipper") {
       let data = this.finalShippersReceivers[parentIndex].shippers[i];
-
       this.shippersReceivers[j].shippers.shipperID = data.shipperID;
-      let newPosData = [];
-      data.pickupPoint.forEach((element) => {
-        element.customerPO.forEach((po: any) => {
-          newPosData.push({ label: po });
-        });
-        element.customerPO = newPosData;
-      });
+      // let newPosData = [];
+      // data.pickupPoint.forEach((element) => {
+      //   element.customerPO.forEach((po: any) => {
+      //     newPosData.push({ label: po });
+      //   });
+      //   element.customerPO = newPosData;
+      // });
       this.shippersReceivers[j].shippers.pickupPoint = data.pickupPoint;
       for (
         let index = 0;
@@ -1828,6 +1945,7 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].shippers.isShow = true;
       this.stateShipperIndex = i;
       this.showShipperUpdate = true;
+      this.getShippers();
     } else {
       let data = this.finalShippersReceivers[parentIndex].receivers[i];
       this.shippersReceivers[j].receivers.receiverID = data.receiverID;
@@ -1852,7 +1970,8 @@ export class AddOrdersComponent implements OnInit {
       this.shippersReceivers[j].receivers.save = false;
       this.shippersReceivers[j].receivers.update = true;
       this.shippersReceivers[j].receivers.isShow = true;
-      this.stateShipperIndex = i;
+      this.stateReceiverIndex = i;
+      this.getReceivers();
     }
     this.visibleIndex = i;
     this.showReceiverUpdate = true;
@@ -1860,52 +1979,56 @@ export class AddOrdersComponent implements OnInit {
 
   async updateShipperReceiver(obj, i) {
     if (obj === "shipper") {
-      if (this.shippersReceivers[i].shippers.pickupPoint[0].address.manual) {
-        if (
-          !this.shippersReceivers[i].shippers.shipperID ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.address ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.cityName ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address
-            .stateCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address
-            .countryCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].address.zipCode ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-          !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
+      // for shipper
+      $("#poErr_" + i).hide();
+      let newPicks = this.shippersReceivers[i].shippers;
+      if (!newPicks.shipperID) {
+        this.toastr.error("Please select shipper");
+        return false;
+      }
+      for (const pick of newPicks.pickupPoint) {
+        if (pick.address.manual) {
+          if (
+            !pick.address.address ||
+            !pick.address.cityName ||
+            !pick.address.stateCode ||
+            !pick.address.countryCode ||
+            !pick.address.zipCode ||
+            !pick.pickupDate ||
+            !pick.pickupTime ||
+            !pick.commodity[0].name
+          ) {
+            this.toastr.error("Please fill required fields.");
+            return false;
+          }
+        } else if (
+          !pick.address.pickupLocation ||
+          !pick.pickupDate ||
+          !pick.pickupTime ||
+          !pick.commodity[0].name
         ) {
           this.toastr.error("Please fill required fields.");
           return false;
         }
-      } else if (
-        !this.shippersReceivers[i].shippers.shipperID ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].address
-          .pickupLocation ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupDate ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].pickupTime ||
-        !this.shippersReceivers[i].shippers.pickupPoint[0].commodity[0].name
-      ) {
-        this.toastr.error("Please fill required fields.");
-        return false;
       }
       let data = this.shippersReceivers[i].shippers;
-
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].shipperID = data.shipperID;
-
       let newPosData = [];
       data.pickupPoint.forEach((element) => {
         element.customerPO.forEach((po: any) => {
-          newPosData.push(po.label);
+          if (po && po != null) {
+            newPosData.push(po.label);
+          }
         });
-        element.customerPO = newPosData;
+        element.newCustomerPO = newPosData;
       });
-
       this.finalShippersReceivers[i].shippers[
         this.stateShipperIndex
       ].pickupPoint = data.pickupPoint;
       let location: any;
+
       for (
         let index = 0;
         index <
@@ -1925,7 +2048,6 @@ export class AddOrdersComponent implements OnInit {
 
           $("#adrsErr1_" + i).css("display", "none");
           let result = await this.newGeoCode(location);
-          console.log("result update", result);
           if (result == null) {
             $("#adrsErr1_" + i).css("display", "block");
             this.toastr.error("Please add valid address");
@@ -1958,49 +2080,53 @@ export class AddOrdersComponent implements OnInit {
       }, 500);
       this.emptyShipper(i);
     } else {
-      if (this.shippersReceivers[i].receivers.dropPoint[0].address.manual) {
-        if (
-          !this.shippersReceivers[i].receivers.receiverID ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.address ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.cityName ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.stateCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address
-            .countryCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].address.zipCode ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-          !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
+      // for receiver
+      let newDrops = this.shippersReceivers[i].receivers;
+      if (!newDrops.receiverID) {
+        this.toastr.error("Please select receiver");
+        return false;
+      }
+      for (const drop of newDrops.dropPoint) {
+        if (drop.address.manual) {
+          if (
+            !drop.address.address ||
+            !drop.address.cityName ||
+            !drop.address.stateCode ||
+            !drop.address.countryCode ||
+            !drop.address.zipCode ||
+            !drop.dropOffDate ||
+            !drop.dropOffTime ||
+            !drop.commodity[0].name
+          ) {
+            this.toastr.error("Please fill required fields.");
+            return false;
+          }
+        } else if (
+          !drop.address.dropOffLocation ||
+          !drop.dropOffDate ||
+          !drop.dropOffTime ||
+          !drop.commodity[0].name
         ) {
           this.toastr.error("Please fill required fields.");
           return false;
         }
-      } else if (
-        !this.shippersReceivers[i].receivers.receiverID ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].address
-          .dropOffLocation ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffDate ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].dropOffTime ||
-        !this.shippersReceivers[i].receivers.dropPoint[0].commodity[0].name
-      ) {
-        this.toastr.error("Please fill required fields.");
-        return false;
       }
       let data = this.shippersReceivers[i].receivers;
 
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffDate;
-      delete this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+      delete this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
         .dropOffTime;
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].receiverID = data.receiverID;
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].dropPoint = data.dropPoint;
       let location: any;
       let allDropPoints =
-        this.finalShippersReceivers[i].receivers[this.stateShipperIndex]
+        this.finalShippersReceivers[i].receivers[this.stateReceiverIndex]
           .dropPoint;
       for (let index = 0; index < allDropPoints.length; index++) {
         const element = this.shippersReceivers[i].receivers.dropPoint[index];
@@ -2033,7 +2159,7 @@ export class AddOrdersComponent implements OnInit {
       }
 
       this.finalShippersReceivers[i].receivers[
-        this.stateShipperIndex
+        this.stateReceiverIndex
       ].driverUnload = data.driverUnload;
       this.showReceiverUpdate = false;
 
@@ -2053,15 +2179,16 @@ export class AddOrdersComponent implements OnInit {
     await this.shipperReceiverMerge();
     await this.getMiles(this.orderData.milesInfo.calculateBy);
     this.visibleIndex = -1;
-    this.stateShipperIndex = "";
   }
 
   addShipReceiver(obj: string, i: any) {
     let length = this.shippersReceivers.length;
     if (obj == "shipper") {
       this.shippersReceivers[i].shippers.isShow = true;
+      this.getShippers();
     } else {
       this.shippersReceivers[i].receivers.isShow = true;
+      this.getReceivers();
     }
   }
 
@@ -2095,11 +2222,17 @@ export class AddOrdersComponent implements OnInit {
       .subscribe(async (result: any) => {
         result = result.Items[0];
         this.orderData.cusAddressID = result.cusAddressID;
-        await this.fetchStateTaxes();
+        if (!result.zeroRated) {
+          await this.fetchStateTaxes();
+        }
+
         let state = this.stateTaxes.find(
           (o) => o.stateTaxID == result.stateTaxID
         );
 
+        if (result.recptStat) {
+          this.recalledState = false;
+        }
         this.orderData.taxesInfo = [
           {
             name: "GST",
@@ -2114,7 +2247,11 @@ export class AddOrdersComponent implements OnInit {
             amount: state ? state.PST : "",
           },
         ];
+        this.orderData["recptStat"] = result.recptStat
+          ? result.recptStat
+          : false;
         this.orderData["customerID"] = result.customerID;
+        this.orderData.cusConfirmation = result.cusConfirmation;
         this.selectedCustomer(result.customerID);
 
         if (result.attachments !== undefined && result.attachments.length > 0) {
@@ -2123,14 +2260,26 @@ export class AddOrdersComponent implements OnInit {
             name: x,
           }));
         }
+        if (result.brkAmount) {
+          this.orderData["brkAmount"] = result.brkAmount;
+        }
+        if (result.brkCarrID) {
+          this.orderData["brkCarrID"] = result.brkCarrID;
+        }
+        if (result.brkIns) {
+          this.orderData["brkIns"] = result.brkIns;
+        }
+        this.orderData.tripData = result.tripData;
         this.orderData["attachments"] = result.attachments;
         this.ifStatus = result.orderStatus;
         this.orderData.orderStatus = result.orderStatus;
+        this.orderData.tripData = result.tripData;
         this.orderData["zeroRated"] = result.zeroRated;
         this.orderData["additionalContact"] = result.additionalContact;
         this.orderData["createdDate"] = result.createdDate;
         this.orderData["createdTime"] = result.createdTime;
         this.isInvoiceGenerated = result.invoiceGenerate;
+        this.orderData["invoiceGenerate"] = result.invoiceGenerate;
         this.orderData["invoiceEmail"] = result.invoiceEmail;
         this.orderData["csa"] = result.csa;
         this.orderData["ctpat"] = result.ctpat;
@@ -2159,6 +2308,10 @@ export class AddOrdersComponent implements OnInit {
 
         this.orderData.additionalDetails["refeerTemp"] =
           result.additionalDetails.refeerTemp;
+
+        if (result.invData) {
+          this.orderData["invData"] = result.invData;
+        }
 
         this.orderData.shippersReceiversInfo = result.shippersReceiversInfo;
         let shimentLength = result.shippersReceiversInfo.length;
@@ -2225,7 +2378,8 @@ export class AddOrdersComponent implements OnInit {
         this.orderData["totalAmount"] = result.totalAmount;
         this.orderData.advance = result.advance;
         this.existingUploadedDocs = result.uploadedDocs;
-
+        this.orderData.cusPOs = result.cusPOs;
+        this.cusPOs = result.cusPOs;
         this.calculateAmount();
       });
   }
@@ -2259,6 +2413,7 @@ export class AddOrdersComponent implements OnInit {
               contactPerson: "",
               phone: "",
               customerPO: [],
+              newCustomerPO: [],
               commodity: [
                 {
                   name: "",
@@ -2325,9 +2480,10 @@ export class AddOrdersComponent implements OnInit {
     }
   }
 
-  updateOrder() {
+  async updateOrder(type) {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
+    this.submitDisabled = true;
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
         element.taxAmount = 0;
@@ -2375,10 +2531,14 @@ export class AddOrdersComponent implements OnInit {
             newloc = elem.address.pickupLocation.replace(/,/g, "");
             selectedLoc += newloc.toLowerCase() + "|";
           }
+
+          if (elem.newCustomerPO != undefined) {
+            elem.customerPO = elem.newCustomerPO;
+            delete elem.newCustomerPO;
+          }
         });
       });
     }
-    this.orderData["loc"] = selectedLoc;
 
     if (!flag) {
       this.toastr.error(
@@ -2386,6 +2546,40 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+    if (this.isConfirmExist) {
+      setTimeout(() => {
+        $("html, body").animate(
+          { scrollTop: $("#confirmErr").position().top },
+          "slow"
+        );
+      }, 500);
+      this.submitDisabled = false;
+      return;
+    }
+
+    for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
+      const element = this.orderData.shippersReceiversInfo[i];
+      for (let j = 0; j < element.shippers.length; j++) {
+        const ship = element.shippers[j];
+        for (let l = 0; l < ship.pickupPoint.length; l++) {
+          const newPick = ship.pickupPoint[l];
+          delete newPick.address.states;
+          delete newPick.address.cities;
+        }
+      }
+
+      for (let x = 0; x < element.receivers.length; x++) {
+        const newReceive = element.receivers[x];
+        for (let l = 0; l < newReceive.dropPoint.length; l++) {
+          const newDrop = newReceive.dropPoint[l];
+          delete newDrop.address.states;
+          delete newDrop.address.cities;
+        }
+      }
+    }
+
+    this.orderData["loc"] = selectedLoc;
+    this.orderData.cusPOs = this.cusPOs;
 
     // create form data instance
     const formData = new FormData();
@@ -2394,13 +2588,18 @@ export class AddOrdersComponent implements OnInit {
     for (let j = 0; j < this.uploadedDocs.length; j++) {
       formData.append("uploadedDocs", this.uploadedDocs[j]);
     }
-    this.submitDisabled = true;
 
     //append other fields
     formData.append("data", JSON.stringify(this.orderData));
 
-    this.apiService.putData("orders", formData, true).subscribe({
-      complete: () => {},
+    let url = "";
+    if (type === "") {
+      url = "orders";
+    } else if (type === "recall") {
+      url = "admin/order/recall";
+    }
+    this.apiService.putData(url, formData, true).subscribe({
+      complete: () => { },
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2421,13 +2620,14 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
-        this.cancel();
+        // this.goBack();
+        this.router.navigate([`/dispatch/orders/detail/${this.getOrderID}`]);
       },
     });
   }
@@ -2478,6 +2678,7 @@ export class AddOrdersComponent implements OnInit {
             contactPerson: "",
             phone: "",
             customerPO: [],
+            newCustomerPO: [],
             commodity: [
               {
                 name: "",
@@ -3015,5 +3216,37 @@ export class AddOrdersComponent implements OnInit {
 
       this.calculateAmount();
     });
+  }
+
+  addPos(pos) {
+    this.cusPOs.push(pos.label);
+  }
+
+  removePos(pos) {
+    let index = this.cusPOs.indexOf(pos.label);
+    this.cusPOs.splice(index, 1);
+  }
+
+  validateConfirmation() {
+    this.isConfirmExist = false;
+    this.submitDisabled = true;
+    if (this.orderData.cusConfirmation !== "") {
+      this.orderData.cusConfirmation = this.orderData.cusConfirmation.trim();
+      this.apiService
+        .getData(
+          `orders/validate/confirm?value=${this.orderData.cusConfirmation}`
+        )
+        .subscribe((result: any) => {
+          if (result) {
+            this.isConfirmExist = true;
+            this.isConfirmData.orderNo = result.orderNo;
+            this.isConfirmData.cusConfirmation = result.cusConfirmation;
+            this.submitDisabled = false;
+          } else {
+            this.isConfirmExist = false;
+            this.submitDisabled = false;
+          }
+        });
+    }
   }
 }
