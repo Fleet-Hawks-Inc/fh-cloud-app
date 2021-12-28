@@ -138,8 +138,8 @@
                       <div class="">
                         <div class="row">
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class=" bg-success text-white">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" (change)="getStatus($event.target.checked, 'confirmed')"
                                     value="confirmed" name="confirmed" checked=true />
@@ -149,8 +149,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class=" text-white" style="background-color: #4cadad;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" (change)="getStatus($event.target.checked, 'dispatched')"
                                     value="dispatched" name="dispatched" checked=true />
@@ -160,8 +160,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class="  text-white" style="background-color: #ffb366;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" (change)="getStatus($event.target.checked, 'started')"
                                     value="started" name="started" checked=true />
@@ -171,8 +171,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class=" text-white" style="background-color: #238FE1;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" (change)="getStatus($event.target.checked, 'enroute')"
                                     value="enroute" name="enroute" checked=true />
@@ -182,8 +182,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class="  text-white" style="background-color: grey;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" name="delivered"
                                     (change)="getStatus($event.target.checked, 'delivered')" checked=true />
@@ -193,8 +193,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class=" text-white" style="background-color: #B2D8B2;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" name="tonu" (change)="getStatus($event.target.checked, 'tonu')"
                                     checked=true />
@@ -204,8 +204,8 @@
                             </div>
                           </div>
                           <div class="col">
-                            <div class="back-color-gray">
-                              <div class="checkbox mt-2 pl-3">
+                            <div class="  text-white" style="background-color: #FF0000;">
+                              <div class="checkbox mt-1 pl-3 pt-2">
                                 <label class="font-weight-semibold">
                                   <input type="checkbox" name="cancelled"
                                     (change)="getStatus($event.target.checked, 'cancelled')" checked=true />
@@ -226,7 +226,7 @@
                         [nowIndicator]="true" deepChangeDetection="true" [events]="events" [header]="{
                           left: 'prev,next today',
                           center: 'title',
-                          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                          right: '' 
                         }"></full-calendar>
                     </div>
                   </div>

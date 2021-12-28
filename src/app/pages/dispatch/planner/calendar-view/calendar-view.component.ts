@@ -183,14 +183,27 @@ export class CalendarViewComponent implements OnInit {
         result.Items.map((i) => {
           if (i.isDeleted === 0) {
             if (i.tripStatus == "confirmed") {
-              backgroundColor = "#005ce6";
-              borderColor = "#005ce6";
-            } else if (i.tripStatus == "delivered") {
               backgroundColor = "#29a329";
               borderColor = "#29a329";
+            } else if (i.tripStatus == "delivered") {
+              backgroundColor = "#808080";
+              borderColor = "#808080";
             } else if (i.tripStatus == "dispatched") {
-              backgroundColor = "#0099ff";
-              borderColor = "#0099ff";
+              backgroundColor = "#4cadad";
+              borderColor = "#4cadad";
+            }
+            else if (i.tripStatus == "started") {
+              backgroundColor = "#ffb366";
+              borderColor = "#ffb366";
+            } else if (i.tripStatus == "enroute") {
+              backgroundColor = "#238FE1";
+              borderColor = "#238FE1";
+            }else if (i.tripStatus == "tonu") {
+              backgroundColor = "#B2D8B2";
+              borderColor = "#B2D8B2";
+            }else if (i.tripStatus == "cancelled") {
+              backgroundColor = "#FF0000";
+              borderColor = "#FF0000";
             }
             let eventObj = {
               title: "#" + i.tripNo + "\n Status: " + i.tripStatus,

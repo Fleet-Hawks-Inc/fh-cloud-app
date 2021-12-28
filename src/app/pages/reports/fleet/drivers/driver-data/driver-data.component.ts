@@ -50,6 +50,7 @@ export class DriverDataComponent implements OnInit {
   totalRecords = 10;
   pageLength = 10;
   lastEvaluatedKey = "";
+  disableSearch = false;
   currentStatus: any;
   hideShow = {
     name: true,
@@ -231,7 +232,7 @@ export class DriverDataComponent implements OnInit {
               v.url = `/reports/fleet/drivers/driver-report/${v.driverID}`;
             });
             if (result.Items.length === 0) {
-
+              this.disableSearch = false;
               this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             if (result.Items.length === 0) {
@@ -239,7 +240,7 @@ export class DriverDataComponent implements OnInit {
               this.dataMessage = Constants.NO_RECORDS_FOUND
             }
             if (result.Items.length > 0) {
-
+              this.disableSearch = false;
               if (result.LastEvaluatedKey !== undefined) {
                 this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].driverSK);
               }
@@ -297,6 +298,7 @@ export class DriverDataComponent implements OnInit {
         this.driverID = this.driverName;
       }
       this.drivers = [];
+      this.disableSearch = true;
       this.dataMessage = Constants.FETCHING_DATA;
       this.lastEvaluatedKey = ''
       this.suggestedDrivers = [];
@@ -312,14 +314,16 @@ export class DriverDataComponent implements OnInit {
       this.dutyStatus !== "" ||
       this.driverType !== null
     ) {
+        
       this.drivers = [];
+      this.disableSearch = true;
       this.driverID = "";
       this.dutyStatus = "";
       this.driverName = "";
       this.driverType = null;
       this.dataMessage = Constants.FETCHING_DATA;
-      this.initDataTable();
       this.lastEvaluatedKey = ''
+      this.initDataTable();
       this.driverDraw = 0;
     } else {
       return false;
