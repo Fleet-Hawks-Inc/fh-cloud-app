@@ -1588,7 +1588,7 @@
                             font-weight-bold
                             text-lg-right
                             pt-2
-                          ">Default Payment Type</label>
+                          ">Default Payment Type <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <ng-select [(ngModel)]="driverData.paymentDetails.paymentType" name="paymentDetails.paymentType"
                           placeholder="Select the payment type" id="paymentTypeForm"
                           (change)="changePaymentModeForm($event)" #paySlt="ngModel" required [ngClass]="{
@@ -1638,7 +1638,7 @@
                             text-lg-right
                             pt-2
                           ">
-                          Rate</label>
+                          Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.rate" name="paymentDetails.rate" type="text"
                           class="form-control" placeholder="eg. $20 ,$40 ,$60" #payHour="ngModel" required [ngClass]="{
                             error: driverF.submitted && payHour.invalid
@@ -1745,7 +1745,7 @@
                             font-weight-bold
                             text-lg-right
                             pt-2
-                          ">Delivery Rate</label>
+                          ">Delivery Rate <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <input [(ngModel)]="driverData.paymentDetails.deliveryRate" name="paymentDetails.deliveryRate"
                           type="text" class="form-control" placeholder="eg. $20 ,$40 ,$60" #dRate="ngModel" required
                           [ngClass]="{
@@ -1794,7 +1794,7 @@
                             font-weight-bold
                             text-lg-right
                             pt-2
-                          ">Load Pay Percent</label>
+                          ">Load Pay Percent <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                         <div class="row">
                           <div class="col-lg-3">
                             <input [(ngModel)]="
@@ -1849,7 +1849,7 @@
                               font-weight-bold
                               text-lg-right
                               pt-2
-                            ">Loaded Miles</label>
+                            ">Loaded Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="driverData.paymentDetails.loadedMiles" name="paymentDetails.loadedMiles"
                             type="text" class="form-control" #payM="ngModel" required [ngClass]="{
                               error: driverF.submitted && payM.invalid
@@ -1882,7 +1882,7 @@
                           </ng-select>
                           <div *ngIf="curr4.invalid && driverF.submitted" class="text-danger">
                             <div *ngIf="curr4.errors.required">
-                              Currency type is required.
+                              Currency is required.
                             </div>
 
                           </div>
@@ -1893,7 +1893,7 @@
                               font-weight-bold
                               text-lg-right
                               pt-2
-                            ">Empty Miles</label>
+                            ">Empty Miles <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="driverData.paymentDetails.emptyMiles" name="paymentDetails.emptyMiles"
                             type="text" class="form-control" placeholder="eg. $0.5, $1, $2" #eMiles1="ngModel" required
                             [ngClass]="{
@@ -1927,7 +1927,7 @@
                           </ng-select>
                           <div *ngIf="curr5.invalid && driverF.submitted" class="text-danger">
                             <div *ngIf="curr5.errors.required">
-                              Currency type is required.
+                              Currency is required.
                             </div>
 
                           </div>
@@ -1938,7 +1938,7 @@
                               font-weight-bold
                               text-lg-right
                               pt-2
-                            ">Loaded Miles (Team)</label>
+                            ">Loaded Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="
                               driverData.paymentDetails.loadedMilesTeam
                             " name="paymentDetails.loadedMilesTeam" type="text" class="form-control"
@@ -1971,7 +1971,7 @@
                           </ng-select>
                           <div *ngIf="curr6.invalid && driverF.submitted" class="text-danger">
                             <div *ngIf="curr6.errors.required">
-                              Currency type is required.
+                              Currency is required.
                             </div>
 
                           </div>
@@ -1982,7 +1982,7 @@
                               font-weight-bold
                               text-lg-right
                               pt-2
-                            ">Empty Miles (Team)</label>
+                            ">Empty Miles (Team) <span class="mandfield text-2 ml-1"><sup>*</sup></span></label>
                           <input [(ngModel)]="
                               driverData.paymentDetails.emptyMilesTeam
                             " name="paymentDetails.emptyMilesTeam" type="text" class="form-control"
@@ -2015,7 +2015,7 @@
                           </ng-select>
                           <div *ngIf="curr7.invalid && driverF.submitted" class="text-danger">
                             <div *ngIf="curr7.errors.required">
-                              Currency type is required.
+                              Currency is required.
                             </div>
 
                           </div>
