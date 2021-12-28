@@ -55,7 +55,6 @@ export class ProvinceMilesComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-        const otherTrips = [];
         for (let element of result.Items) {
           element.newStatus = element.tripStatus;
 
@@ -175,12 +174,10 @@ export class ProvinceMilesComponent implements OnInit {
         if (element.provinceData && element.provinceData.length > 0) {
           for (let i = 0; i < element.provinceData.length; i++) {
             const element2 = element.provinceData[i];
-            console.log('element2', element2)
             for (let j = 0; j < element2.usProvince.length; j++) {
               const element3 = element2.usProvince[j];
               usState += `"${element3.StCntry}\n\"`;
               usMiles += `"${element3.Total}\n\"`;
-              console.log('usState', usState)
             }
             for (let k = 0; k < element2.canProvince.length; k++) {
               const element4 = element2.canProvince[k];
@@ -203,7 +200,6 @@ export class ProvinceMilesComponent implements OnInit {
         obj["Total Miles"] = element.miles;
         obj["Trip Status"] = element.newStatus;
         dataObject.push(obj)
-        console.log('dataObject', dataObject)
       });
       let headers = Object.keys(dataObject[0]).join(',')
       headers += ' \n'
