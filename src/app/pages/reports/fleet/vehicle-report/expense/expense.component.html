@@ -68,6 +68,8 @@
                                         <col style="width:2%">
                                         <col style="width:2%">
                                         <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
                                         <col style="width:5%">
                                         <col style="width:2%">
                                         <col style="width:2%">
@@ -76,6 +78,8 @@
                                                 <th>Vehicle</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
+                                                <th>Type</th>
+                                                <th>Driver</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Total Miles</th>
@@ -90,6 +94,8 @@
                                                 </td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+                                                <td>{{item.orderType}}</td>
+                                                <td>{{item.driverName}}</td>
                                                 <td>
                                                     <span *ngFor="let data of item.tripPlanning">
                                                         <b>
