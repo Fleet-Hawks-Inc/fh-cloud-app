@@ -84,16 +84,20 @@
                             <div class="card-body">
 
                                 <section class="reports_div">
-                                    <table width="70%" class="row-border hover table table-bordered table-striped mb-0"
+                                    <table class="row-border hover table table-bordered table-striped mb-0"
                                         id="tonuTripsDT">
-                                        <col style="width:10%">
-                                        <col style="width:5%">
-                                        <col style="width:10%">
-                                        <col style="width:25%">
-                                        <col style="width:10%">
-                                        <col style="width:10%">
-
-
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
+                                        <col style="width:3%">
+                                        <col style="width:2%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Asset</th>
@@ -102,8 +106,10 @@
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
+                                                <th>US Province Miles</th>
                                                 <th>US(Total)</th>
                                                 <th>Province(Canada)</th>
+                                                <th>Canada Total Miles</th>
                                                 <th>Canada(Total)</th>
                                                 <th>Total Miles</th>
                                             </tr>
@@ -135,21 +141,35 @@
                                                 <td>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.usProvince"> 
-                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     {{item2.StCntry}}<br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                  <td>
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.usProvince"> 
+                                                     {{item2.Total}} <br>
                                                      </span>
                                                     </span>
                                                 </td>
                                                 <td>
-                                                         {{item.usMiles}} <br>
+                                                         {{item.usMiles | number : '1.2-2' }} <br>
                                                 </td>
-                                                   <td>
+                                                <td>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.caProvince"> 
-                                                     {{item2.StCntry}} :-{{item2.Total}} <br>
+                                                     {{item2.StCntry}}<br>
                                                      </span>
                                                     </span>
                                                 </td>
-                                                <td>{{item.canMiles}}</td>
+                                                 <td>
+                                                       <span *ngFor="let item1 of item.provinceData">
+                                                     <span *ngFor="let item2 of item1.caProvince"> 
+                                                     {{item2.Total}} <br>
+                                                     </span>
+                                                    </span>
+                                                </td>
+                                                <td>{{item.canMiles | number : '1.2-2' }}</td>
                                                 <td>
                                                     {{ item.miles}}
                                                 </td>

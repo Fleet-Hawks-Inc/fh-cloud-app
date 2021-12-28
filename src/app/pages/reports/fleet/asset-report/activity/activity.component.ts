@@ -6,7 +6,6 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import { ActivatedRoute } from "@angular/router";
 import { result } from 'lodash';
-import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 @Component({
   selector: 'app-activity',
@@ -20,9 +19,7 @@ export class ActivityComponent implements OnInit {
   startDate = '';
   endDate = '';
   start = null;
-    states = [];
-stateCode = null;
-  dummyData = [];
+  states = [];
   end = null;
   assetIdentification = '';
   assetID = '';
@@ -34,7 +31,7 @@ stateCode = null;
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   public astId;
-  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute,private countryStateCity: CountryStateCityService) { }
+  constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute) { }
   ngOnInit() {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
@@ -47,31 +44,24 @@ stateCode = null;
       this.assetData = result.Items;
     });
   }
-
-  onScroll() {
-    if (this.loaded) {
-      this.fetchAssetActivity();
-    }
-    this.loaded = false;
-  }
-   async fetchStates(countryCode: any) 
-   {
-    this.states = await this.countryStateCity.GetStatesByCountryCode([
-      countryCode,
-    ]);
-   }
    fetchAssetActivity() {
         if (this.lastItemSK !== 'end') {
         this.apiService.getData(`trips/get/tripData?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
+                this.allData = this.allData.concat(result.Items)
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
-                this.allData = this.allData.concat(result.Items)
-                
+                 if (result.LastEvaluatedKey !== undefined) {
+          this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.tripSK);
+          this.datee = encodeURIComponent(result.LastEvaluatedKey.dateCreated)
+        }
+        else {
+          this.lastItemSK = 'end';
+        }
+        this.loaded = true;
                     const usProvArr = ["AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "	KY", "	LA", "ME", "MD", "MA", "MI", "MN",
                         "MS", "MO", "MT", "NE", "NV", "NH", "	NJ", "	NM", "	NY", "NC", "ND", "OH", "OK", "OR", "PA", "PR", "	RI", "SC", "SD", "	TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"]
                     const canArr = ["AB", "BC", "MB", "NB", "NL", "NF", "NT", "NS", "NU", "ON", "PE", "PQ", "QC", "SK", "YT"]
-               
                 for (let asst of this.allData) {
                     let dataa = asst
                     asst.miles = 0
@@ -79,20 +69,11 @@ stateCode = null;
                         asst.miles += Number(element.miles);
                     }
                 }
-                this.allData = result.Items;
-                console.log('allData==-', this.allData)
                 for (let data of this.allData) {
-                    console.log(' iftaMiles', data.iftaMiles)
                     data.canMiles = 0;
                     data.usMiles = 0;
                     data.finalData = ''
-                    data.canProvince = [];
-                    data.usProvince = [];
                     data.provinceData = [];
-                    data.province =
-                    data.counter = 0;
-                    data.us = [];
-                    data.ca = [];
                     data.vehicleProvinces = [];
                     data.vehicleIDs.map((v) => {
                         data.iftaMiles.map((ifta) => {
@@ -106,7 +87,6 @@ stateCode = null;
                                         usProvince:[]
                                     }
                                     ifta2[v].map((location) => {
-
                                         if (!data.vehicleProvinces.includes(location.StCntry)) {
                                             data.vehicleProvinces.push(location.StCntry);
                                         }
@@ -119,25 +99,19 @@ stateCode = null;
                                          }
                                     })
                                     data.provinceData.push(newObj);
-                                    console.log(data.provinceData)
                                 }
                             })
                         })
                     })
                     for (let item of data.provinceData) {
                         data.finalData = item
-                        console.log('data.finalData', data.finalData,)
                         let provinceDataa = item.provinces;
                         item.provinces.map((v) => {
                             if (usProvArr.includes(v.StCntry)) {
-                                console.log('v.StCntry', v.StCntry);
-                                console.log('exx', v);
                                 data.usMiles += Number(v.Total)
                                 data.usProvince = v.StCntry
                             }
                             else if (canArr.includes(v.StCntry)) {
-                                console.log('v.StCntry', v.StCntry);
-                                console.log('exx', v);
                                 data.canMiles += Number(v.Total)
                                 data.canProvince = v.StCntry
                             }
@@ -147,18 +121,15 @@ stateCode = null;
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
-                if (result.LastEvaluatedKey !== undefined) {
-                    this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
-                    this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
-                }
-                else {
-                    this.lastItemSK = 'end';
-                }
-                this.loaded = true;
             });
         }
     }
-
+      onScroll() {
+    if (this.loaded) {
+      this.fetchAssetActivity();
+    }
+    this.loaded = false;
+  }
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -181,14 +152,11 @@ stateCode = null;
       return false;
     }
   }
-  
-
     csv() {
       this.exportData = this.allData
       this.generateCSV();
       this.fetchAssetActivity();
     }
-  
   generateCSV() {
     if (this.exportData.length > 0) {
       let dataObject = []
@@ -196,6 +164,12 @@ stateCode = null;
       this.exportData.forEach(element => {
         let location = ''
         let date = ''
+        let Miles = 0
+        let State = ''
+        let usMiles = ''
+        let caMiles = ''
+        let usState = ''
+        let caState = ''
         for (let i = 0; i < element.tripPlanning.length; i++)
         {
           const element2 = element.tripPlanning[i];
@@ -211,26 +185,16 @@ stateCode = null;
             location += " & ";
           }
         }
-                    let usState = ''
-        for(let data of element.provinceData){
-       
-          for(let j =0; j < data.usProvince.length; j++){
+        for (let data of element.provinceData) {
+          for (let j = 0; j < data.usProvince.length; j++) {
             const element3 = data.usProvince[j];
-            usState += element3.StCntry + " : " + element3.Total
-            if (j < data.usProvince.length - 1) {
-              usState += " & ";
-            }
+            usState += `"${element3.StCntry}\n\"`;
+            usMiles += `"${element3.Total}\n\"`;
           }
-        }
-                let caState = ''
-        for(let data of element.provinceData){
-       
-          for(let j =0; j < data.caProvince.length; j++){
+          for (let j = 0; j < data.caProvince.length; j++) {
             const element3 = data.caProvince[j];
-            caState += element3.StCntry + " : " + element3.Total
-            if (j < data.caProvince.length - 1) {
-              caState += " & ";
-            }
+            caState += `"${element3.StCntry}\n\"`;
+            caMiles += `"${element3.Total}\n\"`;
           }
         }
         let obj = {}
@@ -240,9 +204,11 @@ stateCode = null;
         obj["location"] = location;
         obj["	Date"] = date;
         obj["Province(US)"] = usState;
+        obj["US Province Miles"] = usMiles;
         obj["US(Total)"] = element.usMiles;
         obj["Province(Canada)"] = caState;
-        obj["Canada(Total)"] = element.canMiles;
+        obj["Canada Province Miles"] = caMiles;
+        obj["Canada(Total)"] = element.caMiles;
         obj["Total Miles"] = element.miles;
         dataObject.push(obj)
       });
