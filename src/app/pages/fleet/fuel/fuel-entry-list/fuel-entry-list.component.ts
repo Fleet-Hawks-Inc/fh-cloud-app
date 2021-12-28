@@ -32,6 +32,8 @@ export class FuelEntryListComponent implements OnInit {
   uploadedDocs = []
   disable = false;
   vehicles = [];
+  reviewing=false;
+  csvHeader=[]
   vehicleList: any = {};
   tripList: any = {};
   assetList: any = {};
@@ -64,7 +66,10 @@ export class FuelEntryListComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
+  error={
+    hasError:false,
+    message:''
+  }
   fuelNext = false;
   fuelPrev = true;
   fuelDraw = 0;
@@ -276,6 +281,7 @@ export class FuelEntryListComponent implements OnInit {
   //     });
   //   }
   // }
+
   deleteFuelEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       // let record = {
@@ -444,8 +450,6 @@ export class FuelEntryListComponent implements OnInit {
       const element = files[i];
       let name = element.name.split('.');
       let ext = name[name.length - 1].toLowerCase();
-
-
       if (ext != 'csv') {
         $('#uploadedDocs').val('');
         condition = false;
@@ -456,15 +460,40 @@ export class FuelEntryListComponent implements OnInit {
     if (condition) {
       this.uploadedDocs = []
       this.uploadedDocs = files
-      this.postDocument();
+      const reader = new FileReader();
+  reader.addEventListener('load', (event:any) => {
+    let csvdata = event.target.result;
+    this.parseCSV(csvdata);
+  });
+  reader.readAsBinaryString(event.target.files[0]);
+      //this.postDocument();
     }
 
   }
+  parseCSV(data:any){
+    let newLinebrk = data.split("\n");
+   
+    this.csvHeader=newLinebrk[0].split(',')
+  }
+
+  validateCSV(){
+    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer Amt","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price",]
+    let match=true
+    console.log(this.csvHeader)
+    if(this.csvHeader && this.csvHeader.length>0){
+    data.forEach(element=>{
+      if(!this.csvHeader.includes(element)){
+        match=false
+      }
+    })
+  }
+return match
+  }
 
   postDocument() {
-    console.log(this.uploadedDocs.length)
+    if(this.validateCSV()){
     if (this.uploadedDocs.length > 0) {
-      this.spinner.show();
+      this.reviewing=true;
       const formData = new FormData();
       for (let i = 0; i < this.uploadedDocs.length; i++) {
         formData.append("uploadedDocs", this.uploadedDocs[i])
@@ -477,9 +506,18 @@ export class FuelEntryListComponent implements OnInit {
         next: (res) => {
           console.log("Uploaded Successfully")
           $('#uploadedDocs').val('');
+          this.reviewing=false
         }
       })
     }
-
+   
   }
+  else{
+    this.error.hasError=true;
+    this.error.message="CSV Headers doesn't match"
+    this.reviewing=false
+    
+  }
+  }
+
 }
