@@ -35,6 +35,8 @@ export class DriverListComponent implements OnInit {
     citiesObject: any = {};
     vehiclesObject: any = {};
     groupssObject: any = {};
+    vendorsObject: any = {};
+    ownerOperatorsObject: any = {};
     driverID = '';
     driverName = '';
     dutyStatus = '';
@@ -94,6 +96,8 @@ export class DriverListComponent implements OnInit {
         //this.fetchDriversCount();
         this.fetchAllVehiclesIDs();
         this.fetchAllGrorups();
+        this.fetchAllVendorsIDs();
+        this.fetchOwnerOperatorsByIDss();
         this.initDataTable();
         $(document).ready(() => {
             setTimeout(() => {
@@ -169,6 +173,19 @@ export class DriverListComponent implements OnInit {
         this.apiService.getData("groups/get/list").subscribe((result: any) => {
             this.groupssObject = result;
         });
+    }
+    fetchAllVendorsIDs() {
+        this.apiService.getData('contacts/get/list/vendor')
+            .subscribe((result: any) => {
+                this.vendorsObject = result;
+            });
+    }
+    fetchOwnerOperatorsByIDss() {
+        this.apiService
+            .getData(`contacts/get/list/ownerOperator`)
+            .subscribe((result: any) => {
+                this.ownerOperatorsObject = result;
+            });
     }
     fetchAllCitiesIDs() {
         this.apiService.getData("cities/get/list").subscribe((result: any) => {

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService, ApiService } from 'src/app/services';
 
 @Component({
@@ -8,6 +9,9 @@ import { AccountService, ApiService } from 'src/app/services';
   styleUrls: ['./sales-invoice-detail.component.css']
 })
 export class SalesInvoiceDetailComponent implements OnInit {
+  @ViewChild("previewSaleInvoice", { static: true })
+  previewSaleInvoice: TemplateRef<any>;
+
   saleID: any;
 
   txnDate: string;
@@ -30,24 +34,19 @@ export class SalesInvoiceDetailComponent implements OnInit {
 
   balance: any;
   received: any;
-  constructor(public accountService: AccountService, public apiService: ApiService, private route: ActivatedRoute) { }
+
+  saleInvPrev: any;
+  chargeName: string;
+  chargeType: string;
+  chargeAmount: string;
+  isPDF: boolean = false;
+  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
       this.fetchSaleOrder();
-      this.fetchCustomersByIDs();
     }
-  }
-
-
-  /*
-* Get all customers's IDs of names from api
-*/
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
   }
 
 
@@ -71,9 +70,20 @@ export class SalesInvoiceDetailComponent implements OnInit {
       this.status = result.status;
       this.sOrNo = result.sOrNo;
       this.taxes = result.charges.taxes;
-      this.accFees = result.charges.accFee;
-      this.accDed = result.charges.accDed;
+      this.chargeName = result.charges.cName;
+      this.chargeType = result.charges.cType;
+      this.chargeAmount = result.charges.cAmount;
+      this.isPDF = true;
     });
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-invoice",
+    };
+    this.saleInvPrev = this.modalService.open(this.previewSaleInvoice, ngbModalOptions)
   }
 
 }

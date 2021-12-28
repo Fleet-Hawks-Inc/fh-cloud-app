@@ -106,6 +106,7 @@ export class CompanyDocumentsComponent implements OnInit {
       });
     }
   }, 800);
+    loaded: any = false;
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,
@@ -295,12 +296,14 @@ export class CompanyDocumentsComponent implements OnInit {
     * Fetch Document details before updating
     */
   editDocument(id: any) {
+
     this.spinner.show();
     this.currentID = id;
     this.docError = false;
     this.ifEdit = true;
     this.modalTitle = 'Edit';
     this.newDoc = [];
+    
     this.apiService
       .getData(`documents/${this.currentID}`)
       .subscribe((result: any) => {
@@ -321,6 +324,38 @@ export class CompanyDocumentsComponent implements OnInit {
         this.documentData.dateCreated = result.dateCreated;
         this.documentData.uploadedDocs = result.uploadedDocs;
         // this.uploadeddoc = result.uploadedDocs;
+                if (
+          result.uploadedDocs !== undefined &&
+          result.uploadedDocs.length > 0
+        ) {
+          result.uploadedDocs.forEach((x: any) => {
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              const obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            } else {
+              const obj = {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.newDoc.push(obj);
+            }
+          });
+        }
+        
+/*
         if (result.uploadedDocs.length > 0) {
           result.uploadedDocs.forEach((x: any) => {
             let obj: any = {};
@@ -348,7 +383,7 @@ export class CompanyDocumentsComponent implements OnInit {
             this.newDoc.push(obj);
           });
         }
-
+*/
       });
     $('#addDocumentModal').modal('show');
   }
@@ -431,52 +466,36 @@ export class CompanyDocumentsComponent implements OnInit {
     }
   }
 
-  initDataTable() {
-    this.spinner.show();
-
-    this.apiService.getData('documents/fetch/records?categoryType=company&searchValue=' + this.filterValues.searchValue + "&from=" + this.filterValues.start + "&to=" + this.filterValues.end + '&lastKey=' + this.lastEvaluatedKey)
+  async initDataTable() {
+    if (this.lastEvaluatedKey !== 'end'){
+    this.apiService.getData(`documents/fetch/records?categoryType=company&searchValue=${this.filterValues.searchValue}&from=${this.filterValues.start}&to=${this.filterValues.end}&lastKey=${this.lastEvaluatedKey}`)
       .subscribe((result: any) => {
         if (result.Items.length == 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
-        this.suggestions = [];
-        this.getStartandEndVal();
-        this.documents = result['Items'];
-        if (this.filterValues.searchValue !== '' || this.filterValues.start !== '' || this.filterValues.end !== '') {
-          this.docStartPoint = 1;
-          this.docEndPoint = this.totalRecords;
-        }
-
-        if (result['LastEvaluatedKey'] !== undefined) {
-          let lastEvalKey = result[`LastEvaluatedKey`].docSK.replace(/#/g, '--');
-          this.docNext = false;
-          // for prev button
-          if (!this.docPrevEvauatedKeys.includes(lastEvalKey)) {
-            this.docPrevEvauatedKeys.push(lastEvalKey);
-          }
-          this.lastEvaluatedKey = lastEvalKey;
-
-        } else {
-          this.docNext = true;
-          this.lastEvaluatedKey = '';
-          this.docEndPoint = this.totalRecords;
-        }
-
-        if (this.totalRecords < this.docEndPoint) {
-          this.docEndPoint = this.totalRecords;
-        }
-
-        // disable prev btn
-        if (this.docDraw > 0) {
-          this.docPrev = false;
-        } else {
-          this.docPrev = true;
-        }
-        this.spinner.hide();
-      }, err => {
-        this.spinner.hide();
-      });
+        if (result.Items.length > 0) {
+                if (result.LastEvaluatedKey !== undefined) {
+                    this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.docSK);
+                }
+                else {
+                    this.lastEvaluatedKey = 'end'
+                }
+                this.documents = this.documents.concat(result.Items);
+                this.loaded = true;
+            }
+        // this.suggestions = [];
+        // this.getStartandEndVal();
+        // this.documents = result['Items'];
+    });
+    }
   }
+  
+    onScroll() {
+        if (this.loaded) {
+            this.initDataTable();
+        }
+        this.loaded = false;
+      }
 
   getCurrentuser = async () => {
     this.currentUser = (await Auth.currentSession()).getIdToken().payload;

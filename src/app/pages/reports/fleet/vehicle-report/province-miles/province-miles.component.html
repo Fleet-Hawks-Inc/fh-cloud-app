@@ -5,6 +5,22 @@
 
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
+                        <!-- 
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <ng-select (change)="fetchStates($event)" name="category" placeholder="Search by Country">
+                                <ng-option value="CA">Canada</ng-option>
+                                <ng-option value="US">United States</ng-option>
+                            </ng-select>
+                        </div>
+
+                        <div class="col-md-2 col-lg-2 pr-0">
+                            <ng-select [(ngModel)]="stateCode" placeholder="search by State" name="stateCode">
+                                <ng-option class="text-capitalize" *ngFor="let state of states"
+                                    value="{{ state.stateCode }}">
+                                    {{ state.stateName }}-- {{ state.stateCode }}</ng-option>
+                            </ng-select>
+                        </div> -->
+
                         <div class="col-md-3 col-lg-3 pr-0">
                             <div class="input-daterange input-group input-group-sm" data-plugin-datepicker="">
                                 <span class="input-group-prepend">
@@ -30,9 +46,6 @@
                         </div>
 
                         <div class="col-md-7 col-lg-7 text-right pr-1">
-                            <a routerLink="/reports/fleet/vehicles/activity-list"
-                                class="btn btn-sm btn-success">Vehicles
-                                List</a>
 
                             <div class="btn-group flex-wrap ml-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -40,39 +53,17 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="csv()">CSV</a>
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
 
                                 </div>
                             </div>
+
                         </div>
+
+
                     </div>
                 </form>
             </header>
-            <section class="m-2">
-                <div class="row mb-3">
-                    <div class="col-12 mb-4 ">
-                        <div class="bg-white p-3">
-                            <div class="row text-dark col-lg-3">
-                                <div class="col">
-                                    <div class="maindriverbox" style="box-shadow: 3px 3px 5px;">
-                                        <div class="col-8">
-
-                                            <div>
-                                                <h4 class="mt-1 mb-0 font-weight-bold">Vehicle Name</h4>
-                                                <h3><span
-                                                        *ngFor="let data of vehicleData">{{data.vehicleIdentification}}</span>
-                                                </h3>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <div class="row text-dark">
                 <div class="col pr-0">
                     <div class="card">
@@ -81,25 +72,31 @@
                             <div class="card-body">
 
                                 <section class="reports_div">
-                                    <table width="18%" class="row-border hover table table-bordered table-striped mb-0">
+                                    <table class="row-border hover table table-bordered table-striped mb-0">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <col style="width:2%">
+                                        <col style="width:3%">
                                         <col style="width:2%">
-                                        <col style="width:2%">
-                                        <col style="width:5%">
-                                        <col style="width:2%">
-                                        <col style="width:2%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:1%">
                                         <thead>
                                             <tr>
                                                 <th>Vehicle</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
-                                                <th>Location</th>
-                                                <th>Date</th>
                                                 <th>Province(US)</th>
-                                                <th>US(Total)</th>
+                                                <th>US Province Miles</th>
                                                 <th>Province(Canada)</th>
-                                                <th>Canada(Total)</th>
+                                                <th>Canada Province Miles</th>
+                                                <th>Canada Total Miles</th>
+                                                <th>US Total Miles</th>
                                                 <th>Total Miles</th>
+                                                <th>Trip Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -107,55 +104,62 @@
                                                 <td colspan="15">{{dataMessage}}</td>
                                             </tr>
                                             <tr *ngFor="let item of allData">
-                                                <td>{{item.vehicle}}
+                                                <td>{{item.vehicle ? item.vehicle : '-'}}
                                                 </td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
-                                                <td>
-                                                    <span title="Location" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.location}} <br>
-                                                    </span>
-                                                </td>
+
 
                                                 <td>
-                                                    <span title="Date" *ngFor="let data of item.tripPlanning">
-                                                        <b>
-                                                            {{data.type}}:
-                                                        </b>
-                                                        {{ data.date}} <br>
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    <span title="Provinceus" *ngFor="let item1 of item.provinceData">
-                                                        <span *ngFor="let item2 of item1.usProvince">
-                                                            {{item2.StCntry}} :-{{item2.Total | number : '1.2-2'}} <br>
-                                                        </span>
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    {{item.usMiles | number : '1.2-2'}}
-                                                </td>
-
-                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                     <span *ngFor="let item1 of item.provinceData">
-                                                        <span *ngFor="let item2 of item1.caProvince">
-                                                            {{item2.StCntry}} :-{{item2.Total | number : '1.2-2'}} <br>
+                                                        <span *ngFor="let item2 of item1.usProvince">
+                                                            {{item2.StCntry}}<br>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor='let item1 of item.provinceData'>
+                                                        <span *ngFor='let item2 of item1.usProvince'>
+                                                            {{item2.Total }}<br>
                                                         </span>
                                                     </span>
                                                 </td>
 
                                                 <td>
-                                                    {{item.canMiles | number : '1.2-2'}}
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor="let item1 of item.provinceData">
+                                                        <span *ngFor="let item2 of item1.canProvince">
+                                                            {{item2.StCntry}}<br>
+                                                        </span>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="item.provinceData.length === 0 ">-</span>
+                                                    <span *ngFor='let item1 of item.provinceData'>
+                                                        <span *ngFor='let item2 of item1.canProvince'>
+                                                            {{item2.Total }}<br>
+                                                        </span>
+                                                    </span>
                                                 </td>
 
+                                                <td>{{item.canMiles | number : '1.2-2' }}
+                                                </td>
+                                                <td>{{item.usMiles | number : '1.2-2' }}
+                                                </td>
                                                 <td>
                                                     {{ item.miles | number : '1.2-2'}}
                                                 </td>
+                                                <td>
+                                                    <span class="badge
+                                                                badge-dark p-1
+                                                                text-capitalize">{{
+                                                        item.newStatus
+                                                        }}</span>
+
+                                                </td>
+
                                             </tr>
                                         </tbody>
 

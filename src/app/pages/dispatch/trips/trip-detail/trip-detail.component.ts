@@ -180,6 +180,7 @@ export class TripDetailComponent implements OnInit {
   async fetchTripDetail() {
     this.tripID = this.route.snapshot.params["tripID"];
     let locations = [];
+    this.uploadedDocSrc = [];
     this.apiService
       .getData("trips/" + this.tripID)
       .subscribe(async (result: any) => {
@@ -228,7 +229,41 @@ export class TripDetailComponent implements OnInit {
               this.routeName = result.Items[0].routeName;
             });
         }
-
+//AWS S3
+           if (result.documents !== undefined && result.documents.length > 0) 
+           {
+          result.documents.forEach((x: any) => 
+          {
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) 
+            {
+              const obj = 
+              {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.uploadedDocSrc.push(obj);
+            } else
+            {
+              const obj = 
+              {
+                imgPath: 'assets/img/icon-pdf.png',
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+              this.uploadedDocSrc.push(obj);
+            }
+          });
+        }
+/*
         if (result.documents.length > 0) {
           for (let k = 0; k < result.documents.length; k++) {
             const element = result.documents[k];
@@ -241,7 +276,7 @@ export class TripDetailComponent implements OnInit {
               name: "",
               ext: "",
             };
-            if (ext == "jpg" || ext == "jpeg" || ext == "png") {
+            if (ext == 'jpg' || ext == 'jpeg' || ext == 'png') {
               obj = {
                 imgPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
                 docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
@@ -251,7 +286,7 @@ export class TripDetailComponent implements OnInit {
               };
             } else {
               obj = {
-                imgPath: "assets/img/icon-pdf.png",
+                imgPath: 'assets/img/icon-pdf.png',
                 docPath: `${this.Asseturl}/${result.carrierID}/${element.storedName}`,
                 displayName: element.displayName,
                 name: name,
@@ -261,7 +296,7 @@ export class TripDetailComponent implements OnInit {
             this.uploadedDocSrc.push(obj);
           }
         }
-
+*/
         for (let i = 0; i < tripPlanning.length; i++) {
           const element = tripPlanning[i];
           let obj = {
@@ -687,7 +722,8 @@ export class TripDetailComponent implements OnInit {
   async generate() {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: 0.5,
+      pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "trip-information.pdf",
       image: { type: "jpeg", quality: 1 },
       html2canvas: {

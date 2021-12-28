@@ -19,8 +19,12 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ActivityListComponent } from './activity-list/activity-list.component';
 import { ActivityComponent } from './activity/activity.component';
+<<<<<<< HEAD
 import { ExpenseListComponent } from './expense-list/expense-list.component';
 import { ExpenseComponent } from './expense/expense.component';
+=======
+import { ProvinceMilesComponent } from './province-miles/province-miles.component';
+>>>>>>> aada572354dff970d128c332f8c3cfa57dfa3996
 
 const routes: Routes = [
   { path: 'overview', component: OverviewComponent },
@@ -31,8 +35,12 @@ const routes: Routes = [
   { path: 'maintenance', component: MaintenanceComponent },
   { path: 'activity/:vehicleId', component: ActivityComponent },
   { path: 'activity-list', component: ActivityListComponent },
+<<<<<<< HEAD
   { path: 'expense-list', component: ExpenseListComponent },
   { path: 'expense/:vehicleId', component: ExpenseComponent }
+=======
+  { path: 'province-miles', component: ProvinceMilesComponent },
+>>>>>>> aada572354dff970d128c332f8c3cfa57dfa3996
 ];
 
 /**
@@ -97,9 +105,13 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
     MaintenanceComponent,
     ActivityListComponent,
     ActivityComponent,
+<<<<<<< HEAD
     ExpenseListComponent,
     ExpenseComponent,
     ExpenseComponent],
+=======
+    ProvinceMilesComponent],
+>>>>>>> aada572354dff970d128c332f8c3cfa57dfa3996
 
   imports: [
     CommonModule,

@@ -26,13 +26,9 @@ export class AddressBookComponent implements OnInit {
   this.fetchAddressBook()
   }
   
-  async fetchAddressBook(refresh?:boolean) {
-    if (refresh === true) {
-            this.lastItemSK = '';
-            this.addressBookList = [];
-        }
+  fetchAddressBook() {
     if (this.lastItemSK !== 'end'){
-    const result = await this.apiService.getData(`contacts/fetch/addressbookrecords?company=${this.company}&type=${this.type}&lastKey=${this.lastItemSK}`).toPromise();
+    this.apiService.getData(`contacts/fetch/addressbookrecords?company=${this.company}&type=${this.type}&lastKey=${this.lastItemSK}`).subscribe((result:any) => {
       this.dataMessage = Constants.FETCHING_DATA
       if (result.Items.length === 0) {
                 this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -40,19 +36,17 @@ export class AddressBookComponent implements OnInit {
             if (result.Items.length > 0) {
                 if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.contactSK);
-                    // this.lastItemSK = encodeURIComponent(result.LastEvaluatedKey.updatedSK);
                 }
                 else {
                     this.lastItemSK = 'end'
                 }
                 this.addressBookList = this.addressBookList.concat(result.Items);
                 this.loaded = true;
-        }
-       
+            }
+       });
     }   
   } 
-
-  
+ 
   searchFilter() {
       if(this.company !== null || this.type !== null){
         this.dataMessage = Constants.FETCHING_DATA;
