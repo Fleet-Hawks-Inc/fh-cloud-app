@@ -173,7 +173,7 @@ export class TripListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private dashboardUtilityService: DashboardUtilityService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.initDataTable();
@@ -213,6 +213,16 @@ export class TripListComponent implements OnInit {
           element.newStatus = element.tripStatus;
           if (element.tripStatus === "delivered") {
             element.canRecall = true;
+          }
+        }
+      }
+
+      // if sub trip is settled then user cannot edit trip
+      if (result.Items[i].split && result.Items[i].split.length > 0) {
+        for (const iterator of result.Items[i].split.length) {
+          if (iterator.settlmnt) {
+            element.canRecall = false;
+            element.disabledEdit = true;
           }
         }
       }
@@ -350,8 +360,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => { },
-          error: () => { },
+          complete: () => {},
+          error: () => {},
           next: (result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -373,106 +383,108 @@ export class TripListComponent implements OnInit {
   }
 
   fetchTripDetail() {
-    this.apiService.getData("trips/updateDetail/" + this.tripID).subscribe((result: any) => {
-      result = result.Items[0];
-      this.prevStatus = result.tripStatus;
-      this.tripStatus = result.tripStatus;
-      this.tripNumber = result.tripNo;
-      this.bolNumber = result.bol;
-      this.tripDate = result.createdDate;
-      this.tripTime = result.createdTime;
-      this.settlement = result.settlmnt;
+    this.apiService
+      .getData("trips/updateDetail/" + this.tripID)
+      .subscribe((result: any) => {
+        result = result.Items[0];
+        this.prevStatus = result.tripStatus;
+        this.tripStatus = result.tripStatus;
+        this.tripNumber = result.tripNo;
+        this.bolNumber = result.bol;
+        this.tripDate = result.createdDate;
+        this.tripTime = result.createdTime;
+        this.settlement = result.settlmnt;
 
-      if (result.driverIDs.length > 0 || result.carrierIDs.length > 0) {
-        // show change status acc to trip
-        if (this.tripStatus == "confirmed") {
-          this.statusData = [
-            {
-              name: "Confirmed",
-              value: "confirmed",
-            },
-            {
-              name: "Dispatched",
-              value: "dispatched",
-            },
-          ];
-        } else if (this.tripStatus == "dispatched") {
-          this.statusData = [
-            {
-              name: "Dispatched",
-              value: "dispatched",
-            },
-            {
-              name: "Started",
-              value: "started",
-            },
-            {
-              name: "En-route",
-              value: "enroute",
-            },
-            {
-              name: "Delivered",
-              value: "delivered",
-            },
-            {
-              name: "TONU",
-              value: "tonu",
-            },
-            {
-              name: "Cancelled",
-              value: "cancelled",
-            },
-          ];
-        } else if (this.tripStatus == "started") {
-          this.statusData = [
-            {
-              name: "Started",
-              value: "started",
-            },
-            {
-              name: "En-route",
-              value: "enroute",
-            },
-            {
-              name: "Delivered",
-              value: "delivered",
-            },
-            {
-              name: "TONU",
-              value: "tonu",
-            },
-            {
-              name: "Cancelled",
-              value: "cancelled",
-            },
-          ];
-        } else if (this.tripStatus == "enroute") {
-          this.statusData = [
-            {
-              name: "En-route",
-              value: "enroute",
-            },
-            {
-              name: "Delivered",
-              value: "delivered",
-            },
-            {
-              name: "TONU",
-              value: "tonu",
-            },
-            {
-              name: "Cancelled",
-              value: "cancelled",
-            },
-          ];
+        if (result.driverIDs.length > 0 || result.carrierIDs.length > 0) {
+          // show change status acc to trip
+          if (this.tripStatus == "confirmed") {
+            this.statusData = [
+              {
+                name: "Confirmed",
+                value: "confirmed",
+              },
+              {
+                name: "Dispatched",
+                value: "dispatched",
+              },
+            ];
+          } else if (this.tripStatus == "dispatched") {
+            this.statusData = [
+              {
+                name: "Dispatched",
+                value: "dispatched",
+              },
+              {
+                name: "Started",
+                value: "started",
+              },
+              {
+                name: "En-route",
+                value: "enroute",
+              },
+              {
+                name: "Delivered",
+                value: "delivered",
+              },
+              {
+                name: "TONU",
+                value: "tonu",
+              },
+              {
+                name: "Cancelled",
+                value: "cancelled",
+              },
+            ];
+          } else if (this.tripStatus == "started") {
+            this.statusData = [
+              {
+                name: "Started",
+                value: "started",
+              },
+              {
+                name: "En-route",
+                value: "enroute",
+              },
+              {
+                name: "Delivered",
+                value: "delivered",
+              },
+              {
+                name: "TONU",
+                value: "tonu",
+              },
+              {
+                name: "Cancelled",
+                value: "cancelled",
+              },
+            ];
+          } else if (this.tripStatus == "enroute") {
+            this.statusData = [
+              {
+                name: "En-route",
+                value: "enroute",
+              },
+              {
+                name: "Delivered",
+                value: "delivered",
+              },
+              {
+                name: "TONU",
+                value: "tonu",
+              },
+              {
+                name: "Cancelled",
+                value: "cancelled",
+              },
+            ];
+          }
+          $("#tripStatusModal").modal("show");
+        } else {
+          this.toastr.error(
+            "Please assign driver(s)/carrier(s) to the trip first."
+          );
         }
-        $("#tripStatusModal").modal("show");
-      } else {
-        this.toastr.error(
-          "Please assign driver(s)/carrier(s) to the trip first."
-        );
-      }
-    });
+      });
   }
 
   updateTripStatus() {
@@ -617,18 +629,19 @@ export class TripListComponent implements OnInit {
     this.spinner.show();
     // this.orders = [];
     if (this.lastEvaluatedKey !== "end") {
+      this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.trim()
       this.apiService
         .getData(
           "trips/fetch/records/all?searchValue=" +
-          this.tripsFiltr.searchValue +
-          "&startDate=" +
-          this.tripsFiltr.start +
-          "&endDate=" +
-          this.tripsFiltr.end +
-          "&category=" +
-          this.tripsFiltr.category +
-          "&lastKey=" +
-          this.lastEvaluatedKey
+            this.tripsFiltr.searchValue +
+            "&startDate=" +
+            this.tripsFiltr.start +
+            "&endDate=" +
+            this.tripsFiltr.end +
+            "&category=" +
+            this.tripsFiltr.category +
+            "&lastKey=" +
+            this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {

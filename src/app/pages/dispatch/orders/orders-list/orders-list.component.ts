@@ -220,7 +220,7 @@ export class OrdersListComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private listService: ListService,
     private dashboardUtilityService: DashboardUtilityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.initDataTable();
@@ -275,18 +275,19 @@ export class OrdersListComponent implements OnInit {
     this.spinner.show();
     // this.orders = [];
     if (this.lastEvaluatedKey !== "end") {
+      this.orderFiltr.searchValue = this.orderFiltr.searchValue.trim();
       this.apiService
         .getData(
           "orders/fetch/records/all?searchValue=" +
-            this.orderFiltr.searchValue +
-            "&startDate=" +
-            this.orderFiltr.start +
-            "&endDate=" +
-            this.orderFiltr.end +
-            "&category=" +
-            this.orderFiltr.category +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          this.orderFiltr.searchValue +
+          "&startDate=" +
+          this.orderFiltr.start +
+          "&endDate=" +
+          this.orderFiltr.end +
+          "&category=" +
+          this.orderFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -516,8 +517,7 @@ export class OrdersListComponent implements OnInit {
     newData.confirm = this.emailData.confirmEmail;
     let result = await this.apiService
       .getData(
-        `orders/update/orderStatus/${this.newOrderID}/${
-          this.newOrderNumber
+        `orders/update/orderStatus/${this.newOrderID}/${this.newOrderNumber
         }/confirmed?emailData=${encodeURIComponent(JSON.stringify(newData))}`
       )
       .toPromise();

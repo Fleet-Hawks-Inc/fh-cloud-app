@@ -3136,18 +3136,19 @@ table.dataTable thead td {
 /* placeholder classes */
 ::-webkit-input-placeholder {
   /* Edge */
-  color: #e1e1e1 !important;
+  color: #999999 !important;
   font-size: 12px !important;
 }
 
 :-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #e1e1e1 !important;
+  color: #999999 !important;
   font-size: 12px !important;
 }
 
 ::placeholder {
-  color: #e1e1e1 !important;
+  /* color: #e1e1e1 !important; */
+  color: #999999 !important;
   font-size: 12px !important;
 }
 /* Optional label color */

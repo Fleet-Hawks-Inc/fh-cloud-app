@@ -240,6 +240,9 @@
                                                                                 <td>&nbsp;</td>
                                                                             </tr>
                                                                             <tr>
+                                                                                <td>&nbsp;</td>
+                                                                            </tr>
+                                                                            <tr>
                                                                                 <td
                                                                                     width="61%"
                                                                                     rowspan="2"
@@ -1038,7 +1041,7 @@
                                                                                     Pay
                                                                                     Period:
                                                                                     <br
-                                                                                        />>{{
+                                                                                        />{{
                                                                                     cheqdata.payPeriod
                                                                                     }}
                                                                                 </td>
@@ -1488,7 +1491,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment (Expense)</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -1546,7 +1549,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment (Expense)</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -1692,7 +1695,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment ({{paydata.advType}})</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -1750,7 +1753,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment ({{paydata.advType}})</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -2298,7 +2301,8 @@
                                     </table>
                                 </td>
                             </tr>
-                            <tr *ngIf="paydata.type === 'owner_operator' || paydata.type === 'carrier'">
+                            <tr *ngIf="paydata.type === 'owner_operator' ||
+                                paydata.type === 'carrier'">
                                 <td>
                                     <table
                                         width="100%"
@@ -2326,6 +2330,8 @@
                                                                         <tbody>
                                                                             <tr>
                                                                                 <td
+                                                                                    style="color:
+                                                                                    #000000"
                                                                                     width="33%"
                                                                                     height="30"
                                                                                     class="pl-3
@@ -2339,11 +2345,14 @@
                                                                                         />
                                                                                     Pay
                                                                                     Period:
-                                                                                    &nbsp;&nbsp;{{
+                                                                                    <br
+                                                                                        />{{
                                                                                     cheqdata.payPeriod
                                                                                     }}
                                                                                 </td>
                                                                                 <td
+                                                                                    style="color:
+                                                                                    #000000"
                                                                                     width="33%"
                                                                                     align="center"
                                                                                     valign="top"
@@ -2354,6 +2363,8 @@
                                                                                     }}
                                                                                 </td>
                                                                                 <td
+                                                                                    style="color:
+                                                                                    #000000"
                                                                                     align="right"
                                                                                     valign="top"
                                                                                     class="pr-3
@@ -2371,17 +2382,19 @@
                                                             <tr>
                                                                 <td
                                                                     width="50%"
-                                                                    height="270"
+                                                                    height="240"
                                                                     valign="top"
                                                                     class="border_right">
                                                                     <table
-                                                                        width="98%"
+                                                                        width="96%"
                                                                         border="0"
                                                                         align="center"
                                                                         cellpadding="0"
                                                                         cellspacing="0">
                                                                         <tbody>
-                                                                            <tr>
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
                                                                                 <td
                                                                                     width="48%">&nbsp;</td>
                                                                                 <td
@@ -2395,7 +2408,9 @@
                                                                                 <td
                                                                                     align="right">YTD</td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
                                                                                 <td>Regular</td>
                                                                                 <td
                                                                                     align="right">
@@ -2420,7 +2435,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td
-                                                                                    height="8"
+                                                                                    height="6"
                                                                                     colspan="4">&nbsp;</td>
                                                                             </tr>
                                                                         </tbody>
@@ -2429,13 +2444,15 @@
                                                                 <td width="50%"
                                                                     valign="top">
                                                                     <table
-                                                                        width="98%"
+                                                                        width="96%"
                                                                         border="0"
                                                                         align="center"
                                                                         cellpadding="0"
                                                                         cellspacing="0">
                                                                         <tbody>
-                                                                            <tr>
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
                                                                                 <td
                                                                                     width="48%">&nbsp;</td>
                                                                                 <td
@@ -2449,7 +2466,9 @@
                                                                                 <td
                                                                                     align="right">YTD</td>
                                                                             </tr>
-                                                                            <tr>
+                                                                            <tr
+                                                                                style="color:
+                                                                                #000000">
                                                                                 <td>Regular</td>
                                                                                 <td
                                                                                     align="right">
@@ -2474,7 +2493,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td
-                                                                                    height="8"
+                                                                                    height="6"
                                                                                     colspan="4">&nbsp;</td>
                                                                             </tr>
                                                                         </tbody>
@@ -2765,7 +2784,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment (Expense)</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -2823,7 +2842,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment (Expense)</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -2969,7 +2988,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment ({{paydata.advType}})</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{
@@ -3027,7 +3046,7 @@
                                                                             <tr
                                                                                 style="color:
                                                                                 #000000">
-                                                                                <td>Payment</td>
+                                                                                <td>Payment ({{paydata.advType}})</td>
                                                                                 <td
                                                                                     align="right">
                                                                                     <!-- {{

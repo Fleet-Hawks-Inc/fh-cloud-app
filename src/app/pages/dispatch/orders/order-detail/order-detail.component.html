@@ -1655,7 +1655,7 @@
                                   </div>
                                 </div>
                               </div>
-                              <div *ngIf="m > 0" class="html2pdf__page-break"></div>
+                              <!-- <div *ngIf="m > 0" class="html2pdf__page-break"></div> -->
                             </div>
                           </div>
                         </td>
@@ -1835,13 +1835,12 @@
                   </table>
                   <table class="invoice-iner__wrapper" width="100%" style="border-top: none">
                     <tbody>
-                      <tr *ngFor="let newDoc of docs">
+                      <tr *ngFor="let newDoc of invDocs;">
                         <td>
                           <table>
                             <tbody>
                               <tr *ngIf="newDoc.ext === 'pdf'">
                                 <td>
-                                  <div class="html2pdf__page-break"></div>
                                   <pdf-viewer [src]="newDoc.docPath" [fit-to-page]="false" [show-all]="true"
                                     [render-text]="true" [original-size]="false" [autoresize]="true"
                                     style="max-width: 700px; display: block">
@@ -1854,9 +1853,7 @@
                                   newDoc.ext === 'png'
                                 ">
                                 <td>
-                                  <div class="html2pdf__page-break"></div>
-                                  <img crossorigin="*" [src]="newDoc.docPath" class="img-fluid rounded" height="200px"
-                                    width="100%" />
+                                  <img crossorigin="anonymous" [src]="newDoc.docPath" width="100%" />
                                 </td>
                               </tr>
                             </tbody>
@@ -1875,21 +1872,6 @@
                 </p>
               </td>
             </tr>
-            <tr>
-              <td colspan="2" class="p-3">
-                <p style="margin: 0; color: #000">
-                  Please include our Invoice number on the remittance. Remit
-                  address is provided above, kindly send all the accounting
-                  queries to
-                  <strong> {{ invoiceData.carrierData.email }}</strong>
-                </p>
-                <p style="margin: 0; color: #000">
-                  No Statement is issued on the payment of this invoice. Terms
-                  net 15 days
-                </p>
-              </td>
-            </tr>
-
             <tr>
               <td colspan="2">
                 <table border="0" align="center" cellpadding="0" cellspacing="0">
