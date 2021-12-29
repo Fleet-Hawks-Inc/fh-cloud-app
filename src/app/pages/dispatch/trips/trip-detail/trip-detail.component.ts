@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild ,  ElementRef,} from "@angular/core";
+import { Component, OnInit, TemplateRef, ViewChild,} from "@angular/core";
 import { AccountService, ApiService } from "../../../../services";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
@@ -20,7 +20,6 @@ import { Location } from "@angular/common";
 })
 export class TripDetailComponent implements OnInit {
   @ViewChild("tripInfoModal", { static: true })
-  @ViewChild("uploadBol", { static: true }) uploadBol: ElementRef;
   tripInfoModal: TemplateRef<any>;
   tripInfoRef: any;
 
@@ -673,7 +672,6 @@ export class TripDetailComponent implements OnInit {
               }
             }
               this.toastr.success('BOL/POD uploaded successfully');
-              this.uploadBol.nativeElement.value = "";
               this.fetchTripDetail();
           },
         });
