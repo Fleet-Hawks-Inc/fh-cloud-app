@@ -524,7 +524,6 @@ export class AddSalesInvoiceComponent implements OnInit {
         return;
       }
     })
-    console.log('this.saleData', this.saleData)
 
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
@@ -566,10 +565,12 @@ export class AddSalesInvoiceComponent implements OnInit {
   async fetchSaleInvoice() {
     let result = await this.accountService.getData(`sales-invoice/detail/${this.saleID}`).toPromise();
     this.saleData = result[0];
-    await this.getCustomerCredit(this.saleData.customerID);
-    await this.getOrders(this.saleData.customerID);
+
+    // await this.getCustomerCredit(this.saleData.customerID);
+    // await this.getOrders(this.saleData.customerID);
     await this.fetchAccounts();
     this.getOrderDetail(this.saleData.sOrderNo)
+    await this.getCustomerOrders(this.saleData.customerID)
   }
 
   updateInvoice() {
