@@ -244,14 +244,20 @@
                                   pt-2
                                 ">
                                 Attachments</label>
-                              <input type="file" multiple (change)="uploadDocs($event.target.files)" [(ngModel)]="files"
-                                name="files" class="form-control" />
+                              <span class="
+                                  btn btn-default btn-file btn-xs
+                                  w100
+                                  text-left
+                                ">
+                                <input type="file" multiple (change)="uploadDocs($event.target.files)"
+                                  [(ngModel)]="files" name="files" class="" />
+                              </span>
                               <span *ngIf="filesError != ''" class="text-danger">
                                 {{ filesError }}
                               </span>
                             </div>
                             <div class="col-10 mt-3" style="max-height: 256px; overflow:
-                            scroll">
+                            scroll" *ngIf="oldDocs.length > 0">
                               <table class="table table-bordered">
                                 <thead>
                                   <th>Sr.</th>
@@ -260,11 +266,6 @@
                                   <th>Action</th>
                                 </thead>
                                 <tbody>
-                                  <tr *ngIf="oldDocs.length == 0">
-                                    <td colspan="4">
-                                      <span>No document found</span>
-                                    </td>
-                                  </tr>
                                   <tr *ngFor="let doc of oldDocs; let d= index">
                                     <td>{{ d + 1 }}</td>
                                     <td>{{ doc.displayName }}</td>

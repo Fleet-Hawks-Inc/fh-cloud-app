@@ -1046,7 +1046,10 @@
                       "
                     >
                       <p style="margin-bottom: 4px; color: #000000">
-                        {{ data.type }}
+                        {{ data.type }} 
+                        <span *ngIf="data.data.useType">
+                          ({{data.data.useType}})
+                      </span>
                       </p>
                     </td>
                     <td
@@ -1551,7 +1554,7 @@
                         style="
                           border-right: 1px solid #adadad;
                           border-bottom: 1px solid #adadad;
-                          padding-left: 10px;
+                          padding-left: 10px;  color: #000000;
                         "
                       >
                         {{ settlementData.deductionTotal | number: "1.2-2" }}
