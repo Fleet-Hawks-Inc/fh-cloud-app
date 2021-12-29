@@ -204,7 +204,7 @@
                                         </thead>
                                         <tbody>
                                           <tr *ngFor="let dt of expenseData.transactionLog">
-                                            <td *ngIf="expenseData.isFeatEnabled">
+                                            <td *ngIf="expenseData.isFeatEnabled"> 
                                                 {{ dt.actName | titlecase}}
                                             </td>
                                             <td *ngIf="!expenseData.isFeatEnabled">

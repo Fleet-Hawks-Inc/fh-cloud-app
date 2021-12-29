@@ -79,12 +79,7 @@ export class ExpenseDetailComponent implements OnInit {
     this.expenseID = this.route.snapshot.params[`expenseID`];
     this.fetchExpenseByID();
     this.fetchVendors();
-    // this.fetchInvoices();
     this.fetchExpenseCategories();
-    // this.fetchCustomersByIDs();
-
-    // this.fetchAccountsByIDs();
-    // this.fetchAccountsByInternalIDs();
     this.fetchTrips();
   }
 
@@ -94,7 +89,6 @@ export class ExpenseDetailComponent implements OnInit {
       .subscribe((result: any) => {
         if (result[0] !== undefined) {
           this.expenseData = result[0];
-          console.log("this.expenseData", this.expenseData);
           if (!this.expenseData.isFeatEnabled) {
             this.fetchAccountsByIDs();
             this.fetchAccountsByInternalIDs();
@@ -147,11 +141,6 @@ export class ExpenseDetailComponent implements OnInit {
     }
   }
 
-  fetchCustomersByIDs() {
-    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
-      this.customersObject = result;
-    });
-  }
   fetchAccountsByIDs() {
     this.accountService
       .getData("chartAc/get/list/all")
@@ -165,12 +154,6 @@ export class ExpenseDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.accountsIntObjects = result;
       });
-  }
-
-  fetchInvoices() {
-    this.accountService.getData("invoices/get/list").subscribe((res: any) => {
-      this.invoices = res;
-    });
   }
 
   deleteDocument(name: string, index: number) {
