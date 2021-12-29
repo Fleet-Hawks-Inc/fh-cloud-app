@@ -5,6 +5,20 @@
 
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
+                        <!-- <div class="col-md-2 col-lg-2 pl-0 pr-0">
+                            <div class="input-group input-group-md mb-3">
+                                <input type="text" autocomplete="off" name="vehicleIdentification"
+                                    placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
+                                    class="form-control" (input)="getSuggestions($event.target.value)" />
+                            </div>
+                            <div *ngIf="suggestedVehicles?.length > 0" class="result-suggestions">
+                                <ul class="text-capitalize">
+                                    <li *ngFor="let suggestedVehicle of suggestedVehicles" style="cursor: pointer;"
+                                        (click)="setVehicle(suggestedVehicle.vehicleID, suggestedVehicle.vehicleIdentification)">
+                                        {{ suggestedVehicle.vehicleIdentification }}</li>
+                                </ul>
+                            </div>
+                        </div> -->
                         <!-- 
                         <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select (change)="fetchStates($event)" name="category" placeholder="Search by Country">
@@ -53,10 +67,14 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="fetchFullExport() ">CSV</a>
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport('US') "  >US</a>
+                                    <a class="dropdown-item text-1"   (click)="fetchFullExport('CAN') " >Canada</a>
+
 
                                 </div>
+                              
                             </div>
+                         
 
                         </div>
 
@@ -95,7 +113,7 @@
                                                 <th>Canada Province Miles</th>
                                                 <th>Canada Total Miles</th>
                                                 <th>US Total Miles</th>
-                                                <th>Total Miles</th>
+                                                <th>Trip Miles</th>
                                                 <th>Trip Status</th>
                                             </tr>
                                         </thead>

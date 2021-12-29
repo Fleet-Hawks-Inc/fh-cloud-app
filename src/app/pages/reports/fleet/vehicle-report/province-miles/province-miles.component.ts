@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
 import Constants from 'src/app/pages/fleet/constants';
 import { CountryStateCityService } from "src/app/services/country-state-city.service";
+import * as _ from 'lodash';
 @Component({
   selector: 'app-province-miles',
   templateUrl: './province-miles.component.html',
@@ -26,6 +27,10 @@ export class ProvinceMilesComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  usStateArr: any;
+  element3: any;
+  suggestedVehicles = [];
+  vehicleIdentification = '';
   constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
   ngOnInit(): void {
 
@@ -38,10 +43,28 @@ export class ProvinceMilesComponent implements OnInit {
   //     countryCode,
   //   ]);
   // }
+  getSuggestions = _.debounce(function (value) {
 
+    value = value.toLowerCase();
+    if (value != '') {
+      this.apiService
+        .getData(`vehicles/suggestion/${value}`)
+        .subscribe((result) => {
+
+          this.suggestedVehicles = result;
+        });
+    } else {
+      this.suggestedVehicles = []
+    }
+  }, 800);
+  setVehicle(vehicleIDs, vehicleIdentification) {
+    this.vehicleIdentification = vehicleIdentification;
+    this.vehicleId = vehicleIDs;
+    this.suggestedVehicles = [];
+  }
   fetchProvinceMilesData() {
     if (this.lastItemSK !== 'end') {
-      this.apiService.getData(`vehicles/fetch/provinceMiles?startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
+      this.apiService.getData(`vehicles/fetch/provinceMiles?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
         this.allData = this.allData.concat(result.Items)
         // this.dummyData = this.dummyData.concat(result.Items)
         if (result.Items.length === 0) {
@@ -65,7 +88,7 @@ export class ProvinceMilesComponent implements OnInit {
           }
           else {
             if (element.stlLink === true) {
-              element.newStatus = "Settled";
+              element.newStatus = "settled";
             }
           }
           for (let element1 of dataa.tripPlanning) {
@@ -106,7 +129,10 @@ export class ProvinceMilesComponent implements OnInit {
     this.loaded = false;
   }
   searchFilter() {
-    if (this.start != null && this.end != null) {
+    if (this.vehicleIdentification !== '' || this.start != null && this.end != null) {
+      if (this.vehicleId == '') {
+        this.vehicleId = this.vehicleIdentification;
+      }
       if (this.start != null && this.end == null) {
         this.toastr.error('Please select both start and end dates.');
         return false;
@@ -119,6 +145,7 @@ export class ProvinceMilesComponent implements OnInit {
       }
       else {
         this.lastItemSK = '';
+        this.suggestedVehicles = [];
         this.allData = [];
         // this.dummyData = [];
         this.dataMessage = Constants.FETCHING_DATA;
@@ -129,7 +156,7 @@ export class ProvinceMilesComponent implements OnInit {
       return false;
     }
   }
-  fetchFullExport() {
+  fetchFullExport(type = '') {
     this.apiService.getData(`vehicles/fetch/provinceMiles/report?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
       for (let veh of this.exportData) {
@@ -141,14 +168,14 @@ export class ProvinceMilesComponent implements OnInit {
         }
         else {
           if (veh.stlLink === true) {
-            veh.newStatus = "Settled";
+            veh.newStatus = "settled";
           }
         }
         for (let element of dataa.tripPlanning) {
           veh.miles += Number(element.miles);
         }
       }
-      this.generateCSV();
+      this.generateCSV(type);
 
     });
   }
@@ -162,44 +189,51 @@ export class ProvinceMilesComponent implements OnInit {
   //     this.fetchFullExport()
   //   }
   // }
-  generateCSV() {
+  generateCSV(type = '') {
     if (this.exportData.length > 0) {
       let dataObject = []
       let csvArray = []
       this.exportData.forEach(element => {
-        let usMiles = ''
         let canMiles = ''
-        let usState = ''
         let canState = ''
-        if (element.provinceData && element.provinceData.length > 0) {
-          for (let i = 0; i < element.provinceData.length; i++) {
-            const element2 = element.provinceData[i];
-            for (let j = 0; j < element2.usProvince.length; j++) {
-              const element3 = element2.usProvince[j];
-              usState += `"${element3.StCntry}\n\"`;
-              usMiles += `"${element3.Total}\n\"`;
-            }
-            for (let k = 0; k < element2.canProvince.length; k++) {
-              const element4 = element2.canProvince[k];
-              canState += `"${element4.StCntry}\n\"`;
-              canMiles += `"${element4.Total}\n\"`;
+        let stateArr = [];
+        if (type === 'CAN') {
+          stateArr = element.canStatesData;
+        } else if (type === 'US') {
+          stateArr = element.usStatesData;
+        }
+        stateArr.forEach((tripUSState, stateIndex) => {
+          if (element.provinceData && element.provinceData.length > 0) {
+
+            for (let i = 0; i < element.provinceData.length; i++) {
+              const element2 = element.provinceData[i];
+              for (let k = 0; k < element2.canProvince.length; k++) {
+                const element4 = element2.canProvince[k];
+                canState += `"${element4.StCntry}\n\"`;
+                canMiles += `"${element4.Total}\n\"`;
+              }
+              let obj = {}
+              obj["Vehicle"] = element.vehicle;
+              obj["Trip#"] = element.tripNo;
+              obj["Order#"] = element.orderName.replace(/, /g, ' &');
+              if (type === 'US') {
+                obj["Province(US)"] = element2.usProvince[stateIndex].StCntry;
+                obj["US Province Miles"] = element2.usProvince[stateIndex].Total;
+                obj["US Total Miles"] = element.usMiles;
+              }
+              else {
+                obj["Province(Canada)"] = element2.canProvince[stateIndex].StCntry;
+                obj["Canada Province Miles"] = element2.canProvince[stateIndex].Total;
+                obj["Canada Total Miles"] = element.canMiles;
+              }
+
+              obj["Trip Miles"] = element.miles;
+              obj["Trip Status"] = element.newStatus;
+              dataObject.push(obj)
             }
           }
 
-        }
-        let obj = {}
-        obj["Vehicle"] = element.vehicle;
-        obj["Trip#"] = element.tripNo;
-        obj["Order#"] = element.orderName.replace(/, /g, ' &');
-        obj["Province(US)"] = usState;
-        obj["US Province Miles"] = usMiles;
-        obj["Province(Canada)"] = canState;
-        obj["Canada Province Miles"] = canMiles;
-        obj["Canada Total Miles"] = element.canMiles;
-        obj["US Total Miles"] = element.usMiles;
-        obj["Total Miles"] = element.miles;
-        obj["Trip Status"] = element.newStatus;
-        dataObject.push(obj)
+        });
       });
       let headers = Object.keys(dataObject[0]).join(',')
       headers += ' \n'
