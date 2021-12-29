@@ -119,6 +119,7 @@
                           <span class="badge badge-danger p-1" *ngIf="item.due">{{item.status}}</span>
                           <span class="badge badge-dark p-1 text-uppercase" *ngIf="!item.due">
                             <span *ngIf="item.status === 'open'">Open</span>
+                            <span *ngIf="item.status === 'sent'">Sent</span>
                             <span *ngIf="item.status === 'partially_deducted'">Partially Received</span>
 
                           </span>
