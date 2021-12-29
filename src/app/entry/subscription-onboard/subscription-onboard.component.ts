@@ -45,8 +45,6 @@ export class SubscriptionOnboardComponent implements OnInit {
     this.verificationInfo = new VerificationInfo();
     const response = await this.apiService.getData(`carriers/getSubCarrier/${this.subCustomerID}`).toPromise();
     this.userInfo.email = response.email;
-    console.log(response);
-
     this.userVerificationFormGroup = this.formBuilder.formGroup(this.verificationInfo);
     this.userInfoFormGroup = this.formBuilder.formGroup(this.userInfo);
 
@@ -55,16 +53,15 @@ export class SubscriptionOnboardComponent implements OnInit {
 
   }
   async onFocusOutEvent(event: any) {
-    return;
-    console.log('Hello')
+
     await this.apiService.getData(`carriers/getSubCarrier/${this.subCustomerID}`).toPromise();
 
     const response = this.apiService.postData(`carriers/checkUser`, { userName: this.userInfo.username })
       .subscribe((data) => {
-        console.log(data)
+
         this.userNameExists = false;
       }, (error) => {
-        console.log(error)
+
         if (error.error && error.error.errorMessage) {
           this.userErrorMessage = error.error.errorMessage;
         }
@@ -73,8 +70,6 @@ export class SubscriptionOnboardComponent implements OnInit {
 
   }
   async register() {
-    this.showVerification = true;
-    return;
     const data = {
       email: this.userInfo.email,
       password: this.userInfo.password,
@@ -89,18 +84,13 @@ export class SubscriptionOnboardComponent implements OnInit {
       this.toaster.error('Unable register user.')
     })
 
-    console.log('ERROR:', response);
-
   }
   async confirmSignUp() {
     try {
-      alert(this.otpCode);
       const response = await Auth.confirmSignUp(this.userInfo.username, this.otpCode);
-      console.log(response);
       this.toaster.info("Thanks for confirming your email.")
       this.router.navigate(['/Login']);
     } catch (error) {
-      console.log('error confirming sign up', error);
       if (error && error.message.includes('Current status is CONFIRMED')) {
         this.toaster.info("Your email is already verified.")
         this.router.navigate(['/Login']);
@@ -119,7 +109,7 @@ export class SubscriptionOnboardComponent implements OnInit {
       await Auth.resendSignUp(this.userInfo.username);
       this.toaster.info("Verification code sent to your email successfully.")
     } catch (error) {
-      console.log('error resending code: ', error);
+
       if (error && error.message) {
         this.toaster.error(error.message);
       } else {
@@ -130,7 +120,7 @@ export class SubscriptionOnboardComponent implements OnInit {
 
 
   onOtpChange(code: any) {
-    console.log(code.length);
+
     if (code.length === 6) {
       this.otpSubmitDisabled = false;
       this.otpCode = code;
