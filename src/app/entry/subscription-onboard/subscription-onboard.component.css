@@ -49,3 +49,18 @@
 .mtnew {
   margin-top: 25% !important;
 }
+
+.validation-message-align {
+  padding-left: 33px;
+  padding-bottom: 8px;
+}
+
+.signup-section {
+  width: 50%;
+}
+
+@media screen and (max-width: 1067px) {
+  .signup-section {
+    width: 90%;
+  }
+}
