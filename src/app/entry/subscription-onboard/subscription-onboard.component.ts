@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { alphaAsync, compare, numericAsync, password, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
+import { alphaAsync, compare, numericAsync, password, pattern, prop, ReactiveFormConfig, required, RxFormBuilder } from '@rxweb/reactive-form-validators';
 import { Auth } from 'aws-amplify';
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from 'src/app/services';
@@ -145,6 +145,9 @@ export class SubscriptionOnboardComponent implements OnInit {
 
 class UserInfo {
   @required()
+  @pattern({
+    expression: { 'onlyAlpha': /^(?=[a-zA-Z0-9.]{6,20}$)(?!.*[.]{2})[^.].*[^.]$/ }, message: "Username should be at-least 6 characters long and can be a combination of numbers, letters  and dot(.)."
+  })
   username: string;
 
   @required()
