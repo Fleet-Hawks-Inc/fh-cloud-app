@@ -62,10 +62,10 @@
 											<tr *ngFor = "let item of serviceProgramList">
 									
 												<td>
-													<span *ngFor = "let vehicle of item.vehicles">
-													{{vehicles[vehicle]}}
+													<span *ngFor = "let vehicle of item.vehicles; let i = index" >
+													  {{vehicles[vehicle]}}{{i !== item.vehicles.length - 1 ? ', ': ''}}
 													</span>
-													</td>
+												</td>
 												<td>{{item.programName}}</td>
 												<td>{{item.description}}</td>
 											</tr>
