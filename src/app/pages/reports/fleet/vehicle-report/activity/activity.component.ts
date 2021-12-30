@@ -41,13 +41,13 @@ export class ActivityComponent implements OnInit {
         this.fetchVehicleListing();
         this.fetchVehicleName();
     }
-    
+
     fetchVehicleName() {
         this.apiService.getData(`vehicles/fetch/detail/${this.vehicleId}`).subscribe((result: any) => {
             this.vehicleData = result.Items;
         });
     }
-    
+
     onScroll() {
         if (this.loaded) {
             this.fetchVehicleListing();
@@ -59,11 +59,11 @@ export class ActivityComponent implements OnInit {
     fetchVehicleListing() {
         if (this.lastItemSK !== 'end') {
             this.apiService.getData(`vehicles/fetch/TripData?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}&lastKey=${this.lastItemSK}&date=${this.datee}`).subscribe((result: any) => {
-               this.allData = this.allData.concat(result.Items)
+                this.allData = this.allData.concat(result.Items)
                 if (result.Items.length === 0) {
                     this.dataMessage = Constants.NO_RECORDS_FOUND
                 }
-                  if (result.LastEvaluatedKey !== undefined) {
+                if (result.LastEvaluatedKey !== undefined) {
                     this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
                     this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
                 }
@@ -90,7 +90,7 @@ export class ActivityComponent implements OnInit {
                     data.usProvince = [];
                     data.provinceData = [];
                     data.province =
-                    data.vehicleProvinces = [];
+                        data.vehicleProvinces = [];
                     data.vehicleIDs.map((v) => {
                         data.iftaMiles.map((ifta) => {
                             ifta.map((ifta2) => {

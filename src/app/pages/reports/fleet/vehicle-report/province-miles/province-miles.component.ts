@@ -14,7 +14,7 @@ export class ProvinceMilesComponent implements OnInit {
   allData: any = [];
   docCountries = [];
   states = [];
-  vehicleId = ''
+  vehicleId = '';
   start = null;
   end = null;
   dataMessage = Constants.FETCHING_DATA;
@@ -156,8 +156,20 @@ export class ProvinceMilesComponent implements OnInit {
       return false;
     }
   }
+  reset() {
+    if (this.vehicleId !== '') {
+      this.vehicleId === '';
+      this.lastItemSK = '';
+      this.suggestedVehicles = [];
+      this.allData = [];
+      this.dataMessage = Constants.FETCHING_DATA;
+      this.fetchProvinceMilesData();
+    } else {
+      return false;
+    }
+  }
   fetchFullExport(type = '') {
-    this.apiService.getData(`vehicles/fetch/provinceMiles/report?startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
+    this.apiService.getData(`vehicles/fetch/provinceMiles/report?vehicle=${this.vehicleId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = result.Items;
       for (let veh of this.exportData) {
         let dataa = veh
