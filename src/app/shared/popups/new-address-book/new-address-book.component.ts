@@ -71,6 +71,7 @@ export class NewAddressBookComponent implements OnInit {
     workEmail: '',
     eTypes: [],
     adrs: [{
+      careOption: '',
       aType: 'Billing Address',
       cName: '',
       sName: '',
@@ -437,6 +438,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: 'Billing Address',
         cName: '',
         sName: '',
@@ -728,7 +730,13 @@ export class NewAddressBookComponent implements OnInit {
               em: '',
               emCur: null,
               dr: '',
-              drCur: null
+              drCur: null,
+              wsib: false,
+              wsibAcc: '',
+              wsibExp: null,
+              wcb: false,
+              wcbAcc: '',
+              wcbExp: null,
             }
           }
           this.newArr.push('owner_operator');
@@ -1205,6 +1213,7 @@ export class NewAddressBookComponent implements OnInit {
     this.apiService.putData('contacts', formData, true).subscribe({
       complete: () => { },
       error: (err: any) => {
+        this.unitDisabled = false;
         from(err.error)
           .pipe(
             map((val: any) => {
@@ -1456,6 +1465,7 @@ export class NewAddressBookComponent implements OnInit {
       workEmail: '',
       eTypes: [],
       adrs: [{
+        careOption: '',
         aType: null,
         cName: '',
         sName: '',

@@ -553,6 +553,7 @@
                                                     <tr class="bgcol2">
                                                         <th></th>
                                                         <th class="text-2">Payment#</th>
+                                                        <th class="text-2">Advance Type</th>
                                                         <th class="text-2">Payment
                                                             Date</th>
                                                         <th class="text-2">Account#</th>
@@ -588,6 +589,9 @@
                                                                 (change)="selectedAdvancepayments()">
                                                         </td>
                                                         <td>{{ data.paymentNo }}</td>
+                                                        <td class="text-capitalize">
+                                                            {{ data.advType }}
+                                                        </td>
                                                         <td>{{ data.txnDate |
                                                             date:"yyyy/MM/dd" }}</td>
                                                         <td>{{

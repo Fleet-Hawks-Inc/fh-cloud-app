@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService, ApiService } from 'src/app/services';
+import * as html2pdf from "html2pdf.js";
 
 @Component({
   selector: 'app-sales-invoice-detail',
@@ -8,10 +10,16 @@ import { AccountService, ApiService } from 'src/app/services';
   styleUrls: ['./sales-invoice-detail.component.css']
 })
 export class SalesInvoiceDetailComponent implements OnInit {
+  @ViewChild("previewSaleInvoice", { static: true })
+  previewSaleInvoice: TemplateRef<any>;
+
   saleID: any;
 
   txnDate: string;
-  customerID: string = '';
+  cName: string;
+  cusAddress: string;
+  cusEmail: string;
+  cusPhone: string;
   finalTotal: any;
   currency: string;
   shipDate: string;
@@ -20,7 +28,7 @@ export class SalesInvoiceDetailComponent implements OnInit {
   remarks: string;
   sOrderDetails: string;
   status: string;
-  sOrNo: string;
+  sInvNo: string;
   taxes: string;
   accFees: string;
   accDed: string;
@@ -30,24 +38,22 @@ export class SalesInvoiceDetailComponent implements OnInit {
 
   balance: any;
   received: any;
-  constructor(public accountService: AccountService, public apiService: ApiService, private route: ActivatedRoute) { }
+
+  isInvDue: boolean;
+  saleInvPrev: any;
+  logo: string;
+  tagline: string;
+  chargeName: string;
+  chargeType: string;
+  chargeAmount: string;
+  isPDF: boolean = false;
+  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
     if (this.saleID) {
       this.fetchSaleOrder();
-      this.fetchCustomersByIDs();
     }
-  }
-
-
-  /*
-* Get all customers's IDs of names from api
-*/
-  fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
-      this.customersObjects = result;
-    });
   }
 
 
@@ -56,7 +62,10 @@ export class SalesInvoiceDetailComponent implements OnInit {
       let result = res[0];
 
       this.txnDate = result.txnDate;
-      this.customerID = result.customerID;
+      this.cName = result.customerName;
+      this.cusAddress = result.address;
+      this.cusPhone = result.workPhone;
+      this.cusEmail = result.workEmail;
       this.finalTotal = result.total.finalTotal;
       this.balance = result.balance;
       this.received = this.finalTotal - this.balance;
@@ -69,11 +78,47 @@ export class SalesInvoiceDetailComponent implements OnInit {
       this.remarks = result.remarks;
       this.sOrderDetails = result.sOrderDetails;
       this.status = result.status;
-      this.sOrNo = result.sOrNo;
+      this.sInvNo = result.sInvNo;
       this.taxes = result.charges.taxes;
-      this.accFees = result.charges.accFee;
-      this.accDed = result.charges.accDed;
+      this.chargeName = result.charges.cName;
+      this.chargeType = result.charges.cType;
+      this.chargeAmount = result.charges.cAmount;
+      this.isPDF = true;
+      this.isInvDue = result.due;
+      this.logo = result.logo;
+      this.tagline = result.tagline;
     });
+  }
+
+  openModal() {
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: false,
+      backdrop: "static",
+      windowClass: "preview-sale-invoice",
+    };
+    this.saleInvPrev = this.modalService.open(this.previewSaleInvoice, ngbModalOptions)
+  }
+
+
+  generatePDF() {
+
+    var data = document.getElementById("print_invoice");
+    html2pdf(data, {
+      margin: 0.5,
+      pagebreak: { mode: "avoid-all", before: "print_invoice" },
+      filename: "sale-invoice.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: {
+        dpi: 300,
+        letterRendering: true,
+        allowTaint: true,
+        useCORS: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" },
+    });
+
+    this.saleInvPrev.close();
+
   }
 
 }

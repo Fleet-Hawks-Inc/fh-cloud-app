@@ -4,44 +4,73 @@
       <header class="page-header pr19 pl7">
         <form class="form-horizontal" method="get">
           <div class="row" style="padding-top: 10px">
-            <div class="col-md-2 col-lg-2 pr-0">
-              <div class="mb-3">
-                <ng-select [clearable]="false" [(ngModel)]="filterData.customerID" name="customerID"
-                  placeholder="Search By customers">
-                  <ng-option *ngFor="let item of customersObjects | keyvalue" value="{{ item.key }}">
-                    {{ item.value }}
-                  </ng-option>
-                </ng-select>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 pr-0">
-              <div class="input-daterange input-group" data-plugin-datepicker>
-                <span class="input-group-prepend">
-                  <span class="input-group-text">
-                    <i class="fas fa-calendar-alt"></i>
-                  </span>
-                </span>
-                <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
-                  ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
-                <span class="input-group-text
-                  border-left-0 border-right-0
-                  rounded-0">
-                  to
-                </span>
-                <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
-                  ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
-              </div>
-            </div>
+            <div class="col-10">
+              <div class="row">
+                <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="mb-3">
+                    <ng-select (change)="resetUnit()" [(ngModel)]="filterData.category" name="category"
+                      placeholder="Select Category">
+                      <ng-option value="customer">Customer</ng-option>
+                      <ng-option value="saleOrder">Sale Order</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filterData.category === 'customer'">
+                  <div class="mb-3">
+                    <ng-select [clearable]="false" [(ngModel)]="filterData.unit" name="unit"
+                      placeholder="Search By customer">
+                      <ng-option *ngFor="let item of customersObjects | keyvalue" value="{{ item.key }}">
+                        {{ item.value }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0" *ngIf="filterData.category === 'saleOrder'">
+                  <div class="mb-3">
+                    <input type="text" [(ngModel)]="filterData.unit" name="unit" class="form-control"
+                      placeholder="Type sale order" />
+                  </div>
+                </div>
+                <div class="col-md-2 col-lg-2 pr-0">
+                  <div class="mb-3">
+                    <ng-select [(ngModel)]="filterData.status" name="status" placeholder="Search By status">
+                      <ng-option *ngFor="let item of allStatus" value="{{ item.value }}">
+                        {{ item.name }}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-3 pr-0">
+                  <div class="input-daterange input-group">
+                    <span class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                      </span>
+                    </span>
+                    <input type="text" [(ngModel)]="filterData.startDate" name="startDate" (click)="startDate.toggle()"
+                      ngbDatepicker #startDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+                    <span class="input-group-text
+                      border-left-0 border-right-0
+                      rounded-0">
+                      to
+                    </span>
+                    <input type="text" [(ngModel)]="filterData.endDate" name="endDate" (click)="endDate.toggle()"
+                      ngbDatepicker #endDate="ngbDatepicker" class="form-control" placeholder="mm/dd/yyyy" readonly />
+                  </div>
+                </div>
 
-            <div class="col-md-2 col-lg-2">
-              <button type="submit" [disabled]="isSearch" (click)="searchSale()" class="btn btn-sm btn-success">
-                Search
-              </button>
-              <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch" (click)="resetFilter()">
-                Reset
-              </button>
+                <div class="col-md-2 col-lg-2">
+                  <button type="submit" [disabled]="isSearch" (click)="searchSale()" class="btn btn-sm btn-success">
+                    Search
+                  </button>
+                  <button type="button" class="btn btn-sm btn-success ml-3" [disabled]="isSearch"
+                    (click)="resetFilter()">
+                    Reset
+                  </button>
+                </div>
+              </div>
             </div>
-            <div class="col-md-5 col-lg-5 text-right pr-2">
+            <div class="col-md-2 col-lg-2 text-right pr-2">
               <a routerLink="/accounts/sales/orders/add" class="btn btn-success
                 btn-sm ml-2" style="color: white"><i class="fas fa-plus"></i> Add Sales Order
               </a>
@@ -66,7 +95,7 @@
                         <th class="text-2">Customer</th>
                         <th class="text-2">Shipment Date</th>
                         <th class="text-2">Amount</th>
-                        <th class="text-2">Invoice Status</th>
+                        <!-- <th class="text-2">Invoice Status</th> -->
                         <!-- <th class="text-2">Payment Status</th> -->
                         <th class="text-2">Status</th>
                         <th class="text-2">Action</th>
@@ -74,12 +103,10 @@
                     </thead>
                     <tbody>
                       <tr *ngIf="allSales.length === 0" class="text-center">
-                        <td colspan="9">{{ dataMessage }}</td>
+                        <td colspan="8">{{ dataMessage }}</td>
                       </tr>
-                      <tr *ngFor="let item of allSales">
-                        <td title="/accounts/sales/orders/detail/{{
-                          item.saleID
-                          }}" routerLink="/accounts/sales/orders/detail/{{
+                      <tr *ngFor="let item of allSales" class="cursorpoint">
+                        <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           {{ item.txnDate | date: "yyyy/MM/dd" }}
@@ -87,35 +114,33 @@
                         <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
-                          {{ item.sOrNo }}
+                          {{ item.sOrNo ? item.sOrNo : '-' }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
-                          {{ item.sRef }}
+                          {{ item.sRef ? item.sRef : '-' }}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
-                          {{ customersObjects[item.cusInfo.customerID] }}
+                          {{ item.cusInfo.customerID ? customersObjects[item.cusInfo.customerID] : '-'}}
                         </td>
                         <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
-                          {{ item.shipDate | date: "yyyy/MM/dd" }}
+                          {{ item.shipDate ? (item.shipDate | date: "yyyy/MM/dd") : '-' }}
                         </td>
-                        <td title="/accounts/sales/orders/detail/{{
-                          item.saleID
-                          }}" routerLink="/accounts/sales/orders/detail/{{
+                        <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           {{
                           item.total.finalTotal
                           ? (item.total.finalTotal | number: "1.2-2")
-                          : ""
+                          : "-"
                           }} {{ item.currency }}
                         </td>
-                        <td routerLink="/accounts/sales/orders/detail/{{
+                        <!-- <td routerLink="/accounts/sales/orders/detail/{{
                           item.saleID
                           }}">
                           <span *ngIf="item.invStatus">
@@ -126,7 +151,7 @@
                           <span *ngIf="!item.invStatus">
                             -
                           </span>
-                        </td>
+                        </td> -->
                         <!-- <td
                           routerLink="/accounts/sales/orders/detail/{{
                             item.saleID

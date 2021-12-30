@@ -144,7 +144,7 @@ export class AddInventoryComponent implements OnInit {
   }
   calculateAmount()
   {
-     this.totalCost = (this.cost + this.tax) * this.quantity;
+     this.totalCost = (this.cost * this.quantity) + this.tax;
   }
 
   getRequiredInventory() {
@@ -165,6 +165,7 @@ export class AddInventoryComponent implements OnInit {
       this.partNumber = result.partNumber;
       this.cost = result.cost;
       this.totalCost = result.totalCost;
+      this.tax = result.tax;
       this.costUnit = result.costUnit;
       this.costUnitType = result.costUnitType;
       this.quantity = result.quantity;

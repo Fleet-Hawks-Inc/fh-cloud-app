@@ -5,6 +5,7 @@ import Constant from "src/app/pages/fleet/constants";
 import { ToastrService } from 'ngx-toastr';
 import * as html2pdf from "html2pdf.js";
 import * as moment from 'moment'
+import * as _ from "lodash";
 declare var $: any;
 
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
@@ -15,8 +16,10 @@ import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 })
 export class CustomerCollectionComponent implements OnInit {
   @ViewChild('myTable') table: any;
-  @ViewChild("previewReportModal", { static: true })
-  previewReportModal: TemplateRef<any>;
+  @ViewChild("previewAllModal",{static:true}) previewAllModal:TemplateRef<any>;
+  @ViewChild("previewReportModal", { static: true }) previewReportModal:TemplateRef<any>;
+//  previewReportModal: TemplateRef<any>;
+  
   constructor(private apiService: ApiService, private el: ElementRef, private toastr: ToastrService,
     private modalService: NgbModal,) { }
   public customerCollection = []
@@ -24,6 +27,8 @@ export class CustomerCollectionComponent implements OnInit {
   ColumnMode = ColumnMode;
   dataMessage = "";
   loaded = false;
+  exportLoading=false
+  allData=[];
   readonly rowHeight = 70;
   readonly headerHeight = 70;
   expanded: any = {};
@@ -33,10 +38,12 @@ export class CustomerCollectionComponent implements OnInit {
   pageLimit = 10
   customer = ""
   previewRef: any;
+  preview:any;
   customerFiltr = {
     startDate: '',
     endDate: ''
   }
+  suggestedCustomers=[]
   printData: any = {}
   date = new Date();
   dateMinLimit = { year: 1950, month: 1, day: 1 };
@@ -65,7 +72,23 @@ export class CustomerCollectionComponent implements OnInit {
       this.loaded = false;
     }
   }
+getSuggestions=_.debounce(async function (value){
+  value=value.toLowerCase();
+  if(value!=''){
+    const result=await this.apiService.getData(`contacts/reports/suggestions/${value}`).toPromise();
+    this.suggestedCustomers=result
+  }
+  else{
+    this.suggestedCustomers=[]
+  }
 
+},500)
+setCustomer(cName){
+  if(cName!=''){
+  this.customer=cName;
+  this.suggestedCustomers=[]
+  }
+}
   async fetchCustomerCollection(refresh?: boolean) {
     this.dataMessage = Constant.FETCHING_DATA
     this.isLoading = true;
@@ -75,7 +98,7 @@ export class CustomerCollectionComponent implements OnInit {
     }
     if (this.lastSK != 'end') {
       const result = await this.apiService.getData(`contacts/get/customer/collection?lastKey=${this.lastSK}&customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
-      //console.log(result)
+      // console.log(result)
       this.dataMessage = Constant.FETCHING_DATA
       if (result.Items.length == 0) {
         this.dataMessage = Constant.NO_RECORDS_FOUND
@@ -134,7 +157,8 @@ export class CustomerCollectionComponent implements OnInit {
 
   }
 
-  async showReport(data: any) {
+  async showReport(event:any,data: any) {
+    event.target.disabled = true;
     this.printData = data
 
     const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.printData.cName}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
@@ -146,24 +170,51 @@ export class CustomerCollectionComponent implements OnInit {
     this.previewRef = this.modalService.open(this.previewReportModal,
       ngbModalOptions
     )
+    event.target.disabled=false
   }
-  async generatePDF() {
-    let data = document.getElementById("print_wrap");
+  async allCustomerPDF(){
+    this.exportLoading=true
+    const result = await this.apiService.getData(`contacts/get/customer/collection/all?customer=${this.customer}&start=${this.customerFiltr.startDate}&end=${this.customerFiltr.endDate}`).toPromise();
+    this.allData=result.Items
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "preview"
+    };
+    this.preview = this.modalService.open(this.previewAllModal,
+      ngbModalOptions
+    )
+    let data=document.getElementById("print_all_wrap")
     html2pdf(data, {
-      margin: 0.15,
-      filename: "customerReport.pdf",
+      margin: 0,
+     pagebreak: { mode: "avoid-all" },
+      filename: "allCustomerReport.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2Canvas: {
         dpi: 300,
         letterRendering: true,
-        allowTaint: true,
-        useCORS: true
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
+    })
+    this.exportLoading=false
+  }
+  async generatePDF() {
+    let data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0,
+      //pagebreak: { mode: "avoid-all" },
+      filename: "customerReport.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2Canvas: {
+        dpi: 200,
+
+        letterRendering: true,
       },
       jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
     })
     $("#previewReportModal").modal("hide");
   }
   async generateCSV() {
+    this.exportLoading=true
     let dataObject = []
     let ordersData = []
     let csvArray = []
@@ -204,11 +255,15 @@ export class CustomerCollectionComponent implements OnInit {
       let orderHeaders = ''
       let oArray = []
       if (orders.length > 0) {
+        delete orders[0].orderSK
+        delete orders[0].isDeleted
         orderHeaders = "," + Object.keys(orders[0]).join(',')
         orderHeaders += '\n'
         for (const i of orders) {
           i.milesInfo = i.milesInfo.totalMiles
           i.charges = i.charges.freightFee.currency
+          delete i.orderSK
+          delete i.isDeleted
           let o = "," + Object.values(i).join(',')
           o += '\n'
           oArray.push(o)
@@ -235,7 +290,7 @@ export class CustomerCollectionComponent implements OnInit {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
+this.exportLoading=false
     }
 
   }

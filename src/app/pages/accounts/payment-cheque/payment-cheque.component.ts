@@ -54,6 +54,8 @@ export class PaymentChequeComponent implements OnInit {
     advance: 0,
     page: "",
     invoices: [],
+    paymentTo: "",
+    advType: "",
   };
 
   cheqdata = {
@@ -89,6 +91,12 @@ export class PaymentChequeComponent implements OnInit {
     currencyText: "",
   };
   driverData;
+  corporateDrver = false;
+  vendorAddress = [];
+  dummyAddress = "";
+  vendorCompanyName = "";
+  dummyEntity = "";
+  showIssue = false;
 
   subscription: Subscription;
   locale = "en-US";
@@ -104,6 +112,15 @@ export class PaymentChequeComponent implements OnInit {
     this.subscription = this.listService.paymentModelList.subscribe(
       (res: any) => {
         if (res.showModal && res.length != 0) {
+          // empty fields
+          this.showIssue = false;
+          this.corporateDrver = false;
+          this.cheqdata.entityName = "";
+          this.carrierID = null;
+          this.cheqdata.companyAddress = null;
+
+          this.getCarriers();
+          this.getCurrentuser();
           this.paydata = res;
           this.cheqdata.payDate = formatDate(
             this.paydata.txnDate,
@@ -115,12 +132,13 @@ export class PaymentChequeComponent implements OnInit {
             this.cheqdata.currencyText = "Amount in Canadian Dollars";
           } else if (this.cheqdata.currency === "USD") {
             this.cheqdata.currencyText = "Amount in US Dollars";
-          }
+          } 
           if (
             this.paydata.type === "driver" ||
             this.paydata.type === "employee" ||
             this.paydata.type === "owner_operator" ||
-            this.paydata.type === "carrier"
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "expensePayment"
           ) {
             this.paydata.payYear = formatDate(
               this.paydata.toDate,
@@ -138,6 +156,20 @@ export class PaymentChequeComponent implements OnInit {
               this.locale
             );
             this.cheqdata.payPeriod = `${startDate} To ${endDate}`;
+          }
+
+          if (this.paydata.type === "advancePayment") {
+            this.paydata.payYear = formatDate(
+              this.paydata.fromDate,
+              "yyyy",
+              this.locale
+            );
+            let startDate = formatDate(
+              this.paydata.fromDate,
+              "dd-MM-yyyy",
+              this.locale
+            );
+            this.cheqdata.payPeriod = `${startDate}`;
           }
 
           this.cheqdata.chqNo = this.paydata.chequeNo;
@@ -161,6 +193,10 @@ export class PaymentChequeComponent implements OnInit {
               Number(this.cheqdata.tax);
             this.cheqdata.netPay =
               Number(this.cheqdata.grossPay) - Number(this.cheqdata.withHeld);
+            // minus advance
+            if (this.paydata.advance > 0) {
+              this.cheqdata.netPay -= this.paydata.advance;
+            }
           } else if (
             this.paydata.type === "owner_operator" ||
             this.paydata.type === "carrier" ||
@@ -173,9 +209,27 @@ export class PaymentChequeComponent implements OnInit {
             }
           }
 
+          // this if cond. only in the case of expense payment
+          if (
+            this.paydata.type === "expensePayment" ||
+            this.paydata.type === "advancePayment"
+          ) {
+            this.cheqdata.regularPay = this.paydata.finalAmount;
+            if (this.paydata.paymentTo == "driver") {
+              this.fetchDriver();
+            } else {
+              this.fetchContact();
+            }
+          }
+
           if (this.paydata.type == "driver") {
             this.fetchDriver();
-          } else {
+          } else if (
+            this.paydata.type === "employee" ||
+            this.paydata.type === "owner_operator" ||
+            this.paydata.type === "carrier" ||
+            this.paydata.type === "vendor"
+          ) {
             this.fetchContact();
           }
           if (
@@ -202,8 +256,6 @@ export class PaymentChequeComponent implements OnInit {
         }
       }
     );
-    this.getCarriers();
-    this.getCurrentuser();
   }
 
   prevCheck() {
@@ -220,7 +272,6 @@ export class PaymentChequeComponent implements OnInit {
       let decc = Number(amountSplit[1]);
       decimals = decc > 0 ? decc : 0.0;
     }
-
     if (decimals > 0) {
       this.cheqdata.decimals = ` and ${decimals}/100`;
     }
@@ -237,13 +288,14 @@ export class PaymentChequeComponent implements OnInit {
   }
 
   getCarriers() {
+    this.carriers = [];
     this.apiService
       .getData(`contacts/get/records/carrier`)
       .subscribe((result: any) => {
         for (let i = 0; i < result.Items.length; i++) {
           const element = result.Items[i];
           element.type = "sub";
-          this.carriers.push(element);
+          this.carriers = [...this.carriers, element];
         }
       });
   }
@@ -292,25 +344,54 @@ export class PaymentChequeComponent implements OnInit {
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
       margin: 0,
-      filename: `cheque.pdf`,
+      filename: `cheque-${this.paydata.chequeNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     });
   }
 
+  arrangeFields(ev) {
+    const showData = ev.target.value === "yes" ? true : false;
+    if (showData) {
+      this.cheqdata.entityName = this.vendorCompanyName;
+      this.cheqdata.entityAddress =
+        this.vendorAddress.length > 0 ? this.vendorAddress[0] : "";
+    } else {
+      this.cheqdata.entityName = this.dummyEntity;
+      this.cheqdata.entityAddress = this.dummyAddress;
+    }
+  }
+
   fetchDriver() {
     this.apiService
-      .getData(`drivers/${this.paydata.entityId}`)
+      .getData(`drivers/cheque/data/${this.paydata.entityId}`)
       .subscribe((result: any) => {
         this.driverData = result.Items[0];
+        this.dummyEntity =
+          this.driverData.firstName + " " + this.driverData.lastName;
         this.cheqdata.entityName =
           this.driverData.firstName + " " + this.driverData.lastName;
         let addr = result.Items[0].address[0];
         if (addr.manual) {
           this.cheqdata.entityAddress = `${addr.address}, ${addr.stateName}, ${addr.cityName}, ${addr.countryName}, ${addr.zipCode}`;
+          this.dummyAddress = `${addr.address}, ${addr.stateName}, ${addr.cityName}, ${addr.countryName}, ${addr.zipCode}`;
         } else {
           this.cheqdata.entityAddress = addr.userLocation;
+          this.dummyAddress = addr.userLocation;
+        }
+
+        if (
+          result.Items[0].vendorName &&
+          result.Items[0].vendorName != "" &&
+          result.Items[0].venAddress &&
+          result.Items[0].venAddress.length > 0
+        ) {
+          this.vendorCompanyName = result.Items[0].vendorName;
+          this.corporateDrver = true;
+          for (const iterator of result.Items[0].venAddress) {
+            this.vendorAddress = [...this.vendorAddress, iterator];
+          }
         }
       });
   }
@@ -321,6 +402,7 @@ export class PaymentChequeComponent implements OnInit {
         .getData(`contacts/detail/${this.paydata.entityId}`)
         .subscribe((result: any) => {
           this.cheqdata.entityName = result.Items[0].cName;
+          this.dummyEntity = result.Items[0].cName;
           let addr = result.Items[0].adrs[0];
           if (addr.manual) {
             this.cheqdata.entityAddress = `${addr.add1} ${addr.add2}, ${addr.sName}, ${addr.ctyName}, ${addr.cName}, ${addr.zip}`;

@@ -49,6 +49,7 @@ export class AddAdvancePaymentComponent implements OnInit {
   Success: string = "";
   submitDisabled = false;
   paymentID;
+  showModal = false;
 
   constructor(
     private listService: ListService,
@@ -250,5 +251,24 @@ export class AddAdvancePaymentComponent implements OnInit {
 
   resetEntityVal() {
     this.paymentData.entityId = null;
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.amount,
+      type: "advancePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.amount,
+      txnDate: this.paymentData.txnDate,
+      advType: this.paymentData.advType,
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

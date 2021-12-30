@@ -1,0 +1,1693 @@
+<ng-template #settlmentDetail let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Details</h4>
+      <button type="button" class="close" (click)="modal.dismiss()">
+        &times;
+      </button>
+    </div>
+    <form>
+      <div class="modal-body" id="settlmentDetailSection">
+        <table
+          width="100%"
+          border="0"
+          align="center"
+          cellpadding="0"
+          cellspacing="0"
+        >
+          <tbody>
+            <tr>
+              <td width="50%">
+                <h1 style="font-size: 26px; color: #000000">
+                  Driver Settlement
+                </h1>
+              </td>
+              <td width="50%" align="right" valign="middle">
+                <img [src]="otherLogoSrc" />
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <h2
+                  style="font-size: 20px; margin-bottom: 10px; color: #000000"
+                >
+                  <span
+                    class="text-uppercase"
+                    *ngIf="
+                      settlementData.type == 'driver' ||
+                      settlementData.type == 'carrier'
+                    "
+                  >
+                    {{ settlementData.type }}
+                  </span>
+                  <span
+                    class="text-uppercase"
+                    *ngIf="settlementData.type == 'owner_operator'"
+                  >
+                    owner operator
+                  </span>
+                  : {{ entityName }}
+                </h2>
+              </td>
+              <td valign="top" align="right">
+                <h2
+                  style="font-size: 20px; margin-bottom: 10px; color: #000000"
+                >
+                  Pay Period:
+                  {{ settlementData.fromDate | date: "yyyy/MM/dd" }} to
+                  {{ settlementData.toDate | date: "yyyy/MM/dd" }}
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" height="1" bgcolor="#bbbbbb"></td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <h2 style="font-size: 16px; color: #000000">
+                  Trip Information
+                </h2>
+              </td>
+              <td valign="top">&nbsp;</td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <table
+                  width="99%"
+                  style="
+                    border: 1px solid #adadad;
+                    color: #000000;
+                    border-right: 0px solid #adadad;
+                    font-size: 13px;
+                    margin-bottom: 10px;
+                  "
+                  cellpadding="0"
+                  cellspacing="0"
+                  bordercolor="#adadad"
+                >
+                  <tbody>
+                    <tr>
+                      <td
+                        width="50%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Total Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.tripsTotal | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="settlementData.type == 'driver'">
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Total Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.driverTotal | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Loaded Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.tripsLoaded | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="settlementData.type == 'driver'">
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Loaded Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.driverLoaded | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Empty Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.tripsEmpty | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <td valign="top" *ngIf="settlementData.type == 'driver'">
+                <table
+                  width="99%"
+                  align="right"
+                  cellpadding="0"
+                  cellspacing="0"
+                  bordercolor="#adadad"
+                  style="
+                    border: 1px solid #adadad;
+                    border-right: 0px solid #adadad;
+                    font-size: 13px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <tbody>
+                    <tr>
+                      <td
+                        width="50%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Empty Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.driverEmpty | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Team Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{ settlementData.miles.tripsTeam | number: "1.2-2" }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Team Miles
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{ settlementData.miles.teamHours | number: "1.2-2" }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Team Loaded
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.driverLoadedTeam
+                              | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Driver Team Empty
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{
+                            settlementData.miles.driverEmptyTeam
+                              | number: "1.2-2"
+                          }}
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" valign="top">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2" valign="top">
+                <table
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    border: 1px solid #d0d0d0;
+                    font-size: 13px;
+                    margin-bottom: 0px;
+                  "
+                >
+                  <tr bgcolor="#f3f3f3">
+                    <td
+                      width="6%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Trip#
+                      </p>
+                    </td>
+                    <td
+                      width="7%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Date
+                      </p>
+                    </td>
+                    <td
+                      width="6%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Order#
+                      </p>
+                    </td>
+                    <td
+                      width="23%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Locations
+                      </p>
+                    </td>
+                    <td
+                      width="7%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Miles
+                      </p>
+                    </td>
+                    <td
+                      width="15%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Driver
+                      </p>
+                    </td>
+                    <td
+                      width="6%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Vehicle
+                      </p>
+                    </td>
+                    <td
+                      width="6%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Assets
+                      </p>
+                    </td>
+                    <td
+                      width="7%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Carrier
+                      </p>
+                    </td>
+                  </tr>
+                  <tr *ngIf="settledTrips.length == 0" class="text-center">
+                    <td colspan="9">
+                      {{ fetchingdata }}
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let trp of settledTrips; let t = index">
+                    <tr>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="color: #000000">{{ trp.tripNo }}</p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="color: #000000">
+                          {{ trp.dateCreated | date: "yyyy/MM/dd" }}
+                        </p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="color: #000000"
+                          [innerHTML]="trp.orderName"
+                        ></p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                          color: #000000;
+                        "
+                        [innerHTML]="trp.pickupLocation"
+                      ></td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="color: #000000">
+                          {{ trp.entityMiles | number: "1.2-2" }}
+                        </p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="color: #000000"
+                          [innerHTML]="trp.allDrivers"
+                        ></p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="color: #000000"
+                          [innerHTML]="trp.allVehicles"
+                        ></p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="color: #000000"
+                          [innerHTML]="trp.allAssets"
+                        ></p>
+                      </td>
+                      <td
+                        valign="top"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="color: #000000"
+                          [innerHTML]="trp.allCarriers"
+                        ></p>
+                      </td>
+                    </tr>
+                    <ng-container
+                      *ngFor="let splt of trp.splitArr; let sp = index"
+                    >
+                      <tr>
+                        <td
+                          valign="top"
+                          style="
+                            border-right: 1px solid #adadad;
+                            border-bottom: 1px solid #adadad;
+                            padding-left: 10px;
+                          "
+                        >
+                          <p>
+                            {{ trp.tripNo }} ({{
+                              splt.splitName ? splt.splitName : sp + 1
+                            }})
+                          </p>
+                        </td>
+                        <td
+                          colspan="11"
+                          style="
+                            padding: 10px;
+                            border-bottom: 1px solid #adadad;
+                          "
+                        >
+                          <table
+                            width="98%"
+                            border="0"
+                            align="center"
+                            cellpadding="0"
+                            cellspacing="0"
+                            style="
+                              border: 1px solid #adadad;
+                              font-size: 13px;
+                              margin-bottom: 10px;
+                            "
+                            *ngFor="let spltLine of splt.trips"
+                          >
+                            <tbody>
+                              <tr>
+                                <td
+                                  width="15%"
+                                  style="
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p>
+                                    {{ spltLine.date | date: "yyyy/MM/dd" }}
+                                  </p>
+                                </td>
+                                <td
+                                  width="35%"
+                                  style="
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <span>
+                                    <b> {{ spltLine.type }}: </b>
+                                    {{ spltLine.planLoc }}
+                                    <br />
+                                    <b>Miles</b>:
+                                    {{ spltLine.miles | number: "1.2-2" }}
+                                  </span>
+                                </td>
+                                <td
+                                  width="20%"
+                                  style="
+                                    border-right: 1px solid #adadad;
+                                    padding-left: 10px;
+                                  "
+                                >
+                                  <p>
+                                    <span *ngIf="spltLine.driverID">
+                                      <b>Driver: </b>
+                                      {{ spltLine.driverName }}
+                                      <br />
+                                    </span>
+                                    <span *ngIf="spltLine.coDriverID">
+                                      <b>Co-driver: </b>
+                                      {{ spltLine.coDriverName }}
+                                    </span>
+                                    <span *ngIf="spltLine.carrierID">
+                                      <b>Carrier: </b>
+                                      {{ spltLine.carrierName }}
+                                    </span>
+                                  </p>
+                                </td>
+                                <td
+                                  style="
+                                    text-align: right;
+                                    border-right: 1px solid #adadad;
+                                    padding-right: 10px;
+                                  "
+                                >
+                                  <p>
+                                    <strong>Vehicle:</strong>
+                                    {{ spltLine.vehicleName }}
+                                  </p>
+                                </td>
+                                <td
+                                  style="text-align: right; padding-right: 10px"
+                                >
+                                  <p>
+                                    <strong>Asset(s):</strong>
+                                    {{ spltLine.assetName }}
+                                  </p>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </ng-container>
+
+                  <tbody></tbody>
+                </table>
+              </td>
+            </tr>
+            <tr *ngIf="fuelEnteries.length > 0">
+              <td colspan="2">
+                <h2 style="font-size: 16px; color: #000000">Fuel</h2>
+              </td>
+            </tr>
+            <tr *ngIf="fuelEnteries.length > 0">
+              <td colspan="2">
+                <table
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    border: 1px solid #d0d0d0;
+                    font-size: 13px;
+                    margin-bottom: 0px;
+                  "
+                >
+                  <tr bgcolor="#f3f3f3">
+                    <td
+                      width="10%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Date
+                      </p>
+                    </td>
+                    <td
+                      width="30%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Location
+                      </p>
+                    </td>
+                    <td
+                      width="15%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Card#
+                      </p>
+                    </td>
+                    <td
+                      width="10%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Type
+                      </p>
+                    </td>
+                    <td
+                      width="10%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Quantity
+                      </p>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Amount
+                      </p>
+                    </td>
+                    <td
+                      width="15%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Action
+                      </p>
+                    </td>
+                  </tr>
+                  <tr *ngIf="fuelEnteries.length === 0" class="text-center">
+                    <td colspan="8" style="margin-bottom: 4px; color: #000000">
+                      No data
+                    </td>
+                  </tr>
+                  <tr *ngFor="let data of fuelEnteries">
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.fuelDate | date: "yyyy/MM/dd" }}
+                      </p>
+                    </td>
+                    <td
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.cityName }}, {{ data.locationCountry }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.fuelCardNumber }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.type }} 
+                        <span *ngIf="data.data.useType">
+                          ({{data.data.useType}})
+                      </span>
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.quantity }} {{ data.unitOfMeasure }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.subTotal | number: "1.2-2" }}
+                        {{ data.currency }}
+                        <span *ngIf="data.convert">
+                          ({{ data.total | number: "1.2-2" }}
+                          {{ data.billingCurrency }}, 1
+                          {{ data.billingCurrency }} =
+                          {{ data.convertRate | number: "1.2-2" }})
+                        </span>
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.action }}
+                      </p>
+                    </td>
+                  </tr>
+                  <tbody></tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2 style="font-size: 16px; color: #000000">Addition</h2>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    border: 1px solid #d0d0d0;
+                    font-size: 13px;
+                    margin-bottom: 0px;
+                  "
+                >
+                  <tr bgcolor="#f3f3f3">
+                    <td
+                      width="20%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Trip#
+                      </p>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Charge Name
+                      </p>
+                    </td>
+                    <td
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Description
+                      </p>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        padding-right: 10px;
+                        text-align: right;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Amount
+                      </p>
+                    </td>
+                  </tr>
+                  <tr
+                    *ngIf="settlementData.addition.length === 0"
+                    class="text-center"
+                  >
+                    <td colspan="4" style="margin-bottom: 4px; color: #000000">
+                      No data
+                    </td>
+                  </tr>
+                  <tr *ngFor="let data of settlementData.addition">
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.tripName ? data.tripName : "-" }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.chargeName }}
+                      </p>
+                    </td>
+                    <td
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.desc ? data.desc : "-" }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="padding-right: 10px; text-align: right"
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.amount | number: "1.2-2" }} {{ data.currency }}
+                      </p>
+                    </td>
+                  </tr>
+                  <tbody></tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2 style="font-size: 16px; color: #000000">Deduction</h2>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  width="100%"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                  style="
+                    border: 1px solid #d0d0d0;
+                    font-size: 13px;
+                    margin-bottom: 0px;
+                  "
+                >
+                  <tr bgcolor="#f3f3f3">
+                    <td
+                      width="20%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Trip#
+                      </p>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Charge Name
+                      </p>
+                    </td>
+                    <td
+                      style="
+                        padding-left: 10px;
+                        border-right: 1px solid #adadad;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Description
+                      </p>
+                    </td>
+                    <td
+                      width="20%"
+                      style="
+                        padding-right: 10px;
+                        text-align: right;
+                        border-bottom: 1px solid #adadad;
+                      "
+                    >
+                      <p
+                        style="
+                          font-weight: 600;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        Amount
+                      </p>
+                    </td>
+                  </tr>
+                  <tr
+                    *ngIf="settlementData.deduction.length === 0"
+                    class="text-center"
+                  >
+                    <td colspan="4">No data</td>
+                  </tr>
+                  <tr *ngFor="let data of settlementData.deduction">
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.tripName ? data.tripName : "-" }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.chargeName }}
+                      </p>
+                    </td>
+                    <td
+                      style="
+                        border-right: 1px solid #adadad;
+                        padding-left: 10px;
+                      "
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.desc ? data.desc : "-" }}
+                      </p>
+                    </td>
+                    <td
+                      valign="top"
+                      style="padding-right: 10px; text-align: right"
+                    >
+                      <p style="margin-bottom: 4px; color: #000000">
+                        {{ data.amount | number: "1.2-2" }} {{ data.currency }}
+                      </p>
+                    </td>
+                  </tr>
+                  <tbody></tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  width="100%"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                  bordercolor="#adadad"
+                  style="
+                    border: 1px solid #adadad;
+                    border-right: 0px solid #adadad;
+                    font-size: 13px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  <tbody>
+                    <tr>
+                      <td
+                        width="30%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Total Payment
+                        </p>
+                      </td>
+                      <td
+                        width="20%"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        {{ settlementData.paymentTotal | number: "1.2-2" }}
+                      </td>
+                      <td
+                        width="30%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Payment Currency
+                        </p>
+                      </td>
+                      <td
+                        width="20%"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        {{ settlementData.currency }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <h2
+                  style="
+                    font-size: 16px;
+                    margin-bottom: 8px;
+                    color: #000000;
+                    margin-top: 8px;
+                  "
+                >
+                  Other Charges
+                </h2>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  width="100%"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                  bordercolor="#adadad"
+                  style="
+                    border: 1px solid #adadad;
+                    border-right: 0px solid #adadad;
+                    font-size: 13px;
+                    margin-bottom: 0px;
+                  "
+                >
+                  <tbody>
+                    <tr>
+                      <td
+                        width="20%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Add
+                        </p>
+                      </td>
+                      <td
+                        width="12%"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{ settlementData.additionTotal | number: "1.2-2" }}
+                        </p>
+                      </td>
+                      <td
+                        width="20%"
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Deduct
+                        </p>
+                      </td>
+                      <td
+                        width="20%"
+                        style="
+                          border-right: 1px solid #adadad;
+                          border-bottom: 1px solid #adadad;
+                          padding-left: 10px;  color: #000000;
+                        "
+                      >
+                        {{ settlementData.deductionTotal | number: "1.2-2" }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Fuel Addition
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p style="margin-bottom: 4px; color: #000000">
+                          {{ settlementData.fuelAdd | number: "1.2-2" }}
+                        </p>
+                      </td>
+                      <td
+                        bgcolor="#f3f3f3"
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                        "
+                      >
+                        <p
+                          style="
+                            font-weight: 600;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Fuel Deduction
+                        </p>
+                      </td>
+                      <td
+                        style="
+                          border-right: 1px solid #adadad;
+                          padding-left: 10px;
+                          margin-bottom: 4px;
+                          color: #000000;
+                        "
+                      >
+                        {{ settlementData.fuelDed | number: "1.2-2" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+              <td valign="top">
+                <p style="font-size: 13px; margin-bottom: 5px; margin-top: 5px">
+                  &nbsp;
+                </p>
+              </td>
+              <td valign="top" align="right">
+                <p
+                  style="
+                    font-size: 20px;
+                    margin-bottom: 5px;
+                    color: #000000;
+                    margin-top: 5px;
+                  "
+                >
+                  <strong>Grand Total:</strong>
+                  {{ settlementData.finalTotal | number: "1.2-2" }}
+                  {{ settlementData.currency }}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <table
+                  border="0"
+                  align="center"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tbody>
+                    <tr>
+                      <td align="center">
+                        <h2
+                          style="
+                            font-size: 13px;
+                            margin-bottom: 4px;
+                            color: #000000;
+                          "
+                        >
+                          Powered By
+                        </h2>
+                        <img [src]="logoSrc" width="207" height="28" />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">&nbsp;</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="modal.dismiss()">
+          Close
+        </button>
+        <button type="button" class="btn btn-success" (click)="generatePDF()">
+          Download PDF
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

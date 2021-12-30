@@ -24,6 +24,7 @@ export class AddSalesInvoiceComponent implements OnInit {
     txnDate: moment().format('YYYY-MM-DD'),
     currency: 'CAD',
     customerID: null,
+    cusAddressID: '',
     sOrderNo: '',
     sRef: '',
     dueDate: null,
@@ -40,18 +41,13 @@ export class AddSalesInvoiceComponent implements OnInit {
       accountID: null,
     }],
     charges: {
-      accFee: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
-      accDed: [
-        {
-          name: "",
-          amount: 0,
-        },
-      ],
+      remarks: "",
+      cName: "Adjustments",
+      cType: "add",
+      cAmount: 0,
+
+      discount: 0,
+      discountUnit: '%',
       taxes: [
         {
           name: "GST",
@@ -81,7 +77,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       subTotal: 0,
       taxes: 0,
       finalTotal: 0,
-      customerCredit: 0
+      customerCredit: 0,
+      discountAmount: 0
     },
     taxExempt: true,
     stateTaxID: null,
@@ -207,6 +204,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async getCustomerOrders(ID: string) {
     this.saleData.sOrderNo = '';
+    this.saleData.cusAddressID = '';
     this.salesOrder = [];
     this.saleData.sOrderDetails = [{
       commodity: '',
@@ -296,6 +294,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async getOrderDetail(ID: string) {
     let getSaleOrder = this.salesOrder.find(elem => elem.saleID === ID);
+    this.saleData.cusAddressID = getSaleOrder.cusInfo.addressID;
     this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails]
     await this.calculateAmount(null);
     this.calculateFinalTotal();
@@ -342,53 +341,6 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.calculateFinalTotal();
   }
 
-  addAccessorialArr(type) {
-    let obj = {
-      name: "",
-      amount: 0,
-    };
-    if (type === "fee") {
-      const lastAdded =
-        this.saleData.charges.accFee[this.saleData.charges.accFee.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.saleData.charges.accFee.push(obj);
-      }
-    } else if (type === "ded") {
-      const lastAdded =
-        this.saleData.charges.accDed[this.saleData.charges.accDed.length - 1];
-      if (lastAdded.name !== "" && lastAdded.amount !== 0) {
-        this.saleData.charges.accDed.push(obj);
-      }
-    }
-  }
-
-  dedAccessorialArr(type, index) {
-    if (type === "fee") {
-      this.saleData.charges.accFee.splice(index, 1);
-      this.accessorialFeeTotal();
-    } else if (type === "ded") {
-      this.saleData.charges.accDed.splice(index, 1);
-      this.accessorialDedTotal();
-      this.calculateFinalTotal();
-    }
-
-  }
-
-  accessorialFeeTotal() {
-    this.saleData.total.feeTotal = 0;
-    this.saleData.charges.accFee.forEach((element) => {
-      this.saleData.total.feeTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
-
-  accessorialDedTotal() {
-    this.saleData.total.dedTotal = 0;
-    this.saleData.charges.accDed.forEach((element) => {
-      this.saleData.total.dedTotal += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
 
   calculateFinalTotal() {
     this.saleData.total.subTotal =
@@ -400,6 +352,25 @@ export class AddSalesInvoiceComponent implements OnInit {
     this.saleData.total.finalTotal =
       Number(this.saleData.total.subTotal) +
       Number(this.saleData.total.taxes) - Number(this.saleData.total.customerCredit);
+    if (this.saleData.charges.discountUnit != '' && this.saleData.charges.discountUnit != null) {
+      if (this.saleData.charges.discountUnit === '%') {
+        this.saleData.total.discountAmount = (this.saleData.total.subTotal * this.saleData.charges.discount) / 100;
+        this.saleData.total.finalTotal -= this.saleData.total.discountAmount;
+      } else {
+        this.saleData.total.discountAmount = this.saleData.total.subTotal - this.saleData.charges.discount;
+        this.saleData.total.finalTotal -= this.saleData.total.discountAmount;
+      }
+    }
+
+  }
+
+  accessorialFeeTotal() {
+    if (this.saleData.charges.cType === "add") {
+      this.saleData.total.feeTotal = Number(this.saleData.charges.cAmount);
+    } else if (this.saleData.charges.cType === "ded") {
+      this.saleData.total.feeTotal = -Number(this.saleData.charges.cAmount);
+    }
+    this.calculateFinalTotal();
   }
 
   taxcalculation(index) {
@@ -410,6 +381,7 @@ export class AddSalesInvoiceComponent implements OnInit {
 
     this.taxTotal();
   }
+
 
   allTax() {
     let countTax = 0;
@@ -532,6 +504,19 @@ export class AddSalesInvoiceComponent implements OnInit {
     }
   }
 
+  changeTaxExempt() {
+    this.taxTotal()
+  }
+
+  checkEmailStat(type) {
+    if (type === "yes") {
+      this.saleData["sendEmail"] = true;
+    } else {
+      this.saleData["sendEmail"] = false;
+    }
+    this.addInvoice();
+  }
+
   addInvoice() {
     this.customerCredits.forEach(elem => {
       if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
@@ -580,10 +565,12 @@ export class AddSalesInvoiceComponent implements OnInit {
   async fetchSaleInvoice() {
     let result = await this.accountService.getData(`sales-invoice/detail/${this.saleID}`).toPromise();
     this.saleData = result[0];
-    await this.getCustomerCredit(this.saleData.customerID);
-    await this.getOrders(this.saleData.customerID);
+
+    // await this.getCustomerCredit(this.saleData.customerID);
+    // await this.getOrders(this.saleData.customerID);
     await this.fetchAccounts();
     this.getOrderDetail(this.saleData.sOrderNo)
+    await this.getCustomerOrders(this.saleData.customerID)
   }
 
   updateInvoice() {

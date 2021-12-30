@@ -16,15 +16,35 @@ export class SalesOrderListComponent implements OnInit {
   allSales = [];
 
   filterData = {
-    customerID: null,
+    category: null,
+    unit: '',
+    status: null,
     startDate: '',
     endDate: '',
-    lastItemSK: ''
   }
   lastItemSK = '';
 
   customersObjects: any = {};
   loaded = false;
+
+  allStatus = [
+    {
+      name: 'Open',
+      value: 'open'
+    },
+    {
+      name: 'Issued',
+      value: 'issued'
+    },
+    {
+      name: 'Closed',
+      value: 'closed'
+    },
+    {
+      name: 'Voided',
+      value: 'voided'
+    }
+  ];
 
   constructor(public accountService: AccountService, private toaster: ToastrService, public apiService: ApiService) { }
 
@@ -60,13 +80,23 @@ export class SalesOrderListComponent implements OnInit {
     }
   }
 
+  resetUnit() {
+    this.filterData.unit = '';
+  }
+
   async fetchSales(refresh?: boolean) {
     if (refresh === true) {
       this.lastItemSK = '';
       this.allSales = [];
     }
     if (this.lastItemSK !== 'end') {
-      this.accountService.getData(`sales-orders/paging?customer=${this.filterData.customerID}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
+      if (this.filterData.category) {
+        this.filterData.category = encodeURIComponent(`"${this.filterData.category}"`);
+      }
+      if (this.filterData.unit) {
+        this.filterData.unit = encodeURIComponent(`"${this.filterData.unit}"`);
+      }
+      this.accountService.getData(`sales-orders/paging?category=${this.filterData.category}&unit=${this.filterData.unit}&status=${this.filterData.status}&startDate=${this.filterData.startDate}&endDate=${this.filterData.endDate}&lastKey=${this.lastItemSK}`)
         .subscribe(async (result: any) => {
           if (result.length === 0) {
             this.isSearch = false;
@@ -87,13 +117,15 @@ export class SalesOrderListComponent implements OnInit {
             this.loaded = true;
 
           }
+        }, err => {
+          this.isSearch = true;
         });
     }
 
   }
 
   searchSale() {
-    if (this.filterData.customerID !== '' || this.filterData.startDate !== '' || this.filterData.endDate !== '' || this.filterData.lastItemSK !== '') {
+    if (this.filterData.category !== null || this.filterData.unit !== '' || this.filterData.status !== null || this.filterData.startDate !== '' || this.filterData.endDate !== '') {
       if (
         this.filterData.startDate !== '' &&
         this.filterData.endDate === ''
@@ -113,6 +145,7 @@ export class SalesOrderListComponent implements OnInit {
         this.isSearch = true;
         this.allSales = [];
         this.lastItemSK = '';
+
         this.dataMessage = Constants.FETCHING_DATA;
         this.fetchSales();
       }
@@ -124,10 +157,11 @@ export class SalesOrderListComponent implements OnInit {
     this.isSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filterData = {
-      customerID: null,
+      category: null,
+      unit: '',
+      status: null,
       startDate: '',
       endDate: '',
-      lastItemSK: ''
     };
     this.lastItemSK = '';
     this.allSales = [];

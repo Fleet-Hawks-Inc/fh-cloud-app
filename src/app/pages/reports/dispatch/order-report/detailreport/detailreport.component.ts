@@ -185,7 +185,7 @@ export class DetailreportComponent implements OnInit {
         obj["Type"] = element.orderMode
         obj["DateTime"] = element.createdDate + " " + element.createdTime
         obj["Cutomer"] = this.customers[element.customerID]
-        obj["Confirmation#"] = element.cusConfirmation;
+        obj["Confirmation#"] = element.cusConfirmation.split(',').join('/');
         obj["Customer PO#"] = element.cusPOs && element.cusPOs.length > 0 ? element.cusPOs.join('/') : ' '
         obj["Drivers"] = ''
         obj["Vehicles"] = ''

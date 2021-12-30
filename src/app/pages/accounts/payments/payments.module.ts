@@ -1,32 +1,36 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbDateStruct,
-} from '@ng-bootstrap/ng-bootstrap';
-import { Injectable } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddAdvancePaymentComponent } from './advance-payments/add-advance-payment/add-advance-payment.component';
-import { AdvancePaymentsListComponent } from './advance-payments/advance-payments-list/advance-payments-list.component';
-import { AdvancePaymentsDetailComponent } from './advance-payments/advance-payments-detail/advance-payments-detail.component';
-import { Routes, RouterModule } from '@angular/router';
-import { DriverPaymentsListComponent } from './driver-payments/driver-payments-list/driver-payments-list.component';
-import { AddDriverPaymentComponent } from './driver-payments/add-driver-payment/add-driver-payment.component';
-import { DriverPaymentsDetailComponent } from './driver-payments/driver-payments-detail/driver-payments-detail.component';
-import { AddEmployeePaymentComponent } from './employee-payment/add-employee-payment/add-employee-payment.component';
-import { EmployeePaymentListComponent } from './employee-payment/employee-payment-list/employee-payment-list.component';
-import { EmployeePaymentDetailComponent } from './employee-payment/employee-payment-detail/employee-payment-detail.component';
-import { AddAccountModule } from '../add-account/add-account.module';
-import { PaymentChequeComponent } from '../payment-cheque/payment-cheque.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { PaymentPdfsComponent } from '../payment-pdfs/payment-pdfs.component';
-import { AddVendorPaymentComponent } from './vendor-payment/add-vendor-payment/add-vendor-payment.component';
-import { VendorPaymentListComponent } from './vendor-payment/vendor-payment-list/vendor-payment-list.component';
-import { VendorPaymentDetailComponent } from './vendor-payment/vendor-payment-detail/vendor-payment-detail.component';
+} from "@ng-bootstrap/ng-bootstrap";
+import { Injectable } from "@angular/core";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { NgSelectModule } from "@ng-select/ng-select";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AddAdvancePaymentComponent } from "./advance-payments/add-advance-payment/add-advance-payment.component";
+import { AdvancePaymentsListComponent } from "./advance-payments/advance-payments-list/advance-payments-list.component";
+import { AdvancePaymentsDetailComponent } from "./advance-payments/advance-payments-detail/advance-payments-detail.component";
+import { Routes, RouterModule } from "@angular/router";
+import { DriverPaymentsListComponent } from "./driver-payments/driver-payments-list/driver-payments-list.component";
+import { AddDriverPaymentComponent } from "./driver-payments/add-driver-payment/add-driver-payment.component";
+import { DriverPaymentsDetailComponent } from "./driver-payments/driver-payments-detail/driver-payments-detail.component";
+import { AddEmployeePaymentComponent } from "./employee-payment/add-employee-payment/add-employee-payment.component";
+import { EmployeePaymentListComponent } from "./employee-payment/employee-payment-list/employee-payment-list.component";
+import { EmployeePaymentDetailComponent } from "./employee-payment/employee-payment-detail/employee-payment-detail.component";
+import { AddAccountModule } from "../add-account/add-account.module";
+import { PaymentChequeComponent } from "../payment-cheque/payment-cheque.component";
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
+import { PaymentPdfsComponent } from "../payment-pdfs/payment-pdfs.component";
+import { AddVendorPaymentComponent } from "./vendor-payment/add-vendor-payment/add-vendor-payment.component";
+import { VendorPaymentListComponent } from "./vendor-payment/vendor-payment-list/vendor-payment-list.component";
+import { VendorPaymentDetailComponent } from "./vendor-payment/vendor-payment-detail/vendor-payment-detail.component";
+import { AddExpensePaymentComponent } from "./expense-payments/add-expense-payment/add-expense-payment.component";
+import { ExpensePaymentListComponent } from "./expense-payments/expense-payment-list/expense-payment-list.component";
+import { ExpensePaymentDetailComponent } from "./expense-payments/expense-payment-detail/expense-payment-detail.component";
+import { ExpenseDetailComponent } from "../expense/expense-detail/expense-detail.component";
 
 /**
  * This Service handles how the date is represented in scripts i.e. ngModel.
@@ -36,21 +40,24 @@ export class CustomAdapter extends NgbDateAdapter<string> {
   readonly DELIMITER = "-";
 
   fromModel(value: string): NgbDateStruct {
-    if (!value) {return null;}
+    if (!value) {
+      return null;
+    }
     let parts = value.split(this.DELIMITER);
     return {
-      year: + parseInt(parts[0]),
-      month: + parseInt(parts[1]),
-      day: + parseInt(parts[2]),
+      year: +parseInt(parts[0]),
+      month: +parseInt(parts[1]),
+      day: +parseInt(parts[2]),
     };
   }
 
-  toModel(date: NgbDateStruct): string { // from internal model -> your mode
-    let month: any = '';
-    let day: any = '';
+  toModel(date: NgbDateStruct): string {
+    // from internal model -> your mode
+    let month: any = "";
+    let day: any = "";
     if (date) {
-      month = date.month < 10 ? '0' + date.month : date.month;
-      day = date.day < 10 ? '0' + date.day : date.day;
+      month = date.month < 10 ? "0" + date.month : date.month;
+      day = date.day < 10 ? "0" + date.day : date.day;
     }
     return date
       ? date.year + this.DELIMITER + month + this.DELIMITER + day
@@ -63,7 +70,7 @@ export class CustomAdapter extends NgbDateAdapter<string> {
  */
 @Injectable()
 export class CustomDateParserFormatter extends NgbDateParserFormatter {
-  readonly DELIMITER = '/';
+  readonly DELIMITER = "/";
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
@@ -78,35 +85,68 @@ export class CustomDateParserFormatter extends NgbDateParserFormatter {
   }
 
   format(date: NgbDateStruct | null): string {
-    let month: any = '';
-    let day: any = '';
+    let month: any = "";
+    let day: any = "";
     if (date) {
-      month = date.month < 10 ? '0' + date.month : date.month;
-      day = date.day < 10 ? '0' + date.day : date.day;
+      month = date.month < 10 ? "0" + date.month : date.month;
+      day = date.day < 10 ? "0" + date.day : date.day;
     }
 
     return date
       ? date.year + this.DELIMITER + month + this.DELIMITER + day
-      : '';
+      : "";
   }
 }
 
 const routes: Routes = [
-  { path: 'advance-payments/list', component: AdvancePaymentsListComponent },
-  { path: 'advance-payments/add', component: AddAdvancePaymentComponent },
-  { path: 'advance-payments/edit/:paymentID', component: AddAdvancePaymentComponent },
-  { path: 'advance-payments/detail/:paymentID', component: AdvancePaymentsDetailComponent },
-  { path: 'driver-payments/list', component: DriverPaymentsListComponent },
-  { path: 'driver-payments/add', component: AddDriverPaymentComponent },
-  { path: 'driver-payments/edit/:paymentID', component: AddDriverPaymentComponent },
-  { path: 'driver-payments/detail/:paymentID', component: DriverPaymentsDetailComponent },
-  { path: 'employee-payments/list', component: EmployeePaymentListComponent },
-  { path: 'employee-payments/add', component: AddEmployeePaymentComponent },
-  { path: 'employee-payments/edit/:paymentID', component: AddEmployeePaymentComponent },
-  { path: 'employee-payments/detail/:paymentID', component: EmployeePaymentDetailComponent },
-  { path: 'vendor-payments/list', component: VendorPaymentListComponent },
-  { path: 'vendor-payments/add' , component: AddVendorPaymentComponent},
-  { path: 'vendor-payments/detail/:paymentID', component: VendorPaymentDetailComponent},
+  { path: "advance-payments/list", component: AdvancePaymentsListComponent },
+  { path: "advance-payments/add", component: AddAdvancePaymentComponent },
+  {
+    path: "advance-payments/edit/:paymentID",
+    component: AddAdvancePaymentComponent,
+  },
+  {
+    path: "advance-payments/detail/:paymentID",
+    component: AdvancePaymentsDetailComponent,
+  },
+  { path: "driver-payments/list", component: DriverPaymentsListComponent },
+  { path: "driver-payments/add", component: AddDriverPaymentComponent },
+  {
+    path: "driver-payments/edit/:paymentID",
+    component: AddDriverPaymentComponent,
+  },
+  {
+    path: "driver-payments/detail/:paymentID",
+    component: DriverPaymentsDetailComponent,
+  },
+  { path: "employee-payments/list", component: EmployeePaymentListComponent },
+  { path: "employee-payments/add", component: AddEmployeePaymentComponent },
+  {
+    path: "employee-payments/edit/:paymentID",
+    component: AddEmployeePaymentComponent,
+  },
+  {
+    path: "employee-payments/detail/:paymentID",
+    component: EmployeePaymentDetailComponent,
+  },
+  { path: "vendor-payments/list", component: VendorPaymentListComponent },
+  { path: "vendor-payments/add", component: AddVendorPaymentComponent },
+  {
+    path: "vendor-payments/detail/:paymentID",
+    component: VendorPaymentDetailComponent,
+  },
+  {
+    path: "expense-payments/list",
+    component: ExpensePaymentListComponent,
+  },
+  {
+    path: "expense-payments/add",
+    component: AddExpensePaymentComponent,
+  },
+  {
+    path: "expense-payments/detail/:paymentID",
+    component: ExpensePaymentDetailComponent,
+  },
 ];
 
 @NgModule({
@@ -125,6 +165,9 @@ const routes: Routes = [
     AddVendorPaymentComponent,
     VendorPaymentListComponent,
     VendorPaymentDetailComponent,
+    AddExpensePaymentComponent,
+    ExpensePaymentListComponent,
+    ExpensePaymentDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -139,6 +182,7 @@ const routes: Routes = [
   ],
   providers: [
     { provide: NgbDateAdapter, useClass: CustomAdapter },
-    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }]
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
+  ],
 })
 export class PaymentsModule {}

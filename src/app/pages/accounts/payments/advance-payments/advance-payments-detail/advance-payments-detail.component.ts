@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, ListService } from "src/app/services";
 
 @Component({
   selector: "app-advance-payments-detail",
@@ -36,11 +36,13 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   accountsObjects: any = {};
   accountsIntObjects: any = {};
   advancePayments = [];
+  showModal = false;
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
     private toaster: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private listService: ListService
   ) {}
 
   ngOnInit() {
@@ -166,5 +168,24 @@ export class AdvancePaymentsDetailComponent implements OnInit {
           });
         });
       });
+  }
+
+  showCheque() {
+    this.showModal = true;
+    let obj = {
+      entityId: this.paymentData.entityId,
+      chequeDate: this.paymentData.payModeDate,
+      chequeAmount: this.paymentData.amount,
+      type: "advancePayment",
+      paymentTo: this.paymentData.paymentTo,
+      chequeNo: this.paymentData.payModeNo,
+      currency: this.paymentData.currency,
+      showModal: this.showModal,
+      fromDate: this.paymentData.txnDate,
+      finalAmount: this.paymentData.amount,
+      txnDate: this.paymentData.txnDate,
+      advType: this.paymentData.advType,
+    };
+    this.listService.openPaymentChequeModal(obj);
   }
 }

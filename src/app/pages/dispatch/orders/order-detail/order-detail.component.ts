@@ -94,6 +94,7 @@ export class OrderDetailComponent implements OnInit {
   pdfSrc: any = this.domSanitizer.bypassSecurityTrustResourceUrl("");
   pdFile = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
+
   pageVariable = 1;
 
   carrierLogo: string;
@@ -214,12 +215,15 @@ export class OrderDetailComponent implements OnInit {
   subject = "";
 
   hideEdit: boolean = false;
+  isGenerate: boolean = true;
+
   tripData: {
     tripNo: "";
     tripID: "";
   };
 
   emailDocs = [];
+  invDocs = [];
   isEmail = false;
 
   slideConfig = { slidesToShow: 1, slidesToScroll: 1 };
@@ -254,8 +258,12 @@ export class OrderDetailComponent implements OnInit {
       phone: "",
       email: "",
       fax: "",
-      logo: "",
       carrierID: "",
+      termsInfo: {
+        logo: "",
+        tagLine: "",
+        terms: ''
+      }
     },
     charges: {
       accessorialDeductionInfo: {
@@ -356,10 +364,12 @@ export class OrderDetailComponent implements OnInit {
         this.carrierID = result.carrierID;
         this.customerID = result.customerID;
         if (
+          result.invoiceGenerate ||
           result.orderStatus === "created" ||
           result.orderStatus === "confirmed"
         ) {
           this.hideEdit = true;
+          this.isGenerate = false;
         }
         this.orderStatus = result.orderStatus;
         this.cusAddressID = result.cusAddressID;
@@ -457,7 +467,7 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.attachments != undefined && result.attachments.length > 0) {
           this.attachments = result.attachments.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x}`,
+            docPath: `${x}`,
             name: x,
             ext: x.split(".")[1],
           }));
@@ -465,9 +475,11 @@ export class OrderDetailComponent implements OnInit {
 
         if (result.tripDocs != undefined && result.tripDocs.length > 0) {
           this.tripDocs = result.tripDocs.map((x) => ({
-            docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+            imgPath: `${x.urlPath}`,
+            docPath: `${x.urlPath}`,
+            displayName: x.displayName,
             name: x.storedName,
-            ext: x.storedName.split(".")[1],
+            ext: x.storedName.split(".")[1]
           }));
         }
 
@@ -482,30 +494,30 @@ export class OrderDetailComponent implements OnInit {
               x.storedName.split(".")[1] === "jpeg"
             ) {
               const obj = {
-                imgPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
-                ext: x.storedName.split(".")[1],
+                ext: x.storedName.split(".")[1]
               };
               this.docs.push(obj);
             } else {
               const obj = {
                 imgPath: "assets/img/icon-pdf.png",
-                docPath: `${this.Asseturl}/${result.carrierID}/${x.storedName}`,
+                docPath: `${x.urlPath}`,
                 displayName: x.displayName,
                 name: x.storedName,
-                ext: x.storedName.split(".")[1],
+                ext: x.storedName.split(".")[1]
               };
               this.docs.push(obj);
             }
           });
         }
 
-        this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
+        //this.emailDocs = [...this.docs, ...this.attachments, ...this.tripDocs];
       },
 
-      (err) => {}
+      (err) => { }
     );
   }
 
@@ -552,7 +564,7 @@ export class OrderDetailComponent implements OnInit {
       this.isEmail = false;
       this.userEmails = [];
       this.emailData.emails = [];
-      this.subject = "";
+      this.subject = `Invoice: ${this.orderMode} - ${this.orderNumber}`;
     } else {
       this.isEmail = false;
     }
@@ -614,7 +626,8 @@ export class OrderDetailComponent implements OnInit {
     this.previewRef.close();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -625,8 +638,6 @@ export class OrderDetailComponent implements OnInit {
       },
       jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-
-    $("#previewInvoiceModal").modal("hide");
   }
 
   cancel() {
@@ -637,7 +648,8 @@ export class OrderDetailComponent implements OnInit {
     await this.saveInvoice();
     var data = document.getElementById("print_wrap");
     html2pdf(data, {
-      margin: 0.15,
+      margin: [0.5, 0.3, 0.5, 0.3],
+      pagebreak: { mode: 'avoid-all', before: "print_wrap" },
       filename: "invoice.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: {
@@ -674,7 +686,7 @@ export class OrderDetailComponent implements OnInit {
     this.invoiceData[`currency`] = this.brokerage.currency;
 
     this.accountService.postData(`order-invoice`, this.invoiceData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -692,7 +704,7 @@ export class OrderDetailComponent implements OnInit {
               this.generateBtnDisabled = false;
             },
 
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -759,7 +771,7 @@ export class OrderDetailComponent implements OnInit {
   /*
    * Selecting files before uploading
    */
-  selectDocuments(event) {
+  async selectDocuments(event) {
     let files = [];
     this.uploadedDocs = [];
     files = [...event.target.files];
@@ -793,46 +805,44 @@ export class OrderDetailComponent implements OnInit {
         formData.append("uploadedDocs", this.uploadedDocs[i]);
       }
 
-      this.apiService
-        .postData(`orders/uploadDocs/${this.orderID}`, formData, true)
-        .subscribe((result: any) => {
-          this.docs = [];
-          this.uploadedDocs = [];
-          if (result.length > 0) {
-            result.forEach((x: any) => {
-              let obj: any = {};
-              if (
-                x.storedName.split(".")[1] === "jpg" ||
-                x.storedName.split(".")[1] === "png" ||
-                x.storedName.split(".")[1] === "jpeg"
-              ) {
-                obj = {
-                  imgPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
-                  displayName: x.displayName,
-                  name: x.storedName,
-                  ext: x.storedName.split(".")[1],
-                };
-              } else {
-                obj = {
-                  imgPath: "assets/img/icon-pdf.png",
-                  docPath: `${this.Asseturl}/${this.carrierID}/${x.storedName}`,
-                  displayName: x.displayName,
-                  name: x.storedName,
-                  ext: x.storedName.split(".")[1],
-                };
-              }
-              this.docs.push(obj);
-            });
+      let result: any = await this.apiService
+        .postData(`orders/uploadDocs/${this.orderID}`, formData, true).toPromise()
+      this.invDocs = [];
+      this.uploadedDocs = [];
+      if (result.length > 0) {
+        result.forEach((x: any) => {
+          let obj: any = {};
+          if (
+            x.storedName.split(".")[1] === "jpg" ||
+            x.storedName.split(".")[1] === "png" ||
+            x.storedName.split(".")[1] === "jpeg"
+          ) {
+            obj = {
+              imgPath: `${x.urlPath}`,
+              docPath: `${x.urlPath}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
+          } else {
+            obj = {
+              imgPath: "assets/img/icon-pdf.png",
+              docPath: `${x.urlPath}`,
+              displayName: x.displayName,
+              name: x.storedName,
+              ext: x.storedName.split(".")[1],
+            };
           }
-          this.toastr.success("BOL/POD uploaded successfully");
-          this.uploadBol.nativeElement.value = "";
-          this.fetchOrder();
+          this.invDocs.push(obj);
         });
+      }
+      this.toastr.success("BOL/POD uploaded successfully");
+      this.uploadBol.nativeElement.value = "";
+      await this.fetchOrder();
     }
   }
 
-  setSrcValue() {}
+  setSrcValue() { }
 
   caretClickShipper(i, j) {
     if (
@@ -883,18 +893,46 @@ export class OrderDetailComponent implements OnInit {
       .getData(`orders/invoice/${this.orderID}`)
       .subscribe((result: any) => {
         this.invoiceData = result[0];
-        this.carrierLogo = `${this.Asseturl}/${this.carrierID}/${this.invoiceData.carrierData.logo}`;
-
         this.orderInvData = result[0];
         this.isInvoice = true;
-        if (this.orderInvData.carrierData.logo != "") {
-          this.companyLogoSrc = `${this.Asseturl}/${this.orderInvData.carrierData.carrierID}/${this.orderInvData.carrierData.logo}`;
+        if (this.orderInvData.carrierData.termsInfo.logo && this.orderInvData.carrierData.termsInfo.logo != "") {
+          this.companyLogoSrc = `${this.orderInvData.carrierData.termsInfo.logo}`;
         }
         if (this.invoiceData.assets != undefined) {
           this.assets = this.invoiceData.assets;
         }
         if (this.invoiceData.vehicles != undefined) {
           this.vehicles = this.invoiceData.vehicles;
+        }
+        if (
+          result[0].uploadedDocs !== undefined &&
+          result[0].uploadedDocs.length > 0
+        ) {
+          result[0].uploadedDocs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.invDocs.push(obj);
+          });
         }
         this.showBtns = true;
       });

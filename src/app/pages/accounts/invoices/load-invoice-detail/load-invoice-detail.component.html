@@ -23,21 +23,29 @@
                     <table width="100%">
                       <tbody>
                         <tr>
+                          <td width="60%" class="title" valign="center" style="padding: 10px; text-align: left">
+                            <h4
+                              style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                              INVOICE</h4>
+                          </td>
+                          <td align="right" style="padding: 10px; text-align: right">
+                            <img crossorigin="anonymous" *ngIf="companyLogoSrc" [src]="companyLogoSrc" alt="logo"
+                              style="max-width: 100px;">
+                            <p *ngIf="invoiceData.carrierData.termsInfo.tagLine && invoiceData.carrierData.termsInfo.tagLine != ''"
+                              class="m-0 font-weight-bold text-dark">{{ invoiceData.carrierData.termsInfo.tagLine }}</p>
+
+                          </td>
+                        </tr>
+                        <!-- <tr>
                           <td width="60%" class="title" valign="middle" style="padding: 10px;text-align: left;">
                             <h4
                               style="margin: 0;font-size: 27px;color: #040404;font-weight: 700;text-transform: capitalize;">
                               INVOICE</h4>
                           </td>
                           <td width="60%" class="title" valign="middle" style="padding: 10px;text-align: right;">
-                            <h4
-                              style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
-                              {{invoiceData.carrierData.companyName}}</h4>
-                            <h6 style="color: #040404;
-                                              font-weight: 500;
-                                              width: 250px;
-                                              float: right;" class="m-0">{{invoiceData.carrierData.address}}</h6>
+                            
                           </td>
-                        </tr>
+                        </tr> -->
                       </tbody>
                     </table>
                   </td>
@@ -88,6 +96,17 @@
                             <td align="right">
                               <table>
                                 <tbody>
+                                  <tr>
+                                    <td align="right" style="padding: 0 0 10px">
+                                      <h4
+                                        style="margin: 0;font-size: 20px;color: #040404;font-weight: 700;text-transform: capitalize;">
+                                        {{invoiceData.carrierData.companyName}}</h4>
+                                      <h6 style="color: #040404;
+                                              font-weight: 500;
+                                              width: 250px;
+                                              float: right;" class="m-0">{{invoiceData.carrierData.address}}</h6>
+                                    </td>
+                                  </tr>
                                   <tr>
                                     <td align="right" style="padding: 0 0 10px">
                                       <span style="font-size: 12px;text-transform: uppercase;">

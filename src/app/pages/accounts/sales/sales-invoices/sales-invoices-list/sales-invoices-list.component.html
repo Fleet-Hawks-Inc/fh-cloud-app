@@ -69,14 +69,14 @@
                         <th class="text-2">Amount</th>
                         <th class="text-2">Payment Status</th>
                         <th class="text-2">Status</th>
-
+                        <!-- <th>Action</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngIf="allInvoices.length === 0" class="text-center">
                         <td colspan="9">{{ dataMessage }}</td>
                       </tr>
-                      <tr *ngFor="let item of allInvoices">
+                      <tr *ngFor="let item of allInvoices" class="cursorpoint">
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
@@ -116,12 +116,26 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-dark p-1 text-uppercase">
+                          <span class="badge badge-danger p-1" *ngIf="item.due">{{item.status}}</span>
+                          <span class="badge badge-dark p-1 text-uppercase" *ngIf="!item.due">
                             <span *ngIf="item.status === 'open'">Open</span>
-                            <span *ngIf="item.status === 'partially_deducted'">Partially Deducted</span>
+                            <span *ngIf="item.status === 'sent'">Sent</span>
+                            <span *ngIf="item.status === 'partially_deducted'">Partially Received</span>
+
                           </span>
                         </td>
-
+                        <!-- <td>
+                          <div class="btn-group flex-wrap">
+                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown">
+                              <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu" role="menu">
+                              <a routerLink="/accounts/sales/invoices/edit/{{
+                                item.saleID
+                                }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
+                            </div>
+                          </div>
+                        </td> -->
                       </tr>
                       <tr></tr>
                     </tbody>
