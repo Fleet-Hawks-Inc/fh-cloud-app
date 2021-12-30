@@ -3010,7 +3010,7 @@
                         </tr>
                         <tr>
                           <th width="40%" class="back-color-gray">WCB Expiry:</th>
-                          <td>{{ item.opData.wcbExp ? item.opData.wcbExp : "-" }}</td>
+                          <td>{{ item.opData.wcbExp ? ( item.opData.wcbExp | date: "yyyy/MM/dd" ) : "-" }}</td>
                         </tr>
                         <tr>
                           <th width="40%" class="back-color-gray">WSIB Account#:</th>
@@ -3018,7 +3018,7 @@
                         </tr>
                         <tr>
                           <th width="40%" class="back-color-gray">WSIB Expiry:</th>
-                          <td>{{ item.opData.wsibExp ? item.opData.wsibExp : "-" }}</td>
+                          <td>{{ item.opData.wsibExp ? (item.opData.wsibExp | date: "yyyy/MM/dd" ) : "-" }}</td>
                         </tr>
                       </tbody>
                     </table>
