@@ -11,6 +11,7 @@ import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
 import {Router} from '@angular/router'
+import { threadId } from 'worker_threads';
 
 declare var $: any;
 
@@ -29,7 +30,11 @@ export class FuelEntryListComponent implements OnInit {
   fromDate: any = '';
   toDate: any = '';
   fuelID = '';
+  uploadedDocs = []
+  disable = false;
   vehicles = [];
+  reviewing=false;
+  csvHeader=[]
   vehicleList: any = {};
   tripList: any = {};
   assetList: any = {};
@@ -62,7 +67,11 @@ export class FuelEntryListComponent implements OnInit {
   totalRecords = 20;
   pageLength = 10;
   lastEvaluatedKey = '';
-
+  error={
+    hasError:false,
+    message:'',
+    attributes:[]
+  }
   fuelNext = false;
   fuelPrev = true;
   fuelDraw = 0;
@@ -274,6 +283,7 @@ export class FuelEntryListComponent implements OnInit {
   //     });
   //   }
   // }
+
   deleteFuelEntry(eventData) {
     if (confirm('Are you sure you want to delete?') === true) {
       // let record = {
@@ -435,4 +445,104 @@ export class FuelEntryListComponent implements OnInit {
     // this.fuelEntriesCount();
     this.resetCountResult();
   }
+  selectDoc(event) {
+    this.csvHeader=[]
+    this.error.hasError=false
+    this.error.message=''
+    this.error.attributes=[]
+    let files = event.target.files;
+    let condition = true;
+    // console.log(files)
+    for (let i = 0; i < files.length; i++) {
+      const element = files[i];
+      let name = element.name.split('.');
+      let ext = name[name.length - 1].toLowerCase();
+      if (ext != 'csv') {
+        $('#uploadedDocs').val('');
+        condition = false;
+        this.toastr.error('Only csv is allowed');
+        return false;
+      }
+    }
+    if (condition) {
+      this.uploadedDocs = []
+      this.uploadedDocs = files
+      const reader = new FileReader();
+  reader.addEventListener('load', (event:any) => {
+    let csvdata = event.target.result;
+    this.parseCSV(csvdata);
+  });
+  reader.readAsBinaryString(event.target.files[0]);
+      //this.postDocument();
+    }
+
+  }
+  parseCSV(data:any){
+    let newLinebrk = data.split("\n");
+   
+    let csvHeader=newLinebrk[0].split(',')
+    csvHeader.forEach(element => {
+      if(element.split(' ').length>=2){
+        this.csvHeader.push(JSON.parse(element))
+        }
+        else{
+          this.csvHeader.push(element)
+        }
+    });
+  }
+
+  validateCSV(){
+    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer Amt","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price",]
+    let match=true
+    if(this.csvHeader && this.csvHeader.length>0){
+    data.forEach(element=>{
+      if(!this.csvHeader.includes(element)){
+        this.error.attributes.push(element)
+        match=false
+      }
+    })
+  }
+return match
+  }
+
+  postDocument() {
+    this.error.hasError=false
+    this.error.message=''
+    if(this.validateCSV()){
+    if (this.uploadedDocs.length > 0) {
+      this.reviewing=true;
+      const formData = new FormData();
+      for (let i = 0; i < this.uploadedDocs.length; i++) {
+        formData.append("uploadedDocs", this.uploadedDocs[i])
+      }
+      this.apiService.postData('fuelEntries/import/BVD', formData, true).subscribe({
+        complete: () => { },
+        error: (err: any) => {
+          this.reviewing=false
+          this.error.hasError=true
+          this.error.message=err
+        },
+        next: (res) => {
+          this.error.hasError=false
+          this.error.message=''
+          this.error.attributes=[]
+          this.toastr.success("Uploaded Successfully")
+          $('#uploadedDocs').val('');
+          this.reviewing=false
+        }
+      })
+    }
+   
+  }
+  else{
+    this.error.hasError=true;
+    if(this.error.attributes.length>0){
+      this.error.message+=this.error.attributes.join(',')
+    }
+    this.error.message+=" CSV Headers are missing"
+    this.reviewing=false
+    this.uploadedDocs=[]
+  }
+  }
+
 }
