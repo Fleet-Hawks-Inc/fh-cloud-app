@@ -336,7 +336,6 @@ export class ListService {
   }
 
   showSettlementsDetailPreview(value) {
-    console.log("in dets fnc");
     this.settlementDetailsDataSource.next(value);
   }
 }
