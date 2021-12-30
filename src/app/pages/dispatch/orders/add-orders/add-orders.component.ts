@@ -1203,7 +1203,7 @@ export class AddOrdersComponent implements OnInit {
         this.apiService
           .getData(
             "trips/calculate/pc/miles?type=mileReport&vehType=Truck&stops=" +
-            this.getAllCords.join(";")
+              this.getAllCords.join(";")
           )
           .subscribe(
             (result) => {
@@ -1536,7 +1536,7 @@ export class AddOrdersComponent implements OnInit {
     formData.append("data", JSON.stringify(this.orderData));
 
     this.apiService.postData("orders", formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         this.submitDisabled = false;
         from(err.error)
@@ -1562,7 +1562,7 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
@@ -1578,12 +1578,12 @@ export class AddOrdersComponent implements OnInit {
       $('[name="' + v + '"]')
         .after(
           '<label id="' +
-          v +
-          '-error" class="error" for="' +
-          v +
-          '">' +
-          this.errors[v] +
-          "</label>"
+            v +
+            '-error" class="error" for="' +
+            v +
+            '">' +
+            this.errors[v] +
+            "</label>"
         )
         .addClass("error");
     });
@@ -2599,7 +2599,7 @@ export class AddOrdersComponent implements OnInit {
       url = "admin/order/recall";
     }
     this.apiService.putData(url, formData, true).subscribe({
-      complete: () => { },
+      complete: () => {},
       error: (err) => {
         from(err.error)
           .pipe(
@@ -2620,14 +2620,14 @@ export class AddOrdersComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => { },
+            next: () => {},
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
         // this.goBack();
-        this.router.navigate([`/dispatch/orders/detail/${this.getOrderID}`]);
+        // this.router.navigate([`/dispatch/orders/detail/${this.getOrderID}`]);
       },
     });
   }
