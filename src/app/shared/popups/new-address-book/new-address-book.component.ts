@@ -730,7 +730,13 @@ export class NewAddressBookComponent implements OnInit {
               em: '',
               emCur: null,
               dr: '',
-              drCur: null
+              drCur: null,
+              wsib: false,
+              wsibAcc: '',
+              wsibExp: null,
+              wcb: false,
+              wcbAcc: '',
+              wcbExp: null,
             }
           }
           this.newArr.push('owner_operator');

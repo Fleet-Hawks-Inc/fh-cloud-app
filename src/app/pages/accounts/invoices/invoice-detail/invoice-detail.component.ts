@@ -1,42 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { AccountService, ApiService } from '../../../../services';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { AccountService, ApiService } from "../../../../services";
 
-import * as html2pdf from 'html2pdf.js';
-import { CountryStateCityService } from 'src/app/services/country-state-city.service';
+import * as html2pdf from "html2pdf.js";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 @Component({
-  selector: 'app-invoice-detail',
-  templateUrl: './invoice-detail.component.html',
-  styleUrls: ['./invoice-detail.component.css']
+  selector: "app-invoice-detail",
+  templateUrl: "./invoice-detail.component.html",
+  styleUrls: ["./invoice-detail.component.css"],
 })
 export class InvoiceDetailComponent implements OnInit {
-  invID = '';
+  invID = "";
   showDetails = false;
   invoice = {
-    invNo: '',
+    invNo: "",
     txnDate: null,
-    invRef: '',
-    invCur: '',
+    invRef: "",
+    invCur: "",
     invDueDate: null,
-    invPayTerms: '',
+    invPayTerms: "",
     customerID: null,
     invSalesman: null,
-    invSubject: '',
+    invSubject: "",
     cusAddressID: null,
-    details: [{
-      commodityService: '',
-      qtyHours: '',
-      priceRate: '',
-      amount: 0,
-      amtCur: null,
-      accountID: null,
-    }],
-    remarks: '',
+    details: [
+      {
+        commodityService: "",
+        qtyHours: "",
+        priceRate: "",
+        amount: 0,
+        amtCur: null,
+        accountID: null,
+      },
+    ],
+    remarks: "",
     discount: 0,
-    discountUnit: '%',
+    discountUnit: "%",
     invStateProvince: null,
-    invStatus: 'open',
-    invType: 'manual',
+    invStatus: "open",
+    invType: "manual",
     subTotal: 0,
     taxesInfo: [],
     transactionLog: [],
@@ -47,38 +49,41 @@ export class InvoiceDetailComponent implements OnInit {
     fullPayment: false,
     balance: 0,
   };
-  customerName = '';
-  customerAddress = '';
-  customerCityName = '';
-  customerStateName = '';
-  customerCountryName = '';
-  customerZipcode = '';
-  customerPhone = '';
-  customerAddressType = '';
-  customerEmail = '';
-  customerfax = '';
+  customerName = "";
+  customerAddress = "";
+  customerCityName = "";
+  customerStateName = "";
+  customerCountryName = "";
+  customerZipcode = "";
+  customerPhone = "";
+  customerAddressType = "";
+  customerEmail = "";
+  customerfax = "";
   total = 0;
   customersObjects = {};
   accountsObjects = {};
   accountsIntObjects = {};
   statesObjects = {};
   carrier = {
-    carrierName: '',
-    phone: '',
-    email: ''
+    carrierName: "",
+    phone: "",
+    email: "",
   };
   carrierAddress = {
-    address: '',
-    userLocation: '',
-    manual: '',
-    stateName: '',
-    countryName: '',
-    cityName: '',
-    zipCode: '',
-
+    address: "",
+    userLocation: "",
+    manual: "",
+    stateName: "",
+    countryName: "",
+    cityName: "",
+    zipCode: "",
   };
-  constructor(private accountService: AccountService, private route: ActivatedRoute, private apiService: ApiService,
-    private countryStateCity: CountryStateCityService) { }
+  constructor(
+    private accountService: AccountService,
+    private route: ActivatedRoute,
+    private apiService: ApiService,
+    private countryStateCity: CountryStateCityService
+  ) {}
 
   ngOnInit() {
     this.invID = this.route.snapshot.params[`invID`];
@@ -92,7 +97,8 @@ export class InvoiceDetailComponent implements OnInit {
     this.fetchStatesByIDs();
   }
   fetchCarrier() {
-    this.apiService.getData(`carriers/${this.invoice[`pk`]}`)
+    this.apiService
+      .getData(`carriers/${this.invoice[`pk`]}`)
       .subscribe((result: any) => {
         this.carrier = result.Items[0];
         this.fetchAddress(this.carrier[`addressDetails`]);
@@ -101,10 +107,16 @@ export class InvoiceDetailComponent implements OnInit {
 
   async fetchAddress(address: any) {
     for (const adr of address) {
-      if (adr.addressType === 'yard' && adr.defaultYard === true) {
+      if (adr.addressType === "yard" && adr.defaultYard === true) {
         if (adr.manual) {
-          adr.countryName = await this.countryStateCity.GetSpecificCountryNameByCode(adr.countryCode);
-          adr.stateName = await this.countryStateCity.GetStateNameFromCode(adr.stateCode, adr.countryCode);
+          adr.countryName =
+            await this.countryStateCity.GetSpecificCountryNameByCode(
+              adr.countryCode
+            );
+          adr.stateName = await this.countryStateCity.GetStateNameFromCode(
+            adr.stateCode,
+            adr.countryCode
+          );
         }
         this.carrierAddress = adr;
         this.showDetails = true;
@@ -113,41 +125,46 @@ export class InvoiceDetailComponent implements OnInit {
     }
   }
   fetchInvoice() {
-    this.accountService.getData(`invoices/detail/${this.invID}`).subscribe((res) => {
-      this.invoice = res[0];
-      this.invoice.invStatus = this.invoice.invStatus.replace('_', ' ');
-      this.invoice.transactionLog.map((v: any) => {
-        v.type = v.type.replace('_', ' ');
+    this.accountService
+      .getData(`invoices/detail/${this.invID}`)
+      .subscribe((res) => {
+        this.invoice = res[0];
+        this.invoice.invStatus = this.invoice.invStatus.replace("_", " ");
+        this.invoice.transactionLog.map((v: any) => {
+          v.type = v.type.replace("_", " ");
+        });
+        this.fetchCustomerByID();
+        this.calculateTotal();
+        this.fetchCarrier(); // fetch carrier details
       });
-      this.fetchCustomerByID();
-      this.calculateTotal();
-      this.fetchCarrier(); // fetch carrier details
-
-    });
   }
   fetchStatesByIDs() {
-    this.apiService.getData('stateTaxes/get/list').subscribe((result: any) => {
+    this.apiService.getData("stateTaxes/get/list").subscribe((result: any) => {
       this.statesObjects = result;
     });
   }
   /*
- * Get all customers's IDs of names from api
- */
+   * Get all customers's IDs of names from api
+   */
   fetchCustomersByIDs() {
-    this.apiService.getData('contacts/get/list').subscribe((result: any) => {
+    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.customersObjects = result;
     });
   }
 
   fetchAccountsByIDs() {
-    this.accountService.getData('chartAc/get/list/all').subscribe((result: any) => {
-      this.accountsObjects = result;
-    });
+    this.accountService
+      .getData("chartAc/get/list/all")
+      .subscribe((result: any) => {
+        this.accountsObjects = result;
+      });
   }
   fetchAccountsByInternalIDs() {
-    this.accountService.getData('chartAc/get/internalID/list/all').subscribe((result: any) => {
-      this.accountsIntObjects = result;
-    });
+    this.accountService
+      .getData("chartAc/get/internalID/list/all")
+      .subscribe((result: any) => {
+        this.accountsIntObjects = result;
+      });
   }
   calculateTotal() {
     let midTotal = 0;
@@ -157,46 +174,45 @@ export class InvoiceDetailComponent implements OnInit {
     this.total = Number(midTotal) + Number(this.invoice.taxAmount);
   }
   fetchCustomerByID() {
-    this.apiService.getData(`contacts/detail/${this.invoice.customerID}`).subscribe((result: any) => {
-
-      if (result.Items.length > 0) {
-        result = result.Items[0];
-        this.customerName = `${result.companyName}`;
-        let newCusAddress = result.address.filter((elem: any) => {
-          if (elem.addressID === this.invoice.cusAddressID) {
-            return elem;
+    this.apiService
+      .getData(`contacts/detail/${this.invoice.customerID}`)
+      .subscribe((result: any) => {
+        if (result.Items.length > 0) {
+          result = result.Items[0];
+          this.customerName = `${result.companyName}`;
+          let newCusAddress = result.address.filter((elem: any) => {
+            if (elem.addressID === this.invoice.cusAddressID) {
+              return elem;
+            }
+          });
+          newCusAddress = newCusAddress[0];
+          if (result.address.length > 0) {
+            if (newCusAddress.manual) {
+              this.customerAddress = newCusAddress.address1;
+            } else {
+              this.customerAddress = newCusAddress.userLocation;
+            }
+            this.customerAddressType = newCusAddress.addressType;
+            this.customerCityName = newCusAddress.cityName;
+            this.customerStateName = newCusAddress.stateName;
+            this.customerCountryName = newCusAddress.countryName;
+            this.customerZipcode = newCusAddress.zipCode;
+            this.customerPhone = result.workPhone;
+            this.customerEmail = result.workEmail;
           }
-        });
-        newCusAddress = newCusAddress[0];
-        if (result.address.length > 0) {
-          if (newCusAddress.manual) {
-            this.customerAddress = newCusAddress.address1;
-          } else {
-            this.customerAddress = newCusAddress.userLocation;
-          }
-          this.customerAddressType = newCusAddress.addressType;
-          this.customerCityName = newCusAddress.cityName;
-          this.customerStateName = newCusAddress.stateName;
-          this.customerCountryName = newCusAddress.countryName;
-          this.customerZipcode = newCusAddress.zipCode;
-          this.customerPhone = result.workPhone;
-          this.customerEmail = result.workEmail;
         }
-      }
-
-    });
+      });
   }
   generatePDF() {
-    const data = document.getElementById('print_wrap');
+    const data = document.getElementById("print_wrap");
 
     html2pdf(data, {
-      margin: 0,
+      margin: [0.5, 0, 0.5, 0],
+      pagebreak: { mode: "avoid-all", before: "print_wrap" },
       filename: `invoice-${this.invoice.invNo}.pdf`,
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-
+      jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
     });
-
   }
 }
