@@ -18,15 +18,7 @@ export class HandleErrorService {
     } else {
       // The backend returned an unsuccessful response code.
       switch (err.status) {
-        case 400:
-          console.log(err);
-          if (err && err.error && err.error.errorMessage) {
-            errorMessage = err.error.errorMessage;
-          } else {
-            errorMessage = err.error || "Validation errors.";
-          }
 
-          break;
         case 401:
           errorMessage = "You need to log in to do this action.";
           break;
@@ -40,16 +32,13 @@ export class HandleErrorService {
         //   errorMessage = "Precondition Failed.";
         //   break;
         case 500:
-          errorMessage = "Internal Server Error.";
+          errorMessage = "The request failed due to an internal error. Our team has been notified.";
           break;
         case 503:
           errorMessage = "The requested service is not available.";
           break;
-        // case 422:
-        //   errorMessage = "Validation Error!";
-        //   break;
-        default:
-          errorMessage = "Something went wrong!";
+
+
       }
     }
     if (errorMessage) {
