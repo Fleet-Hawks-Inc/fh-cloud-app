@@ -110,11 +110,6 @@
                                     </div>
 
                                     <div class="row">
-                                        <p *ngIf="hasError" class="text text-danger ml-5">
-                                            {{ Error }}
-                                        </p>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-sm-12 pl-signin text-center">
                                             <button type="button" (click)="register()" [disabled]="!userInfoFormGroup.valid || userNameExists" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">
                                                 Sign Up

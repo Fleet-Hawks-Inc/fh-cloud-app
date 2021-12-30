@@ -23,6 +23,17 @@ export class SubscriptionOnboardComponent implements OnInit {
   otpSubmitDisabled: boolean = true;
   otpCode: string;
   showVerification: boolean = false;
+  fieldTextType: boolean;
+  fieldTextType1: boolean;
+
+  /**
+   * Constructor
+   * @param apiService 
+   * @param route 
+   * @param formBuilder 
+   * @param toaster 
+   * @param router 
+   */
   constructor(private apiService: ApiService,
     private route: ActivatedRoute,
     private formBuilder: RxFormBuilder,
@@ -103,6 +114,12 @@ export class SubscriptionOnboardComponent implements OnInit {
       }
     }
   }
+
+  // Show password
+  toggleFieldTextType() {
+    this.fieldTextType = !this.fieldTextType;
+  }
+
 
   async resendConfirmationCode() {
     try {
