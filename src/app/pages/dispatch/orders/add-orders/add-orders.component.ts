@@ -2627,7 +2627,7 @@ export class AddOrdersComponent implements OnInit {
         this.submitDisabled = false;
         this.toastr.success("Order updated successfully");
         // this.goBack();
-        // this.router.navigate([`/dispatch/orders/detail/${this.getOrderID}`]);
+        this.router.navigate([`/dispatch/orders/detail/${this.getOrderID}`]);
       },
     });
   }
