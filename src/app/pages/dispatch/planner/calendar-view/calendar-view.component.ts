@@ -34,7 +34,7 @@ export class CalendarViewComponent implements OnInit {
     private route: ActivatedRoute,
     private hereMap: HereMapService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   calendarPlugins = [dayGridPlugin, timeGrigPlugin, listPlugin];
   vehicles = [];
@@ -198,10 +198,10 @@ export class CalendarViewComponent implements OnInit {
             } else if (i.tripStatus == "enroute") {
               backgroundColor = "#238FE1";
               borderColor = "#238FE1";
-            }else if (i.tripStatus == "tonu") {
+            } else if (i.tripStatus == "tonu") {
               backgroundColor = "#B2D8B2";
               borderColor = "#B2D8B2";
-            }else if (i.tripStatus == "cancelled") {
+            } else if (i.tripStatus == "cancelled") {
               backgroundColor = "#FF0000";
               borderColor = "#FF0000";
             }
@@ -407,7 +407,7 @@ export class CalendarViewComponent implements OnInit {
       this.tripData.assetIDs = await selectedAssets;
       this.tripData.tripStatus = "dispatched";
       this.apiService.putData("trips", this.tripData).subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -423,8 +423,8 @@ export class CalendarViewComponent implements OnInit {
                 this.spinner.hide();
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
@@ -681,7 +681,7 @@ export class CalendarViewComponent implements OnInit {
     this.apiService
       .postData("assets/addManualAsset", this.assetData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -694,8 +694,8 @@ export class CalendarViewComponent implements OnInit {
               complete: () => {
                 this.throwErrors();
               },
-              error: () => {},
-              next: () => {},
+              error: () => { },
+              next: () => { },
             });
         },
         next: (res) => {
