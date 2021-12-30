@@ -287,7 +287,6 @@ export class AddSettlementComponent implements OnInit {
         //   this.tripMsg = Constants.NO_RECORDS_FOUND;
         // }
         let entStat = `${this.settlementData.entityId}:false`;
-
         for (let i = 0; i < this.trips.length; i++) {
           const element = this.trips[i];
           element.pickupLocation = "";
@@ -1994,11 +1993,14 @@ export class AddSettlementComponent implements OnInit {
 
   resetFormValues() {
     this.settlementData.entityId = null;
+    this.tripsObject = [];
     this.resetAlldata();
   }
 
   resetAlldata() {
     this.trips = [];
+    this.settlementData.fuelIds = [];
+    this.settlementData.fuelData = [];
     this.settlementData.deduction = [];
     this.settlementData.addition = [];
     this.settlementData.miles.drivers = [];
@@ -2017,6 +2019,8 @@ export class AddSettlementComponent implements OnInit {
       driverLoadedTeam: 0,
       driverEmptyTeam: 0,
     };
+    this.settlementData.fuelAdd = 0;
+    this.settlementData.fuelDed = 0;
     this.settlementData.additionTotal = 0;
     this.settlementData.deductionTotal = 0;
     this.settlementData.taxObj = {
@@ -2151,6 +2155,8 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.type === "owner_operator")
     ) {
       if (this.showFuel === "yes") {
+        this.settlementData.fuelAdd = 0;
+        this.settlementData.fuelDed = 0;
         let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
         let result = await this.apiService
           .getData(
@@ -2382,25 +2388,31 @@ export class AddSettlementComponent implements OnInit {
   }
 
   filterByUnit() {
-    if (this.ownerVehicleID.length > 0 && this.dummyTrips.length > 0) {
-      const tripArr = [];
-      for (const element of this.dummyTrips) {
-        let flag = false;
-        if (element.vehicleIDs && element.vehicleIDs.length > 0) {
-          element.vehicleIDs.map((v) => {
-            if (this.ownerVehicleID.includes(v)) {
-              flag = true;
-            }
-          });
-        }
+    if (this.settlementData.type === "owner_operator") {
+      if (
+        this.ownerVehicleID &&
+        this.ownerVehicleID.length > 0 &&
+        this.dummyTrips.length > 0
+      ) {
+        const tripArr = [];
+        for (const element of this.dummyTrips) {
+          let flag = false;
+          if (element.vehicleIDs && element.vehicleIDs.length > 0) {
+            element.vehicleIDs.map((v) => {
+              if (this.ownerVehicleID.includes(v)) {
+                flag = true;
+              }
+            });
+          }
 
-        if (flag) {
-          tripArr.push(element);
+          if (flag) {
+            tripArr.push(element);
+          }
         }
+        this.trips = tripArr;
+      } else {
+        this.trips = this.dummyTrips;
       }
-      this.trips = tripArr;
-    } else {
-      this.trips = this.dummyTrips;
     }
   }
 

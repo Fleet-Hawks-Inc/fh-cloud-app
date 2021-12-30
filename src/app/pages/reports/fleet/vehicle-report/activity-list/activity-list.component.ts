@@ -39,8 +39,8 @@ export class ActivityListComponent implements OnInit {
   lastItemSK = ''
   loaded = false
 
-  constructor(private apiService: ApiService, private httpClient: HttpClient, 
-     protected _sanitizer: DomSanitizer) {
+  constructor(private apiService: ApiService, private httpClient: HttpClient,
+    protected _sanitizer: DomSanitizer) {
   }
   ngOnInit() {
     this.fetchGroups();

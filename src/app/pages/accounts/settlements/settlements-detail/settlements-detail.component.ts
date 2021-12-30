@@ -96,6 +96,7 @@ export class SettlementsDetailComponent implements OnInit {
   payments = [];
   showModal = true;
   selectedFuelEnteries = [];
+  showDetailBtn = false;
 
   constructor(
     private accountService: AccountService,
@@ -216,6 +217,7 @@ export class SettlementsDetailComponent implements OnInit {
       let result = await this.apiService
         .getData(`fuelEntries/get/selected/ids?fuel=${fuelIDs}`)
         .toPromise();
+      this.showDetailBtn = true;
       result.map((k) => {
         k.fuelID = k.data.fuelID;
         k.fuelDate = k.data.date;
@@ -247,6 +249,8 @@ export class SettlementsDetailComponent implements OnInit {
         let dateB: any = new Date(b.fuelDate);
         return dateA - dateB;
       });
+    } else {
+      this.showDetailBtn = true;
     }
   }
 }
