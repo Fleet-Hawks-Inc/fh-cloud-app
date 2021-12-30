@@ -86,7 +86,7 @@
     "number-to-words": "1.2.4",
     "path": "0.12.7",
     "pdfjs-dist": "2.5.207",
-    "pdfmake": "0.2.0",
+    "pdfmake": "0.2.4",
     "randomstring": "1.1.5",
     "rxjs": "6.6.7",
     "select2": "4.0.13",
