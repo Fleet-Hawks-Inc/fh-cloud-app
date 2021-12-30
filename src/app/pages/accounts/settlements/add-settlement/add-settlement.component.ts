@@ -2205,6 +2205,8 @@ export class AddSettlementComponent implements OnInit {
       }
     } else {
       this.fuelEnteries = [];
+      this.settlementData.fuelAdd = 0;
+      this.settlementData.fuelDed = 0;
     }
   }
 
