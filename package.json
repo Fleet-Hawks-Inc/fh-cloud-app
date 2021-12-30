@@ -69,7 +69,7 @@
     "jwt-decode": "3.1.2",
     "lodash": "4.17.20",
     "moment": "2.29.1",
-    "ng-multiselect-dropdown": "0.3.4",
+    "ng-multiselect-dropdown": "0.3.7",
     "ng-pick-datetime": "7.0.0",
     "ng2-charts": "2.4.2",
     "ng2-pdf-viewer": "6.3.2",
