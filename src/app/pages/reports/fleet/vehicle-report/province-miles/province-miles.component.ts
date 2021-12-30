@@ -158,7 +158,7 @@ export class ProvinceMilesComponent implements OnInit {
   }
   reset() {
     if (this.vehicleId !== '') {
-      this.vehicleId === '';
+      this.vehicleId = '';
       this.lastItemSK = '';
       this.suggestedVehicles = [];
       this.allData = [];
