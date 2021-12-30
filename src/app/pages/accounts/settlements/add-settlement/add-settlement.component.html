@@ -1257,7 +1257,12 @@
                                                                 data.fuelCardNumber
                                                                 }}
                                                             </td>
-                                                            <td>{{ data.type }}</td>
+                                                            <td>
+                                                                {{ data.type }}
+                                                                <span *ngIf="data.data.useType">
+                                                                    ({{data.data.useType}})
+                                                                </span>
+                                                            </td>
                                                             <td>{{ data.quantity
                                                                 }} {{
                                                                 data.unitOfMeasure
@@ -1336,7 +1341,12 @@
                                                                     }}</td>
                                                                 <td>{{
                                                                     data.fuelCardNumber}}</td>
-                                                                <td>{{ data.type }}</td>
+                                                                <td>
+                                                                    {{ data.type }}
+                                                                    <span *ngIf="data.data.useType">
+                                                                        ({{data.data.useType}})
+                                                                    </span>
+                                                                </td>
                                                                 <td>{{ data.quantity
                                                                     }} {{
                                                                     data.unitOfMeasure

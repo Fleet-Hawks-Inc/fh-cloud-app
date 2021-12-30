@@ -479,10 +479,21 @@
                               </td>
                               <td class="border">
                                 <ng-select class="form-control populate" placeholder="Select account"
-                                  [(ngModel)]="dt.accountID" name="accountID{{ d }}">
+                                  [(ngModel)]="dt.accountID" name="accountID{{ d }}" #acc="ngModel" required>
                                   <ng-option *ngFor="let act of accounts" value="{{ act.actID }}">{{ act.actNo }} -
                                     {{ act.actName | titlecase }}</ng-option>
                                 </ng-select>
+                                <div *ngIf="acc.invalid
+                                    &&
+                                    (acc.dirty
+                                    ||
+                                    acc.touched)" class="text-danger">
+                                  <div *ngIf="acc.errors.required">
+                                    Account
+                                    is
+                                    required.
+                                  </div>
+                                </div>
                               </td>
                               <td class="border text-center">
                                 <button [disabled]="
@@ -558,7 +569,7 @@
                                               #cType="ngModel" [clearable]="false" (change)="accessorialFeeTotal()"
                                               required>
                                               <ng-option value="add">Add</ng-option>
-                                              <ng-option value="ded">Deduct</ng-option>
+                                              <!-- <ng-option value="ded">Deduct</ng-option> -->
                                             </ng-select>
                                           </div>
                                         </div>
