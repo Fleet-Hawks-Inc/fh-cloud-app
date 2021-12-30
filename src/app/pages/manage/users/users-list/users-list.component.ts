@@ -35,7 +35,7 @@ export class UsersListComponent implements OnInit {
   userPrevEvauatedKeys = [''];
   userStartPoint = 1;
   userEndPoint = this.pageLength;
-  userRoles: any;
+  userRoles={};
   selectedUserData: any = '';
   newRoles = [];
    searchValue = null;
@@ -45,9 +45,11 @@ export class UsersListComponent implements OnInit {
   constructor(private apiService: ApiService, private toastr: ToastrService, private spinner: NgxSpinnerService, private httpClient: HttpClient) { }
 
   ngOnInit() {
+    this.fetchUserRoles();
     this.fetchUsers();
   }
 
+ 
   getSuggestions = _.debounce(function (value) {
     this.contactID = '';
     value = value.toLowerCase();
@@ -94,12 +96,12 @@ export class UsersListComponent implements OnInit {
         },
       });
   }
-  fetchUserRoles() {
-    this.httpClient.get('assets/jsonFiles/user/userRoles.json').subscribe((data: any) => {
-      this.userRoles = data;
-    }
-    );
-
+  async fetchUserRoles() {
+    const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
+    console.log(data)
+data.forEach(element => {
+  this.userRoles[element.role]=element.name
+});
   }
 
   fetchRole(user: any) {
