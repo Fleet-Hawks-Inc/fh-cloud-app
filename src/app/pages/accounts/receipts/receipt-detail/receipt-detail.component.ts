@@ -35,6 +35,7 @@ export class ReceiptDetailComponent implements OnInit {
       addAccountID: null,
       dedAccountID: null,
     },
+    isFeatEnabled: false,
   };
   customerName = "";
   isLoaded = false;
@@ -49,7 +50,6 @@ export class ReceiptDetailComponent implements OnInit {
     if (this.recID) {
       this.fetchReceipt();
     }
-    this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
   }
 
   async fetchReceipt() {
@@ -57,6 +57,9 @@ export class ReceiptDetailComponent implements OnInit {
       .getData(`receipts/detail/${this.recID}`)
       .subscribe((res: any) => {
         this.receiptData = res[0];
+        if (!this.receiptData.isFeatEnabled) {
+          this.accountsIntObjects = this.accountUtility.getPreDefinedAccounts();
+        }
         this.isLoaded = true;
         if (this.receiptData.custData) {
           for (let i = 0; i < this.receiptData.custData.length; i++) {
@@ -82,7 +85,10 @@ export class ReceiptDetailComponent implements OnInit {
           const element = this.receiptData.transactionLog[j];
           element.accName = "";
           element.type = element.type.replace("_", " ");
-          if (element.actIDType === "actID") {
+          if (
+            element.actIDType === "actID" &&
+            !this.receiptData.isFeatEnabled
+          ) {
             this.receiptData.fetchedInvoices.map((v) => {
               if (v._type === "Accounts" && v.actID === element.accountID) {
                 element.accName = v.actName;
