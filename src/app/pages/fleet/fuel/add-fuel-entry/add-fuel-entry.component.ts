@@ -44,6 +44,7 @@ export class AddFuelEntryComponent implements OnInit {
       ppu: "0",
       rPpu: "0",
       rAmt: "0",
+      rBeforeTax:"0",
       date: "",
       time: "",
       type: "",
@@ -215,7 +216,7 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   addFuelTaxRow() {
-    this.fuelData.data.tax.push({
+    this.fuelData.data.tax.unshift({
       taxCode: null,
       amount: 0,
     });
@@ -440,7 +441,7 @@ export class AddFuelEntryComponent implements OnInit {
     this.fuelData.data.type = result.data.type;
     this.fuelData.data.rPpu = result.data.rPpu;
     this.fuelData.data.rAmt = result.data.rAmt;
-
+    this.fuelData.data.rBeforeTax=result.data.rBeforeTax
     this.fuelData.driverID = result.driverID;
     this.fuelData.data.cardNo = result.data.cardNo;
     this.fuelData.data.transID = result.data.transID;
