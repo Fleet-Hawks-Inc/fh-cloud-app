@@ -5,8 +5,13 @@
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4">
             <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">
-              Sales Invoice# - 1279430
-              <span class="badge badge-dark p-1">PARTIALLY PAID</span>
+              Sales Invoice# - {{sInvNo}}
+              <span class="badge badge-danger p-1" *ngIf="isInvDue">{{status}}</span>
+              <span class="badge badge-dark p-1 text-uppercase" *ngIf="!isInvDue">
+                <span *ngIf="status === 'open'">Open</span>
+                <span *ngIf="status === 'partially_deducted'">Partially Received</span>
+
+              </span>
             </h4>
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
@@ -41,7 +46,7 @@
                         <i class="fa fa-user text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
-                          {{ customerID ? customersObjects[customerID] : '-' }}
+                          {{ cName ? cName : '-' }}
                         </p>
                         <p class="mb-0">CUSTOMER</p>
                       </div>
@@ -83,13 +88,13 @@
                             <td class="back-color-gray font-weight-bold">
                               Reference#
                             </td>
-                            <td>{{ sRef }}</td>
+                            <td>{{ sRef ? sRef : '-' }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
                               Sales Person
                             </td>
-                            <td>{{ salePerson }}</td>
+                            <td>{{ salePerson ? salePerson : '-' }}</td>
                           </tr>
                           <tr>
                             <td class="back-color-gray font-weight-bold">
@@ -165,7 +170,7 @@
                             <td class="back-color-gray font-weight-bold">
                               Remarks
                             </td>
-                            <td>{{remarks}}</td>
+                            <td>{{remarks ? remarks : '-'}}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -251,26 +256,29 @@
 </section>
 
 
-<!-- <ng-template #previewSaleInvoice let-modal>
+<ng-template #previewSaleInvoice let-modal>
   <div class="modal-content">
 
-    <div class="modal-body text-dark" id="print_sale">
+    <div class="modal-body text-dark" id="print_invoice">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
         <tbody>
           <tr>
             <td>
-              <h2 class="modal-title mt-0" id="modal-basic-title"><strong>Sales Order</strong></h2>
+              <h1 class="modal-title mt-0" id="modal-basic-title"><strong>Sales Invoice</strong></h1>
             </td>
           </tr>
           <tr>
-            <td valign="top">
+            <td valign="center">
               <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;"><strong>Sales
-                  Order #:</strong> {{ sOrNo }}</p>
-            </td>
-            <td valign="top" align="right">
+                  Invoice #:</strong> {{ sInvNo }}</p>
               <p class="text-dark" style="font-size:13px; margin-bottom:5px; margin-top:5px;">
-                <strong>Sales OrderDate:</strong> {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
+                <strong>Sales Invoice Date:</strong> {{ txnDate ? (txnDate | date: "yyyy/MM/dd") : "-" }}
               </p>
+            </td>
+            <td valign="center" align="right">
+              <img crossorigin="anonymous" *ngIf="logo" [src]="logo" class="mb-2" alt="logo" style="max-width: 100px;">
+              <p *ngIf="tagline && tagline != ''" class="mb-2 font-weight-bold text-dark">{{ tagline }}</p>
+
             </td>
           </tr>
           <tr>
@@ -279,15 +287,16 @@
           <tr>
             <td width="50%" valign="top">
               <h2 class="text-dark" style="font-size:20px;">Customer</h2>
-              <p class="text-dark text-capitalize" style="font-size:13px;"> <strong>{{customerName}}</strong><br>
-                <strong>Address:</strong> {{address ? address : 'NA'}}<br>
+              <p class="text-dark text-capitalize mb-2" style="font-size:13px;"> <strong>{{cName ? cName :
+                  'NA'}}</strong><br>
+                <strong>Address:</strong> {{cusAddress ? cusAddress : 'NA'}}<br>
               </p>
             </td>
             <td valign="top" align="right">
               <h2 style="font-size:20px;">&nbsp;</h2>
-              <p class="m-0 text-dark" style="font-size:13px;"> <strong>Phone:</strong> {{workPhone ? workPhone :
+              <p class=" text-dark mb-2" style="font-size:13px;"> <strong>Phone:</strong> {{cusPhone ? cusPhone :
                 'NA'}}<br>
-                <strong>Email:</strong> {{workEmail ? workEmail : 'NA'}}<br>
+                <strong>Email:</strong> {{cusEmail ? cusEmail : 'NA'}}<br>
               </p>
             </td>
           </tr>
@@ -310,11 +319,11 @@
                   <tr bgcolor="#f3f3f3">
                     <td width="15%"
                       style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Reference#</p>
+                      <p class="m-0 text-dark" style="font-weight:600;">Due Date#</p>
                     </td>
                     <td width="15%"
                       style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark" style="font-weight:600;">Shipment Date</p>
+                      <p class="m-0 text-dark" style="font-weight:600;">Reference#</p>
                     </td>
                     <td width="15%"
                       style="border-bottom:1px solid #adadad; border-right:1px solid #adadad; padding:10px;">
@@ -330,10 +339,10 @@
                   </tr>
                   <tr>
                     <td height="25" style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark"> {{ sRef ? sRef : '-' }}</p>
+                      <p class="m-0 text-dark">{{ dueDate ? (dueDate | date: "yyyy/MM/dd") : '-' }}</p>
                     </td>
-                    <td style="border-right:1px solid #adadad; padding:10px;">
-                      <p class="m-0 text-dark"> {{ shipDate ? (shipDate | date: "yyyy/MM/dd" ) : '' }}</p>
+                    <td height="25" style="border-right:1px solid #adadad; padding:10px;">
+                      <p class="m-0 text-dark"> {{ sRef ? sRef : '-' }}</p>
                     </td>
                     <td style="border-right:1px solid #adadad; padding:10px;">
                       <p class="m-0 text-dark">{{ salePerson ? salePerson : '-' }} </p>
@@ -471,6 +480,7 @@
               </table>
               <table class="border-0 w-100 mt-4">
                 <tbody>
+
                   <tr>
                     <td class="border-0 text-right" colspan="5">Total Amount: <span
                         style="font-size: 30px;font-weight: 600;">{{ currency
@@ -516,4 +526,4 @@
 
     </div>
   </div>
-</ng-template> -->
+</ng-template>

@@ -14,7 +14,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 export class AddDeviceComponent implements OnInit {
   public errorMessage = "";
   public deviceIDText = "Device ID (Serial#)";
-  public title = "New Device"
+  public title = "Add Device"
   constructor(
     private apiService: ApiService,
     private toastr: ToastrService,

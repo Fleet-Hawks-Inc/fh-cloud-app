@@ -182,21 +182,24 @@ export class PaymentPdfsComponent implements OnInit {
 
   async generatePaymentPDF() {
     let data: any;
+    let pdfId = "";
     if (
       this.paymentData.paymentTo === "driver" ||
       this.paymentData.paymentTo === "employee"
     ) {
+      pdfId = "driver_pay_pdf";
       data = document.getElementById("driver_pay_pdf");
     } else if (
       this.paymentData.paymentTo === "owner_operator" ||
       this.paymentData.paymentTo === "carrier"
     ) {
+      pdfId = "ownerOperator_pay_pdf";
       data = document.getElementById("ownerOperator_pay_pdf");
     }
 
     html2pdf(data, {
       margin: [0.5, 0, 0.5, 0],
-      pagebreak: { mode: ["avoid-all"] },
+      pagebreak: { mode: "avoid-all", before: pdfId },
       filename: `${this.paymentData.paymentTo}-payment-${this.paymentData.paymentNo}.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, logging: true, dpi: 192, letterRendering: true },
@@ -394,12 +397,12 @@ export class PaymentPdfsComponent implements OnInit {
         .toPromise();
       this.fueldata.map((k) => {
         result.map((fuel) => {
-          k.city = fuel.cityName;
-          k.country = fuel.locationCountry;
-          k.vehicle = fuel.unitNumber;
-          k.card = fuel.fuelCardNumber;
-          k.quantity = `${fuel.quantity} ${fuel.unitOfMeasure}`;
-          k.fuelDate = fuel.fuelDate;
+          k.city = fuel.data.city;
+          k.country = fuel.data.country;
+          k.vehicle = fuel.data.unitNo;
+          k.card = fuel.data.cardNo;
+          k.quantity = `${fuel.data.qty} ${fuel.data.uom}`;
+          k.fuelDate = fuel.data.date;
         });
 
         if (k.action === "add") {

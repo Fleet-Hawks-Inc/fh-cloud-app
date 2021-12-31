@@ -4,9 +4,7 @@ ngx-datatable {
   overflow-y: scroll;
 }
 
-td {
-  padding: 5px;
-}
+
 
 #print_wrap td {
   padding: 0;

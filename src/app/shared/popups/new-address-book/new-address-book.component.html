@@ -1804,6 +1804,8 @@
                     <ng-option value="Pay Per Delivery">Pay Per Delivery</ng-option>
                   </ng-select>
                 </div>
+
+
                 <div class="row m-0 w-100" id="payPerHourForm" *ngIf="unit.opData.pType == 'Pay Per Hour'">
                   <div class="col-3">
                     <label class="control-label font-weight-bold text-lg-right pt-2">Rate</label>
@@ -1913,6 +1915,71 @@
                       <ng-option value="USD">USD</ng-option>
                     </ng-select>
                   </div>
+                </div>
+
+              </div>
+              <div class="row wsib-wrapper">
+                <div class="col-2">
+                  <div class="d-flex align-items-center justify-content-between mt-3">
+                    <div class="checkbox-custom mt-0 pt-2">
+                      <input [(ngModel)]="unit.opData.wsib" name="wsib" type="checkbox" id="wsib-fields" />
+                      <label for="wsib">WSIB</label>
+                    </div>
+                    <div class="checkbox-custom mt-0 pt-2">
+                      <input [(ngModel)]="unit.opData.wcb" name="wcb" type="checkbox" id="wcb-fields" />
+                      <label for="wcb">WCB</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row wsib-wrapper" *ngIf="unit.opData.wsib">
+                <div class="col-3">
+                  <label class="
+                      control-label
+                      font-weight-bold
+                      text-lg-right
+                      pt-2
+                    ">WSIB Account#
+                    <span class="text-1 optional-label-color">(optional)</span></label>
+                  <input [(ngModel)]="unit.opData.wsibAcc" name="unit.opData.wsibAcc" type="text" class="form-control"
+                    placeholder=" Work safety insurance board no." />
+                </div>
+                <div class="col-3">
+                  <label class="
+                      control-label
+                      font-weight-bold
+                      text-lg-right
+                      pt-2
+                    ">WSIB Expiry
+                    <span class="text-1 optional-label-color">(optional)</span></label>
+                  <input [(ngModel)]="unit.opData.wsibExp" name="unit.opData" type="text" placeholder="yyyy/mm/dd"
+                    (click)="wsibexp.toggle()" ngbDatepicker readonly #wsibexp="ngbDatepicker" class="form-control"
+                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
+                </div>
+              </div>
+              <div class="row wcb-wrapper" *ngIf="unit.opData.wcb">
+                <div class="col-3">
+                  <label class="
+                      control-label
+                      font-weight-bold
+                      text-lg-right
+                      pt-2
+                    ">WCB Account#
+                    <span class="text-1 optional-label-color">(optional)</span></label>
+                  <input [(ngModel)]="unit.opData.wcbAcc" name="unit.opData.wcbAcc" type="text" class="form-control"
+                    placeholder=" Work safety insurance board no." />
+                </div>
+                <div class="col-3">
+                  <label class="
+                      control-label
+                      font-weight-bold
+                      text-lg-right
+                      pt-2
+                    ">WCB Expiry
+                    <span class="text-1 optional-label-color">(optional)</span></label>
+                  <input [(ngModel)]="unit.opData.wcbExp" name="unit.opData.wcbExp" type="text" placeholder="yyyy/mm/dd"
+                    (click)="wcbexp.toggle()" ngbDatepicker readonly #wcbexp="ngbDatepicker" class="form-control"
+                    autocomplete="off" [minDate]="dateMinLimit" [maxDate]="futureDatesLimit" />
                 </div>
               </div>
             </div>
@@ -2936,6 +3003,22 @@
                         <tr>
                           <th width="40%" class="back-color-gray">SIN:</th>
                           <td>{{ item.opData.sin ? item.opData.sin : "-" }}</td>
+                        </tr>
+                        <tr>
+                          <th width="40%" class="back-color-gray">WCB Account#:</th>
+                          <td>{{ item.opData.wcbAcc ? item.opData.wcbAcc : "-" }}</td>
+                        </tr>
+                        <tr>
+                          <th width="40%" class="back-color-gray">WCB Expiry:</th>
+                          <td>{{ item.opData.wcbExp ? ( item.opData.wcbExp | date: "yyyy/MM/dd" ) : "-" }}</td>
+                        </tr>
+                        <tr>
+                          <th width="40%" class="back-color-gray">WSIB Account#:</th>
+                          <td>{{ item.opData.wsibAcc ? item.opData.wsibAcc : "-" }}</td>
+                        </tr>
+                        <tr>
+                          <th width="40%" class="back-color-gray">WSIB Expiry:</th>
+                          <td>{{ item.opData.wsibExp ? (item.opData.wsibExp | date: "yyyy/MM/dd" ) : "-" }}</td>
                         </tr>
                       </tbody>
                     </table>

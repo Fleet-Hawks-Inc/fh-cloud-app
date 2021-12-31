@@ -63,7 +63,7 @@
                                 <span *ngIf="fuelData.unitType!='reefer'">{{vehicleList[fuelData.unitID]}}</span>
                                 <span *ngIf="fuelData.unitType=='reefer'">{{assetList[fuelData.unitID]}}</span>
                               </span>
-                              <span *ngIf="fuelData.unitNo">{{fuelData.unitNo}}</span>
+                              <span *ngIf="!fuelData.unitID">{{fuelData.unitNo}}</span>
 
                             </td>
                           </tr>
