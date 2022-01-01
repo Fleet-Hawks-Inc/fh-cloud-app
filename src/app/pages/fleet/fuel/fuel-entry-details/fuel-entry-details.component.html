@@ -117,6 +117,10 @@
                             <td class="back-color-gray font-weight-bold">Retail Amount</td>
                             <td>{{fuelData.retailAmount}} {{fuelData.billingCurrency}}</td>
                           </tr>
+                          <tr *ngIf="fuelData.rBeforeTax">
+                            <td class="back-color-gray font-weight-bold">Retail Amount Before Tax</td>
+                            <td>{{fuelData.rBeforeTax}} {{fuelData.billingCurrency}}</td>
+                          </tr>
                           <tr *ngIf="fuelData.amountPaid">
                             <td class="back-color-gray font-weight-bold">Amount Paid</td>
                             <td>{{fuelData.amountPaid}} {{fuelData.billingCurrency}}</td>

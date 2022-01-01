@@ -287,7 +287,6 @@ export class AddSettlementComponent implements OnInit {
         //   this.tripMsg = Constants.NO_RECORDS_FOUND;
         // }
         let entStat = `${this.settlementData.entityId}:false`;
-
         for (let i = 0; i < this.trips.length; i++) {
           const element = this.trips[i];
           element.pickupLocation = "";
@@ -1994,11 +1993,14 @@ export class AddSettlementComponent implements OnInit {
 
   resetFormValues() {
     this.settlementData.entityId = null;
+    this.tripsObject = [];
     this.resetAlldata();
   }
 
   resetAlldata() {
     this.trips = [];
+    this.settlementData.fuelIds = [];
+    this.settlementData.fuelData = [];
     this.settlementData.deduction = [];
     this.settlementData.addition = [];
     this.settlementData.miles.drivers = [];
@@ -2017,6 +2019,8 @@ export class AddSettlementComponent implements OnInit {
       driverLoadedTeam: 0,
       driverEmptyTeam: 0,
     };
+    this.settlementData.fuelAdd = 0;
+    this.settlementData.fuelDed = 0;
     this.settlementData.additionTotal = 0;
     this.settlementData.deductionTotal = 0;
     this.settlementData.taxObj = {
@@ -2151,54 +2155,66 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.type === "owner_operator")
     ) {
       if (this.showFuel === "yes") {
+        this.settlementData.fuelAdd = 0;
+        this.settlementData.fuelDed = 0;
         let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
         let result = await this.apiService
           .getData(
             `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
           )
           .toPromise();
-        this.fuelEnteries = result;
-        this.fuelEnteries.map(async (elem) => {
-          elem.fuelID = elem.data.fuelID;
-          elem.fuelDate = elem.data.date;
-          elem.unitNumber = this.vehicles[elem.unitID];
-          elem.cityName = elem.data.city;
-          elem.locationCountry = elem.data.country;
-          elem.fuelCardNumber = elem.data.cardNo;
-          elem.unitOfMeasure = elem.data.uom;
-          elem.subTotal = elem.data.amt;
-          elem.total = elem.data.amt;
-          elem.billingCurrency = elem.data.currency;
-          elem.add = false;
-          elem.deduction = false;
-          elem.addDisabled = false;
-          elem.subDisabled = false;
-          elem.type = elem.data.type;
-          elem.convert = false;
-          elem.convertRate = 0;
-          elem.currency = this.settlementData.currency;
-          if (
-            this.settlementData.currency !== elem.billingCurrency &&
-            this.settlementData.currency !== undefined
-          ) {
-            elem.convert = true;
-            let convertedValue: any = await this.currencyConverter(
-              elem.billingCurrency,
-              elem.total,
-              elem.fuelDate
-            );
-            elem.subTotal = convertedValue.result;
-            elem.convertRate = convertedValue.rate;
-          }
-        });
-        this.fuelEnteries.sort(function compare(a, b) {
-          let dateA: any = new Date(a.fuelDate);
-          let dateB: any = new Date(b.fuelDate);
-          return dateA - dateB;
-        });
+        if (this.vehicleIds.length > 0) {
+          this.fuelEnteries = result;
+          this.fuelEnteries.map(async (elem) => {
+            elem.fuelID = elem.data.fuelID;
+            elem.fuelDate = elem.data.date;
+            elem.unitNumber = this.vehicles[elem.unitID];
+            elem.cityName = elem.data.city;
+            elem.locationCountry = elem.data.country;
+            elem.fuelCardNumber = elem.data.cardNo;
+            elem.unitOfMeasure = elem.data.uom;
+            elem.subTotal = elem.data.rBeforeTax
+              ? elem.data.rBeforeTax
+              : elem.data.amt;
+            elem.total = elem.data.amt;
+            elem.billingCurrency = elem.data.currency;
+            elem.add = false;
+            elem.deduction = false;
+            elem.addDisabled = false;
+            elem.subDisabled = false;
+            elem.type = elem.data.type;
+            elem.convert = false;
+            elem.convertRate = 0;
+            elem.currency = this.settlementData.currency;
+            if (
+              this.settlementData.currency !== elem.billingCurrency &&
+              this.settlementData.currency !== undefined
+            ) {
+              elem.convert = true;
+              let convertedValue: any = await this.currencyConverter(
+                elem.billingCurrency,
+                elem.total,
+                elem.fuelDate
+              );
+              elem.subTotal = convertedValue.result;
+              elem.convertRate = convertedValue.rate;
+            }
+          });
+          this.fuelEnteries.sort(function compare(a, b) {
+            let dateA: any = new Date(a.fuelDate);
+            let dateB: any = new Date(b.fuelDate);
+            return dateA - dateB;
+          });
+        } else {
+          this.fuelEnteries = [];
+          this.settlementData.fuelAdd = 0;
+          this.settlementData.fuelDed = 0;
+        }
       }
     } else {
       this.fuelEnteries = [];
+      this.settlementData.fuelAdd = 0;
+      this.settlementData.fuelDed = 0;
     }
   }
 
@@ -2268,7 +2284,7 @@ export class AddSettlementComponent implements OnInit {
         k.locationCountry = k.data.country;
         k.fuelCardNumber = k.data.cardNo;
         k.unitOfMeasure = k.data.uom;
-        k.subTotal = k.data.amt;
+        k.subTotal = k.data.rBeforeTax ? k.data.rBeforeTax : k.data.amt;
         k.billingCurrency = k.data.currency;
         k.type = k.data.type;
         this.settlementData.fuelData.map((v) => {
@@ -2382,25 +2398,31 @@ export class AddSettlementComponent implements OnInit {
   }
 
   filterByUnit() {
-    if (this.ownerVehicleID.length > 0 && this.dummyTrips.length > 0) {
-      const tripArr = [];
-      for (const element of this.dummyTrips) {
-        let flag = false;
-        if (element.vehicleIDs && element.vehicleIDs.length > 0) {
-          element.vehicleIDs.map((v) => {
-            if (this.ownerVehicleID.includes(v)) {
-              flag = true;
-            }
-          });
-        }
+    if (this.settlementData.type === "owner_operator") {
+      if (
+        this.ownerVehicleID &&
+        this.ownerVehicleID.length > 0 &&
+        this.dummyTrips.length > 0
+      ) {
+        const tripArr = [];
+        for (const element of this.dummyTrips) {
+          let flag = false;
+          if (element.vehicleIDs && element.vehicleIDs.length > 0) {
+            element.vehicleIDs.map((v) => {
+              if (this.ownerVehicleID.includes(v)) {
+                flag = true;
+              }
+            });
+          }
 
-        if (flag) {
-          tripArr.push(element);
+          if (flag) {
+            tripArr.push(element);
+          }
         }
+        this.trips = tripArr;
+      } else {
+        this.trips = this.dummyTrips;
       }
-      this.trips = tripArr;
-    } else {
-      this.trips = this.dummyTrips;
     }
   }
 

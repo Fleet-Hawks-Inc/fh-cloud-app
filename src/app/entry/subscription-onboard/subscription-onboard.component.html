@@ -1,0 +1,158 @@
+<div class="bg-light">
+    <div class="ml-none ml-0">
+        <div class="maindivleft">
+            <div class="row justify-content-center mtnew">
+                <div class="col-lg-9 offset-lg-3">
+                    <h2 class="font-weight-bold text-light text-7 mb-0">
+                        Dashboard Features
+                    </h2>
+                    <h2 class="font-weight-normal text-light text-5 mt-4 mb-0">
+                        <i class="fas fa-check"></i> Fleet
+                    </h2>
+                    <h2 class="font-weight-normal text-light text-5 mt-1 mb-0">
+                        <i class="fas fa-check"></i> Compliance ( HOS, DVIR, IFTA )
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Routing & Dispatch
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Safety
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-0">
+                        <i class="fas fa-check"></i> Accounting
+                    </h2>
+                    <h2 class="font-weight-normal text-light mt-1 text-5 mb-4">
+                        <i class="fas fa-check"></i> Reports
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="maindivright">
+            <div class="row justify-content-center mtnew">
+                <section class="signup-section">
+                    <div class="">
+                        <div class="col-sm-12 log">
+                            <img src="./assets/img/logologin.png" alt="FH Admin" />
+                        </div>
+
+                        <div class="panel card-sign" *ngIf="!showVerification">
+                            <div class="card-title-sign text-center">
+                                <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">
+                                    Create Account
+                                </h2>
+                                <!-- <span class="font-weight-bold mb-3 mt-2">Thank your for subscribing with Fleet Hawks. Based on the information provided during subscription, we have customised your Dashboard. Please create account with to access it.</span> -->
+                            </div>
+                            <div class="card-body">
+                                <form *ngIf="userInfoFormGroup" [formGroup]="userInfoFormGroup">
+                                    <div class="form-group mb-3">
+                                        <div class="input-group">
+                                            <div class="logiconm mr-3">
+                                                <i class="fas fa-envelope logicon text-5"></i>
+                                            </div>
+                                            <input name="emailId" type="text" formControlName="email" placeholder="Email Address" class="form-control login form-control-lg" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3 input-group">
+                                        <div class="logiconm mr-3">
+                                            <i class="fas fa-user logicon text-5"></i>
+                                        </div>
+                                        <input name="username" (focusout)="onFocusOutEvent($event)" type="text" placeholder="Username" formControlName="username" class="form-control login form-control-lg" />
+                                    </div>
+                                    <small *ngIf="
+                      userInfoFormGroup.controls?.username['errorMessages']
+                        .length > 0
+                    " class="form-text text-danger validation-message-align">
+                                        {{
+                                        userInfoFormGroup.controls.username["errorMessages"]
+                                        }}</small>
+                                    <small class="form-text text-danger validation-message-align" *ngIf="userNameExists">
+                                        {{ userErrorMessage }}
+                                    </small>
+                                    <div class="form-group mb-3" name="originalPassword">
+                                        <div class="input-group">
+                                            <div class="logiconm mr-3">
+                                                <i class="fa fa-lock logicon text-5"></i>
+                                            </div>
+                                            <input name="pwd" [type]="fieldTextType ? 'text' : 'password'" placeholder="Password" class="form-control login form-control-lg" formControlName="password" />
+
+                                            <div class="input-group-append">
+                                                <span class="input-group-text eye">
+                                                    <i class="fa" [ngClass]="{
+                              'fa-eye-slash': !fieldTextType,
+                              'fa-eye': fieldTextType
+                            }" (click)="toggleFieldTextType()"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <small *ngIf="
+                        userInfoFormGroup.controls?.password['errorMessages']
+                          .length > 0
+                      " class="form-text text-danger validation-message-align">{{
+                                            userInfoFormGroup.controls?.password["errorMessages"]
+                                            }}</small>
+                                    </div>
+                                    <div class="form-group mb-3" name="confirmPassword">
+                                        <div class="input-group">
+                                            <div class="logiconm mr-3">
+                                                <i class="fa fa-lock logicon text-5"></i>
+                                            </div>
+                                            <input name="confirmPwd" [type]="fieldTextType ? 'text' : 'password'" placeholder="Repeat Password" class="form-control login form-control-lg" formControlName="confirmPassword" />
+                                        </div>
+                                        <small *ngIf="
+                        userInfoFormGroup.controls?.confirmPassword[
+                          'errorMessages'
+                        ].length > 0
+                      " class="form-text text-danger validation-message-align">{{
+                                            userInfoFormGroup.controls?.confirmPassword[
+                                            "errorMessages"
+                                            ]
+                                            }}</small>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12 pl-signin text-center">
+                                            <button type="button" (click)="register()" [disabled]="!userInfoFormGroup.valid || userNameExists" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">
+                                                Sign Up
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="panle card-sign text-center" *ngIf="showVerification">
+                            <div class="card-title-sign text-center">
+                                <h2 id="loginTitle" class="text-uppercase font-weight-bold mb-3 mt-2">
+                                    Confirm Email
+                                </h2>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="form-group">
+                                    <label> We have sent you verification code on your email. Please check your
+                                            email(SPAM or JUNK) and enter the code below.
+                                        </label>
+                                    <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="{length:6,allowNumbersOnly:true}"></ng-otp-input>
+                                    <!-- <input type="text" formControlName="verificationCode" class="form-control login form-control-lg" placeholder="Verification code" /> -->
+
+                                </div>
+                                <br/>
+                                <a (click)="resendConfirmationCode()" [routerLink]="">
+
+                                        Click here to send verification code again.</a>
+
+
+
+                                <button [disabled]="otpSubmitDisabled" (click)="confirmSignUp()" class="btn btn-dark btn-block btn-lg mt-2 loginSignBtn">
+                                        Submit
+                                    </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
