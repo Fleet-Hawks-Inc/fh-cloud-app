@@ -35,6 +35,7 @@ export class FuelEntryDetailsComponent implements OnInit {
     quantity: '',
     retailPpu: '',
     retailAmount: '',
+    rBeforeTax:'',
     fuelDate: '',
     fuelTime: '',
     fuelType: '',
@@ -318,6 +319,7 @@ export class FuelEntryDetailsComponent implements OnInit {
         this.fuelData.amount = result.data.amt;
         this.fuelData.retailPpu = result.data.rPpu;
         this.fuelData.retailAmount = result.data.rAmt;
+        this.fuelData.rBeforeTax=result.data.rBeforeTax;
         this.fuelData.fuelType = result.data.type
         this.fuelData.transactionID = result.data.transID;
         this.fuelData.fuelProvider = result.data.fuelProvider;
