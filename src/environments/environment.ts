@@ -63,7 +63,7 @@ export const environment = {
     apiKey: "lIoqoqWBD3Op-8TVFDBPM9pj3kTQKIyCuH8Q_2RDR1c",
   },
   googleConfig: {
-    apiKey: "AIzaSyBCsElmX2bmCCfOuRKDviD54ltY1pO1fBI",
+    apiKey: "AIzaSyDRt9SGmd-mzAsC30SofiwDRtHw592Og5E",
   },
   VSSServerWSS: 'wss://safety-cam.fleethawks.com:36301/wss'
 };
