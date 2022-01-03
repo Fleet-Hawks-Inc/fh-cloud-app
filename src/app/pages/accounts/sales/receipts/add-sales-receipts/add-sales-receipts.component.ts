@@ -216,13 +216,13 @@ export class AddSalesReceiptsComponent implements OnInit {
       this.submitDisabled = false;
       return
     }
-    this.customerInvoices.forEach(elem => {
-      if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
+    for (const elem of this.customerInvoices) {
+      if (elem.selected && (elem.paidAmount === 0)) {
         this.toaster.error('Please add invoice amount')
         this.submitDisabled = false;
-        return;
+        return false;
       }
-    });
+    };
 
     // create form data instance
     const formData = new FormData();

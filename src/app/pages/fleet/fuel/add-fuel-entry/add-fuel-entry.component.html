@@ -455,7 +455,7 @@
                         </div>
                         </div> -->
                     <div class="row">
-                      <div class="col-lg-6">
+                      <div class="col-lg-3">
                         <label
                           class="
                             control-label
@@ -491,7 +491,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col-lg-4">
+                      <div class="col-lg-3">
                         <label
                           class="
                             control-label
@@ -499,7 +499,7 @@
                             text-lg-right
                             pt-2
                           "
-                          >Retail Amount<span class="mandfield text-2 ml-1"
+                          >Retail Amount <span style="font-size:10px">After Tax</span> <span class="mandfield text-2 ml-1"
                             ><sup>*</sup></span
                           ></label
                         >
@@ -521,6 +521,40 @@
                           class="text-danger"
                         >
                           <div *ngIf="rAmount.errors.required">
+                            Retail Amount must contain numbers.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-4">
+                        <label
+                          class="
+                            control-label
+                            font-weight-bold font-bold
+                            text-lg-right
+                            pt-2
+                          "
+                          >Retail Amount <span style="font-size:10px">Before Tax</span><span class="mandfield text-2 ml-1"
+                            ><sup>*</sup></span
+                          ></label
+                        >
+                        <input
+                          type="number"
+                          min="0"
+                          placeholder="eg. 100,200"
+                          class="form-control"
+                          name="rBeforeTax"
+                          [(ngModel)]="fuelData.data.rBeforeTax"
+                          #rBeforeTax="ngModel"
+                          required
+                        />
+                        <div
+                          *ngIf="
+                            rBeforeTax.invalid &&
+                            (rBeforeTax.dirty || rBeforeTax.touched)
+                          "
+                          class="text-danger"
+                        >
+                          <div *ngIf="rBeforeTax.errors.required">
                             Retail Amount must contain numbers.
                           </div>
                         </div>
@@ -641,7 +675,7 @@
                         <button
                           type="button"
                           class="btn cus-btn-padd btn-success"
-                          *ngIf="t === fuelData.data.tax.length - 1"
+                          *ngIf="fuelData.data.tax[0] && t==0"
                           (click)="addFuelTaxRow()"
                         >
                           <i class="fas fa-plus"></i>
@@ -649,7 +683,7 @@
                         <button
                           type="button"
                           (click)="deleteTaxRow(t)"
-                          *ngIf="t != fuelData.data.tax.length - 1"
+                          *ngIf="t!=0"
                           class="btn cus-btn-padd btn-danger"
                         >
                           <i class="fas fa-minus"></i>

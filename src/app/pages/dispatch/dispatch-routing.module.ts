@@ -35,6 +35,10 @@ const routes: Routes = [
     loadChildren: () => import('./quotes/quote.module').then((m) => m.QuoteModule),
   },
   {
+    path: 'total-miles',
+    loadChildren: () => import('./total-miles/total-miles.module').then((m) => m.TotalMilesModule),
+  },
+  {
     path: 'overview',
     children: [
       { path: '', component: DispatchOverviewComponent }
