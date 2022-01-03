@@ -150,7 +150,6 @@ data.forEach(element => {
     if (this.lastItemSK !== 'end'){
     this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
-        console.log('abc', result)
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }
