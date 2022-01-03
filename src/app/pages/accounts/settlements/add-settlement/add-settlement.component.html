@@ -177,7 +177,7 @@
                                                 <label class="control-label font-weight-bold pt-2">Filter By Unit</label>
                                                 <br>
                                                 <ng-select [(ngModel)]="ownerVehicleID" name="ownerVehicle" [multiple]="true" (change)="filterByUnit()"
-                                                    placeholder="Select Unit" required>
+                                                    placeholder="Select Unit">
                                                     <ng-option value="{{ veh.vehicleID }}" *ngFor="let veh of ownerVehicles;">{{ veh.vehicleIdentification }}</ng-option>
                                                 </ng-select>
                                             </div>

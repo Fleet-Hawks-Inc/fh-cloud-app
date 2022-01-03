@@ -105,11 +105,15 @@
                           class="text-capitalize"
                           routerLink="/manage/users/detail/{{ user.contactID }}"
                         >
-                          {{
-                            user.userLoginData.userRoles
-                              ? user.userLoginData.userRoles
-                              : "-"
-                          }}
+                        <span *ngIf="user.userLoginData.userRoles">
+                          
+                          <span *ngFor="let role of user.userLoginData.userRoles">
+                            {{userRoles[role]}} <span *ngIf="user.userLoginData.userRoles.length>1">,</span>
+                          </span>
+                        </span>
+                         <span *ngIf="!user.userLoginData">
+                           -
+                         </span>
                         </td>
                         <td
                           routerLink="/manage/users/detail/{{ user.contactID }}"
