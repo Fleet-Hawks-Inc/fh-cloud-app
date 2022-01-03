@@ -14,7 +14,6 @@ export class ProvinceMilesComponent implements OnInit {
   allData: any = [];
   docCountries = [];
   states = [];
-  vehicleId = '';
   start = null;
   end = null;
   dataMessage = Constants.FETCHING_DATA;
@@ -31,6 +30,7 @@ export class ProvinceMilesComponent implements OnInit {
   element3: any;
   suggestedVehicles = [];
   vehicleIdentification = '';
+  vehicleId = '';
   constructor(private apiService: ApiService, private toastr: ToastrService, private countryStateCity: CountryStateCityService,) { }
   ngOnInit(): void {
 
@@ -130,6 +130,7 @@ export class ProvinceMilesComponent implements OnInit {
   }
   searchFilter() {
     if (this.vehicleIdentification !== '' || this.start != null && this.end != null) {
+      this.vehicleIdentification = this.vehicleIdentification.toLowerCase();
       if (this.vehicleId == '') {
         this.vehicleId = this.vehicleIdentification;
       }
@@ -157,10 +158,11 @@ export class ProvinceMilesComponent implements OnInit {
     }
   }
   reset() {
-    if (this.vehicleId !== '') {
+    if (this.vehicleIdentification !== '') {
       this.vehicleId = '';
-      this.lastItemSK = '';
       this.suggestedVehicles = [];
+      this.vehicleIdentification = '';
+      this.lastItemSK = '';
       this.allData = [];
       this.dataMessage = Constants.FETCHING_DATA;
       this.fetchProvinceMilesData();
