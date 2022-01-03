@@ -328,11 +328,26 @@
                                   </div>
                                 </div>
                                 <div class="col-lg-6 pl-1">
-                                  <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
-                                    [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event, d)" name="qtyUnit{{ d }}">
-                                    <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name
-                                      }}</ng-option>
-                                  </ng-select>
+                                  <input class="form-control populate" placeholder="unit type" [(ngModel)]="dt.qtyUnit"
+                                    (change)="changeUnit($event.target.value, d)" pattern="^[a-zA-Z \-\']+"
+                                    #unit="ngModel" required name="qtyUnit{{ d }}" />
+                                  <div *ngIf="unit.invalid
+                                      &&
+                                      (unit.dirty
+                                      ||
+                                      unit.touched)" class="text-danger">
+                                    <div *ngIf="unit.errors.required">
+                                      Type
+                                      is
+                                      required.
+                                    </div>
+                                    <div *ngIf="unit.errors.pattern">
+                                      Please
+                                      enter
+                                      valid
+                                      type
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </td>
@@ -361,11 +376,26 @@
                                   </div>
                                 </div>
                                 <div class="col-lg-6 pl-1">
-                                  <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
-                                    [(ngModel)]="dt.rateUnit" (change)="changeUnit($event, d)" name="rateUnit{{ d }}">
-                                    <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name
-                                      }}</ng-option>
-                                  </ng-select>
+                                  <input class="form-control populate" placeholder="unit type" [(ngModel)]="dt.rateUnit"
+                                    (change)="changeUnit($event.target.value, d)" pattern="^[a-zA-Z \-\']+"
+                                    #unit="ngModel" required name="rateUnit{{ d }}" />
+                                  <div *ngIf="unit.invalid
+                                    &&
+                                    (unit.dirty
+                                    ||
+                                    unit.touched)" class="text-danger">
+                                    <div *ngIf="unit.errors.required">
+                                      Type
+                                      is
+                                      required.
+                                    </div>
+                                    <div *ngIf="unit.errors.pattern">
+                                      Please
+                                      enter
+                                      valid
+                                      type
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
                             </td>
@@ -395,8 +425,8 @@
                               </span>
                               <span class="pull-right">
                                 {{
-                                salesData.total.detailTotal
-                                ? (salesData.total.detailTotal
+                                salesData.total.finalTotal
+                                ? (salesData.total.finalTotal
                                 | number: "1.2-2")
                                 : 0.0
                                 }}
@@ -431,6 +461,9 @@
                           <textarea class="form-control h-auto" name="remarks" [(ngModel)]="salesData.remarks"
                             rows="6"></textarea>
                         </div>
+
+                      </div>
+                      <div class="offset-2 col-lg-5">
                         <div class="col-lg-12 pl-0">
                           <label class="
                               control-label
@@ -484,146 +517,6 @@
                               </tr>
                             </tbody>
                           </table>
-                        </div>
-                      </div>
-
-                      <div class="col-lg-5 offset-lg-2">
-                        <h4 class="mt-0
-                          text-dark
-                          font-weight-bold
-                          text-4
-                          d-inline">
-                          Charges
-                        </h4>
-                        <div class="row mt-3">
-                          <div class="col-lg-6">
-                            <div class="row">
-                              <div class="col-lg-10 pr-0">
-                                <input type="text" name="cName" [(ngModel)]="salesData.charges.cName"
-                                  class="form-control" placeholder="Enter name" />
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-3">
-                            <div class="row">
-                              <div class="col-lg-12 pr-0">
-                                <ng-select [(ngModel)]="salesData.charges.cType" name="cType" #cType="ngModel"
-                                  [clearable]="false" (change)="accessorialFeeTotal()" required>
-                                  <ng-option value="add">Add</ng-option>
-                                  <ng-option value="ded">Deduct</ng-option>
-                                </ng-select>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-3 text-right">
-                            <div class="row">
-                              <div class="col-lg-12 pr-0">
-                                <input type="text" name="cAmount" [(ngModel)]="salesData.charges.cAmount"
-                                  class="form-control" placeholder="Enter amount" (input)="accessorialFeeTotal()"
-                                  pattern="^[0-9]\d*(\.\d+)?$" #accFeeam="ngModel" />
-
-                                <div *ngIf="accFeeam.errors?.pattern">
-                                  Please enter valid amount
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="row mt-3 align-items-center">
-                          <div class="col-lg-5 pl-3 mb-2">
-                            <div class="checkbox-custom checkbox-default">
-                              <input [(ngModel)]="salesData.taxExempt" name="taxExempt" type="checkbox"
-                                id="ZeroRated" />
-                              <label class="control-label
-                                font-weight-semibold
-                                labelmt
-                                text-3 text-dark" for="ZeroRated">Tax Exempt</label>
-                            </div>
-                          </div>
-                          <div class="col-lg-7 pl-3 mb-0 text-right">
-                            <span class="font-weight-semibold mr-5">Sub Total:
-                            </span>
-                            {{
-                            salesData.total.subTotal
-                            ? (salesData.total.subTotal
-                            | number: "1.2-2")
-                            : 0.0
-                            }}
-                          </div>
-                        </div>
-                        <div class="row mt-3" *ngIf="!salesData.taxExempt">
-                          <div class="col-lg-12">
-                            <label class="control-label
-                              font-weight-bold
-                              text-3 text-dark" for="inputDefault">Province/State</label>
-                          </div>
-                          <div class="col-lg-9">
-                            <ng-select [(ngModel)]="salesData.stateTaxID" name="stateTaxID"
-                              (change)="stateSelectChange()" class="form-control
-                              populate" [clearable]="false">
-                              <ng-option *ngFor="let stateTax of stateTaxes" selected value="{{ stateTax.stateTaxID }}">
-                                {{
-                                stateTax.stateName
-                                }}</ng-option>
-                            </ng-select>
-                          </div>
-                        </div>
-
-                        <div class="row" *ngIf="!salesData.taxExempt">
-                          <div class="col-lg-8">
-                            <!-- GST -->
-                            <div class="row mt-3" *ngFor="let taxD of
-                              salesData.charges
-                              .taxes;
-                              let td= index">
-                              <div class="col-lg-5 pr-0">
-                                <input type="text" disabled class="form-control" [(ngModel)]="taxD.name"
-                                  name="taxName{{ td }}" />
-                              </div>
-
-                              <div class="col-lg-5 pr-0 input-group">
-                                <input type="text" [(ngModel)]="taxD.tax" name="taxper{{ td }}" class="form-control"
-                                  (input)="taxcalculation(td)" /><span class="input-group-append"><span class="input-group-text
-                                    pt-0
-                                    pb-0">%</span></span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-lg-4">
-                            <div class="row mt-3 bordtop" *ngFor="let taxD of
-                              salesData.charges
-                              .taxes;
-                              let td= index">
-                              <div class="col-lg-12 pt-1">
-                                <p class="text-right mb-0">
-                                  {{
-                                  taxD.amount
-                                  ? (taxD.amount
-                                  | number: "1.2-2")
-                                  : 0.0
-                                  }}
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row align-items-center">
-                          <div class="col-lg-12 pt-1 text-right">
-                            <span class="text-right
-                              h5
-                              font-weight-semibold
-                              text-4 text-dark
-                              mr-5">
-                              Total Amount
-                            </span>
-                            <span class="text-right m-0">
-                              {{
-                              salesData.total.finalTotal
-                              | number: "1.2-2"
-                              }}
-                            </span>
-                          </div>
                         </div>
                       </div>
                     </div>
