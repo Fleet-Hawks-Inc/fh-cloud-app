@@ -98,7 +98,6 @@ export class UsersListComponent implements OnInit {
   }
   async fetchUserRoles() {
     const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
-    console.log(data)
 data.forEach(element => {
   this.userRoles[element.role]=element.name
 });
