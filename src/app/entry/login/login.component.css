@@ -1,15 +1,20 @@
-.eye{
+.eye {
     border: none;
     background-color: #ebebeb;
 }
-.red1{ color:#fe4e37;}
 
-.green1{color: #1eb54f;}
+.red1 {
+    color: #fe4e37;
+}
 
-.modal-update{
+.green1 {
+    color: #1eb54f;
+}
+
+.modal-update {
     max-width: 60%;
-    height:100%;
-    display:flex;
+    height: 100%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
 }
@@ -17,36 +22,42 @@
 
 /* new login page classes 15.09.21 */
 
-.maindivleft{
+.maindivleft {
     background: #000000;
     float: left;
     width: 50%;
     position: relative;
     min-height: 100vh;
-    
 }
 
-.maindivright{
+.maindivright {
     background: #ffffff;
     float: right;
     width: 50%;
     position: relative;
     min-height: 100vh;
-    
 }
 
-@media screen and (max-width: 1067px){
-.maindivright {
-    width: 100% !important; float: right;
+@media screen and (max-width: 1067px) {
+    .maindivright {
+        width: 100% !important;
+        float: right;
+    }
+    .maindivleft {
+        display: none !important;
+    }
 }
-.maindivleft{
-   display: none !important;
-}
-
-}
-
 
 .mtnew {
     margin-top: 25% !important;
-    
+}
+
+.signup-section {
+    width: 50%;
+}
+
+@media screen and (max-width: 1067px) {
+    .signup-section {
+        width: 90%;
+    }
 }

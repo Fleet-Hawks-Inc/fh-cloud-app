@@ -24,12 +24,14 @@ import { SidebarComponent } from './shared/sidebar/sidebar.component';
 import { ForgotPasswordComponent } from './entry/forgot-password/forgot-password.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LocationShareComponent } from './entry/location-share/location-share.component';
+import { SubscriptionOnboardComponent } from './entry/subscription-onboard/subscription-onboard.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/Login', pathMatch: 'full' },
   { path: 'Login', component: LoginComponent },
   { path: 'onboard', component: AddAccountComponent },
+  { path: 'subOnboard/:id', component: SubscriptionOnboardComponent },
   { path: 'forgotPassword', component: ForgotPasswordComponent },
   {
     path: 'location-share/:token',

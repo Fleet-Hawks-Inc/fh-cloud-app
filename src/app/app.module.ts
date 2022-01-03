@@ -50,7 +50,10 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CustomRouteReuseStrategy } from './services/customRouteReuseService';
 import { LocationShareComponent } from './entry/location-share/location-share.component';
 import { GlobalErrorHandler } from './interceptors/GlobalErrorHandler';
+import { SubscriptionOnboardComponent } from './entry/subscription-onboard/subscription-onboard.component';
+import { NgOtpInputModule } from 'ng-otp-input';
 
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: environment.HOSTNAME,
@@ -71,7 +74,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     UnsavedChangesComponent,
     AddAccountComponent,
     ForgotPasswordComponent,
-    LocationShareComponent
+    LocationShareComponent,
+    SubscriptionOnboardComponent
   ],
   imports: [
     CommonModule,
@@ -93,7 +97,10 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     NgxSpinnerModule,
     NgSelectModule,
     NgxCaptchaModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    RxReactiveFormsModule,
+    NgOtpInputModule
+
 
 
   ],
