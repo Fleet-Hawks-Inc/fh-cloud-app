@@ -43,6 +43,19 @@ export class SalesInvoicesListComponent implements OnInit {
     });
   }
 
+  voidOrderInvoice(i: any, saleID: string) {
+    if (confirm("Are you sure you want to void?") === true) {
+      this.accountService
+        .deleteData(`sales-invoice/delete/${saleID}`)
+        .subscribe((res) => {
+          if (res) {
+            this.allInvoices[i].status = 'voided';
+          }
+        })
+    }
+  }
+
+
   async fetchSales(refresh?: boolean) {
     if (refresh === true) {
       this.lastItemSK = '';

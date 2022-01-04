@@ -18,6 +18,7 @@ export class AddPurchaseOrderComponent implements OnInit {
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
+  pageTitle = "Add";
 
   orderData = {
     txnDate: null,
@@ -87,6 +88,7 @@ export class AddPurchaseOrderComponent implements OnInit {
   Success: string = "";
   purchaseID;
   stateTaxes = [];
+  cloneID: any;
 
   constructor(
     private httpClient: HttpClient,
@@ -96,13 +98,23 @@ export class AddPurchaseOrderComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.purchaseID = this.route.snapshot.params["purchaseID"];
     if (this.purchaseID) {
+      this.pageTitle = "Edit";
       this.fetchDetails();
     }
+    this.route.queryParams.subscribe((params) => {
+      this.cloneID = params.cloneID;
+      if (this.cloneID != undefined && this.cloneID != "") {
+        this.pageTitle = "Clone";
+        this.purchaseID = this.cloneID;
+        this.fetchDetails();
+      }
+    });
+
     this.listService.fetchVendors();
     this.fetchQuantityTypes();
     this.fetchStateTaxes();
@@ -166,6 +178,11 @@ export class AddPurchaseOrderComponent implements OnInit {
   }
 
   checkEmailStat(type) {
+    if (this.cloneID) {
+      delete this.orderData['orderNo'];
+      delete this.orderData['purchaseID'];
+      delete this.orderData['paymentLinked'];
+    }
     if (type === "yes") {
       this.orderData["sendEmail"] = true;
     } else {
@@ -202,7 +219,7 @@ export class AddPurchaseOrderComponent implements OnInit {
 
     this.submitDisabled = true;
     this.accountService.postData("purchase-orders", this.orderData).subscribe({
-      complete: () => {},
+      complete: () => { },
       error: (err: any) => {
         from(err.error)
           .pipe(
@@ -219,14 +236,14 @@ export class AddPurchaseOrderComponent implements OnInit {
             error: () => {
               this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Purchase order added successfully.");
-        // this.cancel();
+        this.cancel();
       },
     });
   }
@@ -344,7 +361,7 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.accountService
       .putData(`purchase-orders/update/${this.purchaseID}`, this.orderData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -361,7 +378,7 @@ export class AddPurchaseOrderComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -423,5 +440,13 @@ export class AddPurchaseOrderComponent implements OnInit {
     });
     this.allTax();
     this.taxTotal();
+  }
+
+  cloneOrder() {
+    delete this.orderData['orderNo'];
+    delete this.orderData['purchaseID'];
+    delete this.orderData['paymentLinked'];
+    this.orderData["sendEmail"] = false;
+    this.addRecord();
   }
 }
