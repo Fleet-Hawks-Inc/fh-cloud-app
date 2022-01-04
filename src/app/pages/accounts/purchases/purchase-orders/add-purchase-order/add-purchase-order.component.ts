@@ -442,11 +442,15 @@ export class AddPurchaseOrderComponent implements OnInit {
     this.taxTotal();
   }
 
-  cloneOrder() {
+  cloneOrder(type) {
+    if (type === "yes") {
+      this.orderData["sendEmail"] = true;
+    } else {
+      this.orderData["sendEmail"] = false;
+    }
     delete this.orderData['orderNo'];
     delete this.orderData['purchaseID'];
     delete this.orderData['paymentLinked'];
-    this.orderData["sendEmail"] = false;
     this.addRecord();
   }
 }
