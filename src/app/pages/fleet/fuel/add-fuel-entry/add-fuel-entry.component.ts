@@ -216,7 +216,7 @@ export class AddFuelEntryComponent implements OnInit {
   //   });
   // }
   addFuelTaxRow() {
-    this.fuelData.data.tax.unshift({
+    this.fuelData.data.tax.push({
       taxCode: null,
       amount: 0,
     });

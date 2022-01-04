@@ -19,10 +19,12 @@ export class InvoiceListComponent implements OnInit {
   invID: string;
   totalCAD = 0;
   totalUSD = 0;
+  exportLoading=false;
   openInvoices = [];
   openTotalCAD = 0;
   openTotalUSD = 0;
   paidInvoices = [];
+  unPaidInvoices=[];
   paidTotalCAD = 0;
   paidTotalUSD = 0;
   emailedInvoices = [];
@@ -39,6 +41,7 @@ export class InvoiceListComponent implements OnInit {
   orderInvoices = [];
   openOrderInvoices = [];
   paidOrderInvoices = [];
+  unPaidOrderInvoices=[];
   emailedOrderInvoices = [];
   partiallyPaidOrderInvoices = [];
   voidedOrderInvoices = [];
@@ -235,6 +238,7 @@ export class InvoiceListComponent implements OnInit {
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
+      this.unPaidInvoices=[]
     }
     if (this.lastItemSK !== "end") {
       if (this.filter.invNo !== null && this.filter.invNo !== "") {
@@ -306,6 +310,7 @@ export class InvoiceListComponent implements OnInit {
       this.orderInvoices = [];
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
+      this.unPaidOrderInvoices=[]
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
@@ -379,18 +384,21 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
+      this.unPaidOrderInvoices=[];
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
       for (const element of invoices) {
         if (element.invStatus === "open") {
           this.openOrderInvoices.push(element);
+          this.unPaidOrderInvoices.push(element);
         } else if (element.invStatus === "paid") {
           this.paidOrderInvoices.push(element);
         } else if (element.invStatus === "emailed") {
           this.emailedOrderInvoices.push(element);
         } else if (element.invStatus === "partially paid") {
           this.partiallyPaidOrderInvoices.push(element);
+          this.unPaidOrderInvoices.push(element);
         } else if (element.invStatus === "voided") {
           this.voidedOrderInvoices.push(element);
         }
@@ -398,6 +406,7 @@ export class InvoiceListComponent implements OnInit {
     } else {
       this.openOrderInvoices = [];
       this.paidOrderInvoices = [];
+      this.unPaidOrderInvoices=[];
       this.emailedOrderInvoices = [];
       this.partiallyPaidOrderInvoices = [];
       this.voidedOrderInvoices = [];
@@ -407,6 +416,7 @@ export class InvoiceListComponent implements OnInit {
     if (invoices.length > 0) {
       this.openInvoices = [];
       this.paidInvoices = [];
+      this.unPaidInvoices=[];
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
@@ -414,6 +424,7 @@ export class InvoiceListComponent implements OnInit {
       for (const element of invoices) {
         if (element.invStatus === "open") {
           this.openInvoices.push(element);
+          this.unPaidInvoices.push(element);
           this.findOverDueInvoice(this.openInvoices);
         } else if (element.invStatus === "paid") {
           this.paidInvoices.push(element);
@@ -421,6 +432,7 @@ export class InvoiceListComponent implements OnInit {
           this.emailedInvoices.push(element);
         } else if (element.invStatus === "partially paid") {
           this.partiallyPaidInvoices.push(element);
+          this.unPaidInvoices.push(element);
         } else if (element.invStatus === "voided") {
           this.voidedInvoices.push(element);
         }
@@ -431,6 +443,7 @@ export class InvoiceListComponent implements OnInit {
       this.emailedInvoices = [];
       this.partiallyPaidInvoices = [];
       this.voidedInvoices = [];
+      this.unPaidInvoices=[];
     }
   }
   findOverDueInvoice(invoices: any) {
@@ -471,6 +484,7 @@ export class InvoiceListComponent implements OnInit {
             this.openTotalCAD = 0;
             this.openTotalUSD = 0;
             this.paidInvoices = [];
+            this.unPaidInvoices=[];
             this.paidTotalCAD = 0;
             this.paidTotalUSD = 0;
             this.emailedInvoices = [];
@@ -487,6 +501,7 @@ export class InvoiceListComponent implements OnInit {
             this.orderInvoices = [];
             this.openOrderInvoices = [];
             this.paidOrderInvoices = [];
+            this.unPaidOrderInvoices=[];
             this.emailedOrderInvoices = [];
             this.partiallyPaidOrderInvoices = [];
             this.voidedOrderInvoices = [];
@@ -537,6 +552,7 @@ export class InvoiceListComponent implements OnInit {
                 this.openTotalCAD = 0;
                 this.openTotalUSD = 0;
                 this.paidInvoices = [];
+                this.unPaidInvoices=[];
                 this.paidTotalCAD = 0;
                 this.paidTotalUSD = 0;
                 this.emailedInvoices = [];
@@ -553,6 +569,7 @@ export class InvoiceListComponent implements OnInit {
                 this.orderInvoices = [];
                 this.openOrderInvoices = [];
                 this.paidOrderInvoices = [];
+                this.unPaidOrderInvoices=[]
                 this.emailedOrderInvoices = [];
                 this.partiallyPaidOrderInvoices = [];
                 this.voidedOrderInvoices = [];
@@ -623,6 +640,7 @@ export class InvoiceListComponent implements OnInit {
     this.openTotalCAD = 0;
     this.openTotalUSD = 0;
     this.paidInvoices = [];
+    this.unPaidInvoices=[];
     this.paidTotalCAD = 0;
     this.paidTotalUSD = 0;
     this.emailedInvoices = [];
@@ -661,6 +679,7 @@ export class InvoiceListComponent implements OnInit {
     this.openTotalCAD = 0;
     this.openTotalUSD = 0;
     this.paidInvoices = [];
+    this.unPaidInvoices=[];
     this.paidTotalCAD = 0;
     this.paidTotalUSD = 0;
     this.emailedInvoices = [];
@@ -678,5 +697,12 @@ export class InvoiceListComponent implements OnInit {
     this.fetchedOrderInvoices = [];
     this.fetchInvoices();
     this.getInvoices();
+  }
+
+  generateCSV(){
+
+  }
+  generatePDF(){
+
   }
 }
