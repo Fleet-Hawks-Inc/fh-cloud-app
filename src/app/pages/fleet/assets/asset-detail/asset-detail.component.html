@@ -912,7 +912,55 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        <!-- create Log -->
+                                        <div class="col-lg-12 solid mt-3">
+                                            <div class="bg-white p-3 text-dark">
+                                                <div class="boxshadow1">
+                                                    <h2 class="
+                              text-4
+                              back-color-gray
+                              font-weight-bold
+                              font-weight-semibold
+                             col-lg-12
+                              p-2">
+                                                        <i class="fas fa-user"></i> Asset Log
+                                                    </h2>
+                                                    <div class="timeline timeline-simple changelog"
+                                                        style="max-height: 497px; overflow-x: auto; width: 100%">
+                                                        <div class="tm-body text-dark" *ngIf="assetLogs.length > 0">
+                                                            <ol class="tm-items">
+                                                                <li *ngFor="let data of assetLogs">
+                                                                    <div class="tm-box">
+                                                                        <span class="release-date">{{ data.createdDate |
+                                                                            date: "yyyy/MM/dd" }} -
+                                                                            {{ data.createdTime }}</span>
+                                                                        <ul class="list-unstyled">
+                                                                            <li>
+                                                                                {{ data.userFirstName | titlecase }}
+                                                                                {{ data.userLastName | titlecase }}
+                                                                                {{ data.eventParams.message }}
+                                                                                {{ data.eventParams.type }}
+                                                                                <b class="text-success">{{
+                                                                                    data.entityNumber
+                                                                                    }}</b>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </li>
+                                                            </ol>
+                                                        </div>
+                                                        <div class="mt-3 mb-3 text-center"
+                                                            *ngIf="assetLogs.length == 0">
+                                                            {{ noLogsMsg }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
+
                                 </div>
                             </div>
                         </div>
