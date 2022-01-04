@@ -398,7 +398,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Account Name</th>
-                                                            <th>Name</th>
+                                                            <!-- <th>Name</th> -->
                                                             <th>Type</th>
                                                             <th>Debit</th>
                                                             <th>Credit</th>
@@ -407,20 +407,19 @@
                                                     <tbody>
                                                         <tr *ngFor="let dt of
                                                             settlementData.transactionLog">
-                                                            <td><span
-                                                                    *ngIf="dt.actIDType
-                                                                    ===
-                                                                    'actID'">{{accountsObjects[dt.accountID]
-                                                                    |
-                                                                    titlecase}}</span>
-                                                                <span
-                                                                    *ngIf="dt.actIDType
-                                                                    ===
-                                                                    'actIntID'">{{accountsIntObjects[dt.accountID]
-                                                                    |
-                                                                    titlecase}}</span></td>
-                                                            <td>{{entityName |
-                                                                titlecase}}</td>
+                                                            <td *ngIf="settlementData.isFeatEnabled"> 
+                                                                {{ dt.actName | titlecase}}
+                                                            </td>
+                                                            <td *ngIf="!settlementData.isFeatEnabled"> 
+                                                                <span *ngIf="dt.actIDType === 'actID'">
+                                                                    {{accountsObjects[dt.accountID] | titlecase}}
+                                                                </span>
+                                                                <span *ngIf="dt.actIDType === 'actIntID'">
+                                                                    {{accountsIntObjects[dt.accountID] | titlecase}}
+                                                                </span>
+                                                            </td>
+                                                            <!-- <td>{{entityName |
+                                                                titlecase}}</td> -->
                                                             <td>{{dt.type |
                                                                 titlecase}}</td>
                                                             <td><span
@@ -439,7 +438,7 @@
                                                                     {{dt.currency}}</span></td>
                                                         </tr>
                                                         <tr>
-                                                            <td colspan="3"
+                                                            <td colspan="2"
                                                                 class="font-weight-bold
                                                                 text-right">Total</td>
                                                             <td>{{settlementData.subTotal

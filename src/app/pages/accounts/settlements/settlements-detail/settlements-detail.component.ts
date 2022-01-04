@@ -81,6 +81,7 @@ export class SettlementsDetailComponent implements OnInit {
     fuelIds: [],
     fuelData: [],
     transactionLog: [],
+    isFeatEnabled: false,
   };
   expenses = [];
   tripsObj = [];
@@ -109,8 +110,8 @@ export class SettlementsDetailComponent implements OnInit {
     this.settlementID = this.route.snapshot.params[`settlementID`];
     this.fetchSettlementDetail();
     this.fetchTrips();
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
+    // this.fetchAccountsByIDs();
+    // this.fetchAccountsByInternalIDs();
     this.fetchPayments();
   }
 
@@ -119,6 +120,10 @@ export class SettlementsDetailComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
+        if (!this.settlementData.isFeatEnabled) {
+          this.fetchAccountsByIDs();
+          this.fetchAccountsByInternalIDs();
+        }
         this.settlementData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });

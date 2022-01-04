@@ -51,6 +51,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     advData: [],
     transactionLog: [],
     paymentEnity: "",
+    isFeatEnabled: false,
   };
   accounts = [];
   accountsObjects = {};
@@ -71,8 +72,8 @@ export class DriverPaymentsDetailComponent implements OnInit {
     this.fetchDrivers();
     this.fetchContactsList();
     this.fetchSettlement();
-    await this.fetchAccountsByIDs();
-    await this.fetchAccountsByInternalIDs();
+    // await this.fetchAccountsByIDs();
+    // await this.fetchAccountsByInternalIDs();
     await this.fetchPaymentDetail();
   }
 
@@ -95,6 +96,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
 
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    if (!this.paymentData.isFeatEnabled) {
+      this.fetchAccountsByIDs();
+      this.fetchAccountsByInternalIDs();
+    }
     if (this.paymentData.transactionLog.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }

@@ -226,7 +226,7 @@
                                             <thead>
                                                 <tr class="bgcol2">
                                                     <th>Account Name</th>
-                                                    <th>Type</th>
+                                                    <!-- <th>Type</th> -->
                                                     <th>Debit</th>
                                                     <th>Credit</th>
                                                 </tr>
@@ -241,17 +241,22 @@
                                                 </tr>
                                                 <tr *ngFor="let data of
                                                     paymentData.transactionLog">
-                                                    <td><span
+                                                    <td *ngIf="paymentData.isFeatEnabled"> 
+                                                        {{ data.actName | titlecase}}
+                                                    </td>
+                                                    <td *ngIf="!paymentData.isFeatEnabled">
+                                                        <span
                                                             *ngIf="data.actIDType
                                                             === 'actID'">{{accountsObjects[data.accountID]
                                                             | titlecase}}</span>
                                                         <span
                                                             *ngIf="data.actIDType
                                                             === 'actIntID'">{{accountsIntObjects[data.accountID]
-                                                            | titlecase}}</span></td>
-                                                    <td class="text-capitalize">{{
+                                                            | titlecase}}</span>
+                                                    </td>
+                                                    <!-- <td class="text-capitalize">{{
                                                         paymentData.paymentEnity
-                                                        }} payment</td>
+                                                        }} payment</td> -->
                                                     <td>
                                                         <span
                                                             *ngIf="data.trxType
