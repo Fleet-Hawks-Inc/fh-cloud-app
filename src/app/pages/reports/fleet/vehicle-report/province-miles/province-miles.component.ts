@@ -83,14 +83,23 @@ export class ProvinceMilesComponent implements OnInit {
 
           let dataa = element
           element.miles = 0
-          if (element.recall === true) {
-            element.newStatus = `${element.tripStatus} (R)`;
+          if(element.stlLink === true) {
+            element.newStatus = "settled";
+         
           }
           else {
-            if (element.stlLink === true) {
-              element.newStatus = "settled";
+            if (element.recall === true) {
+              element.newStatus = `${element.tripStatus} (R)`;
             }
           }
+          // if (element.recall === true) {
+          //   element.newStatus = `${element.tripStatus} (R)`;
+          // }
+          // else {
+          //   if (element.stlLink === true) {
+          //     element.newStatus = "settled";
+          //   }
+          // }
           for (let element1 of dataa.tripPlanning) {
             element.miles += Number(element1.miles);
           }
