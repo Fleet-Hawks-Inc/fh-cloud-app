@@ -118,13 +118,10 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{
-                            settlementData.paymentInfo.pType
-                          }}
+                          {{ settlementData.paymentInfo.pType }}
                         </p>
                       </td>
                     </tr>
-                    
                   </tbody>
                 </table>
               </td>
@@ -143,7 +140,11 @@
                   "
                 >
                   <tbody>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Mile'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Mile'
+                      "
+                    >
                       <td
                         width="50%"
                         bgcolor="#f3f3f3"
@@ -173,11 +174,16 @@
                         <p style="margin-bottom: 4px; color: #000000">
                           {{
                             settlementData.paymentInfo.eMiles | number: "1.2-2"
-                          }} {{ settlementData.currency }}
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Mile'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Mile'
+                      "
+                    >
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -204,11 +210,19 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.lMiles | number: "1.2-2" }} {{ settlementData.currency }}
+                          {{
+                            settlementData.paymentInfo.lMiles | number: "1.2-2"
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Mile' && settlementData.type === 'driver'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Mile' &&
+                        settlementData.type === 'driver'
+                      "
+                    >
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -235,11 +249,20 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.eMileTeam | number: "1.2-2" }} {{ settlementData.currency }}
+                          {{
+                            settlementData.paymentInfo.eMileTeam
+                              | number: "1.2-2"
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Mile' && settlementData.type === 'driver'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Mile' &&
+                        settlementData.type === 'driver'
+                      "
+                    >
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -266,11 +289,19 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.lMileTeam | number: "1.2-2" }}  {{ settlementData.currency }}
+                          {{
+                            settlementData.paymentInfo.lMileTeam
+                              | number: "1.2-2"
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Delivery'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Delivery'
+                      "
+                    >
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -297,11 +328,18 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.dRate | number: "1.2-2" }}  {{ settlementData.currency }}
+                          {{
+                            settlementData.paymentInfo.dRate | number: "1.2-2"
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
-                    <tr *ngIf="settlementData.paymentInfo.pType === 'Pay Per Hour'">
+                    <tr
+                      *ngIf="
+                        settlementData.paymentInfo.pType === 'Pay Per Hour'
+                      "
+                    >
                       <td
                         bgcolor="#f3f3f3"
                         style="
@@ -328,7 +366,10 @@
                         "
                       >
                         <p style="margin-bottom: 4px; color: #000000">
-                          {{ settlementData.paymentInfo.rate | number: "1.2-2" }}  {{ settlementData.currency }}
+                          {{
+                            settlementData.paymentInfo.rate | number: "1.2-2"
+                          }}
+                          {{ settlementData.currency }}
                         </p>
                       </td>
                     </tr>
@@ -337,7 +378,6 @@
               </td>
             </tr>
 
-            
             <tr>
               <td valign="top">
                 <h2 style="font-size: 16px; color: #000000">
@@ -1018,7 +1058,7 @@
                             padding-left: 10px;
                           "
                         >
-                          <p>
+                          <p style="color: #000000">
                             {{ trp.tripNo }} ({{
                               splt.splitName ? splt.splitName : sp + 1
                             }})
@@ -1053,7 +1093,7 @@
                                     padding-left: 10px;
                                   "
                                 >
-                                  <p>
+                                  <p style="color: #000000">
                                     {{ spltLine.date | date: "yyyy/MM/dd" }}
                                   </p>
                                 </td>
@@ -1062,6 +1102,7 @@
                                   style="
                                     border-right: 1px solid #adadad;
                                     padding-left: 10px;
+                                    color: #000000;
                                   "
                                 >
                                   <span>
@@ -1079,7 +1120,7 @@
                                     padding-left: 10px;
                                   "
                                 >
-                                  <p>
+                                  <p style="color: #000000">
                                     <span *ngIf="spltLine.driverID">
                                       <b>Driver: </b>
                                       {{ spltLine.driverName }}
@@ -1102,7 +1143,7 @@
                                     padding-right: 10px;
                                   "
                                 >
-                                  <p>
+                                  <p style="color: #000000">
                                     <strong>Vehicle:</strong>
                                     {{ spltLine.vehicleName }}
                                   </p>
@@ -1110,7 +1151,7 @@
                                 <td
                                   style="text-align: right; padding-right: 10px"
                                 >
-                                  <p>
+                                  <p style="color: #000000">
                                     <strong>Asset(s):</strong>
                                     {{ spltLine.assetName }}
                                   </p>
@@ -1319,10 +1360,10 @@
                       "
                     >
                       <p style="margin-bottom: 4px; color: #000000">
-                        {{ data.type }} 
+                        {{ data.type }}
                         <span *ngIf="data.data.useType">
-                          ({{data.data.useType}})
-                      </span>
+                          ({{ data.data.useType }})
+                        </span>
                       </p>
                     </td>
                     <td
@@ -1827,7 +1868,8 @@
                         style="
                           border-right: 1px solid #adadad;
                           border-bottom: 1px solid #adadad;
-                          padding-left: 10px;  color: #000000;
+                          padding-left: 10px;
+                          color: #000000;
                         "
                       >
                         {{ settlementData.deductionTotal | number: "1.2-2" }}
