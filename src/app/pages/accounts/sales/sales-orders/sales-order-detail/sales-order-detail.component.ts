@@ -71,10 +71,7 @@ export class SalesOrderDetailComponent implements OnInit {
       this.sOrderDetails = result.sOrderDetails;
       this.status = result.status;
       this.sOrNo = result.sOrNo;
-      this.taxes = result.charges.taxes;
-      this.chargeName = result.charges.cName;
-      this.chargeType = result.charges.cType;
-      this.chargeAmount = result.charges.cAmount;
+
       this.isPDF = true;
 
       if (result.docs.length > 0) {
