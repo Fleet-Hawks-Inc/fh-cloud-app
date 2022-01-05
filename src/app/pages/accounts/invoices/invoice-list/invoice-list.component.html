@@ -28,7 +28,20 @@
                 >
               </ng-select>
             </div>
-            <div class="col-lg-3 col-md-3 pr-0">
+            <div class="col-md-1 col-lg-1 pr-0">
+              <ng-select
+                [(ngModel)]="filter.invType"
+                placeholder="Select Invoice Type"
+                name="invType"
+              >
+                <ng-option
+                  value="{{ data.key }}"
+                  *ngFor="let data of invoiceTypeObject | keyvalue"
+                  >{{ data.value }}</ng-option
+                >
+              </ng-select>
+            </div>
+            <div class="col-lg-2 col-md-2 pr-0">
               <div class="input-daterange input-group">
                 <span class="input-group-prepend">
                   <span class="input-group-text">

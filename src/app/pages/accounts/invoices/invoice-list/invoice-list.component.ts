@@ -36,7 +36,7 @@ export class InvoiceListComponent implements OnInit {
   voidedInvoices = [];
   voidedTotalCAD = 0;
   voidedTotalUSD = 0;
-
+  invoiceTypeObject={all: "all",open:"Open",paid:"paid",partial_paid:"Partial Paid",unpaid:"Unpaid"}
   // Order Invoice
   orderInvoices = [];
   openOrderInvoices = [];
@@ -51,6 +51,7 @@ export class InvoiceListComponent implements OnInit {
     endDate: null,
     invNo: null,
     customer: null,
+    invType:null
   };
   lastItemSK = "";
   lastItemOrderSK = "";
@@ -250,7 +251,7 @@ export class InvoiceListComponent implements OnInit {
 
       let result: any = await this.accountService
         .getData(
-          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}`
+          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
         )
         .toPromise();
       // .subscribe(async (result: any) => {
@@ -327,7 +328,7 @@ export class InvoiceListComponent implements OnInit {
       }
       this.accountService
         .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}`
+          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
         )
         .subscribe(async (result: any) => {
           if (result.length === 0) {
@@ -465,6 +466,8 @@ export class InvoiceListComponent implements OnInit {
   fetchCustomersByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.customersObjects = result;
+      console.log(this.customersObjects)
+      console.log(this.invoiceTypeObject)
     });
   }
 
@@ -589,7 +592,8 @@ export class InvoiceListComponent implements OnInit {
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
       this.filter.invNo !== null ||
-      this.filter.customer !== null
+      this.filter.customer !== null ||
+      this.filter.invType !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
       if (this.filter.startDate !== "" && this.filter.endDate === "") {
@@ -631,6 +635,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
+      invType:null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -670,6 +675,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
+      invType:null
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -699,8 +705,39 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
-  generateCSV(){
-
+  async generateCSV(){
+    let searchParam = null;
+    let searchParamOrder=null
+    this.exportLoading=true;
+    if (this.lastItemOrderSK !== "end") {
+      if (
+        this.filter.invNo !== null &&
+        this.filter.invNo !== "" &&
+        this.filter.invNo !== "%22null%22"
+      ) {
+        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+      } else {
+        searchParamOrder = null;
+      }
+    }
+    if (this.filter.invNo !== null && this.filter.invNo !== "") {
+      searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+      searchParam = searchParam.toUpperCase();
+    } else {
+      searchParam = null;
+    }
+    let result: any = await this.accountService
+        .getData(
+          `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+        )
+        .toPromise();
+        let orderInvoice:any=await this.accountService
+        .getData(
+          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+        ).toPromise();
+this.exportLoading=false
+console.log(result)
+console.log(orderInvoice)
   }
   generatePDF(){
 
