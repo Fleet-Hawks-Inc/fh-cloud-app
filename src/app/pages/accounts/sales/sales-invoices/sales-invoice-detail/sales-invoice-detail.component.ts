@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
 import { AccountService, ApiService } from 'src/app/services';
 import * as html2pdf from "html2pdf.js";
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sales-invoice-detail',
@@ -47,7 +48,8 @@ export class SalesInvoiceDetailComponent implements OnInit {
   chargeType: string;
   chargeAmount: string;
   isPDF: boolean = false;
-  constructor(public accountService: AccountService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute) { }
+  emailDisabled = false;
+  constructor(public accountService: AccountService, private toaster: ToastrService, private modalService: NgbModal, public apiService: ApiService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.saleID = this.route.snapshot.params[`saleID`];
@@ -119,6 +121,19 @@ export class SalesInvoiceDetailComponent implements OnInit {
 
     this.saleInvPrev.close();
 
+  }
+
+  async sendConfirmationEmail() {
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`sales-invoice/send/confirmation-email/${this.saleID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.toaster.success("Email sent successfully");
+    } else {
+      this.toaster.error("Something went wrong.");
+    }
   }
 
 }

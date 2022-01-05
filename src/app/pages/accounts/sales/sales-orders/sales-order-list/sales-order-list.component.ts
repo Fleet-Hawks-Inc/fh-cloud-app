@@ -33,8 +33,8 @@ export class SalesOrderListComponent implements OnInit {
       value: 'open'
     },
     {
-      name: 'Issued',
-      value: 'issued'
+      name: 'Sent',
+      value: 'sent'
     },
     {
       name: 'Closed',

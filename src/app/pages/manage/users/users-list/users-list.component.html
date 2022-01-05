@@ -107,11 +107,11 @@
                         >
                         <span *ngIf="user.userLoginData.userRoles">
                           
-                          <span *ngFor="let role of user.userLoginData.userRoles">
-                            {{userRoles[role]}} <span *ngIf="user.userLoginData.userRoles.length>1">,</span>
+                          <span *ngFor="let role of user.userLoginData.userRoles; let i=index">
+                          {{userRoles[role]}}<span *ngIf="user.userLoginData.userRoles.length>1 && i!=user.userLoginData.userRoles.length-1">,</span>
                           </span>
                         </span>
-                         <span *ngIf="!user.userLoginData">
+                         <span *ngIf="!user.userLoginData"> 
                            -
                          </span>
                         </td>
