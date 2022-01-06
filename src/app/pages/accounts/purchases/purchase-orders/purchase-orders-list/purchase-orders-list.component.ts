@@ -28,7 +28,7 @@ export class PurchaseOrdersListComponent implements OnInit {
     private apiService: ApiService,
     private accountService: AccountService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.fetchVendor();
@@ -78,8 +78,8 @@ export class PurchaseOrdersListComponent implements OnInit {
       this.accountService
         .deleteData(`purchase-orders/delete/${data.purchaseID}`)
         .subscribe({
-          complete: () => {},
-          error: () => {},
+          complete: () => { },
+          error: () => { },
           next: (result: any) => {
             this.dataMessage = Constants.FETCHING_DATA;
             this.lastItemSK = "";
