@@ -226,13 +226,8 @@ export class AddSalesOrderComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.salesData.sOrderDetails[i].amount =
-      (this.salesData.sOrderDetails[i].qty
-        ? this.salesData.sOrderDetails[i].qty
-        : 0) *
-      (this.salesData.sOrderDetails[i].rate
-        ? this.salesData.sOrderDetails[i].rate
-        : 0);
+    let amount: any = (this.salesData.sOrderDetails[i].qty ? this.salesData.sOrderDetails[i].qty : 0) * (this.salesData.sOrderDetails[i].rate ? this.salesData.sOrderDetails[i].rate : 0);
+    this.salesData.sOrderDetails[i].amount = parseFloat(amount.toFixed(2));
     this.salesData.sOrderDetails.forEach((element) => {
       total += element.amount;
     });
