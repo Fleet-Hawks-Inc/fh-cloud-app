@@ -1523,6 +1523,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
+    this.orderData.cusConfirmation = this.orderData.cusConfirmation ? this.orderData.cusConfirmation : 'NA';
 
     // create form data instance
     const formData = new FormData();
@@ -2251,7 +2252,7 @@ export class AddOrdersComponent implements OnInit {
           ? result.recptStat
           : false;
         this.orderData["customerID"] = result.customerID;
-        this.orderData.cusConfirmation = result.cusConfirmation;
+        this.orderData.cusConfirmation = result.cusConfirmation == 'NA' ? '' : result.cusConfirmation;
         this.selectedCustomer(result.customerID);
 
         if (result.attachments !== undefined && result.attachments.length > 0) {
@@ -2580,6 +2581,7 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.cusPOs = this.cusPOs;
+    this.orderData.cusConfirmation = this.orderData.cusConfirmation ? this.orderData.cusConfirmation : 'NA';
 
     // create form data instance
     const formData = new FormData();
