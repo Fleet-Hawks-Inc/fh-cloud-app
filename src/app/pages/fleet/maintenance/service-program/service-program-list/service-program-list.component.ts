@@ -40,7 +40,6 @@ export class ServiceProgramListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-  //  this.demo();
     this.initDataTable();
   }
 
@@ -114,13 +113,6 @@ export class ServiceProgramListComponent implements OnInit {
         });
     }
   }
-//   demo() {
-//     this.apiService.getData('servicePrograms/get/suggestions').subscribe((result: any) => {
-//         this.demoData = result;
-//         console.log(this.demoData)
-//     });
-// }
-
   getSuggestions = _.debounce(function (searchvalue) {
     console.log(searchvalue)
     this.suggestions = [];
