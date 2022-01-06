@@ -32,6 +32,7 @@ export class ServiceProgramListComponent implements OnInit {
   suggestions = [];
   data = []
   loaded = false
+  demoData = []
   constructor(
     private apiService: ApiService,
     private spinner: NgxSpinnerService,
@@ -39,6 +40,7 @@ export class ServiceProgramListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+  //  this.demo();
     this.initDataTable();
   }
 
@@ -112,21 +114,27 @@ export class ServiceProgramListComponent implements OnInit {
         });
     }
   }
+//   demo() {
+//     this.apiService.getData('servicePrograms/get/suggestions').subscribe((result: any) => {
+//         this.demoData = result;
+//         console.log(this.demoData)
+//     });
+// }
 
-
-  // getSuggestions = _.debounce(function (searchvalue) {
-  //   this.suggestions = [];
-  //   if (searchvalue !== '') {
-  //     searchvalue = searchvalue.toLowerCase();
-  //     this.apiService.getData('servicePrograms/get/suggestions/' + searchvalue).subscribe({
-  //       complete: () => { },
-  //       error: () => { },
-  //       next: (result: any) => {
-  //         this.suggestions = result;
-  //       }
-  //     })
-  //   }
-  // }, 800)
+  getSuggestions = _.debounce(function (searchvalue) {
+    console.log(searchvalue)
+    this.suggestions = [];
+    if (searchvalue !== '') {
+      searchvalue = searchvalue.toLowerCase();
+      this.apiService.getData('servicePrograms/get/suggestions/' + searchvalue).subscribe({
+        complete: () => { },
+        error: () => { },
+        next: (result: any) => {
+          this.suggestions = result;
+        }
+      })
+    }
+  }, 800)
 
   setData(value) {
     this.programeName = value.trim();

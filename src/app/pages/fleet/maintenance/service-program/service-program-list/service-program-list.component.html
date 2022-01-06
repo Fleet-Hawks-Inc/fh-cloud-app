@@ -8,15 +8,15 @@
                     <div class="row" style="padding-top:10px;">
                         <div class="col-md-3 col-lg-3 pr-1">
                             <div class="input-group input-group-sm mb-3">
-                                <input type="text" name="programeName" [(ngModel)]="programeName" class="form-control"
+                                <input type="text" (input)="getSuggestions($event.target.value)" name="programeName" [(ngModel)]="programeName" class="form-control"
                                     placeholder="Search by program name" >
                             </div>
-                            <!-- <div *ngIf="suggestions?.length > 0" class="result-suggestions">
+                            <div *ngIf="suggestions?.length > 0" class="result-suggestions">
                                 <ul>
                                     <li *ngFor="let data of suggestions" style="cursor: pointer;"
                                         (click)="setData(data.programName)">{{ data.programName }}</li>
                                 </ul>
-                            </div> -->
+                            </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2">
