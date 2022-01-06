@@ -444,7 +444,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.accountService
       .postData("driver-payments", this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -461,7 +461,7 @@ export class AddDriverPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -519,7 +519,7 @@ export class AddDriverPaymentComponent implements OnInit {
     this.accountService
       .putData(`driver-payments/${this.paymentID}`, this.paymentData)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           from(err.error)
             .pipe(
@@ -536,7 +536,7 @@ export class AddDriverPaymentComponent implements OnInit {
               error: () => {
                 this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {

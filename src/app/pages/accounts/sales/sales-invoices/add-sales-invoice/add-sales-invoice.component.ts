@@ -72,8 +72,6 @@ export class AddSalesInvoiceComponent implements OnInit {
 
     total: {
       detailTotal: 0,
-      feeTotal: 0,
-      dedTotal: 0,
       subTotal: 0,
       taxes: 0,
       finalTotal: 0,
@@ -119,7 +117,6 @@ export class AddSalesInvoiceComponent implements OnInit {
   salesOrder = [];
   accounts: any = [];
   customers = [];
-  units = [];
   stateTaxes = [];
 
   customerCredits = []
@@ -140,7 +137,6 @@ export class AddSalesInvoiceComponent implements OnInit {
       this.fetchAccounts();
     }
 
-    this.fetchQuantityUnits();
     this.getCurrentUser();
     this.fetchStateTaxes();
     this.listService.fetchCustomers();
@@ -162,13 +158,6 @@ export class AddSalesInvoiceComponent implements OnInit {
     });
   }
 
-  fetchQuantityUnits() {
-    this.httpClient
-      .get("assets/jsonFiles/quantityTypes.json")
-      .subscribe((data: any) => {
-        this.units = data;
-      });
-  }
 
   fetchCustomer() {
     this.listService.fetchCustomers();
@@ -191,7 +180,8 @@ export class AddSalesInvoiceComponent implements OnInit {
   async calculateAmount(i: number) {
     let total: any = 0;
     if (i != null) {
-      this.saleData.sOrderDetails[i].amount = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
+      let amount: any = this.saleData.sOrderDetails[i].qty * this.saleData.sOrderDetails[i].rate;
+      this.saleData.sOrderDetails[i].amount = parseFloat(amount.toFixed(2));
     }
 
     this.saleData.sOrderDetails.forEach(element => {
@@ -217,8 +207,8 @@ export class AddSalesInvoiceComponent implements OnInit {
       accountID: null,
     }];
     if (ID != undefined) {
-      this.getCustomerCredit(ID);
-      this.getOrders(ID);
+      await this.getCustomerCredit(ID);
+      await this.getOrders(ID);
       this.calculateAmount(null)
       this.calculateFinalTotal();
     }
@@ -294,10 +284,14 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async getOrderDetail(ID: string) {
     let getSaleOrder = this.salesOrder.find(elem => elem.saleID === ID);
-    this.saleData.cusAddressID = getSaleOrder.cusInfo.addressID;
-    this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails]
-    await this.calculateAmount(null);
-    this.calculateFinalTotal();
+    if (getSaleOrder && getSaleOrder != undefined) {
+      this.saleData.cusAddressID = getSaleOrder.cusInfo.addressID;
+      this.saleData.sOrderDetails = [...getSaleOrder.sOrderDetails];
+      await this.calculateAmount(null);
+      this.calculateFinalTotal();
+    }
+
+
   }
 
 
@@ -345,8 +339,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   calculateFinalTotal() {
     this.saleData.total.subTotal =
       Number(this.saleData.total.detailTotal) +
-      Number(this.saleData.total.feeTotal) -
-      Number(this.saleData.total.dedTotal);
+      Number(this.saleData.charges.cAmount)
 
     this.allTax();
     this.saleData.total.finalTotal =
@@ -357,19 +350,19 @@ export class AddSalesInvoiceComponent implements OnInit {
         this.saleData.total.discountAmount = (this.saleData.total.subTotal * this.saleData.charges.discount) / 100;
         this.saleData.total.finalTotal -= this.saleData.total.discountAmount;
       } else {
-        this.saleData.total.discountAmount = this.saleData.total.subTotal - this.saleData.charges.discount;
-        this.saleData.total.finalTotal -= this.saleData.total.discountAmount;
+        this.saleData.total.discountAmount = this.saleData.charges.discount;
+        this.saleData.total.finalTotal = this.saleData.total.subTotal - this.saleData.total.discountAmount;
       }
     }
 
   }
 
   accessorialFeeTotal() {
-    if (this.saleData.charges.cType === "add") {
-      this.saleData.total.feeTotal = Number(this.saleData.charges.cAmount);
-    } else if (this.saleData.charges.cType === "ded") {
-      this.saleData.total.feeTotal = -Number(this.saleData.charges.cAmount);
-    }
+    // if (this.saleData.charges.cType === "add") {
+    //   this.saleData.total.feeTotal = Number(this.saleData.charges.cAmount);
+    // } else if (this.saleData.charges.cType === "ded") {
+    //   this.saleData.total.feeTotal = -Number(this.saleData.charges.cAmount);
+    // }
     this.calculateFinalTotal();
   }
 
@@ -524,7 +517,7 @@ export class AddSalesInvoiceComponent implements OnInit {
         return;
       }
     })
-
+    this.submitDisabled = true;
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {
@@ -564,16 +557,48 @@ export class AddSalesInvoiceComponent implements OnInit {
 
   async fetchSaleInvoice() {
     let result = await this.accountService.getData(`sales-invoice/detail/${this.saleID}`).toPromise();
-    this.saleData = result[0];
+    result = result[0];
+    this.saleData['sInvNo'] = result.sInvNo;
+    this.saleData.txnDate = result.txnDate;
+    this.saleData.currency = result.currency;
+    this.saleData.customerID = result.customerID;
+    this.saleData.cusAddressID = result.cusAddressID;
+    this.saleData.sRef = result.sRef;
+    this.saleData.paymentTerm = result.paymentTerm;
+    this.saleData.dueDate = result.dueDate;
+    this.saleData.salePerson = result.salePerson;
+    this.saleData.creditData = result.creditData;
+    this.saleData.creditIds = result.creditIds;
 
-    // await this.getCustomerCredit(this.saleData.customerID);
-    // await this.getOrders(this.saleData.customerID);
+    this.saleData.charges = result.charges;
+    this.saleData.remarks = result.remarks;
+    this.saleData.total = result.total;
+
     await this.fetchAccounts();
-    this.getOrderDetail(this.saleData.sOrderNo)
-    await this.getCustomerOrders(this.saleData.customerID)
+    await this.getCustomerOrders(result.customerID);
+    this.saleData.sOrderNo = result.sOrderNo;
+    await this.getOrderDetail(result.sOrderNo);
+    this.saleData.sOrderDetails = result.sOrderDetails;
+    this.saleData.creditIds.forEach(elem => {
+      this.customerCredits.map(item => {
+        if (item.creditID === elem) {
+          item.selected = true;
+        }
+      })
+    })
+
+
   }
 
   updateInvoice() {
+    this.customerCredits.forEach(elem => {
+      if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
+        this.toaster.error('Please add credits amount')
+        return;
+      }
+    })
+
+    this.submitDisabled = true;
     this.accountService.putData(`sales-invoice/update/${this.saleID}`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {

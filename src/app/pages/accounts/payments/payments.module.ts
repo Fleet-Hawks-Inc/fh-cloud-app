@@ -185,4 +185,4 @@ const routes: Routes = [
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
   ],
 })
-export class PaymentsModule {}
+export class PaymentsModule { }

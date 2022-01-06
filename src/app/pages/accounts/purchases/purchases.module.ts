@@ -149,4 +149,4 @@ const routes: Routes = [
     InfiniteScrollModule,
   ],
 })
-export class PurchasesModule {}
+export class PurchasesModule { }

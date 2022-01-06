@@ -5,7 +5,7 @@
 
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                        <!-- <div class="col-md-2 col-lg-2 pl-0 pr-0">
+                        <div class="col-md-2 col-lg-2 pl-0 pr-0">
                             <div class="input-group input-group-md mb-3">
                                 <input type="text" autocomplete="off" name="vehicleIdentification"
                                     placeholder="Search vehicle by name" [(ngModel)]="vehicleIdentification"
@@ -18,7 +18,7 @@
                                         {{ suggestedVehicle.vehicleIdentification }}</li>
                                 </ul>
                             </div>
-                        </div> -->
+                        </div>
                         <!-- 
                         <div class="col-md-2 col-lg-2 pr-1">
                             <ng-select (change)="fetchStates($event)" name="category" placeholder="Search by Country">
@@ -57,9 +57,12 @@
                         <div class="col-md-2 col-lg-2">
                             <button type="button" class="btn btn-sm btn-success mr-3"
                                 (click)="searchFilter()">Search</button>
+                            <button class="btn btn-sm btn-success" type="submit" (click)="reset()">
+                                Reset
+                            </button>
                         </div>
 
-                        <div class="col-md-7 col-lg-7 text-right pr-1">
+                        <div class="col-md-5 col-lg-5 text-right pr-1">
 
                             <div class="btn-group flex-wrap ml-2">
                                 <button type="button" class="btn btn-success btn-sm dropdown-toggle"
@@ -67,14 +70,14 @@
                                     Export<span class="caret"></span></button>
                                 <div class="dropdown-menu" role="menu" x-placement="bottom-start"
                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                                    <a class="dropdown-item text-1" (click)="fetchFullExport('US') "  >US</a>
-                                    <a class="dropdown-item text-1"   (click)="fetchFullExport('CAN') " >Canada</a>
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport('US')">US</a>
+                                    <a class="dropdown-item text-1" (click)="fetchFullExport('CAN')">CAN</a>
 
 
                                 </div>
-                              
+
                             </div>
-                         
+
 
                         </div>
 
