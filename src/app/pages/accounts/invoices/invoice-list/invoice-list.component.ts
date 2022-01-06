@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { Router } from "@angular/router";
+import * as moment from 'moment'
 declare var $: any;
 @Component({
   selector: "app-invoice-list",
@@ -37,6 +38,7 @@ export class InvoiceListComponent implements OnInit {
   voidedTotalCAD = 0;
   voidedTotalUSD = 0;
   invoiceTypeObject={all: "all",open:"Open",paid:"paid",partial_paid:"Partial Paid",unpaid:"Unpaid"}
+  allData=[]
   // Order Invoice
   orderInvoices = [];
   openOrderInvoices = [];
@@ -466,8 +468,6 @@ export class InvoiceListComponent implements OnInit {
   fetchCustomersByIDs() {
     this.apiService.getData("contacts/get/list").subscribe((result: any) => {
       this.customersObjects = result;
-      console.log(this.customersObjects)
-      console.log(this.invoiceTypeObject)
     });
   }
 
@@ -705,39 +705,98 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
-  async generateCSV(){
+  async getData(){
+    this.allData=[]
     let searchParam = null;
     let searchParamOrder=null
-    this.exportLoading=true;
-    if (this.lastItemOrderSK !== "end") {
-      if (
-        this.filter.invNo !== null &&
-        this.filter.invNo !== "" &&
-        this.filter.invNo !== "%22null%22"
-      ) {
-        searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
-      } else {
-        searchParamOrder = null;
-      }
-    }
-    if (this.filter.invNo !== null && this.filter.invNo !== "") {
-      searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
-      searchParam = searchParam.toUpperCase();
+    this.lastItemOrderSK=""
+    this.lastItemSK=""
+    if (
+      this.filter.invNo !== null &&
+      this.filter.invNo !== "" &&
+      this.filter.invNo !== "%22null%22"
+    ) {
+      searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
     } else {
-      searchParam = null;
+      searchParamOrder = null;
     }
-    let result: any = await this.accountService
-        .getData(
-          `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
-        )
-        .toPromise();
-        let orderInvoice:any=await this.accountService
-        .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
-        ).toPromise();
-this.exportLoading=false
-console.log(result)
-console.log(orderInvoice)
+  if (this.filter.invNo !== null && this.filter.invNo !== "") {
+    searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
+    searchParam = searchParam.toUpperCase();
+  } else {
+    searchParam = null;
+  }
+  let result: any = await this.accountService
+      .getData(
+        `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+      )
+      .toPromise();
+      if(result && result.length>0){
+        this.allData=this.allData.concat(result)
+      }
+  let orderInvoice:any=await this.accountService
+      .getData(
+        `order-invoice/export?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+      ).toPromise();
+      if(orderInvoice && orderInvoice.length>0){
+        this.allData=this.allData.concat(orderInvoice)
+      }
+  }
+  async generateCSV(){  
+      this.exportLoading=true;
+      let dataObject=[]
+      let csvArray=[]
+
+      try{
+      await this.getData();
+      
+      if(this.allData.length>0){
+        console.log(this.allData)
+        for(const element of this.allData){
+          let obj={}
+          obj["invoice#"]=element.invNo
+          obj["Date"]=element.txnDate
+          obj["Customer"]=this.customersObjects[element.customerID]
+          obj["Order#"]=element.invNo
+          obj["Freight Amount"]=(element.charges!==undefined)?element.charges.freightFee.amount:"-"
+          obj["Tax"]=(element.taxesAmt===undefined)?element.taxAmount:element.taxesAmt
+          obj["Total Amount"]=element.subTotal
+          obj["Amount Received"]=element.amountReceived
+          obj["Balance"]=element.balance
+          obj["Due Date"]=element.invDueDate
+          obj["Invoice Status"]=element.invStatus
+          dataObject.push(obj)
+        }
+        console.log("DataObject",dataObject)
+        let headers = Object.keys(dataObject[0]).join(',')
+        headers += '\n'
+        csvArray.push(headers)
+        for(const element of dataObject){
+          let value=Object.values(element).join(',')
+          value += '\n'
+          csvArray.push(value)
+        }
+        const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-invoice.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    this.exportLoading=false
+      }
+      else{
+        this.toaster.success("No Data Found")
+        this.exportLoading=false
+      }
+    }catch(error){
+      this.exportLoading=false
+    }
   }
   generatePDF(){
 
