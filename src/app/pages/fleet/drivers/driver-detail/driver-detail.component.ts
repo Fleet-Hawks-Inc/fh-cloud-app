@@ -24,7 +24,6 @@ export class DriverDetailComponent implements OnInit {
   Asseturl = this.apiService.AssetUrl;
   environment = environment.isFeatureEnabled;
   platform: any;
-  profile = '';
   driverName: string;
   CDL: string;
   phone: string;
@@ -123,6 +122,7 @@ export class DriverDetailComponent implements OnInit {
   docs = [];
   assetsDocs = [];
   absDocs = [];
+  profile = [];
   documentTypeList: any = [];
   documentsTypesObects: any = {};
   dataMessage = Constants.NO_RECORDS_FOUND;
@@ -355,14 +355,21 @@ export class DriverDetailComponent implements OnInit {
           this.terminationDate = this.driverData.terminationDate;
           this.contractStart = this.driverData.contractStart;
           this.contractEnd = this.driverData.contractEnd;
+          /*
           if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
             this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
           } else {
             this.profile = 'assets/img/driver/driver.png';
           }
+          */  
+          //Presigned URL Using AWS S3
+          this.profile =  this.driverData.uploadImage;
+          this.absDocs = this.driverData.docsAbs;
+          /*
           if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
-            this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
+            //this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
           }
+          */
           this.driverType = this.driverData.driverType;
           this.employeeId = this.driverData.employeeContractorId;
           this.corporationType = this.driverData.corporationType ? this.driverData.corporationType.replace('_', ' ') : '';
@@ -385,8 +392,9 @@ export class DriverDetailComponent implements OnInit {
           let newDocuments = [];
           for (let i = 0; i < this.driverData.documentDetails.length; i++) {
             let docmnt = []
-            if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-              docmnt = this.driverData.documentDetails[i].uploadedDocs;
+           if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
+                this.assetsDocs[i] = this.driverData.docuementUpload;
+             // docmnt = this.driverData.documentDetails[i].uploadedDocs;
             }
             newDocuments.push({
               documentType: this.driverData.documentDetails[i].documentType,
@@ -399,7 +407,8 @@ export class DriverDetailComponent implements OnInit {
               uploadedDocs: docmnt
             });
             if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
-              this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
+                this.assetsDocs[i] = this.driverData.docuementUpload;
+              //this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
             }
           }
           this.documents = newDocuments;

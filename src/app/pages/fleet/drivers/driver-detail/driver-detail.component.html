@@ -1748,10 +1748,10 @@
         </button>
       </div>
       <div class="modal-body text-dark">
-        <div class="row">
+        <div class="row"*ngFor="let item of profile;">
           <div class="col-lg-12">
             <img
-              [src]="profile"
+              [src]="item.path"
               class="img-fluid rounded"
               height="200px"
               width="100%"
