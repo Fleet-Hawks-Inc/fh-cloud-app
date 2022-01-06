@@ -98,7 +98,6 @@ export class UsersListComponent implements OnInit {
   }
   async fetchUserRoles() {
     const data:any=await this.httpClient.get('assets/jsonFiles/user/userRoles.json').toPromise();
-    console.log(data)
 data.forEach(element => {
   this.userRoles[element.role]=element.name
 });
@@ -151,7 +150,6 @@ data.forEach(element => {
     if (this.lastItemSK !== 'end'){
     this.apiService.getData(`contacts/fetch/employee/records?searchValue=${this.contactID}&lastKey=${this.lastItemSK}`)
       .subscribe((result: any) => {
-        console.log('abc', result)
         if (result.Items.length === 0) {
           this.dataMessage = Constants.NO_RECORDS_FOUND;
         }

@@ -60,7 +60,7 @@
                 <div class="col-lg-12">
                   <table class="table table-bordered table-striped mb-0 simple-table">
                     <thead>
-                      <tr class="bgcol2">
+                      <tr class="">
                         <th class="text-2">Date</th>
                         <th class="text-2">Sales Invoice#</th>
                         <th class="text-2">Reference#</th>
@@ -69,18 +69,18 @@
                         <th class="text-2">Amount</th>
                         <th class="text-2">Payment Status</th>
                         <th class="text-2">Status</th>
-                        <!-- <th>Action</th> -->
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngIf="allInvoices.length === 0" class="text-center">
                         <td colspan="9">{{ dataMessage }}</td>
                       </tr>
-                      <tr *ngFor="let item of allInvoices" class="cursorpoint">
+                      <tr *ngFor="let item of allInvoices; let i = index;" class="cursorpoint">
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          {{ item.txnDate | date: 'yyyy/MM/dd' }}
+                          {{ item.txnDate | date: "yyyy/MM/dd" }}
                         </td>
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
@@ -90,7 +90,7 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          {{ item.sRef ? item.sRef : '-' }}
+                          {{ item.sRef ? item.sRef : "-" }}
                         </td>
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
@@ -100,31 +100,34 @@
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          {{ item.dueDate | date: 'yyyy/MM/dd' }}
+                          {{ item.dueDate | date: "yyyy/MM/dd" }}
                         </td>
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          CAD {{ item.total.finalTotal | number : '1.2-2'}}
+                          CAD {{ item.total.finalTotal | number: "1.2-2" }}
                         </td>
 
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-dark p-1  text-uppercase">{{item.payStatus}}</span>
+                          <span class="badge badge-dark p-1 text-uppercase">{{
+                            item.payStatus
+                            }}</span>
                         </td>
                         <td routerLink="/accounts/sales/invoices/detail/{{
                             item.saleID
                           }}">
-                          <span class="badge badge-danger p-1" *ngIf="item.due">{{item.status}}</span>
+                          <span class="badge badge-danger p-1" *ngIf="item.due">{{ item.status }}</span>
                           <span class="badge badge-dark p-1 text-uppercase" *ngIf="!item.due">
                             <span *ngIf="item.status === 'open'">Open</span>
                             <span *ngIf="item.status === 'sent'">Sent</span>
                             <span *ngIf="item.status === 'partially_deducted'">Partially Received</span>
+                            <span *ngIf="item.status === 'voided'">Voided</span>
 
                           </span>
                         </td>
-                        <!-- <td>
+                        <td>
                           <div class="btn-group flex-wrap">
                             <button type="button" class="m-0 p-0 btn" data-toggle="dropdown">
                               <i class="fas fa-ellipsis-v"></i>
@@ -133,22 +136,22 @@
                               <a routerLink="/accounts/sales/invoices/edit/{{
                                 item.saleID
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
+                              <a *ngIf="item.status !== 'open' &&
+                              item.status !== 'sent' && item.status !== 'voided' &&
+                              item.status !== 'partially_deducted'" (click)="voidOrderInvoice(i, item.saleID)"
+                                class="dropdown-item text-1" href="javascript:;">Void</a>
                             </div>
                           </div>
-                        </td> -->
+                        </td>
                       </tr>
                       <tr></tr>
                     </tbody>
                   </table>
                 </div>
-                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' &&
-                      allInvoices.length
-                      !==
-                      0">
-                  <button type="button" class="btn
-                          btn-success
-                          btn-sm text-light" (click)="onScroll()">Load
-                    More..</button>
+                <div class="col-lg-12 mt-3 text-center" *ngIf="lastItemSK !== 'end' && allInvoices.length !== 0">
+                  <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">
+                    Load More..
+                  </button>
                 </div>
               </div>
             </div>

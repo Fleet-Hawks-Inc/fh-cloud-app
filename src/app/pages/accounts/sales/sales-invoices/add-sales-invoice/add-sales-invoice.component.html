@@ -4,7 +4,7 @@
       <header class="page-header">
         <div class="row" style="padding-top: 10px">
           <div class="col-md-4 col-lg-4 font-weight-bold text-4 text-dark">
-            Add Sales Invoice
+            {{pageTitle}} Sales Invoice
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-4">
             <a routerLink="/accounts/sales/invoices/list" class="btn btn-default btn-sm"><i class="fas fa-list"></i> All
@@ -428,11 +428,26 @@
                                     </div>
                                   </div>
                                   <div class="col-lg-6 pl-1">
-                                    <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
-                                      [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event, d)" name="qtyUnit{{ d }}">
-                                      <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name }}
-                                      </ng-option>
-                                    </ng-select>
+                                    <input type="text" class="form-control populate" placeholder="unit type"
+                                      [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event, d)" name="qtyUnit{{ d }}"
+                                      pattern="^[a-zA-Z \-\']+" #unit="ngModel" required name="rateUnit{{ d }}" />
+                                    <div *ngIf="unit.invalid
+                                        &&
+                                        (unit.dirty
+                                        ||
+                                        unit.touched)" class="text-danger">
+                                      <div *ngIf="unit.errors.required">
+                                        Type
+                                        is
+                                        required.
+                                      </div>
+                                      <div *ngIf="unit.errors.pattern">
+                                        Please
+                                        enter
+                                        valid
+                                        type
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </td>
@@ -461,11 +476,26 @@
                                     </div>
                                   </div>
                                   <div class="col-lg-6 pl-1">
-                                    <ng-select [clearable]="false" class="form-control populate" placeholder="unit type"
-                                      [(ngModel)]="dt.rateUnit" (change)="changeUnit($event, d)" name="rateUnit{{ d }}">
-                                      <ng-option *ngFor="let unit of units" value="{{ unit.value }}">{{ unit.name }}
-                                      </ng-option>
-                                    </ng-select>
+                                    <input type="text" class="form-control populate" placeholder="unit type"
+                                      [(ngModel)]="dt.rateUnit" (change)="changeUnit($event, d)" name="rateUnit{{ d }}"
+                                      pattern="^[a-zA-Z \-\']+" #unit="ngModel" required name="qtyUnit{{ d }}" />
+                                    <div *ngIf="unit.invalid
+                                        &&
+                                        (unit.dirty
+                                        ||
+                                        unit.touched)" class="text-danger">
+                                      <div *ngIf="unit.errors.required">
+                                        Type
+                                        is
+                                        required.
+                                      </div>
+                                      <div *ngIf="unit.errors.pattern">
+                                        Please
+                                        enter
+                                        valid
+                                        type
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </td>
@@ -541,7 +571,7 @@
                                           text-4 text-dark
                                         ">Remarks</label>
                                       <textarea class="form-control h-auto" name="remarks"
-                                        [(ngModel)]="saleData.remarks" rows="14"></textarea>
+                                        [(ngModel)]="saleData.remarks" rows="7"></textarea>
                                     </div>
                                   </div>
 
@@ -606,7 +636,7 @@
                                           </div>
                                         </div>
                                       </div>
-                                      <div class="col-lg-3 text-right">
+                                      <div class="col-lg-3 text-left">
                                         <div class="row">
                                           <div class="col-lg-12 pr-0">
                                             <ng-select class="form-control populate"
@@ -751,8 +781,8 @@
                         [disabled]="!saleForm.form.valid || submitDisabled">Save
                         &
                         Send</button>
-                      <button href="javascript:;" *ngIf="saleID" (click)="updateInvoice()"
-                        class="btn btn-success">Update</button>
+                      <button href="javascript:;" [disabled]="!saleForm.form.valid || submitDisabled" *ngIf="saleID"
+                        (click)="updateInvoice()" class="btn btn-success">Update</button>
                     </div>
                   </div>
                 </form>

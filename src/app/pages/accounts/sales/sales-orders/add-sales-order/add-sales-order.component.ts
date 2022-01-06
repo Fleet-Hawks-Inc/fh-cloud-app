@@ -21,7 +21,6 @@ import { ActivatedRoute } from "@angular/router";
 export class AddSalesOrderComponent implements OnInit {
   assetUrl = this.apiService.AssetUrl;
   pageTitle = "Add";
-  stateTaxes = [];
   submitDisabled = false;
 
   salesData: any = {
@@ -45,47 +44,14 @@ export class AddSalesOrderComponent implements OnInit {
         amount: 0,
       },
     ],
-    charges: {
-      remarks: "",
-      cName: "Adjustments",
-      cType: "add",
-      cAmount: 0,
-      taxes: [
-        {
-          name: "GST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "PST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-        {
-          name: "HST",
-          tax: 0,
-          type: "prcnt",
-          amount: 0,
-        },
-      ],
-    },
     total: {
-      detailTotal: 0,
-      feeTotal: 0,
-      dedTotal: 0,
-      subTotal: 0,
-      taxes: 0,
       finalTotal: 0,
     },
-    taxExempt: true,
-    stateTaxID: null,
+
     remarks: "",
   };
 
   customers = [];
-  units = [];
   customerSelected: any = [];
   notOfficeAddress: boolean = false;
 
@@ -132,8 +98,6 @@ export class AddSalesOrderComponent implements OnInit {
       }
     });
 
-    this.fetchStateTaxes();
-    this.fetchQuantityUnits();
     this.listService.fetchCustomers();
     this.getCurrentuser();
 
@@ -226,14 +190,6 @@ export class AddSalesOrderComponent implements OnInit {
     this.salesData.sOrderDetails[i].rateUnit = value;
   }
 
-  fetchQuantityUnits() {
-    this.httpClient
-      .get("assets/jsonFiles/quantityTypes.json")
-      .subscribe((data: any) => {
-        this.units = data;
-      });
-  }
-
   addDetails() {
     let obj = {
       commodity: "",
@@ -259,70 +215,8 @@ export class AddSalesOrderComponent implements OnInit {
   }
 
   deleteDetail(d: number) {
-    this.salesData.total.detailTotal -= this.salesData.sOrderDetails[d].amount;
+    this.salesData.total.finalTotal -= this.salesData.sOrderDetails[d].amount;
     this.salesData.sOrderDetails.splice(d, 1);
-    this.calculateFinalTotal();
-  }
-
-
-
-  accessorialFeeTotal() {
-    if (this.salesData.charges.cType === "add") {
-      this.salesData.total.feeTotal = Number(this.salesData.charges.cAmount);
-    } else if (this.salesData.charges.cType === "ded") {
-      this.salesData.total.feeTotal = -Number(this.salesData.charges.cAmount);
-    }
-    this.calculateFinalTotal();
-  }
-
-  calculateFinalTotal() {
-    this.salesData.total.subTotal =
-      Number(this.salesData.total.detailTotal) +
-      Number(this.salesData.total.feeTotal) -
-      Number(this.salesData.total.dedTotal);
-
-    this.allTax();
-    this.salesData.total.finalTotal =
-      Number(this.salesData.total.subTotal) +
-      Number(this.salesData.total.taxes);
-  }
-
-  taxcalculation(index) {
-    this.salesData.charges.taxes[index].amount =
-      (this.salesData.charges.taxes[index].tax *
-        this.salesData.total.subTotal) /
-      100;
-
-    this.taxTotal();
-  }
-
-  allTax() {
-    let countTax = 0;
-    this.salesData.charges.taxes.forEach((element) => {
-      element.amount = (element.tax * this.salesData.total.subTotal) / 100;
-      countTax += element.amount;
-    });
-    this.salesData.total.taxes = countTax;
-  }
-
-  taxTotal() {
-    this.salesData.total.taxes = 0;
-    this.salesData.charges.taxes.forEach((element) => {
-      this.salesData.total.taxes += Number(element.amount);
-    });
-    this.calculateFinalTotal();
-  }
-
-  async fetchStateTaxes() {
-    let result = await this.apiService.getData("stateTaxes").toPromise();
-    this.stateTaxes = result.Items;
-  }
-
-  taxExempt(value: boolean) {
-    if (value === true) {
-      this.salesData.total.finalTotal = this.salesData.total.subTotal;
-    }
-    this.calculateFinalTotal();
   }
 
   getCurrentuser = async () => {
@@ -330,49 +224,14 @@ export class AddSalesOrderComponent implements OnInit {
     this.salesData.salePerson = `${this.currentUser.firstName} ${this.currentUser.lastName}`;
   };
 
-  async stateSelectChange() {
-    let selected: any = this.stateTaxes.find(
-      (o) => o.stateTaxID == this.salesData.stateTaxID
-    );
-
-    this.salesData.charges.taxes = [];
-
-    this.salesData.charges.taxes = [
-      {
-        name: "GST",
-        tax: selected.GST ? selected.GST : 0,
-      },
-      {
-        name: "HST",
-        tax: selected.HST ? selected.HST : 0,
-      },
-      {
-        name: "PST",
-        tax: selected.PST ? selected.PST : 0,
-      },
-    ];
-    this.calculateFinalTotal();
-
-    // this.tax =
-    //   (parseInt(selected.GST) ? selected.GST : 0) +
-    //   (parseInt(selected.HST) ? selected.HST : 0) +
-    //   (parseInt(selected.PST) ? selected.PST : 0);
-  }
-
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.salesData.sOrderDetails[i].amount =
-      (this.salesData.sOrderDetails[i].qty
-        ? this.salesData.sOrderDetails[i].qty
-        : 0) *
-      (this.salesData.sOrderDetails[i].rate
-        ? this.salesData.sOrderDetails[i].rate
-        : 0);
+    let amount: any = (this.salesData.sOrderDetails[i].qty ? this.salesData.sOrderDetails[i].qty : 0) * (this.salesData.sOrderDetails[i].rate ? this.salesData.sOrderDetails[i].rate : 0);
+    this.salesData.sOrderDetails[i].amount = parseFloat(amount.toFixed(2));
     this.salesData.sOrderDetails.forEach((element) => {
       total += element.amount;
     });
-    this.salesData.total.detailTotal = parseFloat(total);
-    this.calculateFinalTotal();
+    this.salesData.total.finalTotal = parseFloat(total);
   }
 
 
