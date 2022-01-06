@@ -2484,7 +2484,6 @@ export class AddOrdersComponent implements OnInit {
   async updateOrder(type) {
     // this.isSubmit = true;
     // if (!this.checkFormErrors()) return false;
-    console.log('aa gya 1', type)
     this.submitDisabled = true;
     if (this.orderData.zeroRated) {
       this.orderData.taxesInfo.forEach((element) => {
@@ -2496,7 +2495,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
-    console.log('aa gya 1')
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2506,7 +2504,6 @@ export class AddOrdersComponent implements OnInit {
       if (shippers.length == 0) flag = false;
       if (receivers.length == 0) flag = false;
     }
-    console.log('aa gya 2')
     //for location search in listing page
     let selectedLoc = "";
     let newloc = "";
@@ -2548,7 +2545,7 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
-    console.log('aa gya 3')
+
     if (this.isConfirmExist) {
       setTimeout(() => {
         $("html, body").animate(
@@ -2559,8 +2556,6 @@ export class AddOrdersComponent implements OnInit {
       this.submitDisabled = false;
       return;
     }
-
-    console.log('aa gya 4')
 
     for (let i = 0; i < this.orderData.shippersReceiversInfo.length; i++) {
       const element = this.orderData.shippersReceiversInfo[i];
@@ -2585,9 +2580,8 @@ export class AddOrdersComponent implements OnInit {
 
     this.orderData["loc"] = selectedLoc;
     this.orderData.cusPOs = this.cusPOs;
-    console.log('this.orderData.cusConfirmation', this.orderData.cusConfirmation)
-    // this.orderData.cusConfirmation = this.orderData.cusConfirmation ? this.orderData.cusConfirmation : 'NA';
-    console.log('aa gya')
+    this.orderData.cusConfirmation = this.orderData.cusConfirmation ? this.orderData.cusConfirmation : 'NA';
+
     // create form data instance
     const formData = new FormData();
 
