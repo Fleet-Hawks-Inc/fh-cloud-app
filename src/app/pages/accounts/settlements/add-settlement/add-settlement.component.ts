@@ -2463,6 +2463,7 @@ export class AddSettlementComponent implements OnInit {
         this.fuelEnteries = fulArr;
       } else {
         this.trips = this.dummyTrips;
+        this.fuelEnteries = this.allFuelsDumm;
       }
     }
   }
