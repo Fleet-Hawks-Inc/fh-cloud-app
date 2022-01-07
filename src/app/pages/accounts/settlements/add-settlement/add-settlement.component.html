@@ -4,7 +4,7 @@
             <header class="page-header pr19 pl7">
                 <div class="row" style="padding-top:10px;">
                     <div class="col-md-2 col-lg-2">
-                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Settlement</h4>
+                        <h4 class="text-4 mt-0 mb-0 font-weight-bold text-dark">Settlement<span *ngIf="settlementData.setNo"># - {{settlementData.setNo}}</span>  </h4>
                     </div>
                     <div class="col-md-10 col-lg-10 pr-1 text-right">
                         <a routerLink="/accounts/settlements/list" class="btn btn-default btn-sm"><i class="fas
@@ -1200,98 +1200,98 @@
                                         </div> -->
 
                                         <!-- settled fuel expense -->
-                                        <div class="row pt-2" *ngIf="settlementID &&
-                                            settlementData.type == 'driver' ||
-                                            settlementData.type ==
-                                            'owner_operator'">
-                                            <div class="col-lg-10">
-                                                <h4 class="font-weight-bold">Settled
-                                                    Fuel Expenses</h4>
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <table class="table
-                                                    table-bordered">
-                                                    <thead>
-                                                        <tr>
-                                                            <th></th>
-                                                            <th>Date</th>
-                                                            <th>Vehicle</th>
-                                                            <th>Location</th>
-                                                            <th>Card No.</th>
-                                                            <th>Type</th>
-                                                            <th>Quantity</th>
-                                                            <th>Amount</th>
-                                                            <th>Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="text-center" *ngIf="selectedFuelEnteries.length
-                                                            === 0">
-                                                            <td colspan="8">{{
-                                                                noRecordMsg }}</td>
-                                                        </tr>
-                                                        <tr *ngFor="let data of
-                                                            selectedFuelEnteries;
-                                                            let fe=index;">
-                                                            <td>
-                                                                <a href="javascript:;" title="Delete
-                                                                    Entry">
-                                                                    <i class="fa
-                                                                        fa-trash" (click)="delSelectedFuel(data.fuelID,
-                                                                        fe)"></i>
-                                                                </a>
-                                                            </td>
-                                                            <td>{{ data.fuelDate
-                                                                |
-                                                                date:"yyyy/MM/dd"
-                                                                }}</td>
-                                                            <td>{{
-                                                                data.unitNumber
-                                                                }}</td>
-                                                            <td>{{ data.cityName
-                                                                }}, {{
-                                                                data.locationCountry
-                                                                }}</td>
-                                                            <td>
-                                                                {{
-                                                                data.fuelCardNumber
-                                                                }}
-                                                            </td>
-                                                            <td>
-                                                                {{ data.type }}
-                                                                <span *ngIf="data.data.useType">
-                                                                    ({{data.data.useType}})
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ data.quantity
-                                                                }} {{
-                                                                data.unitOfMeasure
-                                                                }}</td>
-                                                            <td>
-                                                                {{ data.subTotal
-                                                                | number :
-                                                                '1.2-2'
-                                                                }}
-                                                                {{ data.currency
-                                                                }}
-                                                                <span *ngIf="data.convert">
-                                                                    ({{data.total
+                                        <div *ngIf="settlementID">
+                                            <div class="row pt-2" *ngIf="settlementData.type == 'driver' ||
+                                                settlementData.type == 'owner_operator'">
+                                                <div class="col-lg-10">
+                                                    <h4 class="font-weight-bold">Settled
+                                                        Fuel Expenses</h4>
+                                                </div>
+                                                <div class="col-lg-12">
+                                                    <table class="table
+                                                        table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Date</th>
+                                                                <th>Vehicle</th>
+                                                                <th>Location</th>
+                                                                <th>Card No.</th>
+                                                                <th>Type</th>
+                                                                <th>Quantity</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-center" *ngIf="selectedFuelEnteries.length
+                                                                === 0">
+                                                                <td colspan="8">{{
+                                                                    noRecordMsg }}</td>
+                                                            </tr>
+                                                            <tr *ngFor="let data of
+                                                                selectedFuelEnteries;
+                                                                let fe=index;">
+                                                                <td>
+                                                                    <a href="javascript:;" title="Delete
+                                                                        Entry">
+                                                                        <i class="fa
+                                                                            fa-trash" (click)="delSelectedFuel(data.fuelID,
+                                                                            fe)"></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{{ data.fuelDate
+                                                                    |
+                                                                    date:"yyyy/MM/dd"
+                                                                    }}</td>
+                                                                <td>{{
+                                                                    data.unitNumber
+                                                                    }}</td>
+                                                                <td>{{ data.cityName
+                                                                    }}, {{
+                                                                    data.locationCountry
+                                                                    }}</td>
+                                                                <td>
+                                                                    {{
+                                                                    data.fuelCardNumber
+                                                                    }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ data.type }}
+                                                                    <span *ngIf="data.data.useType">
+                                                                        ({{data.data.useType}})
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ data.quantity
+                                                                    }} {{
+                                                                    data.unitOfMeasure
+                                                                    }}</td>
+                                                                <td>
+                                                                    {{ data.subTotal
                                                                     | number :
-                                                                    '1.2-2' }}
-                                                                    {{data.billingCurrency}},
-                                                                    1
-                                                                    {{data.billingCurrency}}
-                                                                    =
-                                                                    {{data.convertRate
-                                                                    | number :
-                                                                    '1.2-2' }})
-                                                                </span>
-                                                            </td>
-                                                            <td>{{ data.action
-                                                                }}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                    '1.2-2'
+                                                                    }}
+                                                                    {{ data.currency
+                                                                    }}
+                                                                    <span *ngIf="data.convert">
+                                                                        ({{data.total
+                                                                        | number :
+                                                                        '1.2-2' }}
+                                                                        {{data.billingCurrency}},
+                                                                        1
+                                                                        {{data.billingCurrency}}
+                                                                        =
+                                                                        {{data.convertRate
+                                                                        | number :
+                                                                        '1.2-2' }})
+                                                                    </span>
+                                                                </td>
+                                                                <td>{{ data.action
+                                                                    }}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
 
