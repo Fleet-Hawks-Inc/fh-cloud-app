@@ -140,7 +140,7 @@ export class AddAccountComponent implements OnInit {
     specialCharacters: false,
     length: false
   };
-  siteKey = '6LfFJmkbAAAAAAhQjutsoWWGZ_J7-MeFw5Iw6KRo';
+  siteKey = '6LckOPUdAAAAAInZHt4GWtTfwWJkhUa5RNlH22ud';
   constructor(private apiService: ApiService,
     private toaster: ToastrService,
     private accountService: AccountService,
