@@ -2495,7 +2495,6 @@ export class AddOrdersComponent implements OnInit {
     this.orderData["orderID"] = this.getOrderID;
     this.orderData.orderNumber = this.orderData.orderNumber.toString();
     this.orderData["deletedFiles"] = this.deletedFiles;
-
     let flag = true;
     // check if exiting accoridan has atleast one shipper and one receiver
     for (let k = 0; k < this.finalShippersReceivers.length; k++) {
@@ -2505,7 +2504,6 @@ export class AddOrdersComponent implements OnInit {
       if (shippers.length == 0) flag = false;
       if (receivers.length == 0) flag = false;
     }
-
     //for location search in listing page
     let selectedLoc = "";
     let newloc = "";
@@ -2547,6 +2545,7 @@ export class AddOrdersComponent implements OnInit {
       );
       return false;
     }
+
     if (this.isConfirmExist) {
       setTimeout(() => {
         $("html, body").animate(
@@ -3230,10 +3229,11 @@ export class AddOrdersComponent implements OnInit {
   }
 
   validateConfirmation() {
-    this.isConfirmExist = false;
-    this.submitDisabled = true;
     if (this.orderData.cusConfirmation !== "") {
-      this.orderData.cusConfirmation = this.orderData.cusConfirmation.trim();
+      this.isConfirmExist = false;
+      this.submitDisabled = true;
+
+      this.orderData.cusConfirmation = this.orderData.cusConfirmation ? this.orderData.cusConfirmation.trim() : 'NA';
       this.apiService
         .getData(
           `orders/validate/confirm?value=${this.orderData.cusConfirmation}`
