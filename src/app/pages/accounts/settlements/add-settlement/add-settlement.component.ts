@@ -161,6 +161,8 @@ export class AddSettlementComponent implements OnInit {
   ownerVehicleID = null;
   dummyTrips = [];
   pendingInfo = false;
+  dummyDelEntry = [];
+  allFuelsDumm = [];
 
   constructor(
     private listService: ListService,
@@ -1294,6 +1296,9 @@ export class AddSettlementComponent implements OnInit {
         if (this.settlementData.type === "driver") {
           this.driverId = this.settlementData.entityId;
         }
+        this.prevSelectEntries = this.settlementData.fuelData;
+        this.prevSelectedIds = this.settlementData.fuelIds;
+
         this.fetchSelectedFuelExpenses();
         // this.fetchSelectedTripExpenses();
         this.editDisabled = true;
@@ -1763,7 +1768,6 @@ export class AddSettlementComponent implements OnInit {
       this.toaster.error("Please select settlement");
       return false;
     }
-    // if(this.settlementData.tr)
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;
@@ -2157,7 +2161,17 @@ export class AddSettlementComponent implements OnInit {
       if (this.showFuel === "yes") {
         this.settlementData.fuelAdd = 0;
         this.settlementData.fuelDed = 0;
-        let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
+        this.fuelQuery();
+      }
+    } else {
+      this.fuelEnteries = [];
+      this.settlementData.fuelAdd = 0;
+      this.settlementData.fuelDed = 0;
+    }
+  }
+
+  async fuelQuery() {
+    let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
         let result = await this.apiService
           .getData(
             `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
@@ -2165,6 +2179,7 @@ export class AddSettlementComponent implements OnInit {
           .toPromise();
         if (this.vehicleIds.length > 0) {
           this.fuelEnteries = result;
+          this.fuelEnteries = this.fuelEnteries.concat(this.dummyDelEntry);
           this.fuelEnteries.map(async (elem) => {
             elem.fuelID = elem.data.fuelID;
             elem.fuelDate = elem.data.date;
@@ -2200,6 +2215,7 @@ export class AddSettlementComponent implements OnInit {
               elem.convertRate = convertedValue.rate;
             }
           });
+          this.allFuelsDumm = this.fuelEnteries;
           this.fuelEnteries.sort(function compare(a, b) {
             let dateA: any = new Date(a.fuelDate);
             let dateB: any = new Date(b.fuelDate);
@@ -2210,12 +2226,6 @@ export class AddSettlementComponent implements OnInit {
           this.settlementData.fuelAdd = 0;
           this.settlementData.fuelDed = 0;
         }
-      }
-    } else {
-      this.fuelEnteries = [];
-      this.settlementData.fuelAdd = 0;
-      this.settlementData.fuelDed = 0;
-    }
   }
 
   selectedFuelEntry() {
@@ -2312,7 +2322,18 @@ export class AddSettlementComponent implements OnInit {
   }
 
   delSelectedFuel(fuelID, index) {
-    this.prevSelectEntries = [];
+    // this.prevSelectEntries = [];
+
+    // remove fuel entries from prev Selected
+    let prevInd = this.prevSelectedIds.indexOf(fuelID);
+    this.prevSelectedIds.splice(prevInd, 1);
+    this.prevSelectEntries.map((v) => {
+      if (v.fuelID === fuelID) {
+        let ind = this.prevSelectEntries.indexOf(v);
+        this.prevSelectEntries.splice(ind, 1);
+      }
+    });
+
     if (!this.deletedFuelEnteries.includes(fuelID)) {
       this.deletedFuelEnteries.push(fuelID);
       let ind = this.settlementData.fuelIds.indexOf(fuelID);
@@ -2326,10 +2347,12 @@ export class AddSettlementComponent implements OnInit {
           this.settlementData.fuelData.splice(ind, 1);
         }
       });
-      this.prevSelectEntries = this.settlementData.fuelData;
-      this.prevSelectedIds = this.settlementData.fuelIds;
-      this.settlementData.fuelData = [];
+      // this.prevSelectEntries = this.settlementData.fuelData;
+      // this.prevSelectedIds = this.settlementData.fuelIds;
+      this.fuelTotal();
+      // this.settlementData.fuelData = [];
       this.preFuelEntriesTotal();
+      this.dummyDelEntry.push(this.selectedFuelEnteries[index]);
       this.fuelEnteries.push(this.selectedFuelEnteries[index]);
       this.selectedFuelEnteries.splice(index, 1);
     }
@@ -2350,6 +2373,16 @@ export class AddSettlementComponent implements OnInit {
     this.prevSelectedIds.map((v) => {
       if (!this.settlementData.fuelIds.includes(v)) {
         this.settlementData.fuelIds.push(v);
+      }
+    });
+  }
+
+  fuelTotal() {
+    this.settlementData.fuelData.map((v) => {
+      if (v.action === "add") {
+        this.settlementData.fuelAdd += Number(v.amount);
+      } else if (v.action === "sub") {
+        this.settlementData.fuelDed += Number(v.amount);
       }
     });
   }
@@ -2393,7 +2426,7 @@ export class AddSettlementComponent implements OnInit {
   checkFuelVisibility(event) {
     this.showFuel = event.target.value;
     if (this.showFuel === "yes") {
-      this.fetchFuelExpenses();
+      this.fuelQuery();
     }
   }
 
@@ -2401,8 +2434,7 @@ export class AddSettlementComponent implements OnInit {
     if (this.settlementData.type === "owner_operator") {
       if (
         this.ownerVehicleID &&
-        this.ownerVehicleID.length > 0 &&
-        this.dummyTrips.length > 0
+        this.ownerVehicleID.length > 0
       ) {
         const tripArr = [];
         for (const element of this.dummyTrips) {
@@ -2419,7 +2451,16 @@ export class AddSettlementComponent implements OnInit {
             tripArr.push(element);
           }
         }
+
+        const fulArr = [];
+        for (const iterator of this.allFuelsDumm) {
+          if(this.ownerVehicleID.includes(iterator.unitID)) {
+            fulArr.push(iterator);
+          }
+        }
+
         this.trips = tripArr;
+        this.fuelEnteries = fulArr;
       } else {
         this.trips = this.dummyTrips;
       }
