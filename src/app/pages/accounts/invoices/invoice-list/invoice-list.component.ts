@@ -716,13 +716,12 @@ export class InvoiceListComponent implements OnInit {
       this.filter.invNo !== "" &&
       this.filter.invNo !== "%22null%22"
     ) {
-      searchParamOrder = encodeURIComponent(`"${this.filter.invNo}"`);
+      searchParamOrder = this.filter.invNo
     } else {
       searchParamOrder = null;
     }
   if (this.filter.invNo !== null && this.filter.invNo !== "") {
-    searchParam = encodeURIComponent(`"${this.filter.invNo}"`);
-    searchParam = searchParam.toUpperCase();
+    searchParam =this.filter.invNo
   } else {
     searchParam = null;
   }
