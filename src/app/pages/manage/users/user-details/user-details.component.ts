@@ -39,7 +39,7 @@ export class UserDetailsComponent implements OnInit {
       WCB: '',
       healthCare: ''
     },
-    
+
     adrs: [{
       aType: null,
       cCode: null,
@@ -75,9 +75,9 @@ export class UserDetailsComponent implements OnInit {
       confirmPassword: ''
     }
   };
-    user = { password: '', confirmPassword: '' };
-    userName: any = '';
-    passwordValidation = {
+  user = { password: '', confirmPassword: '' };
+  userName: any = '';
+  passwordValidation = {
     upperCase: false,
     lowerCase: false,
     number: false,
@@ -85,46 +85,46 @@ export class UserDetailsComponent implements OnInit {
     length: false
   };
   newRoles = [];
-    fieldTextType: boolean;
-    cpwdfieldTextType: boolean;
-    errors: {};
-    submitDisabled: boolean = false;
-    hasSuccess: boolean;
-    response:any ='';
+  fieldTextType: boolean;
+  cpwdfieldTextType: boolean;
+  errors: {};
+  submitDisabled: boolean = false;
+  hasSuccess: boolean;
+  response: any = '';
   public userProfileSrc: any = 'assets/img/driver/driver.png';
   constructor(private route: ActivatedRoute, private apiService: ApiService, private router: Router, private toastr: ToastrService,
-              private countryStateCity: CountryStateCityService) { }
+    private countryStateCity: CountryStateCityService) { }
 
   ngOnInit() {
     this.contactID = this.route.snapshot.params[`contactID`];
     this.fetchUserByID();
   }
-  
+
   toggleFieldTextType() {
     this.fieldTextType = !this.fieldTextType;
   }
-  
+
   togglecpwdfieldTextType() {
     this.cpwdfieldTextType = !this.cpwdfieldTextType;
   }
-  
-    pwdModalClose(){
+
+  pwdModalClose() {
     $('#userPasswordModal').modal('hide');
-        this.user = {
-          password: '',
-          confirmPassword: '',
-        }
-   }
-  
+    this.user = {
+      password: '',
+      confirmPassword: '',
+    }
+  }
+
   onChangeHideErrors(fieldname = '') {
     $('[name="' + fieldname + '"]')
       .removeClass('error')
       .next()
       .remove('label');
   }
-  
+
   hideErrors() {
-        from(Object.keys(this.errors))
+    from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .removeClass('error')
@@ -132,16 +132,16 @@ export class UserDetailsComponent implements OnInit {
           .remove('label')
       });
     this.errors = {};
-    }
-    throwErrors() {
-        from(Object.keys(this.errors))
+  }
+  throwErrors() {
+    from(Object.keys(this.errors))
       .subscribe((v) => {
         $('[name="' + v + '"]')
           .after('<label id="' + v + '-error" class="error" for="' + v + '">' + this.errors[v] + '</label>')
           .addClass('error');
       });
-    }
-  
+  }
+
   validatePassword(password) {
     let passwordVerify = passwordStrength(password)
     if (passwordVerify.contains.includes('lowercase')) {
@@ -174,14 +174,14 @@ export class UserDetailsComponent implements OnInit {
       this.passwordValidation.specialCharacters = true;
     }
   }
-  
-    onChangePassword() {
-      this.submitDisabled = false;
-      const data = {
+
+  onChangePassword() {
+    this.submitDisabled = false;
+    const data = {
       userName: this.userName,
       password: this.user.password
-      };
-      this.apiService.postData('drivers/password', data).subscribe({
+    };
+    this.apiService.postData('drivers/password', data).subscribe({
       complete: () => { },
       error: (err: any) => {
         from(err.error)
@@ -214,7 +214,7 @@ export class UserDetailsComponent implements OnInit {
         }
       },
     });
-    
+
   }
 
   fetchUserByID() {
@@ -222,8 +222,18 @@ export class UserDetailsComponent implements OnInit {
       result = result.Items[0];
       result.userLoginData.userRoles.map((v: any) => {
         const role = v.split('_');
-        const newRole = role[1];
-        this.newRoles.push(newRole);
+
+        if (role.length > 2) {
+          if (role[1] === 'view') {
+            role.splice(2, 1, "only");
+          }
+          const newRole = `${role[1]} ${role[2]}`
+          this.newRoles.push(newRole);
+        }
+        else {
+          const newRole = role[1];
+          this.newRoles.push(newRole);
+        }
       });
       this.userData = {
         companyName: result.companyName,
@@ -271,6 +281,6 @@ export class UserDetailsComponent implements OnInit {
       }
     });
   }
-  
-    
+
+
 }
