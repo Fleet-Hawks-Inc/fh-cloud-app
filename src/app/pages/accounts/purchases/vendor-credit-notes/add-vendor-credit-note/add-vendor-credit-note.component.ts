@@ -52,6 +52,11 @@ export class AddVendorCreditNoteComponent implements OnInit {
   creditID: any;
   units = [];
   purchaseOrders = [];
+  filesError = '';
+
+  docs = [];
+  oldDocs = [];
+  removedDocs = [];
 
   constructor(
     private listService: ListService,
@@ -60,7 +65,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
     private location: Location,
     private accountService: AccountService,
     private httpClient: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.creditID = this.route.snapshot.params[`creditID`];
@@ -151,12 +156,13 @@ export class AddVendorCreditNoteComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.creditData.crDetails[i].amount =
+    let amount =
       this.creditData.crDetails[i].qty * this.creditData.crDetails[i].rate;
+    this.creditData.crDetails[i].amount = parseFloat(amount.toFixed(2));
     this.creditData.crDetails.forEach((element) => {
       total += element.amount;
     });
-    this.total = total.toFixed(2);
+    this.total = total;
   }
 
   cancel() {
@@ -164,6 +170,8 @@ export class AddVendorCreditNoteComponent implements OnInit {
   }
 
   addNotes() {
+
+
     for (let i = 0; i < this.creditData.crDetails.length; i++) {
       const element = this.creditData.crDetails[i];
       if (
@@ -181,8 +189,20 @@ export class AddVendorCreditNoteComponent implements OnInit {
 
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
-    this.accountService.postData(`vendor-credits`, this.creditData).subscribe({
-      complete: () => {},
+
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.creditData));
+
+    this.accountService.postData(`vendor-credits`, formData, true).subscribe({
+      complete: () => { },
       error: (err: any) => {
         this.submitDisabled = false;
         from(err.error)
@@ -200,7 +220,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
             error: () => {
               // this.submitDisabled = false;
             },
-            next: () => {},
+            next: () => { },
           });
       },
       next: (res) => {
@@ -225,7 +245,36 @@ export class AddVendorCreditNoteComponent implements OnInit {
         this.creditData.vendorID = result.vendorID;
         this.creditData.crDetails = result.crDetails;
         this.creditData.remarks = result.remarks;
+        this.creditData.docs = result.docs;
         this.total = result.totalAmt;
+
+        if (result.docs && result.docs.length > 0) {
+          result.docs.forEach((x: any) => {
+            let obj: any = {};
+            if (
+              x.storedName.split(".")[1] === "jpg" ||
+              x.storedName.split(".")[1] === "png" ||
+              x.storedName.split(".")[1] === "jpeg"
+            ) {
+              obj = {
+                imgPath: `${x.urlPath}`,
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            } else {
+              obj = {
+                imgPath: "assets/img/icon-pdf.png",
+                docPath: `${x.urlPath}`,
+                displayName: x.displayName,
+                name: x.storedName,
+                ext: x.storedName.split(".")[1],
+              };
+            }
+            this.oldDocs.push(obj);
+          });
+        }
         this.fetchPurchaseOrders();
       });
   }
@@ -233,10 +282,22 @@ export class AddVendorCreditNoteComponent implements OnInit {
   updateNotes() {
     this.submitDisabled = true;
     this.creditData.totalAmt = this.total;
+    this.creditData.removedDocs = this.removedDocs;
+    // create form data instance
+    const formData = new FormData();
+
+    //append docs if any
+    for (let j = 0; j < this.docs.length; j++) {
+      formData.append("docs", this.docs[j]);
+    }
+
+    //append other fields
+    formData.append("data", JSON.stringify(this.creditData));
+
     this.accountService
-      .putData(`vendor-credits/update/${this.creditID}`, this.creditData)
+      .putData(`vendor-credits/update/${this.creditID}`, formData, true)
       .subscribe({
-        complete: () => {},
+        complete: () => { },
         error: (err: any) => {
           this.submitDisabled = false;
           from(err.error)
@@ -254,7 +315,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
               error: () => {
                 // this.submitDisabled = false;
               },
-              next: () => {},
+              next: () => { },
             });
         },
         next: (res) => {
@@ -274,5 +335,56 @@ export class AddVendorCreditNoteComponent implements OnInit {
         .toPromise();
       this.purchaseOrders = result;
     }
+  }
+
+  uploadDocs(documents) {
+    this.filesError = '';
+    this.docs = [];
+    let files = [...documents];
+    let filesSize = 0;
+    if (files.length > 5) {
+      this.toaster.error("Files count limit exceeded");
+      this.filesError = "Files should not be more than 5";
+      return;
+    }
+
+    for (let i = 0; i < files.length; i++) {
+      filesSize += files[i].size / 1024 / 1024;
+      if (filesSize > 10) {
+        this.toaster.error("Files size limit exceeded");
+        this.filesError = 'Files size limit exceeded. Files size should be less than 10mb';
+        return;
+      } else {
+        let name = files[i].name.split(".");
+        let ext = name[name.length - 1].toLowerCase();
+        if (
+          ext == "doc" ||
+          ext == "docx" ||
+          ext == "pdf" ||
+          ext == "jpg" ||
+          ext == "jpeg" ||
+          ext == "png"
+        ) {
+          this.docs.push(files[i]);
+        } else {
+          this.filesError =
+            "Only .doc, .docx, .pdf, .jpg, .jpeg and png files allowed.";
+        }
+      }
+    }
+  }
+
+  deleteDocument(name: string, index: number) {
+    this.oldDocs.filter(elem => {
+      if (elem.displayName === name) {
+        let obj = {
+          storedName: elem.name,
+          displayName: elem.displayName,
+        }
+        this.removedDocs.push(obj);;
+      }
+    })
+
+    this.oldDocs.splice(index, 1);
   }
 }

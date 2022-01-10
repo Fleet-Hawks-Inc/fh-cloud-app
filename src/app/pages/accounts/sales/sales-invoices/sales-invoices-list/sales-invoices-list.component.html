@@ -124,8 +124,9 @@
                             <span *ngIf="item.status === 'sent'">Sent</span>
                             <span *ngIf="item.status === 'partially_deducted'">Partially Received</span>
                             <span *ngIf="item.status === 'voided'">Voided</span>
-
                           </span>
+                          <span class="badge badge-success p-1 text-uppercase ml-1"
+                            *ngIf="item.status === 'sent'">Emailed</span>
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
@@ -136,8 +137,7 @@
                               <a routerLink="/accounts/sales/invoices/edit/{{
                                 item.saleID
                                 }}" class="dropdown-item text-1" href="javascript:;">Edit</a>
-                              <a *ngIf="item.status !== 'open' &&
-                              item.status !== 'sent' && item.status !== 'voided' &&
+                              <a *ngIf="item.status !== 'voided' &&
                               item.status !== 'partially_deducted'" (click)="voidOrderInvoice(i, item.saleID)"
                                 class="dropdown-item text-1" href="javascript:;">Void</a>
                             </div>
