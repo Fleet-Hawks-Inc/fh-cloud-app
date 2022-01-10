@@ -57,7 +57,7 @@ export class AddVendorCreditNoteComponent implements OnInit {
   docs = [];
   oldDocs = [];
   removedDocs = [];
-
+  files: any;
   constructor(
     private listService: ListService,
     private route: ActivatedRoute,

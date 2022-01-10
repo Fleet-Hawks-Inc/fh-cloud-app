@@ -130,7 +130,8 @@
                         </td>
                         <td>
                           <div class="btn-group flex-wrap">
-                            <button type="button" class="m-0 p-0 btn" data-toggle="dropdown">
+                            <button type="button" [disabled]="item.status != 'open'" class="m-0 p-0 btn"
+                              data-toggle="dropdown">
                               <i class="fas fa-ellipsis-v"></i>
                             </button>
                             <div class="dropdown-menu" role="menu">
