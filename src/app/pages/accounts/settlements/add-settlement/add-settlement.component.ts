@@ -2172,60 +2172,74 @@ export class AddSettlementComponent implements OnInit {
 
   async fuelQuery() {
     let veh = encodeURIComponent(JSON.stringify(this.vehicleIds));
-        let result = await this.apiService
-          .getData(
-            `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
-          )
-          .toPromise();
-        if (this.vehicleIds.length > 0) {
-          this.fuelEnteries = result;
-          this.fuelEnteries = this.fuelEnteries.concat(this.dummyDelEntry);
-          this.fuelEnteries.map(async (elem) => {
-            elem.fuelID = elem.data.fuelID;
-            elem.fuelDate = elem.data.date;
-            elem.unitNumber = this.vehicles[elem.unitID];
-            elem.cityName = elem.data.city;
-            elem.locationCountry = elem.data.country;
-            elem.fuelCardNumber = elem.data.cardNo;
-            elem.unitOfMeasure = elem.data.uom;
-            elem.subTotal = elem.data.rBeforeTax
-              ? elem.data.rBeforeTax
-              : elem.data.amt;
-            elem.total = elem.data.amt;
-            elem.billingCurrency = elem.data.currency;
-            elem.add = false;
-            elem.deduction = false;
-            elem.addDisabled = false;
-            elem.subDisabled = false;
-            elem.type = elem.data.type;
-            elem.convert = false;
-            elem.convertRate = 0;
-            elem.currency = this.settlementData.currency;
-            if (
-              this.settlementData.currency !== elem.billingCurrency &&
-              this.settlementData.currency !== undefined
-            ) {
-              elem.convert = true;
-              let convertedValue: any = await this.currencyConverter(
-                elem.billingCurrency,
-                elem.total,
-                elem.fuelDate
-              );
-              elem.subTotal = convertedValue.result;
-              elem.convertRate = convertedValue.rate;
-            }
-          });
-          this.allFuelsDumm = this.fuelEnteries;
-          this.fuelEnteries.sort(function compare(a, b) {
-            let dateA: any = new Date(a.fuelDate);
-            let dateB: any = new Date(b.fuelDate);
-            return dateA - dateB;
-          });
-        } else {
-          this.fuelEnteries = [];
-          this.settlementData.fuelAdd = 0;
-          this.settlementData.fuelDed = 0;
+    let result = await this.apiService
+      .getData(
+        `fuelEntries/get/vehicle/enteries?vehicle=${veh}&start=${this.settlementData.fromDate}&end=${this.settlementData.toDate}`
+      )
+      .toPromise();
+    if (this.vehicleIds.length > 0) {
+      this.fuelEnteries = result;
+      this.fuelEnteries = this.fuelEnteries.concat(this.dummyDelEntry);
+      this.fuelEnteries.map(async (elem) => {
+        elem.fuelID = elem.data.fuelID;
+        elem.fuelDate = elem.data.date;
+        elem.unitNumber = this.vehicles[elem.unitID];
+        elem.cityName = elem.data.city;
+        elem.locationCountry = elem.data.country;
+        elem.fuelCardNumber = elem.data.cardNo;
+        elem.unitOfMeasure = elem.data.uom;
+        elem.subTotal = elem.data.rBeforeTax
+          ? elem.data.rBeforeTax
+          : elem.data.amt;
+        elem.total = elem.data.amt;
+        elem.retailAmount = elem.data.rAmt;
+        elem.billingCurrency = elem.data.currency;
+        elem.add = false;
+        elem.deduction = false;
+        elem.addDisabled = false;
+        elem.subDisabled = false;
+        elem.type = elem.data.type;
+        elem.convert = false;
+        elem.convertRate = 0;
+        elem.currency = this.settlementData.currency;
+        if (
+          this.settlementData.currency !== elem.billingCurrency &&
+          this.settlementData.currency !== undefined
+        ) {
+          elem.convert = true;
+          let convertedValue: any;
+          if (elem.billingCurrency === "USD") {
+            console.log("inside");
+            elem.total = elem.retailAmount;
+            convertedValue = await this.currencyConverter(
+              elem.billingCurrency,
+              elem.retailAmount,
+              elem.fuelDate
+            );
+          } else {
+            elem.total = elem.subTotal;
+            convertedValue = await this.currencyConverter(
+              elem.billingCurrency,
+              elem.subTotal,
+              elem.fuelDate
+            );
+          }
+
+          elem.subTotal = convertedValue.result;
+          elem.convertRate = convertedValue.rate;
         }
+      });
+      this.allFuelsDumm = this.fuelEnteries;
+      this.fuelEnteries.sort(function compare(a, b) {
+        let dateA: any = new Date(a.fuelDate);
+        let dateB: any = new Date(b.fuelDate);
+        return dateA - dateB;
+      });
+    } else {
+      this.fuelEnteries = [];
+      this.settlementData.fuelAdd = 0;
+      this.settlementData.fuelDed = 0;
+    }
   }
 
   selectedFuelEntry() {
@@ -2307,6 +2321,7 @@ export class AddSettlementComponent implements OnInit {
               k.currency = this.settlementData.currency;
               k.subTotal = v.amount;
             } else {
+              k.currency = this.settlementData.currency;
               k.convert = false;
             }
           }
@@ -2432,10 +2447,7 @@ export class AddSettlementComponent implements OnInit {
 
   filterByUnit() {
     if (this.settlementData.type === "owner_operator") {
-      if (
-        this.ownerVehicleID &&
-        this.ownerVehicleID.length > 0
-      ) {
+      if (this.ownerVehicleID && this.ownerVehicleID.length > 0) {
         const tripArr = [];
         for (const element of this.dummyTrips) {
           let flag = false;
@@ -2454,7 +2466,7 @@ export class AddSettlementComponent implements OnInit {
 
         const fulArr = [];
         for (const iterator of this.allFuelsDumm) {
-          if(this.ownerVehicleID.includes(iterator.unitID)) {
+          if (this.ownerVehicleID.includes(iterator.unitID)) {
             fulArr.push(iterator);
           }
         }
