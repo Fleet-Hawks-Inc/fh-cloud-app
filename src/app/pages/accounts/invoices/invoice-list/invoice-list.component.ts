@@ -37,7 +37,7 @@ export class InvoiceListComponent implements OnInit {
   voidedInvoices = [];
   voidedTotalCAD = 0;
   voidedTotalUSD = 0;
-  invoiceTypeObject={all: "all",open:"Open",paid:"paid",partial_paid:"Partial Paid",unpaid:"Unpaid"}
+  invoiceTypeObject={all: "all",open:"Open",paid:"paid",partially_paid:"Partial Paid",unpaid:"Unpaid"}
   allData=[]
   // Order Invoice
   orderInvoices = [];
