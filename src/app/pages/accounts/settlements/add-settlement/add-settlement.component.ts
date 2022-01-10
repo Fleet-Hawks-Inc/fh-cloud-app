@@ -2209,7 +2209,6 @@ export class AddSettlementComponent implements OnInit {
           elem.convert = true;
           let convertedValue: any;
           if (elem.billingCurrency === "USD") {
-            console.log("inside");
             elem.total = elem.retailAmount;
             convertedValue = await this.currencyConverter(
               elem.billingCurrency,
@@ -2351,8 +2350,8 @@ export class AddSettlementComponent implements OnInit {
 
     if (!this.deletedFuelEnteries.includes(fuelID)) {
       this.deletedFuelEnteries.push(fuelID);
-      let ind = this.settlementData.fuelIds.indexOf(fuelID);
-      this.settlementData.fuelIds.splice(ind, 1);
+      // let ind = this.settlementData.fuelIds.indexOf(fuelID);
+      // this.settlementData.fuelIds.splice(ind, 1);
       this.settlementData.fuelAdd = 0;
       this.settlementData.fuelDed = 0;
 
@@ -2364,7 +2363,7 @@ export class AddSettlementComponent implements OnInit {
       });
       // this.prevSelectEntries = this.settlementData.fuelData;
       // this.prevSelectedIds = this.settlementData.fuelIds;
-      this.fuelTotal();
+      // this.fuelTotal();
       // this.settlementData.fuelData = [];
       this.preFuelEntriesTotal();
       this.dummyDelEntry.push(this.selectedFuelEnteries[index]);
@@ -2382,14 +2381,14 @@ export class AddSettlementComponent implements OnInit {
         this.settlementData.fuelDed += Number(v.amount);
       }
     });
-    this.prevSelectEntries.map((v) => {
-      this.settlementData.fuelData.push(v);
-    });
-    this.prevSelectedIds.map((v) => {
-      if (!this.settlementData.fuelIds.includes(v)) {
-        this.settlementData.fuelIds.push(v);
-      }
-    });
+    // this.prevSelectEntries.map((v) => {
+    //   this.settlementData.fuelData.push(v);
+    // });
+    // this.prevSelectedIds.map((v) => {
+    //   if (!this.settlementData.fuelIds.includes(v)) {
+    //     this.settlementData.fuelIds.push(v);
+    //   }
+    // });
   }
 
   fuelTotal() {
