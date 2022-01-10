@@ -165,7 +165,7 @@
                                             <td colspan="15">{{dataMessage}}</td>
                                         </tr>
                                         <tr *ngFor="let item of vehicle">
-                                            <td>{{vehiclesObject[item.unitID]}}</td>
+                                            <td>{{item.vehicle}}</td>
                                             <td>{{item.data.cardNo}}</td>
                                             <td>{{item.data.type}}</td>
                                             <td>{{item.data.date |
@@ -213,43 +213,26 @@
                                             <td colspan="15">{{dataMessage}}</td>
                                         </tr>
                                         <tr *ngFor="let item of serviceLogName">
-                                            <td>{{vehiclesObject[item.unitID]}}</td>
+                                            <td>{{item.vehicle}}</td>
                                             <td>{{item.completionDate}}</td>
                                             <td>
                                                 <div>
-                                                    <span class="font-weight-bold">Service
-                                                        Task(s):
+                                                    <span class="font-weight-bold">Service Task(s):
                                                     </span>
-                                                    <span *ngFor="let
-                                                        task
-                                                        of
-                                                        item.allServiceTasks.serviceTaskList;let
-                                                        j=
-                                                        index;
-                                                        let
-                                                        $last=
-                                                        last">{{task.taskName
-                                                        ?
-                                                        task.taskName
-                                                        :
-                                                        '-'}}<span *ngIf="!$last" class="list-format">,
+                                                    <span
+                                                        *ngFor="let task of item.allServiceTasks.serviceTaskList;let j=index; let $last=last">{{task.taskName
+                                                        ? task.taskName : '-'}}
+                                                        <span *ngIf="!$last" class="list-format">,
                                                         </span>
                                                     </span>
-                                                    <span *ngIf="item.allServiceTasks.serviceTaskList
-                                                        ==
-                                                        0;">-
+                                                    <span *ngIf="item.allServiceTasks.serviceTaskList == 0;">-
                                                     </span>
                                                 </div>
                                                 <div>
                                                     <span class="font-weight-bold">Issue(s):
                                                     </span>
-                                                    <a class="text-info
-                                                        font-size-12" *ngFor="let
-                                                        issue
-                                                        of
-                                                        item.selectedIssues;let
-                                                        $last=
-                                                        last">
+                                                    <a class="text-info font-size-12"
+                                                        *ngFor="let issue of item.selectedIssues;let $last= last">
                                                         <span>{{issuesObject[issue]}}</span>
                                                         <span *ngIf="!$last" class="list-format">,
                                                         </span>

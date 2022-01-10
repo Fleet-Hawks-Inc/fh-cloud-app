@@ -17,7 +17,7 @@ import { AccountService } from "src/app/services";
   styleUrls: ['./expense.component.css']
 })
 export class ExpenseComponent implements OnInit {
-
+  data = []
   allData = [];
   vehicleData = []
   startDate = '';
@@ -62,8 +62,9 @@ export class ExpenseComponent implements OnInit {
   };
   serviceLogName = []
   payment = []
-  driver = []
-  entityId
+  driver: any = []
+  finalAmount = ''
+  entityId: any
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
   }
@@ -72,25 +73,30 @@ export class ExpenseComponent implements OnInit {
     this.end = moment().format("YYYY-MM-DD");
     this.start = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.vehicleId = this.route.snapshot.params[`vehicleId`];
-
-
     this.fetchVehicleListing();
     this.fetchVehicleName();
-    this.fetchAllVehiclesIDs();
     this.fetchAllIssuesIDs()
     this.fetchFuelVehicles();
     this.fetchServiceLogName();
-    this.fetchDrivers();
-    this.fetchDriverByTrip();
+
     this.fetchSettlement();
+
   }
 
 
   fetchDriverByTrip() {
-    // console.log("driver===", this.paymentID)
-    this.accountService.getData(`driver-payments/get/driver/enitity/expense`).subscribe((result: any) => {
+    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`).subscribe((result: any) => {
       this.payments = result
-      console.log("payment", this.payments)
+      // for (var i = 0; i < this.driver.length; i++) {
+      //   for (var j = 0; j < this.driver.length; j++) {
+      //     if (i != j) {
+      //       if (this.driver[i] == this.driver[j]) {
+      //         return true; // means there are duplicate values
+      //       }
+      //     }
+      //   }
+      // }
+      // return false; // means there are no duplicate values.
     })
   }
   fetchSettlement() {
@@ -101,17 +107,6 @@ export class ExpenseComponent implements OnInit {
       });
   }
 
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.driverList = result;
-    });
-  }
-
-  fetchAllVehiclesIDs() {
-    this.apiService.getData("vehicles/get/list").subscribe((result: any) => {
-      this.vehiclesObject = result;
-    });
-  }
 
   fetchAllIssuesIDs() {
     this.apiService.getData("issues/get/list").subscribe((result: any) => {
@@ -144,7 +139,6 @@ export class ExpenseComponent implements OnInit {
           this.dataMessage = Constants.NO_RECORDS_FOUND
         }
         this.allData = this.allData.concat(result.Items)
-        console.log("allData", this.allData)
         for (let veh of this.allData) {
           let dataa = veh
           veh.miles = 0
@@ -156,12 +150,12 @@ export class ExpenseComponent implements OnInit {
             this.driver.push(driv)
           }
         }
-
-        console.log("driver", this.driver)
-
+        this.fetchDriverByTrip();
         if (result.LastEvaluatedKey !== undefined) {
+
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
           this.datee = encodeURIComponent(result.Items[result.Items.length - 1].dateCreated)
+
         }
         else {
           this.lastItemSK = 'end';
@@ -169,6 +163,7 @@ export class ExpenseComponent implements OnInit {
         this.loaded = true;
       });
     }
+
   }
   onScroll() {
     if (this.loaded) {
