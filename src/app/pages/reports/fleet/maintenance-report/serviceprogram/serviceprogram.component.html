@@ -90,54 +90,76 @@
         </form>
       </header>
 
-			<div class="row text-dark">
-				<div class="col">
-					<div class="card">
-						<div class="card-body bor-radius0px">
-							<!--Vehicle Div-->
-							<div id="ifta-report-distance-vehicle-div">
-								<section class="reports_div">
-							     <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
-                                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
-									<table class="table reports_small_div">
-										<thead>
-											<tr class="back-color-gray">
-												<th>Vehicle</th>
-												<th>Service Program Name</th>
-												<th>Description</th>
-											</tr>
-										</thead>
-										<tbody>
-											 <tr *ngIf="serviceProgramList.length == 0" class="text-center">
-                                                                        <td colspan="3">{{dataMessage}}</td>
-                                                                    </tr>
-											<tr *ngFor = "let item of serviceProgramList">
-									
-												<td>
-													<span *ngFor = "let vehicle of item.vehicles; let i = index" >
-													  {{vehicles[vehicle]}}{{i !== item.vehicles.length - 1 ? ', ': ''}}
-													</span>
-												</td>
-												<td>{{item.programName}}</td>
-												<td>{{item.description}}</td>
-											</tr>
-										</tbody>
-									</table>
-								<div class="row mt-3 dtPaginate">
-                                                    <div class="col-lg-12 mt-3 text-center"
-                                                        *ngIf="lastItemSK !== 'end' && serviceProgramList.length !== 0">
-                                                        <button type="button" (click)="onScroll()"
-                                                            class="btn btn-success btn-sm text-light">Load
-                                                            More ...</button>
-                                                    </div>
-                                </div>
-							  </div>
-							</section>
-						   </div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
+      <div class="row text-dark">
+        <div class="col">
+          <div class="card">
+            <div class="card-body bor-radius0px">
+              <!--Vehicle Div-->
+              <div id="ifta-report-distance-vehicle-div">
+                <section class="reports_div">
+                  <div
+                    infiniteScroll
+                    [infiniteScrollDistance]="1"
+                    [infiniteScrollUpDistance]="1"
+                    [infiniteScrollThrottle]="5"
+                    (scrolled)="onScroll()"
+                  >
+                    <table class="table reports_small_div">
+                      <thead>
+                        <tr class="">
+                          <th>Vehicle</th>
+                          <th>Service Program Name</th>
+                          <th>Description</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          *ngIf="serviceProgramList.length == 0"
+                          class="text-center"
+                        >
+                          <td colspan="3">{{ dataMessage }}</td>
+                        </tr>
+                        <tr *ngFor="let item of serviceProgramList">
+                          <td>
+                            <span
+                              *ngFor="
+                                let vehicle of item.vehicles;
+                                let i = index
+                              "
+                            >
+                              {{ vehicles[vehicle]
+                              }}{{ i !== item.vehicles.length - 1 ? ", " : "" }}
+                            </span>
+                          </td>
+                          <td>{{ item.programName }}</td>
+                          <td>{{ item.description }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="row mt-3 dtPaginate">
+                      <div
+                        class="col-lg-12 mt-3 text-center"
+                        *ngIf="
+                          lastItemSK !== 'end' &&
+                          serviceProgramList.length !== 0
+                        "
+                      >
+                        <button
+                          type="button"
+                          (click)="onScroll()"
+                          class="btn btn-success btn-sm text-light"
+                        >
+                          Load More ...
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </section>
