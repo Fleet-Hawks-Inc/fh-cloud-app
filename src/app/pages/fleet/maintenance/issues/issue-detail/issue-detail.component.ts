@@ -84,7 +84,8 @@ export class IssueDetailComponent implements OnInit {
     this.apiService
       .getData('issues/' + this.issueID)
       .subscribe((result: any) => {
-        result = result.Items[0];
+        result = result[0];
+        // console.log('reult',result)
         this.issueID = this.issueID;
         this.issueName = result.issueName;
         this.unitID = result.unitID;

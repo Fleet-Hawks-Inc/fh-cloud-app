@@ -130,20 +130,20 @@ export class IssueListComponent implements OnInit {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
-          if (result.Items.length === 0) {
+          if (result.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestedIssues = [];
-          if (result.Items.length > 0) {
+          if (result.length > 0) {
 
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].issueID);
+              this.lastEvaluatedKey = encodeURIComponent(result[result.length - 1].issueID);
             }
             else {
               this.lastEvaluatedKey = 'end'
             }
-            this.issues = this.issues.concat(result.Items)
+            this.issues = this.issues.concat(result)
 
             this.loaded = true;
           }
