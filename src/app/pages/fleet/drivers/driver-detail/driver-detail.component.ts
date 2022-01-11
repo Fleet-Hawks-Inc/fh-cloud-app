@@ -122,7 +122,7 @@ export class DriverDetailComponent implements OnInit {
     docs = [];
     assetsDocs = [];
     absDocs = [];
-    profile = [];
+    profile:any = [];
     documentTypeList: any = [];
     documentsTypesObects: any = {};
     dataMessage = Constants.NO_RECORDS_FOUND;
@@ -358,20 +358,17 @@ export class DriverDetailComponent implements OnInit {
                     this.terminationDate = this.driverData.terminationDate;
                     this.contractStart = this.driverData.contractStart;
                     this.contractEnd = this.driverData.contractEnd;
-                    /*
+                    
                     if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
-                        this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
+                          this.profile =  this.driverData.uploadImage;
+                        //this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
                     } else {
-                        this.profile = 'assets/img/driver/driver.png';
+                          this.profile = 'assets/img/driver/driver.png';
                     }
                     if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
-                        this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
+                          this.absDocs = this.driverData.docsAbs;
+                        //this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
                     }
-                    */
-                      //Presigned URL Using AWS S3
-                    this.profile =  this.driverData.uploadImage;
-                    this.absDocs = this.driverData.docsAbs;
-                    
                     this.driverType = this.driverData.driverType;
                     this.employeeId = this.driverData.employeeContractorId;
                     this.corporationType = this.driverData.corporationType ? this.driverData.corporationType.replace('_', ' ') : '';
