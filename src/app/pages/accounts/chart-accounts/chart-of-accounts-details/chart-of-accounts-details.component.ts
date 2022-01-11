@@ -46,6 +46,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     endDate: null,
   };
   merged = {};
+  lastKey = "";
   constructor(
     private accountService: AccountService,
     private toaster: ToastrService,
@@ -58,7 +59,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     this.actID = this.route.snapshot.params[`actID`];
     if (this.actID) {
       this.fetchAccount();
-      this.fetchAccountClassByIDs();
     }
   }
   fetchAccountClassByIDs() {
@@ -100,11 +100,17 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       }
     });
   }
+
   fetchAccount() {
     this.accountService
       .getData(`chartAc/account/${this.actID}`)
       .subscribe((res) => {
         this.account = res;
+        if (!this.account.isFeatEnabled) {
+          this.fetchAccountClassByIDs();
+        }
+
+        // -----
         this.account[`first`] = this.account.actName.substring(
           0,
           this.account.actName.indexOf(" ")
@@ -189,6 +195,24 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
           this.account.closingAmtUSD < 0
         ) {
           this.periodVarianceUSD = -1 * +this.account.closingAmtUSD.toFixed(2);
+        }
+      });
+  }
+
+  logsCADPaging() {
+    this.accountService
+      .getData(
+        `chartAc/logs/pagination/CAD/${this.actID}?lastkey=${this.lastKey}`
+      )
+      .subscribe((res) => {
+        console.log("res pagination", res);
+        // this.account = res;
+        if (res.length > 0) {
+          if (res[res.length - 1].sk !== undefined) {
+            this.lastKey = encodeURIComponent(res[res.length - 1].sk);
+          } else {
+            this.lastKey = "end";
+          }
         }
       });
   }
@@ -328,4 +352,105 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
         }
       });
   }
+
+  onScroll() {
+    console.log("scroll");
+    this.logsCADPaging();
+  }
+
+  // fetchAccount() {
+  //   this.accountService
+  //     .getData(`chartAc/account/${this.actID}`)
+  //     .subscribe((res) => {
+  //       this.account = res;
+  //       if(!this.account.isFeatEnabled) {
+  //         this.fetchAccountClassByIDs();
+  //       }
+  //       this.account[`first`] = this.account.actName.substring(
+  //         0,
+  //         this.account.actName.indexOf(" ")
+  //       );
+  //       this.account[`last`] = this.account.actName.substring(
+  //         this.account.actName.indexOf(" ") + 1,
+  //         this.account.actName.length
+  //       );
+  //       for (const element of this.account.transactionLogCAD) {
+  //         element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+  //       }
+  //       for (const element of this.account.transactionLogUSD) {
+  //         element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+  //       }
+  //       if (this.account.closingAmtCAD > this.account.opnBalCAD) {
+  //         this.periodVarianceCAD = +(
+  //           this.account.closingAmtCAD - this.account.opnBalCAD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalCAD > this.account.closingAmtCAD &&
+  //         this.account.closingAmtCAD === 0
+  //       ) {
+  //         this.periodVarianceCAD = +(
+  //           this.account.opnBalCAD - this.account.closingAmtCAD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalCAD > this.account.closingAmtCAD &&
+  //         this.account.closingAmtCAD > 0
+  //       ) {
+  //         this.periodVarianceCAD = +(
+  //           this.account.opnBalCAD - this.account.closingAmtCAD
+  //         ).toFixed(2);
+  //       } else if (this.account.opnBalCAD === this.account.closingAmtCAD) {
+  //         this.periodVarianceCAD = +(
+  //           this.account.closingAmtCAD - this.account.opnBalCAD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.closingAmtCAD < 0 &&
+  //         this.account.opnBalCAD > 0
+  //       ) {
+  //         this.periodVarianceCAD = +(
+  //           this.account.opnBalCAD + this.account.closingAmtCAD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalCAD === 0 &&
+  //         this.account.closingAmtCAD < 0
+  //       ) {
+  //         this.periodVarianceCAD = -1 * +this.account.closingAmtCAD.toFixed(2);
+  //       }
+
+  //       if (this.account.closingAmtUSD > this.account.opnBalUSD) {
+  //         this.periodVarianceUSD = +(
+  //           this.account.closingAmtUSD - this.account.opnBalUSD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalUSD > this.account.closingAmtUSD &&
+  //         this.account.closingAmtUSD === 0
+  //       ) {
+  //         this.periodVarianceUSD = +(
+  //           this.account.opnBalUSD - this.account.closingAmtUSD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalUSD > this.account.closingAmtUSD &&
+  //         this.account.closingAmtUSD > 0
+  //       ) {
+  //         this.periodVarianceUSD = +(
+  //           this.account.opnBalUSD - this.account.closingAmtUSD
+  //         ).toFixed(2);
+  //       } else if (this.account.opnBalUSD === this.account.closingAmtUSD) {
+  //         this.periodVarianceUSD = +(
+  //           this.account.closingAmtUSD - this.account.opnBalUSD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.closingAmtUSD < 0 &&
+  //         this.account.opnBalUSD > 0
+  //       ) {
+  //         this.periodVarianceUSD = +(
+  //           this.account.opnBalUSD + this.account.closingAmtUSD
+  //         ).toFixed(2);
+  //       } else if (
+  //         this.account.opnBalUSD === 0 &&
+  //         this.account.closingAmtUSD < 0
+  //       ) {
+  //         this.periodVarianceUSD = -1 * +this.account.closingAmtUSD.toFixed(2);
+  //       }
+  //     });
+  // }
 }
