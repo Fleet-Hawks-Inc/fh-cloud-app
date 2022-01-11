@@ -1,9 +1,11 @@
 import { AccountService, ApiService } from "../../../../services";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild,TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { Router } from "@angular/router";
 import * as moment from 'moment'
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import * as html2pdf from "html2pdf.js";
 declare var $: any;
 @Component({
   selector: "app-invoice-list",
@@ -11,6 +13,8 @@ declare var $: any;
   styleUrls: ["./invoice-list.component.css"],
 })
 export class InvoiceListComponent implements OnInit {
+  @ViewChild("previewInvoiceModal", { static: true }) previewInvoiceModal:TemplateRef<any>;
+
   dataMessage = Constants.NO_RECORDS_FOUND;
   invoices = [];
   fetchedManualInvoices = [];
@@ -66,12 +70,14 @@ export class InvoiceListComponent implements OnInit {
   invoicesUSD = [];
   overdueTotalCAD = 0;
   overdueTotalUSD = 0;
+  preview:any;
 
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -750,7 +756,6 @@ export class InvoiceListComponent implements OnInit {
       await this.getData();
       
       if(this.allData.length>0){
-        console.log(this.allData)
         for(const element of this.allData){
           let obj={}
           obj["invoice#"]=element.invNo
@@ -766,7 +771,6 @@ export class InvoiceListComponent implements OnInit {
           obj["Invoice Status"]=element.invStatus
           dataObject.push(obj)
         }
-        console.log("DataObject",dataObject)
         let headers = Object.keys(dataObject[0]).join(',')
         headers += '\n'
         csvArray.push(headers)
@@ -797,7 +801,33 @@ export class InvoiceListComponent implements OnInit {
       this.exportLoading=false
     }
   }
+
+  async openPDFPreview(){
+    this.exportLoading=true
+    await this.getData();
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "preview"
+    };
+    this.preview = this.modalService.open(this.previewInvoiceModal,
+      ngbModalOptions
+    )
+    this.exportLoading=false
+  }
   generatePDF(){
+    let data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0,
+      pagebreak: { mode: "avoid-all" },
+      filename: "invoice.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2Canvas: {
+        dpi: 200,
+        letterRendering: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
+    })
+    $("#previewInvoiceModal").modal("hide");
 
   }
 }
