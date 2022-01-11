@@ -147,7 +147,7 @@
                     <section class="reports_div">
                       <table class="table table-bordered table-striped">
                         <thead>
-                          <tr class="back-color-gray">
+                          <tr class="">
                             <th>Contact</th>
                             <th>Contact Renewal Type</th>
                             <th>Send Reminder</th>
@@ -167,20 +167,12 @@
                             </td>
                             <td>
                               <span
-                                class="
-                                  text-warning
-                                  font-weight-bold font-size-12
-                                  text-uppercase
-                                "
+                                class="text-warning font-weight-bold font-size-12 text-uppercase"
                                 *ngIf="item.status === 'dueSoon'"
                                 >{{ item.status }}<br
                               /></span>
                               <span
-                                class="
-                                  text-danger
-                                  font-weight-bold font-size-12
-                                  text-uppercase
-                                "
+                                class="text-danger font-weight-bold font-size-12 text-uppercase"
                                 *ngIf="item.status === 'overdue'"
                                 >{{ item.status }}<br
                               /></span>

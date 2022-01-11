@@ -429,8 +429,9 @@
                                   </div>
                                   <div class="col-lg-6 pl-1">
                                     <input type="text" class="form-control populate" placeholder="unit type"
-                                      [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event, d)" name="qtyUnit{{ d }}"
-                                      pattern="^[a-zA-Z \-\']+" #unit="ngModel" required name="rateUnit{{ d }}" />
+                                      [(ngModel)]="dt.qtyUnit" (change)="changeUnit($event.target.value, d)"
+                                      name="qtyUnit{{ d }}" pattern="^[a-zA-Z \-\']+" #unit="ngModel" required
+                                      name="rateUnit{{ d }}" />
                                     <div *ngIf="unit.invalid
                                         &&
                                         (unit.dirty
@@ -477,8 +478,9 @@
                                   </div>
                                   <div class="col-lg-6 pl-1">
                                     <input type="text" class="form-control populate" placeholder="unit type"
-                                      [(ngModel)]="dt.rateUnit" (change)="changeUnit($event, d)" name="rateUnit{{ d }}"
-                                      pattern="^[a-zA-Z \-\']+" #unit="ngModel" required name="qtyUnit{{ d }}" />
+                                      [(ngModel)]="dt.rateUnit" (change)="changeUnit($event.target.value, d)"
+                                      name="rateUnit{{ d }}" pattern="^[a-zA-Z \-\']+" #unit="ngModel" required
+                                      name="qtyUnit{{ d }}" />
                                     <div *ngIf="unit.invalid
                                         &&
                                         (unit.dirty

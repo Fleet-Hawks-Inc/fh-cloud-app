@@ -209,8 +209,8 @@ export class AddSalesInvoiceComponent implements OnInit {
     if (ID != undefined) {
       await this.getCustomerCredit(ID);
       await this.getOrders(ID);
-      this.calculateAmount(null)
-      this.calculateFinalTotal();
+      await this.calculateAmount(null)
+      await this.calculateFinalTotal();
     }
 
   }
@@ -336,7 +336,7 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
 
-  calculateFinalTotal() {
+  async calculateFinalTotal() {
     this.saleData.total.subTotal =
       Number(this.saleData.total.detailTotal) +
       Number(this.saleData.charges.cAmount)
@@ -511,13 +511,17 @@ export class AddSalesInvoiceComponent implements OnInit {
   }
 
   addInvoice() {
-    this.customerCredits.forEach(elem => {
+    this.submitDisabled = true;
+
+    for (const elem of this.customerCredits) {
       if (elem.selected && (elem.paidAmount === 0 || elem.paidAmount === '')) {
         this.toaster.error('Please add credits amount')
-        return;
+        this.submitDisabled = false;
+        return false;
       }
-    })
-    this.submitDisabled = true;
+    };
+
+
     this.accountService.postData(`sales-invoice`, this.saleData).subscribe({
       complete: () => { },
       error: (err: any) => {
