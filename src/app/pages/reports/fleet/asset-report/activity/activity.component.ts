@@ -86,6 +86,7 @@ export class ActivityComponent implements OnInit {
              });
     }
   }
+  
   searchFilter() {
     if (this.start != null && this.end != null) {
       if (this.start != null && this.end == null) {
@@ -108,6 +109,7 @@ export class ActivityComponent implements OnInit {
       return false;
     }
   }
+  
   fetchFullExport() {
     this.apiService.getData(`trips/fetch/assetActivity/list?asset=${this.astId}&startDate=${this.start}&endDate=${this.end}`).subscribe((result: any) => {
       this.exportData = this.allData;
@@ -121,6 +123,7 @@ export class ActivityComponent implements OnInit {
       this.generateCSV();
     });
   }
+  
   generateCSV() {
     if (this.exportData.length > 0) {
       let dataObject = []
