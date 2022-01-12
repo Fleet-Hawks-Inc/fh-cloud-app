@@ -130,6 +130,7 @@ export class IssueListComponent implements OnInit {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
+          // console.log('result', result)
           if (result.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
