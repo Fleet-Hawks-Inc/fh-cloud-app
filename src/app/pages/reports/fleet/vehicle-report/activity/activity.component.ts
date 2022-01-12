@@ -168,10 +168,10 @@ export class ActivityComponent implements OnInit {
                             obj["location"] = location;
                             obj["Date"] = date;
                             obj["Province(US)"] = usState;
-                            obj["US Province Miles"] = usMiles;
+                            obj["US Miles"] = usMiles;
                             obj["US(Total)"] = element.usMiles;
                             obj["Province(Canada)"] = canState; 
-                            obj["Canada Total Miles"] = canMiles;
+                            obj["Canada Miles"] = canMiles;
                             obj["Canada(Total)"] = element.canMiles;
                             obj["Total Miles"] = element.miles;
                             dataObject.push(obj)
