@@ -7,7 +7,7 @@
             <div class="col-lg-10 col-md-10">
               <div class="row">
                 <div class="col-md-2 col-lg-2 pr-0">
-                  <ng-select [(ngModel)]="filter.type" (change)="UnitTypeChange()" name="SettlementType"
+                  <ng-select [(ngModel)]="filter.type" (change)="unitTypeChange()" name="SettlementType"
                     placeholder="Select type">
                     <ng-option value="settlementNo">Settlement Number</ng-option>
                     <ng-option value="driver">Driver</ng-option>
@@ -17,8 +17,8 @@
                 </div>
                 <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'settlementNo'">
                   <div class="input-group input-group-md mb-3">
-                    <input type="text" class="form-control" placeholder="Search by settlement#" name="settlementNo"
-                      [(ngModel)]="filter.searchValue" />
+                    <input type="text" class="form-control" placeholder="Search by settlement number"
+                      name="settlementNo" [(ngModel)]="filter.searchValue" />
                   </div>
                 </div>
                 <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'driver'">

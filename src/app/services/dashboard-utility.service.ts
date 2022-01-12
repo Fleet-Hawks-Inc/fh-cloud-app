@@ -11,6 +11,7 @@ export class DashboardUtilityService {
   public refreshContacts = true;
   public refreshInternalCarriers = true;
   public refreshOwnerOperators = true;
+  public refreshEmployees = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
@@ -18,6 +19,7 @@ export class DashboardUtilityService {
   contacts: any = {};
   internalCarriers: any = {};
   ownerOperators: any = {};
+  employees: any = {};
 
   constructor(private apiService: ApiService) { }
 
@@ -96,5 +98,16 @@ export class DashboardUtilityService {
       this.refreshOwnerOperators = false;
     }
     return this.ownerOperators;
+  };
+
+  public getEmployees = async (): Promise<any[]> => {
+    if (this.refreshEmployees) {
+      const result = await this.apiService
+        .getData("contacts/get/emp/list")
+        .toPromise();
+      this.employees = result;
+      this.refreshEmployees = false;
+    }
+    return this.employees;
   };
 }

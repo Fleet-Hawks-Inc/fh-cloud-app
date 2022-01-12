@@ -21,7 +21,6 @@ export class SettlementsListComponent implements OnInit {
     startDate: null,
     endDate: null,
     type: null,
-    settlementNo: "",
   };
   lastItemSK = "";
   loaded = false;
@@ -46,7 +45,7 @@ export class SettlementsListComponent implements OnInit {
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
   }
 
-  UnitTypeChange() {
+  unitTypeChange() {
     this.filter.searchValue = null;
   }
 
@@ -58,16 +57,16 @@ export class SettlementsListComponent implements OnInit {
     }
     if (this.lastItemSK !== "end") {
       if (
-        this.filter.settlementNo !== null &&
-        this.filter.settlementNo !== ""
+        this.filter.searchValue !== null &&
+        this.filter.searchValue !== ""
       ) {
-        searchParam = encodeURIComponent(`"${this.filter.settlementNo}"`);
+        searchParam = encodeURIComponent(`"${this.filter.searchValue}"`);
       } else {
         searchParam = null;
       }
       this.accountService
         .getData(
-          `settlement/paging?type=${this.filter.type}&searchValue=${this.filter.searchValue}&settlementNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `settlement/paging?type=${this.filter.type}&searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -97,6 +96,8 @@ export class SettlementsListComponent implements OnInit {
             });
             this.loaded = true;
           }
+        }, err => {
+          this.disableSearch = false;
         });
     }
   }
@@ -104,19 +105,27 @@ export class SettlementsListComponent implements OnInit {
   searchFilter() {
     if (
       this.filter.type !== null ||
-      this.filter.settlementNo !== null ||
+      this.filter.searchValue !== null ||
       this.filter.endDate !== null ||
       this.filter.startDate !== null
     ) {
       this.disableSearch = true;
+      if (this.filter.type != '' && (this.filter.searchValue == null || this.filter.searchValue == '')) {
+        this.toaster.error("Please select any value");
+        this.disableSearch = false;
+        return false;
+      }
       if (this.filter.startDate != "" && this.filter.endDate == "") {
         this.toaster.error("Please select both start and end dates.");
+        this.disableSearch = false;
         return false;
       } else if (this.filter.startDate == "" && this.filter.endDate != "") {
         this.toaster.error("Please select both start and end dates.");
+        this.disableSearch = false;
         return false;
       } else if (this.filter.startDate > this.filter.endDate) {
         this.toaster.error("Start date should be less then end date");
+        this.disableSearch = false;
         return false;
       } else {
         this.dataMessage = Constants.FETCHING_DATA;
@@ -135,7 +144,6 @@ export class SettlementsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = "";
@@ -170,7 +178,6 @@ export class SettlementsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      settlementNo: null,
     };
     this.settlements = [];
     this.lastItemSK = "";
