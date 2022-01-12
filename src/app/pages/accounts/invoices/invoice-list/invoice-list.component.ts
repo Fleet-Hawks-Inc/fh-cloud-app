@@ -1,8 +1,11 @@
 import { AccountService, ApiService } from "../../../../services";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild,TemplateRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "../../../fleet/constants";
 import { Router } from "@angular/router";
+import * as moment from 'moment'
+import { NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import * as html2pdf from "html2pdf.js";
 declare var $: any;
 @Component({
   selector: "app-invoice-list",
@@ -10,6 +13,8 @@ declare var $: any;
   styleUrls: ["./invoice-list.component.css"],
 })
 export class InvoiceListComponent implements OnInit {
+  @ViewChild("previewInvoiceModal", { static: true }) previewInvoiceModal:TemplateRef<any>;
+
   dataMessage = Constants.NO_RECORDS_FOUND;
   invoices = [];
   fetchedManualInvoices = [];
@@ -36,7 +41,8 @@ export class InvoiceListComponent implements OnInit {
   voidedInvoices = [];
   voidedTotalCAD = 0;
   voidedTotalUSD = 0;
-
+  invoiceTypeObject={all: "all",open:"Open",paid:"paid",partially_paid:"Partial Paid",unpaid:"Unpaid"}
+  allData=[]
   // Order Invoice
   orderInvoices = [];
   openOrderInvoices = [];
@@ -51,6 +57,7 @@ export class InvoiceListComponent implements OnInit {
     endDate: null,
     invNo: null,
     customer: null,
+    invType:null
   };
   lastItemSK = "";
   lastItemOrderSK = "";
@@ -63,12 +70,14 @@ export class InvoiceListComponent implements OnInit {
   invoicesUSD = [];
   overdueTotalCAD = 0;
   overdueTotalUSD = 0;
+  preview:any;
 
   constructor(
     private accountService: AccountService,
     private apiService: ApiService,
     private toaster: ToastrService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit() {
@@ -250,7 +259,7 @@ export class InvoiceListComponent implements OnInit {
 
       let result: any = await this.accountService
         .getData(
-          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}`
+          `invoices/paging?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
         )
         .toPromise();
       // .subscribe(async (result: any) => {
@@ -327,7 +336,7 @@ export class InvoiceListComponent implements OnInit {
       }
       this.accountService
         .getData(
-          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}`
+          `order-invoice/paging?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
         )
         .subscribe(async (result: any) => {
           if (result.length === 0) {
@@ -589,7 +598,8 @@ export class InvoiceListComponent implements OnInit {
       this.filter.endDate !== null ||
       this.filter.startDate !== null ||
       this.filter.invNo !== null ||
-      this.filter.customer !== null
+      this.filter.customer !== null ||
+      this.filter.invType !== null
     ) {
       // this.dataMessage = Constants.FETCHING_DATA;
       if (this.filter.startDate !== "" && this.filter.endDate === "") {
@@ -631,6 +641,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
+      invType:null,
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -670,6 +681,7 @@ export class InvoiceListComponent implements OnInit {
       endDate: null,
       invNo: null,
       customer: null,
+      invType:null
     };
     this.lastItemSK = "";
     this.lastItemOrderSK = "";
@@ -699,10 +711,123 @@ export class InvoiceListComponent implements OnInit {
     this.getInvoices();
   }
 
-  generateCSV(){
+  async getData(){
+    this.allData=[]
+    let searchParam = null;
+    let searchParamOrder=null
+    this.lastItemOrderSK=""
+    this.lastItemSK=""
+    if (
+      this.filter.invNo !== null &&
+      this.filter.invNo !== "" &&
+      this.filter.invNo !== "%22null%22"
+    ) {
+      searchParamOrder = this.filter.invNo
+    } else {
+      searchParamOrder = null;
+    }
+  if (this.filter.invNo !== null && this.filter.invNo !== "") {
+    searchParam =this.filter.invNo
+  } else {
+    searchParam = null;
+  }
+  let result: any = await this.accountService
+      .getData(
+        `invoices/export?invNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+      )
+      .toPromise();
+      if(result && result.length>0){
+        this.allData=this.allData.concat(result)
+      }
+  let orderInvoice:any=await this.accountService
+      .getData(
+        `order-invoice/export?invNo=${searchParamOrder}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemOrderSK}&customer=${this.filter.customer}&invType=${this.filter.invType}`
+      ).toPromise();
+      if(orderInvoice && orderInvoice.length>0){
+        this.allData=this.allData.concat(orderInvoice)
+      }
+  }
+  async generateCSV(){  
+      this.exportLoading=true;
+      let dataObject=[]
+      let csvArray=[]
 
+      try{
+      await this.getData();
+      
+      if(this.allData.length>0){
+        for(const element of this.allData){
+          let obj={}
+          obj["invoice#"]=element.invNo
+          obj["Date"]=element.txnDate
+          obj["Customer"]=this.customersObjects[element.customerID]
+          obj["Order#"]=element.invNo
+          obj["Freight Amount"]=(element.charges!==undefined)?element.charges.freightFee.amount:"-"
+          obj["Tax"]=(element.taxesAmt===undefined)?element.taxAmount:element.taxesAmt
+          obj["Total Amount"]=element.subTotal
+          obj["Amount Received"]=element.amountReceived
+          obj["Balance"]=element.balance
+          obj["Due Date"]=element.invDueDate
+          obj["Invoice Status"]=element.invStatus
+          dataObject.push(obj)
+        }
+        let headers = Object.keys(dataObject[0]).join(',')
+        headers += '\n'
+        csvArray.push(headers)
+        for(const element of dataObject){
+          let value=Object.values(element).join(',')
+          value += '\n'
+          csvArray.push(value)
+        }
+        const blob = new Blob(csvArray, { type: 'text/csv;charset=utf-8' })
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}-invoice.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    this.exportLoading=false
+      }
+      else{
+        this.toaster.success("No Data Found")
+        this.exportLoading=false
+      }
+    }catch(error){
+      this.exportLoading=false
+    }
+  }
+
+  async openPDFPreview(){
+    this.exportLoading=true
+    await this.getData();
+    let ngbModalOptions: NgbModalOptions = {
+      keyboard: true,
+      windowClass: "preview"
+    };
+    this.preview = this.modalService.open(this.previewInvoiceModal,
+      ngbModalOptions
+    )
+    this.exportLoading=false
   }
   generatePDF(){
+    let data = document.getElementById("print_wrap");
+    html2pdf(data, {
+      margin: 0,
+      pagebreak: { mode: "avoid-all" },
+      filename: "invoice.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2Canvas: {
+        dpi: 200,
+        letterRendering: true,
+      },
+      jsPDF: { unit: "in", format: "a4", orientation: "landscape" }
+    })
+    $("#previewInvoiceModal").modal("hide");
 
   }
 }
