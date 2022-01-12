@@ -9,13 +9,19 @@ export class DashboardUtilityService {
   public refreshAssets = true;
   public refreshVehicles = true;
   public refreshContacts = true;
+  public refreshInternalCarriers = true;
+  public refreshOwnerOperators = true;
+  public refreshEmployees = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
   vehicles: any = {};
   contacts: any = {};
+  internalCarriers: any = {};
+  ownerOperators: any = {};
+  employees: any = {};
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
 
   public getCarriers = async (): Promise<any[]> => {
     var size = Object.keys(this.carriers).length;
@@ -70,5 +76,38 @@ export class DashboardUtilityService {
       this.refreshContacts = false;
     }
     return this.contacts;
+  };
+
+  public getContactsCarriers = async (): Promise<any[]> => {
+    if (this.refreshInternalCarriers) {
+      const result = await this.apiService
+        .getData("contacts/get/list/carrier")
+        .toPromise();
+      this.internalCarriers = result;
+      this.refreshInternalCarriers = false;
+    }
+    return this.internalCarriers;
+  };
+
+  public getOwnerOperators = async (): Promise<any[]> => {
+    if (this.refreshOwnerOperators) {
+      const result = await this.apiService
+        .getData("contacts/get/list/owner_operator")
+        .toPromise();
+      this.ownerOperators = result;
+      this.refreshOwnerOperators = false;
+    }
+    return this.ownerOperators;
+  };
+
+  public getEmployees = async (): Promise<any[]> => {
+    if (this.refreshEmployees) {
+      const result = await this.apiService
+        .getData("contacts/get/emp/list")
+        .toPromise();
+      this.employees = result;
+      this.refreshEmployees = false;
+    }
+    return this.employees;
   };
 }
