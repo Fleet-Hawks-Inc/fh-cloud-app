@@ -1062,39 +1062,42 @@ export class AddVehicleComponent implements OnInit {
       result.uploadedPhotos != undefined &&
       result.uploadedPhotos.length > 0
     ) {
-      this.slides = result.uploadedPhotos.map(
-        (x) => `${this.Asseturl}/${result.carrierID}/${x}`
-      );
+    //  this.slides = result.uploadedPhotos.map(
+    //  (x) => `${this.Asseturl}/${result.carrierID}/${x}`
+    //  );
+    this.slides = result.uploadedPics;
     }
 
     if (result.purchaseDocs != undefined && result.purchaseDocs.length > 0) {
-      result.purchaseDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        };
-        this.pDocs.push(obj);
-      });
+    //  result.purchaseDocs.map((x) => {
+    //    let obj = {
+    //      name: x,
+    //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
+    //    };
+    //    this.pDocs.push(obj);
+    //  });
+    this.pDocs = result.purchaseDocsUpload;
     }
     if (result.loanDocs != undefined && result.loanDocs.length > 0) {
-      result.loanDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        };
-        this.lDocs.push(obj);
-      });
+    //  result.loanDocs.map((x) => {
+    //    let obj = {
+    //      name: x,
+    //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
+    //    };
+    //    this.lDocs.push(obj);
+    //  });
+    this.lDocs = result.loanDocsUpload;
     }
-
     if (result.uploadedDocs != undefined && result.uploadedDocs.length > 0) {
-      result.uploadedDocs.map((x) => {
-        let obj = {
-          name: x,
-          path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        };
-        this.documentSlides.push(obj);
-      });
-      // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    //  result.uploadedDocs.map((x) => {
+    //    let obj = {
+    //      name: x,
+    //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
+    //    };
+    //    this.documentSlides.push(obj);
+    //  });
+    // this.documentSlides = result.uploadedDocs.map(x => `${this.Asseturl}/${result.carrierID}/${x}`);
+    this.documentSlides = result.uploadDocument;
     }
     this.timeCreated = result.timeCreated;
 
