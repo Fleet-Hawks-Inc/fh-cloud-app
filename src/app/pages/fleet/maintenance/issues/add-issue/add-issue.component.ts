@@ -286,19 +286,20 @@ export class AddIssueComponent implements OnInit {
       result.uploadedPhotos !== undefined &&
       result.uploadedPhotos.length > 0
     ) {
-      this.issueImages = result.uploadedPhotos.map((x) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+      //this.issueImages = result.uploadedPhotos.map((x) => ({
+      //  path: `${this.Asseturl}/${result.carrierID}/${x}`,
+      //  name: x,
+    //  }));
+            this.issueImages = result.uploadedPics;
     }
 
     if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-      this.issueDocs = result.uploadedDocs.map((x) => ({
-        path: `${this.Asseturl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+     // this.issueDocs = result.uploadedDocs.map((x) => ({
+     //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+     //    name: x,
+    //  }));
+            this.issueDocs = result.uploadDocument;
     }
-    // });
   }
   setPDFSrc(val) {
     const pieces = val.split(/[\s.]+/);

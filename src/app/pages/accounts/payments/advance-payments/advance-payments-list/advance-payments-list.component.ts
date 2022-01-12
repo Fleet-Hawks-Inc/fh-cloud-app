@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
 
 @Component({
   selector: "app-advance-payments-list",
@@ -12,7 +12,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
   payments = [];
   filter = {
-    paymentNo: null,
+    searchValue: null,
     startDate: null,
     endDate: null,
     type: null,
@@ -22,21 +22,29 @@ export class AdvancePaymentsListComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   drivers = [];
   contacts: any = {};
-  employees: any = {};
+
   lastItemSK = "";
   loaded = false;
   disableSearch = false;
+
+  driversObject: any = {};
+  carriersObject: any = {};
+  ownerOpObjects: any = {};
+  employees: any = {};
+
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
-    private toaster: ToastrService
-  ) {}
+    private toaster: ToastrService,
+    private dashboardUtilityService: DashboardUtilityService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.fetchPayments();
-    this.fetchDrivers();
-    this.fetchContactsList();
-    this.fetchEmployeesList();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
+    this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
+    this.employees = await this.dashboardUtilityService.getEmployees();
   }
 
   fetchPayments(refresh?: boolean) {
@@ -46,14 +54,14 @@ export class AdvancePaymentsListComponent implements OnInit {
       this.payments = [];
     }
     if (this.lastItemSK !== "end") {
-      if (this.filter.paymentNo !== null && this.filter.paymentNo !== "") {
-        searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
+      if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
+        searchParam = encodeURIComponent(`"${this.filter.searchValue}"`);
       } else {
         searchParam = null;
       }
       this.accountService
         .getData(
-          `advance/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `advance/paging?type=${this.filter.type}&searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -88,24 +96,6 @@ export class AdvancePaymentsListComponent implements OnInit {
     }
   }
 
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
-  }
-
-  fetchEmployeesList() {
-    this.apiService
-      .getData(`contacts/get/emp/list`)
-      .subscribe((result: any) => {
-        this.employees = result;
-      });
-  }
-  fetchContactsList() {
-    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-      this.contacts = result;
-    });
-  }
 
   deletePayment(paymentID) {
     if (confirm("Are you sure you want to void?") === true) {
@@ -124,7 +114,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   searchFilter() {
     if (
       this.filter.type !== null ||
-      this.filter.paymentNo !== null ||
+      this.filter.searchValue !== null ||
       this.filter.endDate !== null ||
       this.filter.startDate !== null
     ) {
@@ -154,7 +144,7 @@ export class AdvancePaymentsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      paymentNo: null,
+      searchValue: null,
     };
     this.payments = [];
     this.lastItemSK = "";
@@ -172,13 +162,17 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.disableSearch = true;
     this.dataMessage = Constants.FETCHING_DATA;
     this.filter = {
+      searchValue: null,
       startDate: null,
       endDate: null,
       type: null,
-      paymentNo: null,
     };
     this.payments = [];
     this.lastItemSK = "";
     this.fetchPayments();
+  }
+
+  unitTypeChange() {
+    this.filter.searchValue = null;
   }
 }
