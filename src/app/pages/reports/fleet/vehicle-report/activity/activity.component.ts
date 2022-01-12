@@ -146,6 +146,7 @@ export class ActivityComponent implements OnInit {
                     element2.location = element2.location.replace(/,/g, ' ');
                     location += `"${element2.type} :-  ${element2.location}\n\"`
                 }
+<<<<<<< HEAD
 
                 if (element.provinceData && element.provinceData.length > 0) {
                     for (let i = 0; i < element.provinceData.length; i++) {
@@ -178,6 +179,41 @@ export class ActivityComponent implements OnInit {
                 obj["Total Miles"] = element.miles;
                 dataObject.push(obj)
             });
+=======
+               
+                    if (element.provinceData && element.provinceData.length > 0) {
+                        for (let i = 0; i < element.provinceData.length; i++) {
+                            const element2 = element.provinceData[i];
+                            for(let j = 0; j< element2.usProvince.length; j++)
+                            {
+                              const element3 = element2.usProvince[j];
+                              usState += `"${element3.StCntry}\n\"`;
+                              usMiles += `"${element3.Total}\n\"`;
+                            }
+                            for (let k = 0; k < element2.canProvince.length; k++) {
+                                const element4 = element2.canProvince[k];
+                                 canState += `"${element4.StCntry}\n\"`;
+                                 canMiles += `"${element4.Total}\n\"`;
+        
+                                    }
+                                }
+                              }
+                            let obj = {}
+                            obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
+                            obj["Trip#"] = element.tripNo;
+                            obj["Order#"] = element.orderName.replace(/, /g, ' &');
+                            obj["location"] = location;
+                            obj["Date"] = date;
+                            obj["Province(US)"] = usState;
+                            obj["US Miles"] = usMiles;
+                            obj["US(Total)"] = element.usMiles;
+                            obj["Province(Canada)"] = canState; 
+                            obj["Canada Miles"] = canMiles;
+                            obj["Canada(Total)"] = element.canMiles;
+                            obj["Total Miles"] = element.miles;
+                            dataObject.push(obj)
+                });
+>>>>>>> 5c1f11701cd057f7a4213258343d94c2c70ad269
             let headers = Object.keys(dataObject[0]).join(',')
             headers += ' \n'
             csvArray.push(headers)

@@ -299,7 +299,7 @@
                                                 </span></td>
                                             <td><strong class="text-capitalize">{{item.paymentTo}}:</strong>
                                                 <span *ngIf="item.paymentTo == 'driver'">
-                                                    {{ driverList[item.entityId] | titlecase}}
+                                                    {{ item.entityId}}
                                                 </span>
                                             </td>
                                             <td>{{item.finalAmount | number : '1.2-2' }} {{item.currency}}</td>

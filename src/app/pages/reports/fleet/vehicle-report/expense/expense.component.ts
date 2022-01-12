@@ -63,7 +63,7 @@ export class ExpenseComponent implements OnInit {
   serviceLogName = []
   payment = []
   driver: any = []
-  finalAmount = ''
+  pay: any = []
   entityId: any
 
   constructor(private apiService: ApiService, private toastr: ToastrService, private route: ActivatedRoute, private spinner: NgxSpinnerService, private accountService: AccountService,) {
@@ -85,20 +85,14 @@ export class ExpenseComponent implements OnInit {
 
 
   fetchDriverByTrip() {
-    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}`).subscribe((result: any) => {
-      this.payments = result
-      // for (var i = 0; i < this.driver.length; i++) {
-      //   for (var j = 0; j < this.driver.length; j++) {
-      //     if (i != j) {
-      //       if (this.driver[i] == this.driver[j]) {
-      //         return true; // means there are duplicate values
-      //       }
-      //     }
-      //   }
-      // }
-      // return false; // means there are no duplicate values.
+    console.log("url", this.driver)
+    this.accountService.getData(`driver-payments/get/driver/enitity/expense?drivers=${encodeURIComponent(JSON.stringify(this.driver))}&payment=${this.payment}`).subscribe((result: any) => {
+      // this.payments = result
+      this.payments = this.payments.concat(result);
+      console.log(this.payments)
     })
   }
+
   fetchSettlement() {
     this.accountService
       .getData(`settlement/get/list`)
@@ -106,6 +100,9 @@ export class ExpenseComponent implements OnInit {
         this.settlements = result;
       });
   }
+
+
+
 
 
   fetchAllIssuesIDs() {
@@ -151,6 +148,8 @@ export class ExpenseComponent implements OnInit {
           }
         }
         this.fetchDriverByTrip();
+        console.log("driver", this.driver)
+
         if (result.LastEvaluatedKey !== undefined) {
 
           this.lastItemSK = encodeURIComponent(result.Items[result.Items.length - 1].tripSK);
