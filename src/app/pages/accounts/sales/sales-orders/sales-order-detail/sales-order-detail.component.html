@@ -141,8 +141,8 @@
                             <th>Commodity</th>
                             <th>Quantity</th>
                             <th>Rate</th>
-                            <th>Amount</th>
                             <th>Description</th>
+                            <th>Amount</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -155,11 +155,12 @@
                               {{ item.rate ? item.rate : "-" }} /
                               {{ item.rateUnit }}
                             </td>
+                            <td>{{ item.desc ? item.desc : "-" }}</td>
                             <td>
                               {{ item.amount ? (item.amount | number: "1.2-2") : "-" }}
                               {{ currency }}
                             </td>
-                            <td>{{ item.desc ? item.desc : "-" }}</td>
+
                           </tr>
                           <tr *ngIf="sOrderDetails?.length === 0">
                             <td>No Data Found</td>
