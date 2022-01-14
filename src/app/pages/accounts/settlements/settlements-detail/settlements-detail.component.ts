@@ -21,11 +21,13 @@ export class SettlementsDetailComponent implements OnInit {
   settlementData = {
     type: null,
     entityId: null,
+    entityName: "",
     setNo: "",
     txnDate: "",
     fromDate: null,
     toDate: null,
     tripIds: [],
+    tripNames: [],
     trpData: [],
     miles: {
       tripsTotal: 0,
@@ -109,7 +111,7 @@ export class SettlementsDetailComponent implements OnInit {
   ngOnInit() {
     this.settlementID = this.route.snapshot.params[`settlementID`];
     this.fetchSettlementDetail();
-    this.fetchTrips();
+    // this.fetchTrips();
     // this.fetchAccountsByIDs();
     // this.fetchAccountsByInternalIDs();
     this.fetchPayments();
@@ -130,35 +132,9 @@ export class SettlementsDetailComponent implements OnInit {
         if (this.settlementData.paymentInfo) {
           this.entityPaymentType = this.settlementData.paymentInfo.pType;
         }
-        if (this.settlementData.type === "driver") {
-          this.fetchDriverDetail(this.settlementData.entityId);
-        } else {
-          this.fetchContact(this.settlementData.entityId);
-        }
+        this.entityName = this.settlementData.entityName;
         this.fetchSelectedFuelExpenses();
       });
-  }
-
-  fetchDriverDetail(driverID) {
-    this.apiService.getData(`drivers/${driverID}`).subscribe((result: any) => {
-      this.driverDetail = result.Items[0];
-      this.entityName = `${this.driverDetail.firstName} ${this.driverDetail.lastName} `;
-    });
-  }
-
-  fetchContact(contactID) {
-    this.apiService
-      .getData(`contacts/detail/${contactID}`)
-      .subscribe((result: any) => {
-        this.operatorDetail = result.Items[0];
-        this.entityName = this.operatorDetail.cName;
-      });
-  }
-
-  fetchTrips() {
-    this.apiService.getData(`trips/get/list`).subscribe((result: any) => {
-      this.tripsObj = result;
-    });
   }
 
   fetchAccountsByIDs() {

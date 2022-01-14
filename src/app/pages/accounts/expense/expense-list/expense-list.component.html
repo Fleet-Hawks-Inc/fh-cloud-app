@@ -152,7 +152,7 @@
                                   data.finalTotal | number : '1.2-2' }}
                                   {{ data.currency }}</td>
                                 <td class="cursorpoint" routerLink="/accounts/expense/detail/{{ data.expenseID }}">
-                                  <span class="badge badge-dark p-1 text-uppercase">{{ data.newStatus}}</span>
+                                  <span class="badge badge-dark p-1 text-uppercase">{{ data.newStatus ? data.newStatus : 'not deducted'}}</span>
                                 </td>
                                 <td>
                                   <div class="btn-group flex-wrap">
