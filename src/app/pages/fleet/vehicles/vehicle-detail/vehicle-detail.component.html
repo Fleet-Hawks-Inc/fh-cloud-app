@@ -403,7 +403,9 @@
                                                         <td colspan="2">{{ noRecordMsg }}</td>
                                                     </tr>
                                                     <tr *ngFor="let data of docs; let i=index;">
-                                                    <a href="{{ data.path }}">Document {{ i+1}}</a>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                         <td width="20%">
                                                             <a href="javascript:;"
                                                                 class="btn btn-deafault pull-right btn-xs"
@@ -857,7 +859,9 @@
                                                     <td colspan="2">{{ noRecordMsg }}</td>
                                                 </tr>
                                                 <tr *ngFor="let data of pDocs; let i=index;">
-                                                    <a href="{{ data.path }}">Document {{ i+1}}</a>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                     <td width="20%">
                                                         <a href="javascript:;"
                                                             class="btn btn-deafault pull-right btn-xs"
@@ -967,7 +971,9 @@
                                                     <td colspan="2">{{ noRecordMsg }}</td>
                                                 </tr>
                                                 <tr *ngFor="let data of lDocs; let i=index;">
-                                                    <a href="{{ data.path }}">Document {{ i+1}}</a>
+                                                     <td width="80%">
+                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                        </td>
                                                     <td width="20%">
                                                         <a href="javascript:;"
                                                             class="btn btn-deafault pull-right btn-xs"
