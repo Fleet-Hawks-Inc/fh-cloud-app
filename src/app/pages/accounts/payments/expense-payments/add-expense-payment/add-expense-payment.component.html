@@ -411,7 +411,7 @@
                                                                 [(ngModel)]="data.selected"
                                                                 (change)="selectedExpenses()">
                                                         </td>
-                                                        <td>{{ data.txnDate }}</td>
+                                                        <td>{{ data.txnDate | date:"yyyy/MM/dd" }}</td>
                                                         <td>
                                                             {{ data.catName }}
                                                         </td>

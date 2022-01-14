@@ -91,7 +91,6 @@ export class AddIssueComponent implements OnInit {
   async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
-    // console.log('id',this.issueID)
     if (this.issueID) {
       this.title = "Edit Issue";
       await this.fetchIssueByID();
@@ -168,7 +167,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
-    // console.log('data-=-=-=',data)
     // create form data instance
     const formData = new FormData();
 
@@ -208,9 +206,7 @@ export class AddIssueComponent implements OnInit {
           });
       },
       next: (res) => {
-        // console.log('res-',res)
         this.response = res;
-        // console.log(' this.response-', this.response)
         this.submitDisabled = false;
         this.toaster.success("Issue Added successfully");
         this.cancel();
@@ -268,12 +264,10 @@ export class AddIssueComponent implements OnInit {
    */
   async fetchIssueByID() {
     let result: any = await this.apiService
-      .getData(`issues/${this.issueID}`)
+      .getData("issues/" + this.issueID)
       .toPromise();
     // .subscribe((result: any) => {
-      // console.log('12',result)
-    result = result[0];
-    // console.log(result)
+    result = result.Items[0];
     this.issueID = this.issueID;
     this.issueName = result.issueName;
     this.unitID = result.unitID;
@@ -287,26 +281,25 @@ export class AddIssueComponent implements OnInit {
     this.reportedBy = result.reportedBy;
     this.assignedTo = result.assignedTo;
     this.existingPhotos = result.uploadedPhotos;
-    // console.log('photo',this.existingPhotos)
     this.existingDocs = result.uploadedDocs;
-    // console.log('existingDocs',this.existingDocs)
     if (
       result.uploadedPhotos !== undefined &&
       result.uploadedPhotos.length > 0
     ) {
-      this.issueImages = result.uploadedPhotos.map((x) => ({
-        path: `${this.Asseturl}/${result.pk}/${x}`,
-        name: x,
-      }));
+      //this.issueImages = result.uploadedPhotos.map((x) => ({
+      //  path: `${this.Asseturl}/${result.carrierID}/${x}`,
+      //  name: x,
+    //  }));
+            this.issueImages = result.uploadedPics;
     }
 
     if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-      this.issueDocs = result.uploadedDocs.map((x) => ({
-        path: `${this.Asseturl}/${result.pk}/${x}`,
-        name: x,
-      }));
+     // this.issueDocs = result.uploadedDocs.map((x) => ({
+     //    path: `${this.Asseturl}/${result.carrierID}/${x}`,
+     //    name: x,
+    //  }));
+            this.issueDocs = result.uploadDocument;
     }
-    // });
   }
   setPDFSrc(val) {
     const pieces = val.split(/[\s.]+/);
@@ -346,7 +339,7 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs,
     };
-// console.log(data)
+
     // create form data instance
     const formData = new FormData();
 
@@ -363,7 +356,7 @@ export class AddIssueComponent implements OnInit {
     // append other fields
     formData.append("data", JSON.stringify(data));
 
-    this.apiService.putData(`issues/${this.issueID}`, formData, true).subscribe({
+    this.apiService.putData("issues/", formData, true).subscribe({
       complete: () => {},
       error: (err: any) => {
         from(err.error)

@@ -853,17 +853,19 @@ export class AddServiceComponent implements OnInit {
       result.uploadedPhotos !== undefined &&
       result.uploadedPhotos.length > 0
     ) {
-      this.logImages = result.uploadedPhotos.map((x) => ({
-        path: `${this.logurl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+     // this.logImages = result.uploadedPhotos.map((x) => ({
+    //    path: `${this.logurl}/${result.carrierID}/${x}`,
+    //    name: x,
+    //  }));
+      this.logImages = result.uploadedPics;
     }
 
     if (result.uploadedDocs !== undefined && result.uploadedDocs.length > 0) {
-      this.logDocs = result.uploadedDocs.map((x) => ({
-        path: `${this.logurl}/${result.carrierID}/${x}`,
-        name: x,
-      }));
+     // this.logDocs = result.uploadedDocs.map((x) => ({
+    //    path: `${this.logurl}/${result.carrierID}/${x}`,
+    //    name: x,
+    //  }));
+    this.logDocs = result.uploadDocument;
     }
 
     this.selectedIssues = result.selectedIssues;
