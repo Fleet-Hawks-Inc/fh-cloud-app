@@ -12,6 +12,7 @@ export class DashboardUtilityService {
   public refreshInternalCarriers = true;
   public refreshOwnerOperators = true;
   public refreshEmployees = true;
+  public refreshVendors = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
@@ -20,6 +21,7 @@ export class DashboardUtilityService {
   internalCarriers: any = {};
   ownerOperators: any = {};
   employees: any = {};
+  vendors: any = {};
 
   constructor(private apiService: ApiService) { }
 
@@ -98,6 +100,17 @@ export class DashboardUtilityService {
       this.refreshOwnerOperators = false;
     }
     return this.ownerOperators;
+  };
+
+  public getVendors = async (): Promise<any[]> => {
+    if (this.refreshVendors) {
+      const result = await this.apiService
+        .getData("contacts/get/list/vendor")
+        .toPromise();
+      this.vendors = result;
+      this.refreshVendors = false;
+    }
+    return this.vendors;
   };
 
   public getEmployees = async (): Promise<any[]> => {
