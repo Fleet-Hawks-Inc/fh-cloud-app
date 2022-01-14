@@ -15,6 +15,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   paymentData = {
     currency: "CAD",
     paymentTo: null,
+    entityName: '',
     entityId: null,
     paymentNo: "",
     txnDate: "",
