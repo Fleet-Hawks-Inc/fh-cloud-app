@@ -88,7 +88,13 @@
                         <i class="far fa-calendar-alt text-7"></i>
                         <br />
                         <p class="mb-0 text-5 font-weight-bold text-dark text-capitalize">
-                          {{ accountsClassObjects[account.actClassID] }}
+                          <span *ngIf="account.isFeatEnabled">
+                            {{ account.className}}
+                          </span>
+                          <span *ngIf="!account.isFeatEnabled">
+                            {{ accountsClassObjects[account.actClassID] }}
+                          </span>
+                          
                         </p>
                         <p class="mb-0">Account Class</p>
                       </div>
@@ -221,14 +227,8 @@
                               <tr *ngFor="let trx of transactionLogCAD; let i = index">
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ trx.trxCreated | date: "yyyy/MM/dd" }}</td>
-                                <td>
-                                  <span *ngIf="
-                                      trx.name !== undefined || trx.name !== null
-                                    ">{{ merged[trx.name] | titlecase }}</span>
-
-                                  <span *ngIf="
-                                      trx.name === undefined || trx.name === null
-                                    ">-</span>
+                                <td class="text-capitalize">
+                                  {{ trx.uName ? trx.uName : '-' }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
@@ -361,14 +361,8 @@
                               <tr *ngFor="let trx of transactionLogUSD; let i = index">
                                 <td>{{ i + 1 }}</td>
                                 <td>{{ trx.trxCreated | date: "yyyy/MM/dd" }}</td>
-                                <td>
-                                  <span *ngIf="
-                                      trx.name !== undefined || trx.name !== null
-                                    ">{{ merged[trx.name] | titlecase }}</span>
-
-                                  <span *ngIf="
-                                      trx.name === undefined || trx.name === null
-                                    ">-</span>
+                                <td class="text-capitalize">
+                                  {{ trx.uName ? trx.uName : '-' }}
                                 </td>
                                 <td>{{ trx.entityType | titlecase }}</td>
                                 <td>{{ trx.desc | titlecase }}</td>
