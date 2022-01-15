@@ -69,22 +69,23 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  getSuggestions = _.debounce(function (value) {
-    value = value.toLowerCase();
+  getSuggestions = _.debounce(function (searchvalue) {
+    searchvalue = searchvalue.toLowerCase();
 
-    if (value != '') {
+    if (searchvalue != '') {
       this.apiService
-        .getData(`issues/get/suggestions/${value}`)
+        .getData(`issues/get/suggestions/${searchvalue}`)
         .subscribe((result) => {
           this.suggestedIssues = result;
+          console.log('suggestion',this.suggestedIssues )
         });
     } else {
       this.suggestedIssues = [];
     }
   }, 800);
 
-  setIssue(issueName) {
-    this.issueName = issueName;
+  setIssue(value) {
+    this.issueName = value;
     this.suggestedIssues = [];
   }
 
@@ -125,32 +126,71 @@ export class IssueListComponent implements OnInit {
     }
   }
 
-
+// with items
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
       this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
-          // console.log('result', result)
-          if (result.length === 0) {
+         
+          // this.issues = result.Items
+           console.log(' this.issues',  this.issues)
+          if (result.Items.length === 0) {
 
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestedIssues = [];
-          if (result.length > 0) {
+          if (result.Items.length > 0) {
+            console.log('result.LastEvaluatedKey ', result.LastEvaluatedKey)
 
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result[result.length - 1].issueID);
+              console.log(' this.lastEvaluatedKey ', this.lastEvaluatedKey)
+              this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.sk);
+        
+              // this.lastEvaluatedKey = encodeURIComponent(this.issues[this.issues.length - 1].sk);
             }
             else {
               this.lastEvaluatedKey = 'end'
             }
-            this.issues = this.issues.concat(result)
+            this.issues = this.issues.concat(result.Items)
 
             this.loaded = true;
           }
         });
     }
   }
+
+  // initDataTable() {
+  //   if (this.lastEvaluatedKey !== 'end') {
+  //     this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
+  //       .subscribe((result: any) => {
+  //         // console.log('result', result)
+  //         if (result.length === 0) {
+
+  //           this.dataMessage = Constants.NO_RECORDS_FOUND
+  //         }
+  //         this.suggestedIssues = [];
+  //         if (result.length > 0) {
+  //           console.log('result.LastEvaluatedKey ', result.LastEvaluatedKey)
+
+  //           if (result.LastEvaluatedKey !== undefined) {
+  //             console.log(' this.lastEvaluatedKey ', this.lastEvaluatedKey)
+  //             this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.sk);
+        
+  //             // this.lastEvaluatedKey = encodeURIComponent(this.issues[this.issues.length - 1].sk);
+  //           }
+  //           else {
+  //             this.lastEvaluatedKey = 'end'
+  //           }
+  //           this.issues = this.issues.concat(result)
+
+  //           this.loaded = true;
+  //         }
+  //       });
+  //   }
+  // }
+
+
+
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
