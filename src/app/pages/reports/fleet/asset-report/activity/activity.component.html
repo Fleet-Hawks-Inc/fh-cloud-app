@@ -87,14 +87,16 @@
                                         id="tonuTripsDT">
                                         <col style="width:1%">
                                         <col style="width:1%">
-                                        <col style="width:2%">
-                                        <col style="width:3%">
-                                        <col style="width:2%">
-                                        <col style="width:3%">
-                                        <col style="width:3%">
-                                        <col style="width:3%">
                                         <col style="width:1%">
-                                        <col style="width:3%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
+                                        <col style="width:4%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:2%">
+                                        <col style="width:1%">
+                                        <col style="width:2%">
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <thead>
@@ -102,6 +104,8 @@
                                                 <th>Asset</th>
                                                 <th>Trip#</th>
                                                 <th>Order#</th>
+                                                <th>Vehicle</th>
+                                                <th>Driver</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
@@ -121,6 +125,8 @@
                                                 <td>{{item.assetName}}
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+                                                <td>{{item.vehicle}}</td>
+                                                <td>{{item.driverName |titlecase}}</td>
                                                 <td>
                                                     <span title="Location" *ngFor="let data of item.tripPlanning">
                                                         <b>
