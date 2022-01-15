@@ -12,6 +12,7 @@
                   <ng-option value="carrier">Carrier</ng-option>
                   <ng-option value="owner_operator">Owner Operator</ng-option>
                   <ng-option value="employee">Employee</ng-option>
+                  <ng-option value="vendor">Vendor</ng-option>
                 </ng-select>
               </div>
               <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'paymentNo'">
@@ -48,6 +49,14 @@
                 <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Employee">
                   <ng-option value="{{ data.key }}" *ngFor="let
                     data of employees | keyvalue"> {{
+                    data.value }}
+                  </ng-option>
+                </ng-select>
+              </div>
+              <div class="col-md-2 col-lg-2 pr-0" *ngIf="filter.type === 'vendor'">
+                <ng-select [(ngModel)]="filter.searchValue" name="searchValue" placeholder="Select Vendor">
+                  <ng-option value="{{ data.key }}" *ngFor="let
+                    data of vendors | keyvalue"> {{
                     data.value }}
                   </ng-option>
                 </ng-select>
