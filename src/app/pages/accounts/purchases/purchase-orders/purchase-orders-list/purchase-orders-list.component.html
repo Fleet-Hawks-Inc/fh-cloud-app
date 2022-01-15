@@ -74,7 +74,7 @@
                           <th class="text-2">Vendor</th>
                           <th class="text-2">Amount</th>
                           <th class="text-2">Status</th>
-                          <th class="text-2">Bill Status</th>
+                          <!-- <th class="text-2">Bill Status</th> -->
                           <th class="text-2">Action</th>
                         </tr>
                       </thead>
@@ -107,16 +107,16 @@
                               data.status
                               }}</span>
                           </td>
-                          <td class="cursorpoint" [routerLink]="data.url">
+                          <!-- <td class="cursorpoint" [routerLink]="data.url">
                             <span *ngIf="data.billStatus" class="badge badge-dark p-1 text-uppercase">{{ data.billStatus
                               }}</span>
                             <span *ngIf="!data.billStatus">-</span>
-                          </td>
+                          </td> -->
                           <td>
                             <div class="btn-group flex-wrap">
                               <button type="button" class="p-0 mb-0 mt-0 mr-1 btn" data-toggle="dropdown" [disabled]="
-                                  data.status !== 'draft' &&
-                                  data.status !== 'issued'
+                              data.status !== 'open' &&
+                                  data.status !== 'sent'
                                 ">
                                 <i class="fas fa-ellipsis-v"></i>
                               </button>

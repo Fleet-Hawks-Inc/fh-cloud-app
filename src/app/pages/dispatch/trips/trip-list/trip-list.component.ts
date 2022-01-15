@@ -44,6 +44,7 @@ export class TripListComponent implements OnInit {
   deliveredTrips = [];
   tonuTrips = [];
   allTripsCount = 0;
+  isSearch = false;
   statusData = [
     {
       name: "Confirmed",
@@ -173,7 +174,7 @@ export class TripListComponent implements OnInit {
     private toastr: ToastrService,
     private spinner: NgxSpinnerService,
     private dashboardUtilityService: DashboardUtilityService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.initDataTable();
@@ -360,8 +361,8 @@ export class TripListComponent implements OnInit {
           `trips/delete/${eventData.tripID}/${eventData.tripNo}/${eventData.settlmnt}/${eventData.tripStatus}`
         )
         .subscribe({
-          complete: () => {},
-          error: () => {},
+          complete: () => { },
+          error: () => { },
           next: (result: any) => {
             this.trips = [];
             this.confirmedTrips = [];
@@ -621,6 +622,64 @@ export class TripListComponent implements OnInit {
     this.form.showErrors(this.errors);
   }
 
+  async tripSearching(refresh?: boolean) {
+    if (refresh === true) {
+      this.lastEvaluatedKey = "";
+      this.trips = [];
+    }
+    this.spinner.show();
+    // this.orders = [];
+    if (this.lastEvaluatedKey !== "end") {
+      this.tripsFiltr.searchValue = this.tripsFiltr.searchValue.trim()
+      this.apiService
+        .getData(
+          "trips/searching/records?searchValue=" +
+          this.tripsFiltr.searchValue +
+          "&startDate=" +
+          this.tripsFiltr.start +
+          "&endDate=" +
+          this.tripsFiltr.end +
+          "&category=" +
+          this.tripsFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
+        )
+        .subscribe(
+          async (result: any) => {
+            // this.trips = [];
+            if (result.Items.length == 0) {
+              this.dataMessage = Constants.NO_RECORDS_FOUND;
+              this.records = false;
+            } else {
+              this.records = true;
+            }
+            result.Items.map((v) => {
+              v.url = `/dispatch/trips/trip-details/${v.tripID}`;
+            });
+            this.fetchedRecordsCount += result.Count;
+
+            await this.fetchTrips(result, "all");
+            this.loaded = true;
+
+            if (result["LastEvaluatedKey"] !== undefined) {
+              let lastEvalKey = result[`LastEvaluatedKey`].tripSK.replace(
+                /#/g,
+                "--"
+              );
+              this.lastEvaluatedKey = lastEvalKey;
+            } else {
+              this.lastEvaluatedKey = "end";
+            }
+            this.isLoad = false;
+            this.spinner.hide();
+          },
+          (err) => {
+            this.spinner.hide();
+          }
+        );
+    }
+  }
+
   initDataTable(refresh?: boolean) {
     if (refresh === true) {
       this.lastEvaluatedKey = "";
@@ -633,15 +692,15 @@ export class TripListComponent implements OnInit {
       this.apiService
         .getData(
           "trips/fetch/records/all?searchValue=" +
-            this.tripsFiltr.searchValue +
-            "&startDate=" +
-            this.tripsFiltr.start +
-            "&endDate=" +
-            this.tripsFiltr.end +
-            "&category=" +
-            this.tripsFiltr.category +
-            "&lastKey=" +
-            this.lastEvaluatedKey
+          this.tripsFiltr.searchValue +
+          "&startDate=" +
+          this.tripsFiltr.start +
+          "&endDate=" +
+          this.tripsFiltr.end +
+          "&category=" +
+          this.tripsFiltr.category +
+          "&lastKey=" +
+          this.lastEvaluatedKey
         )
         .subscribe(
           (result: any) => {
@@ -741,7 +800,8 @@ export class TripListComponent implements OnInit {
         this.dataMessage = Constants.FETCHING_DATA;
         this.activeTab = "all";
         this.lastEvaluatedKey = "";
-        this.initDataTable();
+        this.isSearch = true;
+        this.tripSearching();
       }
     } else {
       return false;
@@ -777,6 +837,7 @@ export class TripListComponent implements OnInit {
       this.deliveredTrips = [];
       this.tonuTrips = [];
       this.lastEvaluatedKey = "";
+      this.isSearch = false;
       this.initDataTable();
     } else {
       return false;
@@ -870,7 +931,12 @@ export class TripListComponent implements OnInit {
     if (this.loaded) {
       this.isLoad = true;
       this.isLoadText = "Loading";
-      this.initDataTable();
+      if (this.isSearch) {
+        this.tripSearching();
+      } else {
+        this.initDataTable();
+      }
+
     }
     this.loaded = false;
   }
