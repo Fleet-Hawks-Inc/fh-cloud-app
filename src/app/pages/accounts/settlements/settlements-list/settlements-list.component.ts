@@ -60,7 +60,7 @@ export class SettlementsListComponent implements OnInit {
         this.filter.searchValue !== null &&
         this.filter.searchValue !== ""
       ) {
-        searchParam = encodeURIComponent(`"${this.filter.searchValue}"`);
+        searchParam = this.filter.type === 'settlementNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }

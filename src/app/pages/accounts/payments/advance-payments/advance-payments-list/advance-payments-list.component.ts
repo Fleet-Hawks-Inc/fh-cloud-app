@@ -31,6 +31,7 @@ export class AdvancePaymentsListComponent implements OnInit {
   carriersObject: any = {};
   ownerOpObjects: any = {};
   employees: any = {};
+  vendors: any = {};
 
   constructor(
     private apiService: ApiService,
@@ -45,6 +46,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
     this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
     this.employees = await this.dashboardUtilityService.getEmployees();
+    this.vendors = await this.dashboardUtilityService.getVendors();
   }
 
   fetchPayments(refresh?: boolean) {
@@ -55,7 +57,7 @@ export class AdvancePaymentsListComponent implements OnInit {
     }
     if (this.lastItemSK !== "end") {
       if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
-        searchParam = encodeURIComponent(`"${this.filter.searchValue}"`);
+        searchParam = this.filter.searchValue === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
 
 @Component({
   selector: "app-driver-payments-list",
@@ -10,16 +10,14 @@ import { AccountService, ApiService } from "src/app/services";
 })
 export class DriverPaymentsListComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
-  drivers = [];
-  contacts = [];
+
   payments = [];
-  settlements = [];
   settlementIds = [];
   filter = {
     startDate: null,
     endDate: null,
     type: null,
-    paymentNo: null,
+    searchValue: null,
   };
   dateMinLimit = { year: 1950, month: 1, day: 1 };
   date = new Date();
@@ -27,29 +25,27 @@ export class DriverPaymentsListComponent implements OnInit {
   lastItemSK = "";
   loaded = false;
   disableSearch = false;
+  driversObject: any = {};
+  carriersObject: any = {};
+  ownerOpObjects: any = {};
+
   constructor(
     private toaster: ToastrService,
     private accountService: AccountService,
-    private apiService: ApiService
-  ) {}
+    private apiService: ApiService,
+    private dashboardUtilityService: DashboardUtilityService
+  ) { }
 
-  ngOnInit() {
-    this.fetchDrivers();
-    this.fetchContactsList();
+  async ngOnInit() {
+
     this.fetchDriverPayments();
-    this.fetchSettlement();
+    this.driversObject = await this.dashboardUtilityService.getDrivers();
+    this.carriersObject = await this.dashboardUtilityService.getContactsCarriers();
+    this.ownerOpObjects = await this.dashboardUtilityService.getOwnerOperators();
   }
 
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
-  }
-
-  fetchContactsList() {
-    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-      this.contacts = result;
-    });
+  unitTypeChange() {
+    this.filter.searchValue = null;
   }
 
   fetchDriverPayments(refresh?: boolean) {
@@ -59,14 +55,14 @@ export class DriverPaymentsListComponent implements OnInit {
       this.payments = [];
     }
     if (this.lastItemSK !== "end") {
-      if (this.filter.paymentNo !== null && this.filter.paymentNo !== "") {
-        searchParam = encodeURIComponent(`"${this.filter.paymentNo}"`);
+      if (this.filter.searchValue !== null && this.filter.searchValue !== "") {
+        searchParam = this.filter.type === 'paymentNo' ? encodeURIComponent(`"${this.filter.searchValue}"`) : `${this.filter.searchValue}`;
       } else {
         searchParam = null;
       }
       this.accountService
         .getData(
-          `driver-payments/paging?type=${this.filter.type}&paymentNo=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
+          `driver-payments/paging?type=${this.filter.type}&searchValue=${searchParam}&startDate=${this.filter.startDate}&endDate=${this.filter.endDate}&lastKey=${this.lastItemSK}`
         )
         .subscribe((result: any) => {
           if (result.length === 0) {
@@ -102,18 +98,11 @@ export class DriverPaymentsListComponent implements OnInit {
     }
   }
 
-  fetchSettlement() {
-    this.accountService
-      .getData(`settlement/get/list`)
-      .subscribe((result: any) => {
-        this.settlements = result;
-      });
-  }
 
   searchFilter() {
     if (
       this.filter.type !== null ||
-      this.filter.paymentNo !== "" ||
+      this.filter.searchValue !== "" ||
       this.filter.endDate !== null ||
       this.filter.startDate !== null
     ) {
@@ -144,7 +133,7 @@ export class DriverPaymentsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      paymentNo: null,
+      searchValue: null,
     };
     this.lastItemSK = "";
     this.fetchDriverPayments();
@@ -165,7 +154,7 @@ export class DriverPaymentsListComponent implements OnInit {
       startDate: null,
       endDate: null,
       type: null,
-      paymentNo: null,
+      searchValue: null,
     };
     this.lastItemSK = "";
     this.fetchDriverPayments();
