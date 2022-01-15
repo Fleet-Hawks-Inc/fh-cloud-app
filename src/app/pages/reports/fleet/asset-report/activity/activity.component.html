@@ -144,6 +144,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
+                                                     <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.usProvince"> 
                                                      {{item2.StCntry}} <br>
@@ -151,6 +152,7 @@
                                                     </span>
                                                 </td>
                                                     <td>
+                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.usProvince"> 
                                                      {{item2.Total}} <br>
@@ -159,6 +161,7 @@
                                                 </td>
                                                <td>   {{item.usMiles}} <br></td> 
                                                    <td>
+                                                        <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.canProvince"> 
                                                      {{item2.StCntry}} <br>
@@ -166,6 +169,7 @@
                                                     </span>
                                                 </td>
                                                     <td>
+                                                         <span *ngIf="item.provinceData.length === 0 ">-</span>
                                                        <span *ngFor="let item1 of item.provinceData">
                                                      <span *ngFor="let item2 of item1.canProvince"> 
                                                      {{item2.Total}} <br>
