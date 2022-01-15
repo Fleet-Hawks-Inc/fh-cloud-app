@@ -1262,7 +1262,6 @@ export class AddDriverComponent
       result.paymentDetails.loadedMilesTeam;
     this.driverData.paymentDetails.loadedMilesTeamUnit =
       result.paymentDetails.loadedMilesTeamUnit;
-
     this.driverData.paymentDetails.emptyMiles =
       result.paymentDetails.emptyMiles;
     this.driverData.paymentDetails.emptyMilesUnit =
