@@ -2480,6 +2480,7 @@ export class AddSettlementComponent implements OnInit {
   }
 
   showPaymentPopup() {
+    this.pendingInfo = false;
     $("#infoModal").modal("show");
   }
 }
