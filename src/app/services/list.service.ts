@@ -239,7 +239,7 @@ export class ListService {
       .getData(`issues/vehicle/${id}`)
       .toPromise();
     let newIssues = [];
-    promise.Items.filter((elem) => {
+    promise.filter((elem) => {
       if (elem.currentStatus == "OPEN") {
         newIssues.push(elem);
       }
@@ -252,12 +252,11 @@ export class ListService {
       .getData(`issues/asset/${id}`)
       .toPromise();
     let newIssues = [];
-    promise.Items.filter((elem) => {
+    promise.filter((elem) => {
       if (elem.currentStatus == "OPEN") {
         newIssues.push(elem);
       }
     });
-    this.issuesDataSource.next(newIssues);
   }
 
   fetchAssets() {

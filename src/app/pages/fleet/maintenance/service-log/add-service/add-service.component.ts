@@ -376,6 +376,7 @@ export class AddServiceComponent implements OnInit {
   async fetchVehicles() {
     let result: any = await this.apiService.getData("vehicles").toPromise();
     result.Items.forEach((element) => {
+
       if (element.isDeleted === 0) {
         this.vehicles.push(element);
       }
@@ -393,6 +394,7 @@ export class AddServiceComponent implements OnInit {
    */
   fetchVehicleByID(id) {
     this.apiService.getData(`vehicles/${id}`).subscribe((result: any) => {
+
       // this.serviceData['unitStatus'] = result.Items[0].currentStatus;
     });
   }
@@ -453,7 +455,6 @@ export class AddServiceComponent implements OnInit {
       .getData("issues/fetch/resolvedIssues?issueIds=" + id)
       .subscribe((result: any) => {
         this.resolvedIssues = result;
-
         for (let i = 0; i < result.length; i++) {
           const element = result[i];
           element.selected = true;
@@ -760,7 +761,6 @@ export class AddServiceComponent implements OnInit {
       .toPromise();
     // .subscribe(async (result: any) => {
     result = result.Items[0];
-
     this.serviceData["logID"] = this.logID;
     this.serviceData.unitType = result.unitType;
     if (result.unitType == "vehicle") {
@@ -846,7 +846,7 @@ export class AddServiceComponent implements OnInit {
     this.existingPhotos = result.uploadedPhotos;
     this.existingDocs = result.uploadedDocs;
     if (result.selectedIssues.length > 0) {
-      this.getResolvedIssues(result.selectedIssues);
+   const data =  this.getResolvedIssues(result.selectedIssues);
     }
 
     if (
