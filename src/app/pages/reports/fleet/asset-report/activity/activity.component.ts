@@ -73,7 +73,8 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-                 for (let ast of result.Items) {
+                 for (let ast of result.Items) 
+                 {
                     let dataa = ast
                     ast.miles = 0
                     for (let element of dataa.tripPlanning) {
