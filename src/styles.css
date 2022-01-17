@@ -49,3 +49,7 @@ body {
 .ng-select .ng-select-container {
   min-height: 31px !important;
 }
+
+.ng-placeholder {
+  font-size: 12px;
+}

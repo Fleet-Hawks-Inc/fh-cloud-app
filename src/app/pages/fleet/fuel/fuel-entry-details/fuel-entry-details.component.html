@@ -144,9 +144,9 @@
                           </tr>
                           <tr *ngIf="fuelData.taxes.length > 0">
                             <td class="back-color-gray font-weight-bold">Taxes</td>
-                            <td><span *ngFor="let tax of fuelData.taxes">
+                            <td><span *ngFor="let tax of fuelData.taxes; let i=index;">
                                 <span *ngIf="tax.taxCode != '';">
-                                  {{tax.taxCode}} - {{tax.amount}} {{fuelData.billingCurrency}},&nbsp;</span>
+                                  {{tax.taxCode}} - {{tax.amount}} {{fuelData.billingCurrency}}<span *ngIf="i<fuelData.taxes.length-1">,</span></span>
                                 <ng-template *ngIf="tax.taxCode=='' && tax.amount==0">0</ng-template>
                               </span>
                             </td>
