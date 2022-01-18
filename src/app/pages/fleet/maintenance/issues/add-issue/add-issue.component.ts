@@ -91,7 +91,6 @@ export class AddIssueComponent implements OnInit {
   async ngOnInit() {
     this.fetchUsers();
     this.issueID = this.route.snapshot.params[`issueID`];
-    // console.log('id',this.issueID)
     if (this.issueID) {
       this.title = "Edit Issue";
       await this.fetchIssueByID();
@@ -168,7 +167,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.uploadedPhotos,
       uploadedDocs: this.uploadedDocs,
     };
-    // console.log('data-=-=-=',data)
     // create form data instance
     const formData = new FormData();
 
@@ -208,9 +206,7 @@ export class AddIssueComponent implements OnInit {
           });
       },
       next: (res) => {
-        // console.log('res-',res)
         this.response = res;
-        // console.log(' this.response-', this.response)
         this.submitDisabled = false;
         this.toaster.success("Issue Added successfully");
         this.cancel();
@@ -271,9 +267,7 @@ export class AddIssueComponent implements OnInit {
       .getData(`issues/${this.issueID}`)
       .toPromise();
     // .subscribe((result: any) => {
-      // console.log('12',result)
     result = result[0];
-    // console.log(result)
     this.issueID = this.issueID;
     this.issueName = result.issueName;
     this.unitID = result.unitID;
@@ -287,9 +281,7 @@ export class AddIssueComponent implements OnInit {
     this.reportedBy = result.reportedBy;
     this.assignedTo = result.assignedTo;
     this.existingPhotos = result.uploadedPhotos;
-    // console.log('photo',this.existingPhotos)
     this.existingDocs = result.uploadedDocs;
-    // console.log('existingDocs',this.existingDocs)
     if (
       result.uploadedPhotos !== undefined &&
       result.uploadedPhotos.length > 0
@@ -346,7 +338,6 @@ export class AddIssueComponent implements OnInit {
       uploadedPhotos: this.existingPhotos,
       uploadedDocs: this.existingDocs,
     };
-// console.log(data)
     // create form data instance
     const formData = new FormData();
 

@@ -46,11 +46,22 @@ export class IssueListComponent implements OnInit {
   issuesPrevEvauatedKeys = [''];
   issuesStartPoint = 1;
   issuesEndPoint = this.pageLength;
-  allVehicles = [];
-  allAssets = [];
+  // allVehicles = [];
+  // allAssets = [];
   suggestedIssues = [];
   loaded = false
-
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+  ]
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -59,8 +70,8 @@ export class IssueListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAssetList();
     this.fetchUsersList();
-    this.fetchAllAssets();
-    this.fetchAllVehicles();
+    // this.fetchAllAssets();
+    // this.fetchAllVehicles();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -77,7 +88,6 @@ export class IssueListComponent implements OnInit {
         .getData(`issues/get/suggestions/${searchvalue}`)
         .subscribe((result) => {
           this.suggestedIssues = result;
-          console.log('suggestion',this.suggestedIssues )
         });
     } else {
       this.suggestedIssues = [];
@@ -126,27 +136,18 @@ export class IssueListComponent implements OnInit {
     }
   }
 
-// with items
+
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
+      this.apiService.getData('issues/fetch/records?searchValue=' + this.searchValue + '&category=' + this.category + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus  + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
-         
-          // this.issues = result.Items
-           console.log(' this.issues',  this.issues)
           if (result.Items.length === 0) {
-
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestedIssues = [];
           if (result.Items.length > 0) {
-            console.log('result.LastEvaluatedKey ', result.LastEvaluatedKey)
-
             if (result.LastEvaluatedKey !== undefined) {
-              console.log(' this.lastEvaluatedKey ', this.lastEvaluatedKey)
               this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.sk);
-        
-              // this.lastEvaluatedKey = encodeURIComponent(this.issues[this.issues.length - 1].sk);
             }
             else {
               this.lastEvaluatedKey = 'end'
@@ -158,38 +159,10 @@ export class IssueListComponent implements OnInit {
         });
     }
   }
+  categoryChange() {
+    this.searchValue = null;
 
-  // initDataTable() {
-  //   if (this.lastEvaluatedKey !== 'end') {
-  //     this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
-  //       .subscribe((result: any) => {
-  //         // console.log('result', result)
-  //         if (result.length === 0) {
-
-  //           this.dataMessage = Constants.NO_RECORDS_FOUND
-  //         }
-  //         this.suggestedIssues = [];
-  //         if (result.length > 0) {
-  //           console.log('result.LastEvaluatedKey ', result.LastEvaluatedKey)
-
-  //           if (result.LastEvaluatedKey !== undefined) {
-  //             console.log(' this.lastEvaluatedKey ', this.lastEvaluatedKey)
-  //             this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.sk);
-        
-  //             // this.lastEvaluatedKey = encodeURIComponent(this.issues[this.issues.length - 1].sk);
-  //           }
-  //           else {
-  //             this.lastEvaluatedKey = 'end'
-  //           }
-  //           this.issues = this.issues.concat(result)
-
-  //           this.loaded = true;
-  //         }
-  //       });
-  //   }
-  // }
-
-
+  }
 
   onScroll() {
     if (this.loaded) {
@@ -198,8 +171,8 @@ export class IssueListComponent implements OnInit {
     this.loaded = false;
   }
   searchFilter() {
-    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-      // this.issueName = this.issueName.toLowerCase();
+    if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
+      this.issueName = this.issueName.toLowerCase();
       this.initDataTable();
       this.lastEvaluatedKey = ''
       this.dataMessage = Constants.FETCHING_DATA;
@@ -210,12 +183,12 @@ export class IssueListComponent implements OnInit {
   }
 
   resetFilter() {
-    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-      this.unitID = null;
+    if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
+      this.searchValue = null;
       this.unitName = '';
       this.issueName = '';
       this.issueStatus = null;
-      this.assetUnitID = null;
+      this.category = null;
       this.suggestedIssues = [];
       this.lastEvaluatedKey = ''
       this.initDataTable();
@@ -227,18 +200,17 @@ export class IssueListComponent implements OnInit {
   }
 
 
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
-    });
-  }
+  // fetchAllVehicles() {
+  //   this.apiService.getData('vehicles').subscribe((result: any) => {
+  //     this.allVehicles = result.Items;
+  //   });
+  // }
 
-
-  fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.allAssets = result.Items;
-    });
-  }
+  // fetchAllAssets() {
+  //   this.apiService.getData('assets').subscribe((result: any) => {
+  //     this.allAssets = result.Items;
+  //   });
+  // }
 
   refreshData() {
     this.unitID = null;
