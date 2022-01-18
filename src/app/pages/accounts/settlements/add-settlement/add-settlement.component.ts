@@ -2276,8 +2276,12 @@ export class AddSettlementComponent implements OnInit {
           this.settlementData.fuelIds.push(element.fuelID);
           let obj = {
             fuelID: element.fuelID,
+            actAmount: element.total,
             amount: Number(element.subTotal),
             action: "sub",
+            convert: element.convert,
+            convertRate: element.convertRate,
+            baseCurr: element.billingCurrency,
           };
           this.settlementData.fuelData.push(obj);
         }

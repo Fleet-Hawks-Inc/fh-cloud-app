@@ -165,6 +165,8 @@ export class ActivityComponent implements OnInit {
                             obj["Vehicle"] = element.vehicle.replace(/, /g, ' &');
                             obj["Trip#"] = element.tripNo;
                             obj["Order#"] = element.orderName.replace(/, /g, ' &');
+                            obj["Assets"] = element.assetName.replace(/, /g, ' &');
+                            obj["Drivers"] = element.driverName.replace(/, /g, ' &');
                             obj["location"] = location;
                             obj["Date"] = date;
                             obj["Province(US)"] = usState;
