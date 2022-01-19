@@ -17,7 +17,7 @@
           </div>
           <div class="col-md-8 col-lg-8 text-right pr-1">
             <button type="button" class="btn btn-success btn-sm mr-2" (click)="sendConfirmationEmail()"
-              [disabled]="emailDisabled">
+              [disabled]="emailDisabled || status == 'invoiced'">
               Send Email To Customer
             </button>
             <button type="button" *ngIf="isPDF" class="btn btn-success btn-sm mr-2" (click)="openModal()">

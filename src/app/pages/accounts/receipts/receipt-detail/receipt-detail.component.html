@@ -283,7 +283,10 @@
                         <td colspan="4">{{ dataMessage }}</td>
                       </tr>
                       <tr *ngFor="let dt of receiptData.transactionLog">
-                        <td>
+                        <td *ngIf="receiptData.isFeatEnabled"> 
+                          {{ dt.actName | titlecase}}
+                        </td>
+                        <td *ngIf="!receiptData.isFeatEnabled"> 
                           <span *ngIf="dt.actIDType === 'actID'">{{
                             dt.accName | titlecase
                           }}</span>

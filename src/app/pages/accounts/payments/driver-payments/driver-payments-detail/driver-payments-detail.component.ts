@@ -15,7 +15,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
   paymentData = {
     currency: "CAD",
     paymentTo: null,
-    entityName: '',
+    entityName: "",
     entityId: null,
     paymentNo: "",
     txnDate: "",
@@ -50,6 +50,7 @@ export class DriverPaymentsDetailComponent implements OnInit {
     advData: [],
     transactionLog: [],
     paymentEnity: "",
+    isFeatEnabled: false,
   };
   accounts = [];
   accountsObjects = {};
@@ -63,17 +64,17 @@ export class DriverPaymentsDetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private apiService: ApiService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
-
-    await this.fetchAccountsByIDs();
-    await this.fetchAccountsByInternalIDs();
+    // this.fetchDrivers();
+    // this.fetchContactsList();
+    // this.fetchSettlement();
+    // await this.fetchAccountsByIDs();
+    // await this.fetchAccountsByInternalIDs();
     await this.fetchPaymentDetail();
   }
-
-
 
   async fetchPaymentDetail() {
     let result: any = await this.accountService
@@ -82,6 +83,10 @@ export class DriverPaymentsDetailComponent implements OnInit {
 
     this.downloadDisabled = false;
     this.paymentData = result[0];
+    if (!this.paymentData.isFeatEnabled) {
+      this.fetchAccountsByIDs();
+      this.fetchAccountsByInternalIDs();
+    }
     if (this.paymentData.transactionLog.length === 0) {
       this.dataMessage = Constants.NO_RECORDS_FOUND;
     }
@@ -95,7 +100,6 @@ export class DriverPaymentsDetailComponent implements OnInit {
       " "
     );
   }
-
 
   async fetchAccountsByIDs() {
     this.accountsObjects = await this.accountService
