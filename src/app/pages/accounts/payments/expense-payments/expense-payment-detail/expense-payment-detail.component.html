@@ -200,7 +200,12 @@
                                           <td colspan="5">No record found</td>
                                        </tr>
                                        <tr *ngFor="let data of paymentData.transactionLog">
-                                          <td>{{ accountsObjects[data.accountID] }}</td>
+                                          <td *ngIf="paymentData.isFeatEnabled"> 
+                                             {{ data.actName | titlecase}}
+                                          </td>
+                                          <td *ngIf="!paymentData.isFeatEnabled"> 
+                                             {{ accountsObjects[data.accountID] }}
+                                          </td>
                                           <td>{{ data.desc }}</td>
                                           <td>
                                              <span *ngIf="data.trxType === 'debit'">
