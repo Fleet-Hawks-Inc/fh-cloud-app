@@ -173,6 +173,7 @@
                       <col style="width: 1%" />
                       <col style="width: 1%" />
                       <col style="width: 1%" />
+                      <col style="width: 1%" />
                       <col style="width: 2%" />
                       <col style="width: 3%" />
                       <col style="width: 2%" />
@@ -186,6 +187,7 @@
                           <th>Vehicle</th>
                           <th>Trip#</th>
                           <th>Order#</th>
+                          <th>Date</th>
                           <th>Province(US)</th>
                           <th>US Province Miles</th>
                           <th>Province(Canada)</th>
@@ -204,6 +206,8 @@
                           <td>{{ item.vehicle ? item.vehicle : "-" }}</td>
                           <td>{{ item.tripNo }}</td>
                           <td>{{ item.orderName }}</td>
+                          <td>{{ item.createdDate }}</td>
+
 
                           <td>
                             <span *ngIf="item.provinceData.length === 0"

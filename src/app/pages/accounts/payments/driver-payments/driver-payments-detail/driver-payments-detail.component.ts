@@ -10,13 +10,12 @@ import { AccountService, ApiService, ListService } from "src/app/services";
 })
 export class DriverPaymentsDetailComponent implements OnInit {
   dataMessage: string = Constants.FETCHING_DATA;
-  drivers = [];
-  contacts = [];
-  settlements = [];
+
   paymentID;
   paymentData = {
     currency: "CAD",
     paymentTo: null,
+    entityName: '',
     entityId: null,
     paymentNo: "",
     txnDate: "",
@@ -64,29 +63,17 @@ export class DriverPaymentsDetailComponent implements OnInit {
     private router: Router,
     private accountService: AccountService,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
-    this.fetchDrivers();
-    this.fetchContactsList();
-    this.fetchSettlement();
+
     await this.fetchAccountsByIDs();
     await this.fetchAccountsByInternalIDs();
     await this.fetchPaymentDetail();
   }
 
-  fetchDrivers() {
-    this.apiService.getData(`drivers/get/list`).subscribe((result: any) => {
-      this.drivers = result;
-    });
-  }
 
-  fetchContactsList() {
-    this.apiService.getData(`contacts/get/list`).subscribe((result: any) => {
-      this.contacts = result;
-    });
-  }
 
   async fetchPaymentDetail() {
     let result: any = await this.accountService
@@ -109,13 +96,6 @@ export class DriverPaymentsDetailComponent implements OnInit {
     );
   }
 
-  fetchSettlement() {
-    this.accountService
-      .getData(`settlement/get/list`)
-      .subscribe((result: any) => {
-        this.settlements = result;
-      });
-  }
 
   async fetchAccountsByIDs() {
     this.accountsObjects = await this.accountService
