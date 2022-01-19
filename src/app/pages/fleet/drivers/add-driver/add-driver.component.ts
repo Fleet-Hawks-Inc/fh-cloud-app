@@ -1188,8 +1188,8 @@ export class AddDriverComponent
     this.driverData.createdTime = result.createdTime;
     this.driverData.driverImage = result.driverImage;
     if (result.driverImage !== "" && result.driverImage !== undefined) {
-      this.driverProfileSrc = result.uploadImage;
-      //this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
+      //this.driverProfileSrc = result.uploadImage;
+      this.driverProfileSrc = `${this.Asseturl}/${result.carrierID}/${result.driverImage}`;
       this.imageTitle = "Change";
     } else {
       this.driverProfileSrc = "";
