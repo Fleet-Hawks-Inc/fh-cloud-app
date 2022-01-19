@@ -84,7 +84,7 @@
                                         <col style="width:1%">
                                         <col style="width:1%">
                                         <col style="width:1%">
-                                        <col style="width:4%">
+                                        <col style="width:1%">
                                         <col style="width:3%">
                                         <col style="width:2%">
                                         <col style="width:3%">
@@ -97,7 +97,9 @@
                                             <tr>
                                                 <th>Vehicle</th>
                                                 <th>Trip#</th>
-                                                <th>Order#</th>
+                                                <th>Order#</th> 
+                                                <th>Assets</th>
+                                                <th>Drivers</th>
                                                 <th>Location</th>
                                                 <th>Date</th>
                                                 <th>Province(US)</th>
@@ -118,6 +120,11 @@
                                                 </td>
                                                 <td>{{item.tripNo}}</td>
                                                 <td> {{item.orderName}}</td>
+                                                
+                                                <th>
+                                                    <span style="font-weight:normal">{{item.assetName}}</span></th>
+                                                
+                                                <td>{{item.driverName |titlecase}}</td>
                                                 <td>
                                                     <span title="Location" *ngFor="let data of item.tripPlanning">
                                                         <b>

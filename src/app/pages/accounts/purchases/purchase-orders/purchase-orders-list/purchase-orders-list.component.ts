@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import Constants from "src/app/pages/fleet/constants";
-import { AccountService, ApiService } from "src/app/services";
+import { AccountService, ApiService, DashboardUtilityService } from "src/app/services";
 
 @Component({
   selector: "app-purchase-orders-list",
@@ -14,36 +14,67 @@ export class PurchaseOrdersListComponent implements OnInit {
   date = new Date();
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   payOrders = [];
-  vendors = {};
   filter = {
-    amount: null,
-    startDate: null,
-    endDate: null,
+    category: null,
+    unit: '',
+    status: null,
+    startDate: '',
+    endDate: '',
   };
   disableSearch = true;
   lastItemSK = "";
   loaded = false;
-
+  emailDisabled = false;
+  vendors: any = {};
+  allStatus = [
+    {
+      name: 'Open',
+      value: 'open'
+    },
+    {
+      name: 'Sent',
+      value: 'sent'
+    },
+    {
+      name: 'Closed',
+      value: 'closed'
+    },
+    {
+      name: 'Cancelled',
+      value: 'cancelled'
+    }
+  ];
   constructor(
     private apiService: ApiService,
     private accountService: AccountService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private dashboardUtilityService: DashboardUtilityService
   ) { }
 
   async ngOnInit() {
-    await this.fetchVendor();
+    this.vendors = await this.dashboardUtilityService.getVendors();
     await this.fetchPurchases();
+
+  }
+
+  resetUnit() {
+    this.filter.unit = '';
   }
 
   async fetchPurchases() {
+    console.log('filter', this.filter)
     if (this.lastItemSK !== "end") {
-      let filterAmount = null;
-      if (this.filter.amount) {
-        filterAmount = encodeURIComponent(`"${this.filter.amount}"`);
+      let category = null;
+      let unit = null;
+      if (this.filter.category) {
+        category = encodeURIComponent(`"${this.filter.category}"`);
+      }
+      if (this.filter.unit) {
+        unit = encodeURIComponent(`"${this.filter.unit}"`);
       }
       let result: any = await this.accountService
         .getData(
-          `purchase-orders/paging?amount=${filterAmount}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
+          `purchase-orders/paging?category=${category}&unit=${unit}&status=${this.filter.status}&start=${this.filter.startDate}&end=${this.filter.endDate}&lastKey=`
         )
         .toPromise();
       this.disableSearch = false;
@@ -66,13 +97,6 @@ export class PurchaseOrdersListComponent implements OnInit {
     }
   }
 
-  async fetchVendor() {
-    let result: any = await this.apiService
-      .getData(`contacts/get/list/vendor`)
-      .toPromise();
-    this.vendors = result;
-  }
-
   deleteOrder(data) {
     if (confirm("Are you sure you want to delete?") === true) {
       this.accountService
@@ -92,24 +116,40 @@ export class PurchaseOrdersListComponent implements OnInit {
   }
 
   searchFilter() {
-    if (
-      this.filter.amount !== null ||
-      this.filter.startDate !== null ||
-      this.filter.endDate !== null
-    ) {
-      this.payOrders = [];
-      this.lastItemSK = "";
-      this.disableSearch = true;
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.fetchPurchases();
+    if (this.filter.category !== null || this.filter.unit !== '' || this.filter.status !== null || this.filter.startDate !== '' || this.filter.endDate !== '') {
+      if (
+        this.filter.startDate !== '' &&
+        this.filter.endDate === ''
+      ) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (
+        this.filter.startDate === '' &&
+        this.filter.endDate !== ''
+      ) {
+        this.toastr.error('Please select both start and end dates.');
+        return false;
+      } else if (this.filter.startDate > this.filter.endDate) {
+        this.toastr.error('Start date should be less then end date');
+        return false;
+      } else {
+        this.payOrders = [];
+        this.lastItemSK = "";
+        this.disableSearch = true;
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.fetchPurchases();
+      }
     }
+
   }
 
   resetFilter() {
     this.filter = {
-      amount: null,
-      startDate: null,
-      endDate: null,
+      category: null,
+      unit: '',
+      status: null,
+      startDate: '',
+      endDate: '',
     };
     this.payOrders = [];
     this.lastItemSK = "";
@@ -123,5 +163,19 @@ export class PurchaseOrdersListComponent implements OnInit {
       this.fetchPurchases();
     }
     this.loaded = false;
+  }
+
+  async sendConfirmationEmail(i: any, purchaseID: any) {
+    this.emailDisabled = true;
+    let result: any = await this.accountService
+      .getData(`purchase-orders/send/confirmation-email/${purchaseID}`)
+      .toPromise();
+    this.emailDisabled = false;
+    if (result) {
+      this.toastr.success("Email sent successfully");
+      this.payOrders[i].status = 'sent';
+    } else {
+      this.toastr.error("Something went wrong.");
+    }
   }
 }
