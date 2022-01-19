@@ -1,0 +1,95 @@
+<style>
+    .extra {
+        display: none;
+    }
+</style>
+<section class="body">
+
+    <div class="inner-wrapper">
+
+        <section role="main" class="content-body pl-1 pt-0 pr-0">
+            <header class="page-header pr19 pl11">
+                <form class="form-horizontal" method="get">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2 col-lg-2 pr-1">
+                            <div class="input-group input-group-md">
+                                <input type="text" autocomplete="off" name="driverName" 
+                                    placeholder="Search driver by name" class="form-control"
+                                    >
+                            </div>
+                            <!-- <div *ngIf="suggestedDrivers?.length> 0" class="result-suggestions">
+                                <ul>
+                                    <li *ngFor="let suggestedDriver of suggestedDrivers" class="cursorpoint" (click)="setDriver(suggestedDriver.driverID,
+                      suggestedDriver.firstName, suggestedDriver.lastName,
+                      suggestedDriver.middleName)" class="text-capitalize">{{ suggestedDriver.firstName }} {{
+                                        suggestedDriver.middleName }} {{ suggestedDriver.lastName }}</li>
+                                </ul>
+                            </div> -->
+                        </div>
+                        <div class="col-md-2 col-lg-2 pr-1">
+                           
+                        </div>
+
+                        <div class="col-md-2 col-lg-2">
+                            <button type="submit" (click)="searchFilter()" class="btn btn-sm
+                  btn-success mr-3">Search</button>
+                            <button type="button" (click)="resetFilter()" class="btn btn-sm
+                  btn-success">Reset</button>
+                        </div>
+                        <div class="col-md-4 col-lg-6 text-right pr-1">
+                            <a routerLink="/reports/fleet/drivers" class="btn btn-sm btn-success">Back
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </header>
+
+            <section class="m-2">
+                <div class="row mb-3">
+                    <div class="col-lg-12">
+                        <div infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="1"
+                            [infiniteScrollThrottle]="5" (scrolled)="onScroll()">
+                            <div class="bg-white p-3 text-dark">
+                                <div class="form-group row pt-3">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table id="diverTbl" class="row-border hover table
+                                                             table-bordered table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th id="" class="col1 minWidth200">Date</th>
+                                                        <!-- <th id="" class="col2 minWidth120">Duty Status</th> -->
+                                                        <th id="" class="minWidth120">Payment Mode</th>
+                                                        <th id="" class="minWidth120">Type Of Payment</th>
+                                                        <th id="" class="minWidth120">Vendor</th>
+                                                        <th id="" class="minWidth120">Amount</th>
+                                                        <th id="" class="minWidth120">Currency</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngIf="allPayments.length == 0" class="text-center">
+                                                        <td colspan="14">{{dataMessage}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </section>
+
+        </section>
+        <div class="col-lg-12 mt-3 text-center" *ngIf="lastEvaluatedKey !== 'end' && allPayments.length !== 0">
+            <button type="button" class="btn btn-success btn-sm text-light" (click)="onScroll()">Load
+                More..</button>
+        </div>
+    </div>
+</section>
