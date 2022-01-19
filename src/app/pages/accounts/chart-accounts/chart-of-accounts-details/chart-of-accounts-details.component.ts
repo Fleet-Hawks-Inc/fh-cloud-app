@@ -125,6 +125,8 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       this.fetchAccountClassByIDs();
       this.getEntityList();
 
+      this.transactionLogCAD = res.transactionLogCAD;
+      this.transactionLogUSD = res.transactionLogUSD;
       for (const element of this.account.transactionLogCAD) {
         element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
       }
