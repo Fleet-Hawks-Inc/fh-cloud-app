@@ -124,6 +124,13 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
     if (!this.account.isFeatEnabled) {
       this.fetchAccountClassByIDs();
       this.getEntityList();
+
+      for (const element of this.account.transactionLogCAD) {
+        element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+      }
+      for (const element of this.account.transactionLogUSD) {
+        element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
+      }
     } else {
       // this.transactionLogCAD = res.transactionLogCAD;
     }
@@ -138,12 +145,6 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       this.account.actName.indexOf(" ") + 1,
       this.account.actName.length
     );
-    for (const element of this.account.transactionLogCAD) {
-      element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
-    }
-    for (const element of this.account.transactionLogUSD) {
-      element.type = element.type.replace("_", " "); // replacing _ with white space in trx type
-    }
 
     this.periodVarianceCAD = Math.abs(
       Number(this.account.opnBalCAD) - Number(this.account.closingAmtCAD)
@@ -247,6 +248,7 @@ export class ChartOfAccountsDetailsComponent implements OnInit {
       }
       res.map((v) => {
         v.entityType = v.entityType.replace("_", " ");
+        v.desc = v.desc.replace("_", " ");
       });
       this.loaded = true;
       this.transactionLogCAD = this.transactionLogCAD.concat(res);
