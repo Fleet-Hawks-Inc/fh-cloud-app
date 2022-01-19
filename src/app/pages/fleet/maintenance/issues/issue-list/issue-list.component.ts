@@ -139,7 +139,7 @@ export class IssueListComponent implements OnInit {
 
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData('issues/fetch/records?searchValue=' + this.searchValue + '&category=' + this.category + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus  + '&lastKey=' + this.lastEvaluatedKey)
+      this.apiService.getData('issues/fetch/records?searchValue=' + this.searchValue + '&category=' + this.category + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
             this.dataMessage = Constants.NO_RECORDS_FOUND
@@ -163,7 +163,6 @@ export class IssueListComponent implements OnInit {
     this.searchValue = null;
 
   }
-
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
@@ -172,12 +171,22 @@ export class IssueListComponent implements OnInit {
   }
   searchFilter() {
     if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
-      this.issueName = this.issueName.toLowerCase();
-      this.initDataTable();
-      this.lastEvaluatedKey = ''
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.issues = [];
-    } else {
+      if (this.searchValue != null && this.category == null) {
+        this.toastr.error('Please select both searchValue and category ');
+        return false;
+      } else if (this.searchValue == null && this.category != null) {
+        this.toastr.error('Please select both searchValue and category ');
+        return false;
+      }
+      else {
+        // this.issueName = this.issueName.toLowerCase();
+        this.initDataTable();
+        this.lastEvaluatedKey = ''
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.issues = [];
+      }
+    }
+    else {
       return false;
     }
   }
@@ -213,11 +222,11 @@ export class IssueListComponent implements OnInit {
   // }
 
   refreshData() {
-    this.unitID = null;
+    this.searchValue = null;
     this.unitName = '';
     this.issueName = '';
     this.issueStatus = null;
-    this.assetUnitID = null;
+    this.category = null;
     this.suggestedIssues = [];
     this.lastEvaluatedKey = '';
     this.initDataTable();

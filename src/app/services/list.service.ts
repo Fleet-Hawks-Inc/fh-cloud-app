@@ -122,7 +122,7 @@ export class ListService {
     private apiService: ApiService,
     private accountService: AccountService,
     private modalService: NgbModal
-  ) {}
+  ) { }
 
   fetchVendors() {
     this.apiService
@@ -257,6 +257,7 @@ export class ListService {
         newIssues.push(elem);
       }
     });
+    this.issuesDataSource.next(newIssues);
   }
 
   fetchAssets() {
