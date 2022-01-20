@@ -28,6 +28,7 @@ export class AdvancePaymentsDetailComponent implements OnInit {
     accountID: null,
     status: "",
     transactionLog: [],
+    isFeatEnabled: false,
   };
   paymentID;
   entityName = "";
@@ -48,8 +49,8 @@ export class AdvancePaymentsDetailComponent implements OnInit {
   ngOnInit() {
     this.paymentID = this.route.snapshot.params[`paymentID`];
     this.fetchPayments();
-    this.fetchAccountsByIDs();
-    this.fetchAccountsByInternalIDs();
+    // this.fetchAccountsByIDs();
+    // this.fetchAccountsByInternalIDs();
   }
   fetchAccountsByIDs() {
     this.accountService
@@ -71,7 +72,10 @@ export class AdvancePaymentsDetailComponent implements OnInit {
       .subscribe((result: any) => {
         this.paymentData = result[0];
         this.fetchAdvPayments();
-
+        if (!this.paymentData.isFeatEnabled) {
+          this.fetchAccountsByIDs();
+          this.fetchAccountsByInternalIDs();
+        }
         this.paymentData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });

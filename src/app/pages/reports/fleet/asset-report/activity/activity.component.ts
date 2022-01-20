@@ -73,7 +73,8 @@ export class ActivityComponent implements OnInit {
           this.lastItemSK = 'end';
         }
         this.loaded = true;
-                 for (let ast of result.Items) {
+                 for (let ast of result.Items) 
+                 {
                     let dataa = ast
                     ast.miles = 0
                     for (let element of dataa.tripPlanning) {
@@ -160,6 +161,8 @@ export class ActivityComponent implements OnInit {
         obj["Asset"] = element.assetName.replace(/, /g, ' &');;
         obj["Trip#"] = element.tripNo;
         obj["Order#"] = element.orderName.replace(/, /g, ' &');
+        obj["Vehicle#"] = element.vehicle.replace(/, /g, ' &');
+        obj["Driver Name"] = element.driverName;
         obj["location"] = location;
         obj["	Date"] = date;
         obj["Province(US)"] = usState;

@@ -245,7 +245,7 @@
                                        <tr>
                                           <th>Account Name</th>
                                           <th>Description</th>
-                                          <th>Type</th>
+                                          <!-- <th>Type</th> -->
                                           <th>Debit</th>
                                           <th>Credit</th>
                                        </tr>
@@ -260,14 +260,19 @@
                                        </tr>
                                        <tr *ngFor="let dt of
                                           paymentData.transactionLog">
-                                          <td><span *ngIf="dt.actIDType ===
+                                          <td *ngIf="paymentData.isFeatEnabled"> 
+                                             {{ dt.actName | titlecase}}
+                                         </td>
+                                         <td *ngIf="!paymentData.isFeatEnabled"> 
+                                             <span *ngIf="dt.actIDType ===
                                                 'actID'">{{accountsObjects[dt.accountID]
                                                 | titlecase}}</span>
                                              <span *ngIf="dt.actIDType ===
                                                 'actIntID'">{{accountsIntObjects[dt.accountID]
-                                                | titlecase}}</span></td>
+                                                | titlecase}}</span>
+                                          </td>
                                           <td>{{dt.desc}}</td>
-                                          <td>{{dt.type | titlecase}}</td>
+                                          <!-- <td>{{dt.type | titlecase}}</td> -->
                                           <td><span *ngIf="dt.trxType ===
                                                 'debit'">{{dt.amount | number :
                                                 '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
