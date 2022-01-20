@@ -62,13 +62,39 @@
                                                         <th id="" class="minWidth120">Payment Mode</th>
                                                         <th id="" class="minWidth120">Type Of Payment</th>
                                                         <th id="" class="minWidth120">Vendor</th>
-                                                        <th id="" class="minWidth120">Amount</th>
                                                         <th id="" class="minWidth120">Currency</th>
+                                                        <th id="" class="minWidth120">Amount</th>
+                                                        <th id="" class="minWidth120">Status</th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr *ngIf="allPayments.length == 0" class="text-center">
                                                         <td colspan="14">{{dataMessage}}</td>
+                                                    </tr>
+                                                    <tr *ngFor="let element of allPayments">
+                                                        <td>
+                                                            {{element.payModeDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.payMode}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.type}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.paymentTo}} : {{element.entityName | titlecase}}
+                                                        </td>
+                                                      
+                                                        <td>
+                                                            {{element.currency}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.amount}}
+                                                        </td>
+                                                        <td>
+                                                            {{element.status}}
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

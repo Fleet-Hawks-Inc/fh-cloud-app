@@ -7,6 +7,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import {PaymentReportComponent} from './payment-report/payment-report.component'
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 const routes: Routes = [
@@ -22,7 +23,8 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         NgxDatatableModule,
         NgbModule,
-        FormsModule
+        FormsModule,
+        InfiniteScrollModule
     ]
 })
 export class ManageAccountsReportsModule { }
