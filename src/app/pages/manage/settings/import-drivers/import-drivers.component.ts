@@ -10,7 +10,7 @@ import * as moment from 'moment'
 import * as _ from 'lodash'
 import { ViewEncapsulation } from '@angular/core';
 import { SelectionType, ColumnMode } from "@swimlane/ngx-datatable";
-import { ParsedResults, ValidatorConfig,  } from 'csv-file-validator';
+import  { ParsedResults, ValidatorConfig,  } from 'csv-file-validator';
 import CSVFileValidator  from 'csv-file-validator';
 import {Router} from '@angular/router'
 import { threadId } from 'worker_threads';
