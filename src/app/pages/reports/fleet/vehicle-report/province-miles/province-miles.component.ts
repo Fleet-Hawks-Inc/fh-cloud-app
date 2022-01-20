@@ -273,7 +273,13 @@ export class ProvinceMilesComponent implements OnInit {
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
         link.setAttribute('href', url);
-        link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}provinceMiles-Report.csv`);
+        if(type === 'US'){
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}US-ProvinceMiles-Report.csv`);
+        }
+        else{
+          link.setAttribute('download', `${moment().format("YYYY-MM-DD:HH:m")}CAN-ProvinceMiles-Report.csv`);
+        }
+      
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();

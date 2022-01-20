@@ -179,11 +179,11 @@ export class IssueListComponent implements OnInit {
         return false;
       }
       else {
-        // this.issueName = this.issueName.toLowerCase();
-        this.initDataTable();
         this.lastEvaluatedKey = ''
-        this.dataMessage = Constants.FETCHING_DATA;
         this.issues = [];
+       
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.initDataTable();
       }
     }
     else {
