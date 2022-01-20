@@ -446,13 +446,11 @@ export class FuelEntryListComponent implements OnInit {
     this.resetCountResult();
   }
   selectDoc(event) {
-    this.csvHeader=[]
     this.error.hasError=false
     this.error.message=''
     this.error.attributes=[]
     let files = event.target.files;
     let condition = true;
-    // console.log(files)
     for (let i = 0; i < files.length; i++) {
       const element = files[i];
       let name = element.name.split('.');
@@ -469,35 +467,33 @@ export class FuelEntryListComponent implements OnInit {
       this.uploadedDocs = []
       this.uploadedDocs = files
       const reader = new FileReader();
-  reader.addEventListener('load', (event:any) => {
+    reader.addEventListener('load', (event:any) => {
     let csvdata = event.target.result;
-    this.parseCSV(csvdata);
+    this.csvHeader= this.parseCSV(csvdata);
   });
   reader.readAsBinaryString(event.target.files[0]);
       //this.postDocument();
+
+      
     }
 
   }
   parseCSV(data:any){
+    this.csvHeader=[]
         let newLinebrk = data.split("\n");
-   
     let csvHeader=newLinebrk[0].split(',')
-    csvHeader.forEach(element => {
-      if(element.split(' ').length>=2){
-        this.csvHeader.push(JSON.parse(element))
-        }
-        else{
-          this.csvHeader.push(element)
-        }
-    });
+    return csvHeader
   }
 
   validateCSV(){
-    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer Amt","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price",]
+    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer AMT","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price"]
     let match=true
-    if(this.csvHeader && this.csvHeader.length>0){
+    console.log(this.csvHeader)
+    const parsedData:any=this.csvHeader.map(element=>element.includes('\r')?element.replace('\r',''):element)
+    console.log("parse",parsedData)
+    if(parsedData && parsedData.length>0){
     data.forEach(element=>{
-      if(!this.csvHeader.includes(element)){
+      if(!parsedData.includes(element)){
         this.error.attributes.push(element)
         match=false
       }
@@ -548,17 +544,20 @@ return match
   }
 
   validatePetro(){
-    const data=["Exchange Rate", "Card #", "Site City", "Site Name","Prov/St Abb.",'DEF AMT',"DEF QTY","Odometer","Unit #","UOM","Date","Time","Driver Id","Discount Rate","Reefer Amt","Tractor","Tractor AMT","Billed Price", "Reefer QTY","Retail Price",]
+    const data=["Sales Date","Sales Time", "Card #", "City", "Province","Product","Volume","Net Unit Price","FET + FCT","Prov. TAX","GST/HST","PST","Amount","Odometer","Doc ID","Driver Name"]
     let match=true
-    if(this.csvHeader && this.csvHeader.length>0){
+    const parseData:any=this.csvHeader.map(element=> JSON.parse(element))
+    if(parseData && parseData.length>0){
     data.forEach(element=>{
-      if(!this.csvHeader.includes(element)){
+      if(!parseData.includes(element)){
         this.error.attributes.push(element)
         match=false
       }
     })
   }
-  console.log(match)
+  else{
+    match=false
+  }
 return match
   }
   
