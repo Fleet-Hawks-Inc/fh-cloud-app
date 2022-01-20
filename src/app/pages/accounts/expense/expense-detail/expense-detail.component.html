@@ -204,8 +204,13 @@
                                         </thead>
                                         <tbody>
                                           <tr *ngFor="let dt of expenseData.transactionLog">
-                                            <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
-                                              <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span></td>
+                                            <td *ngIf="expenseData.isFeatEnabled"> 
+                                                {{ dt.actName | titlecase}}
+                                            </td>
+                                            <td *ngIf="!expenseData.isFeatEnabled">
+                                                <span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                                                <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span>
+                                            </td>
                                            <td>{{dt.type | titlecase}}</td>
                                            <td><span *ngIf="dt.trxType === 'debit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
                                            <td><span *ngIf="dt.trxType === 'credit'">{{dt.amount | number : '1.2-2'}}&nbsp; {{dt.currency}}</span></td>
