@@ -40,9 +40,7 @@ export class DashboardUtilityService {
   public fetchCountries = async (): Promise<any[]> => {
     if (this.refreshCountries) {
       const result = await this.countryStateCity.GetAllCountries();
-      // console.log('result', result)
       this.countries = result;
-      // console.log('countries', this.countries)
       this.refreshCountries = false;
     }
     return this.countries;

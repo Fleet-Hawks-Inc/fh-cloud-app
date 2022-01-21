@@ -428,9 +428,7 @@ export class AddDriverComponent
       this.pageTitle = "Add Driver";
     }
     this.fetchGroups(); // fetch groups
-    // this.fetchCountries(); 
     this.docCountries = await this.dashboardUtilityService.fetchCountries();// fetch countries
-    // console.log('  this.docCountries', this.docCountries)
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
@@ -607,7 +605,6 @@ export class AddDriverComponent
 
   // async fetchCountries() {
   //   this.docCountries = await this.countryStateCity.GetAllCountries();
-  //   console.log(' this.docCountries ', this.docCountries )
   // }
   async getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = "";
