@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import Constants from '../../constants';
-import {environment} from '../../../../../environments/environment';
+import Constants from '../../../constants';
+import {environment} from '../../../../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService } from '../../../../services';
+import { ApiService } from '../../../../../services';
 import * as _ from 'lodash';
 @Component({
   selector: 'app-assets-setting',

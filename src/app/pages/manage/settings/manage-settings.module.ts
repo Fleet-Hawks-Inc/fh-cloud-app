@@ -6,7 +6,7 @@ import { GeneralSettingsComponent } from './general-settings/general-settings.co
 import { MyAccountComponent } from './my-account/my-account.component';
 import { DriverSettingComponent } from './driver-setting/driver-setting.component';
 import { VehicleSettingComponent } from './vehicle-setting/vehicle-setting.component';
-import { AssetsSettingComponent } from './assets-setting/assets-setting.component';
+import { AssetsSettingComponent } from './assets-setting/assets-settings/assets-setting.component';
 import { FuelSettingComponent } from './fuel-setting/fuel-setting.component';
 import { RemindersSettingComponent } from './reminders-setting/reminders-setting.component';
 import { IssueSettingComponent } from './issue-setting/issue-setting.component';
@@ -18,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
+import { AssetsOverviewComponent } from './assets-setting/assets-overview/assets-overview.component';
+import { ImportAssetsComponent } from './assets-setting/import-assets/import-assets.component';
 
 const routes: Routes = [
 
@@ -27,6 +29,8 @@ const routes: Routes = [
   { path: 'driver', component: DriverSettingComponent },
   { path: 'vehicle', component: VehicleSettingComponent },
   { path: 'asset', component: AssetsSettingComponent },
+  { path: 'assetsoverview', component: AssetsOverviewComponent },
+  { path: 'importassets', component: ImportAssetsComponent },
   { path: 'fuel', component: FuelSettingComponent },
   { path: 'reminders', component: RemindersSettingComponent },
   { path: 'issue', component: IssueSettingComponent },
@@ -50,7 +54,9 @@ const routes: Routes = [
     DispatchSettingComponent,
     ComplianceSettingComponent,
     SafetySettingComponent,
-    CustomerSettingComponent],
+    CustomerSettingComponent,
+    AssetsOverviewComponent,
+    ImportAssetsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
