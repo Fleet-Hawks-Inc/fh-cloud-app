@@ -125,7 +125,7 @@
                           </td>
 
                           <td class="cursorpoint" [routerLink]="data.url">
-                            {{ data.vendorName }}
+                            {{ vendors[data.vendorID] }}
                           </td>
                           <td class="cursorpoint" [routerLink]="data.url">
                             {{ data.total.finalTotal | number: "1.2-2" }}
