@@ -1,6 +1,4 @@
 <ul class="nav nav-main mr-0 bg-white">
-
-
   <li class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-truck" aria-hidden="true"></i>
@@ -8,27 +6,39 @@
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" [routerLink]="['/reports','fleet','drivers']">
+        <a class="nav-link" [routerLink]="['/reports', 'fleet', 'drivers']">
           Drivers
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/reports', 'fleet','vehicles','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'fleet', 'vehicles', 'overview']"
+        >
           Vehicles
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/reports','fleet','asset','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'fleet', 'asset', 'overview']"
+        >
           Assets
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/reports', 'fleet','fuel','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'fleet', 'fuel', 'overview']"
+        >
           Fuel
         </a>
       </li>
       <li>
-        <a class="nav-link" [routerLink]="['/reports', 'fleet','reminders','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'fleet', 'reminders', 'overview']"
+        >
           Reminders
         </a>
       </li>
@@ -38,7 +48,10 @@
         </a>
       </li> -->
       <li>
-        <a class="nav-link" [routerLink]="['/reports', 'fleet','maintenance','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'fleet', 'maintenance', 'overview']"
+        >
           Maintenance
         </a>
       </li>
@@ -55,7 +68,6 @@
     </ul>
   </li>
 
-
   <li class="nav-parent">
     <a class="nav-link" href="#">
       <i class="fas fa-route" aria-hidden="true"></i>
@@ -63,7 +75,10 @@
     </a>
     <ul class="nav nav-children">
       <li>
-        <a class="nav-link" [routerLink]="['/reports', 'dispatch','orders','overview']">
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'dispatch', 'orders', 'overview']"
+        >
           Orders
         </a>
       </li>
@@ -92,11 +107,8 @@
           Documents
         </a>
       </li> -->
-
-
     </ul>
   </li>
-
 
   <!-- <li class="nav-parent">
     <a class="nav-link" href="#">
@@ -158,25 +170,37 @@
         </a>
       </li> -->
 
-
   <!-- </ul>
 </li> -->
 
-<li class="nav-parent">
-  <a class="nav-link" href="#">
-    <i class="fas fa-file-invoice-dollar"></i>
-    <span>Accounts
-    </span>
-  </a>
-  <ul class="nav nav-children">
-    <li>
-      <a class="nav-link" [routerLink]="['/reports', 'accounts','collections']">
-        Customer Collection
-      </a>
-    </li>
+  <li class="nav-parent">
+    <a class="nav-link" href="#">
+      <i class="fas fa-file-alt"></i>
+      <span>Accounts </span>
+    </a>
+    <ul class="nav nav-children">
+      <li>
+        <a
+          class="nav-link"
+          [routerLink]="['/reports', 'accounts', 'collections']"
+        >
+          Customer Collection
+        </a>
+      </li>
+    </ul>
+  </li>
 
-
-  </ul>
-</li>
-
+  <li class="nav-parent">
+    <a class="nav-link" href="#">
+      <i class="fas fa-users"></i>
+      <span>Customer Information </span>
+    </a>
+    <ul class="nav nav-children">
+      <li>
+        <a class="nav-link" [routerLink]="['/reports', 'addressbook']">
+          Customer Collection
+        </a>
+      </li>
+    </ul>
+  </li>
 </ul>

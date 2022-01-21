@@ -174,12 +174,13 @@ export class AddCreditNoteComponent implements OnInit {
 
   async calculateAmount(i: number) {
     let total: any = 0;
-    this.creditData.crDetails[i].amount =
+    let amount =
       this.creditData.crDetails[i].qty * this.creditData.crDetails[i].rate;
+    this.creditData.crDetails[i].amount = parseFloat(amount.toFixed(2));
     this.creditData.crDetails.forEach((element) => {
       total += element.amount;
     });
-    this.total = total.toFixed(2);
+    this.total = total;
   }
 
   cancel() {
@@ -321,6 +322,7 @@ export class AddCreditNoteComponent implements OnInit {
 
   uploadDocs(documents) {
     this.filesError = '';
+    this.docs = [];
     let files = [...documents];
     let filesSize = 0;
     if (files.length > 5) {

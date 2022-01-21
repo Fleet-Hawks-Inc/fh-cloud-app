@@ -24,7 +24,6 @@ export class DriverDetailComponent implements OnInit {
     Asseturl = this.apiService.AssetUrl;
     environment = environment.isFeatureEnabled;
     platform: any;
-    profile = '';
     driverName: string;
     CDL: string;
     phone: string;
@@ -123,6 +122,7 @@ export class DriverDetailComponent implements OnInit {
     docs = [];
     assetsDocs = [];
     absDocs = [];
+    profile:any = [];
     documentTypeList: any = [];
     documentsTypesObects: any = {};
     dataMessage = Constants.NO_RECORDS_FOUND;
@@ -358,13 +358,16 @@ export class DriverDetailComponent implements OnInit {
                     this.terminationDate = this.driverData.terminationDate;
                     this.contractStart = this.driverData.contractStart;
                     this.contractEnd = this.driverData.contractEnd;
+                    
                     if (this.driverData.driverImage !== '' && this.driverData.driverImage !== undefined) {
-                        this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
+                          this.profile =  this.driverData.uploadImage;
+                        //this.profile = `${this.Asseturl}/${this.driverData.carrierID}/${this.driverData.driverImage}`;
                     } else {
-                        this.profile = 'assets/img/driver/driver.png';
+                          this.profile = 'assets/img/driver/driver.png';
                     }
                     if (this.driverData.abstractDocs !== undefined && this.driverData.abstractDocs.length > 0) {
-                        this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
+                          this.absDocs = this.driverData.docsAbs;
+                        //this.absDocs = this.driverData.abstractDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
                     }
                     this.driverType = this.driverData.driverType;
                     this.employeeId = this.driverData.employeeContractorId;
@@ -401,9 +404,13 @@ export class DriverDetailComponent implements OnInit {
                             expiryDate: this.driverData.documentDetails[i].expiryDate,
                             uploadedDocs: docmnt
                         });
+                        /*
                         if (this.driverData.documentDetails[i].uploadedDocs != undefined && this.driverData.documentDetails[i].uploadedDocs.length > 0) {
                             this.assetsDocs[i] = this.driverData.documentDetails[i].uploadedDocs.map(x => ({ path: `${this.Asseturl}/${this.driverData.carrierID}/${x}`, name: x }));
                         }
+                        */
+                         //Presigned URL Using AWS S3
+                        this.assetsDocs[i] = this.driverData.docuementUpload;
                     }
                     this.documents = newDocuments;
                     this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),

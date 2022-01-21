@@ -413,7 +413,11 @@
                 </thead>
                 <tbody>
                   <tr *ngFor="let dt of invoiceData.transactionLog">
-                    <td><span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
+                    <td *ngIf="invoiceData.isFeatEnabled"> 
+                      {{ dt.actName | titlecase}}
+                    </td>
+                    <td *ngIf="!invoiceData.isFeatEnabled"> 
+                      <span *ngIf="dt.actIDType === 'actID'">{{accountsObjects[dt.accountID] | titlecase}}</span>
                       <span *ngIf="dt.actIDType === 'actIntID'">{{accountsIntObjects[dt.accountID] | titlecase}}</span>
                     </td>
                     <td>{{ dt.desc }}</td>

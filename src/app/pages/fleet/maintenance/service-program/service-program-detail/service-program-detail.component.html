@@ -111,7 +111,9 @@
                      <div class="form-group col-md-12">
                         <label class="control-label font-weight-bold text-3 text-dark">Select Service Task</label>
                         <ng-select placeholder="Select Service Task" [(ngModel)]="programData.serviceTask" name="serviceTask" style="width: 100%;">
-                           <ng-option *ngFor="let item of allTasks;" value="{{item.taskID}}">{{item.taskName}}</ng-option>
+                           <ng-option *ngFor="let data of tasksObjects | keyvalue" value="{{ data.key }}">
+                              {{ data.value }}
+                          </ng-option>
                         </ng-select>
                      </div>
                   </div>

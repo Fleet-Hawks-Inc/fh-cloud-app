@@ -56,6 +56,7 @@ export class EmployeePaymentDetailComponent implements OnInit {
     advancePayIds: [],
     advData: [],
     transactionLog: [],
+    isFeatEnabled: false,
   };
   employees = [];
   empdetail = {
@@ -87,8 +88,8 @@ export class EmployeePaymentDetailComponent implements OnInit {
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
     this.fetchPaymentDetail();
-    this.fetchEmployees();
-    this.fetchCustomersByIDs();
+    // this.fetchEmployees();
+    // this.fetchCustomersByIDs();
     this.fetchAccountsByIDs();
     this.fetchAccountsByInternalIDs();
   }
@@ -111,13 +112,13 @@ export class EmployeePaymentDetailComponent implements OnInit {
       });
   }
 
-  fetchEmployees() {
-    this.apiService
-      .getData(`contacts/get/emp/list`)
-      .subscribe((result: any) => {
-        this.employees = result;
-      });
-  }
+  // fetchEmployees() {
+  //   this.apiService
+  //     .getData(`contacts/get/emp/list`)
+  //     .subscribe((result: any) => {
+  //       this.employees = result;
+  //     });
+  // }
 
   fetchEmpDetail(empID) {
     this.apiService
@@ -127,11 +128,11 @@ export class EmployeePaymentDetailComponent implements OnInit {
       });
   }
 
-  fetchCustomersByIDs() {
-    this.apiService.getData("contacts/get/list").subscribe((result: any) => {
-      this.customersObjects = result;
-    });
-  }
+  // fetchCustomersByIDs() {
+  //   this.apiService.getData("contacts/get/list").subscribe((result: any) => {
+  //     this.customersObjects = result;
+  //   });
+  // }
 
   fetchAccountsByIDs() {
     this.accountService

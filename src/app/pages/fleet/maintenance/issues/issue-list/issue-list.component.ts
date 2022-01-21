@@ -46,11 +46,22 @@ export class IssueListComponent implements OnInit {
   issuesPrevEvauatedKeys = [''];
   issuesStartPoint = 1;
   issuesEndPoint = this.pageLength;
-  allVehicles = [];
-  allAssets = [];
+  // allVehicles = [];
+  // allAssets = [];
   suggestedIssues = [];
   loaded = false
-
+  searchValue = null;
+  category = null;
+  categoryFilter = [
+    {
+      'name': 'Vehicle',
+      'value': 'vehicle'
+    },
+    {
+      'name': 'Asset',
+      'value': 'asset'
+    },
+  ]
   constructor(private apiService: ApiService, private router: Router, private spinner: NgxSpinnerService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -59,8 +70,8 @@ export class IssueListComponent implements OnInit {
     this.fetchDriverList();
     this.fetchAssetList();
     this.fetchUsersList();
-    this.fetchAllAssets();
-    this.fetchAllVehicles();
+    // this.fetchAllAssets();
+    // this.fetchAllVehicles();
 
     $(document).ready(() => {
       setTimeout(() => {
@@ -69,12 +80,12 @@ export class IssueListComponent implements OnInit {
     });
   }
 
-  getSuggestions = _.debounce(function (value) {
-    value = value.toLowerCase();
+  getSuggestions = _.debounce(function (searchvalue) {
+    searchvalue = searchvalue.toLowerCase();
 
-    if (value != '') {
+    if (searchvalue != '') {
       this.apiService
-        .getData(`issues/get/suggestions/${value}`)
+        .getData(`issues/get/suggestions/${searchvalue}`)
         .subscribe((result) => {
           this.suggestedIssues = result;
         });
@@ -83,8 +94,8 @@ export class IssueListComponent implements OnInit {
     }
   }, 800);
 
-  setIssue(issueName) {
-    this.issueName = issueName;
+  setIssue(value) {
+    this.issueName = value;
     this.suggestedIssues = [];
   }
 
@@ -128,17 +139,15 @@ export class IssueListComponent implements OnInit {
 
   initDataTable() {
     if (this.lastEvaluatedKey !== 'end') {
-      this.apiService.getData('issues/fetch/records?unitID=' + this.unitID + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&asset=' + this.assetUnitID + '&lastKey=' + this.lastEvaluatedKey)
+      this.apiService.getData('issues/fetch/records?searchValue=' + this.searchValue + '&category=' + this.category + '&issueName=' + this.issueName + '&currentStatus=' + this.issueStatus + '&lastKey=' + this.lastEvaluatedKey)
         .subscribe((result: any) => {
           if (result.Items.length === 0) {
-
             this.dataMessage = Constants.NO_RECORDS_FOUND
           }
           this.suggestedIssues = [];
           if (result.Items.length > 0) {
-
             if (result.LastEvaluatedKey !== undefined) {
-              this.lastEvaluatedKey = encodeURIComponent(result.Items[result.Items.length - 1].issueID);
+              this.lastEvaluatedKey = encodeURIComponent(result.LastEvaluatedKey.sk);
             }
             else {
               this.lastEvaluatedKey = 'end'
@@ -150,6 +159,10 @@ export class IssueListComponent implements OnInit {
         });
     }
   }
+  categoryChange() {
+    this.searchValue = null;
+
+  }
   onScroll() {
     if (this.loaded) {
       this.initDataTable();
@@ -157,24 +170,34 @@ export class IssueListComponent implements OnInit {
     this.loaded = false;
   }
   searchFilter() {
-    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-      // this.issueName = this.issueName.toLowerCase();
-      this.initDataTable();
-      this.lastEvaluatedKey = ''
-      this.dataMessage = Constants.FETCHING_DATA;
-      this.issues = [];
-    } else {
+    if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
+      if (this.searchValue != null && this.category == null) {
+        this.toastr.error('Please select both searchValue and category ');
+        return false;
+      } else if (this.searchValue == null && this.category != null) {
+        this.toastr.error('Please select both searchValue and category ');
+        return false;
+      }
+      else {
+        this.lastEvaluatedKey = ''
+        this.issues = [];
+       
+        this.dataMessage = Constants.FETCHING_DATA;
+        this.initDataTable();
+      }
+    }
+    else {
       return false;
     }
   }
 
   resetFilter() {
-    if (this.unitID != null || this.issueName != '' || this.issueStatus != null || this.assetUnitID != null) {
-      this.unitID = null;
+    if (this.searchValue != null || this.issueName != '' || this.issueStatus != null || this.category != null) {
+      this.searchValue = null;
       this.unitName = '';
       this.issueName = '';
       this.issueStatus = null;
-      this.assetUnitID = null;
+      this.category = null;
       this.suggestedIssues = [];
       this.lastEvaluatedKey = ''
       this.initDataTable();
@@ -186,25 +209,24 @@ export class IssueListComponent implements OnInit {
   }
 
 
-  fetchAllVehicles() {
-    this.apiService.getData('vehicles').subscribe((result: any) => {
-      this.allVehicles = result.Items;
-    });
-  }
+  // fetchAllVehicles() {
+  //   this.apiService.getData('vehicles').subscribe((result: any) => {
+  //     this.allVehicles = result.Items;
+  //   });
+  // }
 
-
-  fetchAllAssets() {
-    this.apiService.getData('assets').subscribe((result: any) => {
-      this.allAssets = result.Items;
-    });
-  }
+  // fetchAllAssets() {
+  //   this.apiService.getData('assets').subscribe((result: any) => {
+  //     this.allAssets = result.Items;
+  //   });
+  // }
 
   refreshData() {
-    this.unitID = null;
+    this.searchValue = null;
     this.unitName = '';
     this.issueName = '';
     this.issueStatus = null;
-    this.assetUnitID = null;
+    this.category = null;
     this.suggestedIssues = [];
     this.lastEvaluatedKey = '';
     this.initDataTable();

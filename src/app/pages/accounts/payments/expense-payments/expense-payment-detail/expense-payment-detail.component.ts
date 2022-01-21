@@ -32,6 +32,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
     expIds: [],
     advTotal: 0,
     expTotal: 0,
+    isFeatEnabled: false,
   };
   showModal = false;
   paymentID = "";
@@ -45,7 +46,7 @@ export class ExpensePaymentDetailComponent implements OnInit {
 
   ngOnInit() {
     this.paymentID = this.route.snapshot.params["paymentID"];
-    this.fetchAccountsByIDs();
+    // this.fetchAccountsByIDs();
     this.fetchPayment();
   }
 
@@ -73,6 +74,9 @@ export class ExpensePaymentDetailComponent implements OnInit {
       .getData(`expense-payments/detail/${this.paymentID}`)
       .toPromise();
     this.paymentData = result;
+    if (!this.paymentData.isFeatEnabled) {
+      this.fetchAccountsByIDs();
+    }
   }
 
   async fetchAccountsByIDs() {
