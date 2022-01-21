@@ -18,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CustomerSettingComponent } from './customer-setting/customer-setting.component';
+import { ImportOverviewComponent } from './settings-overview/import-overview/import-overview.component';
+import { VehImportComponent } from './veh-import/veh-import.component';
 
 const routes: Routes = [
 
@@ -34,6 +36,8 @@ const routes: Routes = [
   { path: 'compliance', component: ComplianceSettingComponent },
   { path: 'safety', component: SafetySettingComponent },
   { path: 'customer', component: CustomerSettingComponent },
+  { path: 'importoverview', component: ImportOverviewComponent },
+  { path: 'vehimport', component: VehImportComponent },
 
 ]
 
@@ -50,7 +54,9 @@ const routes: Routes = [
     DispatchSettingComponent,
     ComplianceSettingComponent,
     SafetySettingComponent,
-    CustomerSettingComponent],
+    CustomerSettingComponent,
+    ImportOverviewComponent,
+    VehImportComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
