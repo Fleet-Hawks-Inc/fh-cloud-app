@@ -25,6 +25,8 @@ export class SettlementsDetailComponent implements OnInit {
     txnDate: "",
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     tripIds: [],
     trpData: [],
     miles: {
@@ -97,6 +99,7 @@ export class SettlementsDetailComponent implements OnInit {
   showModal = true;
   selectedFuelEnteries = [];
   showDetailBtn = false;
+  carrierID = "";
 
   constructor(
     private accountService: AccountService,
@@ -119,6 +122,10 @@ export class SettlementsDetailComponent implements OnInit {
       .getData(`settlement/detail/${this.settlementID}`)
       .subscribe((result: any) => {
         this.settlementData = result[0];
+        if (!this.settlementData.prStart && !this.settlementData.prEnd) {
+          this.settlementData.prStart = this.settlementData.fromDate;
+          this.settlementData.prEnd = this.settlementData.toDate;
+        }
         this.settlementData.transactionLog.map((v: any) => {
           v.type = v.type.replace("_", " ");
         });
@@ -131,6 +138,7 @@ export class SettlementsDetailComponent implements OnInit {
           this.fetchContact(this.settlementData.entityId);
         }
         this.fetchSelectedFuelExpenses();
+        this.carrierID = result[0].pk;
       });
   }
 
