@@ -428,7 +428,9 @@ export class AddDriverComponent
       this.pageTitle = "Add Driver";
     }
     this.fetchGroups(); // fetch groups
-    this.fetchCountries(); // fetch countries
+    // this.fetchCountries(); 
+    this.docCountries = await this.dashboardUtilityService.fetchCountries();// fetch countries
+    // console.log('  this.docCountries', this.docCountries)
     this.getToday(); // get today date on calender
     this.searchLocation(); // search location on keyup
     this.fetchDocuments();
@@ -603,9 +605,10 @@ export class AddDriverComponent
     this.listService.fetchOwnerOperators();
   }
 
-  async fetchCountries() {
-    this.docCountries = await this.countryStateCity.GetAllCountries();
-  }
+  // async fetchCountries() {
+  //   this.docCountries = await this.countryStateCity.GetAllCountries();
+  //   console.log(' this.docCountries ', this.docCountries )
+  // }
   async getStates(countryCode: any, index: any) {
     this.driverData.address[index].stateCode = "";
     this.driverData.address[index].cityName = "";
@@ -1232,13 +1235,13 @@ export class AddDriverComponent
         result.documentDetails[i].uploadedDocs !== undefined &&
         result.documentDetails[i].uploadedDocs.length > 0
       ) {
-         this.assetsDocs[i] = result.docuementUpload;
-      //  this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(
-      //    (x) => ({
-      //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
-      //      name: x,
-      //    })
-      //  );
+        this.assetsDocs[i] = result.docuementUpload;
+        //  this.assetsDocs[i] = result.documentDetails[i].uploadedDocs.map(
+        //    (x) => ({
+        //      path: `${this.Asseturl}/${result.carrierID}/${x}`,
+        //      name: x,
+        //    })
+        //  );
       }
     }
     this.driverData.documentDetails = this.newDocuments;

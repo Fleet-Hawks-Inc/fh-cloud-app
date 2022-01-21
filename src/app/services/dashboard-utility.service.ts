@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "./api.service";
+import { CountryStateCityService } from "src/app/services/country-state-city.service";
 
 @Injectable({
   providedIn: "root",
@@ -13,6 +14,7 @@ export class DashboardUtilityService {
   public refreshOwnerOperators = true;
   public refreshEmployees = true;
   public refreshVendors = true;
+  public refreshCountries = true;
   carriers: any = {};
   drivers: any = {};
   assets: any = {};
@@ -22,8 +24,8 @@ export class DashboardUtilityService {
   ownerOperators: any = {};
   employees: any = {};
   vendors: any = {};
-
-  constructor(private apiService: ApiService) { }
+  countries: any = {};
+  constructor(private apiService: ApiService, private countryStateCity: CountryStateCityService,) { }
 
   public getCarriers = async (): Promise<any[]> => {
     var size = Object.keys(this.carriers).length;
@@ -35,6 +37,16 @@ export class DashboardUtilityService {
     }
     return this.carriers;
   };
+  public fetchCountries = async (): Promise<any[]> => {
+    if (this.refreshCountries) {
+      const result = await this.countryStateCity.GetAllCountries();
+      // console.log('result', result)
+      this.countries = result;
+      // console.log('countries', this.countries)
+      this.refreshCountries = false;
+    }
+    return this.countries;
+  }
 
   public getDrivers = async (): Promise<any[]> => {
     if (this.refreshDrivers) {
