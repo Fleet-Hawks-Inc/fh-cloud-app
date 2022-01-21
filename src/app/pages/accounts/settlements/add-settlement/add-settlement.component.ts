@@ -24,6 +24,8 @@ export class AddSettlementComponent implements OnInit {
     txnDate: moment().format("YYYY-MM-DD"),
     fromDate: null,
     toDate: null,
+    prStart: null,
+    prEnd: null,
     tripIds: [],
     trpData: [],
     miles: {
@@ -1252,12 +1254,28 @@ export class AddSettlementComponent implements OnInit {
       this.toaster.error("Please select settlement");
       return false;
     }
+    if (this.settlementData.prStart == "" || this.settlementData.prEnd == "") {
+      this.toaster.error("Please select pay period");
+      return false;
+    }
+
+    if (
+      this.settlementData.prStart == "" ||
+      this.settlementData.prStart == null ||
+      this.settlementData.prEnd == "" ||
+      this.settlementData.prEnd == null
+    ) {
+      this.toaster.error("Please select pay period");
+      return false;
+    }
+
     if (this.settlementData.type === "owner_operator") {
       this.settlementData.miles.drivers.map((v) => {
         delete v.paymentDetails;
       });
     }
     this.submitDisabled = true;
+    console.log("this.settlementData", this.settlementData);
     this.accountService.postData("settlement", this.settlementData).subscribe({
       complete: () => {},
       error: (err: any) => {
@@ -1768,6 +1786,16 @@ export class AddSettlementComponent implements OnInit {
       this.toaster.error("Please select settlement");
       return false;
     }
+    if (
+      this.settlementData.prStart == "" ||
+      this.settlementData.prStart == null ||
+      this.settlementData.prEnd == "" ||
+      this.settlementData.prEnd == null
+    ) {
+      this.toaster.error("Please select pay period");
+      return false;
+    }
+
     this.submitDisabled = true;
     this.errors = {};
     this.hasError = false;

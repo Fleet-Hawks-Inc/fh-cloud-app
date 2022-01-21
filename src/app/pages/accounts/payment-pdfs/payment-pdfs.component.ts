@@ -5,6 +5,7 @@ import { ApiService } from "src/app/services/api.service";
 import { ListService } from "src/app/services/list.service";
 import { formatDate } from "@angular/common";
 import { AccountService } from "src/app/services/account.service";
+import { Auth } from "aws-amplify";
 
 @Component({
   selector: "app-payment-pdfs",
@@ -98,6 +99,9 @@ export class PaymentPdfsComponent implements OnInit {
   fuelAddTotal = 0;
   fuelDedTotal = 0;
   pdfTitle = "";
+  currentUser: any = "";
+  companyName: any = "";
+  companyLogo = "";
 
   ngOnInit() {
     this.subscription = this.listService.paymentPdfList.subscribe(
@@ -113,11 +117,11 @@ export class PaymentPdfsComponent implements OnInit {
           this.paymentData.eiInsurable = this.paymentData.totalAmount;
 
           if (this.paymentData.paymentTo === "driver") {
-            this.pdfTitle = "Driver Payment Advance";
+            this.pdfTitle = "Driver Payment";
           } else if (this.paymentData.paymentTo === "employee") {
             this.pdfTitle = "Employee Payment";
           }
-
+          await this.getCurrentuser();
           this.pdfDetails.paymentNo = this.paymentData.paymentNo;
           if (this.paymentData.paymentTo === "driver") {
             this.fetchDriverDetails();
@@ -414,4 +418,14 @@ export class PaymentPdfsComponent implements OnInit {
       });
     }
   }
+
+  getCurrentuser = async () => {
+    this.currentUser = (await Auth.currentSession()).getIdToken().payload;
+    const carrierID = this.currentUser.carrierID;
+    let result: any = await this.apiService
+      .getData(`carriers/detail/${carrierID}`)
+      .toPromise();
+    this.companyName = result.companyName;
+    this.companyLogo = result.logo;
+  };
 }
