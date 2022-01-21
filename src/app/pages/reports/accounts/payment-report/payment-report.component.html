@@ -11,23 +11,18 @@
             <header class="page-header pr19 pl11">
                 <form class="form-horizontal" method="get">
                     <div class="row" style="padding-top:10px;">
-                        <div class="col-md-2 col-lg-2 pr-1">
-                            <div class="input-group input-group-md">
-                                <input type="text" autocomplete="off" name="driverName" 
-                                    placeholder="Search driver by name" class="form-control"
-                                    >
-                            </div>
-                            <!-- <div *ngIf="suggestedDrivers?.length> 0" class="result-suggestions">
-                                <ul>
-                                    <li *ngFor="let suggestedDriver of suggestedDrivers" class="cursorpoint" (click)="setDriver(suggestedDriver.driverID,
-                      suggestedDriver.firstName, suggestedDriver.lastName,
-                      suggestedDriver.middleName)" class="text-capitalize">{{ suggestedDriver.firstName }} {{
-                                        suggestedDriver.middleName }} {{ suggestedDriver.lastName }}</li>
-                                </ul>
-                            </div> -->
-                        </div>
-                        <div class="col-md-2 col-lg-2 pr-1">
-                           
+                        <div class="col-md-8 col-lg-8 pr-1">
+                            
+                            <div class="col-md-4 col-lg-4 pr-0">
+                                <ng-select [(ngModel)]="filter.type" name="type" placeholder="Select type">
+                                    <ng-option *ngFor="let payment of paymentType" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
+                              <div class="col-md-4 col-lg-4 pr-0">
+                                <ng-select [(ngModel)]="filter.mode" name="type" placeholder="Select mode">
+                                    <ng-option *ngFor="let payment of paymentMode" [value]="payment.type">{{payment.name}}</ng-option>
+                                </ng-select>
+                              </div>
                         </div>
 
                         <div class="col-md-2 col-lg-2">
@@ -64,7 +59,6 @@
                                                         <th id="" class="minWidth120">Vendor</th>
                                                         <th id="" class="minWidth120">Currency</th>
                                                         <th id="" class="minWidth120">Amount</th>
-                                                        <th id="" class="minWidth120">Status</th>
                                                         
                                                     </tr>
                                                 </thead>
@@ -91,9 +85,6 @@
                                                         </td>
                                                         <td>
                                                             {{element.amount}}
-                                                        </td>
-                                                        <td>
-                                                            {{element.status}}
                                                         </td>
                                                     </tr>
                                                 </tbody>
