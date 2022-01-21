@@ -1,7 +1,7 @@
 <ng-template #settlmentDetail let-modal>
   <div class="modal-content">
     <div class="modal-header">
-      <h4 class="modal-title">Details</h4>
+      <h4 class="modal-title">Settlement Details</h4>
       <button type="button" class="close" (click)="modal.dismiss()">
         &times;
       </button>
@@ -18,12 +18,12 @@
           <tbody>
             <tr>
               <td width="50%">
-                <h1 style="font-size: 26px; color: #000000">
-                  Driver Settlement
+                <h1 style="font-size: 20px; color: #000000" class="text-uppercase">
+                  Company: {{ companyName }}
                 </h1>
               </td>
               <td width="50%" align="right" valign="middle">
-                <img [src]="otherLogoSrc" />
+                <img crossorigin="anonymous" *ngIf="companyLogo" [src]="companyLogo" alt="logo" style="max-width: 100px;">
               </td>
             </tr>
             <tr>
@@ -49,7 +49,10 @@
                   >
                     owner operator
                   </span>
-                  : {{ entityName }}
+                  <span class="text-uppercase">
+                    : {{ entityName }}
+                  </span>
+                  
                 </h2>
               </td>
               <td valign="top" align="right">
@@ -57,8 +60,8 @@
                   style="font-size: 20px; margin-bottom: 10px; color: #000000"
                 >
                   Pay Period:
-                  {{ settlementData.fromDate | date: "yyyy/MM/dd" }} to
-                  {{ settlementData.toDate | date: "yyyy/MM/dd" }}
+                  {{ settlementData.prStart | date: "yyyy/MM/dd" }} to
+                  {{ settlementData.prEnd | date: "yyyy/MM/dd" }}
                 </h2>
               </td>
             </tr>

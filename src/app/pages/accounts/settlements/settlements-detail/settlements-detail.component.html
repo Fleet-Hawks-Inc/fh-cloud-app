@@ -126,6 +126,14 @@
                                                                 settlementData.miles.totalHours
                                                                 }}</td>
                                                         </tr>
+                                                        <tr>
+                                                            <td
+                                                                class="back-color-gray
+                                                                font-weight-bold">Pay Period</td>
+                                                            <td>
+                                                                {{ settlementData.prStart | date:"yyyy/MM/dd" }} - {{ settlementData.prEnd | date:"yyyy/MM/dd" }}
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
