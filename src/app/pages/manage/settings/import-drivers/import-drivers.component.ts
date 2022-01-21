@@ -140,6 +140,7 @@ chooseFile(event) {
     if (condition) {
       this.importDocs = []
       this.importDocs = files
+      this.inValidMessages = [];
       const reader = new FileReader();
       reader.addEventListener('load', (event:any) => {
         let csvdata = event.target.result;
