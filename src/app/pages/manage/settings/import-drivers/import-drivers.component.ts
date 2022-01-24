@@ -125,11 +125,11 @@ submitDisabled: boolean = true;
           csvData.data
         }else if(csvData.data.length == 0){
           this.submitDisabled = true;
-          this.toastr.error("Don't upload empty CSV.") 
+          this.toastr.error("There are no records in the file uploaded") 
         }
        else {
          this.submitDisabled = true;
-         this.toastr.error("'Recored should be less than 200'")}
+         this.toastr.error("'The file should contain a maximum of 200 records'")}
       })
       .catch(err => { })
   }
@@ -169,7 +169,7 @@ chooseFile(event) {
         },
         next: (res) => {
           this.submitDisabled = false;
-          this.toastr.success("Imported Successfully")
+          this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
           $('#importDocs').val('');
           $('#importModel').modal('hide');
         }
