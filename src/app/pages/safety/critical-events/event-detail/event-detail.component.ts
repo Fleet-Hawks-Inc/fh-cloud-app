@@ -119,21 +119,19 @@ export class EventDetailComponent implements OnInit {
         }
         this.safetyNotes = result.safetyNotes;
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
-          this.eventImages = result.uploadedPhotos.map(x => ({
-            path: `${this.asseturl}/${result.pk}/${x}`,
-            name: x,
-          }));
+        this.eventImages = result.uploadPics;
+        // this.eventImages = result.uploadedPhotos.map(x => ({
+        //    path: `${this.asseturl}/${result.pk}/${x}`,
+        //    name: x,
+        //  }));
         }
-
         if (result.uploadedVideos != undefined && result.uploadedVideos.length > 0) {
-          this.eventVideos = result.uploadedVideos.map(x => ({
-            path: `${this.asseturl}/${result.pk}/${x}`,
-            name: x
-          }));
+        this.eventVideos = result.uploadVideo;
+        //  this.eventVideos = result.uploadedVideos.map(x => ({
+        //    path: `${this.asseturl}/${result.pk}/${x}`,
+        //    name: x
+        //  }));
         }
-
-
-
       })
   }
 
