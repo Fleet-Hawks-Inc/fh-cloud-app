@@ -108,7 +108,6 @@ export class IncidentDetailComponent implements OnInit {
           await this.setMarker(result.location.cords);  
         }
         
-        
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
         this.incidentImages = result.uploadPics;
          // this.incidentImages = result.uploadedPhotos.map(x => ({

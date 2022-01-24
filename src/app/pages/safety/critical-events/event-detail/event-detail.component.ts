@@ -118,6 +118,7 @@ export class EventDetailComponent implements OnInit {
           await this.setMarker(result.location.cords);
         }
         this.safetyNotes = result.safetyNotes;
+        
         if (result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0) {
         this.eventImages = result.uploadPics;
         // this.eventImages = result.uploadedPhotos.map(x => ({
