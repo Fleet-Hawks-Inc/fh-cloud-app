@@ -241,7 +241,8 @@ export class AddReceiptComponent implements OnInit {
   }
 
   refreshAccount() {
-    this.listService.fetchChartAccounts();
+    // this.listService.fetchChartAccounts();
+    this.fetchAccounts()
   }
   fetchAdvancePayments() {
     this.dataMessageAdv = Constants.FETCHING_DATA;
