@@ -105,8 +105,8 @@ export class AddAccountComponent implements OnInit {
         this.submitDisabled = false;
         this.response = res;
         this.toaster.success("Account Added Successfully.");
-        // $('#addAccountModal').modal('hide');
-        // this.listService.fetchChartAccounts();
+        $('#addAccountModal').modal('hide');
+        this.listService.fetchChartAccounts();
         this.actName = "";
         this.actType = "";
         this.mainactType = "";

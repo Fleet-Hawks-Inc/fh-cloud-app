@@ -55,10 +55,10 @@ export class ReceiptDetailComponent implements OnInit {
   async fetchReceipt() {
     this.accountService
       .getData(`receipts/detail/${this.recID}`)
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         this.receiptData = res[0];
         if (!this.receiptData.isFeatEnabled) {
-          this.accountsIntObjects = this.accountUtility.getPreDefinedAccounts();
+          this.accountsIntObjects = await this.accountUtility.getPreDefinedAccounts();
         }
         this.isLoaded = true;
         if (this.receiptData.custData) {
