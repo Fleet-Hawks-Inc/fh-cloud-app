@@ -107,7 +107,7 @@ export class IncidentDetailComponent implements OnInit {
         if(result.location.cords != undefined) {
           await this.setMarker(result.location.cords);  
         }
-        
+      
         if(result.uploadedPhotos != undefined && result.uploadedPhotos.length > 0){
         this.incidentImages = result.uploadPics;
          // this.incidentImages = result.uploadedPhotos.map(x => ({
@@ -125,7 +125,6 @@ export class IncidentDetailComponent implements OnInit {
         }
         this.createdBy = result.createdBy;
         this.safetyNotes = result.safetyNotes;
-        
       })
   }
 
