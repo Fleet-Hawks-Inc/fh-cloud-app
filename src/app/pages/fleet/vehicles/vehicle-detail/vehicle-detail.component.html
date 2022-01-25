@@ -404,7 +404,7 @@
                                                     </tr>
                                                     <tr *ngFor="let data of docs; let i=index;">
                                                      <td width="80%">
-                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                      <a href="{{data.path}}"target="_blank">Document {{ i + 1 }}</a>
                                                         </td>
                                                         <td width="20%">
                                                             <a href="javascript:;"
@@ -859,9 +859,10 @@
                                                     <td colspan="2">{{ noRecordMsg }}</td>
                                                 </tr>
                                                 <tr *ngFor="let data of pDocs; let i=index;">
-                                                     <td width="80%">
-                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
-                                                        </td>
+                                                    <td width="80%">
+                                                      <a href="{{data.path}}" target="_blank">Document {{ i + 1 }}</a>
+                                                        </td>   
+                          
                                                     <td width="20%">
                                                         <a href="javascript:;"
                                                             class="btn btn-deafault pull-right btn-xs"
@@ -972,7 +973,7 @@
                                                 </tr>
                                                 <tr *ngFor="let data of lDocs; let i=index;">
                                                      <td width="80%">
-                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                      <a href="{{data.path}}" target="_blank">Document {{ i + 1 }}</a>
                                                         </td>
                                                     <td width="20%">
                                                         <a href="javascript:;"

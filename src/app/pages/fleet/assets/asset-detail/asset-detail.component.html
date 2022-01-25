@@ -591,7 +591,7 @@
                                                         </tr>
                                                         <tr *ngFor="let data of lDocs; let i = index">
                                                         <td width="80%">
-                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                      <a href="{{data.path}}"target="_blank">Document {{ i + 1 }}</a>
                                                         </td>
                                                  <!--   <a href="{{ data.path }}">Document {{ i+1}}</a> -->
                                                             <td width="20%">
@@ -830,7 +830,7 @@
                                                         </tr>
                                                         <tr *ngFor="let data of pDocs; let i = index">
                                                          <td width="80%">
-                                                      <a href="{{data.path}}">Document {{ i + 1 }}</a>
+                                                      <a href="{{data.path}}"target="_blank">Document {{ i + 1 }}</a>
                                                         </td>
                                                             <td width="20%">
                                                                 <a href="javascript:;"
@@ -904,12 +904,12 @@
                                                     <div class="col-lg-9">
                                                         <a href="{{ doc.path }}" data-toggle="modal"
                                                             data-target="#viewDocModal"
-                                                            (click)="setPDFSrc(doc.path)">Document {{ d + 1 }}</a>
+                                                            (click)="setPDFSrc(doc.path)"target="_blank">Document {{ d + 1 }}</a>
                                                     </div>
                                                     <div class="col-lg-3 text-right">
-                                                        <em class="far fa-file text-dak mr-1"
+                                                       <em class="far fa-file text-dak mr-1"
                                                             (click)="setPDFSrc(doc.path)" data-toggle="modal"
-                                                            data-target="#viewDocModal"></em>
+                                                            data-target="#viewDocModal"></em> 
                                                         <a href="javascript:;" (click)="deleteDocument('doc', doc.name)"
                                                             class="modal-with-form">
                                                             <em class="fas fa-times text-danger"></em></a>
