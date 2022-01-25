@@ -139,9 +139,10 @@ export class AddReceiptComponent implements OnInit {
 
   fetchAccounts() {
     this.accountService
-      .getData(`chartAc/get/all/list`)
+      .getData(`chartAc/get/list/all`)
       .subscribe((result: any) => {
         this.accounts = result;
+        console.log('this.accounts', this.accounts)
       });
   }
 
@@ -241,7 +242,7 @@ export class AddReceiptComponent implements OnInit {
   }
 
   refreshAccount() {
-    // this.listService.fetchChartAccounts();
+    // this.listService.fetchChartAccounts(); 
     this.fetchAccounts()
   }
   fetchAdvancePayments() {
