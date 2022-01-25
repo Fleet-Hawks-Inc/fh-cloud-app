@@ -162,6 +162,50 @@
                                         </div>
 
                                         <div class="row mt-2">
+                                            
+                                            <div class="col-6" *ngIf="settlementData.type == 'owner_operator'">
+                                                <label class="control-label font-weight-bold pt-2">Filter By Unit</label>
+                                                <br>
+                                                <ng-select [(ngModel)]="ownerVehicleID" name="ownerVehicle" [multiple]="true" (change)="filterByUnit()"
+                                                    placeholder="Select Unit">
+                                                    <ng-option value="{{ veh.vehicleID }}" *ngFor="let veh of ownerVehicles;">{{ veh.vehicleIdentification }}</ng-option>
+                                                </ng-select>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                   <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-lg-4" *ngIf="settlementData.type">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Search Start Date<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
+                                                    #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
+                                            </div>
+                                            <div class="col-lg-4" *ngIf="settlementData.type">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Search End Date<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
+                                                    #toDate="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
+                                            </div>
+                                            <div class="col-lg-2 text-right" *ngIf="settlementData.type &&
+                                            !editDisabled">
+                                                <button class="btn btn-success
+                                                    mar-top-37" (click)="searchFnc()"
+                                                    [disabled]="searchDisabled">Search</button>
+                                            </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-6">
+                                        <div class="row">
                                             <div class="col-4">
                                                 <label class="control-label
                                                 font-weight-bold pt-2">Show Fuel</label>
@@ -173,42 +217,53 @@
                                                     <input type="radio" name="optradio" value="no" (change)="checkFuelVisibility($event)" [checked]="showFuel === 'no'"><span class="pl-1">No</span>
                                                 </label>
                                             </div>
-                                            <div class="col-6" *ngIf="settlementData.type == 'owner_operator'">
-                                                <label class="control-label font-weight-bold pt-2">Filter By Unit</label>
-                                                <br>
-                                                <ng-select [(ngModel)]="ownerVehicleID" name="ownerVehicle" [multiple]="true" (change)="filterByUnit()"
-                                                    placeholder="Select Unit">
-                                                    <ng-option value="{{ veh.vehicleID }}" *ngFor="let veh of ownerVehicles;">{{ veh.vehicleIdentification }}</ng-option>
-                                                </ng-select>
+                                        </div>
+                                   </div>
+                                   <div class="col-6">
+                                        <div class="row">
+                                            <div class="col-lg-5">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Pay Period From<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.prStart" name="prStart" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="prStart.toggle()" ngbDatepicker
+                                                    #prStart="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly #perriodFrom="ngModel">
+
+                                                <div *ngIf="perriodFrom.invalid &&
+                                                    (perriodFrom.dirty ||
+                                                    perriodFrom.touched)" class="text-danger">
+                                                    <div *ngIf="perriodFrom.errors.required">
+                                                        Pay period is
+                                                        required.
+                                                    </div>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-5">
+                                                <label class="control-label
+                                                    font-weight-bold pt-2">Pay Period To<span
+                                                        class="mandfield text-2 ml-1"><sup>*</sup></span></label>
+                                                <input [(ngModel)]="settlementData.prEnd" name="prEnd" type="text"
+                                                    placeholder="yyyy/mm/dd" (click)="prEnd.toggle()" ngbDatepicker
+                                                    #prEnd="ngbDatepicker" class="form-control" autocomplete="off"
+                                                    (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
+                                                    [maxDate]="futureDatesLimit" readonly #perriodTo="ngModel">
+
+                                                <div *ngIf="perriodTo.invalid &&
+                                                    (perriodTo.dirty ||
+                                                    perriodTo.touched)" class="text-danger">
+                                                    <div *ngIf="perriodTo.errors.required">
+                                                        Pay period is
+                                                        required.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div class="col-lg-2" *ngIf="settlementData.type">
-                                        <label class="control-label
-                                            font-weight-bold pt-2">From Date<span
-                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input [(ngModel)]="settlementData.fromDate" name="fromDate" type="text"
-                                            placeholder="yyyy/mm/dd" (click)="fromDate.toggle()" ngbDatepicker
-                                            #fromDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                            (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
-                                            [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
-                                    </div>
-                                    <div class="col-lg-2" *ngIf="settlementData.type">
-                                        <label class="control-label
-                                            font-weight-bold pt-2">To Date<span
-                                                class="mandfield text-2 ml-1"><sup>*</sup></span></label>
-                                        <input [(ngModel)]="settlementData.toDate" name="toDate" type="text"
-                                            placeholder="yyyy/mm/dd" (click)="toDate.toggle()" ngbDatepicker
-                                            #toDate="ngbDatepicker" class="form-control" autocomplete="off"
-                                            (dateSelect)="checkSearchDisable();" [minDate]="dateMinLimit"
-                                            [maxDate]="futureDatesLimit" readonly [disabled]="editDisabled">
-                                    </div>
-                                    <div class="col-lg-1 text-right" *ngIf="settlementData.type &&
-                                        !editDisabled">
-                                        <button class="btn btn-success
-                                            mar-top-37" (click)="searchFnc()"
-                                            [disabled]="searchDisabled">Search</button>
-                                    </div>
+                                    
+                                   
 
                                 </div>
                             </div>
