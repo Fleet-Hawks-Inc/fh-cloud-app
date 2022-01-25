@@ -96,6 +96,8 @@ export class ReceiptDetailComponent implements OnInit {
             });
           }
         }
+
+        console.log('this.receiptData', this.receiptData)
       });
   }
 

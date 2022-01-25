@@ -236,7 +236,7 @@
                                                         <tr *ngFor="let data of
                                                             settlementData.addition">
                                                             <td>{{
-                                                                tripsObj[data.tripID]
+                                                                data.tripName
                                                                 }}</td>
                                                             <td>{{
                                                                 data.chargeName
@@ -274,7 +274,7 @@
                                                         <tr *ngFor="let data of
                                                             settlementData.deduction">
                                                             <td>{{
-                                                                tripsObj[data.tripID]
+                                                                data.tripName
                                                                 }}</td>
                                                             <td>{{
                                                                 data.chargeName
