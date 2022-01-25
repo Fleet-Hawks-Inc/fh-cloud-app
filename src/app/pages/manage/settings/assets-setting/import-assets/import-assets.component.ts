@@ -131,11 +131,11 @@ export class ImportAssetsComponent implements OnInit {
           csvData.data
         }else if(csvData.data.length == 0){
           this.submitDisabled = true;
-          this.toastr.error("Don't upload empty CSV.") 
+          this.toastr.error("There are no records in the file uploaded.") 
         }
        else {
          this.submitDisabled = true;
-         this.toastr.error("No of records in CSV can not more than 200.")}
+         this.toastr.error("The file should contain a maximum of 200 records.")}
       })
       .catch(err => { })
   }
@@ -167,7 +167,7 @@ export class ImportAssetsComponent implements OnInit {
           this.error.message=''
           this.error.attributes=[]
           this.submitDisabled = false;
-          this.toastr.success("Imported Successfully")
+          this.toastr.success("The file has been scheduled for processing and you will be notified via email once it is completed.")
           $('#uploadedDocs').val('');
           $('#importModel').modal('hide');
         }

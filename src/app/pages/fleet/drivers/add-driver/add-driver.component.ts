@@ -315,6 +315,7 @@ export class AddDriverComponent
   uploadedPic = "";
   showUploadedPicModal = false;
   pageType = "add";
+    groupsData: any = [];
 
   constructor(
     private apiService: ApiService,
@@ -439,6 +440,7 @@ export class AddDriverComponent
     let vehicleList = new Array<any>();
     this.getValidVehicles(vehicleList);
     this.vehicles = vehicleList;
+    this.fetchGroupsList();
   }
 
   private getValidVehicles(vehicleList: any[]) {
@@ -1773,5 +1775,12 @@ export class AddDriverComponent
     this.onChangeHideErrors("CDL_Number");
     this.onChangeHideErrors("email");
     this.submitDisabled = false;
+  }
+  
+  // >>>vivek
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=drivers').subscribe((result: any) => {
+      this.groupsData = result;
+    });
   }
 }

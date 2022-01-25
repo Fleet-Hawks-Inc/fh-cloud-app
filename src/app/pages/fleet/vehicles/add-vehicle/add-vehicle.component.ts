@@ -282,6 +282,7 @@ export class AddVehicleComponent implements OnInit {
   futureDatesLimit = { year: this.date.getFullYear() + 30, month: 12, day: 31 };
   editDisabled = false;
   currentYear = '';
+    groupsData: any = [];
   constructor(
     private apiService: ApiService,
     private route: ActivatedRoute,
@@ -349,6 +350,7 @@ export class AddVehicleComponent implements OnInit {
     let driverList = new Array<any>();
     this.getValidDrivers(driverList);
     this.drivers = driverList;
+    this.fetchGroupsList();
   }
   getYears() {
     var max = new Date().getFullYear() + 1,
@@ -1552,5 +1554,12 @@ export class AddVehicleComponent implements OnInit {
 
   refreshOpData() {
     this.listService.fetchOwnerOperators();
+  }
+  // >>>>vivek
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=vehicles').subscribe((result: any) => {
+      this.groupsData = result;
+      console.log('abc', result)
+    });
   }
 }

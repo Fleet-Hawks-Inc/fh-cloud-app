@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ApiService, DashboardUtilityService } from "../../../../services";
+import { ApiService, DashboardUtilityService} from "../../../../services";
 import { Router, ActivatedRoute } from "@angular/router";
 import { formatDate } from "@angular/common";
 import { map } from "rxjs/operators";
@@ -37,6 +37,7 @@ export class AddAssetsComponent implements OnInit {
     inspectionFormID: "",
     assetIdentification: "",
     groupID: null,
+    pk: null,
     VIN: "",
     startDate: moment().format("YYYY-MM-DD"),
     assetType: null,
@@ -169,6 +170,7 @@ export class AddAssetsComponent implements OnInit {
   companyLabel = "";
 
   isEdit: boolean = false;
+  groupsData:any = [];
   
    retInterval = [
     {
@@ -241,6 +243,9 @@ export class AddAssetsComponent implements OnInit {
     let operatorList = new Array<any>();
     this.getValidOperators(operatorList);
     this.ownOperators = operatorList;
+    
+    // >>>vivek
+    this.fetchGroupsList();
   }
 
   private getValidVendors(vendorList: any[]) {
@@ -992,13 +997,7 @@ export class AddAssetsComponent implements OnInit {
     }
   }
 
-  fetchGroups() {
-    this.apiService
-      .getData(`groups/getGroup/${this.groupData.groupType}`)
-      .subscribe((result: any) => {
-        this.groups = result.Items;
-      });
-  }
+  
 
   getGroups() {
     this.fetchGroups();
@@ -1137,5 +1136,21 @@ export class AddAssetsComponent implements OnInit {
       description: "",
       groupMembers: [],
     };
+  }
+  
+  // >>>vivek
+  
+  fetchGroups() {
+    this.apiService
+      .getData(`groups/getGroup/${this.groupData.groupType}`)
+      .subscribe((result: any) => {
+        this.groups = result.Items;
+      });
+  }
+  
+  fetchGroupsList() {
+    this.apiService.getData('groups/get/list/type?type=assets').subscribe((result: any) => {
+      this.groupsData = result;
+    });
   }
 }

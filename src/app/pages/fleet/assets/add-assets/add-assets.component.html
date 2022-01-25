@@ -79,13 +79,12 @@
                                 font-weight-bold
                                 text-lg-right
                               ">Group</label>
-
                                                         <ng-select class="form-control populate"
                                                             [(ngModel)]="assetsData.groupID"
                                                             placeholder="Select group for asset" name="groupID"
                                                             #groupSlt="ngModel">
-                                                            <ng-option *ngFor="let group of groups"
-                                                                value="{{ group.groupID }}">
+                                                            <ng-option *ngFor="let group of groupsData" 
+                                                                [value] = "group.groupID">
                                                                 {{ group.groupName }}</ng-option>
                                                         </ng-select>
                                                         <!-- <div *ngIf="groupSlt.invalid && (groupSlt.dirty || groupSlt.touched)" class="text-danger">

@@ -148,6 +148,8 @@ export class DriverDetailComponent implements OnInit {
     Error = '';
     Success = '';
     driverLogs = [];
+    groupName: any = '';
+    groupId: any = '';
 
     constructor(
         private hereMap: HereMapService,
@@ -167,7 +169,7 @@ export class DriverDetailComponent implements OnInit {
         this.driverID = this.route.snapshot.params[`driverID`]; // get asset Id from URL
         this.fetchDriver();
 
-        this.fetchGroupsbyIDs();
+        // this.fetchGroupsbyIDs();
         this.fetchAllContacts();
         this.fetchDocuments();
         this.fetchDriverTrips();
@@ -175,6 +177,7 @@ export class DriverDetailComponent implements OnInit {
         this.fetchDriverList();
         this.fetchAssetList();
         this.fetchDriverLogs();
+        // this.fetchGroups();
     }
     fetchVehicleList() {
         this.apiService.getData('vehicles/get/list').subscribe((result: any) => {
@@ -388,7 +391,8 @@ export class DriverDetailComponent implements OnInit {
                     this.fastExpiry = this.driverData.crossBorderDetails.fastExpiry;
                     this.citizenship = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.citizenship);
                     this.csa = this.driverData.crossBorderDetails.csa;
-                    this.group = this.driverData.groupID;
+                    this.groupId = this.driverData.groupID;
+                    this.groupName = this.fetchGroups(this.groupId)[0].groupName
                     this.assignedVehicle = this.driverData.assignedVehicle;
                     this.address = this.driverData.address;
                     let newDocuments = [];
@@ -417,7 +421,7 @@ export class DriverDetailComponent implements OnInit {
                     }
                     this.documents = newDocuments;
                     this.liceIssueSate = await this.countryStateCity.GetStateNameFromCode(this.driverData.licenceDetails.issuedState, this.driverData.licenceDetails.issuedCountry),
-                        this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
+                    this.liceIssueCountry = await this.countryStateCity.GetSpecificCountryNameByCode(this.driverData.licenceDetails.issuedCountry);
                     this.licenceExpiry = this.driverData.licenceDetails.licenceExpiry;
                     this.liceMedicalCardRenewal = this.driverData.licenceDetails.medicalCardRenewal;
                     this.licNotification = this.driverData.licenceDetails.licenceNotification;
@@ -463,7 +467,6 @@ export class DriverDetailComponent implements OnInit {
                     this.emerEmail = this.driverData.emergencyDetails.email;
                     this.emerRelationship = this.driverData.emergencyDetails.relationship;
                     this.spinner.hide();
-
                 }
             }, (err) => {
 
@@ -493,12 +496,12 @@ export class DriverDetailComponent implements OnInit {
         })
     }
 
-    fetchGroupsbyIDs() {
-        this.apiService.getData('groups/get/list')
-            .subscribe((result: any) => {
-                this.groupsObjects = result;
-            });
-    }
+    // fetchGroupsbyIDs() {
+    //     this.apiService.getData('groups/get/list')
+    //         .subscribe((result: any) => {
+    //             this.groupsObjects = result;
+    //         });
+    // }
 
     fetchAllContacts() {
         this.apiService.getData('contacts/get/list')
@@ -599,5 +602,12 @@ export class DriverDetailComponent implements OnInit {
                     });
                 }
             });
+    }
+    
+    fetchGroups(groupId) {
+        this.apiService.getData(`groups/get/list?type=drivers&groupId=${groupId}`).subscribe((result: any) => {
+            this.groupsObjects = result;
+            console.log('groupsObject', this.groupsObjects)
+        });
     }
 }

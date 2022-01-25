@@ -255,8 +255,10 @@
                                 class="badge badge-dark p-1 text-uppercase">+2</span>
                             </td>
                             <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.groupID">
-                              {{ driver.groupID ? groupssObject[driver.groupID] :
-                              '-'}}</td>
+                             <span class="text-capitalize">
+                                {{ groupsObjects[driver.groupID] }}
+                              </span>
+													    </td>
                             <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.citizenship">
                               {{ driver.citizenCntryName.name }}</td>
                             <td [routerLink]="driver.url" class="cursorpoint" *ngIf="hideShow.address">
