@@ -126,6 +126,14 @@
                                                                 settlementData.miles.totalHours
                                                                 }}</td>
                                                         </tr>
+                                                        <tr>
+                                                            <td
+                                                                class="back-color-gray
+                                                                font-weight-bold">Pay Period</td>
+                                                            <td>
+                                                                {{ settlementData.prStart | date:"yyyy/MM/dd" }} - {{ settlementData.prEnd | date:"yyyy/MM/dd" }}
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -228,7 +236,7 @@
                                                         <tr *ngFor="let data of
                                                             settlementData.addition">
                                                             <td>{{
-                                                                tripsObj[data.tripID]
+                                                                data.tripName
                                                                 }}</td>
                                                             <td>{{
                                                                 data.chargeName
@@ -266,7 +274,7 @@
                                                         <tr *ngFor="let data of
                                                             settlementData.deduction">
                                                             <td>{{
-                                                                tripsObj[data.tripID]
+                                                                data.tripName
                                                                 }}</td>
                                                             <td>{{
                                                                 data.chargeName
