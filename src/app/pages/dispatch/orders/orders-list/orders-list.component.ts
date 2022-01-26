@@ -735,7 +735,13 @@ export class OrdersListComponent implements OnInit {
 
   onScroll() {
     if (this.loaded) {
-      this.isLoad = true;
+      this.orderFiltr.searchValue = "",
+        this.orderFiltr.startDate = "",
+        this.orderFiltr.endDate = "",
+        this.orderFiltr.category = null,
+
+
+        this.isLoad = true;
       this.isLoadText = "Loading";
       this.initDataTable();
     }
