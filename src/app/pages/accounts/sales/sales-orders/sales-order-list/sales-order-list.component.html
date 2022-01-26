@@ -106,7 +106,7 @@
                       <tr *ngIf="allSales.length === 0" class="text-center">
                         <td colspan="8">{{ dataMessage }}</td>
                       </tr>
-                      <tr *ngFor="let item of allSales" class="cursorpoint">
+                      <tr *ngFor="let item of allSales; let i = index;" class="cursorpoint">
                         <td routerLink="/accounts/sales/orders/detail/{{
                             item.saleID
                           }}">
