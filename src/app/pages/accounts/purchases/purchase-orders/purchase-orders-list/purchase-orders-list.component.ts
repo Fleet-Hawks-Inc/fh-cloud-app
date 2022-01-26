@@ -68,7 +68,6 @@ export class PurchaseOrdersListComponent implements OnInit {
   }
 
   async fetchPurchases() {
-    console.log('filter', this.filter)
     if (this.lastItemSK !== "end") {
       let category = null;
       let unit = null;
